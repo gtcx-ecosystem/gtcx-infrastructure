@@ -1,0 +1,384 @@
+# =============================================================================
+# GTCX Development Docker Compose
+# =============================================================================
+#
+# Local development environment with all services.
+#
+# Principles Implemented:
+#   - DEPLOYABLE (14): Mirrors production architecture locally
+#   - OBSERVABLE (15): Full observability stack included
+#   - OFFLINE (17): SQLite edge node for offline testing
+#   - DOCUMENTED (27): Clear service definitions
+#
+# Usage:
+#   docker compose -f docker/docker-compose.dev.yml up
+#   docker compose -f docker/docker-compose.dev.yml up -d  # Detached
+#   docker compose -f docker/docker-compose.dev.yml logs -f api
+#
+# =============================================================================
+
+name: gtcx-dev
+
+services:
+  # ===========================================================================
+  # DATABASES
+  # ===========================================================================
+  
+  # Primary PostgreSQL (operational data)
+  postgres:
+    image: postgres:16-alpine
+    container_name: gtcx-postgres
+    environment:
+      POSTGRES_USER: gtcx
+      POSTGRES_PASSWORD: gtcx_dev_password
+      POSTGRES_DB: gtcx_development
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-scripts/postgres:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gtcx -d gtcx_development"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - gtcx-network
+
+  # Audit PostgreSQL (append-only, separate instance per AUDITABLE principle)
+  postgres-audit:
+    image: postgres:16-alpine
+    container_name: gtcx-postgres-audit
+    environment:
+      POSTGRES_USER: gtcx_audit
+      POSTGRES_PASSWORD: gtcx_audit_dev_password
+      POSTGRES_DB: gtcx_audit
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_audit_data:/var/lib/postgresql/data
+      - ./init-scripts/postgres-audit:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gtcx_audit -d gtcx_audit"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - gtcx-network
+
+  # Redis (cache, never in critical path per RESILIENT principle)
+  redis:
+    image: redis:7-alpine
+    container_name: gtcx-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - gtcx-network
+
+  # ===========================================================================
+  # CORE SERVICES
+  # ===========================================================================
+
+  # API Gateway (Rails)
+  api:
+    build:
+      context: ../
+      dockerfile: infra/docker/Dockerfile.base
+      target: ruby-production
+    container_name: gtcx-api
+    environment:
+      RAILS_ENV: development
+      DATABASE_URL: postgres://gtcx:gtcx_dev_password@postgres:5432/gtcx_development
+      AUDIT_DATABASE_URL: postgres://gtcx_audit:gtcx_audit_dev_password@postgres-audit:5432/gtcx_audit
+      REDIS_URL: redis://redis:6379/0
+      GTCX_CRYPTO_URL: http://crypto:8080
+      SECRET_KEY_BASE: dev_secret_key_base_change_in_production
+      # Observability
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4318
+      OTEL_SERVICE_NAME: gtcx-api
+    ports:
+      - "3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      postgres-audit:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ../apps:/app/apps
+      - ../packages:/app/packages
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    networks:
+      - gtcx-network
+
+  # Rust Crypto Service
+  crypto:
+    build:
+      context: ../
+      dockerfile: infra/docker/Dockerfile.base
+      target: rust-production
+    container_name: gtcx-crypto
+    environment:
+      RUST_LOG: info
+      GTCX_CRYPTO_PORT: 8080
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    networks:
+      - gtcx-network
+
+  # ===========================================================================
+  # PROTOCOL SERVICES
+  # ===========================================================================
+
+  # TradePass Identity Service
+  tradepass:
+    build:
+      context: ../
+      dockerfile: infra/docker/Dockerfile.base
+      target: ruby-production
+    container_name: gtcx-tradepass
+    environment:
+      RAILS_ENV: development
+      DATABASE_URL: postgres://gtcx:gtcx_dev_password@postgres:5432/gtcx_development
+      GTCX_SERVICE_NAME: tradepass
+      GTCX_CRYPTO_URL: http://crypto:8080
+    ports:
+      - "3001:3000"
+    depends_on:
+      - postgres
+      - crypto
+    networks:
+      - gtcx-network
+
+  # GeoTag Location Service
+  geotag:
+    build:
+      context: ../
+      dockerfile: infra/docker/Dockerfile.base
+      target: ruby-production
+    container_name: gtcx-geotag
+    environment:
+      RAILS_ENV: development
+      DATABASE_URL: postgres://gtcx:gtcx_dev_password@postgres:5432/gtcx_development
+      GTCX_SERVICE_NAME: geotag
+      GTCX_CRYPTO_URL: http://crypto:8080
+    ports:
+      - "3002:3000"
+    depends_on:
+      - postgres
+      - crypto
+    networks:
+      - gtcx-network
+
+  # GCI Compliance Service
+  gci:
+    build:
+      context: ../
+      dockerfile: infra/docker/Dockerfile.base
+      target: ruby-production
+    container_name: gtcx-gci
+    environment:
+      RAILS_ENV: development
+      DATABASE_URL: postgres://gtcx:gtcx_dev_password@postgres:5432/gtcx_development
+      GTCX_SERVICE_NAME: gci
+      GTCX_CRYPTO_URL: http://crypto:8080
+    ports:
+      - "3003:3000"
+    depends_on:
+      - postgres
+      - crypto
+    networks:
+      - gtcx-network
+
+  # ===========================================================================
+  # PLATFORM SERVICES
+  # ===========================================================================
+
+  # CRX - Commodity Regulatory Exchange
+  crx:
+    build:
+      context: ../
+      dockerfile: infra/docker/Dockerfile.base
+      target: ruby-production
+    container_name: gtcx-crx
+    environment:
+      RAILS_ENV: development
+      DATABASE_URL: postgres://gtcx:gtcx_dev_password@postgres:5432/gtcx_development
+      GTCX_SERVICE_NAME: crx
+      GTCX_API_URL: http://api:3000
+    ports:
+      - "3010:3000"
+    depends_on:
+      - api
+    networks:
+      - gtcx-network
+
+  # SGX - Sovereign Governance Exchange
+  sgx:
+    build:
+      context: ../
+      dockerfile: infra/docker/Dockerfile.base
+      target: ruby-production
+    container_name: gtcx-sgx
+    environment:
+      RAILS_ENV: development
+      DATABASE_URL: postgres://gtcx:gtcx_dev_password@postgres:5432/gtcx_development
+      GTCX_SERVICE_NAME: sgx
+      GTCX_API_URL: http://api:3000
+    ports:
+      - "3011:3000"
+    depends_on:
+      - api
+    networks:
+      - gtcx-network
+
+  # AGX - Authenticated Global Exchange
+  agx:
+    build:
+      context: ../
+      dockerfile: infra/docker/Dockerfile.base
+      target: ruby-production
+    container_name: gtcx-agx
+    environment:
+      RAILS_ENV: development
+      DATABASE_URL: postgres://gtcx:gtcx_dev_password@postgres:5432/gtcx_development
+      GTCX_SERVICE_NAME: agx
+      GTCX_API_URL: http://api:3000
+    ports:
+      - "3012:3000"
+    depends_on:
+      - api
+    networks:
+      - gtcx-network
+
+  # ===========================================================================
+  # EDGE NODE (for offline testing)
+  # ===========================================================================
+
+  edge:
+    build:
+      context: ../
+      dockerfile: infra/docker/Dockerfile.base
+      target: edge-runtime
+    container_name: gtcx-edge
+    environment:
+      GTCX_DEPLOYMENT_MODE: edge
+      GTCX_DATABASE_ADAPTER: sqlite3
+      GTCX_OFFLINE_DURATION_DAYS: 30
+      GTCX_SYNC_ENDPOINT: http://api:3000/sync
+    ports:
+      - "3100:3000"
+    volumes:
+      - edge_data:/app/data
+    networks:
+      - gtcx-network
+
+  # ===========================================================================
+  # OBSERVABILITY (per OBSERVABLE principle)
+  # ===========================================================================
+
+  # Prometheus (Metrics)
+  prometheus:
+    image: prom/prometheus:v2.48.0
+    container_name: gtcx-prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.enable-lifecycle'
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./observability/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    networks:
+      - gtcx-network
+
+  # Grafana (Dashboards)
+  grafana:
+    image: grafana/grafana:10.2.2
+    container_name: gtcx-grafana
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: admin
+      GF_USERS_ALLOW_SIGN_UP: false
+    ports:
+      - "3030:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./observability/grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - ./observability/grafana/datasources:/etc/grafana/provisioning/datasources
+    depends_on:
+      - prometheus
+    networks:
+      - gtcx-network
+
+  # Jaeger (Distributed Tracing)
+  jaeger:
+    image: jaegertracing/all-in-one:1.52
+    container_name: gtcx-jaeger
+    environment:
+      COLLECTOR_OTLP_ENABLED: true
+    ports:
+      - "16686:16686"  # UI
+      - "4317:4317"    # OTLP gRPC
+      - "4318:4318"    # OTLP HTTP
+    networks:
+      - gtcx-network
+
+  # Loki (Log Aggregation)
+  loki:
+    image: grafana/loki:2.9.2
+    container_name: gtcx-loki
+    ports:
+      - "3100:3100"
+    volumes:
+      - loki_data:/loki
+      - ./observability/loki.yml:/etc/loki/local-config.yaml
+    command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      - gtcx-network
+
+# =============================================================================
+# NETWORKS
+# =============================================================================
+
+networks:
+  gtcx-network:
+    driver: bridge
+    name: gtcx-network
+
+# =============================================================================
+# VOLUMES
+# =============================================================================
+
+volumes:
+  postgres_data:
+    name: gtcx-postgres-data
+  postgres_audit_data:
+    name: gtcx-postgres-audit-data
+  redis_data:
+    name: gtcx-redis-data
+  edge_data:
+    name: gtcx-edge-data
+  prometheus_data:
+    name: gtcx-prometheus-data
+  grafana_data:
+    name: gtcx-grafana-data
+  loki_data:
+    name: gtcx-loki-data

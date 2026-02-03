@@ -1,0 +1,35 @@
+# =============================================================================
+# GTCX Terraform Variables - EXAMPLE
+# =============================================================================
+# Copy this file to terraform.tfvars and customize for your deployment.
+# =============================================================================
+
+# Environment identifier (used in all resource names)
+environment = "country-pilot"  # e.g., "ghana-pilot", "kenya-prod"
+
+# AWS Region - choose based on data residency requirements (SOVEREIGN principle)
+region = "af-south-1"  # Africa (Cape Town)
+
+# Availability zones for high availability
+availability_zones = [
+  "af-south-1a",
+  "af-south-1b",
+  "af-south-1c"
+]
+
+# Network configuration
+vpc_cidr = "10.0.0.0/16"
+
+# Database configuration
+db_instance_class    = "db.t3.medium"  # Upgrade for production
+db_allocated_storage = 100              # GB
+
+# High availability
+enable_multi_az = true  # Always true for production
+
+# Additional tags
+tags = {
+  Owner       = "GTCX"
+  CostCenter  = "Infrastructure"
+  Compliance  = "SOVEREIGN"
+}

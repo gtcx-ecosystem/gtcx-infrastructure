@@ -1,0 +1,71 @@
+# Reference
+
+> **API documentation, schemas, and lookup resources**
+
+
+## Contents
+
+| Section | Description |
+|---------|-------------|
+| [api/](./api/) | API documentation |
+| [schemas/](./schemas/) | Data model reference |
+| [glossary.md](./glossary.md) | Terminology definitions |
+
+
+## Quick Links
+
+### API Reference
+- [OpenAPI Specification](../../gtcx-protocol-docs/api/openapi.yaml)
+- [API README](../../gtcx-protocol-docs/api/README.md)
+
+### Schemas
+- [Data Models (Spec §7)](../../gtcx-protocol-docs/spec/07-data-models.md)
+- [Schema Package](../../packages/schemas/)
+
+### Terminology
+- [Full Glossary](../../gtcx-protocol-docs/GLOSSARY.md)
+- [Spec-to-Code Map](../../gtcx-protocol-docs/SPEC-TO-CODE-MAP.md)
+
+### Cryptographic
+- [Test Vectors](../../gtcx-protocol-docs/TEST-VECTORS.md)
+- [Security Spec (§8)](../../gtcx-protocol-docs/spec/08-security.md)
+
+
+## Data Model Overview
+
+```
+packages/schemas/src/
+├── identity/           # TradePass™ schemas
+├── compliance/         # GCI™ schemas
+├── location/           # GeoTag™ schemas
+├── custody/            # VaultMark™ schemas
+├── settlement/         # PvP™ schemas
+├── consensus/          # PANX™ schemas
+├── events/             # Event sourcing
+└── index.ts            # Public exports
+```
+
+All schemas use **Zod** for runtime validation and TypeScript type generation.
+
+
+## Using Schemas
+
+```typescript
+import { TradePassDIDDocumentSchema, GCIInputSchema } from '@gtcx/schemas';
+
+// Validate input
+const result = GCIInputSchema.safeParse(input);
+if (!result.success) {
+  console.error(result.error);
+}
+
+// Type inference
+type GCIInput = z.infer<typeof GCIInputSchema>;
+```
+
+
+## Related Documentation
+
+- [Protocol Specification](../../gtcx-protocol-docs/spec/)
+- [Engineering Standards](../05-engineering/)
+- [Guides](../07-guides/)

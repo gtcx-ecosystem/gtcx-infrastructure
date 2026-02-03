@@ -1,0 +1,99 @@
+# =============================================================================
+# GTCX Production Ingress
+# =============================================================================
+#
+# NGINX Ingress configuration for production.
+# TLS termination, rate limiting, security headers.
+#
+# =============================================================================
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gtcx-ingress
+  namespace: gtcx
+  annotations:
+    # NGINX configuration
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    
+    # Rate limiting (SECURE principle)
+    nginx.ingress.kubernetes.io/limit-rps: "100"
+    nginx.ingress.kubernetes.io/limit-connections: "50"
+    
+    # Security headers
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      add_header X-Frame-Options "DENY" always;
+      add_header X-Content-Type-Options "nosniff" always;
+      add_header X-XSS-Protection "1; mode=block" always;
+      add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+      add_header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline';" always;
+    
+    # Proxy settings
+    nginx.ingress.kubernetes.io/proxy-body-size: "10m"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "60"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "60"
+    
+    # Cert-manager (if using)
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  tls:
+    - hosts:
+        - api.gtcx.io
+        - "*.gtcx.io"
+      secretName: gtcx-tls-secret
+  rules:
+    - host: api.gtcx.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: gtcx-api
+                port:
+                  number: 3000
+
+---
+# Internal ingress for protocol services (cluster-only)
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gtcx-internal-ingress
+  namespace: gtcx
+  annotations:
+    kubernetes.io/ingress.class: nginx-internal
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  rules:
+    - host: tradepass.gtcx.internal
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: gtcx-tradepass
+                port:
+                  number: 3000
+    - host: geotag.gtcx.internal
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: gtcx-geotag
+                port:
+                  number: 3000
+    - host: gci.gtcx.internal
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: gtcx-gci
+                port:
+                  number: 3000

@@ -1,0 +1,33 @@
+{
+  "name": "gtcx-infrastructure",
+  "version": "0.1.0",
+  "private": true,
+  "description": "GTCX Infrastructure - Docker, Kubernetes, Terraform, security, migrations, and deployment tooling",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gtcx-protocol/gtcx-infrastructure.git"
+  },
+  "author": "GTCX Protocol",
+  "license": "MIT",
+  "packageManager": "pnpm@9.15.0",
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "clean": "turbo run clean && rm -rf node_modules",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md,yaml,yml}\"",
+    "typecheck": "turbo run typecheck",
+    "docker:build": "docker compose build",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "prettier": "^3.4.0",
+    "turbo": "^2.3.0",
+    "typescript": "^5.7.0"
+  }
+}

@@ -1,0 +1,51 @@
+# =============================================================================
+# Production Pod Security Standards
+# =============================================================================
+# Per SECURE (11): Restricted security context for all pods
+# =============================================================================
+
+# ResourceQuota to limit namespace resources
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: gtcx-quota
+  namespace: gtcx-production
+spec:
+  hard:
+    requests.cpu: "20"
+    requests.memory: "40Gi"
+    limits.cpu: "40"
+    limits.memory: "80Gi"
+    pods: "100"
+    services: "20"
+    secrets: "50"
+    configmaps: "50"
+    persistentvolumeclaims: "20"
+
+---
+# LimitRange for default resource limits
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: gtcx-limits
+  namespace: gtcx-production
+spec:
+  limits:
+    - default:
+        cpu: "500m"
+        memory: "512Mi"
+      defaultRequest:
+        cpu: "100m"
+        memory: "128Mi"
+      max:
+        cpu: "4"
+        memory: "8Gi"
+      min:
+        cpu: "50m"
+        memory: "64Mi"
+      type: Container
+    - max:
+        storage: "100Gi"
+      min:
+        storage: "1Gi"
+      type: PersistentVolumeClaim

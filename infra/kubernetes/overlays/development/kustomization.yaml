@@ -1,0 +1,55 @@
+# =============================================================================
+# Development Overlay
+# =============================================================================
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: gtcx-dev
+
+resources:
+  - ../../base
+
+nameSuffix: -dev
+
+commonLabels:
+  environment: development
+
+# Development-specific patches
+patches:
+  # Reduce replicas for dev
+  - patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 1
+    target:
+      kind: Deployment
+  # Disable HPA in dev
+  - patch: |-
+      $patch: delete
+      apiVersion: autoscaling/v2
+      kind: HorizontalPodAutoscaler
+      metadata:
+        name: not-used
+    target:
+      kind: HorizontalPodAutoscaler
+
+configMapGenerator:
+  - name: gtcx-env
+    behavior: merge
+    literals:
+      - GTCX_LOG_LEVEL=debug
+      - RAILS_ENV=development
+
+secretGenerator:
+  - name: gtcx-secrets
+    behavior: replace
+    literals:
+      - DATABASE_URL=postgres://gtcx:gtcx_dev@postgres:5432/gtcx_development
+      - SECRET_KEY_BASE=dev_secret_key_change_in_production
+      - REDIS_URL=redis://redis:6379/0
+
+images:
+  - name: gtcx/api
+    newTag: dev
+  - name: gtcx/crypto
+    newTag: dev

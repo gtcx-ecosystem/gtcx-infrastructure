@@ -1,0 +1,41 @@
+# =============================================================================
+# GTCX Kubernetes Base Kustomization
+# =============================================================================
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+metadata:
+  name: gtcx-base
+
+commonLabels:
+  app.kubernetes.io/part-of: gtcx
+  app.kubernetes.io/managed-by: kustomize
+
+resources:
+  - namespace.yaml
+  - configmaps/base-config.yaml
+  - services/api.yaml
+  - services/crypto.yaml
+  - services/tradepass.yaml
+  - services/geotag.yaml
+  - services/gci.yaml
+
+configMapGenerator:
+  - name: gtcx-env
+    literals:
+      - GTCX_VERSION=1.0.0
+      - GTCX_LOG_LEVEL=info
+      - GTCX_LOG_FORMAT=json
+
+secretGenerator:
+  - name: gtcx-secrets
+    type: Opaque
+    literals:
+      - DATABASE_URL=postgres://placeholder:placeholder@localhost:5432/gtcx
+      - SECRET_KEY_BASE=placeholder-override-in-overlay
+
+images:
+  - name: gtcx/api
+    newTag: latest
+  - name: gtcx/crypto
+    newTag: latest

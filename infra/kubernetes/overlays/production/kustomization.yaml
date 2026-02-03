@@ -1,0 +1,100 @@
+# =============================================================================
+# Production Overlay
+# =============================================================================
+# SOVEREIGN (6): This configuration is for government-grade deployment
+# SECURE (11): Maximum security posture
+# RESILIENT (12): High availability configuration
+# =============================================================================
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: gtcx-production
+
+resources:
+  - ../../base
+  - network-policies.yaml
+  - pod-security-policy.yaml
+
+nameSuffix: -prod
+
+commonLabels:
+  environment: production
+
+commonAnnotations:
+  deployment.kubernetes.io/revision: "1"
+
+configMapGenerator:
+  - name: gtcx-env
+    behavior: merge
+    literals:
+      - GTCX_LOG_LEVEL=warn
+      - RAILS_ENV=production
+      - GTCX_FEATURE_FEDERATION=true
+
+# Production secrets managed externally (Vault/Sealed Secrets)
+# Not generated here - injected via GitOps
+
+images:
+  - name: gtcx/api
+    newTag: v1.0.0  # Pinned versions in production
+  - name: gtcx/crypto
+    newTag: v1.0.0
+
+# Production resource configuration
+patches:
+  # API service - production resources
+  - patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 3
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/cpu
+        value: "500m"
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/memory
+        value: "1Gi"
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/limits/cpu
+        value: "2000m"
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/limits/memory
+        value: "2Gi"
+    target:
+      kind: Deployment
+      name: gtcx-api
+  
+  # Crypto service - production resources
+  - patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 3
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/cpu
+        value: "250m"
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/memory
+        value: "256Mi"
+    target:
+      kind: Deployment
+      name: gtcx-crypto
+  
+  # HPA - production scaling
+  - patch: |-
+      - op: replace
+        path: /spec/minReplicas
+        value: 3
+      - op: replace
+        path: /spec/maxReplicas
+        value: 20
+    target:
+      kind: HorizontalPodAutoscaler
+      name: gtcx-api
+  
+  # PDB - production availability
+  - patch: |-
+      - op: replace
+        path: /spec/minAvailable
+        value: 2
+    target:
+      kind: PodDisruptionBudget
+      name: gtcx-api

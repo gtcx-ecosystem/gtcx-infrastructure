@@ -1,0 +1,151 @@
+# =============================================================================
+# Production Network Policies
+# =============================================================================
+# Per SECURE (11): Defense in depth, principle of least privilege
+# =============================================================================
+
+# Default deny all ingress
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-ingress
+  namespace: gtcx-production
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
+
+---
+# Default deny all egress (except DNS)
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-egress
+  namespace: gtcx-production
+spec:
+  podSelector: {}
+  policyTypes:
+    - Egress
+  egress:
+    # Allow DNS
+    - to:
+        - namespaceSelector: {}
+      ports:
+        - protocol: UDP
+          port: 53
+
+---
+# API service network policy
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: gtcx-api-policy
+  namespace: gtcx-production
+spec:
+  podSelector:
+    matchLabels:
+      app: gtcx-api-prod
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    # Allow from ingress controller
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              name: ingress-nginx
+      ports:
+        - protocol: TCP
+          port: 3000
+  egress:
+    # Allow to crypto service
+    - to:
+        - podSelector:
+            matchLabels:
+              app: gtcx-crypto-prod
+      ports:
+        - protocol: TCP
+          port: 8080
+    # Allow to protocol services
+    - to:
+        - podSelector:
+            matchLabels:
+              tier: protocol
+      ports:
+        - protocol: TCP
+          port: 3000
+    # Allow to database (external)
+    - to:
+        - ipBlock:
+            cidr: 10.0.0.0/8  # Internal network - customize per deployment
+      ports:
+        - protocol: TCP
+          port: 5432
+
+---
+# Crypto service network policy
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: gtcx-crypto-policy
+  namespace: gtcx-production
+spec:
+  podSelector:
+    matchLabels:
+      app: gtcx-crypto-prod
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    # Allow from API and protocol services only
+    - from:
+        - podSelector:
+            matchLabels:
+              app: gtcx-api-prod
+        - podSelector:
+            matchLabels:
+              tier: protocol
+      ports:
+        - protocol: TCP
+          port: 8080
+  egress: []  # Crypto service has no external dependencies
+
+---
+# Protocol services network policy
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: gtcx-protocol-policy
+  namespace: gtcx-production
+spec:
+  podSelector:
+    matchLabels:
+      tier: protocol
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    # Allow from API
+    - from:
+        - podSelector:
+            matchLabels:
+              app: gtcx-api-prod
+      ports:
+        - protocol: TCP
+          port: 3000
+  egress:
+    # Allow to crypto
+    - to:
+        - podSelector:
+            matchLabels:
+              app: gtcx-crypto-prod
+      ports:
+        - protocol: TCP
+          port: 8080
+    # Allow to database
+    - to:
+        - ipBlock:
+            cidr: 10.0.0.0/8
+      ports:
+        - protocol: TCP
+          port: 5432

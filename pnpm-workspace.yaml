@@ -1,0 +1,11 @@
+packages:
+  # Infrastructure
+  - "infra/edge-proxy"
+  - "infra/migrations"
+
+  # Tools
+  - "tools/scripts"
+  - "tools/templates"
+
+  # Monitoring
+  - "monitoring"

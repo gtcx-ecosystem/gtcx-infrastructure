@@ -1,0 +1,107 @@
+# =============================================================================
+# GCI Compliance Intelligence Service
+# =============================================================================
+# Rule-based compliance scoring and verification
+# Principles: COMPLIANT (10), PROOF (1), SOVEREIGN (6)
+# =============================================================================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gtcx-gci
+  namespace: gtcx
+  labels:
+    app: gtcx-gci
+    tier: protocol
+    protocol: gci
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: gtcx-gci
+  template:
+    metadata:
+      labels:
+        app: gtcx-gci
+        tier: protocol
+        protocol: gci
+    spec:
+      serviceAccountName: gtcx-protocol
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      containers:
+        - name: gci
+          image: gtcx/api:latest
+          imagePullPolicy: Always
+          args: ["bundle", "exec", "puma", "-C", "config/puma.rb"]
+          ports:
+            - name: http
+              containerPort: 3000
+          env:
+            - name: GTCX_SERVICE_NAME
+              value: "gci"
+          envFrom:
+            - configMapRef:
+                name: gtcx-base-config
+            - secretRef:
+                name: gtcx-secrets
+          resources:
+            requests:
+              cpu: "150m"
+              memory: "384Mi"
+            limits:
+              cpu: "750m"
+              memory: "768Mi"
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+            - name: rules
+              mountPath: /app/config/rules
+              readOnly: true
+      volumes:
+        - name: tmp
+          emptyDir: {}
+        - name: rules
+          configMap:
+            name: gtcx-compliance-rules
+            optional: true
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gtcx-gci
+  namespace: gtcx
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 3000
+      targetPort: http
+  selector:
+    app: gtcx-gci
+---
+# Shared ServiceAccount for protocol services
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: gtcx-protocol
+  namespace: gtcx

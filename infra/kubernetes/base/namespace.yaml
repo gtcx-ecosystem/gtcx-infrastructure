@@ -1,0 +1,15 @@
+# =============================================================================
+# GTCX Namespace
+# =============================================================================
+# Per SOVEREIGN principle: Each deployment gets isolated namespace
+# =============================================================================
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: gtcx
+  labels:
+    app.kubernetes.io/part-of: gtcx
+    # Pod security standards
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/warn: restricted

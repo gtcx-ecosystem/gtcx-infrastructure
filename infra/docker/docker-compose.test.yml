@@ -1,0 +1,243 @@
+# =============================================================================
+# GTCX Test Docker Compose
+# =============================================================================
+#
+# Minimal configuration for CI/CD testing.
+# Fast startup, isolated, deterministic.
+#
+# Principles Implemented:
+#   - TESTED (29): Comprehensive test environment
+#   - SECURE (11): Isolated, no persistent data
+#   - DEPLOYABLE (14): Same services as production
+#
+# Usage:
+#   docker compose -f docker/docker-compose.test.yml up -d
+#   docker compose -f docker/docker-compose.test.yml run --rm api bundle exec rspec
+#   docker compose -f docker/docker-compose.test.yml down -v
+#
+# =============================================================================
+
+name: gtcx-test
+
+services:
+  # ===========================================================================
+  # DATABASES (Ephemeral)
+  # ===========================================================================
+  
+  postgres:
+    image: postgres:16-alpine
+    container_name: gtcx-test-postgres
+    environment:
+      POSTGRES_USER: gtcx_test
+      POSTGRES_PASSWORD: gtcx_test_password
+      POSTGRES_DB: gtcx_test
+    # No ports exposed - internal only
+    tmpfs:
+      - /var/lib/postgresql/data  # RAM disk for speed
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gtcx_test -d gtcx_test"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    networks:
+      - gtcx-test-network
+
+  postgres-audit:
+    image: postgres:16-alpine
+    container_name: gtcx-test-postgres-audit
+    environment:
+      POSTGRES_USER: gtcx_test_audit
+      POSTGRES_PASSWORD: gtcx_test_audit_password
+      POSTGRES_DB: gtcx_test_audit
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gtcx_test_audit -d gtcx_test_audit"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    networks:
+      - gtcx-test-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: gtcx-test-redis
+    tmpfs:
+      - /data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    networks:
+      - gtcx-test-network
+
+  # ===========================================================================
+  # TEST RUNNERS
+  # ===========================================================================
+
+  # Ruby/Rails Test Runner
+  api-test:
+    build:
+      context: ../
+      dockerfile: infra/docker/Dockerfile.base
+      target: ruby-base  # Use base with dev dependencies
+    container_name: gtcx-test-api
+    environment:
+      RAILS_ENV: test
+      DATABASE_URL: postgres://gtcx_test:gtcx_test_password@postgres:5432/gtcx_test
+      AUDIT_DATABASE_URL: postgres://gtcx_test_audit:gtcx_test_audit_password@postgres-audit:5432/gtcx_test_audit
+      REDIS_URL: redis://redis:6379/0
+      GTCX_CRYPTO_URL: http://crypto-test:8080
+      SECRET_KEY_BASE: test_secret_key_base
+      # Disable external services
+      GTCX_DISABLE_EXTERNAL_APIS: true
+      # Parallel test workers
+      PARALLEL_WORKERS: 4
+    depends_on:
+      postgres:
+        condition: service_healthy
+      postgres-audit:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ../:/app
+      - bundle_cache:/app/vendor/bundle
+    working_dir: /app
+    command: ["bundle", "exec", "rspec", "--format", "progress", "--format", "RspecJunitFormatter", "--out", "tmp/test-results/rspec.xml"]
+    networks:
+      - gtcx-test-network
+
+  # Rust Test Runner
+  crypto-test:
+    build:
+      context: ../
+      dockerfile: infra/docker/Dockerfile.base
+      target: rust-builder  # Use builder with test tools
+    container_name: gtcx-test-crypto
+    environment:
+      RUST_LOG: debug
+      RUST_BACKTRACE: 1
+    volumes:
+      - ../packages/gtcx-crypto:/build/packages/gtcx-crypto
+      - cargo_cache:/usr/local/cargo/registry
+    working_dir: /build
+    command: ["cargo", "test", "--package", "gtcx-crypto", "--", "--test-threads=4"]
+    networks:
+      - gtcx-test-network
+
+  # TypeScript/Node Test Runner
+  packages-test:
+    image: node:20-alpine
+    container_name: gtcx-test-packages
+    environment:
+      NODE_ENV: test
+      CI: true
+    volumes:
+      - ../packages:/app/packages
+      - ../package.json:/app/package.json
+      - ../package-lock.json:/app/package-lock.json
+      - ../turbo.json:/app/turbo.json
+      - node_cache:/app/node_modules
+    working_dir: /app
+    command: ["npm", "run", "test:ci"]
+    networks:
+      - gtcx-test-network
+
+  # ===========================================================================
+  # INTEGRATION TESTS
+  # ===========================================================================
+
+  integration-test:
+    build:
+      context: ../
+      dockerfile: infra/docker/Dockerfile.base
+      target: ruby-base
+    container_name: gtcx-test-integration
+    environment:
+      RAILS_ENV: test
+      DATABASE_URL: postgres://gtcx_test:gtcx_test_password@postgres:5432/gtcx_test
+      GTCX_API_URL: http://api-test:3000
+      GTCX_CRYPTO_URL: http://crypto-test:8080
+    depends_on:
+      - api-test
+      - crypto-test
+    volumes:
+      - ../:/app
+    working_dir: /app
+    command: ["bundle", "exec", "rspec", "spec/integration", "--format", "documentation"]
+    networks:
+      - gtcx-test-network
+
+  # ===========================================================================
+  # E2E TESTS (Playwright)
+  # ===========================================================================
+
+  e2e-test:
+    image: mcr.microsoft.com/playwright:v1.40.0-jammy
+    container_name: gtcx-test-e2e
+    environment:
+      CI: true
+      BASE_URL: http://api-test:3000
+    depends_on:
+      - api-test
+    volumes:
+      - ../:/app
+      - playwright_cache:/root/.cache/ms-playwright
+    working_dir: /app
+    command: ["npx", "playwright", "test", "--reporter=junit"]
+    networks:
+      - gtcx-test-network
+
+  # ===========================================================================
+  # SECURITY SCANNING
+  # ===========================================================================
+
+  # Dependency vulnerability scanning
+  security-scan:
+    image: aquasec/trivy:0.48.0
+    container_name: gtcx-test-security
+    volumes:
+      - ../:/app
+      - trivy_cache:/root/.cache/trivy
+    working_dir: /app
+    command: ["fs", "--exit-code", "1", "--severity", "HIGH,CRITICAL", "--scanners", "vuln,secret", "."]
+    networks:
+      - gtcx-test-network
+
+  # SBOM generation (per AUDITABLE principle)
+  sbom:
+    image: anchore/syft:v0.98.0
+    container_name: gtcx-test-sbom
+    volumes:
+      - ../:/app
+    working_dir: /app
+    command: ["/app", "-o", "spdx-json=/app/sbom.json"]
+    networks:
+      - gtcx-test-network
+
+# =============================================================================
+# NETWORKS
+# =============================================================================
+
+networks:
+  gtcx-test-network:
+    driver: bridge
+    name: gtcx-test-network
+
+# =============================================================================
+# VOLUMES (Caches for faster CI)
+# =============================================================================
+
+volumes:
+  bundle_cache:
+    name: gtcx-test-bundle-cache
+  cargo_cache:
+    name: gtcx-test-cargo-cache
+  node_cache:
+    name: gtcx-test-node-cache
+  playwright_cache:
+    name: gtcx-test-playwright-cache
+  trivy_cache:
+    name: gtcx-test-trivy-cache
