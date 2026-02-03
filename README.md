@@ -20,13 +20,6 @@ DevOps tooling, deployment automation, and security framework for the GTCX ecosy
 ```
 gtcx-infrastructure/
 ├── infra/                 # Core IaC (docker, kubernetes, terraform, edge-proxy, migrations, security, scripts)
-├── docker/                # Container configurations (placeholder)
-├── kubernetes/            # Orchestration (base manifests + overlays per environment)
-├── terraform/             # Multi-cloud provisioning (modules + country-specific envs)
-├── ansible/               # On-premise provisioning for air-gapped deployments
-├── security/              # Zero-trust framework (placeholder)
-├── monitoring/            # Observability stack (placeholder)
-├── scripts/               # Deployment automation (placeholder)
 ├── tools/                 # Scripts and project templates
 ├── docs/                  # Infrastructure documentation and security policies
 ├── package.json

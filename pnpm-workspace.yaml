@@ -6,6 +6,3 @@ packages:
   # Tools
   - "tools/scripts"
   - "tools/templates"
-
-  # Monitoring
-  - "monitoring"
