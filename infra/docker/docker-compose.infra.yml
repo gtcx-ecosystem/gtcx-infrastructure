@@ -1,0 +1,190 @@
+# =============================================================================
+# GTCX Infrastructure Docker Compose
+# =============================================================================
+#
+# Infrastructure-only services for local development.
+# This file contains databases and observability services that can run
+# independently of the application services (which require source code).
+#
+# Tickets: FND-402, FND-603
+#
+# Usage:
+#   docker compose -f docker-compose.infra.yml up -d
+#   docker compose -f docker-compose.infra.yml down -v
+#
+# =============================================================================
+
+name: gtcx-infra
+
+services:
+  # ===========================================================================
+  # DATABASES
+  # ===========================================================================
+
+  # Primary PostgreSQL (operational data)
+  postgres:
+    image: postgres:16-alpine
+    container_name: gtcx-postgres
+    environment:
+      POSTGRES_USER: gtcx
+      POSTGRES_PASSWORD: gtcx_dev_password
+      POSTGRES_DB: gtcx_development
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-scripts/postgres:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U gtcx -d gtcx_development']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - gtcx-network
+
+  # Audit PostgreSQL (append-only, separate instance per AUDITABLE principle)
+  postgres-audit:
+    image: postgres:16-alpine
+    container_name: gtcx-postgres-audit
+    environment:
+      POSTGRES_USER: gtcx_audit
+      POSTGRES_PASSWORD: gtcx_audit_dev_password
+      POSTGRES_DB: gtcx_audit
+    ports:
+      - '5433:5432'
+    volumes:
+      - postgres_audit_data:/var/lib/postgresql/data
+      - ./init-scripts/postgres-audit:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U gtcx_audit -d gtcx_audit']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - gtcx-network
+
+  # Redis (cache, never in critical path per RESILIENT principle)
+  redis:
+    image: redis:7-alpine
+    container_name: gtcx-redis
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - gtcx-network
+
+  # ===========================================================================
+  # OBSERVABILITY (per OBSERVABLE principle)
+  # ===========================================================================
+
+  # Prometheus (Metrics)
+  prometheus:
+    image: prom/prometheus:v2.48.0
+    container_name: gtcx-prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.enable-lifecycle'
+    ports:
+      - '9090:9090'
+    volumes:
+      - ./observability/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    healthcheck:
+      test: ['CMD', 'wget', '-q', '--spider', 'http://localhost:9090/-/ready']
+      interval: 15s
+      timeout: 5s
+      retries: 5
+    networks:
+      - gtcx-network
+
+  # Grafana (Dashboards) -- FND-603: provisioning auto-configures datasources
+  grafana:
+    image: grafana/grafana:10.2.2
+    container_name: gtcx-grafana
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: admin
+      GF_USERS_ALLOW_SIGN_UP: 'false'
+    ports:
+      - '3030:3000'
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./observability/grafana/provisioning:/etc/grafana/provisioning
+    depends_on:
+      - prometheus
+    healthcheck:
+      test: ['CMD', 'wget', '-q', '--spider', 'http://localhost:3000/api/health']
+      interval: 15s
+      timeout: 5s
+      retries: 5
+    networks:
+      - gtcx-network
+
+  # Jaeger (Distributed Tracing)
+  jaeger:
+    image: jaegertracing/all-in-one:1.52
+    container_name: gtcx-jaeger
+    environment:
+      COLLECTOR_OTLP_ENABLED: 'true'
+    ports:
+      - '16686:16686' # UI
+      - '4317:4317' # OTLP gRPC
+      - '4318:4318' # OTLP HTTP
+    healthcheck:
+      test: ['CMD', 'wget', '-q', '--spider', 'http://localhost:16686/']
+      interval: 15s
+      timeout: 5s
+      retries: 5
+    networks:
+      - gtcx-network
+
+  # Loki (Log Aggregation)
+  loki:
+    image: grafana/loki:2.9.2
+    container_name: gtcx-loki
+    ports:
+      - '3100:3100'
+    volumes:
+      - loki_data:/loki
+      - ./observability/loki.yml:/etc/loki/local-config.yaml
+    command: -config.file=/etc/loki/local-config.yaml
+    healthcheck:
+      test: ['CMD', 'wget', '-q', '--spider', 'http://localhost:3100/ready']
+      interval: 15s
+      timeout: 5s
+      retries: 5
+    networks:
+      - gtcx-network
+
+# =============================================================================
+# NETWORKS
+# =============================================================================
+
+networks:
+  gtcx-network:
+    driver: bridge
+    name: gtcx-network
+
+# =============================================================================
+# VOLUMES
+# =============================================================================
+
+volumes:
+  postgres_data:
+    name: gtcx-infra-postgres-data
+  postgres_audit_data:
+    name: gtcx-infra-postgres-audit-data
+  redis_data:
+    name: gtcx-infra-redis-data
+  prometheus_data:
+    name: gtcx-infra-prometheus-data
+  grafana_data:
+    name: gtcx-infra-grafana-data
+  loki_data:
+    name: gtcx-infra-loki-data
