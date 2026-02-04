@@ -6,6 +6,7 @@ DevOps tooling, deployment automation, and security framework for the GTCX ecosy
 
 | Document | Description |
 |----------|-------------|
+| [Architecture Overview](./docs/architecture/infrastructure-architecture-overview.md) | Composable architecture and ecosystem integration |
 | [Infrastructure Overview](./docs/infrastructure-overview.md) | High-level architecture of the deployment stack |
 | [Digital Infrastructure Framework](./docs/digital-infrastructure-framework.md) | End-to-end digital infrastructure design |
 | [Six-Month Deployment Roadmap](./docs/six-month-deployment-roadmap.md) | Phased deployment plan across environments |
