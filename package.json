@@ -23,7 +23,8 @@
     "typecheck": "turbo run typecheck",
     "docker:build": "docker compose build",
     "docker:up": "docker compose up -d",
-    "docker:down": "docker compose down"
+    "docker:down": "docker compose down",
+    "prepare": "husky"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",
@@ -32,6 +33,8 @@
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-import": "^2.29.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
     "prettier": "^3.4.0",
     "turbo": "^2.3.0",
     "typescript": "^5.7.0"
@@ -43,6 +46,15 @@
       "P15",
       "P22",
       "P24"
+    ]
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,yml,yaml}": [
+      "prettier --write"
     ]
   }
 }

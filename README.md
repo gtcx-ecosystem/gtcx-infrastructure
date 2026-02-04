@@ -4,17 +4,17 @@ DevOps tooling, deployment automation, and security framework for the GTCX ecosy
 
 ## Quick Navigation
 
-| Document | Description |
-|----------|-------------|
+| Document                                                                             | Description                                       |
+| ------------------------------------------------------------------------------------ | ------------------------------------------------- |
 | [Architecture Overview](./docs/architecture/infrastructure-architecture-overview.md) | Composable architecture and ecosystem integration |
-| [Infrastructure Overview](./docs/infrastructure-overview.md) | High-level architecture of the deployment stack |
-| [Digital Infrastructure Framework](./docs/digital-infrastructure-framework.md) | End-to-end digital infrastructure design |
-| [Six-Month Deployment Roadmap](./docs/six-month-deployment-roadmap.md) | Phased deployment plan across environments |
-| [Security Policies](./docs/security/policies-overview.md) | Security policy framework and standards |
-| [Edge Proxy Overview](./docs/edge-proxy-overview.md) | Edge proxy architecture for field connectivity |
-| [Compliance OS Overview](./docs/compliance-os-overview.md) | Compliance operating system and automation |
-| [Migrations Overview](./docs/migrations-overview.md) | Data and service migration strategies |
-| [Infrastructure Economics](./docs/infrastructure-economics.md) | Cost modeling and optimization |
+| [Infrastructure Overview](./docs/infrastructure-overview.md)                         | High-level architecture of the deployment stack   |
+| [Digital Infrastructure Framework](./docs/digital-infrastructure-framework.md)       | End-to-end digital infrastructure design          |
+| [Six-Month Deployment Roadmap](./docs/six-month-deployment-roadmap.md)               | Phased deployment plan across environments        |
+| [Security Policies](./docs/security/README.md)                                       | Security policy framework and standards           |
+| [Edge Proxy Overview](./docs/edge-proxy-overview.md)                                 | Edge proxy architecture for field connectivity    |
+| [Compliance OS Overview](./docs/compliance-os-overview.md)                           | Compliance operating system and automation        |
+| [Migrations Overview](./docs/migrations-overview.md)                                 | Data and service migration strategies             |
+| [Infrastructure Economics](./docs/infrastructure-economics.md)                       | Cost modeling and optimization                    |
 
 ## Directory Structure
 
