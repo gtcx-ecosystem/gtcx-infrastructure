@@ -10,13 +10,13 @@ Pre-development. Specifications and architecture documentation are in progress.
 
 ## Status
 
-| Area | Status |
-|------|--------|
-| Specifications | In Progress |
+| Area                | Status      |
+| ------------------- | ----------- |
+| Specifications      | In Progress |
 | Architecture Design | In Progress |
-| Implementation | Not Started |
-| Testing | Not Started |
-| CI/CD | Not Started |
+| Implementation      | Not Started |
+| Testing             | Not Started |
+| CI/CD               | Not Started |
 
 ## Key Documents
 
@@ -29,3 +29,9 @@ Pre-development. Specifications and architecture documentation are in progress.
 ## Dependencies
 
 None. Standalone DevOps tooling consumed by all other repos.
+
+## Guidance
+
+Master guidance for all agile-pm folders:
+
+- `gtcx-docs/agile-pm/guidance.md`
