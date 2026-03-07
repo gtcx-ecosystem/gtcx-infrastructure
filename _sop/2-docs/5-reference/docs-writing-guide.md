@@ -103,7 +103,7 @@ Never use bare fenced code blocks without a language tag.
 See [trust model](../1-architecture/trust-model.md)
 
 <!-- Bad -->
-See [trust model](/Users/dev/3-protocols/SOP/2-docs/1-architecture/trust-model.md)
+See [trust model](/Users/dev/3-protocols/_sop/2-docs/1-architecture/trust-model.md)
 ````
 
 ### READMEs Link to Every Child

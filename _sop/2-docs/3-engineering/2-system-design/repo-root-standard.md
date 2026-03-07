@@ -16,7 +16,7 @@ These must be present in every repository, no exceptions.
 | `CLAUDE.md`  | AI agent orientation — project-specific context and rules             |
 | `LICENSE`    | Standard open-source or proprietary license file                      |
 | `.gitignore` | Must include: `node_modules/`, `dist/`, `build/`, `coverage/`, `.env` |
-| `SOP/`       | Operational documentation following the SOP structure standard        |
+| `_sop/`      | Operational documentation following the SOP structure standard        |
 
 ---
 
@@ -121,10 +121,10 @@ These patterns violate the standard and must be removed or relocated.
 
 | Pattern                                  | Problem                             | Correct location                                            |
 | ---------------------------------------- | ----------------------------------- | ----------------------------------------------------------- |
-| `agile-pm/`                              | Superseded by SOP                   | → `SOP/3-agile/`                                            |
-| `docs/`                                  | Replaced by SOP                     | → `SOP/` following the SOP structure standard               |
-| `SOPs/`                                  | Wrong casing / ad-hoc naming        | → rename to `SOP/` following the standard                   |
-| `quality/`                               | Not a recognized root folder        | → `SOP/2-docs/` or `SOP/3-agile/`                           |
+| `agile-pm/`                              | Superseded by SOP                   | → `_sop/3-agile/`                                           |
+| `docs/`                                  | Replaced by SOP                     | → `_sop/` following the SOP structure standard              |
+| `SOPs/`                                  | Wrong casing / ad-hoc naming        | → rename to `_sop/` following the standard                  |
+| `quality/`                               | Not a recognized root folder        | → `_sop/2-docs/` or `_sop/3-agile/`                         |
 | `coverage/`                              | Build artifact — must be gitignored | Add to `.gitignore`, never commit                           |
 | `dist/`, `build/`, `out/`                | Build artifacts                     | Add to `.gitignore`, never commit                           |
 | `*.png`, `*.jpg` at root                 | Loose media files                   | → `docs/` (internal) or `public/` (web app)                 |

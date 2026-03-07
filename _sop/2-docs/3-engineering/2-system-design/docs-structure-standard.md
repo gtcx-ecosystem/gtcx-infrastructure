@@ -1,17 +1,17 @@
-# SOP/2-docs Structure Standard
+# \_sop/2-docs Structure Standard
 
-> Canonical structure for `SOP/2-docs/` across all {organization-name} repositories.
+> Canonical structure for `_sop/2-docs/` across all {organization-name} repositories.
 
-This standard defines how documentation is organized inside `SOP/2-docs/` in every repo. The structure is designed from first principles: 6 folders, each answering a distinct question. No project-specific folders at the root level. Every repo uses the same skeleton — only the content inside `specs/` differs.
+This standard defines how documentation is organized inside `_sop/2-docs/` in every repo. The structure is designed from first principles: 6 folders, each answering a distinct question. No project-specific folders at the root level. Every repo uses the same skeleton — only the content inside `specs/` differs.
 
-`SOP/2-docs/` is the documentation subfolder within the repo's `SOP/` folder. For the full SOP structure (all numbered subfolders), see `sop-structure-standard.md`.
+`_sop/2-docs/` is the documentation subfolder within the repo's `_sop/` folder. For the full SOP structure (all numbered subfolders), see `sop-structure-standard.md`.
 
 ---
 
 ## Structure
 
 ```
-SOP/2-docs/
+_sop/2-docs/
 ├── README.md           ← This file (standard + guide)
 ├── architecture/       ← How the system works
 ├── specs/              ← What we're building
@@ -42,7 +42,7 @@ System design, data models, design principles, and architectural decisions.
 
 **What belongs here**: System diagrams, tech stack decisions, ADRs, API architecture, data flow diagrams, security architecture, scalability considerations, design principles.
 
-**What does NOT belong here**: API endpoint docs for external users (→ `SOP/2-docs/gitbook/api/`), per-service specs (→ `specs/`).
+**What does NOT belong here**: API endpoint docs for external users (→ `_sop/2-docs/gitbook/api/`), per-service specs (→ `specs/`).
 
 ---
 
@@ -187,12 +187,12 @@ Every folder's README explains what belongs there and links to its contents. A r
 To apply this structure to a new repository:
 
 ```bash
-mkdir -p SOP/2-docs/{architecture/{decisions,data-models,deployment,monitoring,principles,global-south},specs/{_project/{overview,planning},products,engines,infrastructure},engineering/{guides,security,testing,devops,data},operations/{organization,runbooks,compliance,analytics,accessibility},reference/{archived,research,glossary,changelog,legal},gitbook}
+mkdir -p _sop/2-docs/{architecture/{decisions,data-models,deployment,monitoring,principles,global-south},specs/{_project/{overview,planning},products,engines,infrastructure},engineering/{guides,security,testing,devops,data},operations/{organization,runbooks,compliance,analytics,accessibility},reference/{archived,research,glossary,changelog,legal},gitbook}
 ```
 
 Then:
 
-1. Copy this file into `SOP/2-docs/README.md`
+1. Copy this file into `_sop/2-docs/README.md`
 2. Add a README to each subfolder explaining what belongs there
 3. Add `.gitkeep` to empty subfolders so git tracks them
 

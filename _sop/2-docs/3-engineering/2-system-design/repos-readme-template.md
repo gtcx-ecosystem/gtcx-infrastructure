@@ -18,7 +18,7 @@
 ├── services/
 │   ├── {service-1}/          ← {service-1-description}
 │   └── {service-2}/          ← {service-2-description}
-├── SOP/                      ← Operational documentation (see SOP/README.md)
+├── _sop/                      ← Operational documentation (see _sop/README.md)
 ├── turbo.json
 ├── pnpm-workspace.yaml
 └── package.json
@@ -69,18 +69,18 @@ pnpm test
 
 ## Documentation
 
-Full documentation lives in [`SOP/`](SOP/README.md), organized by the SOP standard:
+Full documentation lives in [`_sop/`](_sop/README.md), organized by the SOP standard:
 
-| Folder            | Purpose                               |
-| ----------------- | ------------------------------------- |
-| `SOP/1-agents/`   | Agent roles, onboarding, governance   |
-| `SOP/2-docs/`     | Architecture, specs, engineering docs |
-| `SOP/3-agile/`    | Sprint plans, roadmap, backlog        |
-| `SOP/4-sessions/` | Session transcripts and insights      |
-| `SOP/5-release/`  | Release management and versioning     |
-| `SOP/6-metrics/`  | Performance and product metrics       |
-| `SOP/7-examples/` | Reference examples                    |
-| `SOP/8-scripts/`  | Doc management scripts                |
+| Folder             | Purpose                               |
+| ------------------ | ------------------------------------- |
+| `_sop/1-agents/`   | Agent roles, onboarding, governance   |
+| `_sop/2-docs/`     | Architecture, specs, engineering docs |
+| `_sop/3-agile/`    | Sprint plans, roadmap, backlog        |
+| `_sop/4-sessions/` | Session transcripts and insights      |
+| `_sop/5-release/`  | Release management and versioning     |
+| `_sop/6-metrics/`  | Performance and product metrics       |
+| `_sop/7-examples/` | Reference examples                    |
+| `_sop/8-scripts/`  | Doc management scripts                |
 
 ---
 

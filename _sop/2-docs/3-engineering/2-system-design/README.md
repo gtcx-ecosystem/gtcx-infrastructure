@@ -12,7 +12,7 @@ Templates for documenting architecture, APIs, data models, and repository struct
 | [database-schema.md](database-schema.md)                           | Database schema template — table definitions, indexes, conventions                                            |
 | [architecture-docs-protocol.md](architecture-docs-protocol.md)     | Protocol for creating and maintaining architecture documentation                                              |
 | [repo-root-standard.md](repo-root-standard.md)                     | What belongs at the root of every repo — required, allowed, and prohibited patterns                           |
-| [docs-structure-standard.md](docs-structure-standard.md)           | Canonical structure for `SOP/2-docs/` — the 6-folder documentation standard                                   |
+| [docs-structure-standard.md](docs-structure-standard.md)           | Canonical structure for `_sop/2-docs/` — the 6-folder documentation standard                                  |
 | [github-readme-template.md](github-readme-template.md)             | GitHub repository README template                                                                             |
 | [repos-readme-template.md](repos-readme-template.md)               | Multi-repo ecosystem README template                                                                          |
 | [repo-folders-readme-template.md](repo-folders-readme-template.md) | Folder-level README template                                                                                  |
