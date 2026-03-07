@@ -1,15 +1,17 @@
-# Task Playbook: Cut a Release
+# Task Playbook: Apply an Infrastructure Change
 
-**Owner:** {quality-role} (gates + evidence) + {architect-role} (version decision)
-**Safety tier:** Requires human approval before publishing
+**Owner:** DevOps engineer (gates + approval) + Lead engineer (sign-off)
+**Safety tier:** Requires human approval before applying to any environment
 
 ---
 
 ## When to Run This
 
-Run when the team has decided to cut a release. A release publishes updated packages to the registry and affects downstream consumers.
+Run when infrastructure changes are ready to be applied — Terraform modules, Kubernetes manifests, Docker configurations, migrations, or CI/CD pipelines.
 
-Gate execution is autonomous. Publishing requires explicit human confirmation — do not proceed past the escalation step without it.
+Infrastructure changes are not package publishes. There is no npm release. "Releasing" infra means applying reviewed IaC changes to an environment. Every environment tier (staging, production) requires explicit confirmation before apply.
+
+> **Hard rule**: Never run `terraform apply` or `kubectl apply` against production without `--approval-ticket=GTCX-XXX` in the command and explicit user confirmation.
 
 ---
 
@@ -17,14 +19,15 @@ Gate execution is autonomous. Publishing requires explicit human confirmation �
 
 Confirm with the human reviewer:
 
-- Target version bump type: `patch`, `minor`, or `major`
-- Packages or components included in this release
-- Whether any API changes are included (triggers mandatory API review)
+- Which environment: `staging` or `production`
+- Which components are changing (Terraform modules, K8s manifests, Docker services, migrations)
+- Whether the change is destructive (resource deletion, DB schema change, cluster config modification)
+- Whether a rollback plan exists and has been reviewed
 
 Then read:
 
 - `_sop/2-docs/4-devops/7-release-mgmt/release-checklist.md` — authoritative gate list
-- `_sop/3-agile/2-scrum-board/6-testing/uat/uat-evidence-log.md` — confirm UAT evidence exists for any new features
+- `_sop/1-agents/4-workflows/safety-rules.md` — three-tier authority structure
 
 ---
 
@@ -32,159 +35,144 @@ Then read:
 
 Execute in order. Do not proceed past a failing gate.
 
-### Gate 1 — Architecture
+### Gate 1 — Script quality
 
 ```bash
-{architecture-check-command}
+pnpm lint
+pnpm format:check
+pnpm typecheck
 ```
 
-Zero violations required.
+All Node.js automation scripts must pass lint and type checking. Zero warnings.
 
 ---
 
-### Gate 2 — Code quality
+### Gate 2 — Build
 
 ```bash
-{lint-command}
-{typecheck-command}
+pnpm build
 ```
 
-Zero warnings, zero errors.
+All automation tooling builds cleanly.
 
 ---
 
-### Gate 3 — Tests
+### Gate 3 — Docker validation (if container changes)
 
 ```bash
-{test-command}
+docker compose build
 ```
 
-All tests pass. Coverage must meet the threshold defined in quality standards.
+All images build without error. Review image sizes for regressions.
 
 ---
 
-### Gate 4 — Build
+### Gate 4 — IaC dry-run (Terraform)
+
+If Terraform modules changed:
 
 ```bash
-{build-command}
+terraform init
+terraform validate
+terraform plan -out=plan.tfplan
 ```
 
-All packages build cleanly.
+Review the plan output carefully:
+
+- No unexpected resource deletions
+- No changes to `gtcx_audit` database — this is append-only and must never be modified
+- Resource counts match expected scope
+
+Do not run `terraform apply` yet.
 
 ---
 
-### Gate 5 — API surface
+### Gate 5 — Manifest validation (Kubernetes)
+
+If K8s manifests changed:
 
 ```bash
-{api-check-command}
+kubectl diff -f <manifest>
 ```
 
-Review the diff against the current baseline.
-
-| Diff type       | Required action                                          |
-| --------------- | -------------------------------------------------------- |
-| Breaking change | Major version bump — escalate to human before proceeding |
-| Additive change | Minor version bump minimum                               |
-| No change       | Patch version is acceptable                              |
-
-Do not update the API baseline yet — that happens after human review.
+Or use `helm diff` for Helm-managed resources. Review the diff — do not apply yet.
 
 ---
 
-### Gate 6 — Performance
+### Gate 6 — Migration review (if DB migrations)
 
-```bash
-{perf-check-command}
-```
+If database migrations are included:
 
-All benchmarks within budget. If any budget is exceeded: block release and escalate. Do not raise the budget to unblock the release.
-
----
-
-### Gate 7 — Security
-
-```bash
-{security-check-command}
-```
-
-All security controls passing. Failures must be escalated to the security role immediately.
+- Confirm migration is forward-only (no destructive rollback that drops columns/tables)
+- Confirm migration does not touch `gtcx_audit` (append-only, never modified)
+- Confirm migration has been reviewed by a second engineer
 
 ---
 
-### Gate 8 — Governance
+## Escalation
 
-```bash
-{governance-check-command}
-```
+Surface to the human reviewer before applying:
 
-Branch protection, CODEOWNERS, and evidence artifacts all valid.
+1. Gate results (all pass / any failures)
+2. Summary of what will change in the target environment
+3. Any resource deletions or destructive operations
+4. Any migration changes
+5. Rollback plan
 
----
-
-## Evidence Artifacts
-
-After all gates pass, commit evidence to `quality/`:
-
-- API surface report
-- Release evidence summary — gate results
-- Any benchmark results that changed
-
----
-
-## Escalate for Human Approval
-
-Surface to the human reviewer:
-
-1. Gate results summary (all pass / any failures)
-2. API diff summary — breaking, additive, or no change
-3. Version bump recommendation with rationale
-4. List of packages or components included
-5. Any UAT gaps (features without evidence in the UAT evidence log)
-
-Do not proceed to version bump or publish without confirmation.
+Do not proceed without explicit confirmation.
 
 ---
 
 ## After Human Approval
 
-### Step 1 — Update API baseline (if API changed)
+### Step 1 — Apply to staging first
+
+Apply the change to staging and verify behavior before production.
 
 ```bash
-{api-update-baseline-command}
+# Terraform (with ticket)
+terraform apply --approval-ticket=GTCX-XXX plan.tfplan
+
+# Kubernetes
+kubectl apply -f <manifest> --approval-ticket=GTCX-XXX
+
+# Docker
+docker compose up -d
 ```
 
-Commit the updated baseline.
+### Step 2 — Verify in staging
 
-### Step 2 — Version bump
+Confirm the expected state is reached:
 
-Use the version bump type confirmed by the human reviewer.
+- Services are healthy
+- No unexpected resource changes
+- Monitoring shows no regressions
 
-### Step 3 — Tag and publish
+### Step 3 — Apply to production
 
-Follow the publish procedure in `_sop/2-docs/4-devops/3-ci-cd-pipelines/ci-cd.md`.
-
-### Step 4 — Update UAT evidence log
-
-If this release closes sprint UAT gates, update `_sop/3-agile/2-scrum-board/6-testing/uat/uat-evidence-log.md`.
+Only after staging verification passes and human explicitly confirms production apply.
 
 ---
 
 ## Post-Flight
 
-- [ ] All gates passed and documented
-- [ ] Evidence committed to `quality/`
-- [ ] API baseline updated (if applicable)
-- [ ] Release checklist completed and committed
-- [ ] UAT evidence log updated for completed sprints
+- [ ] All gates passed
+- [ ] Human confirmation received with approval ticket
+- [ ] Applied to staging and verified
+- [ ] Applied to production (if in scope)
+- [ ] Terraform state committed (if applicable)
+- [ ] Change documented in incident log if any unexpected behavior occurred
 
 ---
 
 ## Hard Rules
 
-- Never publish without all gates passing
-- Never update the API baseline without human approval
-- Never force-push a release tag
-- Never mark a checklist item complete without running the actual gate
+- Never apply to production without explicit human confirmation and `--approval-ticket=GTCX-XXX`
+- Never run destructive operations (drop DB, delete cluster resources) without explicit user instruction
+- Never modify a migration that has already run in any environment
+- Never cross-write or merge `gtcx_audit` into `gtcx_development` or vice versa
+- Never commit secrets, API keys, or credentials to any file
+- Never use `--no-verify`
 - Never push to `main` without explicit instruction
 
 ---
@@ -192,5 +180,5 @@ If this release closes sprint UAT gates, update `_sop/3-agile/2-scrum-board/6-te
 ## Reference
 
 - [`_sop/2-docs/4-devops/7-release-mgmt/release-checklist.md`](../../../2-docs/4-devops/7-release-mgmt/release-checklist.md) — release checklist
-- [`_sop/2-docs/4-devops/3-ci-cd-pipelines/ci-cd.md`](../../../2-docs/4-devops/3-ci-cd-pipelines/ci-cd.md) — publish procedure
-- [`_sop/1-agents/4-workflows/safety-rules.md`](../safety-rules.md) — approval requirements
+- [`_sop/2-docs/4-devops/3-ci-cd-pipelines/ci-cd.md`](../../../2-docs/4-devops/3-ci-cd-pipelines/ci-cd.md) — CI/CD pipeline reference
+- [`_sop/1-agents/4-workflows/safety-rules.md`](../safety-rules.md) — approval requirements and three-tier authority

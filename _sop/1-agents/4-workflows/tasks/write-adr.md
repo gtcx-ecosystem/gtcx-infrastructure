@@ -1,6 +1,6 @@
 # Task Playbook: Write an ADR
 
-**Owner:** {architect-role}
+**Owner:** Lead engineer / DevOps engineer
 **Safety tier:** Autonomous (propose) / Requires approval (accept)
 
 ---
@@ -9,22 +9,19 @@
 
 Run when:
 
-- A new architectural decision must be made that affects component boundaries, protocol behavior, algorithm selection, or dependency policy
+- A new infrastructure decision must be made that affects environment topology, cloud provider selection, database separation, network security, or deployment strategy
 - An existing ADR needs to be superseded due to changed requirements
 - A technical choice lacks documented rationale and a PR review is blocked on it
 
-Do not write an ADR for implementation decisions that do not affect the architectural surface. If unsure, write the ADR — the cost of documentation is zero; the cost of an undocumented decision is future confusion or a broken architecture.
+Do not write an ADR for routine configuration changes. Write an ADR when the decision creates a structural constraint — something that would be costly to reverse or that future engineers need to understand to avoid breaking the system.
 
-Security-sensitive ADRs require the designated security role as co-author.
+Security-sensitive ADRs (affecting secrets management, network policies, IAM, or the `gtcx_audit` database) require security review before proposing.
 
 ---
 
 ## Pre-Flight
 
 ```bash
-# Confirm architecture baseline before proposing a structural change
-{architecture-check-command}
-
 # Review existing ADRs to understand context and avoid contradictions
 ls _sop/2-docs/3-engineering/6-decisions/ | sort
 ```
@@ -60,6 +57,13 @@ Use `_sop/2-docs/3-engineering/6-decisions/adr-template.md` exactly. Fill every 
 | Alternatives considered | At least two alternatives with reasons for rejection             |
 | References              | Spec sections, prior ADRs, external standards                    |
 
+**Infrastructure-specific context to include where relevant:**
+
+- Which environments are affected (staging, production, or both)
+- Whether the decision affects `gtcx_development` or `gtcx_audit` databases (or both)
+- Whether the decision creates an approval-required change (IaC apply, migration, secret rotation)
+- Security surface changes: IAM, network policy, secrets management
+
 ---
 
 ### 3. Update the ADR index
@@ -86,7 +90,7 @@ Add the superseded ADR to the new ADR's References section.
 
 ### 5. Link from affected specs
 
-If the ADR affects a component spec in `_sop/2-docs/5-specs/`, add a reference to the relevant section of that spec.
+If the ADR affects an infrastructure spec, add a reference to the relevant spec document.
 
 ---
 
@@ -97,6 +101,7 @@ ADRs in `Proposed` status are complete and reviewable. Do not change status to `
 - The ADR file path
 - A one-sentence summary of the decision
 - The key trade-off that requires human judgment
+- Whether security review is needed (secrets management, IAM, audit DB changes)
 
 ---
 
@@ -106,7 +111,6 @@ ADRs in `Proposed` status are complete and reviewable. Do not change status to `
 - [ ] New ADR file is at the correct path (`NNN-<kebab-case-title>.md`)
 - [ ] Status is `Proposed`
 - [ ] If superseding: old ADR is marked superseded
-- [ ] `{architecture-check-command}` still passes
 
 ---
 
@@ -114,7 +118,7 @@ ADRs in `Proposed` status are complete and reviewable. Do not change status to `
 
 - Never mark status `Accepted` — that is a human decision
 - Never write an ADR for a decision already rejected by a prior ADR without explicitly superseding the prior ADR
-- Security-sensitive ADRs require security role co-authorship
+- Security-sensitive ADRs (secrets, IAM, audit DB, network policy) require security review co-authorship
 
 ---
 
