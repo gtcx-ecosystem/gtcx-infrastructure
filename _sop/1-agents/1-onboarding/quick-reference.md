@@ -1,84 +1,74 @@
-# Quick Reference — [Organization Name] SOP
+# Quick Reference — gtcx-infrastructure
 
-> Start here. Everything you need in one place.
+> One-page orientation. Start here, then follow the links.
+
+---
+
+## What This Repo Is
+
+DevOps tooling, deployment automation, and security framework for the GTCX ecosystem. Docker, Kubernetes, Terraform, edge proxy, security policy, migrations, and compliance tooling. Standalone — consumed by all other repos, depends on none.
+
+---
+
+## Key Documents
+
+| What              | Where                                                                                                                    |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| Codebase map      | [`orientation.md`](orientation.md)                                                                                       |
+| Safety rules      | [`../4-workflows/safety-rules.md`](../4-workflows/safety-rules.md)                                                       |
+| Architecture      | [`../../2-docs/1-architecture/system-overview.md`](../../2-docs/1-architecture/system-overview.md)                       |
+| Trust model       | [`../../2-docs/1-architecture/trust-model.md`](../../2-docs/1-architecture/trust-model.md)                               |
+| Quality runbook   | [`../../2-docs/4-devops/2-runbooks/quality-runbook.md`](../../2-docs/4-devops/2-runbooks/quality-runbook.md)             |
+| Release checklist | [`../../2-docs/4-devops/7-release-mgmt/release-checklist.md`](../../2-docs/4-devops/7-release-mgmt/release-checklist.md) |
+| Deploy runbook    | [`../../2-docs/4-operations/runbooks/deploy.md`](../../2-docs/4-operations/runbooks/deploy.md)                           |
 
 ---
 
 ## Repo Structure
 
 ```
-SOP/
-├── system/              # Universal governing layer
-│   ├── protocols/       # Mandatory rules — always win
-│   ├── guides/          # Cross-project how-to workflows
-│   ├── standards/       # Quality standards and engineering principles
-│   └── frameworks/      # Evaluation and maturity frameworks
-│
-├── repo/                # Scaffolding — copy into project repos
-│   ├── agents/          # ← You are here
-│   │   ├── onboarding/  # Quick-reference, setup, contributor guide
-│   │   ├── roles/       # Role definitions
-│   │   ├── structure/   # Team org charts
-│   │   ├── workflows/   # Operational workflows
-│   │   └── governance/  # Decision-making and approval processes
-│   ├── docs/            # Product, company, engineering, devops, specs
-│   ├── agile/           # Sprints, audits, reports, incidents, hygiene
-│   ├── sessions/        # Session protocols, transcripts, insights
-│   ├── release/         # Release checklists, versioning, legal
-│   ├── metrics/         # Metrics and dashboard templates
-│   ├── examples/        # Filled-in reference examples
-│   ├── scripts/         # Repo hygiene scripts
-│   └── .gtcx/
-│       ├── decisions/   # Architecture Decision Records (ADRs)
-│       └── principles/  # Engineering principles
-│
-├── AGENTS.md
-├── CLAUDE.md
-└── agent-guide.md
+gtcx-infrastructure/
+├── infra/
+│   ├── docker/        # Container definitions and compose files
+│   ├── kubernetes/    # K8s manifests and Helm charts
+│   ├── terraform/     # Infrastructure-as-code (IaC)
+│   ├── edge-proxy/    # Field connectivity proxy
+│   ├── migrations/    # Data migration scripts
+│   ├── security/      # Security policies and controls
+│   └── scripts/       # Operational scripts
+├── tools/             # Project templates and dev scripts
+└── _sop/              # Docs, agent team, safety rules, runbooks
 ```
 
 ---
 
-## Key Documents
+## Common Commands
 
-| What                          | Where                                                        |
-| ----------------------------- | ------------------------------------------------------------ |
-| Engineering standards         | `system/3-standards/`                                        |
-| Architecture decisions (ADRs) | `repo/.gtcx/decisions/`                                      |
-| Engineering principles        | `repo/.gtcx/principles/`                                     |
-| System design                 | `repo/2-docs/3-engineering/2-system-design/`                 |
-| Tech stack                    | `repo/2-docs/3-engineering/3-technology-stack/tech-stack.md` |
-| Deployment                    | `repo/2-docs/3-engineering/4-deployment/deployment.md`       |
-| Agent guide                   | `agent-guide.md`                                             |
-| Audit templates               | `repo/3-agile/4-audits/templates/`                           |
-| Onboarding templates          | `repo/1-agents/onboarding/`                                  |
-| Role definitions              | `repo/1-agents/roles/`                                       |
-| Governance policies           | `repo/1-agents/governance/`                                  |
+```bash
+pnpm install                        # Install dependencies
+pnpm build                          # Build tooling packages
+pnpm test                           # Run tests
+pnpm lint                           # Lint TypeScript tooling
+terraform fmt -check -recursive     # Check Terraform formatting
+terraform validate                  # Validate Terraform configs
+trivy image <image>                 # Container vulnerability scan
+```
 
 ---
 
-## Onboarding Checklist
+## Session Start
 
-- [ ] Read this file
-- [ ] Read the [Service Overview](service-overview.md) for your assigned service
-- [ ] Complete [Developer Setup](developer-setup.md)
-- [ ] Read the [Contributor Guide](contributor-guide.md)
-- [ ] Review relevant ADRs in `repo/.gtcx/decisions/`
-- [ ] Review team [Roles](../roles/README.md) and [Workflows](../workflows/README.md)
+1. Read [`orientation.md`](orientation.md) — codebase map and deployment model
+2. Read [`../4-workflows/safety-rules.md`](../4-workflows/safety-rules.md) — what needs human approval
+3. Read the role file for your current work
+4. After a break: [`context-recovery.md`](context-recovery.md)
 
 ---
 
-## Naming Conventions
+## Security-Sensitive — Always Requires Human Approval
 
-| Pattern                  | Meaning                               |
-| ------------------------ | ------------------------------------- |
-| `[Organization Name]`    | The organization using this SOP       |
-| `[Platform A–H]`         | Named products or platforms           |
-| `[AI System]`            | Primary AI agent or system            |
-| `[Index A–D]`            | Data indices or scoring products      |
-| `[org]-api`, `[org]-web` | Service repository slugs              |
-| `{placeholder}`          | Template field to fill in per-service |
-
----
-
-_See `agent-guide.md` at the repo root for AI-specific operating instructions._
+- Any Terraform change that touches production state
+- Changes to RBAC, network policies, or security group rules
+- Secrets management and rotation procedures
+- Destructive operations: scale-down, delete, drain, cordon
+- Firewall rule changes and zero-trust policy updates
