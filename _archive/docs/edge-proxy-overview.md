@@ -5,8 +5,9 @@
 ## Purpose
 
 Thin edge layer for:
+
 - TLS termination
-- Geographic routing  
+- Geographic routing
 - DDoS protection
 - Static asset caching
 
@@ -15,6 +16,7 @@ Thin edge layer for:
 ## Future Contents
 
 When implemented, this will contain:
+
 - `nginx/` - Nginx configurations
 - `envoy/` - Envoy proxy configs (alternative)
 - `cloudflare/` - Cloudflare Workers scripts
@@ -35,6 +37,7 @@ We deliberately chose NOT to build a custom API gateway because:
 ## When to Implement
 
 Implement edge proxy when:
+
 - Deploying to production
 - Need geographic load balancing
 - DDoS protection required
@@ -42,5 +45,4 @@ Implement edge proxy when:
 
 Use industry-standard tools (nginx, envoy, Cloudflare) rather than custom code.
 
-
-*Part of the [GTCX Protocol](../../README.md) infrastructure*
+_Part of the [GTCX Protocol](../../README.md) infrastructure_

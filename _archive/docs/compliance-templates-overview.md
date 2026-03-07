@@ -15,10 +15,10 @@ Each template defines the regulatory compliance rules for a specific jurisdictio
 
 ```yaml
 compliance_engine:
-  version: "1.0.0"
-  country: "country_code"
-  regulatory_framework: "primary_legislation"
-  
+  version: '1.0.0'
+  country: 'country_code'
+  regulatory_framework: 'primary_legislation'
+
   capabilities:
     automated_checking: true
     real_time_monitoring: true
@@ -28,33 +28,33 @@ compliance_engine:
 mining_safety:
   rules:
     rule_id:
-      description: "Human readable description"
-      checks: ["list", "of", "checks"]
+      description: 'Human readable description'
+      checks: ['list', 'of', 'checks']
       validation:
-        type: "boolean|certification|inspection|etc"
-        frequency: "daily|weekly|monthly"
+        type: 'boolean|certification|inspection|etc'
+        frequency: 'daily|weekly|monthly'
       automated_action:
-        on_violation: "block_operation|flag_violation|etc"
-        
+        on_violation: 'block_operation|flag_violation|etc'
+
 environmental_compliance:
   # ...
-  
+
 worker_protection:
   # ...
-  
+
 revenue_management:
   # ...
 ```
 
 ## Available Templates
 
-| Country | Code | Regulatory Framework | Status |
-|---------|------|---------------------|--------|
-| Ghana | `ghana.yaml` | Minerals and Mining Act 703 | [Done] Production |
-| Kenya | `kenya.yaml` | Mining Act 2016 | [Done] Production |
-| Peru | `peru.yaml` | Mining Law DS 014-92-EM | [In Progress] Draft |
-| Colombia | `colombia.yaml` | Mining Code Law 685/2001 | [In Progress] Draft |
-| Tanzania | `tanzania.yaml` | Mining Act 2010 | [In Progress] Draft |
+| Country  | Code            | Regulatory Framework        | Status              |
+| -------- | --------------- | --------------------------- | ------------------- |
+| Ghana    | `ghana.yaml`    | Minerals and Mining Act 703 | [Done] Production   |
+| Kenya    | `kenya.yaml`    | Mining Act 2016             | [Done] Production   |
+| Peru     | `peru.yaml`     | Mining Law DS 014-92-EM     | [In Progress] Draft |
+| Colombia | `colombia.yaml` | Mining Code Law 685/2001    | [In Progress] Draft |
+| Tanzania | `tanzania.yaml` | Mining Act 2010             | [In Progress] Draft |
 
 ## Usage
 
@@ -70,7 +70,7 @@ const engine = new ComplianceEngine(ghanaRules);
 // Check compliance
 const result = await engine.check({
   entity: miningOperation,
-  ruleCategories: ['mining_safety', 'environmental']
+  ruleCategories: ['mining_safety', 'environmental'],
 });
 
 // result: { compliant: boolean, violations: [], score: 0.95 }
@@ -96,7 +96,7 @@ const requiredChecks = await agent.query({
   intent: 'compliance_requirements',
   country: 'ghana',
   operation: 'gold_export',
-  context: { quantity: '500kg', destination: 'switzerland' }
+  context: { quantity: '500kg', destination: 'switzerland' },
 });
 
 // Returns structured compliance checklist
