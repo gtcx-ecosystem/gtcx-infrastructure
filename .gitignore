@@ -33,3 +33,6 @@ Thumbs.db
 *.log
 npm-debug.log*
 pnpm-debug.log*
+
+# Local archive (reference only, not tracked)
+_archive/
