@@ -1,331 +1,179 @@
-## Technology Stack
+# Technology Stack — gtcx-infrastructure
 
-### Content Factory (NestJS + XState 5)
+**Last updated:** 2026-03-08
+
+---
+
+## Summary
+
+`gtcx-infrastructure` is the infrastructure-as-code and DevOps layer for the GTCX ecosystem. It does not produce application code — it provisions cloud resources, defines Kubernetes workloads, packages Helm charts, and drives CI/CD pipelines. The primary tools are Terraform (cloud provisioning), Kubernetes + Kustomize (workload definitions), and GitHub Actions (CI/CD).
+
+---
+
+## Core Technologies
+
+| Layer              | Technology     | Version | Purpose                                                            |
+| ------------------ | -------------- | ------- | ------------------------------------------------------------------ |
+| IaC                | Terraform      | 1.6+    | AWS resource provisioning (VPC, EKS, RDS, S3, IAM, ECR)            |
+| Container platform | Kubernetes     | 1.28+   | Workload orchestration across dev / staging / production           |
+| K8s overlay tool   | Kustomize      | 5.x     | Environment-specific overlay management (no Helm templating abuse) |
+| Package manager    | Helm           | 3.x     | Third-party chart management (cert-manager, ArgoCD, ingress)       |
+| Containers         | Docker         | 24+     | Application container images + local dev compose stack             |
+| GitOps delivery    | ArgoCD         | 2.9+    | Continuous delivery — Git state drives cluster state               |
+| CI/CD              | GitHub Actions | —       | Pipelines: Terraform plan gating, security scans, deployments      |
+| Cloud              | AWS            | —       | EKS, RDS, S3, Secrets Manager, ECR, VPC, IAM                       |
+
+---
+
+## Cloud Platform (AWS)
+
+| AWS Service     | Purpose                                                               |
+| --------------- | --------------------------------------------------------------------- |
+| EKS             | Managed Kubernetes cluster for all GTCX workloads                     |
+| RDS PostgreSQL  | Transactional database (primary data store for all platform services) |
+| TimescaleDB     | Time-series metrics database (on RDS with TimescaleDB extension)      |
+| S3              | Object storage — evidence artifacts, backups, static assets           |
+| ECR             | Container registry for all GTCX Docker images                         |
+| Secrets Manager | Secret injection into pods at runtime                                 |
+| VPC             | Network isolation per environment                                     |
+| IAM             | Role-based access for CI/CD, pods (IRSA), and operators               |
+
+**Two-database pattern:** PostgreSQL for all transactional workloads; TimescaleDB for time-series telemetry and metrics. No single database serves both purposes.
+
+---
+
+## Kubernetes Environments
+
+Three namespaces, one per environment:
+
+| Namespace         | Environment | Cluster access            |
+| ----------------- | ----------- | ------------------------- |
+| `gtcx-dev`        | Development | Engineers, CI bots        |
+| `gtcx-staging`    | Staging     | CI/CD only after PR merge |
+| `gtcx-production` | Production  | ArgoCD only (GitOps)      |
+
+All environment differences are expressed as Kustomize overlays — no environment-specific code exists in application repos.
+
+---
+
+## Repository Structure
 
 ```
-NestJS 10.x + PostgreSQL (Prisma ORM)
-┌─────────────────────────────────────────────────────────┐
-│ Content State Machine (XState 5)                         │
-│                                                          │
-│  draft → pending_review → approved → scheduled → published│
-│    ↑                                              │       │
-│    └──────────────── request_changes ─────────────┘       │
-└─────────────────────────────────────────────────────────┘
-```
-
-### Data Model (Core Tables)
-
-| Table                  | Purpose                              |
-| ---------------------- | ------------------------------------ |
-| `contents`             | Published content with state machine |
-| `publications`         | Channel-specific publication records |
-| `content_performances` | Engagement metrics                   |
-| `insights`             | AI-synthesized intelligence          |
-| `intelligence_sources` | Raw source material                  |
-| `entities`             | People, organizations, regulations   |
-| `daily_briefs`         | Automated briefing documents         |
-
----
-
-## Key Architectural Decisions
-
-See `/.gtcx/decisions/` for full ADRs.
-
-| Decision                 | Choice                                      | Rationale                                        |
-| ------------------------ | ------------------------------------------- | ------------------------------------------------ |
-| Publishing orchestration | [AI System] + [AI System B]                 | Cost-effective, Git-as-memory, production-proven |
-| Database                 | PostgreSQL                                  | Government-grade, PostGIS support                |
-| Content state            | XState 5                                    | Clear workflow states, audit trail               |
-| Admin                    | Next.js admin routes (`/admin/*`) with RBAC | Rapid development, full-stack TypeScript         |
-| AI models                | Claude (via [AI System B])                  | Best for analysis and writing                    |
-| Platform split           | By entity                                   | Clear commercial vs. credibility separation      |
-
----
-
-## Architecture Principles
-
-| Principle                     | Application                                         |
-| ----------------------------- | --------------------------------------------------- |
-| **Content-First**             | AI optimized for media production, not transactions |
-| **Editorial Control**         | Human-in-loop for all published content             |
-| **Global South Optimized**    | Offline-first, multi-channel, multi-language        |
-| **[Platform F]-First Design** | Built for hardest environments, works everywhere    |
-| **Cost-Aware**                | Budget-capped workflows, token optimization         |
-
-### Design Principles
-
-#### 1. Sovereign Accessibility
-
-Design for frontier markets first. $50 device target, <100KB transactions, 45+ day offline capability.
-
-#### 2. Regenerative Economics
-
-Create non-zero-sum outcomes. Every participant benefits from system growth.
-
-#### 3. Open Infrastructure
-
-Build infrastructure others can build on. API-first, standards-compliant, interoperable.
-
-#### 4. Engineering Excellence
-
-Production-ready from day one. Comprehensive testing, observability, documentation.
-
----
-
-## Global South Design
-
-| Constraint       | Reality                            | Design Response                        |
-| ---------------- | ---------------------------------- | -------------------------------------- |
-| **Connectivity** | 40% feature phones, 2G/3G dominant | USSD, SMS, offline-first               |
-| **Bandwidth**    | Expensive, unreliable              | 70-85% compression, <100KB/transaction |
-| **Devices**      | $50 smartphones, 1GB RAM           | Lightweight PWA, minimal JS            |
-| **Power**        | Intermittent, solar-dependent      | Battery-optimized, offline queuing     |
-| **Literacy**     | Variable across regions            | Voice, icons, local languages          |
-| **Languages**    | 15+ across target markets          | Multi-language content production      |
-
-### Connectivity Profiles
-
-| Profile     | Characteristics         | Content Delivery Strategy              |
-| ----------- | ----------------------- | -------------------------------------- |
-| `offline`   | Zero connectivity       | Cached content only, queue alerts      |
-| `ussd-only` | Feature phone, 160 char | Headlines + USSD codes for details     |
-| `edge`      | 2G/EDGE, <200 Kbps      | Text-only, high compression, no images |
-| `degraded`  | 3G intermittent         | Compressed images, essential content   |
-| `standard`  | 4G/WiFi                 | Full content, real-time updates        |
-| `satellite` | High latency, expensive | Batched delivery, cost warnings        |
-
----
-
-## Multi-Channel Distribution
-
-8 channels optimized for different connectivity profiles and user preferences.
-
-| Channel      | Connectivity      | Use Case                      |
-| ------------ | ----------------- | ----------------------------- |
-| **Email**    | Any (async)       | Digests, reports              |
-| **WhatsApp** | Edge+             | High-engagement alerts        |
-| **SMS**      | Any               | Critical alerts (160 char)    |
-| **USSD**     | Feature phones    | Interactive menus             |
-| **Telegram** | Edge+             | Tech-savvy users              |
-| **Web/PWA**  | Standard/Degraded | Full content, offline-capable |
-| **API**      | Standard          | Enterprise integration        |
-| **Audio**    | Offline download  | Low-literacy users            |
-
----
-
-## RAG Knowledge Architecture
-
-6 vector collections for editorial memory:
-
-| Domain                   | Sources                                                              | Update Frequency |
-| ------------------------ | -------------------------------------------------------------------- | ---------------- |
-| **Regulatory Corpus**    | Government gazettes, ministry announcements, [Regulatory body] rules | Daily            |
-| **Country Profiles**     | [X] countries/markets + key trade partners                           | Weekly           |
-| **Editorial Guidelines** | Voice guide, style manual, topic taxonomies                          | As needed        |
-| **Domain Glossaries**    | Terminology per language (6 Tier 1 + 5 Tier 2)                       | As needed        |
-| **Industry Landscape**   | Competitor profiles, market structure, key players                   | Monthly          |
-| **Content Archive**      | Past articles, reports, alerts (2+ years)                            | Continuous       |
-
----
-
-## MCP Server Ecosystem
-
-5 custom Model Context Protocol servers provide live data access to agents:
-
-| MCP Server                    | Function                       | Global South Feature           |
-| ----------------------------- | ------------------------------ | ------------------------------ |
-| `[org]-sources`               | News, gov portals, market data | Gov portal caching for offline |
-| `[org]-[intelligence-module]` | Regulatory database            | Offline-syncable snapshots     |
-| `[org]-analytics`             | Engagement metrics             | Low-bandwidth tracking         |
-| `[org]-distribution`          | Multi-channel delivery         | USSD, SMS, WhatsApp            |
-| `[org]-i18n`                  | Translation engine             | 6+ language support            |
-
----
-
-## Core Services
-
-### Content Service
-
-Manages all content creation, storage, and retrieval.
-
-| Component | Technology    | Function                      |
-| --------- | ------------- | ----------------------------- |
-| CMS API   | NestJS        | Content CRUD, workflows       |
-| Search    | Elasticsearch | Full-text, faceted search     |
-| Assets    | Cloud Storage | Images, documents, media      |
-| Cache     | Redis         | Content delivery acceleration |
-
-### Identity Service
-
-Authentication, authorization, user management.
-
-| Component | Technology            | Function                   |
-| --------- | --------------------- | -------------------------- |
-| Auth      | Auth0 / Supabase Auth | SSO, MFA, social login     |
-| Users     | PostgreSQL            | User profiles, preferences |
-| Roles     | RBAC                  | Permission management      |
-| API Keys  | Custom                | [Platform G] API access    |
-
-**User Types**: Anonymous readers, Registered users (free), Subscribers (paid), Contributors, Editors, Administrators.
-
-### Commerce Service
-
-Subscriptions, billing, payments.
-
-| Component     | Technology     | Function           |
-| ------------- | -------------- | ------------------ |
-| Subscriptions | Stripe         | Plan management    |
-| Payments      | Stripe + Local | Card, mobile money |
-| Invoicing     | Custom         | B2B billing        |
-| Usage         | Custom         | API metering       |
-
----
-
-## Intelligence Pipelines
-
-### [Index A] Pipeline
-
-```
-Sources -> Collectors -> Validation -> Calculation -> Storage -> Publication
-             |              |            |            |           |
-             v              v            v            v           v
-         Scheduled      Quality       Index       PostgreSQL   Website
-         + Triggered    Checks       Algorithm    + Search     + API
-```
-
-### [Intelligence Product] Pipeline
-
-```
-Sources -> Scraping -> Processing -> Classification -> Alerting -> Distribution
-             |            |              |              |            |
-             v            v              v              v            v
-         Playwright    OCR/NLP       Taxonomy       Webhooks     Email
-         + APIs        + Translation  + AI          + Push       + SMS
+terraform/
+├── modules/         # Reusable Terraform modules (vpc, eks, rds, s3, iam)
+├── environments/
+│   ├── dev/         # Dev environment root module
+│   ├── staging/     # Staging environment root module
+│   └── production/  # Production environment root module
+└── shared/          # Shared data sources and provider config
+kubernetes/
+├── base/            # Shared Kustomize base manifests for all services
+└── overlays/
+    ├── dev/         # Dev overrides
+    ├── staging/     # Staging overrides
+    └── production/  # Production overrides
+helm/
+├── charts/          # Any custom Helm charts authored here
+└── values/          # Environment-specific values for third-party charts
+docker/
+└── docker-compose.infra.yml  # Local dev infrastructure services
+.github/
+└── workflows/       # GitHub Actions CI/CD pipelines
 ```
 
 ---
 
-## Detailed Technology Stack
+## Terraform
 
-### Backend
+All AWS resources are defined in Terraform. Key conventions:
 
-| Layer     | Technology    | Version | Purpose          |
-| --------- | ------------- | ------- | ---------------- |
-| Runtime   | Node.js       | 20 LTS  | Server runtime   |
-| Framework | NestJS        | 10.x    | API framework    |
-| Database  | PostgreSQL    | 15      | Primary data     |
-| Search    | Elasticsearch | 8.x     | Full-text search |
-| Cache     | Redis         | 7.x     | Caching, queues  |
-| Queue     | BullMQ        | 4.x     | Job processing   |
+- Every module has a `variables.tf`, `main.tf`, and `outputs.tf`
+- Remote state is stored in S3 with DynamoDB locking
+- `terraform plan` output is posted as a PR comment before any merge
+- `terraform apply` is gated behind manual approval in the CI pipeline for staging and production
+- No hardcoded credentials — secrets come from AWS Secrets Manager or environment variables in CI
 
-### Frontend
-
-| Layer     | Technology      | Version | Purpose       |
-| --------- | --------------- | ------- | ------------- |
-| Framework | Next.js         | 14      | React SSR     |
-| Styling   | Tailwind CSS    | 3.x     | Utility CSS   |
-| State     | Zustand         | 4.x     | Client state  |
-| Forms     | React Hook Form | 7.x     | Form handling |
-
-### AI/ML
-
-| Component       | Technology                                | Purpose                      |
-| --------------- | ----------------------------------------- | ---------------------------- |
-| Agent Framework | LangGraph, Agno, CrewAI, PydanticAI       | Agent orchestration          |
-| LLM             | Claude (Anthropic), GPT-4                 | Content generation, analysis |
-| RAG             | LlamaIndex, Qdrant (cloud), Chroma (edge) | Knowledge retrieval          |
-| TTS             | Piper, Coqui                              | Audio content generation     |
-| Observability   | LangSmith                                 | Agent monitoring             |
-
-### Infrastructure
-
-| Layer     | Technology                       | Purpose                    |
-| --------- | -------------------------------- | -------------------------- |
-| Cloud     | Google Cloud                     | Primary cloud              |
-| Compute   | Cloud Run                        | Serverless containers      |
-| Database  | Cloud SQL                        | Managed PostgreSQL         |
-| Storage   | Cloud Storage                    | File storage               |
-| CDN       | Cloudflare                       | Edge delivery              |
-| DNS       | Cloudflare                       | DNS management             |
-| Messaging | [SMS/messaging provider], Twilio | SMS/USSD/WhatsApp delivery |
-
-### DevOps
-
-| Layer      | Technology            | Purpose          |
-| ---------- | --------------------- | ---------------- |
-| Repository | GitHub                | Code hosting     |
-| CI/CD      | GitHub Actions        | Automation       |
-| Monitoring | Datadog               | Observability    |
-| Logging    | Datadog Logs          | Centralized logs |
-| Secrets    | Google Secret Manager | Credentials      |
+```bash
+cd terraform/environments/dev
+terraform init
+terraform plan
+terraform apply
+```
 
 ---
 
-## Architecture Decision Records
+## GitHub Actions CI/CD
 
-We document significant architecture decisions in ADRs:
+**Terraform pipeline (on PR to `main`):**
 
-| ADR     | Title                         | Status   |
-| ------- | ----------------------------- | -------- |
-| ADR-001 | Monorepo Structure            | Accepted |
-| ADR-002 | Commodity Agnostic Design     | Accepted |
-| ADR-003 | AI-Native Architecture        | Accepted |
-| ADR-004 | Offline-First Mobile          | Accepted |
-| ADR-005 | Jurisdiction Plugins          | Accepted |
-| ADR-006 | Package Boundaries            | Accepted |
-| ADR-007 | Content-First Architecture    | Accepted |
-| ADR-008 | Multi-Channel Distribution    | Accepted |
-| ADR-009 | Platform Architecture Pattern | Accepted |
-| ADR-010 | Service Taxonomy              | Accepted |
+```
+terraform fmt check → terraform validate → tfsec security scan → terraform plan → post plan as PR comment
+```
+
+**Terraform pipeline (on merge to `main`):**
+
+```
+terraform plan → manual approval gate → terraform apply → ArgoCD sync
+```
+
+**Security scans (every PR):**
+
+```
+tfsec (Terraform) → trivy (container images) → checkov (K8s manifests)
+```
+
+| CI Job        | Trigger       | What it runs                                  |
+| ------------- | ------------- | --------------------------------------------- |
+| `tf-validate` | Every PR      | `terraform fmt -check` + `terraform validate` |
+| `tf-security` | Every PR      | `tfsec` — Terraform security lint             |
+| `tf-plan`     | Every PR      | `terraform plan` output posted as PR comment  |
+| `k8s-lint`    | Every PR      | `kubeval` + `checkov` on all manifests        |
+| `image-scan`  | Every PR      | `trivy` container image vulnerability scan    |
+| `tf-apply`    | Main + manual | `terraform apply` with manual approval gate   |
+| `argocd-sync` | Post-apply    | ArgoCD sync to propagate new manifests        |
+
+---
+
+## Local Development
+
+The Docker Compose file at `docker/docker-compose.infra.yml` provides a local replica of the production infrastructure stack for service development:
+
+```bash
+docker compose -f docker/docker-compose.infra.yml up -d
+```
+
+| Service     | Local Port | Notes                          |
+| ----------- | ---------- | ------------------------------ |
+| PostgreSQL  | :5432      | Primary transactional database |
+| TimescaleDB | :5433      | Metrics and time-series data   |
+| Redis       | :6379      | Cache and pub/sub              |
+| MinIO       | :9000      | S3-compatible object storage   |
 
 ---
 
-## Key Architectural Layers
+## GitOps with ArgoCD
 
-### 1. Intelligence Layer
+Production deployments are GitOps-only. No `kubectl apply` commands are run manually in production.
 
-The foundation of all [Organization Name] products — proprietary indices, research, and knowledge bases.
-
-| Component                  | Function                                                             |
-| -------------------------- | -------------------------------------------------------------------- |
-| **[Index A]**              | Commodity Trade Integrity Index — jurisdiction-level scoring         |
-| **[Index C]**              | Civic Digital Infrastructure Index — government transparency scoring |
-| **[Intelligence Product]** | Real-time regulatory monitoring and alerts                           |
-| **Knowledge Base**         | Entities, regulatory tracker, glossary, market structure             |
-
-### 2. Publishing Layer ([AI System])
-
-AI-native content production system with 15 agents across 9 workflows.
-
-| Component             | Function                                    |
-| --------------------- | ------------------------------------------- |
-| **Scout Agents**      | Monitor sources, detect breaking stories    |
-| **Analyst Agents**    | Synthesize implications, provide context    |
-| **Writer Agents**     | Draft content in appropriate formats        |
-| **QA Agents**         | Fact-check, style-check, validate           |
-| **Translation Agent** | Multi-language output (6 Tier 1 + 5 Tier 2) |
-| **Human Gates**       | Editorial approval before publication       |
-
-### 3. Distribution Layer
-
-8 channels optimized for different connectivity profiles and user preferences.
-
-| Channel      | Connectivity      | Use Case                      |
-| ------------ | ----------------- | ----------------------------- |
-| **Email**    | Any (async)       | Digests, reports              |
-| **WhatsApp** | Edge+             | High-engagement alerts        |
-| **SMS**      | Any               | Critical alerts (160 char)    |
-| **USSD**     | Feature phones    | Interactive menus             |
-| **Telegram** | Edge+             | Tech-savvy users              |
-| **Web/PWA**  | Standard/Degraded | Full content, offline-capable |
-| **API**      | Standard          | Enterprise integration        |
-| **Audio**    | Offline download  | Low-literacy users            |
-
-### 4. Platform Layer
-
-| Category               | Products                                                             |
-| ---------------------- | -------------------------------------------------------------------- |
-| **Platforms/Networks** | [Platform A], [Platform B]                                           |
-| **Research & Media**   | [Platform D], [Platform C], [Platform E], [Platform F], [Platform G] |
+- ArgoCD watches the `kubernetes/overlays/production/` path in this repo
+- Any merged change to that path triggers an automatic sync
+- Rollback = revert the Git commit + ArgoCD re-syncs
+- ArgoCD UI is accessible to platform engineers for monitoring; write access is CI-only
 
 ---
+
+## Security Conventions
+
+- **IRSA (IAM Roles for Service Accounts):** Every pod has a dedicated IAM role with least-privilege permissions — no shared node IAM roles for application access
+- **Secrets:** Never stored in Git. Injected at runtime from AWS Secrets Manager via the External Secrets Operator
+- **Network policy:** Default-deny enforced in all namespaces; explicit allow rules per service
+- **Image provenance:** All images must come from ECR; no `latest` tags in production manifests
+
+---
+
+## Reference
+
+- [dev-setup.md](../dev-setup.md) — local setup and tool prerequisites
+- [deployment.md](../4-deployment/deployment.md) — deployment runbook
+- [ci-cd-pipelines/](../../4-devops/3-ci-cd-pipelines/) — full CI/CD pipeline documentation
+- [runbooks/](../../4-devops/2-runbooks/) — operational runbooks
