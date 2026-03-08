@@ -1,71 +1,77 @@
-# Environment Configuration
+# Environment Configuration — gtcx-infrastructure
 
-> Environment topology, configuration profiles, and secrets management for [Organization Name].
+> Environment topology, configuration profiles, and secrets management for the GTCX infrastructure layer.
 
 ---
 
 ## 1. Environment Topology
 
-| Environment             | Purpose                               | Audience                    | Promotion                     |
-| ----------------------- | ------------------------------------- | --------------------------- | ----------------------------- |
-| **Local**               | Developer workstation                 | Engineers                   | Manual                        |
-| **Development** (`dev`) | Integration testing, feature branches | Engineering team            | Auto on merge to `develop`    |
-| **Staging** (`staging`) | Pre-release validation, QA sign-off   | Engineering + QA            | Auto on merge to `staging`    |
-| **Production** (`prod`) | Live user traffic                     | All users                   | Manual promotion from staging |
-| **Preview**             | PR-level previews                     | Engineering + design review | Auto on PR open               |
+| Environment             | K8s Namespace     | Purpose                                           | Audience         | Promotion                                  |
+| ----------------------- | ----------------- | ------------------------------------------------- | ---------------- | ------------------------------------------ |
+| **Local**               | (Docker Compose)  | Developer workstation — databases + observability | Engineers        | Manual                                     |
+| **Development** (`dev`) | `gtcx-dev`        | Integration testing, feature branches             | Engineering team | Auto on merge to `develop`                 |
+| **Staging** (`staging`) | `gtcx-staging`    | Pre-release validation, QA sign-off               | Engineering + QA | Auto on merge to `staging`                 |
+| **Production** (`prod`) | `gtcx-production` | Live traffic — all GTCX services                  | All users        | Manual promotion, approval ticket required |
 
 ### Environment Parity
 
-- Staging must mirror production infrastructure (same instance types, same config)
-- The only differences between staging and production are: data (anonymized in staging), traffic scale, and external integrations (use sandbox accounts in staging)
-- All environment-specific differences are documented in this file
+- Staging mirrors production infrastructure (same RDS instance class, same Terraform module configuration, same K8s overlay structure)
+- Differences between staging and production: data (anonymized in staging), traffic scale, external integrations (sandbox accounts in staging)
+- All environment-specific differences are captured in the Terraform `environments/{env}/terraform.tfvars` file and the K8s `overlays/{env}/` directory
 
 ---
 
-## 2. Configuration Profiles
+## 2. Infrastructure Configuration per Environment
 
-### Environment Variables
+### Kubernetes Overlays
 
-| Variable                | Description                 | Dev                       | Staging                            | Production                 |
-| ----------------------- | --------------------------- | ------------------------- | ---------------------------------- | -------------------------- |
-| `NODE_ENV`              | Runtime environment         | `development`             | `staging`                          | `production`               |
-| `DATABASE_URL`          | Primary database connection | Local PostgreSQL          | Staging Cloud SQL                  | Production Cloud SQL       |
-| `REDIS_URL`             | Cache and queue connection  | Local Redis               | Staging Redis                      | Production Redis           |
-| `LOG_LEVEL`             | Application log verbosity   | `debug`                   | `info`                             | `warn`                     |
-| `API_BASE_URL`          | Internal API base URL       | `http://localhost:{port}` | `https://api.staging.[org-domain]` | `https://api.[org-domain]` |
-| `[AI_PROVIDER]_API_KEY` | AI model provider key       | Dev key                   | Staging key                        | Production key             |
+Each environment has a Kustomize overlay at `infra/kubernetes/overlays/{env}/`:
 
-All secrets are sourced from [Secret Manager]. Never hardcode values in config files.
+| Overlay       | Image Strategy      | Resource Limits | Security Additions                                                  |
+| ------------- | ------------------- | --------------- | ------------------------------------------------------------------- |
+| `development` | Local image tags    | Minimal         | None                                                                |
+| `staging`     | Staging registry    | Standard        | Staging DB endpoints                                                |
+| `production`  | Production registry | Production      | Ingress, network policies (deny-all), pod security policy (no root) |
 
-### Feature Flags
+### Terraform Variables
 
-| Flag          | Dev    | Staging | Production | Description   |
-| ------------- | ------ | ------- | ---------- | ------------- |
-| `[FEATURE_A]` | `true` | `true`  | `false`    | [Description] |
-| `[FEATURE_B]` | `true` | `false` | `false`    | [Description] |
+Each environment directory (`infra/terraform/environments/{env}/`) is a copy of `environments/template/`. Fill in `terraform.tfvars` with environment-specific values before running `terraform plan`.
 
-Feature flags are managed via [feature flag service / environment variable]. Enable in staging before enabling in production.
+### Database Sizing
+
+| Environment | Operational DB                                    | Audit DB                        | Multi-AZ |
+| ----------- | ------------------------------------------------- | ------------------------------- | -------- |
+| Dev (local) | Docker postgres:16                                | Docker postgres:16              | No       |
+| Staging     | RDS PostgreSQL 16.1                               | RDS PostgreSQL 16.1             | Yes      |
+| Production  | RDS PostgreSQL 16.1 (100GB gp3, auto-scale 200GB) | RDS PostgreSQL 16.1 (200GB gp3) | Yes      |
 
 ---
 
-## 3. Infrastructure per Environment
+## 3. Configuration Profiles
 
-### Compute Sizing
+### Kubernetes ConfigMap Keys
 
-| Service                   | Dev   | Staging                     | Production                    |
-| ------------------------- | ----- | --------------------------- | ----------------------------- |
-| Web (`[org]-web`)         | Local | 1 instance, 0.5 vCPU, 256MB | 2–10 instances, 1 vCPU, 512MB |
-| API (`[org]-api`)         | Local | 1 instance, 1 vCPU, 512MB   | 2–20 instances, 2 vCPU, 1GB   |
-| Workers (`[org]-workers`) | Local | 1 instance, 0.5 vCPU, 256MB | 0–5 instances, 1 vCPU, 512MB  |
-| AI agents (`[org]-ai`)    | Local | 1 instance, 1 vCPU, 1GB     | 0–3 instances, 2 vCPU, 2GB    |
+The base configmap (`infra/kubernetes/base/configmaps/base-config.yaml`) provides:
 
-### Database
+| Key               | Value (base)  | Override in overlay? |
+| ----------------- | ------------- | -------------------- |
+| `GTCX_VERSION`    | Set per build | Yes — per overlay    |
+| `GTCX_LOG_LEVEL`  | `info`        | Dev: `debug`         |
+| `GTCX_LOG_FORMAT` | `json`        | No                   |
 
-| Environment | Instance            | vCPU | RAM   | Storage   |
-| ----------- | ------------------- | ---- | ----- | --------- |
-| Dev         | Local PostgreSQL    | —    | —     | —         |
-| Staging     | `db-f1-micro`       | 1    | 614MB | 10GB SSD  |
-| Production  | `db-custom-[N]-[N]` | [N]  | [N]GB | [N]GB SSD |
+### Environment Variables for Scripts
+
+Scripts in `infra/scripts/` and the Node TypeScript tooling use:
+
+| Variable       | Description                            | Dev              | Staging              | Production              |
+| -------------- | -------------------------------------- | ---------------- | -------------------- | ----------------------- |
+| `NODE_ENV`     | Runtime environment                    | `development`    | `staging`            | `production`            |
+| `DATABASE_URL` | Operational database connection string | `localhost:5432` | Staging RDS endpoint | Production RDS endpoint |
+| `AUDIT_DB_URL` | Audit database connection string       | `localhost:5433` | Staging audit RDS    | Production audit RDS    |
+| `REDIS_URL`    | Redis connection                       | `localhost:6379` | Staging Redis        | Production Redis        |
+| `LOG_LEVEL`    | Log verbosity                          | `debug`          | `info`               | `warn`                  |
+
+All production and staging connection strings come from AWS Secrets Manager — never hardcoded.
 
 ---
 
@@ -73,75 +79,113 @@ Feature flags are managed via [feature flag service / environment variable]. Ena
 
 ### Rules
 
-- Secrets are never stored in git, environment files (`.env`), or application config files
-- All secrets are stored in [Secret Manager service]
-- Each service account has access only to the secrets it needs
-- Secret rotation schedule: high-privilege credentials every [N] days; standard every [N] days
+- Secrets are never stored in git, `.env` files, or Terraform state in plaintext
+- All database credentials are managed by AWS Secrets Manager (`manage_master_user_password = true` in the Terraform database module)
+- Kubernetes secrets (`gtcx-secrets`) hold `DATABASE_URL` and `SECRET_KEY_BASE` — base contains placeholders; overlays must override before deployment
+- Service accounts have access only to the secrets they need (least-privilege)
+- Secret rotation: high-privilege credentials every 90 days; standard every 180 days
 
 ### Local Development
 
-For local development, engineers use:
+For local development, engineers use the Docker Compose init scripts which create the local databases with default credentials:
 
 ```bash
-# Pull secrets to local .env (never committed)
-[secret-manager-cli] secrets pull --env local > .env.local
-
-# OR use a secrets management tool
-direnv allow  # loads .envrc with secret references
+# Local PostgreSQL credentials (Docker Compose — not secret)
+# Operational DB:  user=gtcx, password=gtcx, db=gtcx_development, port=5432
+# Audit DB:        user=gtcx_audit, password=gtcx_audit, db=gtcx_audit, port=5433
 ```
 
-`.env.local` and `.envrc` are in `.gitignore`.
+These credentials are local-only and never used outside Docker Compose.
 
-### Adding a New Secret
+### Adding a New Secret (Staging/Production)
 
-1. Add secret to [Secret Manager] in all environments
-2. Grant access to relevant service accounts
-3. Document in this file (variable name + description, not value)
-4. Reference in application config via environment variable
+1. Add the secret to AWS Secrets Manager in the target environment
+2. Grant access to the relevant IAM role / K8s service account
+3. Reference the secret in the appropriate Terraform module or K8s overlay
+4. Document in this file (variable name + description, not value)
+5. Never commit the secret value anywhere
 
 ---
 
 ## 5. Access Control per Environment
 
-| Environment | Engineer      | Senior Engineer | On-Call         | Admin |
-| ----------- | ------------- | --------------- | --------------- | ----- |
-| Local       | Full          | Full            | Full            | Full  |
-| Dev         | Full          | Full            | Full            | Full  |
-| Staging     | Deploy + read | Deploy + read   | Full            | Full  |
-| Production  | Read-only     | Read-only       | Write (audited) | Full  |
+| Environment | Engineer      | Senior Engineer | On-Call                       | Admin |
+| ----------- | ------------- | --------------- | ----------------------------- | ----- |
+| Local       | Full          | Full            | Full                          | Full  |
+| Dev         | Full          | Full            | Full                          | Full  |
+| Staging     | Deploy + read | Deploy + read   | Full                          | Full  |
+| Production  | Read-only     | Read-only       | Write (audited, time-limited) | Full  |
 
-Production write access for on-call engineers is time-limited (expires after [N] hours) and fully audited.
+Production write access for on-call engineers is time-limited (expires after 4 hours) and fully audited in the append-only audit database.
+
+Production deployments require an approval ticket (`--approval-ticket=GTCX-NNN`). The `deploy.sh` script enforces this.
 
 ---
 
 ## 6. Environment Setup
 
-### First-Time Setup (Engineer)
+### First-Time Local Setup
 
 ```bash
 # Clone repo
-git clone [repo-url]
-cd [repo-name]
+git clone https://github.com/gtcx/gtcx-infrastructure
+cd gtcx-infrastructure
 
-# Install dependencies
+# Install Node dependencies
 pnpm install
 
-# Pull local environment config
-[command to pull dev secrets]
+# Start local infrastructure services
+docker compose -f infra/docker/docker-compose.infra.yml up -d
 
-# Start local services
-docker-compose up -d  # start backing services (DB, Redis)
-pnpm dev              # start application
+# Verify all services are running
+docker compose -f infra/docker/docker-compose.infra.yml ps
+```
+
+### New Environment (Staging/Production)
+
+```bash
+# Copy the Terraform environment template
+cp -r infra/terraform/environments/template infra/terraform/environments/{env}
+
+# Fill in environment-specific variables
+vi infra/terraform/environments/{env}/terraform.tfvars
+
+# Initialize and plan (never apply without reviewing the plan)
+cd infra/terraform/environments/{env}
+terraform init
+terraform plan
+
+# After human review of the plan:
+terraform apply
+```
+
+### Applying K8s Changes to a New Environment
+
+```bash
+# Create the overlay directory if it doesn't exist
+mkdir -p infra/kubernetes/overlays/{env}
+
+# Verify what would change before applying
+kubectl diff -k infra/kubernetes/overlays/{env}
+
+# Apply (development only — autonomous)
+kubectl apply -k infra/kubernetes/overlays/development
+
+# Staging and production use deploy.sh
+./infra/scripts/deploy.sh staging
+./infra/scripts/deploy.sh production --approval-ticket=GTCX-NNN
 ```
 
 ### Environment Health Checks
 
-| Environment | Health URL                                | Expected Response    |
-| ----------- | ----------------------------------------- | -------------------- |
-| Dev         | `http://localhost:{port}/health`          | `{ "status": "ok" }` |
-| Staging     | `https://api.staging.[org-domain]/health` | `{ "status": "ok" }` |
-| Production  | `https://api.[org-domain]/health`         | `{ "status": "ok" }` |
+| Environment | Check                                                         | Expected             |
+| ----------- | ------------------------------------------------------------- | -------------------- |
+| Local       | `docker compose ps` (all containers)                          | All healthy          |
+| Local       | `psql -h localhost -U gtcx -d gtcx_development -c "SELECT 1"` | `1`                  |
+| Staging     | `kubectl get pods -n gtcx-staging`                            | All Running          |
+| Production  | `kubectl get pods -n gtcx-production`                         | All Running          |
+| Any         | `node infra/security/scripts/security-status.js`              | No critical findings |
 
 ---
 
-_Environment configuration is the foundation of reliable software delivery. Parity between staging and production prevents surprises._
+_Environment configuration is the foundation of reliable infrastructure delivery. Staging-production parity prevents surprises. The two-database constraint is non-negotiable._

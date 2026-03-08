@@ -1,15 +1,20 @@
-# Developer Setup — {repo-name}
+# Developer Setup — gtcx-infrastructure
 
 ---
 
 ## Prerequisites
 
-| Tool   | Version   | Install                   |
-| ------ | --------- | ------------------------- |
-| {tool} | {version} | {install-command-or-link} |
-| {tool} | {version} | {install-command-or-link} |
-| {tool} | {version} | {install-command-or-link} |
-| {tool} | {version} | {install-command-or-link} |
+| Tool           | Version   | Install                                             |
+| -------------- | --------- | --------------------------------------------------- |
+| Node.js        | >= 20.0.0 | https://nodejs.org or `nvm install 20`              |
+| pnpm           | >= 9.15.0 | `npm install -g pnpm`                               |
+| Docker         | >= 24.0   | https://docs.docker.com/get-docker/                 |
+| Docker Compose | >= 2.20   | Bundled with Docker Desktop                         |
+| Terraform      | >= 1.6.0  | https://developer.hashicorp.com/terraform/downloads |
+| kubectl        | >= 1.28   | https://kubernetes.io/docs/tasks/tools/             |
+| AWS CLI        | >= 2.13   | `brew install awscli` or https://aws.amazon.com/cli |
+
+> Terraform, kubectl, and the AWS CLI are not required just to run local services — only for IaC work or deploying to live environments.
 
 ---
 
@@ -17,112 +22,125 @@
 
 ```bash
 # 1. Clone the repository
-git clone {repo-url}
-cd {repo-name}
+git clone https://github.com/gtcx/gtcx-infrastructure
+cd gtcx-infrastructure
 
-# 2. Install dependencies
-{install-command}
+# 2. Install Node dependencies
+pnpm install
 
-# 3. Copy environment variables
-cp .env.example .env
+# 3. Verify the build
+pnpm build
 
-# 4. Set up the database
-{db-setup-command}
+# 4. Run lint and typecheck
+pnpm lint && pnpm typecheck
+```
 
-# 5. Seed initial data (optional)
-{seed-command}
+There is no `.env.example` at the repo root — environment configuration is managed per-infrastructure component. See `infra/terraform/environments/template/` for Terraform variable templates.
+
+---
+
+## Starting Local Infrastructure Services
+
+All local backing services (databases, observability stack) are defined in `infra/docker/docker-compose.infra.yml`:
+
+```bash
+# Start infrastructure services only (PostgreSQL, Redis, Prometheus, Grafana, Jaeger, Loki)
+docker compose -f infra/docker/docker-compose.infra.yml up -d
+
+# Verify all services are healthy
+docker compose -f infra/docker/docker-compose.infra.yml ps
+
+# Start full local dev stack (application services + infrastructure)
+docker compose -f infra/docker/docker-compose.dev.yml up -d
+```
+
+| Service            | Port(s) | Credentials                          |
+| ------------------ | ------- | ------------------------------------ |
+| PostgreSQL (app)   | 5432    | user: `gtcx`, db: `gtcx_development` |
+| PostgreSQL (audit) | 5433    | user: `gtcx_audit`, db: `gtcx_audit` |
+| Redis              | 6379    | No auth (local)                      |
+| Prometheus         | 9090    | No auth (local)                      |
+| Grafana            | 3030    | admin / admin                        |
+| Jaeger UI          | 16686   | No auth (local)                      |
+| Loki               | 3100    | No auth (local)                      |
+
+> The two PostgreSQL instances are a hard architectural constraint. The audit database (`postgres-audit` on port 5433) is append-only. Never merge the two instances, never cross-write.
+
+---
+
+## Running Scripts
+
+```bash
+# Run all tests
+pnpm test
+
+# Lint and typecheck
+pnpm lint
+pnpm typecheck
+
+# Run the security scanner
+node infra/security/scripts/security-status.js
+
+# Bootstrap a new environment
+./infra/scripts/setup.sh
+
+# Run database migrations (development — autonomous)
+./infra/scripts/migrate.sh development
+
+# Run migrations with dry-run (staging/production — always dry-run first)
+./infra/scripts/migrate.sh staging --dry-run
 ```
 
 ---
 
 ## Environment Variables
 
-Reference: `.env.example`
+This repo is IaC and tooling — it does not run a long-lived application process. Secrets for live environments are managed via AWS Secrets Manager (`manage_master_user_password = true` in Terraform). No secrets are committed to this repo.
 
-| Variable     | Description   | Where to Get It                             |
-| ------------ | ------------- | ------------------------------------------- |
-| `{VAR_NAME}` | {description} | {source — vault, team lead, auto-generated} |
-| `{VAR_NAME}` | {description} | {source}                                    |
-| `{VAR_NAME}` | {description} | {source}                                    |
-
-> Never commit `.env` files. All secrets must come from a secure source.
-
----
-
-## Local Services
+For Terraform work, copy the environment template:
 
 ```bash
-# Start all required services (database, cache, message broker, etc.)
-docker compose up -d
-
-# Verify services are running
-docker compose ps
-```
-
-| Service   | URL                     | Credentials                      |
-| --------- | ----------------------- | -------------------------------- |
-| {service} | http://localhost:{port} | {default-credentials-or-see-env} |
-| {service} | http://localhost:{port} | {default-credentials-or-see-env} |
-| {service} | http://localhost:{port} | {default-credentials-or-see-env} |
-
----
-
-## Running the App
-
-```bash
-# Development server with hot reload
-{dev-command}
-
-# The app will be available at:
-# {app-url}
-```
-
----
-
-## Running Tests
-
-```bash
-# Run all tests
-{test-command}
-
-# Run tests in watch mode
-{test-watch-command}
-
-# Run tests with coverage
-{test-coverage-command}
-
-# Run a specific test file
-{test-single-command}
+cp infra/terraform/environments/template/ infra/terraform/environments/my-env
+# Edit terraform.tfvars with environment-specific values
 ```
 
 ---
 
 ## Common Issues
 
-| Problem                    | Cause            | Solution     |
-| -------------------------- | ---------------- | ------------ |
-| {error-message-or-symptom} | {why-it-happens} | {how-to-fix} |
-| {error-message-or-symptom} | {why-it-happens} | {how-to-fix} |
-| {error-message-or-symptom} | {why-it-happens} | {how-to-fix} |
+| Problem                                               | Cause                               | Solution                                                              |
+| ----------------------------------------------------- | ----------------------------------- | --------------------------------------------------------------------- |
+| `docker compose up` fails on port 5432                | Local PostgreSQL already running    | Stop the local process: `brew services stop postgresql`               |
+| `terraform plan` errors on provider authentication    | AWS credentials not configured      | Run `aws configure` or export `AWS_PROFILE`                           |
+| `kubectl` commands return "connection refused"        | No cluster context set              | Run `aws eks update-kubeconfig --name <cluster-name>`                 |
+| `pnpm install` fails with missing native deps         | Node version mismatch               | Use Node 20: `nvm use 20`                                             |
+| Grafana at port 3030 shows no data                    | Prometheus not yet scraping targets | Wait 30s after startup, then reload dashboards                        |
+| Migration script fails with "database does not exist" | Init scripts haven't run            | Recreate containers: `docker compose down -v && docker compose up -d` |
 
 ---
 
 ## IDE Setup
 
-**Recommended editor:** {editor}
+**Recommended editor:** VS Code or Cursor
 
 **Extensions:**
 
-- {extension-name} — {what-it-does}
-- {extension-name} — {what-it-does}
-- {extension-name} — {what-it-does}
+- HashiCorp Terraform — syntax highlighting and validation for `.tf` files
+- Kubernetes — YAML validation and kubectl integration
+- Docker — Dockerfile and Compose support
+- ESLint — linting integration
+- Prettier — code formatting
 
 **Settings:**
 
 ```json
 {
   "editor.formatOnSave": true,
-  "{additional-settings}": "{value}"
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[terraform]": {
+    "editor.defaultFormatter": "hashicorp.terraform",
+    "editor.formatOnSave": true
+  }
 }
 ```
 
@@ -130,13 +148,14 @@ docker compose ps
 
 ## Verification
 
-Confirm your setup is working by checking each item:
+Confirm your setup is working:
 
-- [ ] Repository cloned and dependencies installed without errors
-- [ ] `.env` file created with all required variables
-- [ ] Local services running (`docker compose ps` shows all healthy)
-- [ ] App starts without errors (`{dev-command}`)
-- [ ] Can access the app at {app-url}
-- [ ] Tests pass (`{test-command}`)
-- [ ] Can connect to the local database
-- [ ] Can hit a sample API endpoint: `curl {sample-endpoint}`
+- [ ] Repository cloned and `pnpm install` ran without errors
+- [ ] `pnpm build` passes
+- [ ] `pnpm lint && pnpm typecheck` passes
+- [ ] `docker compose -f infra/docker/docker-compose.infra.yml up -d` starts all services
+- [ ] `docker compose ps` shows all containers healthy
+- [ ] PostgreSQL reachable on port 5432: `psql -h localhost -U gtcx -d gtcx_development`
+- [ ] Grafana accessible at http://localhost:3030
+- [ ] Jaeger UI accessible at http://localhost:16686
+- [ ] `node infra/security/scripts/security-status.js` runs without fatal errors
