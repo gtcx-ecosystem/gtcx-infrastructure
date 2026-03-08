@@ -1,101 +1,70 @@
-# [Product Name] — Executive Summary
-
-> **Document ID:** [PRD-XXX]
-> **Version:** [1.0]
-> **Date:** [YYYY-MM-DD]
-> **Status:** [Draft / In Review / Approved]
-> **Owner:** [Product Owner]
+# Executive Summary — gtcx-infrastructure
 
 ---
 
 ## Product Vision
 
-[2–3 sentences. What is this product? Who is it for? What transformation does it enable for them?]
+`gtcx-infrastructure` is the deployment and operations backbone for the GTCX ecosystem — the single source of truth for how every GTCX service is provisioned, deployed, and secured. It holds Terraform modules for AWS resource provisioning, Kubernetes manifests with Kustomize overlays per environment, GitHub Actions CI/CD pipelines, database migration tooling, and security policies. Its purpose is environment parity and operational consistency: a service that passes CI on `gtcx-dev` deploys to `gtcx-production` through the same manifests, the same gates, and the same secrets management pattern.
 
 ---
 
 ## Problem Statement
 
-[Describe the core problem in concrete terms. Be specific. Quantify where possible.]
-
-- **[Problem 1]:** [Description — what it costs, who suffers, what the root cause is]
-- **[Problem 2]:** [Description]
-- **[Problem 3]:** [Description]
-- **[Problem 4]:** [Description]
+- **Deployment patterns diverge without a central repo:** each GTCX service left to manage its own K8s manifests and Terraform state will drift — different resource naming, different secret injection patterns, incompatible IAM policies that create security gaps
+- **Environment parity breaks without enforced overlays:** without Kustomize overlays governed from a single source, dev/staging/production diverge and "works in dev, fails in prod" becomes the default failure mode
+- **Database schema evolution has no coordination layer:** a distributed schema migration approach (each service runs its own migrations independently) causes ordering conflicts and rollback failures during multi-service deployments
+- **Security scan and Terraform plan gates are per-repo without a central policy:** security controls applied inconsistently across repos create audit risk and compliance gaps for the GTCX platform
 
 ---
 
 ## Solution
 
-[2–4 sentences. What is being built? What is the core mechanism that solves the problem? What is the key differentiator?]
+Terraform modules provision AWS resources (EKS, RDS, ElastiCache, S3, IAM) with shared naming conventions and output contracts that Kustomize overlays consume. Three Kustomize overlay stacks (`gtcx-dev`, `gtcx-staging`, `gtcx-production`) provide per-environment configuration — resource limits, replica counts, secrets references — on top of a shared base. All GTCX backend services are deployed through ArgoCD GitOps pulling from this repo. GitHub Actions pipelines enforce Terraform plan review before apply, Trivy security scans before merge, and migration dry-run validation before deployment. The two-database pattern (PostgreSQL for transactional workloads, TimescaleDB for time-series event data) is standardized here.
 
-**What it delivers:**
-
-- [Capability 1]
-- [Capability 2]
-- [Capability 3]
-- [Capability 4]
-
----
-
-## Target Audience
-
-| Persona     | Role         | Primary Need                       |
-| ----------- | ------------ | ---------------------------------- |
-| [Persona 1] | [Role title] | [What they need from this product] |
-| [Persona 2] | [Role title] | [What they need]                   |
-| [Persona 3] | [Role title] | [What they need]                   |
+| Layer              | Technology         | Role                                              |
+| ------------------ | ------------------ | ------------------------------------------------- |
+| Cloud provisioning | Terraform + AWS    | EKS, RDS, ElastiCache, S3, IAM                    |
+| K8s configuration  | Kustomize overlays | Per-environment base + patch                      |
+| GitOps delivery    | ArgoCD             | Continuous deployment from this repo              |
+| CI/CD pipelines    | GitHub Actions     | Terraform gate, security scan, migration validate |
+| Transactional DB   | PostgreSQL (RDS)   | All GTCX service operational data                 |
+| Time-series DB     | TimescaleDB        | Trade event streams, metric history               |
+| Migration tooling  | Custom + Flyway    | Schema evolution coordination across services     |
 
 ---
 
-## Release Phases
+## Current Status
 
-| Phase   | Name         | Timeline | Key Deliverable     |
-| ------- | ------------ | -------- | ------------------- |
-| Phase 1 | [Foundation] | [Q/Year] | [Core feature set]  |
-| Phase 2 | [Expansion]  | [Q/Year] | [Second capability] |
-| Phase 3 | [Scale]      | [Q/Year] | [Full capability]   |
+**Phase**: Active operations — all GTCX backend services deployed through this repo
 
----
+**What is live:**
 
-## Success Metrics
+- Terraform modules for all GTCX AWS resources
+- Kustomize overlays for dev, staging, and production environments
+- ArgoCD GitOps configuration for all GTCX backend services
+- GitHub Actions: Terraform plan/apply gate, Trivy security scan, migration dry-run
+- Two-database pattern (PostgreSQL + TimescaleDB) live in all environments
+- `ci-cd.md` with full pipeline documentation
 
-| Metric     | Baseline | 6-Month Target | 12-Month Target |
-| ---------- | -------- | -------------- | --------------- |
-| [Metric 1] | [X]      | [X]            | [X]             |
-| [Metric 2] | [X]      | [X]            | [X]             |
-| [Metric 3] | [X]      | [X]            | [X]             |
+**In progress:**
 
----
-
-## Budget & Resources
-
-| Category              | Estimate   |
-| --------------------- | ---------- |
-| Engineering (Phase 1) | $[X]       |
-| Design                | $[X]       |
-| Infrastructure        | $[X]/month |
-| **Total Phase 1**     | **$[X]**   |
-
-**Team:** [X] engineers, [X] PM, [X] designer, [X] QA
+- Observability stack expansion (OpenTelemetry collectors, Grafana dashboards)
+- Database migration coordination tooling for multi-service deployments
+- Cost tagging enforcement across all Terraform modules
+- Secrets rotation automation (AWS Secrets Manager)
 
 ---
 
-## Top Risks
+## Key Metrics / Gates
 
-| Risk     | Impact              | Mitigation   |
-| -------- | ------------------- | ------------ |
-| [Risk 1] | High / Medium / Low | [Mitigation] |
-| [Risk 2] | High / Medium / Low | [Mitigation] |
-| [Risk 3] | High / Medium / Low | [Mitigation] |
-
----
-
-## Decisions Required
-
-- [ ] [Decision 1 — who decides, by when]
-- [ ] [Decision 2 — who decides, by when]
-- [ ] [Decision 3 — who decides, by when]
+| Gate                                                 | Target                          |
+| ---------------------------------------------------- | ------------------------------- |
+| Terraform plan review required before apply          | Enforced in CI — no exceptions  |
+| Trivy security scan pass                             | Required for merge to main      |
+| Migration dry-run pass before deployment             | Required for all schema changes |
+| Environment parity (dev → staging → production diff) | < 5% configuration delta        |
+| ArgoCD sync health (all services)                    | 100% — alerts on drift          |
+| RDS backup retention                                 | 30 days minimum                 |
 
 ---
 
