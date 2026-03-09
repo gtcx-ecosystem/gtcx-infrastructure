@@ -1,6 +1,6 @@
 # Task Playbook: Add a Secondary-Language Component
 
-**Owner:** {role-name} (depending on component type)
+**Owner:** DevOps/SRE Engineer or Infrastructure Security Engineer (depending on component type)
 **Safety tier:** Requires human approval before proceeding
 
 ---
@@ -107,10 +107,18 @@ Add an entry in `_sop/2-docs/3-engineering/5-compliance/spec-to-code-traceabilit
 
 ### 8. Run component gates
 
+Run from the component directory. For shell scripts:
+
 ```bash
-{build-command} {component-name}
-{test-command} {component-name}
-{lint-command} {component-name}
+shellcheck {component-name}.sh
+```
+
+For Python automation scripts:
+
+```bash
+uv run pytest tests/
+ruff check src/
+mypy src/
 ```
 
 ---
@@ -118,11 +126,9 @@ Add an entry in `_sop/2-docs/3-engineering/5-compliance/spec-to-code-traceabilit
 ### 9. Run full workspace gates
 
 ```bash
-{architecture-check-command}
-{lint-command}
-{typecheck-command}
-{test-command}
-{build-command}
+pnpm lint
+pnpm typecheck
+pnpm build
 ```
 
 ---

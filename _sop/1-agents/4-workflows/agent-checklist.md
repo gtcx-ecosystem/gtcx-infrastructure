@@ -10,7 +10,7 @@ Pre-flight and validation checklists for AI agents and developers.
 
 - [ ] Correct project directory? (`pwd` to verify)
 - [ ] Latest code pulled? (`git pull`)
-- [ ] All dependencies installed? (`{package-manager} install`)
+- [ ] All dependencies installed? (`pnpm install`)
 - [ ] Tests passing?
 - [ ] No uncommitted changes? (`git status`)
 
