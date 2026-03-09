@@ -1,238 +1,116 @@
-# Ecosystem Integration Report
+# Ecosystem Integration — gtcx-infrastructure
 
 **Date:** 2026-03-09
-**Scope:** GTCX Ecosystem — cross-repo integration architecture
-**Method:** package.json dependency analysis, source directory inspection, CI pipeline review
+**Scope:** 4-infrastructure — what this repo provides to the ecosystem, what it should provide, and the architectural gaps to close
 
 ---
 
-## Current Integration Reality
+## What This Repo Actually Provides Today
 
-What's actually connected (confirmed from code, not documentation):
+### Confirmed Integrations (Consuming Repos Can Use These)
 
-```
-ai-2-ledger (design system)
-    ↓ @gtcx/ui, @gtcx/theme, @gtcx/tokens
-    ↓
-ai-3-fiftyfour ──────────────── compliance-os
-(13 surfaces)                   (platform + mobile)
-    ↓ HTTP only                     ↓ @gtcx/audit-trail
-    ↓ no typed contract             ↓ @gtcx/agent-runtime
-    [backend undefined]             [WORKING]
+**Local development stack.** Any GTCX repo can use `docker-compose.infra.yml` to spin up the full backing service layer — PostgreSQL (primary + audit), Redis, Prometheus, Grafana (datasource auto-provisioned), Jaeger, Loki. This is the primary concrete value of this repo today. Any engineer onboarding to any platform repo gets a working data and observability stack from a single command.
 
-2-core (@gtcx/crypto, @gtcx/types, @gtcx/schemas, @gtcx/domain)
-    ↓
-3-protocols (TradePass, GeoTag, GCI, VaultMark, PvP, PANX)
-    ↓ only 3 of 6 consumed downstream
-6-platforms/operations (VaultKit→VaultMark, TapKit→GeoTag, TradeCV→TradePass)
-    AGX, CRX, SGX, Pathways: ZERO protocol imports
+**K8s deployment target definitions.** The service manifests define the canonical runtime spec for api, crypto, tradepass, geotag, and gci. Replica counts, resource limits, HPA thresholds, network policy rules — these are authoritative for the services they cover. When 6-platforms ships deployable services, these manifests are the reference pattern.
 
-5-intelligence (ANISA, Cortex, PANX analytics)
-    → [CONNECTED TO NOTHING]
+**Network security graph.** The production `network-policies.yaml` is the only authoritative service-to-service communication map in the ecosystem. It specifies: api → crypto (8080), api → protocol services (3000), protocol services → crypto (8080), all services → database (5432). Everything else is default-denied. This document is infrastructure and policy simultaneously.
 
-7-mobile → @gtcx/api-client → [sync implementation unconfirmed]
-```
+**Terraform database module.** Provides the reference RDS instantiation pattern for any environment — dual-instance operational + audit, encryption at rest, 90-day audit retention, Secrets Manager credentials. Any environment that stores GTCX data should reference this module.
+
+**Deployment protocol.** `deploy.sh` defines the canonical deployment sequence: build → Trivy scan → canary (production only) → apply → verify → audit-log. Any CI automation should mirror this flow.
 
 ---
 
-## Confirmed Integration Map
+## What This Repo Is Intended to Provide That It Doesn't
 
-### What's Actually Wired
+### EKS Cluster Provisioning
 
-| Consumer             | Imports From | What It Gets                                                                         |
-| -------------------- | ------------ | ------------------------------------------------------------------------------------ |
-| 3-protocols          | 2-core       | @gtcx/crypto, @gtcx/domain, @gtcx/schemas, @gtcx/audit, @gtcx/auth, @gtcx/validators |
-| ai-3-fiftyfour       | ai-2-ledger  | @gtcx/ui, @gtcx/theme, @gtcx/tokens                                                  |
-| compliance-os        | 2-core       | @gtcx/audit-trail, @gtcx/types, @gtcx/feature-gate, @gtcx/agent-runtime              |
-| 6-platforms/VaultKit | 3-protocols  | @gtcx/protocol-vaultmark, @gtcx/types                                                |
-| 6-platforms/TapKit   | 3-protocols  | @gtcx/protocol-geotag, @gtcx/types                                                   |
-| 6-platforms/TradeCV  | 3-protocols  | @gtcx/protocol-tradepass, @gtcx/types                                                |
-| 7-mobile             | 2-core       | @gtcx/crypto, @gtcx/types, @gtcx/schemas, @gtcx/api-client                           |
+K8s manifests assume a running cluster but no Terraform creates one. Every environment (Ghana pilot, Kenya staging, production) needs a cluster. The VPC and database modules exist — the EKS cluster with node groups in private subnets connected to RDS in database subnets is absent.
 
-### What's NOT Wired (Documented Intent vs. Reality)
+**Decision needed:** EKS managed node groups vs. Fargate. For Africa with variable load and spot pricing, managed node groups with mixed on-demand/spot is the right default. Fargate is simpler but ~30% more expensive and cannot use daemonsets for observability agents.
 
-| Connection                       | Intent                               | Reality                                         |
-| -------------------------------- | ------------------------------------ | ----------------------------------------------- |
-| Protocols → AGX/CRX/SGX/Pathways | Protocol-driven trade execution      | Zero imports                                    |
-| Intelligence → Platforms         | AI-native risk scoring in trade flow | Zero imports                                    |
-| Intelligence → Frontend          | Cortex insights surfaced to users    | Zero imports                                    |
-| Frontend → Backend               | Full product surfaces                | HTTP calls to undefined routes; no OpenAPI spec |
-| PANX Oracle → Price Discovery    | Market consensus feeds trading       | Not wired                                       |
-| Compliance → Intelligence        | Audit signals feed risk models       | No event bus                                    |
-| Hardware → Platforms             | Device attestation chain             | Integration point undefined                     |
+### Load Balancer / Ingress Provisioning
 
----
+The K8s ingress assumes an NGINX ingress controller behind an ALB, and cert-manager provides TLS. Neither the ALB nor the ACM certificate has Terraform definitions. The path from `api.gtcx.io` DNS to a running pod does not exist in infrastructure code.
 
-## Protocol Adoption Status
+### Container Registry
 
-| Protocol  | Confirmed Consumers                 | Status              |
-| --------- | ----------------------------------- | ------------------- |
-| TradePass | TradeCV (direct), TapKit (indirect) | In use              |
-| GeoTag    | TapKit (direct)                     | In use              |
-| VaultMark | VaultKit (direct)                   | In use              |
-| PANX      | Intelligence layer (disconnected)   | Built, not consumed |
-| GCI       | None confirmed                      | Built, not consumed |
-| PvP       | None confirmed                      | Built, not consumed |
+Images are tagged `gtcx/api` and `gtcx/crypto` but no ECR repository is defined. No cross-account pull permissions, no image lifecycle policies. The deploy script builds and references images but has no place to push them.
 
-**3 of 6 protocols have confirmed consumers. AGX, CRX, SGX, Pathways have zero protocol imports.**
+### Intelligence Service Infrastructure
+
+ANISA (Python), PANX consensus (Python), Cortex (TypeScript) have no K8s manifests, no Dockerfiles, and no Terraform resources in this repo. The intelligence layer is architecturally invisible to infrastructure.
+
+### Event Streaming
+
+All inter-service communication is currently HTTP. For PANX consensus flows, Cortex event ingestion, GCI compliance event propagation — all of which are event-driven by nature — the infrastructure must provide a message broker. No Kafka, NATS, or SQS is provisioned or even designed in this repo.
+
+### Secret Management
+
+The database module uses AWS Secrets Manager for RDS credentials, but application secrets (API keys, JWT signing keys, service credentials) have no provisioned infrastructure path. The deploy script checks for a pre-created K8s secret but provides no tooling to create it from a secure source.
 
 ---
 
-## Infrastructure Maturity
+## Integration Gaps: Who Should Be Consuming This Repo But Isn't
 
-### Kubernetes — Production-Ready
+### 6-platforms (Backend Services)
 
-- Base configs: namespace, ConfigMaps, service discovery
-- Overlays for dev, staging, production with distinct ingress, pod security, and network policies
-- Network policy defaults to deny-all with explicit allow rules
-- **Mature enough for stateless services today**
+The primary intended consumer. AGX, CRX, SGX, Veritas, Pathways — none have K8s manifests here. When platform services are built, each needs: Deployment + Service + HPA + PDB manifests (following api.yaml pattern), network policy rules (platform → protocol services), database connection via RDS module outputs, and per-environment overlays.
 
-### Terraform — Partial
+**Current state:** Absent entirely. The infrastructure team has no platform service definitions to work from because the platform services don't exist yet.
 
-- Modules: VPC (AWS), PostgreSQL database
-- Missing: load balancer, CDN, secret management, autoscaling
-- Multi-environment structure present but not fully populated
+### 5-intelligence (ANISA, PANX, Cortex)
 
-### Docker — Strong for Dev
+Intelligence services are Python (ANISA, PANX) and TypeScript (Cortex SDK). They need dedicated K8s manifests, potentially compute-optimized node selectors, a separate namespace or network segment (intelligence services should not be in the same flat network as protocol services), and separate database schemas. Python services need their own Dockerfiles — the existing `ruby-production` and `rust-production` targets are irrelevant.
 
-- Compose files: dev (services), infra (observability: Prometheus/Grafana/Loki), test (integration)
-- Production deployment path unclear
+**Current state:** Completely absent.
 
-### Database Strategy — Incomplete
+### CI/CD Systems
 
-- PostgreSQL only (TypeORM)
-- No caching layer, read replicas, or sharding strategy documented
-- No event streaming infrastructure (Kafka, NATS, RabbitMQ)
+The deploy script is production-grade but no CI pipeline calls it. No GitHub Actions workflow in this repo triggers the deploy. Every deployment is manual today, which violates the AUDITABLE and DEPLOYABLE principles the scripts themselves reference.
+
+### 3-protocols (VaultMark, PvP, PANX-as-protocol)
+
+K8s manifests exist for TradePass, GeoTag, and GCI. VaultMark, PvP, and PANX (as a protocol service) have no K8s definitions even though they are production-ready in the protocols repo.
 
 ---
 
-## The Architecture Vision vs. The Architecture Reality
+## Architectural Decisions Needed to Make This a First-Class Ecosystem Citizen
 
-### Intended Layer Model (correct and will scale)
+### 1. Complete the Terraform stack — unblocks everything else
 
-```
-HARDWARE:       TapKit → GeoTag attestation, VaultKit → VaultMark custody
-PROTOCOLS:      TradePass + GeoTag + GCI + VaultMark + PvP + PANX
-PLATFORMS:      AGX + CRX + SGX + Veritas + Pathways + Operations
-INTELLIGENCE:   ANISA + Cortex + PANX Analytics (cross-cutting)
-SURFACES:       fifty-four (13 surfaces) + compliance-os + mobile
-```
+Priority sequence: EKS cluster module → ECR module → ALB + ACM module → ElastiCache module → optional WAF. Without EKS, nothing runs in a repeatable, reproducible way.
 
-### Reality Gap
+### 2. Add event streaming infrastructure
 
-The middle three layers are not connected. The architecture is correct as a diagram. It is not yet correct as a system.
+Recommended: NATS JetStream (simpler than Kafka, suitable for variable Africa connectivity, supports at-least-once delivery, pub/sub and request/reply in one system). Add a Terraform module and K8s StatefulSet. This is prerequisite for Cortex event ingestion and PANX async consensus.
 
----
+### 3. Separate the intelligence service plane
 
-## Future-Proofed Architecture: What Must Be Built
+Define a `gtcx-intelligence` K8s namespace with its own network policies. Intelligence services should be callable by platform services via defined egress rules but should not share a flat network segment with protocol services. Add Dockerfiles for Python intelligence services.
 
-### 1. Event Bus (Highest Priority)
+### 4. Implement GitOps
 
-Every cross-repo action should emit an event. Every layer subscribes to what it needs.
+The existing kustomize structure is already ArgoCD-compatible. Add `Application` manifests that point to this repo per environment. Remove the requirement for a human to SSH and run `deploy.sh`. The audit trail moves from a local file to Git history.
 
-```
-TRADE EVENT (AGX/CRX submit)
-    → emit: trade.submitted, trade.verified, trade.settled
-    → consumed by: compliance-os (audit), intelligence (risk), PANX (price feed)
+### 5. Instantiate environments
 
-PROTOCOL EVENT (3-protocols verify)
-    → emit: identity.verified, location.confirmed, quality.certified
-    → consumed by: platforms (unlock execution), compliance (evidence), mobile (status)
-
-INTELLIGENCE EVENT (Cortex/ANISA)
-    → emit: risk.elevated, anomaly.detected, trend.shifted
-    → consumed by: frontends (alert), platforms (pause), compliance (flag)
-```
-
-Technology recommendation: NATS for simplicity and low-latency; Kafka if audit durability is the primary concern.
-
-### 2. OpenAPI Contract at the Frontend Boundary
-
-fifty-four calls `/api/tradebook/search`, `/api/tradedesk/workspace` with no typed contract. Before a second developer touches the API:
-
-- Define OpenAPI spec for all frontend-facing routes
-- Commit spec to 2-core or a dedicated `contracts` package
-- Generate typed clients for TypeScript (frontend) and any Python consumers
-
-### 3. Intelligence as a gRPC Microservice
-
-ANISA and Cortex should not be npm packages imported into platform code. They should be gRPC microservices with defined contracts:
-
-```protobuf
-service IntelligenceService {
-  rpc AssessRisk(TradeRequest) returns (RiskAssessment);
-  rpc DetectAnomaly(EventStream) returns (AnomalyResult);
-  rpc GetMarketContext(CommodityQuery) returns (MarketIntelligence);
-}
-```
-
-Platforms call `IntelligenceService.assessRisk(trade)`. Intelligence upgrades without platform release cycles. This is the architecture that makes AI-native mean something.
-
-### 4. Protocol Middleware for Platforms
-
-AGX, CRX, SGX don't use protocols because there's no activation pattern. The fix:
-
-```typescript
-// NestJS declarative protocol enforcement
-@RequiresProtocol(TradePass, GCI)
-@Post('/trade/submit')
-async submitTrade(@Body() trade: TradeRequest) { ... }
-```
-
-Protocol verification becomes declarative. Backend developers build business logic without becoming protocol experts. This unlocks all 6 protocols across all 6 platforms.
-
-### 5. Single Domain Model (Cross-Language)
-
-`@gtcx/types` (TypeScript), protocol types, Python services — define the same domain entities independently. Define canonical `.proto` files for `Trade`, `Commodity`, `Identity`, `Location`, `Claim`. Generate TypeScript + Python from them. One source of truth, three languages, zero silent divergence.
+Create `environments/ghana-pilot/`, `environments/staging/`, `environments/production/` in Terraform. The template shows the pattern — the environments need to exist as code. The Ghana pilot specifically should be instantiated first.
 
 ---
 
-## The Moat Gap
+## The Network Policy as Integration Map
 
-The research surfaced a hard fact worth naming clearly: **the AI-native claim is currently a design claim, not a product claim.**
+The production `network-policies.yaml` is the single most important integration document in this repo. The current model:
 
-ANISA, Cortex, PANX analytics — all defined, none connected to execution. A competitor who builds a simpler but integrated intelligence layer on top of existing commodity platforms could credibly claim the same positioning without the protocol sophistication.
+```
+internet → ingress → api → crypto
+                         → tradepass
+                         → geotag
+                         → gci
+                         → [database]
+protocol services → crypto
+                  → [database]
+```
 
-**The moat becomes real when:**
-
-- A trader submitting to AGX gets a Cortex-generated counterparty risk score in the same flow
-- PANX oracle consensus feeds live into price discovery on TradeDesk54
-- ANISA's cultural context surfaces in Intel54 market analysis
-- A compliance flag from compliance-os automatically pauses a trade and notifies relevant parties
-
-**None of that is wired today.**
-
-The 90-day copy test: could a funded team replicate what's currently deployed in 90 days? The honest answer is yes — because what's deployed is UI surfaces and protocol definitions, not the emergent intelligence that compounds across them.
-
-**Activating the intelligence layer is the single highest-leverage technical decision in Q2.**
-
----
-
-## Priority Integration Sequence
-
-### Phase 1 — Unblock Near-Term (Q2)
-
-1. Define OpenAPI spec for fifty-four → backend boundary; generate typed client
-2. Wire PANX oracle outputs into AGX/CRX as a decision feed
-3. Deploy event bus POC (NATS or Kafka); emit trade, compliance, and audit events
-4. Add `@RequiresProtocol` middleware to platforms (AGX first)
-
-### Phase 2 — Intelligence Activation (Q2-Q3)
-
-1. Deploy Cortex as gRPC microservice with K8s deployment
-2. Wire intelligence risk scoring into trade submission flow
-3. Build feedback loop: compliance audit results → intelligence fine-tuning
-4. Surface anomaly detection in fifty-four dashboard
-
-### Phase 3 — Data Consistency (Q3)
-
-1. Consolidate domain model: protobuf-first type generation
-2. Add integration tests between platforms and protocols
-3. Implement distributed tracing across all layers (OpenTelemetry hooks already partial)
-
-### Phase 4 — Production Hardening (Q3-Q4)
-
-1. Complete Terraform: load balancing, CDN, secret management, autoscaling
-2. Database: replication, read replicas, analytics data warehouse
-3. mTLS for inter-service communication
-4. Chaos engineering tests
+Missing from this map: intelligence services, event bus, platform services (crx, sgx, agx), mobile sync endpoints. Every new service must be added to network policies before it can communicate — the network policy is the enforcement mechanism and the architecture diagram simultaneously.

@@ -1,162 +1,112 @@
-# Q2 GTM Strategy — Global South / Africa
+# GTM Q2 Africa — gtcx-infrastructure
 
 **Date:** 2026-03-09
-**Scope:** Q2 go-to-market priorities anchored in Africa / Global South focus
-**Premise:** Ship one country deeply before scaling regionally
+**Scope:** 4-infrastructure — how this repo's work directly enables or blocks Q2 Ghana GTM, and the one thing it must deliver
 
 ---
 
-## Situational Assessment
+## The Q2 Goal and Infrastructure's Role
 
-GTCX enters a market with:
+Target: verified metric tons of commodity transacted through a cooperative proof point in Ghana. The cooperative demonstrates the technology to aggregators and DFIs. The infrastructure layer is the invisible enabler — if it works, no one notices. If it breaks, the pilot fails publicly.
 
-- **Active DFI investment**: $4B+ pipeline in digital trade infrastructure (AfDB, IFC, World Bank)
-- **Post-AfCFTA scramble**: 54 countries committed to continental free trade with no unified digital layer
-- **Zero dominant AI-native trade platforms**: The category does not yet have a clear winner
-- **Fragmented commodity intelligence**: Price data in most African markets is whatever one buyer tells a producer it is
-
-The window is open but not indefinitely. Tradeteq, Komgo, and AgriDigital are moving into African markets from the top (via established banks). GTCX's structural advantage is going bottom-up (verified producer relationships) while having the infrastructure depth to win enterprise contracts at the top.
+The cooperative proof point requires: a working deployment that cooperatives can actually use, data that regulators and DFIs can trust, and a system that survives Ghana's network conditions (unreliable connectivity, 2G/3G mobile, intermittent power).
 
 ---
 
-## Q2 Priority: Pick One Country, Win It Deeply
+## What Infrastructure Must Be Live for the Cooperative Proof Point
 
-### Primary Recommendation: Ghana
+### 1. A Running Deployment (Currently Blocked)
 
-**Why Ghana specifically:**
+Right now, there is no environment that can be deployed to. The Terraform has VPC and database modules but no EKS cluster. The K8s manifests have no cluster to apply to. The deploy script has no cluster to target.
 
-| Factor                 | Detail                                                                                               |
-| ---------------------- | ---------------------------------------------------------------------------------------------------- |
-| Commodity Board        | COCOBOD is single-buyer for all cocoa — one institutional relationship unlocks 800K metric tons/year |
-| Existing Exchange      | Ghana Commodity Exchange (GCX) is active and underpowered — looking for tech partners                |
-| Payment Rails          | GhanaLink banking interoperability provides payment integration surface                              |
-| Regulatory Environment | Progressive on fintech and digital trade; Bank of Ghana sandbox-friendly                             |
-| Language               | English-primary; lowers operational overhead                                                         |
-| Regional Position      | Hub for AfDB, IFC, and major commodity trading firm Africa HQs                                       |
-| Diaspora Network       | UK/US Ghanaian diaspora with investment appetite and business connections                            |
+**Minimum viable infrastructure for Q2:**
 
-**Secondary:** Ethiopia (coffee, sesame — large producer base, Ethio Telecom integration opportunity)
-**Tertiary:** Kenya (tea, macadamia — mature export infrastructure, East African hub)
+- AWS EKS cluster in af-south-1 (Cape Town) — closest region to Ghana, lowest latency
+- ALB with ACM-managed TLS certificate
+- ECR repositories for api and crypto images
+- RDS operational + audit instances (via the existing database module)
+- VPC wiring all of the above together (via the existing vpc module)
 
----
+None of this is Terraform code yet. It is 2–3 weeks of work.
 
-## Early Win Sequence
+### 2. A Database That Can Be Trusted
 
-### Win 1 — The Cooperative Proof Point (Month 1-2)
+The audit database design (separate RDS instance, immutable, 90-day retention) is the right architecture for a compliance product that needs to produce verifiable records for regulators. But the init scripts that create the schema don't exist. The database starts empty.
 
-Partner with one commodity cooperative (target: 500-2,000 member producers). Implement:
+For Q2, the audit database must have: schema for trade events, GCI compliance records, PANX consensus results, and GeoTag location attestations. This is the evidence chain that DFIs audit before disbursing financing.
 
-- TradePass identity registration for all members
-- GCI quality certification for one commodity batch
-- nyota-bot for price intelligence (WhatsApp-first, English + Twi)
+### 3. Observability Sufficient for Pilot Operations
 
-**Goal:** Produce a before/after case study showing average price received by producers increased because they could negotiate with real price data. This is the evangelist story. Keep the technology invisible — the story is "producers made more money."
+During a pilot, something will break. Without observability, the team is blind. The Prometheus + Grafana + Loki stack is designed and configured — but no dashboards, no alert rules, no on-call routing exist. For Q2, minimum viable observability is:
 
-**Success metric:** One published case study with real numbers. Not a testimonial — a verified financial outcome.
+- Alert on pod restarts
+- Alert on database connection failures
+- Dashboard showing transaction throughput by cooperative
+- Log aggregation queryable by support team
 
----
+### 4. Network Connectivity for Edge Operations
 
-### Win 2 — The Aggregator/Exporter Commercial Hook (Month 2-3)
-
-The cooperative proof point creates pull from aggregators and exporters who now face a verification problem: international buyers want GCI-certified lots, producers have GTCX identity — the aggregator in the middle needs to process through the system to maintain their buyer relationships.
-
-This forces adoption without fighting aggregator resistance directly. They adopt because their buyers require it, not because GTCX is better for producers.
-
-**Goal:** Sign 2-3 aggregators to a commercial pilot. These become paying customers. Revenue from aggregators cross-subsidizes free access for producers.
-
-**Pricing model:** Per-lot verification fee (not SaaS). Aggregators pay per certified shipment. Low friction to start, scales with volume.
+The edge node concept (SQLite, 30-day offline, sync endpoint) is designed for cooperative offices without reliable internet. This is not a nice-to-have for Ghana — it is a necessity. Cooperative agents will register commodity lots, run GeoTag attestations, and issue GCI compliance scores while offline. The edge runtime needs to be buildable and deployable before the pilot launches. Currently, it is a README and an empty Dockerfile target.
 
 ---
 
-### Win 3 — The DFI Partnership (Month 3-4)
+## What Is NOT Ready in This Repo That Blocks Q2
 
-Bring the proof point + pilot data to one development finance institution.
-
-**Primary targets:**
-
-- AfDB Agricultural Finance arm
-- Norfund / Proparco (Nordic/French impact investors with agriculture mandates)
-- Mastercard Foundation (active in Ghana, digital agriculture programs)
-
-**The ask:** Not equity. A pilot grant or concessional finance facility for cooperatives that have verifiable GTCX inventory. "If a cooperative has GCI-certified, VaultKit-tracked inventory, they qualify for a pre-approved working capital facility."
-
-This transforms GTCX infrastructure from interesting software into the key that unlocks capital for producers — which is worth more than any product feature.
-
----
-
-## Early Evangelist Profile
-
-### Profile 1: The Cooperative Leader
-
-**Who they are:** Runs a cooperative of 500-2,000 smallholder farmers. Speaks English. Has direct relationships with international buyers. Understands they're getting systematically underpaid (sees the export price, knows the farm-gate price, feels the gap). Frustrated with current quality certification costs ($5K+ for organic cert, $3K for Rainforest Alliance audit).
-
-**What they want:** More money for their members. Simpler certification. Negotiating power with buyers.
-
-**What GTCX gives them:** A verifiable quality claim that costs less than Rainforest Alliance certification, price data to negotiate with, and an identity that buyers trust.
-
-**There are ~200 of these individuals in West Africa with real institutional weight.** Finding 5 is the entire Q2 distribution challenge.
+| Gap                                     | Severity | Blocks What                                     |
+| --------------------------------------- | -------- | ----------------------------------------------- |
+| No EKS Terraform module                 | Critical | Everything runs on a cluster that doesn't exist |
+| No ALB/ACM Terraform                    | Critical | Platform not reachable externally               |
+| No ECR repositories                     | Critical | No place to push built images                   |
+| No instantiated ghana-pilot environment | Critical | Deployment target undefined                     |
+| No DB init scripts                      | High     | Database starts with no schema                  |
+| Edge node Dockerfile missing            | High     | Cooperative offline capability absent           |
+| No ANISA/PANX K8s manifests             | High     | Intelligence unavailable at pilot               |
+| VaultMark, PvP K8s manifests missing    | Medium   | Two protocols undeployable                      |
+| No Grafana dashboards                   | Medium   | Blind during pilot operations                   |
+| No alert rules                          | Medium   | Failures silent until user reports them         |
+| Staging not differentiated              | Low      | No safe pre-production validation gate          |
 
 ---
 
-### Profile 2: The Trading Firm's Africa Lead
+## Priority Q2 Tasks for This Repo
 
-**Who they are:** Works for a mid-size European or Middle Eastern commodity trading house. Sources from 3-5 African countries. Spends significant resources on due diligence, quality verification, and audit paper trails. Has a sustainability reporting obligation (EUDR, CSRD) they're struggling to meet from fragmented data.
+Listed in execution sequence — each unblocks the next:
 
-**What they want:** A single source of verified origin, quality, and custody data that replaces multiple certification bodies. Compliance evidence they can hand to their EU regulatory team.
+**Week 1: Make deployment possible**
 
-**What GTCX gives them:** One integration that replaces five audit relationships. Machine-readable compliance evidence. A competitive advantage when sourcing from certified cooperatives.
+1. Write EKS Terraform module — managed node groups, private subnets, OIDC for IRSA
+2. Write ALB Terraform module — internet-facing, ACM certificate, HTTPS redirect
+3. Write ECR Terraform module — repositories for api, crypto, intelligence services
+4. Instantiate `environments/ghana-pilot/` with af-south-1 region
 
----
+**Week 2: Make the deployment complete** 5. Write DB init scripts — schema for audit events, compliance records, trade data 6. Add VaultMark and PvP K8s manifests (copy tradepass.yaml pattern) 7. Add network policy rules for any new services 8. Build and push api/crypto images to ECR as proof of pipeline
 
-## Financial Sponsors
+**Week 3: Make the deployment observable and resilient** 9. Add Grafana dashboard — pod health, transaction throughput, error rates 10. Add Prometheus alert rules — pod restarts, DB connections, latency 11. Fix canary error detection in deploy.sh (Prometheus query, not grep) 12. First full deploy to ghana-pilot environment with approval ticket
 
-### Grant / Concessional Finance
-
-| Sponsor               | Program                           | Ask                   | Why They Care                                                |
-| --------------------- | --------------------------------- | --------------------- | ------------------------------------------------------------ |
-| AfDB                  | Digital Infrastructure for Africa | $500K-$2M pilot grant | Active traceability mandate across agriculture programs      |
-| Prosper Africa / DFC  | Trade promotion facility          | $1M-$5M               | US government mandate to expand African trade infrastructure |
-| Mastercard Foundation | Digital agriculture               | $500K-$1M             | Active Ghana programs; farmer financial inclusion mandate    |
-| Nespresso / JDE Peets | Supply chain transparency         | Partnership + funding | ESG commitments require verified traceability                |
-| Rainforest Alliance   | Innovation fund                   | $200K-$500K           | Want digital-native alternatives to paper audit trails       |
-
-### Equity
-
-**Structure recommendation:** Seed/Series A combining:
-
-1. **Pan-African VC lead:** Novastar Ventures, Partech Africa, or Ventures Platform — brings network, regional credibility, governance expertise
-2. **Strategic investor:** Olam Agri, Sucafina, or Louis Dreyfus — brings commodity volume, buyer relationships, distribution. All three have made African agri-tech investments in the past 3 years.
-3. **DFI equity window:** IFC Emerging Africa & Asia Pacific Fund or AfDB Venture Capital Initiative — patient capital, regulatory navigation support, signal to other investors
-
-**The strategic investor is the most important.** A commodity trading firm as a minority investor creates an anchor distribution relationship that no cold sales motion can replicate.
+**Week 4: Edge capability** 13. Implement the edge-runtime Dockerfile target 14. Define SQLite schema matching the main database schema 15. Implement the sync protocol between edge and central
 
 ---
 
-## The One Metric That Matters in Q2
+## The One Thing This Repo Must Deliver to Unblock Q2
 
-Not users. Not transactions. Not MRR.
+**A complete, runnable `environments/ghana-pilot/` Terraform environment.**
 
-**Verified metric tons of commodity transacted through GTCX infrastructure.**
+Everything else — dashboards, edge nodes, intelligence services — is important but can be done in parallel or after initial deployment. The single blocker is the absence of a K8s cluster with a load balancer and a database that GTCX services can be deployed to and reached from.
 
-If you can say "2,000 metric tons of Rainforest Alliance-equivalent certified cocoa verified through GTCX in Q2" — you have:
+Without this, every other team's work — 6-platforms backend services, 5-intelligence integration, 3-protocols deployments — has nowhere to run in Ghana.
 
-- A fundable story for DFIs
-- A commercially defensible position for buyers
-- A concrete proof point that the protocol layer works in real markets
-- A basis for the PANX index (2,000 MT is enough to establish a price signal)
-
-Everything else is a vanity metric until you have verified volume.
+The VPC module is done. The database module is done. What's missing is the EKS cluster that connects them and the ALB that exposes the result to the internet. This is a concrete, scoped, unambiguous deliverable. It represents approximately 2 weeks of infrastructure work. It is the infrastructure team's entire Q2 mandate.
 
 ---
 
-## What Could Go Wrong
+## Ghana-Specific Infrastructure Considerations
 
-1. **Aggregator resistance.** If large aggregators feel GTCX threatens their margin, they will actively discourage producer adoption. Mitigation: approach aggregators as partners first, not targets.
+**AWS af-south-1 (Cape Town) limitations:** No ElastiCache, no MSK (Kafka), limited instance types compared to us-east-1. The Terraform modules must be written to work with the service subset available in Cape Town.
 
-2. **Regulatory surprise.** Agricultural commodity regulations vary significantly by country. Some commodities require government licensing to trade (Ghana cocoa is all COCOBOD). Mitigation: engage a local regulatory advisor before any commercial launch.
+**Latency reality:** Johannesburg → Accra is ~30ms. Not ideal for real-time consensus operations. PANX consensus flows should be designed for asynchronous operation, not synchronous HTTP round-trips from Ghana to South Africa.
 
-3. **Infrastructure reality.** 2G connectivity and USD 30 Android phones are the target. The mobile experience must be validated in actual field conditions, not Accra office WiFi. Mitigation: field testing with actual cooperative members before any commercial announcement.
+**Mobile network conditions:** Cooperative agents will be on 2G/3G. API responses > 100KB will fail. The edge node is not optional — it is the primary interface for field operations. Infrastructure must support offline-first from day one, not as a later optimization.
 
-4. **Currency risk.** Commodity prices denominated in USD/EUR; producer payments in GHS/ETB/KES. PvP settlement layer is not production-ready. Mitigation: partner with an established mobile money provider for Q2; PvP is Q3+.
+**Power reliability:** Edge nodes must survive power loss and restart cleanly. SQLite as the edge store (designed in compose) handles this correctly. The sync protocol must be idempotent — network reconnection after power outage should not duplicate or lose transactions.
 
-5. **The competitor who moves first.** Agri-tech markets in Africa have winner-take-most dynamics (network effects in verified supplier networks). If a well-funded competitor signs COCOBOD before GTCX, the Ghana market becomes much harder. Mitigation: speed. Q2 timeline for the cooperative proof point is aggressive but necessary.
+**Data sovereignty:** Ghana's data protection law (Act 843) requires that personal data on Ghanaian nationals be stored in Ghana or in countries with adequate protection frameworks. South Africa (af-south-1) is likely compliant but should be confirmed before the pilot. This is a legal requirement that the infrastructure configuration must satisfy, not just a design preference.
