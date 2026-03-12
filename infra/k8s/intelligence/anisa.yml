@@ -1,0 +1,95 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: anisa
+  namespace: intelligence
+  labels:
+    app: anisa
+    app.kubernetes.io/part-of: gtcx
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: anisa
+  template:
+    metadata:
+      labels:
+        app: anisa
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/port: '8100'
+        prometheus.io/path: '/metrics'
+    spec:
+      serviceAccountName: intelligence-sa
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      containers:
+        - name: anisa
+          image: '${ECR_REGISTRY}/gtcx-anisa:latest'
+          ports:
+            - name: http
+              containerPort: 8100
+            - name: grpc
+              containerPort: 8101
+          env:
+            - name: ANTHROPIC_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: intelligence-secrets
+                  key: anthropic-api-key
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: intelligence-secrets
+                  key: database-url
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: 'http://jaeger.observability:4318'
+            - name: OTEL_SERVICE_NAME
+              value: 'anisa'
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 30
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 3
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: anisa
+  namespace: intelligence
+  labels:
+    app: anisa
+spec:
+  selector:
+    app: anisa
+  ports:
+    - name: http
+      port: 8100
+      targetPort: http
+    - name: grpc
+      port: 8101
+      targetPort: grpc
+  type: ClusterIP

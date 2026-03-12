@@ -23,7 +23,7 @@ services:
   # ===========================================================================
   # DATABASES
   # ===========================================================================
-  
+
   # Primary PostgreSQL (operational data)
   postgres:
     image: postgres:16-alpine
@@ -33,12 +33,12 @@ services:
       POSTGRES_PASSWORD: gtcx_dev_password
       POSTGRES_DB: gtcx_development
     ports:
-      - "5432:5432"
+      - '5432:5432'
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./init-scripts/postgres:/docker-entrypoint-initdb.d
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U gtcx -d gtcx_development"]
+      test: ['CMD-SHELL', 'pg_isready -U gtcx -d gtcx_development']
       interval: 10s
       timeout: 5s
       retries: 5
@@ -54,12 +54,12 @@ services:
       POSTGRES_PASSWORD: gtcx_audit_dev_password
       POSTGRES_DB: gtcx_audit
     ports:
-      - "5433:5432"
+      - '5433:5432'
     volumes:
       - postgres_audit_data:/var/lib/postgresql/data
       - ./init-scripts/postgres-audit:/docker-entrypoint-initdb.d
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U gtcx_audit -d gtcx_audit"]
+      test: ['CMD-SHELL', 'pg_isready -U gtcx_audit -d gtcx_audit']
       interval: 10s
       timeout: 5s
       retries: 5
@@ -71,11 +71,11 @@ services:
     image: redis:7-alpine
     container_name: gtcx-redis
     ports:
-      - "6379:6379"
+      - '6379:6379'
     volumes:
       - redis_data:/data
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: ['CMD', 'redis-cli', 'ping']
       interval: 10s
       timeout: 5s
       retries: 5
@@ -104,7 +104,7 @@ services:
       OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4318
       OTEL_SERVICE_NAME: gtcx-api
     ports:
-      - "3000:3000"
+      - '3000:3000'
     depends_on:
       postgres:
         condition: service_healthy
@@ -116,7 +116,7 @@ services:
       - ../apps:/app/apps
       - ../packages:/app/packages
     healthcheck:
-      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3000/health"]
+      test: ['CMD', 'wget', '-q', '--spider', 'http://localhost:3000/health']
       interval: 30s
       timeout: 5s
       retries: 3
@@ -134,9 +134,9 @@ services:
       RUST_LOG: info
       GTCX_CRYPTO_PORT: 8080
     ports:
-      - "8080:8080"
+      - '8080:8080'
     healthcheck:
-      test: ["CMD", "wget", "-q", "--spider", "http://localhost:8080/health"]
+      test: ['CMD', 'wget', '-q', '--spider', 'http://localhost:8080/health']
       interval: 30s
       timeout: 5s
       retries: 3
@@ -160,7 +160,7 @@ services:
       GTCX_SERVICE_NAME: tradepass
       GTCX_CRYPTO_URL: http://crypto:8080
     ports:
-      - "3001:3000"
+      - '3001:3000'
     depends_on:
       - postgres
       - crypto
@@ -180,7 +180,7 @@ services:
       GTCX_SERVICE_NAME: geotag
       GTCX_CRYPTO_URL: http://crypto:8080
     ports:
-      - "3002:3000"
+      - '3002:3000'
     depends_on:
       - postgres
       - crypto
@@ -200,7 +200,7 @@ services:
       GTCX_SERVICE_NAME: gci
       GTCX_CRYPTO_URL: http://crypto:8080
     ports:
-      - "3003:3000"
+      - '3003:3000'
     depends_on:
       - postgres
       - crypto
@@ -224,7 +224,7 @@ services:
       GTCX_SERVICE_NAME: crx
       GTCX_API_URL: http://api:3000
     ports:
-      - "3010:3000"
+      - '3010:3000'
     depends_on:
       - api
     networks:
@@ -243,7 +243,7 @@ services:
       GTCX_SERVICE_NAME: sgx
       GTCX_API_URL: http://api:3000
     ports:
-      - "3011:3000"
+      - '3011:3000'
     depends_on:
       - api
     networks:
@@ -262,9 +262,70 @@ services:
       GTCX_SERVICE_NAME: agx
       GTCX_API_URL: http://api:3000
     ports:
-      - "3012:3000"
+      - '3012:3000'
     depends_on:
       - api
+    networks:
+      - gtcx-network
+
+  # ===========================================================================
+  # INTELLIGENCE SERVICES
+  # ===========================================================================
+
+  # ANISA — Cultural Intelligence (FastAPI + gRPC)
+  anisa:
+    build:
+      context: ../../5-intelligence
+      dockerfile: intelligence/anisa/Dockerfile
+    container_name: gtcx-anisa
+    environment:
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      DATABASE_URL: postgres://gtcx:gtcx_dev_password@postgres:5432/gtcx_development
+      ANISA_GRPC_PORT: 8101
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4318
+      OTEL_SERVICE_NAME: anisa
+    ports:
+      - '8100:8100' # HTTP (FastAPI)
+      - '8101:8101' # gRPC
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'python',
+          '-c',
+          "import urllib.request; urllib.request.urlopen('http://localhost:8100/health')",
+        ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    networks:
+      - gtcx-network
+
+  # Intelligence SDK Server (Cortex, Veritas, PANX, Underwriting)
+  intelligence-sdk:
+    build:
+      context: ../../5-intelligence
+      dockerfile: intelligence/sdk/Dockerfile
+    container_name: gtcx-intelligence-sdk
+    environment:
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      SCREENING_PROVIDER: ${SCREENING_PROVIDER:-local}
+      COMPLY_ADVANTAGE_API_KEY: ${COMPLY_ADVANTAGE_API_KEY:-}
+      CORTEX_EVENT_STORE_PATH: /data/cortex-events.ndjson
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4318
+      OTEL_SERVICE_NAME: intelligence-sdk
+    ports:
+      - '8200:8200' # HTTP
+    volumes:
+      - intelligence_sdk_data:/data
+    healthcheck:
+      test: ['CMD', 'wget', '-q', '--spider', 'http://localhost:8200/health']
+      interval: 30s
+      timeout: 5s
+      retries: 3
     networks:
       - gtcx-network
 
@@ -284,7 +345,7 @@ services:
       GTCX_OFFLINE_DURATION_DAYS: 30
       GTCX_SYNC_ENDPOINT: http://api:3000/sync
     ports:
-      - "3100:3000"
+      - '3100:3000'
     volumes:
       - edge_data:/app/data
     networks:
@@ -303,7 +364,7 @@ services:
       - '--storage.tsdb.path=/prometheus'
       - '--web.enable-lifecycle'
     ports:
-      - "9090:9090"
+      - '9090:9090'
     volumes:
       - ./observability/prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus_data:/prometheus
@@ -318,7 +379,7 @@ services:
       GF_SECURITY_ADMIN_PASSWORD: admin
       GF_USERS_ALLOW_SIGN_UP: false
     ports:
-      - "3030:3000"
+      - '3030:3000'
     volumes:
       - grafana_data:/var/lib/grafana
       - ./observability/grafana/dashboards:/etc/grafana/provisioning/dashboards
@@ -335,9 +396,9 @@ services:
     environment:
       COLLECTOR_OTLP_ENABLED: true
     ports:
-      - "16686:16686"  # UI
-      - "4317:4317"    # OTLP gRPC
-      - "4318:4318"    # OTLP HTTP
+      - '16686:16686' # UI
+      - '4317:4317' # OTLP gRPC
+      - '4318:4318' # OTLP HTTP
     networks:
       - gtcx-network
 
@@ -346,7 +407,7 @@ services:
     image: grafana/loki:2.9.2
     container_name: gtcx-loki
     ports:
-      - "3100:3100"
+      - '3100:3100'
     volumes:
       - loki_data:/loki
       - ./observability/loki.yml:/etc/loki/local-config.yaml
@@ -382,3 +443,5 @@ volumes:
     name: gtcx-grafana-data
   loki_data:
     name: gtcx-loki-data
+  intelligence_sdk_data:
+    name: gtcx-intelligence-sdk-data

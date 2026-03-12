@@ -1,0 +1,101 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: intelligence-sdk
+  namespace: intelligence
+  labels:
+    app: intelligence-sdk
+    app.kubernetes.io/part-of: gtcx
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: intelligence-sdk
+  template:
+    metadata:
+      labels:
+        app: intelligence-sdk
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/port: '8200'
+        prometheus.io/path: '/metrics'
+    spec:
+      serviceAccountName: intelligence-sa
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      containers:
+        - name: intelligence-sdk
+          image: '${ECR_REGISTRY}/gtcx-intelligence-sdk:latest'
+          ports:
+            - name: http
+              containerPort: 8200
+          env:
+            - name: ANTHROPIC_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: intelligence-secrets
+                  key: anthropic-api-key
+            - name: SCREENING_PROVIDER
+              value: 'comply_advantage'
+            - name: COMPLY_ADVANTAGE_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: intelligence-secrets
+                  key: comply-advantage-api-key
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: 'http://jaeger.observability:4318'
+            - name: OTEL_SERVICE_NAME
+              value: 'intelligence-sdk'
+            - name: CORTEX_EVENT_STORE_PATH
+              value: '/data/cortex-events.ndjson'
+          volumeMounts:
+            - name: event-store
+              mountPath: /data
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 30
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 3
+      volumes:
+        - name: event-store
+          emptyDir:
+            sizeLimit: 500Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: intelligence-sdk
+  namespace: intelligence
+  labels:
+    app: intelligence-sdk
+spec:
+  selector:
+    app: intelligence-sdk
+  ports:
+    - name: http
+      port: 8200
+      targetPort: http
+  type: ClusterIP
