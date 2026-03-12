@@ -275,7 +275,7 @@ services:
   # ANISA — Cultural Intelligence (FastAPI + gRPC)
   anisa:
     build:
-      context: ../../5-intelligence
+      context: ../../../5-intelligence
       dockerfile: intelligence/anisa/Dockerfile
     container_name: gtcx-anisa
     environment:
@@ -307,7 +307,7 @@ services:
   # Intelligence SDK Server (Cortex, Veritas, PANX, Underwriting)
   intelligence-sdk:
     build:
-      context: ../../5-intelligence
+      context: ../../../5-intelligence
       dockerfile: intelligence/sdk/Dockerfile
     container_name: gtcx-intelligence-sdk
     environment:
