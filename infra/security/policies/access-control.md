@@ -1,29 +1,28 @@
 # Access Control Policy
 
-*Version 1.0 | Aligned with P9 (Security by Design)*
-
+_Version 1.0 | Aligned with P9 (Security by Design)_
 
 ## 1. Overview
 
 This policy defines authentication, authorization, and access control requirements for all GTCX systems and services.
 
 ### Scope
+
 - All production systems
 - All development environments with production data access
 - All API endpoints
 - All administrative interfaces
 
-
 ## 2. Authentication Requirements
 
 ### 2.1 User Authentication
 
-| System Type | Minimum Requirements |
-|-------------|---------------------|
+| System Type      | Minimum Requirements                 |
+| ---------------- | ------------------------------------ |
 | Production Admin | MFA required + hardware key optional |
-| API Access | API key + request signing |
-| Mobile Apps | Biometric + PIN fallback |
-| Field Operations | Biometric + offline validation (P8) |
+| API Access       | API key + request signing            |
+| Mobile Apps      | Biometric + PIN fallback             |
+| Field Operations | Biometric + offline validation (P8)  |
 
 ### 2.2 Service Authentication
 
@@ -40,11 +39,11 @@ interface ServiceCredential {
 ### 2.3 Offline Authentication (P8)
 
 Field operations must work without network. Requirements:
+
 - Cached credentials with cryptographic validation
 - Time-limited offline tokens (max 72 hours)
 - Sync required before token expiry
 - Local biometric verification
-
 
 ## 3. Authorization Model
 
@@ -54,38 +53,38 @@ Field operations must work without network. Requirements:
 Roles:
   system_admin:
     description: Full system access
-    permissions: ["*"]
+    permissions: ['*']
     requires_mfa: true
     audit_level: full
-    
+
   platform_operator:
     description: Platform management
     permissions:
-      - "platform:read"
-      - "platform:write"
-      - "users:read"
+      - 'platform:read'
+      - 'platform:write'
+      - 'users:read'
     requires_mfa: true
-    
+
   field_inspector:
     description: Field verification operations
     permissions:
-      - "verification:create"
-      - "verification:read"
-      - "geotag:create"
-      - "credentials:read"
+      - 'verification:create'
+      - 'verification:read'
+      - 'geotag:create'
+      - 'credentials:read'
     offline_capable: true
-    
+
   producer:
     description: Commodity producer
     permissions:
-      - "own:read"
-      - "own:write"
-      - "verification:request"
-    
+      - 'own:read'
+      - 'own:write'
+      - 'verification:request'
+
   auditor:
     description: Read-only audit access
     permissions:
-      - "*:read"
+      - '*:read'
     audit_level: full
 ```
 
@@ -93,19 +92,14 @@ Roles:
 
 ```typescript
 // Permission format: resource:action[:scope]
-type Permission = 
-  | `${Resource}:${Action}`
-  | `${Resource}:${Action}:${Scope}`;
+type Permission = `${Resource}:${Action}` | `${Resource}:${Action}:${Scope}`;
 
-type Resource = 
-  | 'verification' | 'credential' | 'geotag' 
-  | 'platform' | 'users' | 'audit' | 'own';
+type Resource = 'verification' | 'credential' | 'geotag' | 'platform' | 'users' | 'audit' | 'own';
 
 type Action = 'create' | 'read' | 'write' | 'delete' | '*';
 
 type Scope = 'own' | 'team' | 'org' | 'global';
 ```
-
 
 ## 4. Implementation Requirements
 
@@ -122,9 +116,7 @@ const PermissionSchema = z.object({
   resourceId: z.string().optional(),
 });
 
-async function checkPermission(
-  request: z.infer<typeof PermissionSchema>
-): Promise<boolean> {
+async function checkPermission(request: z.infer<typeof PermissionSchema>): Promise<boolean> {
   const validated = PermissionSchema.parse(request);
   // ... permission logic
 }
@@ -150,13 +142,12 @@ interface AccessAuditLog {
 
 ### 4.3 Session Management
 
-| Parameter | Production | Development |
-|-----------|------------|-------------|
-| Session timeout | 30 minutes | 8 hours |
-| Refresh token lifetime | 7 days | 30 days |
-| Max concurrent sessions | 3 | 10 |
-| Session invalidation on password change | Required | Required |
-
+| Parameter                               | Production | Development |
+| --------------------------------------- | ---------- | ----------- |
+| Session timeout                         | 30 minutes | 8 hours     |
+| Refresh token lifetime                  | 7 days     | 30 days     |
+| Max concurrent sessions                 | 3          | 10          |
+| Session invalidation on password change | Required   | Required    |
 
 ## 5. API Security
 
@@ -173,13 +164,12 @@ All API requests to sensitive endpoints MUST be signed:
 
 ```typescript
 interface SignedRequest {
-  timestamp: string;      // ISO 8601
-  nonce: string;          // Unique per request
-  signature: string;      // HMAC-SHA256 of canonical request
-  keyId: string;          // API key identifier
+  timestamp: string; // ISO 8601
+  nonce: string; // Unique per request
+  signature: string; // HMAC-SHA256 of canonical request
+  keyId: string; // API key identifier
 }
 ```
-
 
 ## 6. Compliance Checklist
 
@@ -203,17 +193,15 @@ API_Security:
   - [ ] Rate limiting enabled
 ```
 
-
 ## 7. Violations
 
-| Severity | Example | Response |
-|----------|---------|----------|
+| Severity | Example               | Response                              |
+| -------- | --------------------- | ------------------------------------- |
 | Critical | Hardcoded credentials | Immediate revocation, security review |
-| High | Missing MFA on admin | 24-hour remediation |
-| Medium | Excessive permissions | 7-day remediation |
-| Low | Missing audit log | 30-day remediation |
+| High     | Missing MFA on admin  | 24-hour remediation                   |
+| Medium   | Excessive permissions | 7-day remediation                     |
+| Low      | Missing audit log     | 30-day remediation                    |
 
-
-*Policy Owner: Security Team*  
-*Last Updated: January 2025*  
-*Next Review: April 2025*
+_Policy Owner: Security Team_  
+_Last Updated: January 2025_  
+_Next Review: April 2025_

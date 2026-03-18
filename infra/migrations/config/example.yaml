@@ -2,7 +2,7 @@
 # Copy this file and customize for your domain
 
 domain: your-domain
-version: "1.0"
+version: '1.0'
 
 # =============================================================================
 # MABA - Transformation Configuration
@@ -10,27 +10,27 @@ version: "1.0"
 maba:
   # Target schema for all transformations
   # Create your schema in maba/connectors/domain/your-schema/
-  target_schema: "your-schema"
-  
+  target_schema: 'your-schema'
+
   # Enabled connectors - choose from available or create custom
   connectors:
-    - name: "primary-database"
-      type: "databases/postgresql"  # or mysql, mongodb, etc.
+    - name: 'primary-database'
+      type: 'databases/postgresql' # or mysql, mongodb, etc.
       config:
-        host: "${DB_HOST}"
-        database: "${DB_NAME}"
-        
-    - name: "document-upload"
-      type: "documents/pdf"
+        host: '${DB_HOST}'
+        database: '${DB_NAME}'
+
+    - name: 'document-upload'
+      type: 'documents/pdf'
       config:
         ocr_enabled: true
-        
+
   # AI schema mapping settings
   ai_mapping:
     enabled: true
     confidence_threshold: 0.85
-    fallback: "manual_review"
-    
+    fallback: 'manual_review'
+
   # Processing settings
   processing:
     batch_size: 10000
@@ -42,24 +42,24 @@ maba:
 kora:
   # Enabled validators - choose from available or create custom
   validators:
-    - name: "primary-registry"
-      type: "government/registry-lookup"
+    - name: 'primary-registry'
+      type: 'government/registry-lookup'
       weight: 0.5
       config:
-        api_url: "${REGISTRY_API_URL}"
-        
-    - name: "community-validation"
-      type: "community/attestation"
+        api_url: '${REGISTRY_API_URL}'
+
+    - name: 'community-validation'
+      type: 'community/attestation'
       weight: 0.3
-      
+
   # Consensus settings
   consensus:
     threshold: 0.67
     min_validators: 2
-    
+
   # Proof generation
   proofs:
-    algorithm: "ed25519"
+    algorithm: 'ed25519'
 
 # =============================================================================
 # AMANI - Guidance Configuration
@@ -67,28 +67,28 @@ kora:
 amani:
   # Enabled channels
   channels:
-    - name: "web"
+    - name: 'web'
       enabled: true
-      
-    - name: "whatsapp"
-      enabled: false  # Enable when ready
-      
+
+    - name: 'whatsapp'
+      enabled: false # Enable when ready
+
   # Language configuration
   languages:
-    primary: "en"
+    primary: 'en'
     supported:
-      - code: "en"
-        name: "English"
-        
+      - code: 'en'
+        name: 'English'
+
   # User journeys - create in amani/journeys/your-domain/
   journeys:
-    - name: "user-onboarding"
-      path: "journeys/your-domain/user-onboarding"
-      
+    - name: 'user-onboarding'
+      path: 'journeys/your-domain/user-onboarding'
+
   # LLM configuration
   llm:
-    provider: "anthropic"
-    model: "claude-3-sonnet"
+    provider: 'anthropic'
+    model: 'claude-3-sonnet'
 
 # =============================================================================
 # Observability
@@ -96,8 +96,8 @@ amani:
 observability:
   metrics:
     enabled: true
-    provider: "prometheus"
-    
+    provider: 'prometheus'
+
   logging:
-    level: "info"
-    format: "json"
+    level: 'info'
+    format: 'json'

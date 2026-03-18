@@ -2,42 +2,42 @@
 # This configures MABA, KORA, AMANI for commodity verification
 
 domain: gtcx
-version: "1.0"
+version: '1.0'
 
 # =============================================================================
 # MABA - Transformation Configuration
 # =============================================================================
 maba:
   # Target schema for all transformations
-  target_schema: "gtcx-core12"
-  
+  target_schema: 'gtcx-core12'
+
   # Enabled connectors
   connectors:
-    - name: "ghana-minerals-commission"
-      type: "databases/postgresql"
+    - name: 'ghana-minerals-commission'
+      type: 'databases/postgresql'
       config:
-        host: "${GMC_DB_HOST}"
-        database: "mining_licenses"
-        
-    - name: "document-upload"
-      type: "documents/pdf"
+        host: '${GMC_DB_HOST}'
+        database: 'mining_licenses'
+
+    - name: 'document-upload'
+      type: 'documents/pdf'
       config:
         ocr_enabled: true
-        language_hints: ["en", "tw"]
-        
-    - name: "legacy-erp"
-      type: "apis/rest"
+        language_hints: ['en', 'tw']
+
+    - name: 'legacy-erp'
+      type: 'apis/rest'
       config:
-        base_url: "${ERP_API_URL}"
-        auth: "bearer"
-        
+        base_url: '${ERP_API_URL}'
+        auth: 'bearer'
+
   # AI schema mapping settings
   ai_mapping:
     enabled: true
     confidence_threshold: 0.85
-    fallback: "manual_review"
-    model: "gpt-4"
-    
+    fallback: 'manual_review'
+    model: 'gpt-4'
+
   # Processing settings
   processing:
     batch_size: 10000
@@ -50,41 +50,41 @@ maba:
 kora:
   # Enabled validators
   validators:
-    - name: "gmc-registry"
-      type: "government/registry-lookup"
+    - name: 'gmc-registry'
+      type: 'government/registry-lookup'
       weight: 0.4
       config:
-        api_url: "${GMC_API_URL}"
-        
-    - name: "geotag-validation"
-      type: "geospatial/coordinate-verify"
+        api_url: '${GMC_API_URL}'
+
+    - name: 'geotag-validation'
+      type: 'geospatial/coordinate-verify'
       weight: 0.3
       config:
-        cadastre_source: "ghana_mining_zones"
+        cadastre_source: 'ghana_mining_zones'
         tolerance_meters: 50
-        
-    - name: "community-attestation"
-      type: "community/attestation"
+
+    - name: 'community-attestation'
+      type: 'community/attestation'
       weight: 0.2
       config:
         min_witnesses: 2
-        
-    - name: "satellite-verification"
-      type: "geospatial/satellite-imagery"
+
+    - name: 'satellite-verification'
+      type: 'geospatial/satellite-imagery'
       weight: 0.1
       config:
-        provider: "planet"
-        
+        provider: 'planet'
+
   # Consensus settings
   consensus:
     threshold: 0.67
     min_validators: 2
-    
+
   # Proof generation
   proofs:
-    algorithm: "ed25519"
-    anchor_to: "panx"  # GTCX PANX Oracle
-    
+    algorithm: 'ed25519'
+    anchor_to: 'panx' # GTCX PANX Oracle
+
   # GCI integration
   gci_integration:
     enabled: true
@@ -99,73 +99,73 @@ kora:
 amani:
   # Enabled channels
   channels:
-    - name: "whatsapp"
+    - name: 'whatsapp'
       enabled: true
       config:
-        business_id: "${WHATSAPP_BUSINESS_ID}"
-        
-    - name: "sms"
+        business_id: '${WHATSAPP_BUSINESS_ID}'
+
+    - name: 'sms'
       enabled: true
       config:
-        provider: "africas_talking"
-        shortcode: "${SMS_SHORTCODE}"
-        
-    - name: "ussd"
+        provider: 'africas_talking'
+        shortcode: '${SMS_SHORTCODE}'
+
+    - name: 'ussd'
       enabled: true
       config:
-        provider: "africas_talking"
-        service_code: "${USSD_CODE}"
-        
-    - name: "web"
+        provider: 'africas_talking'
+        service_code: '${USSD_CODE}'
+
+    - name: 'web'
       enabled: true
       config:
-        cors_origins: ["https://app.gtcx.global"]
-        
+        cors_origins: ['https://app.gtcx.global']
+
   # Language configuration
   languages:
-    primary: "en"
+    primary: 'en'
     supported:
-      - code: "en"
-        name: "English"
-      - code: "tw"
-        name: "Twi"
-      - code: "ha"
-        name: "Hausa"
-      - code: "fr"
-        name: "French"
-      - code: "pt"
-        name: "Portuguese"
-        
+      - code: 'en'
+        name: 'English'
+      - code: 'tw'
+        name: 'Twi'
+      - code: 'ha'
+        name: 'Hausa'
+      - code: 'fr'
+        name: 'French'
+      - code: 'pt'
+        name: 'Portuguese'
+
   # User journeys
   journeys:
-    - name: "miner-onboarding"
-      path: "journeys/gtcx/miner-onboarding"
+    - name: 'miner-onboarding'
+      path: 'journeys/gtcx/miner-onboarding'
       entry_points:
-        - "register"
-        - "start"
-        - "join"
-        
-    - name: "payment-status"
-      path: "journeys/gtcx/payment-status"
+        - 'register'
+        - 'start'
+        - 'join'
+
+    - name: 'payment-status'
+      path: 'journeys/gtcx/payment-status'
       entry_points:
-        - "payment"
-        - "money"
-        - "pay"
-        
-    - name: "compliance-help"
-      path: "journeys/gtcx/compliance-help"
+        - 'payment'
+        - 'money'
+        - 'pay'
+
+    - name: 'compliance-help'
+      path: 'journeys/gtcx/compliance-help'
       entry_points:
-        - "license"
-        - "permit"
-        - "compliance"
-        
+        - 'license'
+        - 'permit'
+        - 'compliance'
+
   # LLM configuration
   llm:
-    provider: "anthropic"
-    model: "claude-3-sonnet"
-    fallback_provider: "openai"
-    fallback_model: "gpt-4"
-    
+    provider: 'anthropic'
+    model: 'claude-3-sonnet'
+    fallback_provider: 'openai'
+    fallback_model: 'gpt-4'
+
   # Offline settings
   offline:
     enabled: true
@@ -179,20 +179,20 @@ amani:
 integrations:
   # GTCX Protocols
   tradepass:
-    api_url: "${TRADEPASS_API_URL}"
-    
+    api_url: '${TRADEPASS_API_URL}'
+
   gci:
-    api_url: "${GCI_API_URL}"
-    
+    api_url: '${GCI_API_URL}'
+
   panx:
-    api_url: "${PANX_API_URL}"
-    
+    api_url: '${PANX_API_URL}'
+
   # GTCX Platforms
   crx:
-    api_url: "${CRX_API_URL}"
-    
+    api_url: '${CRX_API_URL}'
+
   sgx:
-    api_url: "${SGX_API_URL}"
+    api_url: '${SGX_API_URL}'
 
 # =============================================================================
 # Observability
@@ -200,14 +200,14 @@ integrations:
 observability:
   metrics:
     enabled: true
-    provider: "prometheus"
+    provider: 'prometheus'
     port: 9090
-    
+
   logging:
-    level: "info"
-    format: "json"
-    
+    level: 'info'
+    format: 'json'
+
   tracing:
     enabled: true
-    provider: "jaeger"
+    provider: 'jaeger'
     sample_rate: 0.1

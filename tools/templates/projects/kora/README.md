@@ -2,7 +2,6 @@
 
 **Verify any claim through multi-source consensus → trust score**
 
-
 ## Overview
 
 KORA is the verification layer that creates tamper-proof validation through multi-source consensus. It cross-references claims against authoritative sources and generates cryptographic proofs.
@@ -17,12 +16,12 @@ KORA is the verification layer that creates tamper-proof validation through mult
 
 ## Performance
 
-| Metric | Target |
-|--------|--------|
+| Metric                  | Target            |
+| ----------------------- | ----------------- |
 | Verification throughput | 100K+ claims/hour |
-| Fraud detection rate | 99.9% |
-| Proof generation | <500ms |
-| Uptime | 99.95% SLA |
+| Fraud detection rate    | 99.9%             |
+| Proof generation        | <500ms            |
+| Uptime                  | 99.95% SLA        |
 
 ## Tech Stack
 
@@ -106,9 +105,11 @@ let is_valid = kora::verify_proof(proof, public_keys)?;
 ## Integration
 
 ### Upstream
+
 - **MABA**: Receives transformed data for verification
 
 ### Downstream
+
 - **PANX Oracle**: Proofs feed consensus mechanism
 - **GCI**: Trust scores feed compliance scoring
 - **AMANI**: Verification status supports user guidance
@@ -116,9 +117,9 @@ let is_valid = kora::verify_proof(proof, public_keys)?;
 ## Documentation
 
 Full agile-pm documentation in `agile-pm/` folder:
+
 - Technical architecture: `04 - spec/`
 - Security requirements: `09 - security/`
 - Sprint planning: `06 - planning/`
 
-
-*Source: Originally from the GTCX monorepo migration tools; now maintained in gtcx-amis (KORA specs) and gtcx-infrastructure (templates)*
+_Source: Originally from the GTCX monorepo migration tools; now maintained in gtcx-amis (KORA specs) and gtcx-infrastructure (templates)_

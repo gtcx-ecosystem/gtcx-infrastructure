@@ -2,18 +2,16 @@
 
 > **Core verification protocols: TradePass, GCI, GeoTag, VaultMark, PvP, PANX**
 
-
 ## Protocol Overview
 
-| Protocol | Purpose | Spec Section |
-|----------|---------|--------------|
-| [TradePass](./tradepass/) | Digital identity & credentials | [§3](../../gtcx-ecosystem-docs/spec/03-tradepass.md) |
-| [GCI](./gci/) | Compliance scoring | [§4](../../gtcx-ecosystem-docs/spec/04-gci.md) |
-| [GeoTag](./geotag/) | Location verification | [§5.1](../../gtcx-ecosystem-docs/spec/05-geotag-vaultmark.md) |
-| [VaultMark](./vaultmark/) | Custody chain tracking | [§5.2](../../gtcx-ecosystem-docs/spec/05-geotag-vaultmark.md) |
-| [PvP](./pvp/) | Payment-versus-Payment settlement | [§6](../../gtcx-ecosystem-docs/spec/06-pvp-settlement.md) |
-| [PANX](./panx-oracle/) | Multi-stakeholder consensus | [§9.3](../../gtcx-ecosystem-docs/spec/09-network.md) |
-
+| Protocol                  | Purpose                           | Spec Section                                                  |
+| ------------------------- | --------------------------------- | ------------------------------------------------------------- |
+| [TradePass](./tradepass/) | Digital identity & credentials    | [§3](../../gtcx-ecosystem-docs/spec/03-tradepass.md)          |
+| [GCI](./gci/)             | Compliance scoring                | [§4](../../gtcx-ecosystem-docs/spec/04-gci.md)                |
+| [GeoTag](./geotag/)       | Location verification             | [§5.1](../../gtcx-ecosystem-docs/spec/05-geotag-vaultmark.md) |
+| [VaultMark](./vaultmark/) | Custody chain tracking            | [§5.2](../../gtcx-ecosystem-docs/spec/05-geotag-vaultmark.md) |
+| [PvP](./pvp/)             | Payment-versus-Payment settlement | [§6](../../gtcx-ecosystem-docs/spec/06-pvp-settlement.md)     |
+| [PANX](./panx-oracle/)    | Multi-stakeholder consensus       | [§9.3](../../gtcx-ecosystem-docs/spec/09-network.md)          |
 
 ## Protocol Layer Architecture
 
@@ -34,7 +32,6 @@ packages/schemas/            # Shared schemas (Zod)
 └── settlement/              # PvP schemas
 ```
 
-
 ## Development Guide
 
 ### Creating a Protocol Feature
@@ -49,7 +46,6 @@ packages/schemas/            # Shared schemas (Zod)
 - Protocols MUST NOT depend on platforms
 - Protocols MAY depend on packages
 - Protocols MUST use `packages/schemas` for data contracts
-
 
 ## Related Documentation
 

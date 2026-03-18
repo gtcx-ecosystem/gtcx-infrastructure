@@ -1,8 +1,8 @@
 packages:
   # Infrastructure
-  - "infra/edge-proxy"
-  - "infra/migrations"
+  - 'infra/edge-proxy'
+  - 'infra/migrations'
 
   # Tools
-  - "tools/scripts"
-  - "tools/templates"
+  - 'tools/scripts'
+  - 'tools/templates'

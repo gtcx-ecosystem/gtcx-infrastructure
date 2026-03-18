@@ -3,7 +3,7 @@
 /**
  * GTCX Monorepo Security Status Script
  * Provides real-time security information and vulnerability status
- * 
+ *
  * Aligned with 12 Architectural Principles:
  * - P5 (AI-Native): Structured JSON output for automated analysis
  * - P9 (Security): Comprehensive vulnerability scanning
@@ -81,7 +81,7 @@ class SecurityStatus {
       // Determine overall status
       this.status.overallStatus = this.calculateOverallStatus();
       this.status.lastScan = new Date().toISOString();
-      
+
       console.log(`   ✅ Audit complete: ${this.status.overallStatus}`);
     } catch (error) {
       console.error('   ❌ Error running security audit:', error.message);
@@ -91,7 +91,7 @@ class SecurityStatus {
 
   calculateOverallStatus() {
     const { critical, high, moderate, low } = this.status.vulnerabilities;
-    
+
     if (critical > 0) return 'CRITICAL';
     if (high > 0) return 'HIGH';
     if (moderate > 0) return 'MODERATE';
@@ -104,21 +104,16 @@ class SecurityStatus {
       console.log('📦 Checking workspace packages...');
 
       // Check key directories
-      const workspaceDirs = [
-        'apps',
-        'packages',
-        'protocols',
-        'platforms',
-        'intelligence',
-      ];
+      const workspaceDirs = ['apps', 'packages', 'protocols', 'platforms', 'intelligence'];
 
       for (const dir of workspaceDirs) {
         const fullPath = path.join(this.rootDir, dir);
         if (fs.existsSync(fullPath)) {
-          const subdirs = fs.readdirSync(fullPath, { withFileTypes: true })
-            .filter(d => d.isDirectory())
-            .map(d => d.name);
-          
+          const subdirs = fs
+            .readdirSync(fullPath, { withFileTypes: true })
+            .filter((d) => d.isDirectory())
+            .map((d) => d.name);
+
           this.status.workspaces.push({
             name: dir,
             packages: subdirs.length,
@@ -129,8 +124,10 @@ class SecurityStatus {
 
       const totalPackages = this.status.workspaces.reduce((sum, w) => sum + w.packages, 0);
       this.status.packages.total = totalPackages;
-      
-      console.log(`   ✅ Found ${totalPackages} packages across ${this.status.workspaces.length} workspaces`);
+
+      console.log(
+        `   ✅ Found ${totalPackages} packages across ${this.status.workspaces.length} workspaces`
+      );
     } catch (error) {
       console.error('   ❌ Error checking workspaces:', error.message);
     }
@@ -145,7 +142,8 @@ class SecurityStatus {
         `grep -r "from 'zod'" ${this.rootDir}/packages ${this.rootDir}/protocols 2>/dev/null | wc -l`,
         { encoding: 'utf8' }
       ).trim();
-      this.status.principleCompliance.P2_TypeSafety = parseInt(zodCheck) > 5 ? 'COMPLIANT' : 'NEEDS_REVIEW';
+      this.status.principleCompliance.P2_TypeSafety =
+        parseInt(zodCheck) > 5 ? 'COMPLIANT' : 'NEEDS_REVIEW';
     } catch {
       this.status.principleCompliance.P2_TypeSafety = 'UNKNOWN';
     }
@@ -156,7 +154,8 @@ class SecurityStatus {
         `grep -r "Schema.parse\\|validate\\|sanitize" ${this.rootDir}/packages 2>/dev/null | wc -l`,
         { encoding: 'utf8' }
       ).trim();
-      this.status.principleCompliance.P9_Security = parseInt(validationCheck) > 3 ? 'COMPLIANT' : 'NEEDS_REVIEW';
+      this.status.principleCompliance.P9_Security =
+        parseInt(validationCheck) > 3 ? 'COMPLIANT' : 'NEEDS_REVIEW';
     } catch {
       this.status.principleCompliance.P9_Security = 'UNKNOWN';
     }
@@ -167,7 +166,8 @@ class SecurityStatus {
         `grep -r "logger\\|metrics\\|trace" ${this.rootDir}/packages 2>/dev/null | wc -l`,
         { encoding: 'utf8' }
       ).trim();
-      this.status.principleCompliance.P12_Observability = parseInt(loggingCheck) > 3 ? 'COMPLIANT' : 'NEEDS_REVIEW';
+      this.status.principleCompliance.P12_Observability =
+        parseInt(loggingCheck) > 3 ? 'COMPLIANT' : 'NEEDS_REVIEW';
     } catch {
       this.status.principleCompliance.P12_Observability = 'UNKNOWN';
     }
@@ -235,24 +235,36 @@ class SecurityStatus {
     console.log('╔══════════════════════════════════════════════════════════╗');
     console.log('║           🛡️  GTCX MONOREPO SECURITY STATUS              ║');
     console.log('╠══════════════════════════════════════════════════════════╣');
-    console.log(`║  Status: ${statusEmoji[this.status.overallStatus]} ${this.status.overallStatus.padEnd(10)} Last Scan: ${this.status.lastScan?.slice(0, 10) || 'Never'}  ║`);
+    console.log(
+      `║  Status: ${statusEmoji[this.status.overallStatus]} ${this.status.overallStatus.padEnd(10)} Last Scan: ${this.status.lastScan?.slice(0, 10) || 'Never'}  ║`
+    );
     console.log('╠══════════════════════════════════════════════════════════╣');
     console.log('║  VULNERABILITIES                                         ║');
-    console.log(`║    Critical: ${String(this.status.vulnerabilities.critical).padEnd(5)} High: ${String(this.status.vulnerabilities.high).padEnd(5)} Moderate: ${String(this.status.vulnerabilities.moderate).padEnd(5)}  ║`);
+    console.log(
+      `║    Critical: ${String(this.status.vulnerabilities.critical).padEnd(5)} High: ${String(this.status.vulnerabilities.high).padEnd(5)} Moderate: ${String(this.status.vulnerabilities.moderate).padEnd(5)}  ║`
+    );
     console.log('╠══════════════════════════════════════════════════════════╣');
     console.log('║  WORKSPACES                                              ║');
-    
+
     for (const ws of this.status.workspaces) {
-      console.log(`║    ${ws.name.padEnd(15)} ${String(ws.packages).padStart(3)} packages                     ║`);
+      console.log(
+        `║    ${ws.name.padEnd(15)} ${String(ws.packages).padStart(3)} packages                     ║`
+      );
     }
-    
+
     console.log('╠══════════════════════════════════════════════════════════╣');
     console.log('║  PRINCIPLE COMPLIANCE                                    ║');
-    console.log(`║    P2 Type Safety:   ${this.status.principleCompliance.P2_TypeSafety.padEnd(15)}              ║`);
-    console.log(`║    P9 Security:      ${this.status.principleCompliance.P9_Security.padEnd(15)}              ║`);
-    console.log(`║    P12 Observability: ${this.status.principleCompliance.P12_Observability.padEnd(15)}             ║`);
+    console.log(
+      `║    P2 Type Safety:   ${this.status.principleCompliance.P2_TypeSafety.padEnd(15)}              ║`
+    );
+    console.log(
+      `║    P9 Security:      ${this.status.principleCompliance.P9_Security.padEnd(15)}              ║`
+    );
+    console.log(
+      `║    P12 Observability: ${this.status.principleCompliance.P12_Observability.padEnd(15)}             ║`
+    );
     console.log('╚══════════════════════════════════════════════════════════╝');
-    
+
     if (this.status.recommendations.length > 0) {
       console.log('\n💡 Recommendations:');
       for (const rec of this.status.recommendations) {
@@ -270,11 +282,11 @@ class SecurityStatus {
 
   async saveStatus() {
     const outputDir = path.join(this.securityDir, 'reports');
-    
+
     if (!fs.existsSync(outputDir)) {
       fs.mkdirSync(outputDir, { recursive: true });
     }
-    
+
     const statusFile = path.join(outputDir, 'current-status.json');
     fs.writeFileSync(statusFile, JSON.stringify(this.status, null, 2));
     console.log(`💾 Status saved to: ${statusFile}`);
@@ -310,7 +322,7 @@ class SecurityStatus {
 
 // Run the security status check
 const securityStatus = new SecurityStatus();
-securityStatus.run().catch(error => {
+securityStatus.run().catch((error) => {
   console.error('❌ Fatal error:', error);
   process.exit(1);
 });

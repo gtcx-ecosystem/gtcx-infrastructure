@@ -12,15 +12,15 @@ metadata:
   namespace: gtcx-production
 spec:
   hard:
-    requests.cpu: "20"
-    requests.memory: "40Gi"
-    limits.cpu: "40"
-    limits.memory: "80Gi"
-    pods: "100"
-    services: "20"
-    secrets: "50"
-    configmaps: "50"
-    persistentvolumeclaims: "20"
+    requests.cpu: '20'
+    requests.memory: '40Gi'
+    limits.cpu: '40'
+    limits.memory: '80Gi'
+    pods: '100'
+    services: '20'
+    secrets: '50'
+    configmaps: '50'
+    persistentvolumeclaims: '20'
 
 ---
 # LimitRange for default resource limits
@@ -32,20 +32,20 @@ metadata:
 spec:
   limits:
     - default:
-        cpu: "500m"
-        memory: "512Mi"
+        cpu: '500m'
+        memory: '512Mi'
       defaultRequest:
-        cpu: "100m"
-        memory: "128Mi"
+        cpu: '100m'
+        memory: '128Mi'
       max:
-        cpu: "4"
-        memory: "8Gi"
+        cpu: '4'
+        memory: '8Gi'
       min:
-        cpu: "50m"
-        memory: "64Mi"
+        cpu: '50m'
+        memory: '64Mi'
       type: Container
     - max:
-        storage: "100Gi"
+        storage: '100Gi'
       min:
-        storage: "1Gi"
+        storage: '1Gi'
       type: PersistentVolumeClaim

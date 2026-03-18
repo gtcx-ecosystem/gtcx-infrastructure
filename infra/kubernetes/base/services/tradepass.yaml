@@ -35,13 +35,13 @@ spec:
         - name: tradepass
           image: gtcx/api:latest
           imagePullPolicy: Always
-          args: ["bundle", "exec", "puma", "-C", "config/puma.rb"]
+          args: ['bundle', 'exec', 'puma', '-C', 'config/puma.rb']
           ports:
             - name: http
               containerPort: 3000
           env:
             - name: GTCX_SERVICE_NAME
-              value: "tradepass"
+              value: 'tradepass'
           envFrom:
             - configMapRef:
                 name: gtcx-base-config
@@ -49,16 +49,16 @@ spec:
                 name: gtcx-secrets
           resources:
             requests:
-              cpu: "100m"
-              memory: "256Mi"
+              cpu: '100m'
+              memory: '256Mi'
             limits:
-              cpu: "500m"
-              memory: "512Mi"
+              cpu: '500m'
+              memory: '512Mi'
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
             capabilities:
-              drop: ["ALL"]
+              drop: ['ALL']
           livenessProbe:
             httpGet:
               path: /health

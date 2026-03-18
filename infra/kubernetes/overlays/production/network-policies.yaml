@@ -77,7 +77,7 @@ spec:
     # Allow to database (external)
     - to:
         - ipBlock:
-            cidr: 10.0.0.0/8  # Internal network - customize per deployment
+            cidr: 10.0.0.0/8 # Internal network - customize per deployment
       ports:
         - protocol: TCP
           port: 5432
@@ -108,7 +108,7 @@ spec:
       ports:
         - protocol: TCP
           port: 8080
-  egress: []  # Crypto service has no external dependencies
+  egress: [] # Crypto service has no external dependencies
 
 ---
 # Protocol services network policy

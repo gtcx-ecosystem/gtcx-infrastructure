@@ -2,15 +2,13 @@
 
 > **System design, architectural decisions, and technical diagrams**
 
-
 ## Contents
 
-| Section | Description |
-|---------|-------------|
-| [decisions/](./decisions/) | Architecture Decision Records (ADRs) |
-| [diagrams/](./diagrams/) | System diagrams and visualizations |
-| [TECH-STACK.md](./TECH-STACK.md) | Technology choices and rationale |
-
+| Section                          | Description                          |
+| -------------------------------- | ------------------------------------ |
+| [decisions/](./decisions/)       | Architecture Decision Records (ADRs) |
+| [diagrams/](./diagrams/)         | System diagrams and visualizations   |
+| [TECH-STACK.md](./TECH-STACK.md) | Technology choices and rationale     |
 
 ## System Overview
 
@@ -31,19 +29,17 @@ GTCX uses a **three-layer architecture**:
 
 See [Protocol Spec §2](../../gtcx-ecosystem-docs/spec/02-architecture.md) for full details.
 
-
 ## Key Architectural Decisions
 
-| ADR | Decision | Status |
-|-----|----------|--------|
-| [ADR-001](./decisions/ADR-001-monorepo-structure.md) | Monorepo structure | [Done] Accepted |
+| ADR                                                         | Decision                  | Status          |
+| ----------------------------------------------------------- | ------------------------- | --------------- |
+| [ADR-001](./decisions/ADR-001-monorepo-structure.md)        | Monorepo structure        | [Done] Accepted |
 | [ADR-002](./decisions/ADR-002-commodity-agnostic-design.md) | Commodity-agnostic design | [Done] Accepted |
-| [ADR-003](./decisions/ADR-003-ai-native-architecture.md) | AI-native architecture | [Done] Accepted |
-| [ADR-004](./decisions/ADR-004-offline-first-mobile.md) | Offline-first mobile | [Done] Accepted |
-| [ADR-005](./decisions/ADR-005-cryptographic-primitives.md) | Cryptographic primitives | [Done] Accepted |
-| [ADR-006](./decisions/ADR-006-package-boundaries.md) | Package boundaries | [Done] Accepted |
-| [ADR-007](./decisions/ADR-007-rust-foundational-layer.md) | Rust foundational layer | [Done] Accepted |
-
+| [ADR-003](./decisions/ADR-003-ai-native-architecture.md)    | AI-native architecture    | [Done] Accepted |
+| [ADR-004](./decisions/ADR-004-offline-first-mobile.md)      | Offline-first mobile      | [Done] Accepted |
+| [ADR-005](./decisions/ADR-005-cryptographic-primitives.md)  | Cryptographic primitives  | [Done] Accepted |
+| [ADR-006](./decisions/ADR-006-package-boundaries.md)        | Package boundaries        | [Done] Accepted |
+| [ADR-007](./decisions/ADR-007-rust-foundational-layer.md)   | Rust foundational layer   | [Done] Accepted |
 
 ## Guiding Principles
 
@@ -54,7 +50,6 @@ Architecture decisions must align with the [30 Engineering Principles](../05-eng
 3. **OFFLINE** — 30+ days autonomous operation
 4. **MODULAR** — Composable, replaceable components
 5. **SECURE** — All crypto in Rust, defense in depth
-
 
 ## Related Documentation
 

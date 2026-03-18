@@ -2,7 +2,6 @@
 
 **Guide any user through any process in 200+ languages**
 
-
 ## Overview
 
 AMANI (meaning "peace" in Swahili) is the AI-driven guidance layer that makes complex systems accessible to everyone. It provides 24/7 intelligent support through multiple channels in 200+ languages, with offline-first design for frontier markets.
@@ -17,13 +16,13 @@ AMANI (meaning "peace" in Swahili) is the AI-driven guidance layer that makes co
 
 ## Performance
 
-| Metric | Target |
-|--------|--------|
-| Concurrent conversations | 50K+ |
-| Response latency | <200ms |
-| Language coverage | 200+ |
-| Issue resolution | 95% without human |
-| User satisfaction | >80% CSAT |
+| Metric                   | Target            |
+| ------------------------ | ----------------- |
+| Concurrent conversations | 50K+              |
+| Response latency         | <200ms            |
+| Language coverage        | 200+              |
+| Issue resolution         | 95% without human |
+| User satisfaction        | >80% CSAT         |
 
 ## Tech Stack
 
@@ -121,34 +120,36 @@ engine.serve(port=8080)
 ```
 User (WhatsApp, Twi): "Me payment no ba" (My payment hasn't come)
 
-AMANI: "Akwaaba! Me hwε wo payment status. Wo lot number yε dεn?" 
+AMANI: "Akwaaba! Me hwε wo payment status. Wo lot number yε dεn?"
        (Welcome! Let me check your payment status. What's your lot number?)
 
 User: "GT-001234"
 
-AMANI: "Wo payment for GT-001234 wↄ release 3 hours ago after vault 
+AMANI: "Wo payment for GT-001234 wↄ release 3 hours ago after vault
         confirmation. Check wo VaultCard balance. Sε εnyε work a, ka kyerε me."
-       (Your payment for GT-001234 was released 3 hours ago after vault 
-        confirmation. Check your VaultCard balance. If it's not working, 
+       (Your payment for GT-001234 was released 3 hours ago after vault
+        confirmation. Check your VaultCard balance. If it's not working,
         let me know.)
 ```
 
 ## Integration
 
 ### Upstream
+
 - **MABA**: Uses indexed data for contextual guidance
 - **KORA**: Displays verification status to users
 
 ### Downstream
+
 - Provides guidance across all GTCX platforms (CRX, SGX, AGX)
 - Supports VIA/VXA field applications
 
 ## Documentation
 
 Full agile-pm documentation in `agile-pm/` folder:
+
 - Conversational UX: `03 - design/`
 - Technical architecture: `04 - spec/`
 - Language support: `11 - support/`
 
-
-*Source: Originally from the GTCX monorepo migration tools; now maintained in gtcx-amis (AMANI specs) and gtcx-infrastructure (templates)*
+_Source: Originally from the GTCX monorepo migration tools; now maintained in gtcx-amis (AMANI specs) and gtcx-infrastructure (templates)_

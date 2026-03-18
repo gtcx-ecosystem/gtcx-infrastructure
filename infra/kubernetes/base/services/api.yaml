@@ -23,9 +23,9 @@ spec:
         app: gtcx-api
         tier: api
       annotations:
-        prometheus.io/scrape: "true"
-        prometheus.io/port: "3000"
-        prometheus.io/path: "/metrics"
+        prometheus.io/scrape: 'true'
+        prometheus.io/port: '3000'
+        prometheus.io/path: '/metrics'
     spec:
       serviceAccountName: gtcx-api
       securityContext:
@@ -50,11 +50,11 @@ spec:
                 name: gtcx-secrets
           resources:
             requests:
-              cpu: "250m"
-              memory: "512Mi"
+              cpu: '250m'
+              memory: '512Mi'
             limits:
-              cpu: "1000m"
-              memory: "1Gi"
+              cpu: '1000m'
+              memory: '1Gi'
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true

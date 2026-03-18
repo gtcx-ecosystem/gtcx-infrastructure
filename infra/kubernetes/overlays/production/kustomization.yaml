@@ -21,7 +21,7 @@ commonLabels:
   environment: production
 
 commonAnnotations:
-  deployment.kubernetes.io/revision: "1"
+  deployment.kubernetes.io/revision: '1'
 
 configMapGenerator:
   - name: gtcx-env
@@ -36,7 +36,7 @@ configMapGenerator:
 
 images:
   - name: gtcx/api
-    newTag: v1.0.0  # Pinned versions in production
+    newTag: v1.0.0 # Pinned versions in production
   - name: gtcx/crypto
     newTag: v1.0.0
 
@@ -62,7 +62,7 @@ patches:
     target:
       kind: Deployment
       name: gtcx-api
-  
+
   # Crypto service - production resources
   - patch: |-
       - op: replace
@@ -77,7 +77,7 @@ patches:
     target:
       kind: Deployment
       name: gtcx-crypto
-  
+
   # HPA - production scaling
   - patch: |-
       - op: replace
@@ -89,7 +89,7 @@ patches:
     target:
       kind: HorizontalPodAutoscaler
       name: gtcx-api
-  
+
   # PDB - production availability
   - patch: |-
       - op: replace
