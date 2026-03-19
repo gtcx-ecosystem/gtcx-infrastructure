@@ -45,6 +45,9 @@ ROLLBACK=false
 VERSION=""
 CANARY_PERCENTAGE=5
 CANARY_WAIT_SECONDS=300  # 5 minutes
+AWS_REGION="${AWS_REGION:-af-south-1}"
+AWS_ACCOUNT_ID="${AWS_ACCOUNT_ID:-}"
+ECR_REGISTRY=""
 
 # Parse flags
 shift || true
@@ -159,31 +162,68 @@ pre_deployment_checks() {
 # Build & Push Images
 # -----------------------------------------------------------------------------
 
+ecr_login() {
+    log_step "Authenticating to ECR..."
+
+    ECR_REGISTRY="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
+
+    if [[ -z "${AWS_ACCOUNT_ID:-}" ]]; then
+        AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text 2>/dev/null || echo "")
+        if [[ -z "${AWS_ACCOUNT_ID}" ]]; then
+            log_error "Cannot determine AWS account ID. Set AWS_ACCOUNT_ID or configure AWS CLI."
+            exit 1
+        fi
+        ECR_REGISTRY="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
+    fi
+
+    aws ecr get-login-password --region "${AWS_REGION}" \
+        | docker login --username AWS --password-stdin "${ECR_REGISTRY}"
+
+    log_success "ECR login successful (${ECR_REGISTRY})"
+}
+
+push_images() {
+    log_step "Pushing images to ECR..."
+
+    local images=("intelligence" "protocols")
+    for img in "${images[@]}"; do
+        local local_tag="gtcx/${img}:${VERSION}"
+        local ecr_tag="${ECR_REGISTRY}/gtcx-${ENVIRONMENT}-${img}:${VERSION}"
+        local ecr_latest="${ECR_REGISTRY}/gtcx-${ENVIRONMENT}-${img}:latest"
+
+        docker tag "${local_tag}" "${ecr_tag}"
+        docker tag "${local_tag}" "${ecr_latest}"
+        docker push "${ecr_tag}"
+        docker push "${ecr_latest}"
+        log_info "Pushed ${ecr_tag}"
+    done
+
+    log_success "All images pushed to ECR"
+}
+
 build_images() {
     log_step "Building Docker images..."
-    
+
     cd "${PROJECT_ROOT}"
-    
+
     # Determine version
     if [[ -z "${VERSION}" ]]; then
         VERSION=$(git rev-parse --short HEAD 2>/dev/null || echo "latest")
     fi
-    
+
     log_info "Version: ${VERSION}"
-    
-    # Build images
+
+    # Build Node.js service images
     docker build \
-        -f infra/docker/Dockerfile.base \
-        --target ruby-production \
-        -t "gtcx/api:${VERSION}" \
+        -f infra/docker/Dockerfile.intelligence \
+        -t "gtcx/intelligence:${VERSION}" \
         .
-    
+
     docker build \
-        -f infra/docker/Dockerfile.base \
-        --target rust-production \
-        -t "gtcx/crypto:${VERSION}" \
+        -f infra/docker/Dockerfile.protocols \
+        -t "gtcx/protocols:${VERSION}" \
         .
-    
+
     log_success "Images built successfully"
 }
 
@@ -196,16 +236,16 @@ security_scan() {
     
     # Scan images with Trivy
     if command -v trivy &>/dev/null; then
-        log_info "Scanning API image..."
-        trivy image --exit-code 1 --severity HIGH,CRITICAL "gtcx/api:${VERSION}" || {
-            log_error "Security vulnerabilities found in API image"
+        log_info "Scanning intelligence image..."
+        trivy image --exit-code 1 --severity HIGH,CRITICAL "gtcx/intelligence:${VERSION}" || {
+            log_error "Security vulnerabilities found in intelligence image"
             [[ "${ENVIRONMENT}" == "production" ]] && exit 1
             log_warning "Continuing despite vulnerabilities (non-production)"
         }
-        
-        log_info "Scanning crypto image..."
-        trivy image --exit-code 1 --severity HIGH,CRITICAL "gtcx/crypto:${VERSION}" || {
-            log_error "Security vulnerabilities found in crypto image"
+
+        log_info "Scanning protocols image..."
+        trivy image --exit-code 1 --severity HIGH,CRITICAL "gtcx/protocols:${VERSION}" || {
+            log_error "Security vulnerabilities found in protocols image"
             [[ "${ENVIRONMENT}" == "production" ]] && exit 1
         }
     else
@@ -368,6 +408,8 @@ main() {
     pre_deployment_checks
     build_images
     security_scan
+    ecr_login
+    push_images
     
     if [[ "${ENVIRONMENT}" == "production" ]]; then
         canary_deploy
