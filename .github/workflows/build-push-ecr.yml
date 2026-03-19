@@ -1,0 +1,92 @@
+# =============================================================================
+# Build, Scan & Push to ECR
+# =============================================================================
+# Triggered on merge to main. Builds service images, runs Trivy security scan,
+# and pushes to ECR with commit SHA + latest tags.
+# =============================================================================
+
+name: Build & Push to ECR
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'intelligence/**'
+      - 'protocols/**'
+      - 'infra/docker/**'
+      - '.github/workflows/build-push-ecr.yml'
+
+permissions:
+  id-token: write
+  contents: read
+  security-events: write
+
+env:
+  AWS_REGION: af-south-1
+
+jobs:
+  build-push:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service:
+          - name: intelligence
+            dockerfile: infra/docker/Dockerfile.intelligence
+            context: .
+          - name: protocols
+            dockerfile: infra/docker/Dockerfile.protocols
+            context: .
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to ECR
+        id: ecr-login
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Set image metadata
+        id: meta
+        run: |
+          REGISTRY=${{ steps.ecr-login.outputs.registry }}
+          REPO="gtcx-${{ github.ref_name == 'main' && 'production' || 'staging' }}-${{ matrix.service.name }}"
+          SHA_TAG="${REGISTRY}/${REPO}:${GITHUB_SHA::8}"
+          LATEST_TAG="${REGISTRY}/${REPO}:latest"
+          echo "sha_tag=${SHA_TAG}" >> "$GITHUB_OUTPUT"
+          echo "latest_tag=${LATEST_TAG}" >> "$GITHUB_OUTPUT"
+
+      - name: Build image
+        run: |
+          docker build \
+            -f ${{ matrix.service.dockerfile }} \
+            -t ${{ steps.meta.outputs.sha_tag }} \
+            -t ${{ steps.meta.outputs.latest_tag }} \
+            ${{ matrix.service.context }}
+
+      - name: Trivy security scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ steps.meta.outputs.sha_tag }}
+          format: sarif
+          output: trivy-${{ matrix.service.name }}.sarif
+          severity: HIGH,CRITICAL
+          exit-code: '1'
+
+      - name: Upload Trivy results
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: trivy-${{ matrix.service.name }}.sarif
+
+      - name: Push to ECR
+        run: |
+          docker push ${{ steps.meta.outputs.sha_tag }}
+          docker push ${{ steps.meta.outputs.latest_tag }}
+          echo "### Pushed ${{ matrix.service.name }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- \`${{ steps.meta.outputs.sha_tag }}\`" >> "$GITHUB_STEP_SUMMARY"
