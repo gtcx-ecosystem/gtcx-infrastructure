@@ -29,6 +29,15 @@ configMapGenerator:
       - GTCX_LOG_LEVEL=info
       - GTCX_LOG_FORMAT=json
 
+# ============================================================
+# PLACEHOLDER SECRETS — NEVER USE IN PRODUCTION
+# These exist only so kustomize build succeeds in base.
+# Production overlays MUST override via:
+#   - Sealed Secrets (bitnami/sealed-secrets)
+#   - External Secrets Operator (external-secrets.io)
+#   - Vault Agent injector
+# See: _sop/2-docs/secrets-management.md
+# ============================================================
 secretGenerator:
   - name: gtcx-secrets
     type: Opaque

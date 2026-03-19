@@ -35,7 +35,7 @@ spec:
       containers:
         - name: crypto
           image: gtcx/crypto:latest
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           ports:
             - name: grpc
               containerPort: 8080

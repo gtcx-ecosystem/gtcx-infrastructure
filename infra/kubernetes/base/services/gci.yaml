@@ -34,7 +34,7 @@ spec:
       containers:
         - name: gci
           image: gtcx/api:latest
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           args: ['bundle', 'exec', 'puma', '-C', 'config/puma.rb']
           ports:
             - name: http
