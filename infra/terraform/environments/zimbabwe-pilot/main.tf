@@ -171,6 +171,24 @@ module "database" {
 }
 
 # -----------------------------------------------------------------------------
+# Event Bus (NATS with JetStream)
+# -----------------------------------------------------------------------------
+
+module "event_bus" {
+  source = "../../modules/event-bus"
+
+  environment             = var.environment
+  vpc_id                  = module.vpc.vpc_id
+  subnet_ids              = module.vpc.private_subnet_ids
+  cluster_size            = 1 # pilot — increase to 3 for production HA
+  jetstream_storage_gb    = 10
+  retention_days          = 90
+  allowed_security_groups = [module.eks.node_security_group_id]
+
+  tags = var.tags
+}
+
+# -----------------------------------------------------------------------------
 # Container Registry
 # -----------------------------------------------------------------------------
 
@@ -239,6 +257,16 @@ output "database_endpoints" {
 output "ecr_repository_urls" {
   description = "ECR repository URLs"
   value       = module.ecr.repository_urls
+}
+
+output "nats_connection_url" {
+  description = "NATS event bus connection URL"
+  value       = module.event_bus.connection_url
+}
+
+output "nats_security_group_id" {
+  description = "NATS security group ID"
+  value       = module.event_bus.security_group_id
 }
 
 output "alb_controller_role_arn" {

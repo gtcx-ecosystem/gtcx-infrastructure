@@ -14,6 +14,7 @@ commonLabels:
 resources:
   - namespace.yaml
   - configmaps/base-config.yaml
+  - services/nats.yaml
   - services/api.yaml
   - services/crypto.yaml
   - services/tradepass.yaml

@@ -83,6 +83,32 @@ services:
       - gtcx-network
 
   # ===========================================================================
+  # EVENT BUS (per RESILIENT principle)
+  # ===========================================================================
+
+  # NATS with JetStream — cross-service domain event pub/sub
+  nats:
+    image: nats:2.10-alpine
+    container_name: gtcx-nats
+    command:
+      - '--config'
+      - '/etc/nats/nats.conf'
+    ports:
+      - '4222:4222' # Client
+      - '6222:6222' # Cluster routing
+      - '8222:8222' # Monitoring / health
+    volumes:
+      - nats_data:/data/jetstream
+      - ./nats/nats.conf:/etc/nats/nats.conf:ro
+    healthcheck:
+      test: ['CMD', 'wget', '-q', '--spider', 'http://localhost:8222/healthz']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - gtcx-network
+
+  # ===========================================================================
   # CORE SERVICES
   # ===========================================================================
 
@@ -99,6 +125,7 @@ services:
       AUDIT_DATABASE_URL: postgres://gtcx_audit:gtcx_audit_dev_password@postgres-audit:5432/gtcx_audit
       REDIS_URL: redis://redis:6379/0
       GTCX_CRYPTO_URL: http://crypto:8080
+      NATS_URL: nats://nats:4222
       SECRET_KEY_BASE: dev_secret_key_base_change_in_production
       # Observability
       OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4318
@@ -435,6 +462,8 @@ volumes:
     name: gtcx-postgres-audit-data
   redis_data:
     name: gtcx-redis-data
+  nats_data:
+    name: gtcx-nats-data
   edge_data:
     name: gtcx-edge-data
   prometheus_data:

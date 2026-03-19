@@ -80,6 +80,32 @@ services:
       - gtcx-network
 
   # ===========================================================================
+  # EVENT BUS (per RESILIENT principle)
+  # ===========================================================================
+
+  # NATS with JetStream — cross-service domain event pub/sub
+  nats:
+    image: nats:2.10-alpine
+    container_name: gtcx-nats
+    command:
+      - '--config'
+      - '/etc/nats/nats.conf'
+    ports:
+      - '4222:4222' # Client
+      - '6222:6222' # Cluster routing
+      - '8222:8222' # Monitoring / health
+    volumes:
+      - nats_data:/data/jetstream
+      - ./nats/nats.conf:/etc/nats/nats.conf:ro
+    healthcheck:
+      test: ['CMD', 'wget', '-q', '--spider', 'http://localhost:8222/healthz']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - gtcx-network
+
+  # ===========================================================================
   # OBSERVABILITY (per OBSERVABLE principle)
   # ===========================================================================
 
@@ -182,6 +208,8 @@ volumes:
     name: gtcx-infra-postgres-audit-data
   redis_data:
     name: gtcx-infra-redis-data
+  nats_data:
+    name: gtcx-infra-nats-data
   prometheus_data:
     name: gtcx-infra-prometheus-data
   grafana_data:
