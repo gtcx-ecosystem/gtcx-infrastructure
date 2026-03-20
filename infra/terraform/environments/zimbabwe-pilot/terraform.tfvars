@@ -22,9 +22,9 @@ eks_node_desired_size   = 1
 eks_node_min_size       = 1
 eks_node_max_size       = 5
 
-# API access — enable during setup, restrict for production
-enable_public_api = true
-admin_cidr_blocks = [] # Add your IP: ["x.x.x.x/32"]
+# API access — private by default; enable with CIDR whitelist for production
+enable_public_api = false
+admin_cidr_blocks = [] # Add your IP when enabling: ["x.x.x.x/32"]
 
 tags = {
   Deployment = "ZWCMP"
