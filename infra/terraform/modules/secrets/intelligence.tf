@@ -213,10 +213,37 @@ resource "aws_iam_role_policy_attachment" "intelligence_secrets" {
 }
 
 # -----------------------------------------------------------------------------
-# External Secrets Operator — SecretStore + ExternalSecret (K8s manifests)
+# External Secrets Operator — Helm Release (controller install)
 # -----------------------------------------------------------------------------
-# These are applied via kubectl_manifest or kubernetes_manifest provider.
-# The ESO controller must be installed in the cluster beforehand.
+# Must be applied before SecretStore/ExternalSecret CRDs can be registered.
+# Per DEPLOYABLE (14): operator lifecycle is Terraform-managed, not manual.
+# -----------------------------------------------------------------------------
+
+resource "helm_release" "external_secrets_operator" {
+  name             = "external-secrets"
+  repository       = "https://charts.external-secrets.io"
+  chart            = "external-secrets"
+  namespace        = "external-secrets"
+  create_namespace = true
+  version          = "0.9.20"
+
+  set {
+    name  = "installCRDs"
+    value = "true"
+  }
+
+  set {
+    name  = "webhook.port"
+    value = "9443"
+  }
+
+  # Wait for all pods to be ready before Terraform proceeds to kubectl_manifest
+  wait    = true
+  timeout = 300
+}
+
+# -----------------------------------------------------------------------------
+# External Secrets Operator — SecretStore + ExternalSecret (K8s manifests)
 # -----------------------------------------------------------------------------
 
 resource "kubectl_manifest" "secret_store" {
@@ -247,6 +274,8 @@ resource "kubectl_manifest" "secret_store" {
       }
     }
   })
+
+  depends_on = [helm_release.external_secrets_operator]
 }
 
 resource "kubectl_manifest" "external_secret" {
@@ -294,7 +323,10 @@ resource "kubectl_manifest" "external_secret" {
     }
   })
 
-  depends_on = [kubectl_manifest.secret_store]
+  depends_on = [
+    helm_release.external_secrets_operator,
+    kubectl_manifest.secret_store,
+  ]
 }
 
 # -----------------------------------------------------------------------------
