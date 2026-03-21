@@ -35,7 +35,11 @@ metadata:
 
     # Security
     alb.ingress.kubernetes.io/ssl-policy: ELBSecurityPolicy-TLS13-1-2-2021-06
-    alb.ingress.kubernetes.io/wafv2-acl-arn: ${WAF_ACL_ARN}
+    # WAFv2 ACL — set via kustomize patch or CI substitution before apply.
+    # Example kustomize patch:
+    #   kubectl annotate ingress gtcx-alb-ingress \
+    #     alb.ingress.kubernetes.io/wafv2-acl-arn=arn:aws:wafv2:... -n gtcx
+    # Omitting this annotation disables WAF; add it before production cutover.
 
     # Performance
     alb.ingress.kubernetes.io/target-group-attributes: >-
