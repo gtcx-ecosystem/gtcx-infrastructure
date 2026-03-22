@@ -53,7 +53,7 @@ locals {
     Environment = var.environment
     ManagedBy   = "terraform"
     Project     = "gtcx"
-    Principle   = "SOVEREIGN,SECURE"
+    Principle   = "SOVEREIGN SECURE"
   })
 }
 
@@ -133,4 +133,9 @@ output "repository_urls" {
 output "registry_id" {
   description = "ECR registry ID"
   value       = values(aws_ecr_repository.repos)[0].registry_id
+}
+
+output "repository_arns" {
+  description = "List of ECR repository ARNs"
+  value       = [for repo in aws_ecr_repository.repos : repo.arn]
 }

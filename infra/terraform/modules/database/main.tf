@@ -37,7 +37,7 @@ variable "allocated_storage" {
 variable "engine_version" {
   description = "PostgreSQL engine version"
   type        = string
-  default     = "16.1"
+  default     = "16.6"
 }
 
 variable "multi_az" {
@@ -79,7 +79,7 @@ locals {
     Environment = var.environment
     ManagedBy   = "terraform"
     Project     = "gtcx"
-    Principle   = "SOVEREIGN,AUDITABLE"
+    Principle   = "SOVEREIGN AUDITABLE"
   })
 }
 
@@ -136,16 +136,9 @@ resource "aws_db_parameter_group" "main" {
   family = "postgres16"
   name   = "gtcx-${var.environment}-pg-params"
 
-  # Security parameters
-  parameter {
-    name  = "ssl"
-    value = "1"
-  }
-
-  parameter {
-    name  = "ssl_min_protocol_version"
-    value = "TLSv1.2"
-  }
+  # Note: ssl=1 is enforced by RDS by default in Postgres 16 and cannot be
+  # modified via parameter groups. ssl_min_protocol_version is also read-only.
+  # SSL enforcement is configured via the rds.force_ssl option group parameter.
 
   # Logging parameters (per AUDITABLE principle)
   parameter {
@@ -168,10 +161,11 @@ resource "aws_db_parameter_group" "main" {
     value = "1"
   }
 
-  # Performance parameters
+  # Performance parameters — static, requires DB reboot to take effect
   parameter {
-    name  = "shared_preload_libraries"
-    value = "pg_stat_statements"
+    name         = "shared_preload_libraries"
+    value        = "pg_stat_statements"
+    apply_method = "pending-reboot"
   }
 
   tags = local.common_tags

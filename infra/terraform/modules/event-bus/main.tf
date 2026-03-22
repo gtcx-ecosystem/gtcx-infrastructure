@@ -26,6 +26,12 @@ variable "subnet_ids" {
   type        = list(string)
 }
 
+variable "availability_zones" {
+  description = "Availability zones corresponding to subnet_ids (for EBS volume placement)"
+  type        = list(string)
+  default     = []
+}
+
 variable "allowed_security_groups" {
   description = "Security groups allowed to connect to NATS"
   type        = list(string)
@@ -78,7 +84,7 @@ locals {
     ManagedBy   = "terraform"
     Project     = "gtcx"
     Component   = "event-bus"
-    Principle   = "RESILIENT,AUDITABLE,SOVEREIGN"
+    Principle   = "RESILIENT AUDITABLE SOVEREIGN"
   })
 
   nats_port    = 4222
@@ -161,7 +167,7 @@ resource "aws_security_group" "nats" {
 resource "aws_ebs_volume" "jetstream" {
   count = var.cluster_size
 
-  availability_zone = var.subnet_ids[count.index % length(var.subnet_ids)]
+  availability_zone = length(var.availability_zones) > 0 ? var.availability_zones[count.index % length(var.availability_zones)] : var.availability_zones[0]
   size              = var.jetstream_storage_gb
   type              = "gp3"
   encrypted         = true

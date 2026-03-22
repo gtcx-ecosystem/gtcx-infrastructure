@@ -18,7 +18,7 @@ locals {
     Service     = "intelligence"
     ManagedBy   = "terraform"
     Project     = "gtcx"
-    Principle   = "SECURE,SOVEREIGN"
+    Principle   = "SECURE SOVEREIGN"
   })
 
   oidc_issuer = replace(

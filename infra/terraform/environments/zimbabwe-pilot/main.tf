@@ -147,6 +147,32 @@ provider "aws" {
   }
 }
 
+data "aws_eks_cluster" "main" {
+  name = "gtcx-${var.environment}"
+}
+
+provider "kubernetes" {
+  host                   = data.aws_eks_cluster.main.endpoint
+  cluster_ca_certificate = base64decode(data.aws_eks_cluster.main.certificate_authority[0].data)
+  exec {
+    api_version = "client.authentication.k8s.io/v1beta1"
+    command     = "aws"
+    args        = ["eks", "get-token", "--cluster-name", "gtcx-${var.environment}", "--region", var.region]
+  }
+}
+
+provider "helm" {
+  kubernetes {
+    host                   = data.aws_eks_cluster.main.endpoint
+    cluster_ca_certificate = base64decode(data.aws_eks_cluster.main.certificate_authority[0].data)
+    exec {
+      api_version = "client.authentication.k8s.io/v1beta1"
+      command     = "aws"
+      args        = ["eks", "get-token", "--cluster-name", "gtcx-${var.environment}", "--region", var.region]
+    }
+  }
+}
+
 # -----------------------------------------------------------------------------
 # Networking
 # -----------------------------------------------------------------------------
@@ -194,6 +220,7 @@ module "event_bus" {
   environment             = var.environment
   vpc_id                  = module.vpc.vpc_id
   subnet_ids              = module.vpc.private_subnet_ids
+  availability_zones      = var.availability_zones
   cluster_size            = 1 # pilot — increase to 3 for production HA
   jetstream_storage_gb    = 10
   retention_days          = 90
@@ -236,6 +263,7 @@ module "eks" {
   enable_public_access       = var.enable_public_api
   allowed_cidr_blocks        = var.admin_cidr_blocks
   database_security_group_id = module.database.security_group_id
+  enable_database_access     = true
 
   tags = var.tags
 }
@@ -267,6 +295,21 @@ module "backup" {
   environment   = var.environment
   db_identifier = module.database.audit_db_identifier
   tags          = var.tags
+}
+
+# -----------------------------------------------------------------------------
+# CI/CD — GitHub Actions OIDC + Deploy Role
+# -----------------------------------------------------------------------------
+
+module "ci" {
+  source = "../../modules/ci"
+
+  environment         = var.environment
+  github_org          = "gtcx-ecosystem"
+  github_repo         = "gtcx-infrastructure"
+  ecr_repository_arns = module.ecr.repository_arns
+
+  tags = var.tags
 }
 
 # -----------------------------------------------------------------------------
@@ -325,4 +368,9 @@ output "acm_certificate_arn" {
 output "kubeconfig_command" {
   description = "Command to configure kubectl"
   value       = "aws eks update-kubeconfig --name ${module.eks.cluster_name} --region ${var.region}"
+}
+
+output "github_deploy_role_arn" {
+  description = "IAM role ARN for GitHub Actions — set as AWS_DEPLOY_ROLE_ARN secret in GitHub"
+  value       = module.ci.deploy_role_arn
 }
