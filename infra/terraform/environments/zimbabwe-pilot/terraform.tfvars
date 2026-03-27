@@ -24,7 +24,7 @@ eks_node_max_size       = 5
 
 # API access — enabled for initial deployment; restrict post-deploy
 enable_public_api = true
-admin_cidr_blocks = ["0.0.0.0/0"] # open during active development — restrict before production go-live
+admin_cidr_blocks = [] # LOCKED: populate with VPN/office CIDRs before enabling public API
 
 tags = {
   Deployment = "ZWCMP"

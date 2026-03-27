@@ -26,16 +26,17 @@ services:
     image: postgres:16-alpine
     container_name: gtcx-postgres
     environment:
-      POSTGRES_USER: gtcx
-      POSTGRES_PASSWORD: gtcx_dev_password
-      POSTGRES_DB: gtcx_development
+      POSTGRES_USER: ${POSTGRES_USER:-gtcx}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-gtcx_dev_password}
+      POSTGRES_DB: ${POSTGRES_DB:-gtcx_development}
     ports:
       - '5432:5432'
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./init-scripts/postgres:/docker-entrypoint-initdb.d
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U gtcx -d gtcx_development']
+      test:
+        ['CMD-SHELL', 'pg_isready -U $${POSTGRES_USER:-gtcx} -d $${POSTGRES_DB:-gtcx_development}']
       interval: 10s
       timeout: 5s
       retries: 5
@@ -47,16 +48,20 @@ services:
     image: postgres:16-alpine
     container_name: gtcx-postgres-audit
     environment:
-      POSTGRES_USER: gtcx_audit
-      POSTGRES_PASSWORD: gtcx_audit_dev_password
-      POSTGRES_DB: gtcx_audit
+      POSTGRES_USER: ${POSTGRES_AUDIT_USER:-gtcx_audit}
+      POSTGRES_PASSWORD: ${POSTGRES_AUDIT_PASSWORD:-gtcx_audit_dev_password}
+      POSTGRES_DB: ${POSTGRES_AUDIT_DB:-gtcx_audit}
     ports:
       - '5433:5432'
     volumes:
       - postgres_audit_data:/var/lib/postgresql/data
       - ./init-scripts/postgres-audit:/docker-entrypoint-initdb.d
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U gtcx_audit -d gtcx_audit']
+      test:
+        [
+          'CMD-SHELL',
+          'pg_isready -U $${POSTGRES_AUDIT_USER:-gtcx_audit} -d $${POSTGRES_AUDIT_DB:-gtcx_audit}',
+        ]
       interval: 10s
       timeout: 5s
       retries: 5
