@@ -21,6 +21,7 @@ resources:
   - services/geotag.yaml
   - services/gci.yaml
   - services/intelligence.yaml
+  - services/platform.yaml
 
 configMapGenerator:
   - name: gtcx-env

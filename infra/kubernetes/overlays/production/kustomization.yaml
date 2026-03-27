@@ -101,3 +101,17 @@ patches:
     target:
       kind: PodDisruptionBudget
       name: gtcx-api
+
+  # Platform service account — enable token projection for IRSA.
+  # automountServiceAccountToken is false in base; set true in production so the
+  # EKS-projected OIDC token is available for STS AssumeRoleWithWebIdentity.
+  # The eks.amazonaws.com/role-arn annotation is applied post-Terraform-apply by:
+  #   ENVIRONMENT=zimbabwe-pilot ./infra/scripts/apply-platform-irsa.sh
+  # ARN source: terraform output kyc_documents_irsa_role_arn
+  - patch: |-
+      - op: replace
+        path: /automountServiceAccountToken
+        value: true
+    target:
+      kind: ServiceAccount
+      name: gtcx-platform
