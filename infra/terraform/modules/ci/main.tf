@@ -76,8 +76,8 @@ resource "aws_iam_role" "github_deploy" {
           "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
         }
         StringLike = {
-          # Allow main branch and PR workflows
-          "token.actions.githubusercontent.com:sub" = "repo:${var.github_org}/${var.github_repo}:*"
+          # Restrict to main branch for production deployments
+          "token.actions.githubusercontent.com:sub" = "repo:${var.github_org}/${var.github_repo}:ref:refs/heads/main"
         }
       }
     }]

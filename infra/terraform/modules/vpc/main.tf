@@ -299,7 +299,7 @@ resource "aws_iam_role_policy" "flow_logs" {
         "logs:DescribeLogStreams"
       ]
       Effect   = "Allow"
-      Resource = "*"
+      Resource = "arn:aws:logs:${var.region}:*:log-group:/aws/vpc-flow-log/gtcx-${var.environment}*"
     }]
   })
 }

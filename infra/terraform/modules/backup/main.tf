@@ -284,7 +284,7 @@ resource "aws_iam_role_policy" "lambda_execution" {
           "rds:DescribeDBSnapshots",
           "rds:StartExportTask"
         ]
-        Resource = "*"
+        Resource = "arn:aws:rds:${var.region}:*:db:gtcx-${var.environment}-*"
       },
       {
         Effect = "Allow"

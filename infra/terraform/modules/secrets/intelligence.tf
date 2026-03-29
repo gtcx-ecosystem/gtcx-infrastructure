@@ -129,6 +129,7 @@ resource "aws_iam_role_policy" "rotation_lambda" {
         Resource = aws_secretsmanager_secret.database_url.arn
       },
       {
+        # GetRandomPassword is an account-level action — no resource ARN exists
         Effect = "Allow"
         Action = [
           "secretsmanager:GetRandomPassword",
@@ -142,7 +143,7 @@ resource "aws_iam_role_policy" "rotation_lambda" {
           "logs:CreateLogStream",
           "logs:PutLogEvents",
         ]
-        Resource = "arn:aws:logs:*:*:*"
+        Resource = "arn:aws:logs:*:*:log-group:/aws/lambda/gtcx-*-intelligence-rotation:*"
       },
     ]
   })

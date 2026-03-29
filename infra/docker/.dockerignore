@@ -1,0 +1,35 @@
+# VCS
+.git
+.gitignore
+
+# Dependencies (reinstalled in container)
+node_modules
+.pnpm-store
+
+# Build artifacts
+dist
+*.tsbuildinfo
+
+# Terraform state (sensitive)
+.terraform
+*.tfstate
+*.tfstate.backup
+*.tfvars
+
+# IDE / OS
+.vscode
+.idea
+.DS_Store
+*.swp
+
+# Tests & docs
+**/*.test.ts
+**/*.spec.ts
+**/tests/
+**/coverage/
+**/__tests__/
+*.md
+
+# CI
+.github
+.husky
