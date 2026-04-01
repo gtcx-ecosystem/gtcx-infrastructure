@@ -176,66 +176,42 @@ services:
       - gtcx-network
 
   # ===========================================================================
-  # PROTOCOL SERVICES
+  # PROTOCOL SERVICES (Node.js — unified server for all 6 protocols)
   # ===========================================================================
 
-  # TradePass Identity Service
-  tradepass:
+  protocols:
     build:
-      context: ../
-      dockerfile: infra/docker/Dockerfile.base
-      target: ruby-production
-    container_name: gtcx-tradepass
+      context: ../../../3-protocols
+      dockerfile: ../4-infrastructure/infra/docker/Dockerfile.protocols
+    container_name: gtcx-protocols
     environment:
-      RAILS_ENV: development
+      NODE_ENV: development
+      PORT: 8300
+      HOST: 0.0.0.0
+      GTCX_ALLOW_STUBS: '1'
+      # Database connections
       DATABASE_URL: postgres://${POSTGRES_USER:-gtcx}:${POSTGRES_PASSWORD:-gtcx_dev_password}@postgres:5432/${POSTGRES_DB:-gtcx_development}
-      GTCX_SERVICE_NAME: tradepass
-      GTCX_CRYPTO_URL: http://crypto:8080
+      AUDIT_DATABASE_URL: postgres://${POSTGRES_AUDIT_USER:-gtcx_audit}:${POSTGRES_AUDIT_PASSWORD:-gtcx_audit_dev_password}@postgres-audit:5432/${POSTGRES_AUDIT_DB:-gtcx_audit}
+      REDIS_URL: redis://redis:6379/0
+      NATS_URL: nats://nats:4222
+      # Observability
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4318
+      OTEL_SERVICE_NAME: gtcx-protocols
     ports:
-      - '3001:3000'
+      - '8300:8300'
     depends_on:
-      - postgres
-      - crypto
-    networks:
-      - gtcx-network
-
-  # GeoTag Location Service
-  geotag:
-    build:
-      context: ../
-      dockerfile: infra/docker/Dockerfile.base
-      target: ruby-production
-    container_name: gtcx-geotag
-    environment:
-      RAILS_ENV: development
-      DATABASE_URL: postgres://${POSTGRES_USER:-gtcx}:${POSTGRES_PASSWORD:-gtcx_dev_password}@postgres:5432/${POSTGRES_DB:-gtcx_development}
-      GTCX_SERVICE_NAME: geotag
-      GTCX_CRYPTO_URL: http://crypto:8080
-    ports:
-      - '3002:3000'
-    depends_on:
-      - postgres
-      - crypto
-    networks:
-      - gtcx-network
-
-  # GCI Compliance Service
-  gci:
-    build:
-      context: ../
-      dockerfile: infra/docker/Dockerfile.base
-      target: ruby-production
-    container_name: gtcx-gci
-    environment:
-      RAILS_ENV: development
-      DATABASE_URL: postgres://${POSTGRES_USER:-gtcx}:${POSTGRES_PASSWORD:-gtcx_dev_password}@postgres:5432/${POSTGRES_DB:-gtcx_development}
-      GTCX_SERVICE_NAME: gci
-      GTCX_CRYPTO_URL: http://crypto:8080
-    ports:
-      - '3003:3000'
-    depends_on:
-      - postgres
-      - crypto
+      postgres:
+        condition: service_healthy
+      postgres-audit:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ['CMD', 'wget', '-q', '--spider', 'http://localhost:8300/health']
+      interval: 30s
+      timeout: 5s
+      start_period: 15s
+      retries: 3
     networks:
       - gtcx-network
 
