@@ -17,9 +17,7 @@ resources:
   - services/nats.yaml
   - services/api.yaml
   - services/crypto.yaml
-  - services/tradepass.yaml
-  - services/geotag.yaml
-  - services/gci.yaml
+  - services/protocols.yaml
   - services/intelligence.yaml
   - services/platform.yaml
 
@@ -50,4 +48,6 @@ images:
   - name: gtcx/api
     newTag: latest
   - name: gtcx/crypto
+    newTag: latest
+  - name: gtcx/protocols
     newTag: latest
