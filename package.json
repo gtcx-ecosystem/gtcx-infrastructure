@@ -16,6 +16,7 @@
   },
   "scripts": {
     "build": "turbo run build",
+    "test": "echo 'Infrastructure tests run via iac-validation CI job (terraform validate + kustomize build + docker compose config)'",
     "lint": "turbo run lint",
     "clean": "turbo run clean && rm -rf node_modules",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md,yaml,yml}\"",

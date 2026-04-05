@@ -40,15 +40,9 @@ jobs:
 
       - name: Type check
         run: pnpm typecheck
-        continue-on-error: true
-
-      - name: Test
-        run: pnpm test
-        continue-on-error: true
 
       - name: Build
         run: pnpm build
-        continue-on-error: true
 
   iac-validation:
     runs-on: ubuntu-latest
@@ -95,20 +89,16 @@ jobs:
           terraform validate
 
       - name: Kustomize build — base
-        run: |
-          kubectl kustomize infra/kubernetes/base/ > /dev/null
+        run: kubectl kustomize infra/kubernetes/base/ > /dev/null
 
       - name: Kustomize build — dev overlay
-        run: |
-          kubectl kustomize infra/kubernetes/overlays/development/ > /dev/null
+        run: kubectl kustomize infra/kubernetes/overlays/development/ > /dev/null
 
       - name: Kustomize build — staging overlay
-        run: |
-          kubectl kustomize infra/kubernetes/overlays/staging/ > /dev/null
+        run: kubectl kustomize infra/kubernetes/overlays/staging/ > /dev/null
 
       - name: Kustomize build — production overlay
-        run: |
-          kubectl kustomize infra/kubernetes/overlays/production/ > /dev/null
+        run: kubectl kustomize infra/kubernetes/overlays/production/ > /dev/null
 
       - name: Docker Compose config validation
         run: |
@@ -137,3 +127,18 @@ jobs:
         if: always()
         with:
           sarif_file: 'trivy-results.sarif'
+
+      - name: Generate SBOM (CycloneDX)
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          format: 'cyclonedx'
+          output: 'sbom-cyclonedx.json'
+
+      - name: Upload SBOM artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom-infrastructure
+          path: sbom-cyclonedx.json
+          retention-days: 365

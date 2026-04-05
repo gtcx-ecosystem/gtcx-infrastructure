@@ -53,3 +53,4 @@ infra/security/reports/
 
 # Local archive (reference only, not tracked)
 _archive/
+_cannon/
