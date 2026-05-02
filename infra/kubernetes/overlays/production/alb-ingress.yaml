@@ -68,7 +68,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: gtcx-api
+                name: gtcx-agx
                 port:
                   number: 3000
 
@@ -120,6 +120,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: gtcx-api
+                name: gtcx-agx
                 port:
                   number: 3000

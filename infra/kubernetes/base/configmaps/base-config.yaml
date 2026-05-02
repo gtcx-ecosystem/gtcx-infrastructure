@@ -8,8 +8,7 @@ metadata:
   namespace: gtcx
 data:
   # Application settings
-  RAILS_ENV: 'production'
-  RACK_ENV: 'production'
+  NODE_ENV: 'production'
   RUST_LOG: 'info'
 
   # GTCX Protocol settings
@@ -17,8 +16,8 @@ data:
   GTCX_LOG_FORMAT: 'json'
 
   # Service discovery
-  GTCX_API_HOST: 'gtcx-api'
-  GTCX_API_PORT: '3000'
+  GTCX_AGX_HOST: 'gtcx-agx'
+  GTCX_AGX_PORT: '3000'
   GTCX_CRYPTO_HOST: 'gtcx-crypto'
   GTCX_CRYPTO_PORT: '8080'
 

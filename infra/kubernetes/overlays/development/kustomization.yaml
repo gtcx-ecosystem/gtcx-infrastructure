@@ -38,7 +38,7 @@ configMapGenerator:
     behavior: merge
     literals:
       - GTCX_LOG_LEVEL=debug
-      - RAILS_ENV=development
+      - NODE_ENV=development
 
 secretGenerator:
   - name: gtcx-secrets
@@ -49,7 +49,11 @@ secretGenerator:
       - REDIS_URL=redis://redis:6379/0
 
 images:
-  - name: gtcx/api
+  - name: gtcx/agx
+    newTag: dev
+  - name: gtcx/crx
+    newTag: dev
+  - name: gtcx/sgx
     newTag: dev
   - name: gtcx/crypto
     newTag: dev

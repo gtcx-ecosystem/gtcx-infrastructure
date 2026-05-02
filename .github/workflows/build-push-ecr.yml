@@ -1,13 +1,13 @@
 # =============================================================================
 # Build, Scan & Push to ECR
 # =============================================================================
-# Triggered on merge to main. Builds all 4 GTCX service images, runs Trivy
+# Triggered on merge to main. Builds all GTCX service images, runs Trivy
 # security scans, and pushes to ECR with commit SHA + latest tags.
 #
 # Image → ECR repo mapping:
 #   intelligence  → gtcx-anisa, gtcx-cortex, gtcx-veritas
 #   protocols     → gtcx-tradepass, gtcx-geotag, gtcx-gci
-#   api           → gtcx-api
+#   platforms     → gtcx-agx, gtcx-crx, gtcx-sgx
 #   crypto        → gtcx-crypto
 # =============================================================================
 
@@ -51,15 +51,30 @@ jobs:
             ecr_repos: gtcx-tradepass,gtcx-geotag,gtcx-gci
             source_repos: gtcx-protocols
 
-          - name: api
-            dockerfile: infra/docker/Dockerfile.base
-            target: ruby-production
-            ecr_repos: gtcx-api
-            source_repos: gtcx-core
+          - name: agx
+            dockerfile: infra/docker/Dockerfile.platforms
+            target: production
+            ecr_repos: gtcx-agx
+            source_repos: gtcx-platforms
+            build_args: PLATFORM=agx,APP_PORT=3000
+
+          - name: crx
+            dockerfile: infra/docker/Dockerfile.platforms
+            target: production
+            ecr_repos: gtcx-crx
+            source_repos: gtcx-platforms
+            build_args: PLATFORM=crx,APP_PORT=3001
+
+          - name: sgx
+            dockerfile: infra/docker/Dockerfile.platforms
+            target: production
+            ecr_repos: gtcx-sgx
+            source_repos: gtcx-platforms
+            build_args: PLATFORM=sgx,APP_PORT=3002
 
           - name: crypto
-            dockerfile: infra/docker/Dockerfile.base
-            target: rust-production
+            dockerfile: infra/docker/Dockerfile.crypto
+            target: production
             ecr_repos: gtcx-crypto
             source_repos: gtcx-core
 
@@ -94,6 +109,14 @@ jobs:
           token: ${{ secrets.GTCX_REPO_TOKEN }}
           path: core
 
+      - name: Checkout gtcx-platforms source
+        if: contains(matrix.service.source_repos, 'gtcx-platforms')
+        uses: actions/checkout@v4
+        with:
+          repository: gtcx/gtcx-platforms
+          token: ${{ secrets.GTCX_REPO_TOKEN }}
+          path: platforms
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -111,6 +134,15 @@ jobs:
           if [ -n "${{ matrix.service.target }}" ]; then
             TARGET_FLAG="--target ${{ matrix.service.target }}"
           fi
+
+          BUILD_ARGS_FLAG=""
+          if [ -n "${{ matrix.service.build_args }}" ]; then
+            IFS=',' read -ra ARGS <<< "${{ matrix.service.build_args }}"
+            for ARG in "${ARGS[@]}"; do
+              BUILD_ARGS_FLAG="$BUILD_ARGS_FLAG --build-arg $ARG"
+            done
+          fi
+
           SHA_SHORT="${GITHUB_SHA::8}"
           REGISTRY="${{ steps.ecr-login.outputs.registry }}"
 
@@ -123,6 +155,7 @@ jobs:
 
           docker build \
             $TARGET_FLAG \
+            $BUILD_ARGS_FLAG \
             $TAGS \
             -f "$DOCKERFILE" \
             .
@@ -203,7 +236,9 @@ jobs:
 
           # Update all service image tags to the new SHA
           kustomize edit set image \
-            gtcx/api="${REGISTRY}/gtcx-api:${SHA_SHORT}" \
+            gtcx/agx="${REGISTRY}/gtcx-agx:${SHA_SHORT}" \
+            gtcx/crx="${REGISTRY}/gtcx-crx:${SHA_SHORT}" \
+            gtcx/sgx="${REGISTRY}/gtcx-sgx:${SHA_SHORT}" \
             gtcx/crypto="${REGISTRY}/gtcx-crypto:${SHA_SHORT}" \
             gtcx/intelligence-sdk="${REGISTRY}/gtcx-anisa:${SHA_SHORT}"
 

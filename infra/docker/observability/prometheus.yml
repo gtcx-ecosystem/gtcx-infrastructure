@@ -38,16 +38,16 @@ scrape_configs:
       - targets: ['localhost:9090']
 
   # --------------------------------------------------------------------------
-  # [PLACEHOLDER] GTCX API Service -- requires gtcx-core Rails app
+  # [PLACEHOLDER] GTCX AGX Service -- requires 6-platforms NestJS app
   # --------------------------------------------------------------------------
-  - job_name: 'gtcx-api'
+  - job_name: 'gtcx-agx'
     metrics_path: '/metrics'
     static_configs:
-      - targets: ['api:3000']
+      - targets: ['agx:3000']
     relabel_configs:
       - source_labels: [__address__]
         target_label: instance
-        replacement: 'gtcx-api'
+        replacement: 'gtcx-agx'
 
   # --------------------------------------------------------------------------
   # [PLACEHOLDER] GTCX Crypto Service -- requires Rust crypto binary
@@ -80,9 +80,8 @@ scrape_configs:
     metrics_path: '/metrics'
     static_configs:
       - targets:
-          - 'crx:3000'
-          - 'sgx:3000'
-          - 'agx:3000'
+          - 'crx:3001'
+          - 'sgx:3002'
     relabel_configs:
       - source_labels: [__address__]
         regex: '([^:]+):.*'

@@ -15,7 +15,9 @@ variable "repositories" {
   description = "List of ECR repository names"
   type        = list(string)
   default = [
-    "gtcx-api",
+    "gtcx-agx",
+    "gtcx-crx",
+    "gtcx-sgx",
     "gtcx-crypto",
     "gtcx-tradepass",
     "gtcx-geotag",

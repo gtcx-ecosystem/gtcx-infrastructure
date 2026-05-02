@@ -39,12 +39,12 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: gtcx-api-policy
+  name: gtcx-agx-policy
   namespace: gtcx-production
 spec:
   podSelector:
     matchLabels:
-      app: gtcx-api-prod
+      app: gtcx-agx-prod
   policyTypes:
     - Ingress
     - Egress
@@ -101,7 +101,7 @@ spec:
     - from:
         - podSelector:
             matchLabels:
-              app: gtcx-api-prod
+              app: gtcx-agx-prod
         - podSelector:
             matchLabels:
               tier: protocol
@@ -129,7 +129,7 @@ spec:
     - from:
         - podSelector:
             matchLabels:
-              app: gtcx-api-prod
+              app: gtcx-agx-prod
       ports:
         - protocol: TCP
           port: 3000

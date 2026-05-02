@@ -12,7 +12,7 @@
 #
 # Usage:
 #   docker compose -f docker/docker-compose.test.yml up -d
-#   docker compose -f docker/docker-compose.test.yml run --rm api bundle exec rspec
+#   docker compose -f docker/docker-compose.test.yml run --rm platforms-test
 #   docker compose -f docker/docker-compose.test.yml down -v
 #
 # =============================================================================
@@ -76,24 +76,21 @@ services:
   # TEST RUNNERS
   # ===========================================================================
 
-  # Ruby/Rails Test Runner
-  api-test:
+  # Platform Services Test Runner (NestJS / Vitest)
+  platforms-test:
     build:
-      context: ../
-      dockerfile: infra/docker/Dockerfile.base
-      target: ruby-base # Use base with dev dependencies
-    container_name: gtcx-test-api
+      context: ../../../6-platforms
+      dockerfile: ../4-infrastructure/infra/docker/Dockerfile.platforms
+      target: build
+      args:
+        PLATFORM: agx
+    container_name: gtcx-test-platforms
     environment:
-      RAILS_ENV: test
+      NODE_ENV: test
+      CI: 'true'
       DATABASE_URL: postgres://gtcx_test:gtcx_test_password@postgres:5432/gtcx_test
       AUDIT_DATABASE_URL: postgres://gtcx_test_audit:gtcx_test_audit_password@postgres-audit:5432/gtcx_test_audit
       REDIS_URL: redis://redis:6379/0
-      GTCX_CRYPTO_URL: http://crypto-test:8080
-      SECRET_KEY_BASE: test_secret_key_base
-      # Disable external services
-      GTCX_DISABLE_EXTERNAL_APIS: true
-      # Parallel test workers
-      PARALLEL_WORKERS: 4
     depends_on:
       postgres:
         condition: service_healthy
@@ -101,83 +98,48 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-    volumes:
-      - ../:/app
-      - bundle_cache:/app/vendor/bundle
     working_dir: /app
-    command:
-      [
-        'bundle',
-        'exec',
-        'rspec',
-        '--format',
-        'progress',
-        '--format',
-        'RspecJunitFormatter',
-        '--out',
-        'tmp/test-results/rspec.xml',
-      ]
+    command: ['pnpm', 'test', '--', '--reporter=junit', '--outputFile=test-results/results.xml']
     networks:
       - gtcx-test-network
 
-  # Rust Test Runner
+  # Rust Crypto Test Runner
   crypto-test:
     build:
-      context: ../
-      dockerfile: infra/docker/Dockerfile.base
-      target: rust-builder # Use builder with test tools
+      context: ../../../2-core
+      dockerfile: ../4-infrastructure/infra/docker/Dockerfile.crypto
+      target: builder
     container_name: gtcx-test-crypto
     environment:
       RUST_LOG: debug
       RUST_BACKTRACE: 1
-    volumes:
-      - ../packages/gtcx-crypto:/build/packages/gtcx-crypto
-      - cargo_cache:/usr/local/cargo/registry
     working_dir: /build
     command: ['cargo', 'test', '--package', 'gtcx-crypto', '--', '--test-threads=4']
     networks:
       - gtcx-test-network
 
-  # TypeScript/Node Test Runner
-  packages-test:
-    image: node:20-alpine
-    container_name: gtcx-test-packages
+  # Protocol Services Test Runner (Vitest)
+  protocols-test:
+    build:
+      context: ../../../3-protocols
+      dockerfile: ../4-infrastructure/infra/docker/Dockerfile.protocols
+      target: production
+    container_name: gtcx-test-protocols
     environment:
       NODE_ENV: test
-      CI: true
-    volumes:
-      - ../packages:/app/packages
-      - ../package.json:/app/package.json
-      - ../package-lock.json:/app/package-lock.json
-      - ../turbo.json:/app/turbo.json
-      - node_cache:/app/node_modules
-    working_dir: /app
-    command: ['npm', 'run', 'test:ci']
-    networks:
-      - gtcx-test-network
-
-  # ===========================================================================
-  # INTEGRATION TESTS
-  # ===========================================================================
-
-  integration-test:
-    build:
-      context: ../
-      dockerfile: infra/docker/Dockerfile.base
-      target: ruby-base
-    container_name: gtcx-test-integration
-    environment:
-      RAILS_ENV: test
+      CI: 'true'
       DATABASE_URL: postgres://gtcx_test:gtcx_test_password@postgres:5432/gtcx_test
-      GTCX_API_URL: http://api-test:3000
-      GTCX_CRYPTO_URL: http://crypto-test:8080
+      AUDIT_DATABASE_URL: postgres://gtcx_test_audit:gtcx_test_audit_password@postgres-audit:5432/gtcx_test_audit
+      REDIS_URL: redis://redis:6379/0
     depends_on:
-      - api-test
-      - crypto-test
-    volumes:
-      - ../:/app
+      postgres:
+        condition: service_healthy
+      postgres-audit:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     working_dir: /app
-    command: ['bundle', 'exec', 'rspec', 'spec/integration', '--format', 'documentation']
+    command: ['pnpm', 'test', '--', '--reporter=junit', '--outputFile=test-results/results.xml']
     networks:
       - gtcx-test-network
 
@@ -189,13 +151,12 @@ services:
     image: mcr.microsoft.com/playwright:v1.40.0-jammy
     container_name: gtcx-test-e2e
     environment:
-      CI: true
-      BASE_URL: http://api-test:3000
+      CI: 'true'
+      BASE_URL: http://agx:3000
     depends_on:
-      - api-test
+      - platforms-test
     volumes:
-      - ../:/app
-      - playwright_cache:/root/.cache/ms-playwright
+      - ../../../6-platforms:/app
     working_dir: /app
     command: ['npx', 'playwright', 'test', '--reporter=junit']
     networks:
@@ -243,13 +204,5 @@ networks:
 # =============================================================================
 
 volumes:
-  bundle_cache:
-    name: gtcx-test-bundle-cache
-  cargo_cache:
-    name: gtcx-test-cargo-cache
-  node_cache:
-    name: gtcx-test-node-cache
-  playwright_cache:
-    name: gtcx-test-playwright-cache
   trivy_cache:
     name: gtcx-test-trivy-cache

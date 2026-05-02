@@ -4,16 +4,16 @@ DevOps tooling, deployment automation, and security framework for the GTCX ecosy
 
 ## Quick Navigation
 
-| Document                                                                        | Description                                    |
-| ------------------------------------------------------------------------------- | ---------------------------------------------- |
-| [SOP Index](./_sop/README.md)                                                   | Full documentation and operations hub          |
-| [Orientation](./_sop/1-agents/1-onboarding/orientation.md)                      | Start here — codebase map and session protocol |
-| [Safety Rules](./_sop/1-agents/4-workflows/safety-rules.md)                     | What requires human approval                   |
-| [Architecture Overview](./_sop/2-docs/1-architecture/system-overview.md)        | System design, deployment model, trust zones   |
-| [Trust Model](./_sop/2-docs/1-architecture/trust-model.md)                      | Zero-trust security boundaries                 |
-| [Quality Runbook](./_sop/2-docs/4-devops/2-runbooks/quality-runbook.md)         | CI triage order and gate sequence              |
-| [Release Checklist](./_sop/2-docs/4-devops/7-release-mgmt/release-checklist.md) | Release gate and evidence requirements         |
-| [Roadmap](./_sop/3-agile/2-scrum-board/2-phases/roadmap.md)                     | Delivery roadmap and sprint status             |
+| Document                                                         | Description                                    |
+| ---------------------------------------------------------------- | ---------------------------------------------- |
+| [Documentation Index](./docs/README.md)                          | Full documentation hub                         |
+| [Orientation](./docs/agents/onboarding/orientation.md)           | Start here — codebase map and session protocol |
+| [Safety Rules](./docs/agents/workflows/agent-safety-rules.md)    | What requires human approval                   |
+| [Architecture Overview](./docs/architecture/system-overview.md)  | System design, deployment model, trust zones   |
+| [Trust Model](./docs/architecture/trust-model.md)                | Zero-trust security boundaries                 |
+| [Quality Runbook](./docs/operations/runbooks/quality-runbook.md) | CI triage order and gate sequence              |
+| [Release Checklist](./docs/devops/release/release-checklist.md)  | Release gate and evidence requirements         |
+| [Roadmap](./docs/agile/sprint-roadmap.md)                        | Delivery roadmap and sprint status             |
 
 ## Quick Start
 
@@ -51,7 +51,7 @@ gtcx-infrastructure/
 │   ├── scripts/           # deploy.sh (canary, approval-gated), migrate, seed
 │   └── security/          # Access control, data protection, incident response policies
 ├── tools/                 # Scripts and project templates
-├── _sop/                  # Standard operating procedures, docs, agent team
+├── docs/                  # All documentation — architecture, ops, security, specs
 └── turbo.json
 ```
 

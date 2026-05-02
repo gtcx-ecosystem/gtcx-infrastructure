@@ -1,0 +1,107 @@
+# =============================================================================
+# GTCX Platform Services — NestJS multi-stage build
+# =============================================================================
+#
+# Parameterized build for all platform services (AGX, CRX, SGX, etc.).
+# Uses Turborepo to build only the selected platform and its dependencies.
+#
+# Principles Implemented:
+#   - DEPLOYABLE (14): Same image pattern for all platforms
+#   - SECURE (11): Non-root user, minimal runtime image
+#   - PORTABLE (22): No cloud-specific dependencies
+#
+# Target Size: < 200MB
+#
+# Usage:
+#   docker build --build-arg PLATFORM=agx --build-arg APP_PORT=3000 \
+#     -f infra/docker/Dockerfile.platforms -t gtcx/agx:latest ../../6-platforms
+#   docker build --build-arg PLATFORM=crx --build-arg APP_PORT=3001 \
+#     -f infra/docker/Dockerfile.platforms -t gtcx/crx:latest ../../6-platforms
+#   docker build --build-arg PLATFORM=sgx --build-arg APP_PORT=3002 \
+#     -f infra/docker/Dockerfile.platforms -t gtcx/sgx:latest ../../6-platforms
+# =============================================================================
+
+ARG NODE_VERSION=20
+
+# -----------------------------------------------------------------------------
+# Stage 1: Install dependencies
+# -----------------------------------------------------------------------------
+FROM node:${NODE_VERSION}-alpine AS deps
+
+WORKDIR /app
+RUN corepack enable && corepack prepare pnpm@9.15.4 --activate
+
+# Copy workspace config and all package.json files for dependency resolution
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY platforms/agx/package.json platforms/agx/
+COPY platforms/crx/package.json platforms/crx/
+COPY platforms/sgx/package.json platforms/sgx/
+COPY platforms/pathways/package.json platforms/pathways/
+COPY platforms/veritas/package.json platforms/veritas/
+COPY platforms/shared/package.json platforms/shared/
+COPY platforms/operations/workproof/package.json platforms/operations/workproof/
+COPY platforms/operations/tradecv/package.json platforms/operations/tradecv/
+COPY platforms/operations/vaultkit/package.json platforms/operations/vaultkit/
+COPY platforms/operations/tapkit/package.json platforms/operations/tapkit/
+COPY packages/types/package.json packages/types/
+COPY packages/vds/package.json packages/vds/
+COPY packages/crypto/package.json packages/crypto/
+COPY packages/schemas/package.json packages/schemas/
+
+RUN pnpm install --frozen-lockfile
+
+# -----------------------------------------------------------------------------
+# Stage 2: Build selected platform
+# -----------------------------------------------------------------------------
+FROM node:${NODE_VERSION}-alpine AS build
+
+ARG PLATFORM=agx
+
+WORKDIR /app
+RUN corepack enable && corepack prepare pnpm@9.15.4 --activate
+
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+
+RUN pnpm turbo run build --filter="@gtcx/platform-${PLATFORM}..."
+
+# Remove test files
+RUN find . -path '*/tests/*' -delete 2>/dev/null; \
+    find . -name '*.test.ts' -delete 2>/dev/null; \
+    find . -name '*.spec.ts' -delete 2>/dev/null; \
+    rm -rf coverage/ .turbo/ .git/
+
+# -----------------------------------------------------------------------------
+# Stage 3: Production runtime
+# -----------------------------------------------------------------------------
+FROM node:${NODE_VERSION}-alpine AS production
+
+ARG PLATFORM=agx
+ARG APP_PORT=3000
+
+WORKDIR /app
+
+RUN addgroup -g 1001 -S gtcx && \
+    adduser -S gtcx -u 1001 -G gtcx
+
+# Copy built output and dependencies
+COPY --from=build --chown=gtcx:gtcx /app/platforms/${PLATFORM}/dist ./platforms/${PLATFORM}/dist
+COPY --from=build --chown=gtcx:gtcx /app/platforms/${PLATFORM}/package.json ./platforms/${PLATFORM}/
+COPY --from=build --chown=gtcx:gtcx /app/platforms/shared/dist ./platforms/shared/dist
+COPY --from=build --chown=gtcx:gtcx /app/platforms/shared/package.json ./platforms/shared/
+COPY --from=build --chown=gtcx:gtcx /app/packages ./packages
+COPY --from=build --chown=gtcx:gtcx /app/node_modules ./node_modules
+COPY --from=build --chown=gtcx:gtcx /app/package.json ./
+
+ENV GTCX_PLATFORM=${PLATFORM}
+ENV NODE_ENV=production
+ENV PORT=${APP_PORT}
+
+USER gtcx
+
+EXPOSE ${APP_PORT}
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+  CMD wget -q --spider http://localhost:${PORT}/api/health || exit 1
+
+CMD ["node", "platforms/${GTCX_PLATFORM}/dist/main.js"]

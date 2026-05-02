@@ -45,7 +45,11 @@ secretGenerator:
       - SECRET_KEY_BASE=placeholder-override-in-overlay
 
 images:
-  - name: gtcx/api
+  - name: gtcx/agx
+    newTag: latest
+  - name: gtcx/crx
+    newTag: latest
+  - name: gtcx/sgx
     newTag: latest
   - name: gtcx/crypto
     newTag: latest

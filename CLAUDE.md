@@ -24,8 +24,8 @@ pnpm typecheck      # Type-check scripts
 
 Read before touching anything:
 
-1. `_sop/1-agents/orientation.md` — repo map, environment topology, key commands
-2. `_sop/1-agents/safety-rules.md` — three-tier authority structure (Autonomous / Requires Approval / Never)
+1. `docs/agents/onboarding/orientation.md` — repo map, environment topology, key commands
+2. `docs/agents/workflows/agent-safety-rules.md` — three-tier authority structure (Autonomous / Requires Approval / Never)
 
 ## Key Rules
 

@@ -267,17 +267,19 @@ deploy() {
     # Update image tags in kustomization
     log_info "Updating image tags..."
     cd "overlays/${ENVIRONMENT}"
-    kustomize edit set image "gtcx/api:${VERSION}"
+    kustomize edit set image "gtcx/agx:${VERSION}"
+    kustomize edit set image "gtcx/crx:${VERSION}"
+    kustomize edit set image "gtcx/sgx:${VERSION}"
     kustomize edit set image "gtcx/crypto:${VERSION}"
     cd "${PROJECT_ROOT}/infra/kubernetes"
-    
+
     # Apply configuration
     log_info "Applying Kubernetes configuration..."
     kubectl apply -k "overlays/${ENVIRONMENT}"
-    
+
     # Wait for rollout
     log_info "Waiting for deployment rollout..."
-    kubectl rollout status deployment/gtcx-api-${ENVIRONMENT:0:4} -n "${NAMESPACE}" --timeout=300s
+    kubectl rollout status deployment/gtcx-agx-${ENVIRONMENT:0:4} -n "${NAMESPACE}" --timeout=300s
     kubectl rollout status deployment/gtcx-crypto-${ENVIRONMENT:0:4} -n "${NAMESPACE}" --timeout=300s
     
     log_success "Deployment applied"
@@ -292,26 +294,26 @@ canary_deploy() {
     
     # Scale canary to percentage
     local total_replicas
-    total_replicas=$(kubectl get deployment/gtcx-api-prod -n "${NAMESPACE}" -o jsonpath='{.spec.replicas}')
+    total_replicas=$(kubectl get deployment/gtcx-agx-prod -n "${NAMESPACE}" -o jsonpath='{.spec.replicas}')
     local canary_replicas=$((total_replicas * CANARY_PERCENTAGE / 100))
     [[ $canary_replicas -lt 1 ]] && canary_replicas=1
-    
+
     log_info "Deploying ${canary_replicas} canary replicas..."
-    
+
     # Deploy canary
-    kubectl set image deployment/gtcx-api-prod \
-        api="gtcx/api:${VERSION}" \
+    kubectl set image deployment/gtcx-agx-prod \
+        agx="gtcx/agx:${VERSION}" \
         -n "${NAMESPACE}" \
         --record
-    
+
     # Wait and monitor
     log_info "Monitoring canary for ${CANARY_WAIT_SECONDS} seconds..."
-    
+
     local end_time=$(($(date +%s) + CANARY_WAIT_SECONDS))
     while [[ $(date +%s) -lt $end_time ]]; do
         # Check pod readiness via condition status
         local not_ready
-        not_ready=$(kubectl get pods -n "${NAMESPACE}" -l app=gtcx-api-prod \
+        not_ready=$(kubectl get pods -n "${NAMESPACE}" -l app=gtcx-agx-prod \
             -o jsonpath='{.items[*].status.conditions[?(@.type=="Ready")].status}' 2>/dev/null \
             | tr ' ' '\n' | grep -c "False" || echo "0")
 
@@ -323,7 +325,7 @@ canary_deploy() {
 
         # Check for pods in CrashLoopBackOff or Error state
         local failing_pods
-        failing_pods=$(kubectl get pods -n "${NAMESPACE}" -l app=gtcx-api-prod \
+        failing_pods=$(kubectl get pods -n "${NAMESPACE}" -l app=gtcx-agx-prod \
             --field-selector=status.phase!=Running,status.phase!=Succeeded \
             -o name 2>/dev/null | wc -l | tr -d ' ')
 
@@ -347,10 +349,10 @@ canary_deploy() {
 rollback_deployment() {
     log_warning "Rolling back deployment..."
     
-    kubectl rollout undo deployment/gtcx-api-${ENVIRONMENT:0:4} -n "${NAMESPACE}"
+    kubectl rollout undo deployment/gtcx-agx-${ENVIRONMENT:0:4} -n "${NAMESPACE}"
     kubectl rollout undo deployment/gtcx-crypto-${ENVIRONMENT:0:4} -n "${NAMESPACE}"
     
-    kubectl rollout status deployment/gtcx-api-${ENVIRONMENT:0:4} -n "${NAMESPACE}" --timeout=300s
+    kubectl rollout status deployment/gtcx-agx-${ENVIRONMENT:0:4} -n "${NAMESPACE}" --timeout=300s
     
     log_success "Rollback completed"
 }
@@ -369,7 +371,7 @@ post_deployment() {
     # Run health checks
     log_info "Running health checks..."
     local api_pod
-    api_pod=$(kubectl get pods -n "${NAMESPACE}" -l app=gtcx-api-${ENVIRONMENT:0:4} -o jsonpath='{.items[0].metadata.name}' 2>/dev/null || echo "")
+    api_pod=$(kubectl get pods -n "${NAMESPACE}" -l app=gtcx-agx-${ENVIRONMENT:0:4} -o jsonpath='{.items[0].metadata.name}' 2>/dev/null || echo "")
     
     if [[ -n "${api_pod}" ]]; then
         kubectl exec "${api_pod}" -n "${NAMESPACE}" -- wget -q --spider http://localhost:3000/health || {

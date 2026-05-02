@@ -113,17 +113,17 @@ setup_docker() {
     
     cd "${PROJECT_ROOT}"
     
-    # Build base images
-    log_info "Building base Docker images..."
+    # Build service images
+    log_info "Building Docker images..."
     docker build \
-        -f infra/docker/Dockerfile.base \
-        --target ruby-production \
-        -t gtcx/api:dev \
-        . || {
-            log_error "Failed to build API image"
+        -f infra/docker/Dockerfile.crypto \
+        --target production \
+        -t gtcx/crypto:dev \
+        ../../2-core || {
+            log_error "Failed to build crypto image"
             return 1
         }
-    
+
     log_success "Docker images built successfully"
     
     # Create Docker network if it doesn't exist
@@ -177,13 +177,7 @@ setup_application() {
     # Install Node dependencies
     if [[ -f "package.json" ]]; then
         log_info "Installing Node dependencies..."
-        npm install
-    fi
-    
-    # Install Ruby dependencies
-    if [[ -f "Gemfile" ]]; then
-        log_info "Installing Ruby dependencies..."
-        bundle install
+        pnpm install
     fi
     
     # Copy environment file

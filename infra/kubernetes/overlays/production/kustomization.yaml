@@ -31,15 +31,19 @@ configMapGenerator:
     behavior: merge
     literals:
       - GTCX_LOG_LEVEL=warn
-      - RAILS_ENV=production
+      - NODE_ENV=production
       - GTCX_FEATURE_FEDERATION=true
 
 # Production secrets managed externally (Vault/Sealed Secrets)
 # Not generated here - injected via GitOps
 
 images:
-  - name: gtcx/api
+  - name: gtcx/agx
     newTag: v1.0.0 # Pinned versions in production
+  - name: gtcx/crx
+    newTag: v1.0.0
+  - name: gtcx/sgx
+    newTag: v1.0.0
   - name: gtcx/crypto
     newTag: v1.0.0
 
@@ -64,7 +68,7 @@ patches:
         value: "2Gi"
     target:
       kind: Deployment
-      name: gtcx-api
+      name: gtcx-agx
 
   # Crypto service - production resources
   - patch: |-
@@ -91,7 +95,7 @@ patches:
         value: 20
     target:
       kind: HorizontalPodAutoscaler
-      name: gtcx-api
+      name: gtcx-agx
 
   # PDB - production availability
   - patch: |-
@@ -100,7 +104,7 @@ patches:
         value: 2
     target:
       kind: PodDisruptionBudget
-      name: gtcx-api
+      name: gtcx-agx
 
   # Platform service account — enable token projection for IRSA.
   # automountServiceAccountToken is false in base; set true in production so the
