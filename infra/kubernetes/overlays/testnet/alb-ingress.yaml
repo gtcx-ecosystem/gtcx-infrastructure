@@ -1,0 +1,58 @@
+# =============================================================================
+# GTCX Testnet Ingress — AWS Application Load Balancer
+# =============================================================================
+# Routes api.testnet.gtcxprotocol.org directly to the protocols service.
+# For testnet, all 6 protocols are exposed via a single entry point
+# without the AGX platform gateway layer.
+# =============================================================================
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gtcx-testnet-alb-ingress
+  namespace: gtcx-testnet
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
+    alb.ingress.kubernetes.io/certificate-arn: ${ACM_CERTIFICATE_ARN}
+
+    # Health check
+    alb.ingress.kubernetes.io/healthcheck-path: /health
+    alb.ingress.kubernetes.io/healthcheck-interval-seconds: '15'
+    alb.ingress.kubernetes.io/healthcheck-timeout-seconds: '5'
+    alb.ingress.kubernetes.io/healthy-threshold-count: '2'
+    alb.ingress.kubernetes.io/unhealthy-threshold-count: '3'
+
+    # Security
+    alb.ingress.kubernetes.io/ssl-policy: ELBSecurityPolicy-TLS13-1-2-2021-06
+
+    # Performance
+    alb.ingress.kubernetes.io/target-group-attributes: >-
+      deregistration_delay.timeout_seconds=30,
+      stickiness.enabled=false,
+      idle_timeout.timeout_seconds=60
+    alb.ingress.kubernetes.io/load-balancer-attributes: >-
+      idle_timeout.timeout_seconds=60,
+      routing.http2.enabled=true,
+      routing.http.drop_invalid_header_fields.enabled=true
+
+    # Tagging
+    alb.ingress.kubernetes.io/tags: >-
+      Project=gtcx,
+      Environment=testnet,
+      ManagedBy=kubernetes
+spec:
+  ingressClassName: alb
+  rules:
+    - host: api.testnet.gtcxprotocol.org
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: gtcx-protocols-testnet
+                port:
+                  number: 8300
