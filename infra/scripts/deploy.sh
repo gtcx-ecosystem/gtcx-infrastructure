@@ -288,58 +288,73 @@ deploy() {
 # -----------------------------------------------------------------------------
 # Canary Deployment (Production)
 # -----------------------------------------------------------------------------
+# Deploys a separate canary Deployment with the new image alongside the
+# existing primary. The canary shares the Service selector so it receives
+# a proportional share of traffic. If healthy after CANARY_WAIT_SECONDS,
+# the canary is deleted and the full rollout proceeds. If unhealthy, the
+# canary is deleted and the primary is untouched.
+# -----------------------------------------------------------------------------
+
+CANARY_MANIFEST="${PROJECT_ROOT}/infra/kubernetes/overlays/production/canary.yaml"
 
 canary_deploy() {
-    log_step "Starting canary deployment (${CANARY_PERCENTAGE}%)..."
-    
-    # Scale canary to percentage
-    local total_replicas
-    total_replicas=$(kubectl get deployment/gtcx-agx-prod -n "${NAMESPACE}" -o jsonpath='{.spec.replicas}')
-    local canary_replicas=$((total_replicas * CANARY_PERCENTAGE / 100))
-    [[ $canary_replicas -lt 1 ]] && canary_replicas=1
+    log_step "Starting canary deployment..."
 
-    log_info "Deploying ${canary_replicas} canary replicas..."
+    # Patch the canary manifest with the target image
+    local canary_image="${ECR_REGISTRY}/gtcx-agx:${VERSION}"
+    log_info "Canary image: ${canary_image}"
 
-    # Deploy canary
-    kubectl set image deployment/gtcx-agx-prod \
-        agx="gtcx/agx:${VERSION}" \
-        -n "${NAMESPACE}" \
-        --record
+    # Apply canary with the new version
+    sed "s|image: gtcx/agx:canary|image: ${canary_image}|" "${CANARY_MANIFEST}" \
+        | kubectl apply -f - -n "${NAMESPACE}"
 
-    # Wait and monitor
+    # Wait for canary pod to be ready
+    log_info "Waiting for canary rollout..."
+    if ! kubectl rollout status deployment/gtcx-agx-canary -n "${NAMESPACE}" --timeout=120s 2>/dev/null; then
+        log_error "Canary failed to become ready. Removing canary..."
+        canary_cleanup
+        exit 1
+    fi
+
+    # Monitor canary health
     log_info "Monitoring canary for ${CANARY_WAIT_SECONDS} seconds..."
 
     local end_time=$(($(date +%s) + CANARY_WAIT_SECONDS))
     while [[ $(date +%s) -lt $end_time ]]; do
-        # Check pod readiness via condition status
+        # Check canary pod readiness
         local not_ready
-        not_ready=$(kubectl get pods -n "${NAMESPACE}" -l app=gtcx-agx-prod \
+        not_ready=$(kubectl get pods -n "${NAMESPACE}" -l app=gtcx-agx-prod,role=canary \
             -o jsonpath='{.items[*].status.conditions[?(@.type=="Ready")].status}' 2>/dev/null \
             | tr ' ' '\n' | grep -c "False" || echo "0")
 
         if [[ $not_ready -gt 0 ]]; then
-            log_error "Unhealthy pods detected during canary (${not_ready} not ready). Rolling back..."
-            rollback_deployment
+            log_error "Canary pod not ready. Removing canary..."
+            canary_cleanup
             exit 1
         fi
 
-        # Check for pods in CrashLoopBackOff or Error state
-        local failing_pods
-        failing_pods=$(kubectl get pods -n "${NAMESPACE}" -l app=gtcx-agx-prod \
-            --field-selector=status.phase!=Running,status.phase!=Succeeded \
-            -o name 2>/dev/null | wc -l | tr -d ' ')
+        # Check for restart count (CrashLoopBackOff indicator)
+        local restarts
+        restarts=$(kubectl get pods -n "${NAMESPACE}" -l app=gtcx-agx-prod,role=canary \
+            -o jsonpath='{.items[0].status.containerStatuses[0].restartCount}' 2>/dev/null || echo "0")
 
-        if [[ $failing_pods -gt 0 ]]; then
-            log_error "Failing pods detected during canary (${failing_pods} pods). Rolling back..."
-            rollback_deployment
+        if [[ "${restarts}" -gt 2 ]]; then
+            log_error "Canary pod restarting (${restarts} restarts). Removing canary..."
+            canary_cleanup
             exit 1
         fi
 
         sleep 30
         log_info "Canary healthy... $((end_time - $(date +%s)))s remaining"
     done
-    
-    log_success "Canary deployment successful"
+
+    log_success "Canary passed — promoting to full rollout"
+    canary_cleanup
+}
+
+canary_cleanup() {
+    log_info "Removing canary deployment..."
+    kubectl delete deployment gtcx-agx-canary -n "${NAMESPACE}" --ignore-not-found=true
 }
 
 # -----------------------------------------------------------------------------
@@ -348,12 +363,15 @@ canary_deploy() {
 
 rollback_deployment() {
     log_warning "Rolling back deployment..."
-    
+
+    # Remove canary if present
+    kubectl delete deployment gtcx-agx-canary -n "${NAMESPACE}" --ignore-not-found=true
+
     kubectl rollout undo deployment/gtcx-agx-${ENVIRONMENT:0:4} -n "${NAMESPACE}"
     kubectl rollout undo deployment/gtcx-crypto-${ENVIRONMENT:0:4} -n "${NAMESPACE}"
-    
+
     kubectl rollout status deployment/gtcx-agx-${ENVIRONMENT:0:4} -n "${NAMESPACE}" --timeout=300s
-    
+
     log_success "Rollback completed"
 }
 
