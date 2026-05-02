@@ -331,6 +331,39 @@ resource "kubectl_manifest" "external_secret" {
 }
 
 # -----------------------------------------------------------------------------
+# Secret Rotation Failure Monitoring
+# -----------------------------------------------------------------------------
+
+resource "aws_sns_topic" "rotation_alerts" {
+  name = "gtcx-${var.environment}-secret-rotation-alerts"
+  tags = local.common_tags
+}
+
+resource "aws_cloudwatch_metric_alarm" "rotation_failure" {
+  alarm_name        = "gtcx-${var.environment}-secret-rotation-failure"
+  alarm_description = "Alert when Secrets Manager rotation fails for intelligence DB credentials"
+
+  namespace   = "AWS/SecretsManager"
+  metric_name = "RotationFailed"
+  statistic   = "Sum"
+  period      = 86400 # 24 hours
+  threshold   = 1
+
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = 1
+  treat_missing_data  = "notBreaching"
+
+  dimensions = {
+    SecretName = aws_secretsmanager_secret.database_url.name
+  }
+
+  alarm_actions = [aws_sns_topic.rotation_alerts.arn]
+  ok_actions    = [aws_sns_topic.rotation_alerts.arn]
+
+  tags = local.common_tags
+}
+
+# -----------------------------------------------------------------------------
 # Data Sources
 # -----------------------------------------------------------------------------
 

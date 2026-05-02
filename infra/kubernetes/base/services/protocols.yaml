@@ -29,7 +29,7 @@ spec:
         prometheus.io/port: '8300'
         prometheus.io/path: '/metrics'
     spec:
-      serviceAccountName: gtcx-ecosystem
+      serviceAccountName: gtcx-platform
       securityContext:
         runAsNonRoot: true
         runAsUser: 1001
