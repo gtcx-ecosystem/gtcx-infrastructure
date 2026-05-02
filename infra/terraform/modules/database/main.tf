@@ -136,9 +136,11 @@ resource "aws_db_parameter_group" "main" {
   family = "postgres16"
   name   = "gtcx-${var.environment}-pg-params"
 
-  # Note: ssl=1 is enforced by RDS by default in Postgres 16 and cannot be
-  # modified via parameter groups. ssl_min_protocol_version is also read-only.
-  # SSL enforcement is configured via the rds.force_ssl option group parameter.
+  # SSL enforcement (per SECURE principle)
+  parameter {
+    name  = "rds.force_ssl"
+    value = "1"
+  }
 
   # Logging parameters (per AUDITABLE principle)
   parameter {

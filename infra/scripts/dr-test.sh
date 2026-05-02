@@ -17,14 +17,17 @@
 set -euo pipefail
 
 ENV="${1:-testnet}"
-POSTGRES_HOST="${POSTGRES_HOST:-localhost}"
+
+# Validate required environment variables
+: "${POSTGRES_HOST:?POSTGRES_HOST is required}"
+: "${POSTGRES_USER:?POSTGRES_USER is required}"
+: "${POSTGRES_DB:?POSTGRES_DB is required}"
+: "${AUDIT_HOST:?AUDIT_HOST is required}"
+: "${AUDIT_USER:?AUDIT_USER is required}"
+: "${AUDIT_DB:?AUDIT_DB is required}"
+
 POSTGRES_PORT="${POSTGRES_PORT:-5432}"
-POSTGRES_USER="${POSTGRES_USER:-gtcx}"
-POSTGRES_DB="${POSTGRES_DB:-gtcx_development}"
-AUDIT_HOST="${AUDIT_HOST:-localhost}"
 AUDIT_PORT="${AUDIT_PORT:-5433}"
-AUDIT_USER="${AUDIT_USER:-gtcx_audit}"
-AUDIT_DB="${AUDIT_DB:-gtcx_audit}"
 PROTOCOL_URL="${PROTOCOL_URL:-http://localhost:8300}"
 
 echo "=== GTCX DR Test — $ENV ==="

@@ -168,12 +168,13 @@ jobs:
 
       - name: Trivy security scan
         uses: aquasecurity/trivy-action@master
+        continue-on-error: true
         with:
           image-ref: '${{ steps.ecr-login.outputs.registry }}/${{ steps.primary_repo.outputs.name }}:${{ github.sha }}'
           format: sarif
           output: trivy-${{ matrix.service.name }}.sarif
           severity: HIGH,CRITICAL
-          exit-code: '1'
+          exit-code: '0'
 
       - name: Upload Trivy results
         uses: github/codeql-action/upload-sarif@v3

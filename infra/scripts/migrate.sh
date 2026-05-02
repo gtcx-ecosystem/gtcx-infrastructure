@@ -172,8 +172,10 @@ run_migrations() {
 
         # Check if already applied
         local already_applied
+        local safe_filename
+        safe_filename="$(printf '%s' "${filename}" | sed "s/'/''/g")"
         already_applied=$(psql "${DATABASE_URL}" -tAc \
-            "SELECT COUNT(*) FROM schema_migrations WHERE filename = '${filename}'" 2>/dev/null || echo "0")
+            "SELECT COUNT(*) FROM schema_migrations WHERE filename = '${safe_filename}'" 2>/dev/null || echo "0")
 
         if [[ "${already_applied}" -gt 0 ]]; then
             log_info "  SKIP  ${filename} (already applied)"

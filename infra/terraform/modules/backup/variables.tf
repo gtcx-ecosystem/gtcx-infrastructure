@@ -3,6 +3,11 @@ variable "environment" {
   type        = string
 }
 
+variable "region" {
+  description = "AWS region for RDS export task ARN construction"
+  type        = string
+}
+
 variable "db_identifier" {
   description = "The audit database RDS instance identifier"
   type        = string
