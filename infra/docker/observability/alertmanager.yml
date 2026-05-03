@@ -1,0 +1,166 @@
+# =============================================================================
+# Alertmanager Configuration for GTCX
+# =============================================================================
+# Per OBSERVABLE (15): Alerts reach humans, not just dashboards.
+#
+# Routing:
+#   P0/P1 (critical/high) → PagerDuty + Slack #gtcx-incidents
+#   P2 (medium)            → Slack #gtcx-alerts
+#   P3 (low)               → Slack #gtcx-alerts (business hours only)
+#
+# Environment variables (set in .env or K8s secret):
+#   PAGERDUTY_SERVICE_KEY  — PagerDuty Events API v2 integration key
+#   SLACK_WEBHOOK_URL      — Slack incoming webhook for #gtcx-alerts
+#   SLACK_INCIDENT_WEBHOOK — Slack incoming webhook for #gtcx-incidents
+# =============================================================================
+
+global:
+  resolve_timeout: 5m
+  pagerduty_url: 'https://events.pagerduty.com/v2/enqueue'
+
+# =============================================================================
+# Alert Templates
+# =============================================================================
+
+templates:
+  - '/etc/alertmanager/templates/*.tmpl'
+
+# =============================================================================
+# Routing Tree
+# =============================================================================
+
+route:
+  receiver: slack-alerts
+  group_by: ['alertname', 'namespace', 'service']
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 4h
+
+  routes:
+    # P0 — Critical: immediate page
+    - match:
+        severity: critical
+      receiver: pagerduty-critical
+      group_wait: 10s
+      repeat_interval: 1h
+      continue: true
+
+    # P0 — also send to Slack incidents channel
+    - match:
+        severity: critical
+      receiver: slack-incidents
+
+    # P1 — High: page during business hours, Slack always
+    - match:
+        severity: high
+      receiver: pagerduty-high
+      group_wait: 30s
+      repeat_interval: 2h
+      continue: true
+
+    - match:
+        severity: high
+      receiver: slack-incidents
+
+    # P2 — Medium: Slack alerts channel
+    - match:
+        severity: medium
+      receiver: slack-alerts
+      repeat_interval: 6h
+
+    # P3 — Low: Slack alerts, business hours only
+    - match:
+        severity: low
+      receiver: slack-alerts
+      repeat_interval: 24h
+      active_time_intervals:
+        - business-hours
+
+# =============================================================================
+# Time Intervals
+# =============================================================================
+
+time_intervals:
+  - name: business-hours
+    time_intervals:
+      - weekdays: ['monday:friday']
+        times:
+          - start_time: '08:00'
+            end_time: '18:00'
+
+# =============================================================================
+# Inhibition Rules
+# =============================================================================
+# Suppress lower-severity alerts when a critical alert is firing for the
+# same service — avoids alert storms during real incidents.
+
+inhibit_rules:
+  - source_match:
+      severity: critical
+    target_match:
+      severity: high
+    equal: ['alertname', 'namespace']
+
+  - source_match:
+      severity: critical
+    target_match:
+      severity: medium
+    equal: ['alertname', 'namespace']
+
+  - source_match:
+      severity: high
+    target_match:
+      severity: medium
+    equal: ['alertname', 'namespace']
+
+# =============================================================================
+# Receivers
+# =============================================================================
+
+receivers:
+  - name: slack-alerts
+    slack_configs:
+      - api_url: '${SLACK_WEBHOOK_URL}'
+        channel: '#gtcx-alerts'
+        send_resolved: true
+        title: '{{ .Status | toUpper }}: {{ .CommonLabels.alertname }}'
+        text: >-
+          *Environment:* {{ .CommonLabels.environment | default "unknown" }}
+          *Service:* {{ .CommonLabels.service | default .CommonLabels.app | default "unknown" }}
+          *Severity:* {{ .CommonLabels.severity }}
+          *Summary:* {{ .CommonAnnotations.summary }}
+          {{ if .CommonAnnotations.runbook_url }}*Runbook:* {{ .CommonAnnotations.runbook_url }}{{ end }}
+
+  - name: slack-incidents
+    slack_configs:
+      - api_url: '${SLACK_INCIDENT_WEBHOOK}'
+        channel: '#gtcx-incidents'
+        send_resolved: true
+        title: '{{ .Status | toUpper }}: {{ .CommonLabels.alertname }}'
+        text: >-
+          *Environment:* {{ .CommonLabels.environment | default "unknown" }}
+          *Service:* {{ .CommonLabels.service | default .CommonLabels.app | default "unknown" }}
+          *Severity:* {{ .CommonLabels.severity }}
+          *Summary:* {{ .CommonAnnotations.summary }}
+          *Description:* {{ .CommonAnnotations.description }}
+          {{ if .CommonAnnotations.runbook_url }}*Runbook:* {{ .CommonAnnotations.runbook_url }}{{ end }}
+
+  - name: pagerduty-critical
+    pagerduty_configs:
+      - service_key: '${PAGERDUTY_SERVICE_KEY}'
+        severity: critical
+        description: '{{ .CommonLabels.alertname }}: {{ .CommonAnnotations.summary }}'
+        details:
+          environment: '{{ .CommonLabels.environment | default "unknown" }}'
+          service: '{{ .CommonLabels.service | default .CommonLabels.app | default "unknown" }}'
+          runbook: '{{ .CommonAnnotations.runbook_url | default "N/A" }}'
+
+  - name: pagerduty-high
+    pagerduty_configs:
+      - service_key: '${PAGERDUTY_SERVICE_KEY}'
+        severity: error
+        description: '{{ .CommonLabels.alertname }}: {{ .CommonAnnotations.summary }}'
+        details:
+          environment: '{{ .CommonLabels.environment | default "unknown" }}'
+          service: '{{ .CommonLabels.service | default .CommonLabels.app | default "unknown" }}'
+          runbook: '{{ .CommonAnnotations.runbook_url | default "N/A" }}'

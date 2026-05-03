@@ -23,11 +23,11 @@ Every service must expose the following before shipping to production:
 
 ### RED Metrics (Rate, Errors, Duration)
 
-| Metric           | Description                       | Alert Threshold            |
-| ---------------- | --------------------------------- | -------------------------- |
-| Request rate     | Requests per second by endpoint   | Anomaly alert              |
-| Error rate       | 4xx + 5xx / total requests        | > {n}% over 5 min → P1     |
-| Request duration | p50, p95, p99 latency by endpoint | p95 > {target}ms → Warning |
+| Metric           | Description                       | Alert Threshold       |
+| ---------------- | --------------------------------- | --------------------- |
+| Request rate     | Requests per second by endpoint   | Anomaly alert         |
+| Error rate       | 4xx + 5xx / total requests        | > 1% over 5 min → P1  |
+| Request duration | p50, p95, p99 latency by endpoint | p95 > 500ms → Warning |
 
 ### USE Metrics (Utilization, Saturation, Errors) — Infrastructure
 
@@ -36,7 +36,7 @@ Every service must expose the following before shipping to production:
 | CPU utilization      | Per container/pod    | > 80% for 10 min → Warning |
 | Memory utilization   | Per container/pod    | > 85% for 5 min → Warning  |
 | Database connections | Active / pool max    | > 80% pool → Warning       |
-| Queue depth          | Unprocessed messages | > {n} for 5 min → Warning  |
+| Queue depth          | Unprocessed messages | > 1000 for 5 min → Warning |
 | Disk usage           | Per volume           | > 80% → Warning            |
 
 ---
@@ -48,26 +48,29 @@ Define SLOs before a service ships. Review quarterly.
 ### SLO Template
 
 ```
-Service: {service-name}
+Service: gtcx-agx
 SLO Window: Rolling 30 days
 
 Availability SLO:
-  Target: 99.{n}% uptime
-  Good event: HTTP response in < {threshold}ms with 2xx status
+  Target: 99.5% uptime
+  Good event: HTTP response in < 2000ms with 2xx status
   Bad event: HTTP response ≥ 500 or timeout
-  Error budget: {n} minutes/month downtime allowed
+  Error budget: 216 minutes/month downtime allowed
 
 Latency SLO:
-  Target: p95 < {threshold}ms for {endpoint}
+  Target: p95 < 500ms for /api/health, /api/v1/*
   Measurement: Prometheus histogram, 5-min windows
 ```
 
 ### Current SLOs
 
-| Service     | Availability Target | Latency Target (p95) | Error Budget  |
-| ----------- | ------------------- | -------------------- | ------------- |
-| [Service A] | 99.{n}%             | < {n}ms              | {n} min/month |
-| [Service B] | 99.{n}%             | < {n}ms              | {n} min/month |
+| Service                  | Availability Target | Latency Target (p95) | Error Budget  |
+| ------------------------ | ------------------- | -------------------- | ------------- |
+| AGX (platform)           | 99.5%               | < 500ms              | 216 min/month |
+| Protocols (verification) | 99.5%               | < 1000ms             | 216 min/month |
+| ANISA (intelligence)     | 99.0%               | < 2000ms             | 432 min/month |
+| Intelligence SDK         | 99.0%               | < 1500ms             | 432 min/month |
+| Crypto (signing)         | 99.9%               | < 100ms              | 43 min/month  |
 
 ---
 
@@ -86,8 +89,8 @@ Latency SLO:
 
 Every production service must have alerts for:
 
-- [ ] Error rate spike (> {n}% over 5 minutes)
-- [ ] p95 latency breach (> SLO threshold)
+- [ ] Error rate spike (> 1% over 5 minutes)
+- [ ] p95 latency breach (> SLO threshold per service)
 - [ ] Service unavailable (health check failing)
 - [ ] Database connection pool exhaustion
 - [ ] Disk space critical (> 80%)
@@ -127,11 +130,11 @@ All logs must be structured JSON. No unstructured log lines in production.
 
 ### Log Retention
 
-| Environment | Retention                                                    |
-| ----------- | ------------------------------------------------------------ |
-| Production  | {n} days (compliance minimum: check regulatory requirements) |
-| Staging     | {n} days                                                     |
-| Development | {n} days                                                     |
+| Environment | Retention                                                   |
+| ----------- | ----------------------------------------------------------- |
+| Production  | 90 days (per AUDITABLE principle — FATF compliance minimum) |
+| Staging     | 30 days                                                     |
+| Development | 7 days                                                      |
 
 ---
 
@@ -171,7 +174,7 @@ All inter-service calls must be instrumented with distributed traces.
 | `http.status_code` | Response code                    |
 | `db.statement`     | Query (sanitized — no values)    |
 
-**Sampling rate**: 100% in staging; {n}% in production (increase to 100% during incidents).
+**Sampling rate**: 100% in staging; 10% in production (increase to 100% during incidents).
 
 ---
 

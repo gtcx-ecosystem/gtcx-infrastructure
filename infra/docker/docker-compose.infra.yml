@@ -135,6 +135,27 @@ services:
     networks:
       - gtcx-network
 
+  # Alertmanager (Alert Routing)
+  alertmanager:
+    image: prom/alertmanager:v0.26.0
+    container_name: gtcx-alertmanager
+    command:
+      - '--config.file=/etc/alertmanager/alertmanager.yml'
+      - '--storage.path=/alertmanager'
+    ports:
+      - '9093:9093'
+    volumes:
+      - ./observability/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    depends_on:
+      - prometheus
+    healthcheck:
+      test: ['CMD', 'wget', '-q', '--spider', 'http://localhost:9093/-/ready']
+      interval: 15s
+      timeout: 5s
+      retries: 5
+    networks:
+      - gtcx-network
+
   # Grafana (Dashboards) -- FND-603: provisioning auto-configures datasources
   grafana:
     image: grafana/grafana:10.2.2
