@@ -250,3 +250,48 @@ jobs:
           git add infra/kubernetes/overlays/production/kustomization.yaml
           git diff --staged --quiet || git commit -m "chore(deploy): update image tags to ${GITHUB_SHA::8}"
           git push
+
+  # Deploy updated manifests to the production cluster
+  deploy:
+    needs: update-manifests
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    environment: production # Requires manual approval via GitHub environment protection rules
+    steps:
+      - name: Checkout (with updated manifests)
+        uses: actions/checkout@v4
+        with:
+          ref: main # Pull the commit with updated image tags
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Configure kubectl
+        run: |
+          aws eks update-kubeconfig \
+            --name "gtcx-zimbabwe-pilot" \
+            --region "${{ env.AWS_REGION }}"
+
+      - name: Deploy to production
+        run: |
+          kubectl apply -k infra/kubernetes/overlays/production/
+          echo "### Deployed to production" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Commit: \`${GITHUB_SHA::8}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Cluster: gtcx-zimbabwe-pilot" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Wait for rollout
+        run: |
+          kubectl rollout status deployment/gtcx-agx-prod -n gtcx-production --timeout=300s
+          kubectl rollout status deployment/gtcx-crypto-prod -n gtcx-production --timeout=300s
+          echo "- Rollout: **healthy**" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Verify health
+        run: |
+          AGX_POD=$(kubectl get pods -n gtcx-production -l app=gtcx-agx-prod -o jsonpath='{.items[0].metadata.name}' 2>/dev/null || echo "")
+          if [[ -n "${AGX_POD}" ]]; then
+            kubectl exec "${AGX_POD}" -n gtcx-production -- wget -q --spider http://localhost:3000/api/health
+            echo "- Health check: **passed**" >> "$GITHUB_STEP_SUMMARY"
+          fi
