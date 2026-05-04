@@ -28,15 +28,20 @@ configMapGenerator:
 
 images:
   - name: gtcx/agx
-    newTag: testnet
+    newName: 348389439381.dkr.ecr.af-south-1.amazonaws.com/gtcx-agx
+    newTag: sha-02dc530
   - name: gtcx/crx
-    newTag: testnet
+    newName: 348389439381.dkr.ecr.af-south-1.amazonaws.com/gtcx-crx
+    newTag: sha-02dc530
   - name: gtcx/sgx
-    newTag: testnet
+    newName: 348389439381.dkr.ecr.af-south-1.amazonaws.com/gtcx-sgx
+    newTag: sha-02dc530
   - name: gtcx/crypto
-    newTag: testnet
+    newName: 348389439381.dkr.ecr.af-south-1.amazonaws.com/gtcx-crypto
+    newTag: sha-02dc530
   - name: gtcx/protocols
-    newTag: testnet
+    newName: 348389439381.dkr.ecr.af-south-1.amazonaws.com/gtcx-protocols
+    newTag: sha-02dc530
 
 # Testnet resource limits — between development and staging
 patches:

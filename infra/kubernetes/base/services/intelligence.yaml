@@ -44,6 +44,8 @@ spec:
         runAsNonRoot: true
         runAsUser: 1000
         fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: anisa
           image: gtcx/anisa:latest
@@ -165,6 +167,8 @@ spec:
         runAsNonRoot: true
         runAsUser: 1000
         fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: sdk-server
           image: gtcx/intelligence-sdk:latest

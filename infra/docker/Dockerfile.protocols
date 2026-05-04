@@ -14,7 +14,6 @@ COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY packages/validators/package.json ./packages/validators/
 COPY packages/domain/package.json ./packages/domain/
 COPY packages/crypto/package.json ./packages/crypto/
-COPY packages/crypto-native/package.json ./packages/crypto-native/
 COPY packages/schemas/package.json ./packages/schemas/
 COPY packages/audit/package.json ./packages/audit/
 COPY packages/auth/package.json ./packages/auth/
@@ -31,7 +30,9 @@ COPY protocols/vaultmark/package.json ./protocols/vaultmark/
 COPY protocols/pvp/package.json ./protocols/pvp/
 COPY protocols/panx/package.json ./protocols/panx/
 COPY server/package.json ./server/
-RUN pnpm install --frozen-lockfile
+# crypto-native excluded from workspace (requires Rust toolchain)
+# Use --no-frozen-lockfile to handle optional workspace dep mismatch
+RUN pnpm install --no-frozen-lockfile
 
 # Stage 2: Copy source (tsx runs TypeScript directly, no build step)
 FROM node:20-alpine AS production
