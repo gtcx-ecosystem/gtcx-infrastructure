@@ -1,0 +1,227 @@
+#!/usr/bin/env bash
+# =============================================================================
+# GTCX Build & Push — Container images to ECR
+# =============================================================================
+# Builds Docker images from ecosystem repos and pushes to ECR.
+#
+# Usage:
+#   ./infra/scripts/build-push.sh                    # Build all, push all
+#   ./infra/scripts/build-push.sh protocols           # Build + push one service
+#   ./infra/scripts/build-push.sh --list              # List available services
+#   ./infra/scripts/build-push.sh --version=sha-abc   # Custom version tag
+#
+# Prerequisites:
+#   - Docker running
+#   - AWS CLI configured for af-south-1
+#   - Ecosystem repos cloned at the same level as gtcx-infrastructure
+# =============================================================================
+
+set -euo pipefail
+
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+CYAN='\033[0;36m'
+NC='\033[0m'
+
+log_info() { echo -e "${CYAN}[INFO]${NC} $1"; }
+log_success() { echo -e "${GREEN}[OK]${NC} $1"; }
+log_warning() { echo -e "${YELLOW}[WARN]${NC} $1"; }
+log_error() { echo -e "${RED}[ERROR]${NC} $1"; }
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+INFRA_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+ECOSYSTEM_ROOT="$(cd "${INFRA_ROOT}/../.." && pwd)"
+
+AWS_REGION="${AWS_REGION:-af-south-1}"
+AWS_ACCOUNT_ID="${AWS_ACCOUNT_ID:-}"
+VERSION=""
+TARGET_SERVICE=""
+
+# =============================================================================
+# Service definitions: name → dockerfile, context dir, build args
+# =============================================================================
+
+declare -A SERVICE_DOCKERFILE
+declare -A SERVICE_CONTEXT
+declare -A SERVICE_ARGS
+
+SERVICE_DOCKERFILE=(
+  [protocols]="infra/docker/Dockerfile.protocols"
+  [agx]="infra/docker/Dockerfile.platforms"
+  [crx]="infra/docker/Dockerfile.platforms"
+  [sgx]="infra/docker/Dockerfile.platforms"
+  [crypto]="infra/docker/Dockerfile.crypto"
+)
+
+SERVICE_CONTEXT=(
+  [protocols]="${ECOSYSTEM_ROOT}/gtcx-protocols"
+  [agx]="${ECOSYSTEM_ROOT}/6-platforms"
+  [crx]="${ECOSYSTEM_ROOT}/6-platforms"
+  [sgx]="${ECOSYSTEM_ROOT}/6-platforms"
+  [crypto]="${ECOSYSTEM_ROOT}/gtcx-core"
+)
+
+SERVICE_ARGS=(
+  [protocols]=""
+  [agx]="--build-arg PLATFORM=agx --build-arg APP_PORT=3000"
+  [crx]="--build-arg PLATFORM=crx --build-arg APP_PORT=3001"
+  [sgx]="--build-arg PLATFORM=sgx --build-arg APP_PORT=3002"
+  [crypto]=""
+)
+
+ALL_SERVICES=(protocols agx crx sgx crypto)
+
+# =============================================================================
+# Parse arguments
+# =============================================================================
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --version=*) VERSION="${1#*=}"; shift ;;
+        --list)
+            echo "Available services:"
+            for svc in "${ALL_SERVICES[@]}"; do
+                echo "  ${svc}"
+            done
+            exit 0
+            ;;
+        --help|-h)
+            echo "Usage: $(basename "$0") [service] [--version=TAG]"
+            echo ""
+            echo "Services: ${ALL_SERVICES[*]}"
+            echo "Omit service name to build all."
+            exit 0
+            ;;
+        -*)
+            log_error "Unknown flag: $1"
+            exit 1
+            ;;
+        *)
+            TARGET_SERVICE="$1"
+            shift
+            ;;
+    esac
+done
+
+# =============================================================================
+# Resolve version
+# =============================================================================
+
+if [[ -z "${VERSION}" ]]; then
+    VERSION="sha-$(git -C "${INFRA_ROOT}" rev-parse --short HEAD 2>/dev/null || echo "unknown")"
+fi
+
+log_info "Version: ${VERSION}"
+
+# =============================================================================
+# ECR login
+# =============================================================================
+
+ecr_login() {
+    if [[ -z "${AWS_ACCOUNT_ID}" ]]; then
+        AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text 2>/dev/null || echo "")
+        if [[ -z "${AWS_ACCOUNT_ID}" ]]; then
+            log_error "Cannot determine AWS account ID. Set AWS_ACCOUNT_ID or configure AWS CLI."
+            exit 1
+        fi
+    fi
+
+    local registry="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
+    log_info "Logging into ECR: ${registry}"
+    aws ecr get-login-password --region "${AWS_REGION}" \
+        | docker login --username AWS --password-stdin "${registry}" 2>/dev/null
+
+    echo "${registry}"
+}
+
+# =============================================================================
+# Build and push one service
+# =============================================================================
+
+build_and_push() {
+    local svc="$1"
+    local registry="$2"
+
+    local dockerfile="${INFRA_ROOT}/${SERVICE_DOCKERFILE[$svc]}"
+    local context="${SERVICE_CONTEXT[$svc]}"
+    local args="${SERVICE_ARGS[$svc]}"
+    local ecr_repo="${registry}/gtcx-${svc}"
+
+    # Validate
+    if [[ ! -f "${dockerfile}" ]]; then
+        log_error "Dockerfile not found: ${dockerfile}"
+        return 1
+    fi
+    if [[ ! -d "${context}" ]]; then
+        log_error "Context directory not found: ${context}"
+        log_warning "Clone the repo: git clone <url> ${context}"
+        return 1
+    fi
+
+    log_info "Building ${svc}..."
+    log_info "  Dockerfile: ${dockerfile}"
+    log_info "  Context:    ${context}"
+    log_info "  Tag:        ${ecr_repo}:${VERSION}"
+
+    # shellcheck disable=SC2086
+    docker build \
+        -f "${dockerfile}" \
+        ${args} \
+        -t "${ecr_repo}:${VERSION}" \
+        -t "${ecr_repo}:latest" \
+        "${context}"
+
+    log_info "Pushing ${svc}..."
+    docker push "${ecr_repo}:${VERSION}"
+    docker push "${ecr_repo}:latest"
+
+    log_success "${svc} → ${ecr_repo}:${VERSION}"
+}
+
+# =============================================================================
+# Main
+# =============================================================================
+
+main() {
+    local registry
+    registry=$(ecr_login)
+
+    local services=()
+    if [[ -n "${TARGET_SERVICE}" ]]; then
+        if [[ -z "${SERVICE_DOCKERFILE[${TARGET_SERVICE}]+x}" ]]; then
+            log_error "Unknown service: ${TARGET_SERVICE}"
+            log_info "Available: ${ALL_SERVICES[*]}"
+            exit 1
+        fi
+        services=("${TARGET_SERVICE}")
+    else
+        services=("${ALL_SERVICES[@]}")
+    fi
+
+    local failed=()
+    for svc in "${services[@]}"; do
+        if ! build_and_push "${svc}" "${registry}"; then
+            failed+=("${svc}")
+            log_warning "Skipping ${svc} (build failed)"
+        fi
+    done
+
+    echo ""
+    log_success "============================================"
+    log_success "  Build & Push Complete"
+    log_success "  Version: ${VERSION}"
+    log_success "  Registry: ${registry}"
+    log_success "  Built: $(( ${#services[@]} - ${#failed[@]} ))/${#services[@]} services"
+    if [[ ${#failed[@]} -gt 0 ]]; then
+        log_warning "  Failed: ${failed[*]}"
+    fi
+    log_success "============================================"
+    echo ""
+    log_info "Next: update kustomization image tags and apply"
+    log_info "  cd infra/kubernetes/overlays/<env>"
+    log_info "  kustomize edit set image gtcx/protocols=${registry}/gtcx-protocols:${VERSION}"
+    log_info "  kubectl apply -k ."
+}
+
+main
