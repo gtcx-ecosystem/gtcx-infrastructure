@@ -109,6 +109,42 @@ jobs:
           terraform init -backend=false
           terraform validate
 
+      - name: Terraform validate — ALB module
+        run: |
+          cd infra/terraform/modules/alb
+          terraform init -backend=false
+          terraform validate
+
+      - name: Terraform validate — Backup module
+        run: |
+          cd infra/terraform/modules/backup
+          terraform init -backend=false
+          terraform validate
+
+      - name: Terraform validate — Detective module
+        run: |
+          cd infra/terraform/modules/detective
+          terraform init -backend=false
+          terraform validate
+
+      - name: Terraform validate — Compliance module
+        run: |
+          cd infra/terraform/modules/compliance
+          terraform init -backend=false
+          terraform validate
+
+      - name: Terraform validate — Event Bus module
+        run: |
+          cd infra/terraform/modules/event-bus
+          terraform init -backend=false
+          terraform validate
+
+      - name: Terraform validate — KYC Documents module
+        run: |
+          cd infra/terraform/modules/kyc-documents
+          terraform init -backend=false
+          terraform validate
+
       - name: Kustomize build — base
         run: kubectl kustomize infra/kubernetes/base/ > /dev/null
 
