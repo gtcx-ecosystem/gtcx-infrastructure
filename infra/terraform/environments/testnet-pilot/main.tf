@@ -252,7 +252,7 @@ module "eks" {
   private_subnet_ids = module.vpc.private_subnet_ids
   public_subnet_ids  = module.vpc.public_subnet_ids
 
-  cluster_version     = "1.29"
+  cluster_version     = "1.31"
   node_instance_types = var.eks_node_instance_types
   node_desired_size   = var.eks_node_desired_size
   node_min_size       = var.eks_node_min_size
