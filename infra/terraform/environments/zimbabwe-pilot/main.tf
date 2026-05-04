@@ -395,6 +395,14 @@ output "acm_certificate_arn" {
   value       = module.alb.certificate_arn
 }
 
+output "db_master_secret_arns" {
+  description = "RDS master password secret ARNs — retrieve with: aws secretsmanager get-secret-value --secret-id <arn>"
+  value = {
+    operational = module.database.operational_master_secret_arn
+    audit       = module.database.audit_master_secret_arn
+  }
+}
+
 output "kubeconfig_command" {
   description = "Command to configure kubectl"
   value       = "aws eks update-kubeconfig --name ${module.eks.cluster_name} --region ${var.region}"

@@ -341,3 +341,13 @@ output "audit_db_identifier" {
   description = "Audit database RDS instance identifier"
   value       = aws_db_instance.audit.identifier
 }
+
+output "operational_master_secret_arn" {
+  description = "ARN of operational DB master password in AWS Secrets Manager (managed by RDS)"
+  value       = aws_db_instance.operational.master_user_secret[0].secret_arn
+}
+
+output "audit_master_secret_arn" {
+  description = "ARN of audit DB master password in AWS Secrets Manager (managed by RDS)"
+  value       = aws_db_instance.audit.master_user_secret[0].secret_arn
+}
