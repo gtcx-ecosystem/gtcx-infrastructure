@@ -22,3 +22,8 @@ output "certificate_domain_validation" {
     }
   ] : []
 }
+
+output "waf_web_acl_arn" {
+  description = "WAF WebACL ARN — use as alb.ingress.kubernetes.io/wafv2-acl-arn annotation"
+  value       = aws_wafv2_web_acl.main.arn
+}

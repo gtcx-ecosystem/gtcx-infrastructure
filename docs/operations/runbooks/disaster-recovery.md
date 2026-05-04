@@ -11,6 +11,25 @@ Recovery procedures for protocol services (TradePass, GeoTag, GCI, VaultMark, Pv
 | **RTO** (Recovery Time Objective)  | 4 hours    |
 | **RPO** (Recovery Point Objective) | 15 minutes |
 
+### Per-Component Targets
+
+| Component            | RPO                                   | RTO    | Recovery Method                                    |
+| -------------------- | ------------------------------------- | ------ | -------------------------------------------------- |
+| Operational DB (RDS) | 5 min (automated snapshots)           | 30 min | Multi-AZ failover (prod), snapshot restore (pilot) |
+| Audit DB (RDS)       | 5 min                                 | 1 hour | Snapshot restore only (never delete audit data)    |
+| KYC Documents (S3)   | 0 (versioned)                         | 15 min | S3 versioning recovery                             |
+| K8s workloads        | 0 (stateless, git is source of truth) | 15 min | `kubectl apply -k overlays/<env>/`                 |
+| NATS JetStream       | 30 min (disk-persisted)               | 15 min | Re-deploy from manifests                           |
+| Terraform state      | 0 (versioned S3)                      | 5 min  | S3 versioning recovery                             |
+
+### DR Test Schedule
+
+Run `infra/scripts/dr-test.sh` quarterly. Record results below.
+
+| Date | Test Type | RTO Achieved | RPO Achieved | Issues | Status |
+| ---- | --------- | ------------ | ------------ | ------ | ------ |
+| —    | —         | —            | —            | —      | —      |
+
 ---
 
 ## Preconditions

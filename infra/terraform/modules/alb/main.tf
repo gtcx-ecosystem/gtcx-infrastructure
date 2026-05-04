@@ -221,6 +221,124 @@ resource "helm_release" "alb_controller" {
 # so individual Ingress resources inherit TLS 1.2+ by default.
 # -----------------------------------------------------------------------------
 
+# -----------------------------------------------------------------------------
+# WAF v2 — OWASP Core Rule Set
+# -----------------------------------------------------------------------------
+# Protects ALB-managed load balancers from common web exploits.
+# The ALB controller automatically associates this WebACL when Ingress
+# resources include: alb.ingress.kubernetes.io/wafv2-acl-arn annotation.
+# -----------------------------------------------------------------------------
+
+resource "aws_wafv2_web_acl" "main" {
+  name        = "gtcx-${var.environment}-waf"
+  description = "GTCX WAF — OWASP Core Rule Set for API protection"
+  scope       = "REGIONAL"
+
+  default_action {
+    allow {}
+  }
+
+  # AWS Managed Rules — Core Rule Set (OWASP top 10)
+  rule {
+    name     = "AWS-AWSManagedRulesCommonRuleSet"
+    priority = 1
+
+    override_action {
+      none {}
+    }
+
+    statement {
+      managed_rule_group_statement {
+        name        = "AWSManagedRulesCommonRuleSet"
+        vendor_name = "AWS"
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "gtcx-${var.environment}-common-rules"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  # AWS Managed Rules — Known Bad Inputs
+  rule {
+    name     = "AWS-AWSManagedRulesKnownBadInputsRuleSet"
+    priority = 2
+
+    override_action {
+      none {}
+    }
+
+    statement {
+      managed_rule_group_statement {
+        name        = "AWSManagedRulesKnownBadInputsRuleSet"
+        vendor_name = "AWS"
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "gtcx-${var.environment}-bad-inputs"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  # AWS Managed Rules — SQL Injection
+  rule {
+    name     = "AWS-AWSManagedRulesSQLiRuleSet"
+    priority = 3
+
+    override_action {
+      none {}
+    }
+
+    statement {
+      managed_rule_group_statement {
+        name        = "AWSManagedRulesSQLiRuleSet"
+        vendor_name = "AWS"
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "gtcx-${var.environment}-sqli"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  # Rate limiting — 2000 requests per 5 minutes per IP
+  rule {
+    name     = "RateLimitPerIP"
+    priority = 4
+
+    action {
+      block {}
+    }
+
+    statement {
+      rate_based_statement {
+        limit              = 2000
+        aggregate_key_type = "IP"
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "gtcx-${var.environment}-rate-limit"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  visibility_config {
+    cloudwatch_metrics_enabled = true
+    metric_name                = "gtcx-${var.environment}-waf"
+    sampled_requests_enabled   = true
+  }
+
+  tags = local.common_tags
+}
+
 resource "kubectl_manifest" "ingress_class_params" {
   yaml_body = yamlencode({
     apiVersion = "elbv2.k8s.aws/v1beta1"
