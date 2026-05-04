@@ -135,6 +135,11 @@ metadata:
     app.kubernetes.io/component: metrics
 spec:
   replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: prometheus
@@ -163,6 +168,11 @@ spec:
             limits:
               cpu: 500m
               memory: 1Gi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
           volumeMounts:
             - name: config
               mountPath: /etc/prometheus/
@@ -184,6 +194,13 @@ spec:
             periodSeconds: 5
             timeoutSeconds: 3
             failureThreshold: 3
+          startupProbe:
+            httpGet:
+              path: /-/ready
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 5
+            failureThreshold: 12
       volumes:
         - name: config
           configMap:
@@ -226,6 +243,11 @@ metadata:
     app.kubernetes.io/component: dashboards
 spec:
   replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: grafana
@@ -254,6 +276,11 @@ spec:
             limits:
               cpu: 500m
               memory: 512Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
           env:
             - name: GF_SECURITY_ADMIN_PASSWORD
               valueFrom:
@@ -275,6 +302,13 @@ spec:
               port: http
             initialDelaySeconds: 10
             periodSeconds: 5
+          startupProbe:
+            httpGet:
+              path: /api/health
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 5
+            failureThreshold: 12
       volumes:
         - name: data
           persistentVolumeClaim:
@@ -418,6 +452,11 @@ metadata:
     app.kubernetes.io/component: logs
 spec:
   replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: loki
@@ -448,6 +487,11 @@ spec:
             limits:
               cpu: 500m
               memory: 512Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
           volumeMounts:
             - name: config
               mountPath: /etc/loki/
@@ -465,6 +509,13 @@ spec:
               port: http
             initialDelaySeconds: 15
             periodSeconds: 5
+          startupProbe:
+            httpGet:
+              path: /ready
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 5
+            failureThreshold: 12
       volumes:
         - name: config
           configMap:
@@ -526,6 +577,11 @@ metadata:
     app.kubernetes.io/component: tracing
 spec:
   replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: jaeger
@@ -536,6 +592,10 @@ spec:
         app.kubernetes.io/part-of: gtcx
         app.kubernetes.io/component: tracing
     spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        fsGroup: 10001
       containers:
         - name: jaeger
           image: jaegertracing/all-in-one:1.52
@@ -556,6 +616,11 @@ spec:
             limits:
               cpu: 500m
               memory: 512Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
           livenessProbe:
             httpGet:
               path: /
@@ -568,6 +633,13 @@ spec:
               port: ui
             initialDelaySeconds: 10
             periodSeconds: 5
+          startupProbe:
+            httpGet:
+              path: /
+              port: ui
+            initialDelaySeconds: 15
+            periodSeconds: 5
+            failureThreshold: 12
 ---
 # -----------------------------------------------------------------------------
 # Jaeger Service

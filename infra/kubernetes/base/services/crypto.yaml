@@ -14,6 +14,11 @@ metadata:
     tier: crypto
 spec:
   replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
   selector:
     matchLabels:
       app: gtcx-crypto
@@ -70,6 +75,13 @@ spec:
               port: grpc
             initialDelaySeconds: 5
             periodSeconds: 5
+          startupProbe:
+            httpGet:
+              path: /health
+              port: grpc
+            initialDelaySeconds: 3
+            periodSeconds: 3
+            failureThreshold: 10
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
