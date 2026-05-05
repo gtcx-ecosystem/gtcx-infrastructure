@@ -16,7 +16,7 @@
 
 global:
   resolve_timeout: 5m
-  pagerduty_url: 'https://events.pagerduty.com/v2/enqueue'
+  pagerduty_url: 'https://events.eu.pagerduty.com/v2/enqueue'
 
 # =============================================================================
 # Alert Templates
@@ -37,6 +37,16 @@ route:
   repeat_interval: 4h
 
   routes:
+    # Intelligence services — dedicated PagerDuty routing
+    - match:
+        service: intelligence
+      receiver: pagerduty-intelligence
+      group_by: ['alertname', 'service']
+      group_wait: 30s
+      group_interval: 5m
+      repeat_interval: 4h
+      continue: true
+
     # P0 — Critical: immediate page, escalate every 15 min if unacknowledged
     - match:
         severity: critical
@@ -164,3 +174,13 @@ receivers:
           environment: '{{ .CommonLabels.environment | default "unknown" }}'
           service: '{{ .CommonLabels.service | default .CommonLabels.app | default "unknown" }}'
           runbook: '{{ .CommonAnnotations.runbook_url | default "N/A" }}'
+
+  - name: pagerduty-intelligence
+    pagerduty_configs:
+      - routing_key: 'f1abedcb69384c06d1a99e45940cfc2d'
+        severity: '{{ .CommonLabels.severity }}'
+        description: '{{ .CommonAnnotations.summary }}'
+        details:
+          service: '{{ .CommonLabels.service }}'
+          alertname: '{{ .CommonLabels.alertname }}'
+          environment: '{{ .CommonLabels.environment | default "unknown" }}'
