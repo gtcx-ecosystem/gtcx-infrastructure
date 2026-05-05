@@ -47,7 +47,7 @@ resource "helm_release" "argo_workflows" {
 
   set {
     name  = "controller.persistence.archive"
-    value = "true"
+    value = "false"
   }
 
   set {
