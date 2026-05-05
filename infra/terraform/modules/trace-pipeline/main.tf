@@ -52,6 +52,8 @@ resource "aws_s3_bucket_lifecycle_configuration" "traces" {
     id     = "expire-old-traces"
     status = "Enabled"
 
+    filter {}
+
     expiration {
       days = var.trace_s3_expiration_days
     }
@@ -89,7 +91,7 @@ resource "aws_sqs_queue" "trace_events" {
 
   tags = merge(local.common_tags, {
     Name    = var.queue_name
-    Purpose = "Async trace events from OTEL → quality scorer"
+    Purpose = "Async trace events from OTEL to quality scorer"
   })
 }
 
@@ -112,7 +114,7 @@ resource "aws_sqs_queue" "trace_events_dlq" {
 resource "helm_release" "tempo" {
   name             = "tempo"
   repository       = "https://grafana.github.io/helm-charts"
-  chart            = "tempo-distributed"
+  chart            = "tempo"
   version          = var.tempo_chart_version
   namespace        = var.tempo_namespace
   create_namespace = true

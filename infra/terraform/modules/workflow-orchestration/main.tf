@@ -218,8 +218,8 @@ resource "kubernetes_service_account" "workflow" {
 # K8s — Fine-Tune Workflow Template
 # -----------------------------------------------------------------------------
 
-resource "kubernetes_manifest" "fine_tune_workflow_template" {
-  manifest = {
+resource "kubectl_manifest" "fine_tune_workflow_template" {
+  yaml_body = yamlencode({
     apiVersion = "argoproj.io/v1alpha1"
     kind       = "WorkflowTemplate"
     metadata = {
@@ -250,7 +250,7 @@ resource "kubernetes_manifest" "fine_tune_workflow_template" {
         {
           name = "curate"
           container = {
-            image   = "{{workflow.parameters.ecr-registry}}/gtcx-intelligence-sdk:latest"
+            image   = "placeholder/gtcx-intelligence-sdk:latest"
             command = ["node", "dist/learning/curator.js"]
             args    = ["--dataset-version", "{{workflow.parameters.dataset-version}}"]
           }
@@ -266,7 +266,7 @@ resource "kubernetes_manifest" "fine_tune_workflow_template" {
             effect   = "NoSchedule"
           }]
           container = {
-            image   = "{{workflow.parameters.ecr-registry}}/gtcx-intelligence-sdk:latest"
+            image   = "placeholder/gtcx-intelligence-sdk:latest"
             command = ["python", "fine_tune.py"]
             resources = {
               limits = {
@@ -283,7 +283,7 @@ resource "kubernetes_manifest" "fine_tune_workflow_template" {
         {
           name = "eval"
           container = {
-            image   = "{{workflow.parameters.ecr-registry}}/gtcx-intelligence-sdk:latest"
+            image   = "placeholder/gtcx-intelligence-sdk:latest"
             command = ["node", "dist/learning/eval.js"]
             args    = ["--threshold", "{{workflow.parameters.eval-threshold}}"]
           }
@@ -291,21 +291,21 @@ resource "kubernetes_manifest" "fine_tune_workflow_template" {
         {
           name = "red-team-scan"
           container = {
-            image   = "{{workflow.parameters.ecr-registry}}/gtcx-intelligence-red-team:latest"
+            image   = "placeholder/gtcx-intelligence-red-team:latest"
             command = ["python", "-m", "garak", "--model-type", "local"]
           }
         },
         {
           name = "promotion-gate"
           container = {
-            image   = "{{workflow.parameters.ecr-registry}}/gtcx-intelligence-sdk:latest"
+            image   = "placeholder/gtcx-intelligence-sdk:latest"
             command = ["node", "dist/learning/promoter.js"]
             args    = ["--model-id", "{{workflow.parameters.model-id}}"]
           }
         },
       ]
     }
-  }
+  })
 
   depends_on = [helm_release.argo_workflows]
 }
@@ -314,8 +314,8 @@ resource "kubernetes_manifest" "fine_tune_workflow_template" {
 # K8s — CronWorkflow (Bi-Weekly Fine-Tune Cycle)
 # -----------------------------------------------------------------------------
 
-resource "kubernetes_manifest" "fine_tune_cron" {
-  manifest = {
+resource "kubectl_manifest" "fine_tune_cron" {
+  yaml_body = yamlencode({
     apiVersion = "argoproj.io/v1alpha1"
     kind       = "CronWorkflow"
     metadata = {
@@ -337,7 +337,7 @@ resource "kubernetes_manifest" "fine_tune_cron" {
         }
       }
     }
-  }
+  })
 
-  depends_on = [kubernetes_manifest.fine_tune_workflow_template]
+  depends_on = [kubectl_manifest.fine_tune_workflow_template]
 }

@@ -126,6 +126,19 @@ variable "domain_name" {
   default     = "gtcxprotocol.org"
 }
 
+variable "vault_address" {
+  description = "Vault server address (e.g., http://vault.vault:8200 for in-cluster)"
+  type        = string
+  default     = "http://vault.vault:8200"
+}
+
+variable "vault_token" {
+  description = "Vault root or admin token for initial configuration"
+  type        = string
+  sensitive   = true
+  default     = "not-configured"
+}
+
 variable "tags" {
   description = "Additional tags"
   type        = map(string)
@@ -157,8 +170,8 @@ data "aws_eks_cluster" "main" {
 # Initial apply will deploy Vault. Subsequent applies configure engines.
 # Set VAULT_ADDR and VAULT_TOKEN in environment for the vault provider.
 provider "vault" {
-  # address is set via VAULT_ADDR environment variable
-  # token is set via VAULT_TOKEN environment variable
+  address          = var.vault_address
+  token            = var.vault_token
   skip_child_token = true
 }
 

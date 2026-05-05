@@ -41,7 +41,7 @@ variable "tempo_namespace" {
 variable "tempo_chart_version" {
   description = "Grafana Tempo Helm chart version"
   type        = string
-  default     = "1.10.3"
+  default     = "1.24.4"
 }
 
 # -----------------------------------------------------------------------------

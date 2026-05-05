@@ -32,7 +32,7 @@ resource "aws_s3_bucket" "datasets" {
 
   tags = merge(local.common_tags, {
     Name    = var.dataset_bucket_name
-    Purpose = "DVC-versioned training datasets from production traces"
+    Purpose = "DVC-versioned training datasets"
   })
 }
 
@@ -60,6 +60,8 @@ resource "aws_s3_bucket_lifecycle_configuration" "datasets" {
   rule {
     id     = "archive-old-datasets"
     status = "Enabled"
+
+    filter {}
 
     transition {
       days          = var.dataset_glacier_transition_days
@@ -90,7 +92,7 @@ resource "aws_s3_bucket" "models" {
 
   tags = merge(local.common_tags, {
     Name    = var.model_bucket_name
-    Purpose = "Model weights, LoRA adapters, and training artifacts"
+    Purpose = "Model weights and LoRA adapters"
   })
 }
 
@@ -165,7 +167,7 @@ resource "aws_dynamodb_table" "model_registry" {
 
   tags = merge(local.common_tags, {
     Name    = var.registry_table_name
-    Purpose = "Model metadata, eval results, lineage tracking"
+    Purpose = "Model metadata and lineage tracking"
   })
 }
 
