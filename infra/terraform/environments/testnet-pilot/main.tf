@@ -29,6 +29,10 @@ terraform {
       source  = "hashicorp/kubernetes"
       version = "~> 2.25"
     }
+    vault = {
+      source  = "hashicorp/vault"
+      version = "~> 4.2"
+    }
   }
 
   backend "s3" {
@@ -147,6 +151,15 @@ provider "aws" {
 
 data "aws_eks_cluster" "main" {
   name = "gtcx-${var.environment}"
+}
+
+# Vault provider — configured after Vault Helm release is deployed.
+# Initial apply will deploy Vault. Subsequent applies configure engines.
+# Set VAULT_ADDR and VAULT_TOKEN in environment for the vault provider.
+provider "vault" {
+  # address is set via VAULT_ADDR environment variable
+  # token is set via VAULT_TOKEN environment variable
+  skip_child_token = true
 }
 
 provider "kubernetes" {
@@ -312,6 +325,142 @@ module "ci" {
 }
 
 # -----------------------------------------------------------------------------
+# Secrets (Secrets Manager + ESO + IRSA)
+# -----------------------------------------------------------------------------
+
+module "secrets" {
+  source = "../../modules/secrets"
+
+  environment           = var.environment
+  eks_cluster_name      = module.eks.cluster_name
+  eks_oidc_provider_arn = module.eks.oidc_provider_arn
+
+  tags = var.tags
+}
+
+# -----------------------------------------------------------------------------
+# Vault (Dynamic Credentials — SIGNAL L4)
+# -----------------------------------------------------------------------------
+
+module "vault" {
+  source = "../../modules/vault"
+
+  environment           = var.environment
+  namespace             = "vault"
+  replicas              = 1 # single replica for testnet (HA in production)
+  storage_size_gb       = 5
+  eks_oidc_provider_arn = module.eks.oidc_provider_arn
+  eks_oidc_provider_url = replace(module.eks.oidc_provider_url, "https://", "")
+
+  rds_endpoint                      = module.database.operational_endpoint
+  rds_database_name                 = "gtcx_development"
+  vault_db_admin_password_secret_arn = module.database.operational_master_secret_arn
+
+  enable_pki = true
+
+  k8s_auth_roles = {
+    "intelligence-prod" = {
+      bound_service_account_names      = ["intelligence"]
+      bound_service_account_namespaces = ["intelligence"]
+      token_ttl_seconds                = 3600
+      token_policies                   = ["db-intelligence-prod", "pki-intelligence"]
+    }
+    "protocols-prod" = {
+      bound_service_account_names      = ["gtcx-platform"]
+      bound_service_account_namespaces = ["gtcx"]
+      token_ttl_seconds                = 3600
+      token_policies                   = ["db-protocols-prod"]
+    }
+  }
+
+  db_roles = {
+    "intelligence-prod" = {
+      db_name = "operational"
+      creation_statements = [
+        "CREATE ROLE \"{{name}}\" WITH LOGIN PASSWORD '{{password}}' VALID UNTIL '{{expiration}}'; GRANT SELECT, INSERT, UPDATE ON ALL TABLES IN SCHEMA public TO \"{{name}}\";",
+      ]
+      revocation_statements = ["DROP ROLE IF EXISTS \"{{name}}\";"]
+      default_ttl_seconds   = 3600
+      max_ttl_seconds       = 86400
+    }
+    "protocols-prod" = {
+      db_name = "operational"
+      creation_statements = [
+        "CREATE ROLE \"{{name}}\" WITH LOGIN PASSWORD '{{password}}' VALID UNTIL '{{expiration}}'; GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO \"{{name}}\";",
+      ]
+      revocation_statements = ["DROP ROLE IF EXISTS \"{{name}}\";"]
+      default_ttl_seconds   = 3600
+      max_ttl_seconds       = 86400
+    }
+  }
+
+  pki_roles = {
+    "intelligence" = {
+      allowed_domains  = ["intelligence.svc.cluster.local", "gtcx.svc.cluster.local"]
+      allow_subdomains = true
+      max_ttl_hours    = 72
+      key_type         = "ec"
+      key_bits         = 256
+    }
+  }
+
+  tags = var.tags
+}
+
+# -----------------------------------------------------------------------------
+# ML Pipeline Storage (SIGNAL L5)
+# -----------------------------------------------------------------------------
+
+module "ml_pipeline" {
+  source = "../../modules/ml-pipeline"
+
+  environment           = var.environment
+  region                = var.region
+  dataset_bucket_name   = "gtcx-${var.environment}-intelligence-datasets"
+  model_bucket_name     = "gtcx-${var.environment}-intelligence-models"
+  registry_table_name   = "gtcx-${var.environment}-model-registry"
+  eks_oidc_provider_arn = module.eks.oidc_provider_arn
+  eks_oidc_provider_url = replace(module.eks.oidc_provider_url, "https://", "")
+
+  tags = var.tags
+}
+
+# -----------------------------------------------------------------------------
+# Trace Pipeline (SIGNAL L5)
+# -----------------------------------------------------------------------------
+
+module "trace_pipeline" {
+  source = "../../modules/trace-pipeline"
+
+  environment           = var.environment
+  trace_bucket_name     = "gtcx-${var.environment}-intelligence-traces"
+  queue_name            = "gtcx-${var.environment}-trace-events"
+  eks_oidc_provider_arn = module.eks.oidc_provider_arn
+  eks_oidc_provider_url = replace(module.eks.oidc_provider_url, "https://", "")
+
+  tags = var.tags
+}
+
+# -----------------------------------------------------------------------------
+# Workflow Orchestration — Argo Workflows (SIGNAL L5)
+# -----------------------------------------------------------------------------
+
+module "workflow_orchestration" {
+  source = "../../modules/workflow-orchestration"
+
+  environment           = var.environment
+  eks_oidc_provider_arn = module.eks.oidc_provider_arn
+  eks_oidc_provider_url = replace(module.eks.oidc_provider_url, "https://", "")
+  dataset_bucket_arn    = module.ml_pipeline.dataset_bucket_arn
+  model_bucket_arn      = module.ml_pipeline.model_bucket_arn
+  registry_table_arn    = module.ml_pipeline.registry_table_arn
+  trace_queue_arn       = module.trace_pipeline.queue_arn
+  ecr_repository_arns   = module.ecr.repository_arns
+
+  tags = var.tags
+}
+
+# -----------------------------------------------------------------------------
 # Outputs
 # -----------------------------------------------------------------------------
 
@@ -375,4 +524,36 @@ output "kubeconfig_command" {
 output "github_deploy_role_arn" {
   description = "IAM role ARN for GitHub Actions"
   value       = module.ci.deploy_role_arn
+}
+
+# -- L4/L5 Infrastructure
+
+output "vault_namespace" {
+  description = "Vault Kubernetes namespace"
+  value       = module.vault.vault_namespace
+}
+
+output "ml_pipeline_dataset_bucket" {
+  description = "ML pipeline dataset S3 bucket"
+  value       = module.ml_pipeline.dataset_bucket_name
+}
+
+output "ml_pipeline_model_bucket" {
+  description = "ML pipeline model S3 bucket"
+  value       = module.ml_pipeline.model_bucket_name
+}
+
+output "ml_pipeline_registry_table" {
+  description = "Model registry DynamoDB table"
+  value       = module.ml_pipeline.registry_table_name
+}
+
+output "trace_pipeline_queue_url" {
+  description = "SQS trace events queue URL"
+  value       = module.trace_pipeline.queue_url
+}
+
+output "argo_workflows_namespace" {
+  description = "Argo Workflows namespace"
+  value       = module.workflow_orchestration.namespace
 }
