@@ -12,12 +12,17 @@ variable "environment" {
 }
 
 variable "jurisdiction" {
-  description = "Jurisdiction identifier — drives region and compliance defaults. Options: zimbabwe, kenya, ghana, generic"
+  description = "Jurisdiction identifier — drives region, retention, and regulatory defaults"
   type        = string
 
   validation {
-    condition     = contains(["zimbabwe", "kenya", "ghana", "nigeria", "tanzania", "rwanda", "generic"], var.jurisdiction)
-    error_message = "jurisdiction must be one of: zimbabwe, kenya, ghana, nigeria, tanzania, rwanda, generic"
+    condition = contains([
+      "zimbabwe", "south_africa", "nigeria", "egypt",
+      "kenya", "ghana", "tanzania", "rwanda",
+      "waemu", "cemac",
+      "generic"
+    ], var.jurisdiction)
+    error_message = "jurisdiction must be one of: zimbabwe, south_africa, nigeria, egypt, kenya, ghana, tanzania, rwanda, waemu, cemac, generic"
   }
 }
 
@@ -113,14 +118,14 @@ variable "backup_retention_days" {
   default     = 30
 }
 
-variable "kyc_retention_days" {
-  description = "KYC document retention in days (FATF minimum: 1825 = 5 years)"
+variable "kyc_retention_days_override" {
+  description = "Override jurisdiction default KYC retention (days). If null, uses jurisdiction preset. Must be >= 1825 (FATF minimum)."
   type        = number
-  default     = 1825
+  default     = null
 
   validation {
-    condition     = var.kyc_retention_days >= 1825
-    error_message = "kyc_retention_days must be >= 1825 (5 years) to meet FATF minimum requirements"
+    condition     = var.kyc_retention_days_override == null || var.kyc_retention_days_override >= 1825
+    error_message = "kyc_retention_days_override must be >= 1825 (5 years) to meet FATF minimum requirements"
   }
 }
 

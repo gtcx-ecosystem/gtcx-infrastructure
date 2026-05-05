@@ -34,12 +34,43 @@ module "compliance_db" {
 
 ## Jurisdiction presets
 
-| Jurisdiction | Region            | KYC Retention                     | Backup Retention | Notes                           |
-| ------------ | ----------------- | --------------------------------- | ---------------- | ------------------------------- |
-| `zimbabwe`   | af-south-1        | 1825 days (5 years, FATF minimum) | 7 years          | ZWCMP compliance                |
-| `kenya`      | af-south-1        | 1825 days                         | 7 years          | CBK requirements                |
-| `ghana`      | eu-west-1         | 1825 days                         | 7 years          | BoG requirements                |
-| `generic`    | (from var.region) | 1825 days                         | 7 years          | No jurisdiction-specific config |
+### Phase 1 — Big 8 (~85% of African fintech volume)
+
+| Jurisdiction   | Region     | KYC Retention  | Audit Retention | Regulator | Data Protection Law                         |
+| -------------- | ---------- | -------------- | --------------- | --------- | ------------------------------------------- |
+| `zimbabwe`     | af-south-1 | 1825 days (5y) | 2555 days (7y)  | RBZ       | Cyber and Data Protection Act (2021)        |
+| `south_africa` | af-south-1 | 1825 days (5y) | 2555 days (7y)  | SARB      | POPIA (2013)                                |
+| `nigeria`      | af-south-1 | 2190 days (6y) | 2555 days (7y)  | CBN       | NDPA (2023)                                 |
+| `egypt`        | me-south-1 | 1825 days (5y) | 3650 days (10y) | CBE       | Personal Data Protection Law No. 151 (2020) |
+| `kenya`        | af-south-1 | 1825 days (5y) | 2555 days (7y)  | CBK       | Data Protection Act (2019)                  |
+| `ghana`        | eu-west-1  | 1825 days (5y) | 2555 days (7y)  | BoG       | Data Protection Act (Act 843, 2012)         |
+| `tanzania`     | af-south-1 | 1825 days (5y) | 2555 days (7y)  | BoT       | Pending (TCRA interim)                      |
+| `rwanda`       | af-south-1 | 1825 days (5y) | 2555 days (7y)  | BNR       | Law N° 058/2021                             |
+
+### Phase 2 — Regional Blocs (covers 14 additional countries)
+
+| Jurisdiction | Region    | Countries                                                                     | Regulator | Notes                                    |
+| ------------ | --------- | ----------------------------------------------------------------------------- | --------- | ---------------------------------------- |
+| `waemu`      | eu-west-3 | Benin, Burkina Faso, Cote d'Ivoire, Guinea-Bissau, Mali, Niger, Senegal, Togo | BCEAO     | 10y audit (OHADA). CFA franc zone.       |
+| `cemac`      | eu-west-3 | Cameroon, CAR, Chad, Congo, Equatorial Guinea, Gabon                          | BEAC      | 10y audit (OHADA). CFA franc (XAF) zone. |
+
+### Generic
+
+| Jurisdiction | Region            | Notes                                        |
+| ------------ | ----------------- | -------------------------------------------- |
+| `generic`    | (from var.region) | FATF baseline. Override retention as needed. |
+
+### Outputs
+
+The `jurisdiction_metadata` output provides full regulatory context:
+
+```hcl
+output "jurisdiction_metadata" {
+  # regulator, data_protection_law, data_protection_authority,
+  # kyc_retention_days, audit_retention_days, cross_border_allowed,
+  # cross_border_conditions, notes
+}
+```
 
 ## Outputs
 

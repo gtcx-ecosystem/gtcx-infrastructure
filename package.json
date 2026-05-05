@@ -37,6 +37,7 @@
     "husky": "^9.1.7",
     "lint-staged": "^16.4.0",
     "prettier": "^3.4.0",
+    "tinyexec": "^1.1.2",
     "turbo": "^2.3.0",
     "typescript": "^5.7.0"
   },
