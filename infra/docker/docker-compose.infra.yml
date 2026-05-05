@@ -26,16 +26,17 @@ services:
     image: postgres:16-alpine
     container_name: gtcx-postgres
     environment:
-      POSTGRES_USER: gtcx
-      POSTGRES_PASSWORD: gtcx_dev_password
-      POSTGRES_DB: gtcx_development
+      POSTGRES_USER: ${POSTGRES_USER:-gtcx}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-gtcx_dev_password}
+      POSTGRES_DB: ${POSTGRES_DB:-gtcx_development}
     ports:
       - '5432:5432'
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./init-scripts/postgres:/docker-entrypoint-initdb.d
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U gtcx -d gtcx_development']
+      test:
+        ['CMD-SHELL', 'pg_isready -U $${POSTGRES_USER:-gtcx} -d $${POSTGRES_DB:-gtcx_development}']
       interval: 10s
       timeout: 5s
       retries: 5
@@ -47,16 +48,20 @@ services:
     image: postgres:16-alpine
     container_name: gtcx-postgres-audit
     environment:
-      POSTGRES_USER: gtcx_audit
-      POSTGRES_PASSWORD: gtcx_audit_dev_password
-      POSTGRES_DB: gtcx_audit
+      POSTGRES_USER: ${POSTGRES_AUDIT_USER:-gtcx_audit}
+      POSTGRES_PASSWORD: ${POSTGRES_AUDIT_PASSWORD:-gtcx_audit_dev_password}
+      POSTGRES_DB: ${POSTGRES_AUDIT_DB:-gtcx_audit}
     ports:
       - '5433:5432'
     volumes:
       - postgres_audit_data:/var/lib/postgresql/data
       - ./init-scripts/postgres-audit:/docker-entrypoint-initdb.d
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U gtcx_audit -d gtcx_audit']
+      test:
+        [
+          'CMD-SHELL',
+          'pg_isready -U $${POSTGRES_AUDIT_USER:-gtcx_audit} -d $${POSTGRES_AUDIT_DB:-gtcx_audit}',
+        ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -73,6 +78,32 @@ services:
       - redis_data:/data
     healthcheck:
       test: ['CMD', 'redis-cli', 'ping']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - gtcx-network
+
+  # ===========================================================================
+  # EVENT BUS (per RESILIENT principle)
+  # ===========================================================================
+
+  # NATS with JetStream — cross-service domain event pub/sub
+  nats:
+    image: nats:2.10-alpine
+    container_name: gtcx-nats
+    command:
+      - '--config'
+      - '/etc/nats/nats.conf'
+    ports:
+      - '4222:4222' # Client
+      - '6222:6222' # Cluster routing
+      - '8222:8222' # Monitoring / health
+    volumes:
+      - nats_data:/data/jetstream
+      - ./nats/nats.conf:/etc/nats/nats.conf:ro
+    healthcheck:
+      test: ['CMD', 'wget', '-q', '--spider', 'http://localhost:8222/healthz']
       interval: 10s
       timeout: 5s
       retries: 5
@@ -98,6 +129,27 @@ services:
       - prometheus_data:/prometheus
     healthcheck:
       test: ['CMD', 'wget', '-q', '--spider', 'http://localhost:9090/-/ready']
+      interval: 15s
+      timeout: 5s
+      retries: 5
+    networks:
+      - gtcx-network
+
+  # Alertmanager (Alert Routing)
+  alertmanager:
+    image: prom/alertmanager:v0.26.0
+    container_name: gtcx-alertmanager
+    command:
+      - '--config.file=/etc/alertmanager/alertmanager.yml'
+      - '--storage.path=/alertmanager'
+    ports:
+      - '9093:9093'
+    volumes:
+      - ./observability/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    depends_on:
+      - prometheus
+    healthcheck:
+      test: ['CMD', 'wget', '-q', '--spider', 'http://localhost:9093/-/ready']
       interval: 15s
       timeout: 5s
       retries: 5
@@ -182,6 +234,8 @@ volumes:
     name: gtcx-infra-postgres-audit-data
   redis_data:
     name: gtcx-infra-redis-data
+  nats_data:
+    name: gtcx-infra-nats-data
   prometheus_data:
     name: gtcx-infra-prometheus-data
   grafana_data:

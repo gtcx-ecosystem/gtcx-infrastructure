@@ -14,6 +14,11 @@ metadata:
     tier: crypto
 spec:
   replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
   selector:
     matchLabels:
       app: gtcx-crypto
@@ -23,35 +28,37 @@ spec:
         app: gtcx-crypto
         tier: crypto
       annotations:
-        prometheus.io/scrape: "true"
-        prometheus.io/port: "8080"
-        prometheus.io/path: "/metrics"
+        prometheus.io/scrape: 'true'
+        prometheus.io/port: '8080'
+        prometheus.io/path: '/metrics'
     spec:
       serviceAccountName: gtcx-crypto
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
         runAsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: crypto
           image: gtcx/crypto:latest
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           ports:
             - name: grpc
               containerPort: 8080
               protocol: TCP
           env:
             - name: RUST_LOG
-              value: "info"
+              value: 'info'
             - name: GTCX_CRYPTO_PORT
-              value: "8080"
+              value: '8080'
           resources:
             requests:
-              cpu: "100m"
-              memory: "128Mi"
+              cpu: '100m'
+              memory: '128Mi'
             limits:
-              cpu: "500m"
-              memory: "256Mi"
+              cpu: '500m'
+              memory: '256Mi'
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
@@ -70,6 +77,13 @@ spec:
               port: grpc
             initialDelaySeconds: 5
             periodSeconds: 5
+          startupProbe:
+            httpGet:
+              path: /health
+              port: grpc
+            initialDelaySeconds: 3
+            periodSeconds: 3
+            failureThreshold: 10
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
@@ -122,3 +136,14 @@ spec:
         target:
           type: Utilization
           averageUtilization: 60
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: gtcx-crypto
+  namespace: gtcx
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: gtcx-crypto

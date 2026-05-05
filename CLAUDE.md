@@ -1,4 +1,4 @@
-# CLAUDE.md — GTCX Infrastructure (`4-infrastructure`)
+# CLAUDE.md — GTCX Infrastructure
 
 ## Purpose
 
@@ -8,9 +8,12 @@ All deployment, infrastructure-as-code, and operational tooling for the GTCX eco
 
 ```bash
 pnpm install        # Install Node tooling
-pnpm lint           # Lint IaC and scripts
-pnpm typecheck      # Type-check scripts
+pnpm lint           # Lint IaC and scripts (runs in CI; 0 workspace tasks locally)
+pnpm typecheck      # Type-check scripts (runs in CI; 0 workspace tasks locally)
+pnpm format:check   # Verify Prettier formatting
 ```
+
+IaC validation (Terraform validate, Kustomize build, Docker Compose config) runs in CI via the `iac-validation` job, not locally.
 
 ## Stack
 
@@ -24,8 +27,8 @@ pnpm typecheck      # Type-check scripts
 
 Read before touching anything:
 
-1. `_sop/1-agents/orientation.md` — repo map, environment topology, key commands
-2. `_sop/1-agents/safety-rules.md` — three-tier authority structure (Autonomous / Requires Approval / Never)
+1. `docs/agents/onboarding/orientation.md` — repo map, environment topology, key commands
+2. `docs/agents/workflows/agent-safety-rules.md` — three-tier authority structure (Autonomous / Requires Approval / Never)
 
 ## Key Rules
 

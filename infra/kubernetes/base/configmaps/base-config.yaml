@@ -8,29 +8,39 @@ metadata:
   namespace: gtcx
 data:
   # Application settings
-  RAILS_ENV: "production"
-  RACK_ENV: "production"
-  RUST_LOG: "info"
-  
+  NODE_ENV: 'production'
+  RUST_LOG: 'info'
+
   # GTCX Protocol settings
-  GTCX_PROTOCOL_VERSION: "1.0"
-  GTCX_LOG_FORMAT: "json"
-  
+  GTCX_PROTOCOL_VERSION: '1.0'
+  GTCX_LOG_FORMAT: 'json'
+
   # Service discovery
-  GTCX_API_HOST: "gtcx-api"
-  GTCX_API_PORT: "3000"
-  GTCX_CRYPTO_HOST: "gtcx-crypto"
-  GTCX_CRYPTO_PORT: "8080"
-  
+  GTCX_AGX_HOST: 'gtcx-agx'
+  GTCX_AGX_PORT: '3000'
+  GTCX_CRYPTO_HOST: 'gtcx-crypto'
+  GTCX_CRYPTO_PORT: '8080'
+
+  # Event bus (per RESILIENT principle)
+  EVENT_BUS_DRIVER: 'nats'
+  NATS_URL: 'nats://gtcx-nats:4222'
+  NATS_DURABLE_NAME: 'gtcx-platform'
+  NATS_CLUSTER_NAME: 'gtcx-events'
+
+  # Intelligence services
+  ANISA_URL: 'http://gtcx-anisa:8100'
+  SCREENING_URL: 'http://gtcx-intelligence-sdk:8200'
+  INTELLIGENCE_SDK_URL: 'http://gtcx-intelligence-sdk:8200'
+
   # Feature flags (per ADAPTIVE principle)
-  GTCX_FEATURE_OFFLINE_SYNC: "true"
-  GTCX_FEATURE_ZK_PROOFS: "true"
-  GTCX_FEATURE_FEDERATION: "false"
-  
+  GTCX_FEATURE_OFFLINE_SYNC: 'true'
+  GTCX_FEATURE_ZK_PROOFS: 'true'
+  GTCX_FEATURE_FEDERATION: 'false'
+
   # Observability (per OBSERVABLE principle)
-  OTEL_SERVICE_NAME: "gtcx"
-  OTEL_EXPORTER_OTLP_PROTOCOL: "grpc"
-  
+  OTEL_SERVICE_NAME: 'gtcx'
+  OTEL_EXPORTER_OTLP_PROTOCOL: 'grpc'
+
   # Security (per SECURE principle)
-  GTCX_TLS_MIN_VERSION: "1.3"
-  GTCX_CORS_ORIGINS: ""
+  GTCX_TLS_MIN_VERSION: '1.3'
+  GTCX_CORS_ORIGINS: ''

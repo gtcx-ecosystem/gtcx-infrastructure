@@ -45,6 +45,9 @@ ROLLBACK=false
 VERSION=""
 CANARY_PERCENTAGE=5
 CANARY_WAIT_SECONDS=300  # 5 minutes
+AWS_REGION="${AWS_REGION:-af-south-1}"
+AWS_ACCOUNT_ID="${AWS_ACCOUNT_ID:-}"
+ECR_REGISTRY=""
 
 # Parse flags
 shift || true
@@ -159,31 +162,68 @@ pre_deployment_checks() {
 # Build & Push Images
 # -----------------------------------------------------------------------------
 
+ecr_login() {
+    log_step "Authenticating to ECR..."
+
+    ECR_REGISTRY="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
+
+    if [[ -z "${AWS_ACCOUNT_ID:-}" ]]; then
+        AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text 2>/dev/null || echo "")
+        if [[ -z "${AWS_ACCOUNT_ID}" ]]; then
+            log_error "Cannot determine AWS account ID. Set AWS_ACCOUNT_ID or configure AWS CLI."
+            exit 1
+        fi
+        ECR_REGISTRY="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
+    fi
+
+    aws ecr get-login-password --region "${AWS_REGION}" \
+        | docker login --username AWS --password-stdin "${ECR_REGISTRY}"
+
+    log_success "ECR login successful (${ECR_REGISTRY})"
+}
+
+push_images() {
+    log_step "Pushing images to ECR..."
+
+    local images=("intelligence" "protocols")
+    for img in "${images[@]}"; do
+        local local_tag="gtcx/${img}:${VERSION}"
+        local ecr_tag="${ECR_REGISTRY}/gtcx-${ENVIRONMENT}-${img}:${VERSION}"
+        local ecr_latest="${ECR_REGISTRY}/gtcx-${ENVIRONMENT}-${img}:latest"
+
+        docker tag "${local_tag}" "${ecr_tag}"
+        docker tag "${local_tag}" "${ecr_latest}"
+        docker push "${ecr_tag}"
+        docker push "${ecr_latest}"
+        log_info "Pushed ${ecr_tag}"
+    done
+
+    log_success "All images pushed to ECR"
+}
+
 build_images() {
     log_step "Building Docker images..."
-    
+
     cd "${PROJECT_ROOT}"
-    
+
     # Determine version
     if [[ -z "${VERSION}" ]]; then
         VERSION=$(git rev-parse --short HEAD 2>/dev/null || echo "latest")
     fi
-    
+
     log_info "Version: ${VERSION}"
-    
-    # Build images
+
+    # Build Node.js service images
     docker build \
-        -f infra/docker/Dockerfile.base \
-        --target ruby-production \
-        -t "gtcx/api:${VERSION}" \
+        -f infra/docker/Dockerfile.intelligence \
+        -t "gtcx/intelligence:${VERSION}" \
         .
-    
+
     docker build \
-        -f infra/docker/Dockerfile.base \
-        --target rust-production \
-        -t "gtcx/crypto:${VERSION}" \
+        -f infra/docker/Dockerfile.protocols \
+        -t "gtcx/protocols:${VERSION}" \
         .
-    
+
     log_success "Images built successfully"
 }
 
@@ -196,16 +236,16 @@ security_scan() {
     
     # Scan images with Trivy
     if command -v trivy &>/dev/null; then
-        log_info "Scanning API image..."
-        trivy image --exit-code 1 --severity HIGH,CRITICAL "gtcx/api:${VERSION}" || {
-            log_error "Security vulnerabilities found in API image"
+        log_info "Scanning intelligence image..."
+        trivy image --exit-code 1 --severity HIGH,CRITICAL "gtcx/intelligence:${VERSION}" || {
+            log_error "Security vulnerabilities found in intelligence image"
             [[ "${ENVIRONMENT}" == "production" ]] && exit 1
             log_warning "Continuing despite vulnerabilities (non-production)"
         }
-        
-        log_info "Scanning crypto image..."
-        trivy image --exit-code 1 --severity HIGH,CRITICAL "gtcx/crypto:${VERSION}" || {
-            log_error "Security vulnerabilities found in crypto image"
+
+        log_info "Scanning protocols image..."
+        trivy image --exit-code 1 --severity HIGH,CRITICAL "gtcx/protocols:${VERSION}" || {
+            log_error "Security vulnerabilities found in protocols image"
             [[ "${ENVIRONMENT}" == "production" ]] && exit 1
         }
     else
@@ -227,18 +267,28 @@ deploy() {
     # Update image tags in kustomization
     log_info "Updating image tags..."
     cd "overlays/${ENVIRONMENT}"
-    kustomize edit set image "gtcx/api:${VERSION}"
+    kustomize edit set image "gtcx/agx:${VERSION}"
+    kustomize edit set image "gtcx/crx:${VERSION}"
+    kustomize edit set image "gtcx/sgx:${VERSION}"
     kustomize edit set image "gtcx/crypto:${VERSION}"
     cd "${PROJECT_ROOT}/infra/kubernetes"
-    
+
     # Apply configuration
     log_info "Applying Kubernetes configuration..."
     kubectl apply -k "overlays/${ENVIRONMENT}"
-    
-    # Wait for rollout
+
+    # Wait for rollout — resolve deployment names dynamically from the cluster
     log_info "Waiting for deployment rollout..."
-    kubectl rollout status deployment/gtcx-api-${ENVIRONMENT:0:4} -n "${NAMESPACE}" --timeout=300s
-    kubectl rollout status deployment/gtcx-crypto-${ENVIRONMENT:0:4} -n "${NAMESPACE}" --timeout=300s
+    local deployments
+    deployments=$(kubectl get deployments -n "${NAMESPACE}" -l app.kubernetes.io/part-of=gtcx -o jsonpath='{.items[*].metadata.name}' 2>/dev/null || echo "")
+    if [[ -z "${deployments}" ]]; then
+        log_error "No GTCX deployments found in namespace ${NAMESPACE}"
+        exit 1
+    fi
+    for dep in ${deployments}; do
+        log_info "Waiting for ${dep}..."
+        kubectl rollout status "deployment/${dep}" -n "${NAMESPACE}" --timeout=300s
+    done
     
     log_success "Deployment applied"
 }
@@ -246,44 +296,73 @@ deploy() {
 # -----------------------------------------------------------------------------
 # Canary Deployment (Production)
 # -----------------------------------------------------------------------------
+# Deploys a separate canary Deployment with the new image alongside the
+# existing primary. The canary shares the Service selector so it receives
+# a proportional share of traffic. If healthy after CANARY_WAIT_SECONDS,
+# the canary is deleted and the full rollout proceeds. If unhealthy, the
+# canary is deleted and the primary is untouched.
+# -----------------------------------------------------------------------------
+
+CANARY_MANIFEST="${PROJECT_ROOT}/infra/kubernetes/overlays/production/canary.yaml"
 
 canary_deploy() {
-    log_step "Starting canary deployment (${CANARY_PERCENTAGE}%)..."
-    
-    # Scale canary to percentage
-    local total_replicas
-    total_replicas=$(kubectl get deployment/gtcx-api-prod -n "${NAMESPACE}" -o jsonpath='{.spec.replicas}')
-    local canary_replicas=$((total_replicas * CANARY_PERCENTAGE / 100))
-    [[ $canary_replicas -lt 1 ]] && canary_replicas=1
-    
-    log_info "Deploying ${canary_replicas} canary replicas..."
-    
-    # Deploy canary
-    kubectl set image deployment/gtcx-api-prod \
-        api="gtcx/api:${VERSION}" \
-        -n "${NAMESPACE}" \
-        --record
-    
-    # Wait and monitor
+    log_step "Starting canary deployment..."
+
+    # Patch the canary manifest with the target image
+    local canary_image="${ECR_REGISTRY}/gtcx-agx:${VERSION}"
+    log_info "Canary image: ${canary_image}"
+
+    # Apply canary with the new version
+    sed "s|image: gtcx/agx:canary|image: ${canary_image}|" "${CANARY_MANIFEST}" \
+        | kubectl apply -f - -n "${NAMESPACE}"
+
+    # Wait for canary pod to be ready
+    log_info "Waiting for canary rollout..."
+    if ! kubectl rollout status deployment/gtcx-agx-canary -n "${NAMESPACE}" --timeout=120s 2>/dev/null; then
+        log_error "Canary failed to become ready. Removing canary..."
+        canary_cleanup
+        exit 1
+    fi
+
+    # Monitor canary health
     log_info "Monitoring canary for ${CANARY_WAIT_SECONDS} seconds..."
-    
+
     local end_time=$(($(date +%s) + CANARY_WAIT_SECONDS))
     while [[ $(date +%s) -lt $end_time ]]; do
-        # Check error rate
-        local error_rate
-        error_rate=$(kubectl top pods -n "${NAMESPACE}" 2>/dev/null | grep -c "Error" || echo "0")
-        
-        if [[ $error_rate -gt 0 ]]; then
-            log_error "Errors detected during canary! Rolling back..."
-            rollback_deployment
+        # Check canary pod readiness
+        local not_ready
+        not_ready=$(kubectl get pods -n "${NAMESPACE}" -l app=gtcx-agx-prod,role=canary \
+            -o jsonpath='{.items[*].status.conditions[?(@.type=="Ready")].status}' 2>/dev/null \
+            | tr ' ' '\n' | grep -c "False" || echo "0")
+
+        if [[ $not_ready -gt 0 ]]; then
+            log_error "Canary pod not ready. Removing canary..."
+            canary_cleanup
             exit 1
         fi
-        
+
+        # Check for restart count (CrashLoopBackOff indicator)
+        local restarts
+        restarts=$(kubectl get pods -n "${NAMESPACE}" -l app=gtcx-agx-prod,role=canary \
+            -o jsonpath='{.items[0].status.containerStatuses[0].restartCount}' 2>/dev/null || echo "0")
+
+        if [[ "${restarts}" -gt 2 ]]; then
+            log_error "Canary pod restarting (${restarts} restarts). Removing canary..."
+            canary_cleanup
+            exit 1
+        fi
+
         sleep 30
         log_info "Canary healthy... $((end_time - $(date +%s)))s remaining"
     done
-    
-    log_success "Canary deployment successful"
+
+    log_success "Canary passed — promoting to full rollout"
+    canary_cleanup
+}
+
+canary_cleanup() {
+    log_info "Removing canary deployment..."
+    kubectl delete deployment gtcx-agx-canary -n "${NAMESPACE}" --ignore-not-found=true
 }
 
 # -----------------------------------------------------------------------------
@@ -292,12 +371,20 @@ canary_deploy() {
 
 rollback_deployment() {
     log_warning "Rolling back deployment..."
-    
-    kubectl rollout undo deployment/gtcx-api-${ENVIRONMENT:0:4} -n "${NAMESPACE}"
-    kubectl rollout undo deployment/gtcx-crypto-${ENVIRONMENT:0:4} -n "${NAMESPACE}"
-    
-    kubectl rollout status deployment/gtcx-api-${ENVIRONMENT:0:4} -n "${NAMESPACE}" --timeout=300s
-    
+
+    # Remove canary if present
+    kubectl delete deployment gtcx-agx-canary -n "${NAMESPACE}" --ignore-not-found=true
+
+    local deployments
+    deployments=$(kubectl get deployments -n "${NAMESPACE}" -l app.kubernetes.io/part-of=gtcx -o jsonpath='{.items[*].metadata.name}' 2>/dev/null || echo "")
+    for dep in ${deployments}; do
+        log_info "Rolling back ${dep}..."
+        kubectl rollout undo "deployment/${dep}" -n "${NAMESPACE}"
+    done
+    for dep in ${deployments}; do
+        kubectl rollout status "deployment/${dep}" -n "${NAMESPACE}" --timeout=300s
+    done
+
     log_success "Rollback completed"
 }
 
@@ -315,7 +402,7 @@ post_deployment() {
     # Run health checks
     log_info "Running health checks..."
     local api_pod
-    api_pod=$(kubectl get pods -n "${NAMESPACE}" -l app=gtcx-api-${ENVIRONMENT:0:4} -o jsonpath='{.items[0].metadata.name}' 2>/dev/null || echo "")
+    api_pod=$(kubectl get pods -n "${NAMESPACE}" -l app.kubernetes.io/part-of=gtcx,app.kubernetes.io/component=agx -o jsonpath='{.items[0].metadata.name}' 2>/dev/null || echo "")
     
     if [[ -n "${api_pod}" ]]; then
         kubectl exec "${api_pod}" -n "${NAMESPACE}" -- wget -q --spider http://localhost:3000/health || {
@@ -328,7 +415,24 @@ post_deployment() {
     
     # Log deployment (per AUDITABLE principle)
     log_info "Recording deployment..."
-    echo "$(date -u +"%Y-%m-%dT%H:%M:%SZ") | ${ENVIRONMENT} | ${VERSION} | ${APPROVAL_TICKET:-N/A} | SUCCESS" >> "${PROJECT_ROOT}/deployment.log"
+    local deploy_record
+    deploy_record="$(date -u +"%Y-%m-%dT%H:%M:%SZ") | ${ENVIRONMENT} | ${VERSION} | ${APPROVAL_TICKET:-N/A} | SUCCESS"
+
+    # Write to CloudWatch Logs if AWS CLI available, otherwise S3
+    if command -v aws &>/dev/null && [[ -n "${AWS_REGION:-}" ]]; then
+        local log_group="/gtcx/${ENVIRONMENT}/deployments"
+        local log_stream="deploy-$(date -u +%Y-%m-%d)"
+        aws logs create-log-group --log-group-name "${log_group}" 2>/dev/null || true
+        aws logs create-log-stream --log-group-name "${log_group}" --log-stream-name "${log_stream}" 2>/dev/null || true
+        aws logs put-log-events \
+            --log-group-name "${log_group}" \
+            --log-stream-name "${log_stream}" \
+            --log-events "timestamp=$(date +%s000),message=${deploy_record}" \
+            --region "${AWS_REGION}" 2>/dev/null || log_warning "CloudWatch logging failed — falling back to local"
+    fi
+
+    # Always write local copy as backup
+    echo "${deploy_record}" >> "${PROJECT_ROOT}/deployment.log"
     
     log_success "Post-deployment verification complete"
 }
@@ -354,6 +458,8 @@ main() {
     pre_deployment_checks
     build_images
     security_scan
+    ecr_login
+    push_images
     
     if [[ "${ENVIRONMENT}" == "production" ]]; then
         canary_deploy

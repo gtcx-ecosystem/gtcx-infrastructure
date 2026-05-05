@@ -1,0 +1,218 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "description": "GTCX Intelligence Services — ANISA, Cortex, Veritas, PANX, GCI Underwriting",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "title": "Service Health",
+      "type": "stat",
+      "gridPos": { "h": 4, "w": 24, "x": 0, "y": 0 },
+      "targets": [
+        {
+          "expr": "intelligence_health_status",
+          "legendFormat": "{{ service }}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "thresholds": {
+            "steps": [
+              { "color": "red", "value": 0 },
+              { "color": "orange", "value": 0.5 },
+              { "color": "green", "value": 1 }
+            ]
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "0": { "text": "UNHEALTHY" },
+                "0.5": { "text": "DEGRADED" },
+                "1": { "text": "HEALTHY" }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "title": "Request Rate (RPS)",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 4 },
+      "targets": [
+        {
+          "expr": "sum(rate(intelligence_requests_total[1m])) by (service)",
+          "legendFormat": "{{ service }}"
+        }
+      ]
+    },
+    {
+      "title": "Error Rate (%)",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 4 },
+      "targets": [
+        {
+          "expr": "sum(rate(intelligence_errors_total[5m])) by (service) / sum(rate(intelligence_requests_total[5m])) by (service) * 100",
+          "legendFormat": "{{ service }}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "thresholds": {
+            "steps": [
+              { "color": "green", "value": 0 },
+              { "color": "orange", "value": 0.5 },
+              { "color": "red", "value": 1 }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "title": "Request Latency p99 (ms)",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 12 },
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.99, sum(rate(intelligence_request_duration_ms_bucket[5m])) by (service, le)) ",
+          "legendFormat": "{{ service }} p99"
+        },
+        {
+          "expr": "histogram_quantile(0.50, sum(rate(intelligence_request_duration_ms_bucket[5m])) by (service, le))",
+          "legendFormat": "{{ service }} p50"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": { "unit": "ms" }
+      }
+    },
+    {
+      "title": "ANISA LLM Latency (seconds)",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 12 },
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.99, rate(anisa_llm_latency_seconds_bucket[5m]))",
+          "legendFormat": "p99"
+        },
+        {
+          "expr": "histogram_quantile(0.50, rate(anisa_llm_latency_seconds_bucket[5m]))",
+          "legendFormat": "p50"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": { "unit": "s" }
+      }
+    },
+    {
+      "title": "Cortex Event Buffer Utilization",
+      "type": "gauge",
+      "gridPos": { "h": 6, "w": 8, "x": 0, "y": 20 },
+      "targets": [
+        {
+          "expr": "intelligence_buffer_utilization{service=\"cortex\"}",
+          "legendFormat": "buffer"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "min": 0,
+          "max": 1,
+          "thresholds": {
+            "steps": [
+              { "color": "green", "value": 0 },
+              { "color": "orange", "value": 0.8 },
+              { "color": "red", "value": 0.9 }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "title": "PANX Consensus Staleness",
+      "type": "gauge",
+      "gridPos": { "h": 6, "w": 8, "x": 8, "y": 20 },
+      "targets": [
+        {
+          "expr": "intelligence_consensus_staleness_seconds{service=\"panx\"}",
+          "legendFormat": "staleness"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "thresholds": {
+            "steps": [
+              { "color": "green", "value": 0 },
+              { "color": "orange", "value": 600 },
+              { "color": "red", "value": 900 }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "title": "Veritas Screening Match Rate",
+      "type": "gauge",
+      "gridPos": { "h": 6, "w": 8, "x": 16, "y": 20 },
+      "targets": [
+        {
+          "expr": "sum(rate(intelligence_requests_total{service=\"veritas\",result=\"match\"}[5m])) / sum(rate(intelligence_requests_total{service=\"veritas\"}[5m]))",
+          "legendFormat": "match rate"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "thresholds": {
+            "steps": [
+              { "color": "green", "value": 0 },
+              { "color": "orange", "value": 0.3 },
+              { "color": "red", "value": 0.5 }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "title": "Degraded Responses",
+      "type": "timeseries",
+      "gridPos": { "h": 6, "w": 12, "x": 0, "y": 26 },
+      "targets": [
+        {
+          "expr": "sum(rate(intelligence_degraded_total[5m])) by (service)",
+          "legendFormat": "{{ service }}"
+        }
+      ]
+    },
+    {
+      "title": "Circuit Breaker Trips",
+      "type": "timeseries",
+      "gridPos": { "h": 6, "w": 12, "x": 12, "y": 26 },
+      "targets": [
+        {
+          "expr": "sum(increase(intelligence_circuit_trips_total[5m])) by (dependency)",
+          "legendFormat": "{{ dependency }}"
+        }
+      ]
+    }
+  ],
+  "schemaVersion": 39,
+  "tags": ["intelligence", "gtcx"],
+  "templating": { "list": [] },
+  "time": { "from": "now-1h", "to": "now" },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Intelligence Services",
+  "uid": "intelligence-services",
+  "version": 1
+}

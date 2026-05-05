@@ -15,7 +15,9 @@ variable "repositories" {
   description = "List of ECR repository names"
   type        = list(string)
   default = [
-    "gtcx-api",
+    "gtcx-agx",
+    "gtcx-crx",
+    "gtcx-sgx",
     "gtcx-crypto",
     "gtcx-tradepass",
     "gtcx-geotag",
@@ -53,8 +55,26 @@ locals {
     Environment = var.environment
     ManagedBy   = "terraform"
     Project     = "gtcx"
-    Principle   = "SOVEREIGN,SECURE"
+    Principle   = "SOVEREIGN SECURE"
   })
+}
+
+# -----------------------------------------------------------------------------
+# KMS Key for ECR Encryption (per SECURE principle)
+# -----------------------------------------------------------------------------
+
+resource "aws_kms_key" "ecr" {
+  description         = "GTCX ECR image encryption — ${var.environment}"
+  enable_key_rotation = true
+
+  tags = merge(local.common_tags, {
+    Name = "gtcx-${var.environment}-ecr-kms"
+  })
+}
+
+resource "aws_kms_alias" "ecr" {
+  name          = "alias/gtcx-${var.environment}-ecr"
+  target_key_id = aws_kms_key.ecr.key_id
 }
 
 # -----------------------------------------------------------------------------
@@ -73,7 +93,8 @@ resource "aws_ecr_repository" "repos" {
   }
 
   encryption_configuration {
-    encryption_type = "AES256"
+    encryption_type = "KMS"
+    kms_key         = aws_kms_key.ecr.arn
   }
 
   tags = merge(local.common_tags, {
@@ -133,4 +154,9 @@ output "repository_urls" {
 output "registry_id" {
   description = "ECR registry ID"
   value       = values(aws_ecr_repository.repos)[0].registry_id
+}
+
+output "repository_arns" {
+  description = "List of ECR repository ARNs"
+  value       = [for repo in aws_ecr_repository.repos : repo.arn]
 }

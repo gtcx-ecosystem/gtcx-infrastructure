@@ -16,6 +16,7 @@
   },
   "scripts": {
     "build": "turbo run build",
+    "test": "echo 'Infrastructure tests run via iac-validation CI job (terraform validate + kustomize build + docker compose config)'",
     "lint": "turbo run lint",
     "clean": "turbo run clean && rm -rf node_modules",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md,yaml,yml}\"",
@@ -38,6 +39,15 @@
     "prettier": "^3.4.0",
     "turbo": "^2.3.0",
     "typescript": "^5.7.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "minimatch": ">=9.0.6",
+      "flatted": ">=3.4.2",
+      "picomatch": ">=4.0.4",
+      "brace-expansion": ">=2.0.3",
+      "yaml": ">=2.8.3"
+    }
   },
   "gtcx": {
     "principles": [

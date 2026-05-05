@@ -1,0 +1,169 @@
+# =============================================================================
+# ANISA Canary Deployment — Argo Rollouts
+# =============================================================================
+#
+# Replaces the standard Deployment with a Rollout resource.
+# Strategy: 10% -> 50% -> 100% with Prometheus-based analysis gates.
+#
+# Prerequisites:
+#   - Argo Rollouts controller installed in the cluster
+#   - Prometheus available at prometheus.observability:9090
+#   - ANISA exposing /metrics on port 8100
+#
+# Usage:
+#   kubectl apply -f canary.yml -n intelligence
+# =============================================================================
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: anisa
+  namespace: intelligence
+  labels:
+    app: anisa
+    app.kubernetes.io/part-of: gtcx
+spec:
+  replicas: 2
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: anisa
+  strategy:
+    canary:
+      canaryService: anisa-canary
+      stableService: anisa
+      steps:
+        # Step 1: 10% traffic, pause 60s for initial observation
+        - setWeight: 10
+        - pause:
+            duration: 60s
+        # Step 2: Run analysis at 10% — gate before scaling up
+        - analysis:
+            templates:
+              - templateName: anisa-canary-analysis
+        # Step 3: 50% traffic, automatic promotion if analysis passes
+        - setWeight: 50
+        - analysis:
+            templates:
+              - templateName: anisa-canary-analysis
+        # Step 4: Full promotion
+        - setWeight: 100
+      rollbackWindow:
+        revisions: 2
+      abortScaleDownDelaySeconds: 30
+  template:
+    metadata:
+      labels:
+        app: anisa
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/port: '8100'
+        prometheus.io/path: '/metrics'
+    spec:
+      serviceAccountName: intelligence-sa
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      containers:
+        - name: anisa
+          image: '${ECR_REGISTRY}/gtcx-anisa:latest'
+          ports:
+            - name: http
+              containerPort: 8100
+            - name: grpc
+              containerPort: 8101
+          env:
+            - name: ANTHROPIC_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: intelligence-secrets
+                  key: anthropic-api-key
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: intelligence-secrets
+                  key: database-url
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: 'http://jaeger.observability:4318'
+            - name: OTEL_SERVICE_NAME
+              value: 'anisa'
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 30
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 3
+---
+# Canary service — routes to canary revision pods
+apiVersion: v1
+kind: Service
+metadata:
+  name: anisa-canary
+  namespace: intelligence
+  labels:
+    app: anisa
+    role: canary
+spec:
+  selector:
+    app: anisa
+  ports:
+    - name: http
+      port: 8100
+      targetPort: http
+    - name: grpc
+      port: 8101
+      targetPort: grpc
+  type: ClusterIP
+---
+# =============================================================================
+# Analysis Template — Prometheus metrics gates
+# =============================================================================
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: anisa-canary-analysis
+  namespace: intelligence
+  labels:
+    app: anisa
+    app.kubernetes.io/part-of: gtcx
+spec:
+  metrics:
+    # Gate 1: Error rate must stay below 2%
+    - name: error-rate
+      interval: 30s
+      count: 5
+      successCondition: result[0] < 0.02
+      failureLimit: 2
+      provider:
+        prometheus:
+          address: http://prometheus.observability:9090
+          query: |
+            rate(anisa_requests_total{status=~"5.."}[5m])
+            /
+            rate(anisa_requests_total[5m])
+    # Gate 2: p99 latency must stay below 5 seconds
+    - name: p99-latency
+      interval: 30s
+      count: 5
+      successCondition: result[0] < 5
+      failureLimit: 2
+      provider:
+        prometheus:
+          address: http://prometheus.observability:9090
+          query: |
+            histogram_quantile(0.99, rate(anisa_request_duration_seconds_bucket[5m]))

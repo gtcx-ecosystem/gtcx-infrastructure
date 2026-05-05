@@ -2,7 +2,7 @@
 # =============================================================================
 # GTCX Database Seed Script
 # =============================================================================
-# Seed development/test databases with sample data.
+# Seed development/test databases with sample data via SQL files.
 #
 # WARNING: Never run on production!
 #
@@ -39,25 +39,20 @@ fi
 log_info "Seeding ${ENVIRONMENT} database..."
 
 cd "${PROJECT_ROOT}"
-export RAILS_ENV="${ENVIRONMENT}"
+export NODE_ENV="${ENVIRONMENT}"
 
-# Run Rails seed
-if [[ -f "db/seeds.rb" ]]; then
-    bundle exec rails db:seed
-    log_success "Database seeded successfully"
-else
-    log_warning "No db/seeds.rb found"
-fi
-
-# Load sample data if available
-if [[ -d "db/sample_data" ]]; then
-    log_info "Loading sample data..."
-    for file in db/sample_data/*.sql; do
+# Load seed SQL files
+SEED_DIR="${PROJECT_ROOT}/infra/docker/init-scripts/postgres"
+if [[ -d "${SEED_DIR}" ]]; then
+    for file in "${SEED_DIR}"/*.sql; do
         if [[ -f "$file" ]]; then
             log_info "Loading $(basename "$file")..."
-            bundle exec rails db:load_sample_data FILE="$file"
+            psql "${DATABASE_URL}" -f "$file"
         fi
     done
+    log_success "Database seeded successfully"
+else
+    log_warning "No seed directory found at ${SEED_DIR}"
 fi
 
 log_success "Seed complete for ${ENVIRONMENT}"

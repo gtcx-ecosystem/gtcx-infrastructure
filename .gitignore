@@ -34,5 +34,26 @@ Thumbs.db
 npm-debug.log*
 pnpm-debug.log*
 
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+crash.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Terraform lambda artifacts (built at deploy time)
+infra/terraform/modules/secrets/lambda/rotation.zip
+
+# Security reports (generated, not tracked)
+infra/security/reports/
+
 # Local archive (reference only, not tracked)
 _archive/
+_cannon/
+
+# BaselineOS
+.baseline/

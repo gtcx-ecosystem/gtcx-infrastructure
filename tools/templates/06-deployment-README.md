@@ -2,26 +2,23 @@
 
 > **Infrastructure, Kubernetes, Terraform, and operational guides**
 
-
 ## Contents
 
-| Section | Description |
-|---------|-------------|
-| [kubernetes/](./kubernetes/) | Kubernetes manifests and overlays |
-| [terraform/](./terraform/) | Infrastructure as code |
-| [air-gapped.md](./air-gapped.md) | Air-gapped deployment guide |
-| [deployment.md](./deployment.md) | General deployment procedures |
-
+| Section                          | Description                       |
+| -------------------------------- | --------------------------------- |
+| [kubernetes/](./kubernetes/)     | Kubernetes manifests and overlays |
+| [terraform/](./terraform/)       | Infrastructure as code            |
+| [air-gapped.md](./air-gapped.md) | Air-gapped deployment guide       |
+| [deployment.md](./deployment.md) | General deployment procedures     |
 
 ## Deployment Targets
 
-| Target | Description | Overlay |
-|--------|-------------|---------|
-| **Development** | Local development | `overlays/development/` |
-| **Staging** | Pre-production testing | `overlays/staging/` |
-| **Production** | Live production | `overlays/production/` |
-| **Air-Gapped** | Government data centers | `overlays/air-gapped/` |
-
+| Target          | Description             | Overlay                 |
+| --------------- | ----------------------- | ----------------------- |
+| **Development** | Local development       | `overlays/development/` |
+| **Staging**     | Pre-production testing  | `overlays/staging/`     |
+| **Production**  | Live production         | `overlays/production/`  |
+| **Air-Gapped**  | Government data centers | `overlays/air-gapped/`  |
 
 ## Infrastructure Overview
 
@@ -39,22 +36,24 @@ infra/
 └── security/            # Security tooling
 ```
 
-
 ## Key Principles
 
 ### P14: DEPLOYABLE
+
 > Same artifact runs everywhere: cloud, on-premise, air-gapped, edge.
 
 ### P6: SOVEREIGN
+
 > Each nation controls its own infrastructure. Data residency enforced.
 
 ### P15: OBSERVABLE
-> Metrics, tracing, health — we see everything.
 
+> Metrics, tracing, health — we see everything.
 
 ## Quick Start
 
 ### Local Development
+
 ```bash
 # Start local services
 docker-compose -f infra/docker/docker-compose.dev.yml up
@@ -64,6 +63,7 @@ kubectl apply -k infra/kubernetes/overlays/development/
 ```
 
 ### Production Deployment
+
 ```bash
 # Apply Terraform
 cd infra/terraform/environments/ghana
@@ -72,7 +72,6 @@ terraform apply
 # Deploy to Kubernetes
 kubectl apply -k infra/kubernetes/overlays/production/
 ```
-
 
 ## Air-Gapped Deployments
 
@@ -84,7 +83,6 @@ Government data centers often require air-gapped deployments:
 4. **No external network dependencies**
 
 See [air-gapped.md](./air-gapped.md) for detailed guide.
-
 
 ## Related Documentation
 

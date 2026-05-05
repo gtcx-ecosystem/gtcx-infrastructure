@@ -35,7 +35,7 @@ variable "public_subnet_ids" {
 variable "cluster_version" {
   description = "Kubernetes version"
   type        = string
-  default     = "1.29"
+  default     = "1.31"
 }
 
 variable "node_instance_types" {
@@ -86,6 +86,12 @@ variable "database_security_group_id" {
   default     = ""
 }
 
+variable "enable_database_access" {
+  description = "Set to true when database_security_group_id is provided (static flag avoids count dependency on computed values)"
+  type        = bool
+  default     = false
+}
+
 variable "tags" {
   description = "Additional tags"
   type        = map(string)
@@ -101,7 +107,7 @@ locals {
     Environment = var.environment
     ManagedBy   = "terraform"
     Project     = "gtcx"
-    Principle   = "SOVEREIGN,DEPLOYABLE"
+    Principle   = "SOVEREIGN DEPLOYABLE"
   })
 
   cluster_name = "gtcx-${var.environment}"
@@ -231,13 +237,13 @@ resource "aws_security_group" "nodes" {
 
 # Node-to-node communication
 resource "aws_security_group_rule" "nodes_internal" {
-  type                     = "ingress"
-  from_port                = 0
-  to_port                  = 65535
-  protocol                 = "-1"
-  self                     = true
-  security_group_id        = aws_security_group.nodes.id
-  description              = "Allow nodes to communicate with each other"
+  type              = "ingress"
+  from_port         = 0
+  to_port           = 65535
+  protocol          = "-1"
+  self              = true
+  security_group_id = aws_security_group.nodes.id
+  description       = "Allow nodes to communicate with each other"
 }
 
 # Cluster API to nodes (for kubelet, logs, exec)
@@ -306,6 +312,13 @@ resource "aws_eks_cluster" "main" {
     endpoint_private_access = true
     endpoint_public_access  = var.enable_public_access
     public_access_cidrs     = var.enable_public_access ? var.allowed_cidr_blocks : []
+  }
+
+  lifecycle {
+    precondition {
+      condition     = !var.enable_public_access || length(var.allowed_cidr_blocks) > 0
+      error_message = "EKS public API access requires explicit CIDR restrictions. Set allowed_cidr_blocks or disable public access."
+    }
   }
 
   encryption_config {
@@ -399,98 +412,11 @@ resource "aws_iam_openid_connect_provider" "eks" {
 }
 
 # -----------------------------------------------------------------------------
-# AWS Load Balancer Controller IAM (for ALB ingress)
-# -----------------------------------------------------------------------------
-
-resource "aws_iam_role" "alb_controller" {
-  name = "${local.cluster_name}-alb-controller"
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [{
-      Effect = "Allow"
-      Principal = {
-        Federated = aws_iam_openid_connect_provider.eks.arn
-      }
-      Action = "sts:AssumeRoleWithWebIdentity"
-      Condition = {
-        StringEquals = {
-          "${replace(aws_eks_cluster.main.identity[0].oidc[0].issuer, "https://", "")}:sub" = "system:serviceaccount:kube-system:aws-load-balancer-controller"
-          "${replace(aws_eks_cluster.main.identity[0].oidc[0].issuer, "https://", "")}:aud" = "sts.amazonaws.com"
-        }
-      }
-    }]
-  })
-
-  tags = local.common_tags
-}
-
-resource "aws_iam_policy" "alb_controller" {
-  name        = "${local.cluster_name}-alb-controller-policy"
-  description = "IAM policy for AWS Load Balancer Controller"
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow"
-        Action = [
-          "ec2:DescribeAccountAttributes",
-          "ec2:DescribeAddresses",
-          "ec2:DescribeAvailabilityZones",
-          "ec2:DescribeInternetGateways",
-          "ec2:DescribeVpcs",
-          "ec2:DescribeVpcPeeringConnections",
-          "ec2:DescribeSubnets",
-          "ec2:DescribeSecurityGroups",
-          "ec2:DescribeInstances",
-          "ec2:DescribeNetworkInterfaces",
-          "ec2:DescribeTags",
-          "ec2:DescribeCoipPools",
-          "ec2:GetCoipPoolUsage",
-          "ec2:DescribeTargetGroups",
-          "ec2:DescribeTargetHealth",
-          "ec2:DescribeListeners",
-          "ec2:DescribeRules",
-          "elasticloadbalancing:*",
-          "ec2:CreateSecurityGroup",
-          "ec2:DeleteSecurityGroup",
-          "ec2:AuthorizeSecurityGroupIngress",
-          "ec2:RevokeSecurityGroupIngress",
-          "ec2:CreateTags",
-          "ec2:DeleteTags",
-          "iam:CreateServiceLinkedRole",
-          "cognito-idp:DescribeUserPoolClient",
-          "acm:ListCertificates",
-          "acm:DescribeCertificate",
-          "wafv2:GetWebACL",
-          "wafv2:GetWebACLForResource",
-          "wafv2:AssociateWebACL",
-          "wafv2:DisassociateWebACL",
-          "shield:GetSubscriptionState",
-          "shield:DescribeProtection",
-          "shield:CreateProtection",
-          "shield:DeleteProtection",
-        ]
-        Resource = "*"
-      },
-    ]
-  })
-
-  tags = local.common_tags
-}
-
-resource "aws_iam_role_policy_attachment" "alb_controller" {
-  role       = aws_iam_role.alb_controller.name
-  policy_arn = aws_iam_policy.alb_controller.arn
-}
-
-# -----------------------------------------------------------------------------
 # Database Access — Allow nodes to reach RDS
 # -----------------------------------------------------------------------------
 
 resource "aws_security_group_rule" "nodes_to_database" {
-  count                    = var.database_security_group_id != "" ? 1 : 0
+  count                    = var.enable_database_access ? 1 : 0
   type                     = "ingress"
   from_port                = 5432
   to_port                  = 5432
@@ -545,6 +471,6 @@ output "oidc_provider_url" {
 }
 
 output "alb_controller_role_arn" {
-  description = "IAM role ARN for AWS Load Balancer Controller"
-  value       = aws_iam_role.alb_controller.arn
+  description = "IAM role ARN for AWS Load Balancer Controller (managed by module.alb)"
+  value       = ""
 }

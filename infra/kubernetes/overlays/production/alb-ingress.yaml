@@ -1,0 +1,125 @@
+# =============================================================================
+# GTCX External Ingress — AWS Application Load Balancer
+# =============================================================================
+#
+# Internet-facing ALB for external API traffic. Routes to GTCX services
+# via IP-mode target groups (EKS pods directly, no NodePort).
+#
+# Per SECURE (11): WAFv2, TLS 1.3, security headers via response headers policy
+# Per RESILIENT (12): Multi-AZ, health checks, connection draining
+# Per SOVEREIGN (6): ALB deployed in-region alongside EKS
+#
+# This coexists with the NGINX internal ingress — ALB handles external
+# traffic, NGINX handles cluster-internal protocol routing.
+# =============================================================================
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gtcx-alb-ingress
+  namespace: gtcx
+  annotations:
+    # ALB controller annotations
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
+    alb.ingress.kubernetes.io/certificate-arn: ${ACM_CERTIFICATE_ARN}
+
+    # Health check
+    alb.ingress.kubernetes.io/healthcheck-path: /health
+    alb.ingress.kubernetes.io/healthcheck-interval-seconds: '15'
+    alb.ingress.kubernetes.io/healthcheck-timeout-seconds: '5'
+    alb.ingress.kubernetes.io/healthy-threshold-count: '2'
+    alb.ingress.kubernetes.io/unhealthy-threshold-count: '3'
+
+    # Security
+    alb.ingress.kubernetes.io/ssl-policy: ELBSecurityPolicy-TLS13-1-2-2021-06
+    # WAFv2 ACL — set via kustomize patch or CI substitution before apply.
+    # Example kustomize patch:
+    #   kubectl annotate ingress gtcx-alb-ingress \
+    #     alb.ingress.kubernetes.io/wafv2-acl-arn=arn:aws:wafv2:... -n gtcx
+    # Omitting this annotation disables WAF; add it before production cutover.
+
+    # Performance
+    alb.ingress.kubernetes.io/target-group-attributes: >-
+      deregistration_delay.timeout_seconds=30,
+      stickiness.enabled=false,
+      idle_timeout.timeout_seconds=60
+    alb.ingress.kubernetes.io/load-balancer-attributes: >-
+      idle_timeout.timeout_seconds=60,
+      routing.http2.enabled=true,
+      routing.http.drop_invalid_header_fields.enabled=true
+
+    # Tagging
+    alb.ingress.kubernetes.io/tags: >-
+      Project=gtcx,
+      Environment=production,
+      ManagedBy=kubernetes,
+      Principle=SECURE
+spec:
+  ingressClassName: alb
+  rules:
+    # Primary API endpoint
+    - host: api.gtcx.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: gtcx-agx
+                port:
+                  number: 3000
+
+    # Intelligence services (ANISA, Cortex)
+    - host: intelligence.gtcx.io
+      http:
+        paths:
+          - path: /v1/cultural-query
+            pathType: Prefix
+            backend:
+              service:
+                name: gtcx-anisa
+                port:
+                  number: 8100
+          - path: /v1/trade-query
+            pathType: Prefix
+            backend:
+              service:
+                name: gtcx-anisa
+                port:
+                  number: 8100
+          - path: /cortex
+            pathType: Prefix
+            backend:
+              service:
+                name: gtcx-intelligence-sdk
+                port:
+                  number: 8200
+          - path: /screening
+            pathType: Prefix
+            backend:
+              service:
+                name: gtcx-intelligence-sdk
+                port:
+                  number: 8200
+          - path: /underwriting
+            pathType: Prefix
+            backend:
+              service:
+                name: gtcx-intelligence-sdk
+                port:
+                  number: 8200
+
+    # Veritas (attestation + resolution API)
+    - host: veritas.gtcx.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: gtcx-agx
+                port:
+                  number: 3000

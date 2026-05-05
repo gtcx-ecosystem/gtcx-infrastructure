@@ -1,0 +1,229 @@
+# =============================================================================
+# GTCX NATS Event Bus
+# =============================================================================
+# Cross-service domain event pub/sub with JetStream persistence.
+# Enables at-least-once delivery for trade execution, settlement, clearance,
+# and compliance events across AGX, CRX, SGX, Pathways, and Veritas.
+#
+# Principles: RESILIENT (12), AUDITABLE (3), SCALABLE (24)
+# =============================================================================
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nats-config
+  namespace: gtcx
+data:
+  nats.conf: |
+    # NATS Server Configuration — GTCX Event Bus
+    server_name: gtcx-nats
+
+    # Client connections
+    port: 4222
+    max_payload: 1MB
+
+    # Monitoring
+    http_port: 8222
+
+    # JetStream — persistent event streams
+    jetstream {
+      store_dir: /data/jetstream
+      max_mem: 256MB
+      max_file: 10GB
+    }
+
+    # TLS — cert-manager provisioned certificates
+    tls {
+      cert_file: /etc/nats-certs/tls.crt
+      key_file: /etc/nats-certs/tls.key
+      timeout: 2
+    }
+
+    # Logging
+    logtime: true
+    debug: false
+    trace: false
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: gtcx-nats
+  namespace: gtcx
+  labels:
+    app: gtcx-nats
+    tier: infrastructure
+spec:
+  serviceName: gtcx-nats
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: gtcx-nats
+  template:
+    metadata:
+      labels:
+        app: gtcx-nats
+        tier: infrastructure
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/port: '7777'
+        prometheus.io/path: '/metrics'
+    spec:
+      serviceAccountName: gtcx-nats
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: nats
+          image: nats:2.10-alpine
+          imagePullPolicy: IfNotPresent
+          args:
+            - '--config'
+            - '/etc/nats/nats.conf'
+          ports:
+            - name: client
+              containerPort: 4222
+              protocol: TCP
+            - name: cluster
+              containerPort: 6222
+              protocol: TCP
+            - name: monitor
+              containerPort: 8222
+              protocol: TCP
+          resources:
+            requests:
+              cpu: '100m'
+              memory: '256Mi'
+            limits:
+              cpu: '500m'
+              memory: '512Mi'
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: monitor
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: monitor
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+          startupProbe:
+            httpGet:
+              path: /healthz
+              port: monitor
+            initialDelaySeconds: 5
+            periodSeconds: 3
+            failureThreshold: 10
+          volumeMounts:
+            - name: config
+              mountPath: /etc/nats
+              readOnly: true
+            - name: nats-certs
+              mountPath: /etc/nats-certs
+              readOnly: true
+            - name: jetstream-data
+              mountPath: /data/jetstream
+            - name: tmp
+              mountPath: /tmp
+        - name: nats-exporter
+          image: natsio/prometheus-nats-exporter:0.14.0
+          imagePullPolicy: IfNotPresent
+          args:
+            - '-varz'
+            - '-jsz=all'
+            - '-connz'
+            - '-subz'
+            - 'http://localhost:8222'
+          ports:
+            - name: metrics
+              containerPort: 7777
+              protocol: TCP
+          resources:
+            requests:
+              cpu: '10m'
+              memory: '32Mi'
+            limits:
+              cpu: '50m'
+              memory: '64Mi'
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+      volumes:
+        - name: config
+          configMap:
+            name: nats-config
+        - name: nats-certs
+          secret:
+            secretName: nats-server-tls
+        - name: tmp
+          emptyDir: {}
+  volumeClaimTemplates:
+    - metadata:
+        name: jetstream-data
+      spec:
+        accessModes: ['ReadWriteOnce']
+        resources:
+          requests:
+            storage: 10Gi
+        storageClassName: gp2
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gtcx-nats
+  namespace: gtcx
+  labels:
+    app: gtcx-nats
+spec:
+  type: ClusterIP
+  ports:
+    - name: client
+      port: 4222
+      targetPort: client
+      protocol: TCP
+    - name: cluster
+      port: 6222
+      targetPort: cluster
+      protocol: TCP
+    - name: monitor
+      port: 8222
+      targetPort: monitor
+      protocol: TCP
+  selector:
+    app: gtcx-nats
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: gtcx-nats
+  namespace: gtcx
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: gtcx-nats
+  namespace: gtcx
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: gtcx-nats

@@ -1,0 +1,37 @@
+# =============================================================================
+# GTCX cert-manager Resources
+# =============================================================================
+# Self-signed ClusterIssuer for internal TLS (NATS, inter-service).
+# For production external TLS, use Let's Encrypt issuer in overlay.
+# =============================================================================
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: gtcx-selfsigned
+spec:
+  selfSigned: {}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: nats-server-tls
+  namespace: gtcx
+spec:
+  secretName: nats-server-tls
+  duration: 8760h
+  renewBefore: 720h
+  isCA: false
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+  usages:
+    - server auth
+  dnsNames:
+    - gtcx-nats
+    - gtcx-nats.gtcx.svc
+    - gtcx-nats.gtcx.svc.cluster.local
+    - '*.gtcx-nats.gtcx.svc.cluster.local'
+  issuerRef:
+    name: gtcx-selfsigned
+    kind: ClusterIssuer
+    group: cert-manager.io

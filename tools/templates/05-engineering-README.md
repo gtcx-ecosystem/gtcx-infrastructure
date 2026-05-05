@@ -2,18 +2,16 @@
 
 > **The 30 principles, code standards, and development practices that define GTCX**
 
-
 ## Core Documents
 
-| Document | Purpose |
-|----------|---------|
-| [PRINCIPLES.md](./PRINCIPLES.md) | **The 30 Engineering Principles** — Start here |
-| [PRINCIPLE-INDEX.md](./PRINCIPLE-INDEX.md) | Quick reference index |
-| [CODE-STANDARDS.md](./CODE-STANDARDS.md) | Code style and quality requirements |
-| [RED-FLAGS.md](./RED-FLAGS.md) | Anti-patterns and common mistakes |
-| [DEVELOPER-MANIFESTO.md](./DEVELOPER-MANIFESTO.md) | Philosophy and culture |
-| [DEPLOYMENT-STRATEGY.md](./DEPLOYMENT-STRATEGY.md) | Release and deployment practices |
-
+| Document                                           | Purpose                                        |
+| -------------------------------------------------- | ---------------------------------------------- |
+| [PRINCIPLES.md](./PRINCIPLES.md)                   | **The 30 Engineering Principles** — Start here |
+| [PRINCIPLE-INDEX.md](./PRINCIPLE-INDEX.md)         | Quick reference index                          |
+| [CODE-STANDARDS.md](./CODE-STANDARDS.md)           | Code style and quality requirements            |
+| [RED-FLAGS.md](./RED-FLAGS.md)                     | Anti-patterns and common mistakes              |
+| [DEVELOPER-MANIFESTO.md](./DEVELOPER-MANIFESTO.md) | Philosophy and culture                         |
+| [DEPLOYMENT-STRATEGY.md](./DEPLOYMENT-STRATEGY.md) | Release and deployment practices               |
 
 ## The 30 Principles (Summary)
 
@@ -44,29 +42,31 @@
 
 **Full details:** [PRINCIPLES.md](./PRINCIPLES.md)
 
-
 ## Code Standards Quick Reference
 
 ### TypeScript
+
 - **Strict mode** always (`"strict": true`)
 - **Zod schemas** at all boundaries
 - **Explicit types** for public APIs
 
 ### Rust
+
 - **All cryptography** lives in `rust/gtcx-crypto/`
 - **No unsafe** without documented justification
 - **Clippy clean** with `#![deny(warnings)]`
 
 ### Testing
+
 - **Unit tests** for business logic
 - **Integration tests** for API boundaries
 - **Property tests** for cryptographic operations
 
 ### Documentation
+
 - **Every public API** must have JSDoc/rustdoc
 - **Every directory** must have README.md
 - **Architecture decisions** must have ADRs
-
 
 ## Decision Test
 
@@ -78,7 +78,6 @@ Before committing code, ask:
 4. **Is this tested?**
 
 If any answer is "no" — fix it first.
-
 
 ## Related Documentation
 

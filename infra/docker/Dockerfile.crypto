@@ -1,0 +1,56 @@
+# =============================================================================
+# GTCX Crypto Service — Rust multi-stage build
+# =============================================================================
+#
+# Builds the gtcx-crypto binary into a minimal distroless image.
+#
+# Principles Implemented:
+#   - DEPLOYABLE (14): Same image runs everywhere
+#   - SECURE (11): Minimal attack surface, non-root user, distroless
+#   - PORTABLE (22): No cloud-specific dependencies
+#
+# Target Size: < 50MB
+#
+# Usage:
+#   docker build -f infra/docker/Dockerfile.crypto -t gtcx/crypto:latest ../../2-core
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Stage 1: Rust Builder
+# -----------------------------------------------------------------------------
+FROM rust:1.75-alpine AS builder
+
+RUN apk add --no-cache musl-dev openssl-dev openssl-libs-static
+
+WORKDIR /build
+
+# Copy Cargo files first (layer caching)
+COPY Cargo.toml Cargo.lock ./
+COPY packages/gtcx-crypto/Cargo.toml packages/gtcx-crypto/
+
+# Create dummy main.rs for dependency caching
+RUN mkdir -p packages/gtcx-crypto/src && \
+    echo "fn main() {}" > packages/gtcx-crypto/src/main.rs && \
+    cargo build --release --package gtcx-crypto 2>/dev/null || true && \
+    rm -rf packages/gtcx-crypto/src
+
+# Copy actual source
+COPY packages/gtcx-crypto packages/gtcx-crypto
+
+# Build release binary
+RUN cargo build --release --package gtcx-crypto
+
+# -----------------------------------------------------------------------------
+# Stage 2: Production Image (Distroless)
+# -----------------------------------------------------------------------------
+FROM gcr.io/distroless/cc-debian12 AS production
+
+COPY --from=builder /build/target/release/gtcx-crypto /usr/local/bin/
+
+# Non-root user (distroless uses numeric UIDs)
+USER 1000
+
+# Note: Distroless has no shell — health checks done via orchestrator
+EXPOSE 8080
+
+ENTRYPOINT ["/usr/local/bin/gtcx-crypto"]

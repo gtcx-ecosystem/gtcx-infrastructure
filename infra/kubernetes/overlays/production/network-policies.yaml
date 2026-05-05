@@ -39,12 +39,12 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: gtcx-api-policy
+  name: gtcx-agx-policy
   namespace: gtcx-production
 spec:
   podSelector:
     matchLabels:
-      app: gtcx-api-prod
+      app: gtcx-agx-prod
   policyTypes:
     - Ingress
     - Egress
@@ -74,13 +74,20 @@ spec:
       ports:
         - protocol: TCP
           port: 3000
-    # Allow to database (external)
+    # Allow to database (RDS in database subnets)
+    # Zimbabwe pilot: VPC 10.1.0.0/16, database subnets 10.1.8.0/21
     - to:
         - ipBlock:
-            cidr: 10.0.0.0/8  # Internal network - customize per deployment
+            cidr: 10.1.8.0/21
       ports:
         - protocol: TCP
           port: 5432
+    # Allow DNS resolution
+    - to:
+        - namespaceSelector: {}
+      ports:
+        - protocol: UDP
+          port: 53
 
 ---
 # Crypto service network policy
@@ -101,14 +108,14 @@ spec:
     - from:
         - podSelector:
             matchLabels:
-              app: gtcx-api-prod
+              app: gtcx-agx-prod
         - podSelector:
             matchLabels:
               tier: protocol
       ports:
         - protocol: TCP
           port: 8080
-  egress: []  # Crypto service has no external dependencies
+  egress: [] # Crypto service has no external dependencies
 
 ---
 # Protocol services network policy
@@ -129,7 +136,7 @@ spec:
     - from:
         - podSelector:
             matchLabels:
-              app: gtcx-api-prod
+              app: gtcx-agx-prod
       ports:
         - protocol: TCP
           port: 3000
@@ -142,10 +149,108 @@ spec:
       ports:
         - protocol: TCP
           port: 8080
-    # Allow to database
+    # Allow to database (RDS in database subnets)
     - to:
         - ipBlock:
-            cidr: 10.0.0.0/8
+            cidr: 10.1.8.0/21
       ports:
         - protocol: TCP
           port: 5432
+    # Allow DNS resolution
+    - to:
+        - namespaceSelector: {}
+      ports:
+        - protocol: UDP
+          port: 53
+
+---
+# =============================================================================
+# Observability Network Policies
+# =============================================================================
+# Allow Prometheus to scrape app pods in this namespace
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-prometheus-scrape
+  namespace: gtcx-production
+  labels:
+    app.kubernetes.io/part-of: gtcx
+    app.kubernetes.io/component: observability
+spec:
+  podSelector:
+    matchLabels: {}
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: gtcx-monitoring
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: prometheus
+      ports:
+        - protocol: TCP
+          port: 9090
+        - protocol: TCP
+          port: 3000
+        - protocol: TCP
+          port: 8080
+        - protocol: TCP
+          port: 9187
+        - protocol: TCP
+          port: 9121
+        - protocol: TCP
+          port: 9100
+
+---
+# Allow app pods to push logs to Loki
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-loki-ingestion
+  namespace: gtcx-monitoring
+  labels:
+    app.kubernetes.io/part-of: gtcx
+    app.kubernetes.io/component: observability
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: loki
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: gtcx-production
+      ports:
+        - protocol: TCP
+          port: 3100
+
+---
+# Allow app pods to send traces to Jaeger
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-jaeger-ingestion
+  namespace: gtcx-monitoring
+  labels:
+    app.kubernetes.io/part-of: gtcx
+    app.kubernetes.io/component: observability
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: jaeger
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: gtcx-production
+      ports:
+        - protocol: TCP
+          port: 4317
+        - protocol: TCP
+          port: 4318

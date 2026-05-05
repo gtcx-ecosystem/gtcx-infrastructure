@@ -2,34 +2,35 @@
 
 > **API documentation, schemas, and lookup resources**
 
-
 ## Contents
 
-| Section | Description |
-|---------|-------------|
-| [api/](./api/) | API documentation |
-| [schemas/](./schemas/) | Data model reference |
+| Section                      | Description             |
+| ---------------------------- | ----------------------- |
+| [api/](./api/)               | API documentation       |
+| [schemas/](./schemas/)       | Data model reference    |
 | [glossary.md](./glossary.md) | Terminology definitions |
-
 
 ## Quick Links
 
 ### API Reference
+
 - [OpenAPI Specification](../../gtcx-ecosystem-docs/api/openapi.yaml)
 - [API README](../../gtcx-ecosystem-docs/api/README.md)
 
 ### Schemas
+
 - [Data Models (Spec §7)](../../gtcx-ecosystem-docs/spec/07-data-models.md)
 - [Schema Package](../../packages/schemas/)
 
 ### Terminology
+
 - [Full Glossary](../../gtcx-ecosystem-docs/GLOSSARY.md)
 - [Spec-to-Code Map](../../gtcx-ecosystem-docs/SPEC-TO-CODE-MAP.md)
 
 ### Cryptographic
+
 - [Test Vectors](../../gtcx-ecosystem-docs/TEST-VECTORS.md)
 - [Security Spec (§8)](../../gtcx-ecosystem-docs/spec/08-security.md)
-
 
 ## Data Model Overview
 
@@ -47,7 +48,6 @@ packages/schemas/src/
 
 All schemas use **Zod** for runtime validation and TypeScript type generation.
 
-
 ## Using Schemas
 
 ```typescript
@@ -62,7 +62,6 @@ if (!result.success) {
 // Type inference
 type GCIInput = z.infer<typeof GCIInputSchema>;
 ```
-
 
 ## Related Documentation
 

@@ -18,13 +18,13 @@ jobs:
   ci:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - uses: pnpm/action-setup@v4
         with:
           version: 9
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: '20'
           cache: 'pnpm'
@@ -40,22 +40,135 @@ jobs:
 
       - name: Type check
         run: pnpm typecheck
-        continue-on-error: true
-
-      - name: Test
-        run: pnpm test
-        continue-on-error: true
 
       - name: Build
         run: pnpm build
-        continue-on-error: true
+
+  docs-links:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check for broken internal links
+        run: |
+          echo "Checking for stale _sop/ references..."
+          if grep -r '_sop/' docs/ --include='*.md' -l 2>/dev/null; then
+            echo "::error::Found stale _sop/ path references in docs/"
+            exit 1
+          fi
+
+          echo "Checking for old GitHub org URLs..."
+          if grep -r 'github\.com/gtcx/' docs/ --include='*.md' -l 2>/dev/null | grep -v 'gtcx-ecosystem'; then
+            echo "::error::Found old github.com/gtcx/ URLs (should be gtcx-ecosystem)"
+            exit 1
+          fi
+
+          echo "All doc link checks passed"
+
+  iac-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: '1.5.0'
+
+      - name: Terraform format check
+        run: terraform fmt -check -recursive infra/terraform/
+
+      - name: Terraform validate — VPC module
+        run: |
+          cd infra/terraform/modules/vpc
+          terraform init -backend=false
+          terraform validate
+
+      - name: Terraform validate — Database module
+        run: |
+          cd infra/terraform/modules/database
+          terraform init -backend=false
+          terraform validate
+
+      - name: Terraform validate — EKS module
+        run: |
+          cd infra/terraform/modules/eks
+          terraform init -backend=false
+          terraform validate
+
+      - name: Terraform validate — ECR module
+        run: |
+          cd infra/terraform/modules/ecr
+          terraform init -backend=false
+          terraform validate
+
+      - name: Terraform validate — Secrets module
+        run: |
+          cd infra/terraform/modules/secrets
+          echo '{}' | zip -q lambda/rotation.zip -
+          terraform init -backend=false
+          terraform validate
+
+      - name: Terraform validate — ALB module
+        run: |
+          cd infra/terraform/modules/alb
+          terraform init -backend=false
+          terraform validate
+
+      - name: Terraform validate — Backup module
+        run: |
+          cd infra/terraform/modules/backup
+          terraform init -backend=false
+          terraform validate
+
+      - name: Terraform validate — Detective module
+        run: |
+          cd infra/terraform/modules/detective
+          terraform init -backend=false
+          terraform validate
+
+      - name: Terraform validate — Compliance module
+        run: |
+          cd infra/terraform/modules/compliance
+          terraform init -backend=false
+          terraform validate
+
+      - name: Terraform validate — Event Bus module
+        run: |
+          cd infra/terraform/modules/event-bus
+          terraform init -backend=false
+          terraform validate
+
+      - name: Terraform validate — KYC Documents module
+        run: |
+          cd infra/terraform/modules/kyc-documents
+          terraform init -backend=false
+          terraform validate
+
+      - name: Kustomize build — base
+        run: kubectl kustomize infra/kubernetes/base/ > /dev/null
+
+      - name: Kustomize build — dev overlay
+        run: kubectl kustomize infra/kubernetes/overlays/development/ > /dev/null
+
+      - name: Kustomize build — staging overlay
+        run: kubectl kustomize infra/kubernetes/overlays/staging/ > /dev/null
+
+      - name: Kustomize build — production overlay
+        run: kubectl kustomize infra/kubernetes/overlays/production/ > /dev/null
+
+      - name: Docker Compose config validation
+        run: |
+          docker compose -f infra/docker/docker-compose.dev.yml config --quiet
+          docker compose -f infra/docker/docker-compose.test.yml config --quiet
+          docker compose -f infra/docker/docker-compose.infra.yml config --quiet
 
   security:
     runs-on: ubuntu-latest
     permissions:
       security-events: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
@@ -67,7 +180,22 @@ jobs:
           severity: 'CRITICAL,HIGH'
 
       - name: Upload Trivy scan results
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@v4
         if: always()
         with:
           sarif_file: 'trivy-results.sarif'
+
+      - name: Generate SBOM (CycloneDX)
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          format: 'cyclonedx'
+          output: 'sbom-cyclonedx.json'
+
+      - name: Upload SBOM artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom-infrastructure
+          path: sbom-cyclonedx.json
+          retention-days: 365

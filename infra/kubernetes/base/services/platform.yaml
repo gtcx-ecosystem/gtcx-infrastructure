@@ -1,0 +1,20 @@
+# =============================================================================
+# GTCX Platform Service Account
+# =============================================================================
+# Used by all platform-layer pods (6-platforms/NestJS services).
+# In production this SA is annotated with the IRSA role ARN so pods can
+# call AWS APIs (presigned S3 URLs, KMS decrypt) without static credentials.
+#
+# The annotation is injected by the production overlay — see:
+#   overlays/production/patches/platform-sa-irsa.yaml
+#
+# ARN source: terraform output kyc_documents_irsa_role_arn
+# =============================================================================
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: gtcx-platform
+  namespace: gtcx
+  labels:
+    app.kubernetes.io/component: platform
+automountServiceAccountToken: false

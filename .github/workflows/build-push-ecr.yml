@@ -1,0 +1,297 @@
+# =============================================================================
+# Build, Scan & Push to ECR
+# =============================================================================
+# Triggered on merge to main. Builds all GTCX service images, runs Trivy
+# security scans, and pushes to ECR with commit SHA + latest tags.
+#
+# Image → ECR repo mapping:
+#   intelligence  → gtcx-anisa, gtcx-cortex, gtcx-veritas
+#   protocols     → gtcx-tradepass, gtcx-geotag, gtcx-gci
+#   platforms     → gtcx-agx, gtcx-crx, gtcx-sgx
+#   crypto        → gtcx-crypto
+# =============================================================================
+
+name: Build & Push to ECR
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'intelligence/**'
+      - 'protocols/**'
+      - 'infra/docker/**'
+      - '.github/workflows/build-push-ecr.yml'
+  workflow_dispatch: # Allow manual trigger
+
+permissions:
+  id-token: write
+  contents: read
+  security-events: write
+
+env:
+  AWS_REGION: af-south-1
+  ECR_ACCOUNT: 293488310036
+
+jobs:
+  build-push:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        service:
+          - name: intelligence
+            dockerfile: infra/docker/Dockerfile.intelligence
+            target: ''
+            ecr_repos: gtcx-anisa,gtcx-cortex,gtcx-veritas
+            source_repos: gtcx-intelligence
+
+          - name: protocols
+            dockerfile: infra/docker/Dockerfile.protocols
+            target: ''
+            ecr_repos: gtcx-tradepass,gtcx-geotag,gtcx-gci
+            source_repos: gtcx-protocols
+
+          - name: agx
+            dockerfile: infra/docker/Dockerfile.platforms
+            target: production
+            ecr_repos: gtcx-agx
+            source_repos: gtcx-platforms
+            build_args: PLATFORM=agx,APP_PORT=3000
+
+          - name: crx
+            dockerfile: infra/docker/Dockerfile.platforms
+            target: production
+            ecr_repos: gtcx-crx
+            source_repos: gtcx-platforms
+            build_args: PLATFORM=crx,APP_PORT=3001
+
+          - name: sgx
+            dockerfile: infra/docker/Dockerfile.platforms
+            target: production
+            ecr_repos: gtcx-sgx
+            source_repos: gtcx-platforms
+            build_args: PLATFORM=sgx,APP_PORT=3002
+
+          - name: crypto
+            dockerfile: infra/docker/Dockerfile.crypto
+            target: production
+            ecr_repos: gtcx-crypto
+            source_repos: gtcx-core
+
+    steps:
+      - name: Checkout infrastructure repo
+        uses: actions/checkout@v4
+        with:
+          path: infra
+
+      # Checkout source repos into paths the Dockerfiles expect
+      - name: Checkout gtcx-intelligence source
+        if: contains(matrix.service.source_repos, 'gtcx-intelligence')
+        uses: actions/checkout@v4
+        with:
+          repository: gtcx/gtcx-intelligence
+          token: ${{ secrets.GTCX_REPO_TOKEN }}
+          path: intelligence
+
+      - name: Checkout gtcx-protocols source
+        if: contains(matrix.service.source_repos, 'gtcx-protocols')
+        uses: actions/checkout@v4
+        with:
+          repository: gtcx/gtcx-protocols
+          token: ${{ secrets.GTCX_REPO_TOKEN }}
+          path: protocols
+
+      - name: Checkout gtcx-core source
+        if: contains(matrix.service.source_repos, 'gtcx-core')
+        uses: actions/checkout@v4
+        with:
+          repository: gtcx/gtcx-core
+          token: ${{ secrets.GTCX_REPO_TOKEN }}
+          path: core
+
+      - name: Checkout gtcx-platforms source
+        if: contains(matrix.service.source_repos, 'gtcx-platforms')
+        uses: actions/checkout@v4
+        with:
+          repository: gtcx/gtcx-platforms
+          token: ${{ secrets.GTCX_REPO_TOKEN }}
+          path: platforms
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to ECR
+        id: ecr-login
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build image
+        run: |
+          DOCKERFILE="infra/${{ matrix.service.dockerfile }}"
+          TARGET_FLAG=""
+          if [ -n "${{ matrix.service.target }}" ]; then
+            TARGET_FLAG="--target ${{ matrix.service.target }}"
+          fi
+
+          BUILD_ARGS_FLAG=""
+          if [ -n "${{ matrix.service.build_args }}" ]; then
+            IFS=',' read -ra ARGS <<< "${{ matrix.service.build_args }}"
+            for ARG in "${ARGS[@]}"; do
+              BUILD_ARGS_FLAG="$BUILD_ARGS_FLAG --build-arg $ARG"
+            done
+          fi
+
+          SHA_SHORT="${GITHUB_SHA::8}"
+          REGISTRY="${{ steps.ecr-login.outputs.registry }}"
+
+          # Build once, tag for all target repos
+          TAGS=""
+          IFS=',' read -ra REPOS <<< "${{ matrix.service.ecr_repos }}"
+          for REPO in "${REPOS[@]}"; do
+            TAGS="$TAGS -t ${REGISTRY}/${REPO}:${SHA_SHORT} -t ${REGISTRY}/${REPO}:latest"
+          done
+
+          docker build \
+            $TARGET_FLAG \
+            $BUILD_ARGS_FLAG \
+            $TAGS \
+            -f "$DOCKERFILE" \
+            .
+
+      - name: Set primary ECR repo
+        id: primary_repo
+        run: |
+          FIRST=$(echo "${{ matrix.service.ecr_repos }}" | cut -d',' -f1)
+          echo "name=${FIRST}" >> "$GITHUB_OUTPUT"
+
+      - name: Trivy security scan
+        uses: aquasecurity/trivy-action@master
+        continue-on-error: true
+        with:
+          image-ref: '${{ steps.ecr-login.outputs.registry }}/${{ steps.primary_repo.outputs.name }}:${{ github.sha }}'
+          format: sarif
+          output: trivy-${{ matrix.service.name }}.sarif
+          severity: HIGH,CRITICAL
+          exit-code: '0'
+
+      - name: Upload Trivy results
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: trivy-${{ matrix.service.name }}.sarif
+
+      - name: Generate container SBOM (CycloneDX)
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: '${{ steps.ecr-login.outputs.registry }}/${{ steps.primary_repo.outputs.name }}:${{ github.sha }}'
+          format: 'cyclonedx'
+          output: 'sbom-${{ matrix.service.name }}.cdx.json'
+
+      - name: Upload container SBOM
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sbom-${{ matrix.service.name }}
+          path: sbom-${{ matrix.service.name }}.cdx.json
+          retention-days: 365
+
+      - name: Push to ECR
+        run: |
+          SHA_SHORT="${GITHUB_SHA::8}"
+          REGISTRY="${{ steps.ecr-login.outputs.registry }}"
+          IFS=',' read -ra REPOS <<< "${{ matrix.service.ecr_repos }}"
+          for REPO in "${REPOS[@]}"; do
+            docker push "${REGISTRY}/${REPO}:${SHA_SHORT}"
+            docker push "${REGISTRY}/${REPO}:latest"
+            echo "### Pushed ${REPO}" >> "$GITHUB_STEP_SUMMARY"
+            echo "- \`${REGISTRY}/${REPO}:${SHA_SHORT}\`" >> "$GITHUB_STEP_SUMMARY"
+            echo "- \`${REGISTRY}/${REPO}:latest\`" >> "$GITHUB_STEP_SUMMARY"
+          done
+
+  # Update K8s manifests with new image SHAs after all builds succeed
+  update-manifests:
+    needs: build-push
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to ECR
+        id: ecr-login
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Update kustomization image tags
+        run: |
+          SHA_SHORT="${GITHUB_SHA::8}"
+          REGISTRY="${{ steps.ecr-login.outputs.registry }}"
+          cd infra/kubernetes/overlays/production
+
+          # Update all service image tags to the new SHA
+          kustomize edit set image \
+            gtcx/agx="${REGISTRY}/gtcx-agx:${SHA_SHORT}" \
+            gtcx/crx="${REGISTRY}/gtcx-crx:${SHA_SHORT}" \
+            gtcx/sgx="${REGISTRY}/gtcx-sgx:${SHA_SHORT}" \
+            gtcx/crypto="${REGISTRY}/gtcx-crypto:${SHA_SHORT}" \
+            gtcx/intelligence-sdk="${REGISTRY}/gtcx-anisa:${SHA_SHORT}"
+
+      - name: Commit manifest update
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add infra/kubernetes/overlays/production/kustomization.yaml
+          git diff --staged --quiet || git commit -m "chore(deploy): update image tags to ${GITHUB_SHA::8}"
+          git push
+
+  # Deploy updated manifests to the production cluster
+  deploy:
+    needs: update-manifests
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    environment: production # Requires manual approval via GitHub environment protection rules
+    steps:
+      - name: Checkout (with updated manifests)
+        uses: actions/checkout@v4
+        with:
+          ref: main # Pull the commit with updated image tags
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Configure kubectl
+        run: |
+          aws eks update-kubeconfig \
+            --name "gtcx-zimbabwe-pilot" \
+            --region "${{ env.AWS_REGION }}"
+
+      - name: Deploy to production
+        run: |
+          kubectl apply -k infra/kubernetes/overlays/production/
+          echo "### Deployed to production" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Commit: \`${GITHUB_SHA::8}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Cluster: gtcx-zimbabwe-pilot" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Wait for rollout
+        run: |
+          kubectl rollout status deployment/gtcx-agx-prod -n gtcx-production --timeout=300s
+          kubectl rollout status deployment/gtcx-crypto-prod -n gtcx-production --timeout=300s
+          echo "- Rollout: **healthy**" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Verify health
+        run: |
+          AGX_POD=$(kubectl get pods -n gtcx-production -l app=gtcx-agx-prod -o jsonpath='{.items[0].metadata.name}' 2>/dev/null || echo "")
+          if [[ -n "${AGX_POD}" ]]; then
+            kubectl exec "${AGX_POD}" -n gtcx-production -- wget -q --spider http://localhost:3000/api/health
+            echo "- Health check: **passed**" >> "$GITHUB_STEP_SUMMARY"
+          fi

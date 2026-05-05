@@ -16,22 +16,23 @@
 
 terraform {
   required_version = ">= 1.5.0"
-  
+
   required_providers {
     aws = {
       source  = "hashicorp/aws"
       version = "~> 5.0"
     }
   }
-  
-  # Backend configuration - customize per environment
-  # backend "s3" {
-  #   bucket         = "gtcx-terraform-state"
-  #   key            = "environments/COUNTRY/terraform.tfstate"
-  #   region         = "REGION"
-  #   encrypt        = true
-  #   dynamodb_table = "gtcx-terraform-locks"
-  # }
+
+  # Backend configuration — MUST be customized per environment.
+  # terraform init will fail if CHANGE-ME values are not replaced.
+  backend "s3" {
+    bucket         = "CHANGE-ME-gtcx-terraform-state"  # Required: unique bucket name
+    key            = "CHANGE-ME/terraform.tfstate"       # Required: state file path
+    region         = "CHANGE-ME"                         # Required: AWS region
+    encrypt        = true
+    dynamodb_table = "CHANGE-ME-terraform-locks"         # Required: lock table name
+  }
 }
 
 # -----------------------------------------------------------------------------
@@ -89,7 +90,7 @@ variable "tags" {
 
 provider "aws" {
   region = var.region
-  
+
   default_tags {
     tags = merge(var.tags, {
       Project     = "gtcx"
@@ -105,20 +106,20 @@ provider "aws" {
 
 module "vpc" {
   source = "../../modules/vpc"
-  
+
   environment        = var.environment
   region             = var.region
   cidr_block         = var.vpc_cidr
   availability_zones = var.availability_zones
   enable_nat_gateway = true
   enable_vpn_gateway = false
-  
+
   tags = var.tags
 }
 
 module "database" {
   source = "../../modules/database"
-  
+
   environment             = var.environment
   vpc_id                  = module.vpc.vpc_id
   subnet_ids              = module.vpc.database_subnet_ids
@@ -127,8 +128,8 @@ module "database" {
   multi_az                = var.enable_multi_az
   backup_retention_period = 30
   deletion_protection     = true
-  allowed_security_groups = []  # Add EKS node security group
-  
+  allowed_security_groups = [] # Add EKS node security group
+
   tags = var.tags
 }
 

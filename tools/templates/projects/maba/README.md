@@ -2,7 +2,6 @@
 
 **Transform any data from any source → any target schema**
 
-
 ## Overview
 
 MABA is the data ingestion and transformation backbone. It converts heterogeneous data sources into standardized, verifiable formats using AI-powered schema mapping and distributed processing.
@@ -17,12 +16,12 @@ MABA is the data ingestion and transformation backbone. It converts heterogeneou
 
 ## Performance
 
-| Metric | Target |
-|--------|--------|
-| Processing throughput | 1M+ records/day |
-| Schema mapping accuracy | 95% automatic |
-| Error rate | <0.1% after auto-reconciliation |
-| Latency | <100ms per record |
+| Metric                  | Target                          |
+| ----------------------- | ------------------------------- |
+| Processing throughput   | 1M+ records/day                 |
+| Schema mapping accuracy | 95% automatic                   |
+| Error rate              | <0.1% after auto-reconciliation |
+| Latency                 | <100ms per record               |
 
 ## Tech Stack
 
@@ -94,18 +93,20 @@ results = engine.process(job)
 ## Integration
 
 ### Downstream
+
 - **KORA**: Transformed data flows to verification
 - **AMANI**: Indexed data supports user guidance
 
 ### Upstream
+
 - Any data source with a connector
 
 ## Documentation
 
 Full agile-pm documentation in `agile-pm/` folder:
+
 - Technical architecture: `04 - spec/`
 - API specification: `04 - spec/api-specification-template.md`
 - Sprint planning: `06 - planning/`
 
-
-*Source: Originally from the GTCX monorepo migration tools; now maintained in gtcx-amis (MABA specs) and gtcx-infrastructure (templates)*
+_Source: Originally from the GTCX monorepo migration tools; now maintained in gtcx-amis (MABA specs) and gtcx-infrastructure (templates)_

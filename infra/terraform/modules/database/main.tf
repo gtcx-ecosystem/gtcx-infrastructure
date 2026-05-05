@@ -37,7 +37,7 @@ variable "allocated_storage" {
 variable "engine_version" {
   description = "PostgreSQL engine version"
   type        = string
-  default     = "16.1"
+  default     = "16.6"
 }
 
 variable "multi_az" {
@@ -49,7 +49,7 @@ variable "multi_az" {
 variable "backup_retention_period" {
   description = "Backup retention period in days"
   type        = number
-  default     = 30  # Per AUDITABLE principle
+  default     = 30 # Per AUDITABLE principle
 }
 
 variable "deletion_protection" {
@@ -79,7 +79,7 @@ locals {
     Environment = var.environment
     ManagedBy   = "terraform"
     Project     = "gtcx"
-    Principle   = "SOVEREIGN,AUDITABLE"
+    Principle   = "SOVEREIGN AUDITABLE"
   })
 }
 
@@ -90,7 +90,7 @@ locals {
 resource "aws_db_subnet_group" "main" {
   name       = "gtcx-${var.environment}-db-subnet"
   subnet_ids = var.subnet_ids
-  
+
   tags = merge(local.common_tags, {
     Name = "gtcx-${var.environment}-db-subnet-group"
   })
@@ -104,7 +104,7 @@ resource "aws_security_group" "database" {
   name        = "gtcx-${var.environment}-db-sg"
   description = "Security group for GTCX databases"
   vpc_id      = var.vpc_id
-  
+
   # PostgreSQL from allowed security groups only
   ingress {
     description     = "PostgreSQL from application"
@@ -113,7 +113,7 @@ resource "aws_security_group" "database" {
     protocol        = "tcp"
     security_groups = var.allowed_security_groups
   }
-  
+
   # No egress (database doesn't initiate connections)
   egress {
     description = "No outbound"
@@ -122,7 +122,7 @@ resource "aws_security_group" "database" {
     protocol    = "-1"
     cidr_blocks = []
   }
-  
+
   tags = merge(local.common_tags, {
     Name = "gtcx-${var.environment}-db-sg"
   })
@@ -135,45 +135,41 @@ resource "aws_security_group" "database" {
 resource "aws_db_parameter_group" "main" {
   family = "postgres16"
   name   = "gtcx-${var.environment}-pg-params"
-  
-  # Security parameters
+
+  # SSL enforcement (per SECURE principle)
   parameter {
-    name  = "ssl"
+    name  = "rds.force_ssl"
     value = "1"
   }
-  
-  parameter {
-    name  = "ssl_min_protocol_version"
-    value = "TLSv1.2"
-  }
-  
+
   # Logging parameters (per AUDITABLE principle)
   parameter {
     name  = "log_statement"
     value = "all"
   }
-  
+
   parameter {
     name  = "log_min_duration_statement"
-    value = "1000"  # Log queries taking > 1s
+    value = "1000" # Log queries taking > 1s
   }
-  
+
   parameter {
     name  = "log_connections"
     value = "1"
   }
-  
+
   parameter {
     name  = "log_disconnections"
     value = "1"
   }
-  
-  # Performance parameters
+
+  # Performance parameters — static, requires DB reboot to take effect
   parameter {
-    name  = "shared_preload_libraries"
-    value = "pg_stat_statements"
+    name         = "shared_preload_libraries"
+    value        = "pg_stat_statements"
+    apply_method = "pending-reboot"
   }
-  
+
   tags = local.common_tags
 }
 
@@ -183,48 +179,48 @@ resource "aws_db_parameter_group" "main" {
 
 resource "aws_db_instance" "operational" {
   identifier = "gtcx-${var.environment}-operational"
-  
+
   # Engine
-  engine               = "postgres"
-  engine_version       = var.engine_version
-  instance_class       = var.instance_class
-  allocated_storage    = var.allocated_storage
-  max_allocated_storage = var.allocated_storage * 2  # Auto-scaling
-  storage_type         = "gp3"
-  storage_encrypted    = true  # Per SECURE principle
-  
+  engine                = "postgres"
+  engine_version        = var.engine_version
+  instance_class        = var.instance_class
+  allocated_storage     = var.allocated_storage
+  max_allocated_storage = var.allocated_storage * 2 # Auto-scaling
+  storage_type          = "gp3"
+  storage_encrypted     = true # Per SECURE principle
+
   # Network
   db_subnet_group_name   = aws_db_subnet_group.main.name
   vpc_security_group_ids = [aws_security_group.database.id]
-  publicly_accessible    = false  # Per SOVEREIGN principle
+  publicly_accessible    = false # Per SOVEREIGN principle
   multi_az               = var.multi_az
-  
+
   # Database
-  db_name  = "gtcx_${replace(var.environment, "-", "_")}"
-  username = "gtcx_admin"
-  manage_master_user_password = true  # AWS Secrets Manager
-  
+  db_name                     = "gtcx_${replace(var.environment, "-", "_")}"
+  username                    = "gtcx_admin"
+  manage_master_user_password = true # AWS Secrets Manager
+
   # Backup (per AUDITABLE principle)
   backup_retention_period = var.backup_retention_period
   backup_window           = "03:00-04:00"
   maintenance_window      = "Mon:04:00-Mon:05:00"
   copy_tags_to_snapshot   = true
-  
+
   # Parameters
   parameter_group_name = aws_db_parameter_group.main.name
-  
+
   # Protection
   deletion_protection       = var.deletion_protection
   skip_final_snapshot       = false
   final_snapshot_identifier = "gtcx-${var.environment}-operational-final"
-  
+
   # Monitoring (per OBSERVABLE principle)
-  performance_insights_enabled    = true
+  performance_insights_enabled          = true
   performance_insights_retention_period = 7
-  monitoring_interval             = 60
-  monitoring_role_arn            = aws_iam_role.rds_monitoring.arn
-  enabled_cloudwatch_logs_exports = ["postgresql", "upgrade"]
-  
+  monitoring_interval                   = 60
+  monitoring_role_arn                   = aws_iam_role.rds_monitoring.arn
+  enabled_cloudwatch_logs_exports       = ["postgresql", "upgrade"]
+
   tags = merge(local.common_tags, {
     Name     = "gtcx-${var.environment}-operational"
     Database = "operational"
@@ -237,52 +233,52 @@ resource "aws_db_instance" "operational" {
 
 resource "aws_db_instance" "audit" {
   identifier = "gtcx-${var.environment}-audit"
-  
+
   # Engine
-  engine               = "postgres"
-  engine_version       = var.engine_version
-  instance_class       = var.instance_class
-  allocated_storage    = var.allocated_storage * 2  # Audit needs more storage
+  engine                = "postgres"
+  engine_version        = var.engine_version
+  instance_class        = var.instance_class
+  allocated_storage     = var.allocated_storage * 2 # Audit needs more storage
   max_allocated_storage = var.allocated_storage * 4
-  storage_type         = "gp3"
-  storage_encrypted    = true
-  
+  storage_type          = "gp3"
+  storage_encrypted     = true
+
   # Network
   db_subnet_group_name   = aws_db_subnet_group.main.name
   vpc_security_group_ids = [aws_security_group.database.id]
   publicly_accessible    = false
   multi_az               = var.multi_az
-  
+
   # Database
-  db_name  = "gtcx_${replace(var.environment, "-", "_")}_audit"
-  username = "gtcx_audit_admin"
+  db_name                     = "gtcx_${replace(var.environment, "-", "_")}_audit"
+  username                    = "gtcx_audit_admin"
   manage_master_user_password = true
-  
+
   # Backup (extended for audit - per AUDITABLE principle)
-  backup_retention_period = 90  # 90 days for audit
+  backup_retention_period = 35 # max RDS allows (use S3 export for longer audit retention)
   backup_window           = "03:00-04:00"
   maintenance_window      = "Mon:04:00-Mon:05:00"
   copy_tags_to_snapshot   = true
-  
+
   # Parameters
   parameter_group_name = aws_db_parameter_group.main.name
-  
+
   # Protection (critical for audit)
-  deletion_protection       = true  # Always protected
+  deletion_protection       = true # Always protected
   skip_final_snapshot       = false
   final_snapshot_identifier = "gtcx-${var.environment}-audit-final"
-  
+
   # Monitoring
-  performance_insights_enabled    = true
+  performance_insights_enabled          = true
   performance_insights_retention_period = 31
-  monitoring_interval             = 60
-  monitoring_role_arn            = aws_iam_role.rds_monitoring.arn
-  enabled_cloudwatch_logs_exports = ["postgresql", "upgrade"]
-  
+  monitoring_interval                   = 60
+  monitoring_role_arn                   = aws_iam_role.rds_monitoring.arn
+  enabled_cloudwatch_logs_exports       = ["postgresql", "upgrade"]
+
   tags = merge(local.common_tags, {
     Name      = "gtcx-${var.environment}-audit"
     Database  = "audit"
-    Principle = "IMMUTABLE"  # No UPDATE/DELETE
+    Principle = "IMMUTABLE" # No UPDATE/DELETE
   })
 }
 
@@ -292,7 +288,7 @@ resource "aws_db_instance" "audit" {
 
 resource "aws_iam_role" "rds_monitoring" {
   name = "gtcx-${var.environment}-rds-monitoring"
-  
+
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
@@ -303,7 +299,7 @@ resource "aws_iam_role" "rds_monitoring" {
       }
     }]
   })
-  
+
   tags = local.common_tags
 }
 
@@ -339,4 +335,19 @@ output "audit_port" {
 output "security_group_id" {
   description = "Database security group ID"
   value       = aws_security_group.database.id
+}
+
+output "audit_db_identifier" {
+  description = "Audit database RDS instance identifier"
+  value       = aws_db_instance.audit.identifier
+}
+
+output "operational_master_secret_arn" {
+  description = "ARN of operational DB master password in AWS Secrets Manager (managed by RDS)"
+  value       = aws_db_instance.operational.master_user_secret[0].secret_arn
+}
+
+output "audit_master_secret_arn" {
+  description = "ARN of audit DB master password in AWS Secrets Manager (managed by RDS)"
+  value       = aws_db_instance.audit.master_user_secret[0].secret_arn
 }

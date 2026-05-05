@@ -32,6 +32,7 @@ The GTCX Migration Stack is a domain-agnostic infrastructure layer that transfor
 ## Components
 
 ### MABA - Universal Transformation Engine
+
 Transform any data from any source into any target schema.
 
 - **AI-powered schema mapping** with 95%+ automatic accuracy
@@ -39,9 +40,8 @@ Transform any data from any source into any target schema.
 - **Universal connectors**: databases, files, APIs, streams
 - **Self-healing** with automatic error resolution
 
-[→ MABA Documentation](./maba/README.md)
-
 ### KORA - Multi-Source Verification Oracle
+
 Create tamper-proof verification through multi-source consensus.
 
 - **Byzantine fault-tolerant** consensus across sources
@@ -49,9 +49,8 @@ Create tamper-proof verification through multi-source consensus.
 - **ML-powered fraud detection** that learns over time
 - **Zero-knowledge proofs** for sensitive data
 
-[→ KORA Documentation](./kora/README.md)
-
 ### AMANI - Multilingual Guidance Layer
+
 Make complex processes accessible to everyone.
 
 - **200+ languages** with cultural adaptation
@@ -59,16 +58,14 @@ Make complex processes accessible to everyone.
 - **Offline-first** for low-connectivity environments
 - **Context-aware** assistance and proactive guidance
 
-[→ AMANI Documentation](./amani/README.md)
-
 ## Domain Examples
 
-| Domain | MABA Transforms | KORA Verifies | AMANI Guides |
-|--------|-----------------|---------------|--------------|
-| **GTCX Commodity** | Legacy ERPs → Core12 | Provenance vs evidence | Miners through compliance |
-| **Land/Cadastre** | Paper titles → digital | Ownership vs registries | Citizens through digitization |
-| **Government** | Ministry DBs → APIs | License validity | Officials through platform |
-| **Financial** | KYC docs → profiles | Identity claims | Clients through onboarding |
+| Domain             | MABA Transforms        | KORA Verifies           | AMANI Guides                  |
+| ------------------ | ---------------------- | ----------------------- | ----------------------------- |
+| **GTCX Commodity** | Legacy ERPs → Core12   | Provenance vs evidence  | Miners through compliance     |
+| **Land/Cadastre**  | Paper titles → digital | Ownership vs registries | Citizens through digitization |
+| **Government**     | Ministry DBs → APIs    | License validity        | Officials through platform    |
+| **Financial**      | KYC docs → profiles    | Identity claims         | Clients through onboarding    |
 
 ## Configuration
 
@@ -81,13 +78,13 @@ maba:
   connectors:
     - ghana-minerals-commission
     - document-upload
-    
+
 kora:
   validators:
     - government-registry
     - geotag-location
     - community-attestation
-    
+
 amani:
   languages: [en, tw, ha, fr, pt]
   channels: [whatsapp, sms, ussd, web]
@@ -98,6 +95,7 @@ See [config/example.yaml](./config/example.yaml) for a template.
 ## Quick Start
 
 ### Prerequisites
+
 - Python 3.11+
 - PostgreSQL 14+
 - Redis
@@ -178,6 +176,7 @@ Configuration: [config/gtcx.yaml](./config/gtcx.yaml)
 ## API Overview
 
 ### MABA
+
 ```
 POST /api/v1/transform    # Start transformation job
 GET  /api/v1/jobs/{id}    # Check job status
@@ -185,6 +184,7 @@ GET  /api/v1/mappings     # Get schema mappings
 ```
 
 ### KORA
+
 ```
 POST /api/v1/verify       # Submit for verification
 GET  /api/v1/proof/{id}   # Get cryptographic proof
@@ -192,6 +192,7 @@ POST /api/v1/dispute      # File dispute
 ```
 
 ### AMANI
+
 ```
 POST /api/v1/chat         # Send message
 GET  /api/v1/languages    # List supported languages
@@ -200,24 +201,23 @@ POST /api/v1/translate    # Translate content
 
 ## Scripts
 
-| Script | Purpose |
-|--------|---------|
+| Script                     | Purpose                          |
+| -------------------------- | -------------------------------- |
 | `scripts/generate_docs.py` | Generate documentation templates |
-| `scripts/check_docs.py` | Audit documentation completeness |
+| `scripts/check_docs.py`    | Audit documentation completeness |
 
 ## Performance Targets
 
-| Metric | MABA | KORA | AMANI |
-|--------|------|------|-------|
-| Throughput | 1M records/day | 100K verifications/day | 10K conversations/hour |
-| Accuracy | 95% auto-mapping | 99.5% verification | 90% first-contact resolution |
-| Latency | <100ms/record | <500ms/verification | <2s response |
-| Availability | 99.9% | 99.95% | 99.9% |
+| Metric       | MABA             | KORA                   | AMANI                        |
+| ------------ | ---------------- | ---------------------- | ---------------------------- |
+| Throughput   | 1M records/day   | 100K verifications/day | 10K conversations/hour       |
+| Accuracy     | 95% auto-mapping | 99.5% verification     | 90% first-contact resolution |
+| Latency      | <100ms/record    | <500ms/verification    | <2s response                 |
+| Availability | 99.9%            | 99.95%                 | 99.9%                        |
 
 ## License
 
 GTCX Protocol - Proprietary
 Copyright 2024-2025 GTCX Global
 
-
-*Part of the [GTCX Protocol](../../README.md) ecosystem*
+_Part of the [GTCX Protocol](../../README.md) ecosystem_

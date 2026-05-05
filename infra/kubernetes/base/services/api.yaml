@@ -1,42 +1,49 @@
 # =============================================================================
-# GTCX API Service (Rails)
+# GTCX AGX Service (NestJS — Authenticated Global Exchange)
 # =============================================================================
-# Core API gateway for all GTCX operations
+# Primary platform API for GTCX operations
 # Principles: SECURE (11), RESILIENT (12), OBSERVABLE (15), SCALABLE (24)
 # =============================================================================
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gtcx-api
+  name: gtcx-agx
   namespace: gtcx
   labels:
-    app: gtcx-api
-    tier: api
+    app: gtcx-agx
+    tier: platform
 spec:
   replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
   selector:
     matchLabels:
-      app: gtcx-api
+      app: gtcx-agx
   template:
     metadata:
       labels:
-        app: gtcx-api
-        tier: api
+        app: gtcx-agx
+        tier: platform
       annotations:
-        prometheus.io/scrape: "true"
-        prometheus.io/port: "3000"
-        prometheus.io/path: "/metrics"
+        prometheus.io/scrape: 'true'
+        prometheus.io/port: '3000'
+        prometheus.io/path: '/metrics'
     spec:
-      serviceAccountName: gtcx-api
+      serviceAccountName: gtcx-platform
       securityContext:
         runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
+        runAsUser: 1001
+        runAsGroup: 1001
+        fsGroup: 1001
+        seccompProfile:
+          type: RuntimeDefault
       containers:
-        - name: api
-          image: gtcx/api:latest
-          imagePullPolicy: Always
+        - name: agx
+          image: gtcx/agx:latest
+          imagePullPolicy: IfNotPresent
           ports:
             - name: http
               containerPort: 3000
@@ -50,11 +57,11 @@ spec:
                 name: gtcx-secrets
           resources:
             requests:
-              cpu: "250m"
-              memory: "512Mi"
+              cpu: 250m
+              memory: 512Mi
             limits:
-              cpu: "1000m"
-              memory: "1Gi"
+              cpu: 1000m
+              memory: 1Gi
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
@@ -63,29 +70,32 @@ spec:
                 - ALL
           livenessProbe:
             httpGet:
-              path: /health/live
+              path: /api/health
               port: http
-            initialDelaySeconds: 30
+            initialDelaySeconds: 15
             periodSeconds: 10
             timeoutSeconds: 5
             failureThreshold: 3
           readinessProbe:
             httpGet:
-              path: /health/ready
+              path: /api/health
               port: http
             initialDelaySeconds: 5
             periodSeconds: 5
             timeoutSeconds: 3
             failureThreshold: 3
+          startupProbe:
+            httpGet:
+              path: /api/health
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 3
+            failureThreshold: 10
           volumeMounts:
             - name: tmp
               mountPath: /tmp
-            - name: cache
-              mountPath: /app/tmp
       volumes:
         - name: tmp
-          emptyDir: {}
-        - name: cache
           emptyDir: {}
       affinity:
         podAntiAffinity:
@@ -94,16 +104,16 @@ spec:
               podAffinityTerm:
                 labelSelector:
                   matchLabels:
-                    app: gtcx-api
+                    app: gtcx-agx
                 topologyKey: kubernetes.io/hostname
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: gtcx-api
+  name: gtcx-agx
   namespace: gtcx
   labels:
-    app: gtcx-api
+    app: gtcx-agx
 spec:
   type: ClusterIP
   ports:
@@ -112,24 +122,18 @@ spec:
       targetPort: http
       protocol: TCP
   selector:
-    app: gtcx-api
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: gtcx-api
-  namespace: gtcx
+    app: gtcx-agx
 ---
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: gtcx-api
+  name: gtcx-agx
   namespace: gtcx
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: gtcx-api
+    name: gtcx-agx
   minReplicas: 2
   maxReplicas: 10
   metrics:
@@ -149,10 +153,10 @@ spec:
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: gtcx-api
+  name: gtcx-agx
   namespace: gtcx
 spec:
   minAvailable: 1
   selector:
     matchLabels:
-      app: gtcx-api
+      app: gtcx-agx

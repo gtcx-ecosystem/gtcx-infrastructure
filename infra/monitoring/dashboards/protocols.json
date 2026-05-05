@@ -1,0 +1,132 @@
+{
+  "dashboard": {
+    "title": "GTCX Protocol Server",
+    "description": "Operational dashboard for the unified protocol server (63 handlers, 6 protocols)",
+    "tags": ["gtcx", "protocols", "production"],
+    "timezone": "utc",
+    "refresh": "30s",
+    "panels": [
+      {
+        "title": "Request Rate (per protocol)",
+        "type": "timeseries",
+        "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
+        "targets": [
+          {
+            "expr": "sum(rate(gtcx_protocol_requests_total[5m])) by (protocol)",
+            "legendFormat": "{{ protocol }}"
+          }
+        ]
+      },
+      {
+        "title": "Error Rate (per protocol)",
+        "type": "timeseries",
+        "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
+        "targets": [
+          {
+            "expr": "sum(rate(gtcx_protocol_errors_total[5m])) by (protocol) / sum(rate(gtcx_protocol_requests_total[5m])) by (protocol)",
+            "legendFormat": "{{ protocol }}"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "percentunit",
+            "thresholds": {
+              "steps": [
+                { "color": "green", "value": 0 },
+                { "color": "yellow", "value": 0.01 },
+                { "color": "red", "value": 0.05 }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "title": "Average Latency (per protocol)",
+        "type": "timeseries",
+        "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 },
+        "targets": [
+          {
+            "expr": "sum(rate(gtcx_protocol_latency_ms_sum[5m])) by (protocol) / sum(rate(gtcx_protocol_latency_ms_count[5m])) by (protocol)",
+            "legendFormat": "{{ protocol }}"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "ms",
+            "thresholds": {
+              "steps": [
+                { "color": "green", "value": 0 },
+                { "color": "yellow", "value": 500 },
+                { "color": "red", "value": 2000 }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "title": "Rate Limit Rejections",
+        "type": "stat",
+        "gridPos": { "h": 8, "w": 6, "x": 12, "y": 8 },
+        "targets": [
+          {
+            "expr": "sum(rate(gtcx_protocol_requests_total{protocol=\"server\",operation=\"rateLimit\"}[5m])) * 60",
+            "legendFormat": "rejections/min"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "thresholds": {
+              "steps": [
+                { "color": "green", "value": 0 },
+                { "color": "yellow", "value": 5 },
+                { "color": "red", "value": 10 }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "title": "Lot Proof Assemblies",
+        "type": "stat",
+        "gridPos": { "h": 8, "w": 6, "x": 18, "y": 8 },
+        "targets": [
+          {
+            "expr": "sum(rate(gtcx_protocol_requests_total{protocol=\"proof\"}[5m])) * 300",
+            "legendFormat": "proofs/5min"
+          }
+        ]
+      },
+      {
+        "title": "Top Operations by Request Count",
+        "type": "table",
+        "gridPos": { "h": 10, "w": 24, "x": 0, "y": 16 },
+        "targets": [
+          {
+            "expr": "topk(15, sum(gtcx_protocol_requests_total) by (protocol, operation))",
+            "format": "table",
+            "instant": true
+          }
+        ]
+      },
+      {
+        "title": "Server Health",
+        "type": "stat",
+        "gridPos": { "h": 4, "w": 6, "x": 0, "y": 26 },
+        "targets": [
+          {
+            "expr": "up{job=\"gtcx-protocols\"}",
+            "legendFormat": "Up"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "mappings": [
+              { "type": "value", "options": { "1": { "text": "UP", "color": "green" } } },
+              { "type": "value", "options": { "0": { "text": "DOWN", "color": "red" } } }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

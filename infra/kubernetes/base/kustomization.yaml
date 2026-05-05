@@ -13,12 +13,14 @@ commonLabels:
 
 resources:
   - namespace.yaml
+  - cert-manager.yaml
   - configmaps/base-config.yaml
+  - services/nats.yaml
   - services/api.yaml
   - services/crypto.yaml
-  - services/tradepass.yaml
-  - services/geotag.yaml
-  - services/gci.yaml
+  - services/protocols.yaml
+  - services/intelligence.yaml
+  - services/platform.yaml
 
 configMapGenerator:
   - name: gtcx-env
@@ -27,15 +29,37 @@ configMapGenerator:
       - GTCX_LOG_LEVEL=info
       - GTCX_LOG_FORMAT=json
 
+# ============================================================
+# STUB SECRETS — kustomize build requires this to succeed.
+# These values are intentionally non-functional.
+#
+# Production secrets flow through External Secrets Operator:
+#   AWS Secrets Manager → ESO SecretStore → K8s Secret
+# See: docs/security/secrets-management.md
+# See: infra/terraform/modules/secrets/intelligence.tf
+#
+# Environment overlays MUST NOT use these literals.
+# ============================================================
 secretGenerator:
   - name: gtcx-secrets
     type: Opaque
     literals:
-      - DATABASE_URL=postgres://placeholder:placeholder@localhost:5432/gtcx
-      - SECRET_KEY_BASE=placeholder-override-in-overlay
+      - DATABASE_URL=PLACEHOLDER_OVERRIDE_IN_OVERLAY
+      - SECRET_KEY_BASE=PLACEHOLDER_OVERRIDE_IN_OVERLAY
 
+# =============================================================
+# Image tags — base uses v0.1.0 as floor version.
+# Environment overlays MUST override with build-specific tags
+# (e.g., sha-a92b7fc from CI). Never deploy :latest.
+# =============================================================
 images:
-  - name: gtcx/api
-    newTag: latest
+  - name: gtcx/agx
+    newTag: v0.1.0
+  - name: gtcx/crx
+    newTag: v0.1.0
+  - name: gtcx/sgx
+    newTag: v0.1.0
   - name: gtcx/crypto
-    newTag: latest
+    newTag: v0.1.0
+  - name: gtcx/protocols
+    newTag: v0.1.0

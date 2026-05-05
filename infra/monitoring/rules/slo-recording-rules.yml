@@ -1,0 +1,179 @@
+# =============================================================================
+# SLO Recording Rules — GTCX
+# =============================================================================
+# Pre-computed SLO metrics for dashboard queries and error budget alerts.
+# Per OBSERVABLE (15): SLOs must be measurable, not aspirational.
+#
+# Targets (pilot):
+#   AGX/Protocols: 99.5% availability, <500ms/<1000ms p95
+#   Intelligence:  99.0% availability, <2000ms p95
+#   Crypto:        99.9% availability, <100ms p95
+# =============================================================================
+
+groups:
+  # ---------------------------------------------------------------------------
+  # Availability SLOs (success rate over rolling windows)
+  # ---------------------------------------------------------------------------
+  - name: slo_availability
+    interval: 1m
+    rules:
+      # AGX availability — ratio of successful requests over 30 days
+      - record: slo:agx:availability:ratio_30d
+        expr: >
+          sum(rate(http_requests_total{service="gtcx-agx", code!~"5.."}[30d]))
+          /
+          sum(rate(http_requests_total{service="gtcx-agx"}[30d]))
+
+      # Protocols availability
+      - record: slo:protocols:availability:ratio_30d
+        expr: >
+          sum(rate(http_requests_total{service="gtcx-protocols", code!~"5.."}[30d]))
+          /
+          sum(rate(http_requests_total{service="gtcx-protocols"}[30d]))
+
+      # ANISA availability
+      - record: slo:anisa:availability:ratio_30d
+        expr: >
+          sum(rate(http_requests_total{service="anisa", code!~"5.."}[30d]))
+          /
+          sum(rate(http_requests_total{service="anisa"}[30d]))
+
+      # Crypto availability
+      - record: slo:crypto:availability:ratio_30d
+        expr: >
+          sum(rate(http_requests_total{service="gtcx-crypto", code!~"5.."}[30d]))
+          /
+          sum(rate(http_requests_total{service="gtcx-crypto"}[30d]))
+
+  # ---------------------------------------------------------------------------
+  # Error Budget Burn Rate (multi-window)
+  # ---------------------------------------------------------------------------
+  - name: slo_error_budget
+    interval: 1m
+    rules:
+      # AGX error budget — 1h burn rate (target 99.5% = 0.005 error budget)
+      - record: slo:agx:error_budget:burn_rate_1h
+        expr: >
+          1 - (
+            sum(rate(http_requests_total{service="gtcx-agx", code!~"5.."}[1h]))
+            /
+            sum(rate(http_requests_total{service="gtcx-agx"}[1h]))
+          ) / 0.005
+
+      # AGX error budget — 6h burn rate
+      - record: slo:agx:error_budget:burn_rate_6h
+        expr: >
+          1 - (
+            sum(rate(http_requests_total{service="gtcx-agx", code!~"5.."}[6h]))
+            /
+            sum(rate(http_requests_total{service="gtcx-agx"}[6h]))
+          ) / 0.005
+
+      # Protocols error budget — 1h burn rate (target 99.5%)
+      - record: slo:protocols:error_budget:burn_rate_1h
+        expr: >
+          1 - (
+            sum(rate(http_requests_total{service="gtcx-protocols", code!~"5.."}[1h]))
+            /
+            sum(rate(http_requests_total{service="gtcx-protocols"}[1h]))
+          ) / 0.005
+
+      # ANISA error budget — 1h burn rate (target 99.0% = 0.01 error budget)
+      - record: slo:anisa:error_budget:burn_rate_1h
+        expr: >
+          1 - (
+            sum(rate(http_requests_total{service="anisa", code!~"5.."}[1h]))
+            /
+            sum(rate(http_requests_total{service="anisa"}[1h]))
+          ) / 0.01
+
+  # ---------------------------------------------------------------------------
+  # Latency SLOs (p95 over rolling windows)
+  # ---------------------------------------------------------------------------
+  - name: slo_latency
+    interval: 1m
+    rules:
+      # AGX p95 latency
+      - record: slo:agx:latency:p95_5m
+        expr: >
+          histogram_quantile(0.95,
+            sum(rate(http_request_duration_seconds_bucket{service="gtcx-agx"}[5m])) by (le)
+          )
+
+      # Protocols p95 latency
+      - record: slo:protocols:latency:p95_5m
+        expr: >
+          histogram_quantile(0.95,
+            sum(rate(http_request_duration_seconds_bucket{service="gtcx-protocols"}[5m])) by (le)
+          )
+
+      # ANISA p95 latency
+      - record: slo:anisa:latency:p95_5m
+        expr: >
+          histogram_quantile(0.95,
+            sum(rate(http_request_duration_seconds_bucket{service="anisa"}[5m])) by (le)
+          )
+
+      # Crypto p95 latency
+      - record: slo:crypto:latency:p95_5m
+        expr: >
+          histogram_quantile(0.95,
+            sum(rate(http_request_duration_seconds_bucket{service="gtcx-crypto"}[5m])) by (le)
+          )
+
+  # ---------------------------------------------------------------------------
+  # Latency SLO Compliance (ratio of requests within target)
+  # ---------------------------------------------------------------------------
+  # A 200-OK that takes 10 seconds is not a successful request from the
+  # user's perspective. These rules count requests that are BOTH successful
+  # AND within latency targets as "good" for composite SLO calculation.
+  #
+  # Targets: AGX/Protocols <500ms, ANISA <2000ms, Crypto <100ms
+  # ---------------------------------------------------------------------------
+  - name: slo_latency_compliance
+    interval: 1m
+    rules:
+      # AGX — ratio of requests completing within 500ms over 30 days
+      - record: slo:agx:latency:compliance_30d
+        expr: >
+          sum(rate(http_request_duration_seconds_bucket{service="gtcx-agx", le="0.5"}[30d]))
+          /
+          sum(rate(http_request_duration_seconds_count{service="gtcx-agx"}[30d]))
+
+      # Protocols — ratio within 500ms
+      - record: slo:protocols:latency:compliance_30d
+        expr: >
+          sum(rate(http_request_duration_seconds_bucket{service="gtcx-protocols", le="0.5"}[30d]))
+          /
+          sum(rate(http_request_duration_seconds_count{service="gtcx-protocols"}[30d]))
+
+      # ANISA — ratio within 2000ms (LLM calls are slower)
+      - record: slo:anisa:latency:compliance_30d
+        expr: >
+          sum(rate(http_request_duration_seconds_bucket{service="anisa", le="2.0"}[30d]))
+          /
+          sum(rate(http_request_duration_seconds_count{service="anisa"}[30d]))
+
+      # Crypto — ratio within 100ms
+      - record: slo:crypto:latency:compliance_30d
+        expr: >
+          sum(rate(http_request_duration_seconds_bucket{service="gtcx-crypto", le="0.1"}[30d]))
+          /
+          sum(rate(http_request_duration_seconds_count{service="gtcx-crypto"}[30d]))
+
+      # Composite SLO: availability AND latency (both must be met)
+      - record: slo:agx:composite:ratio_30d
+        expr: >
+          min(slo:agx:availability:ratio_30d, slo:agx:latency:compliance_30d)
+
+      - record: slo:protocols:composite:ratio_30d
+        expr: >
+          min(slo:protocols:availability:ratio_30d, slo:protocols:latency:compliance_30d)
+
+      - record: slo:anisa:composite:ratio_30d
+        expr: >
+          min(slo:anisa:availability:ratio_30d, slo:anisa:latency:compliance_30d)
+
+      - record: slo:crypto:composite:ratio_30d
+        expr: >
+          min(slo:crypto:availability:ratio_30d, slo:crypto:latency:compliance_30d)

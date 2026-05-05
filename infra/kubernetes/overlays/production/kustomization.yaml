@@ -14,6 +14,9 @@ resources:
   - ../../base
   - network-policies.yaml
   - pod-security-policy.yaml
+  - ingress.yaml
+  - alb-controller.yaml
+  - alb-ingress.yaml
 
 nameSuffix: -prod
 
@@ -21,22 +24,26 @@ commonLabels:
   environment: production
 
 commonAnnotations:
-  deployment.kubernetes.io/revision: "1"
+  deployment.kubernetes.io/revision: '1'
 
 configMapGenerator:
   - name: gtcx-env
     behavior: merge
     literals:
       - GTCX_LOG_LEVEL=warn
-      - RAILS_ENV=production
+      - NODE_ENV=production
       - GTCX_FEATURE_FEDERATION=true
 
 # Production secrets managed externally (Vault/Sealed Secrets)
 # Not generated here - injected via GitOps
 
 images:
-  - name: gtcx/api
-    newTag: v1.0.0  # Pinned versions in production
+  - name: gtcx/agx
+    newTag: v1.0.0 # Pinned versions in production
+  - name: gtcx/crx
+    newTag: v1.0.0
+  - name: gtcx/sgx
+    newTag: v1.0.0
   - name: gtcx/crypto
     newTag: v1.0.0
 
@@ -61,8 +68,8 @@ patches:
         value: "2Gi"
     target:
       kind: Deployment
-      name: gtcx-api
-  
+      name: gtcx-agx
+
   # Crypto service - production resources
   - patch: |-
       - op: replace
@@ -77,7 +84,7 @@ patches:
     target:
       kind: Deployment
       name: gtcx-crypto
-  
+
   # HPA - production scaling
   - patch: |-
       - op: replace
@@ -88,8 +95,8 @@ patches:
         value: 20
     target:
       kind: HorizontalPodAutoscaler
-      name: gtcx-api
-  
+      name: gtcx-agx
+
   # PDB - production availability
   - patch: |-
       - op: replace
@@ -97,4 +104,18 @@ patches:
         value: 2
     target:
       kind: PodDisruptionBudget
-      name: gtcx-api
+      name: gtcx-agx
+
+  # Platform service account — enable token projection for IRSA.
+  # automountServiceAccountToken is false in base; set true in production so the
+  # EKS-projected OIDC token is available for STS AssumeRoleWithWebIdentity.
+  # The eks.amazonaws.com/role-arn annotation is applied post-Terraform-apply by:
+  #   ENVIRONMENT=zimbabwe-pilot ./infra/scripts/apply-platform-irsa.sh
+  # ARN source: terraform output kyc_documents_irsa_role_arn
+  - patch: |-
+      - op: replace
+        path: /automountServiceAccountToken
+        value: true
+    target:
+      kind: ServiceAccount
+      name: gtcx-platform

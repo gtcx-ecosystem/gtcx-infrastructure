@@ -1,0 +1,164 @@
+# =============================================================================
+# GTCX Protocol Server — Unified service for all 6 protocols
+# =============================================================================
+# Replaces separate TradePass, GeoTag, GCI Kubernetes deployments with
+# a single Node.js service serving 63 handlers across 6 protocols.
+#
+# Principles: PROOF (1), PRIVATE (2), OBSERVABLE (15), RESILIENT (12)
+# =============================================================================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gtcx-protocols
+  namespace: gtcx
+  labels:
+    app: gtcx-protocols
+    tier: protocol
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: gtcx-protocols
+  template:
+    metadata:
+      labels:
+        app: gtcx-protocols
+        tier: protocol
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/port: '8300'
+        prometheus.io/path: '/metrics'
+    spec:
+      serviceAccountName: gtcx-platform
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        runAsGroup: 1001
+        fsGroup: 1001
+        seccompProfile:
+          type: RuntimeDefault
+      terminationGracePeriodSeconds: 15
+      containers:
+        - name: protocols
+          image: gtcx/protocols:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8300
+          env:
+            - name: PORT
+              value: '8300'
+            - name: HOST
+              value: '0.0.0.0'
+            - name: NODE_ENV
+              value: 'production'
+            - name: RATE_LIMIT_MAX
+              value: '200'
+            - name: RATE_LIMIT_WINDOW_MS
+              value: '60000'
+            - name: LOG_REQUESTS
+              value: '1'
+          envFrom:
+            - configMapRef:
+                name: gtcx-base-config
+            - secretRef:
+                name: gtcx-secrets
+          resources:
+            requests:
+              cpu: '200m'
+              memory: '512Mi'
+            limits:
+              cpu: '1000m'
+              memory: '1Gi'
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ['ALL']
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 2
+            failureThreshold: 2
+          startupProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 3
+            failureThreshold: 10
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: tmp
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gtcx-protocols
+  namespace: gtcx
+  labels:
+    app: gtcx-protocols
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 8300
+      targetPort: http
+  selector:
+    app: gtcx-protocols
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: gtcx-protocols
+  namespace: gtcx
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: gtcx-protocols
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: gtcx-protocols
+  namespace: gtcx
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: gtcx-protocols
+  minReplicas: 2
+  maxReplicas: 8
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 80

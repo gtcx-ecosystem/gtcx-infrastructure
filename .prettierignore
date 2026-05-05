@@ -2,7 +2,9 @@ node_modules/
 dist/
 build/
 .turbo/
+.terraform/
 coverage/
+_delete/
 *.min.js
 *.min.css
 pnpm-lock.yaml

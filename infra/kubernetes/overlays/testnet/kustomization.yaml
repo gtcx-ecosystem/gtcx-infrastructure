@@ -1,0 +1,81 @@
+# =============================================================================
+# Testnet Overlay
+# =============================================================================
+# Protocol evaluation environment for bank and government tenants.
+# Serves all 6 protocols at api.testnet.gtcxprotocol.org.
+# =============================================================================
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: gtcx-testnet
+
+resources:
+  - ../../base
+  - alb-ingress.yaml
+
+nameSuffix: -testnet
+
+commonLabels:
+  environment: testnet
+
+configMapGenerator:
+  - name: gtcx-env
+    behavior: merge
+    literals:
+      - GTCX_LOG_LEVEL=info
+      - NODE_ENV=production
+      - GTCX_FEATURE_FEDERATION=true
+
+images:
+  - name: gtcx/agx
+    newName: 348389439381.dkr.ecr.af-south-1.amazonaws.com/gtcx-agx
+    newTag: sha-02dc530
+  - name: gtcx/crx
+    newName: 348389439381.dkr.ecr.af-south-1.amazonaws.com/gtcx-crx
+    newTag: sha-02dc530
+  - name: gtcx/sgx
+    newName: 348389439381.dkr.ecr.af-south-1.amazonaws.com/gtcx-sgx
+    newTag: sha-02dc530
+  - name: gtcx/crypto
+    newName: 348389439381.dkr.ecr.af-south-1.amazonaws.com/gtcx-crypto
+    newTag: sha-02dc530
+  - name: gtcx/protocols
+    newName: 348389439381.dkr.ecr.af-south-1.amazonaws.com/gtcx-protocols
+    newTag: sha-02dc530
+
+# Testnet resource limits — between development and staging
+patches:
+  # Protocols service: 2 replicas for availability during evaluation
+  - patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 2
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/cpu
+        value: "200m"
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/memory
+        value: "512Mi"
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/limits/cpu
+        value: "500m"
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/limits/memory
+        value: "1Gi"
+    target:
+      kind: Deployment
+      name: gtcx-protocols
+  # AGX platform: 1 replica (not primary for testnet)
+  - patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 1
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/cpu
+        value: "100m"
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/memory
+        value: "256Mi"
+    target:
+      kind: Deployment
+      name: gtcx-agx

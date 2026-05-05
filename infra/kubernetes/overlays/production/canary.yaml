@@ -1,0 +1,97 @@
+# =============================================================================
+# Canary Deployment — AGX Platform
+# =============================================================================
+# Standalone canary deployment that runs alongside the primary deployment.
+# Uses the same Service selector (app: gtcx-agx-prod) so traffic is split
+# proportionally by pod count. Managed by deploy.sh — not applied by default.
+#
+# Usage (via deploy.sh):
+#   1. deploy.sh applies this manifest with the new image tag
+#   2. Canary pods join the existing Service via shared labels
+#   3. Monitor error rate for CANARY_WAIT_SECONDS
+#   4. If healthy: delete canary, apply full rollout via kustomize
+#   5. If unhealthy: delete canary, primary is untouched
+#
+# Per RESILIENT (12): Canary isolates risk to a small replica set
+# =============================================================================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gtcx-agx-canary
+  namespace: gtcx-production
+  labels:
+    app: gtcx-agx-prod
+    role: canary
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gtcx-agx-prod
+      role: canary
+  template:
+    metadata:
+      labels:
+        app: gtcx-agx-prod
+        role: canary
+        tier: platform
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/port: '3000'
+        prometheus.io/path: '/metrics'
+    spec:
+      serviceAccountName: gtcx-platform
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        runAsGroup: 1001
+        fsGroup: 1001
+      containers:
+        - name: agx
+          image: gtcx/agx:canary
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: gtcx-base-config
+            - configMapRef:
+                name: gtcx-env
+            - secretRef:
+                name: gtcx-secrets
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              cpu: 1000m
+              memory: 1Gi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: tmp
+          emptyDir: {}

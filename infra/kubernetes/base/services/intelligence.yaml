@@ -1,0 +1,327 @@
+# =============================================================================
+# GTCX Intelligence Services — ANISA + SDK Server
+# =============================================================================
+# ANISA: Cultural intelligence (Python FastAPI + gRPC)
+# SDK Server: Cortex, Screening, Underwriting (Node.js HTTP)
+#
+# Per SOVEREIGN (6): Deployed in-region alongside data stores
+# Per OBSERVABLE (25): Prometheus metrics on /metrics
+# =============================================================================
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gtcx-anisa
+  namespace: gtcx
+  labels:
+    app: gtcx-anisa
+    app.kubernetes.io/name: anisa
+    app.kubernetes.io/component: intelligence
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: gtcx-anisa
+  template:
+    metadata:
+      labels:
+        app: gtcx-anisa
+        app.kubernetes.io/name: anisa
+        app.kubernetes.io/component: intelligence
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/port: '8100'
+        prometheus.io/path: '/metrics'
+    spec:
+      serviceAccountName: gtcx-platform
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: anisa
+          image: gtcx/anisa:latest
+          ports:
+            - containerPort: 8100
+              name: http
+              protocol: TCP
+            - containerPort: 8101
+              name: grpc
+              protocol: TCP
+          env:
+            - name: ANISA_PORT
+              value: '8100'
+            - name: ANISA_GRPC_PORT
+              value: '8101'
+            - name: ANTHROPIC_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: gtcx-secrets
+                  key: ANTHROPIC_API_KEY
+                  optional: true
+            - name: ANISA_LLM_BACKEND
+              value: anthropic
+            - name: OTEL_SERVICE_NAME
+              value: anisa
+          resources:
+            requests:
+              cpu: 200m
+              memory: 256Mi
+            limits:
+              cpu: 1000m
+              memory: 1Gi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          startupProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 3
+            failureThreshold: 10
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: tmp
+          emptyDir: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gtcx-anisa
+  namespace: gtcx
+spec:
+  type: ClusterIP
+  selector:
+    app: gtcx-anisa
+  ports:
+    - name: http
+      port: 8100
+      targetPort: http
+      protocol: TCP
+    - name: grpc
+      port: 8101
+      targetPort: grpc
+      protocol: TCP
+
+---
+# Intelligence SDK Server (Cortex + Screening + Underwriting)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gtcx-intelligence-sdk
+  namespace: gtcx
+  labels:
+    app: gtcx-intelligence-sdk
+    app.kubernetes.io/name: intelligence-sdk
+    app.kubernetes.io/component: intelligence
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: gtcx-intelligence-sdk
+  template:
+    metadata:
+      labels:
+        app: gtcx-intelligence-sdk
+        app.kubernetes.io/name: intelligence-sdk
+        app.kubernetes.io/component: intelligence
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/port: '8200'
+        prometheus.io/path: '/metrics'
+    spec:
+      serviceAccountName: gtcx-platform
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: sdk-server
+          image: gtcx/intelligence-sdk:latest
+          ports:
+            - containerPort: 8200
+              name: http
+              protocol: TCP
+          env:
+            - name: PORT
+              value: '8200'
+            - name: CORTEX_EVENT_STORE_PATH
+              value: /data/cortex-events.jsonl
+            - name: CORTEX_EVENT_STORE_MAX
+              value: '50000'
+            - name: OTEL_SERVICE_NAME
+              value: intelligence-sdk
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+          volumeMounts:
+            - name: cortex-data
+              mountPath: /data
+            - name: tmp
+              mountPath: /tmp
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          startupProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 3
+            failureThreshold: 10
+      volumes:
+        - name: cortex-data
+          emptyDir:
+            sizeLimit: 1Gi
+        - name: tmp
+          emptyDir: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gtcx-intelligence-sdk
+  namespace: gtcx
+spec:
+  type: ClusterIP
+  selector:
+    app: gtcx-intelligence-sdk
+  ports:
+    - name: http
+      port: 8200
+      targetPort: http
+      protocol: TCP
+
+
+# =============================================================================
+# Autoscaling & Availability (per RESILIENT principle)
+# =============================================================================
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: gtcx-anisa
+  namespace: gtcx
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: gtcx-anisa
+  minReplicas: 2
+  maxReplicas: 8
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 80
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: gtcx-anisa
+  namespace: gtcx
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: gtcx-anisa
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: gtcx-intelligence-sdk
+  namespace: gtcx
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: gtcx-intelligence-sdk
+  minReplicas: 2
+  maxReplicas: 8
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 80
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: gtcx-intelligence-sdk
+  namespace: gtcx
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: gtcx-intelligence-sdk
