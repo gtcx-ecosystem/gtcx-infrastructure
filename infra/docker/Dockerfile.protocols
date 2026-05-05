@@ -6,7 +6,7 @@
 # Target size: < 200MB
 # =============================================================================
 
-# Stage 1: Install dependencies
+# Stage 1: Install dependencies (hoisted for runtime compatibility)
 FROM node:20-alpine AS deps
 WORKDIR /app
 RUN corepack enable && corepack prepare pnpm@9.15.4 --activate
@@ -31,27 +31,28 @@ COPY protocols/pvp/package.json ./protocols/pvp/
 COPY protocols/panx/package.json ./protocols/panx/
 COPY server/package.json ./server/
 # crypto-native excluded from workspace (requires Rust toolchain)
-# Use --no-frozen-lockfile to handle optional workspace dep mismatch
-RUN pnpm install --no-frozen-lockfile
+# shamefully-hoist flattens node_modules for runtime resolution
+RUN pnpm install --no-frozen-lockfile --shamefully-hoist
 
-# Stage 2: Copy source (tsx runs TypeScript directly, no build step)
+# Stage 2: Production image (tsx runs TypeScript directly)
 FROM node:20-alpine AS production
 WORKDIR /app
 
-RUN corepack enable && corepack prepare pnpm@9.15.4 --activate
 RUN addgroup -g 1001 -S gtcx && \
     adduser -S gtcx -u 1001 -G gtcx
 
-COPY --from=deps --chown=gtcx:gtcx /app/node_modules ./node_modules
-COPY --from=deps --chown=gtcx:gtcx /app/packages/*/node_modules ./packages/
-COPY --from=deps --chown=gtcx:gtcx /app/protocols/*/node_modules ./protocols/
-COPY --from=deps --chown=gtcx:gtcx /app/server/node_modules ./server/
-
-# Copy all source (tsx compiles on the fly)
+# Copy source
 COPY --chown=gtcx:gtcx package.json pnpm-lock.yaml pnpm-workspace.yaml tsconfig.json ./
 COPY --chown=gtcx:gtcx packages/ ./packages/
 COPY --chown=gtcx:gtcx protocols/ ./protocols/
 COPY --chown=gtcx:gtcx server/ ./server/
+
+# Overlay node_modules from deps (after source so COPY doesn't clobber them)
+COPY --from=deps /app/node_modules ./node_modules
+
+# Patch tsconfig (baseUrl for path resolution) and server/package.json (type:module for ESM)
+RUN node -e "const f='./tsconfig.json';const c=JSON.parse(require('fs').readFileSync(f,'utf8'));c.compilerOptions.baseUrl='.';require('fs').writeFileSync(f,JSON.stringify(c,null,2));" && \
+    node -e "const f='./server/package.json';const c=JSON.parse(require('fs').readFileSync(f,'utf8'));c.type='module';require('fs').writeFileSync(f,JSON.stringify(c,null,2));"
 
 # Remove test files to reduce image size
 RUN find . -path '*/tests/*' -delete 2>/dev/null; \
@@ -70,4 +71,5 @@ EXPOSE 8300
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
   CMD wget -q --spider http://localhost:8300/health || exit 1
 
-CMD ["npx", "tsx", "server/src/index.ts"]
+# tsx is in node_modules (hoisted from server dep); use full path
+CMD ["node_modules/.bin/tsx", "server/src/index.ts"]
