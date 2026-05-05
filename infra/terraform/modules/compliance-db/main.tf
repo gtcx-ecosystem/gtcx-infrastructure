@@ -12,11 +12,14 @@
 # =============================================================================
 
 locals {
-  # Jurisdiction → region mapping
+  # Jurisdiction → region mapping (closest AWS region with data residency)
   jurisdiction_regions = {
-    zimbabwe = "af-south-1"
-    kenya    = "af-south-1"
-    ghana    = "eu-west-1"
+    zimbabwe = "af-south-1" # Cape Town — closest to Harare
+    kenya    = "af-south-1" # Cape Town — closest to Nairobi (no EA region yet)
+    ghana    = "eu-west-1"  # Ireland — BoG allows EU hosting
+    nigeria  = "af-south-1" # Cape Town — CBN requires African data residency
+    tanzania = "af-south-1" # Cape Town — BoT compliance
+    rwanda   = "af-south-1" # Cape Town — BNR fintech sandbox
     generic  = var.region
   }
 

@@ -16,8 +16,8 @@ variable "jurisdiction" {
   type        = string
 
   validation {
-    condition     = contains(["zimbabwe", "kenya", "ghana", "generic"], var.jurisdiction)
-    error_message = "jurisdiction must be one of: zimbabwe, kenya, ghana, generic"
+    condition     = contains(["zimbabwe", "kenya", "ghana", "nigeria", "tanzania", "rwanda", "generic"], var.jurisdiction)
+    error_message = "jurisdiction must be one of: zimbabwe, kenya, ghana, nigeria, tanzania, rwanda, generic"
   }
 }
 
