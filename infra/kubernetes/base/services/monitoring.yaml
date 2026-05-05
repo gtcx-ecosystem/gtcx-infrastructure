@@ -43,7 +43,8 @@ data:
         - static_configs:
             - targets: []
 
-    rule_files: []
+    rule_files:
+      - /etc/prometheus/rules/*.yml
 
     scrape_configs:
       # Prometheus self-monitoring
@@ -113,6 +114,31 @@ data:
             action: replace
             target_label: kubernetes_service_name
 
+      # Intelligence namespace — explicit targeting for AI services
+      - job_name: 'intelligence-sdk'
+        kubernetes_sd_configs:
+          - role: endpoints
+            namespaces:
+              names: ['gtcx']
+        relabel_configs:
+          - source_labels: [__meta_kubernetes_service_name]
+            regex: gtcx-intelligence-sdk
+            action: keep
+        metrics_path: /metrics
+        scrape_interval: 15s
+
+      - job_name: 'anisa'
+        kubernetes_sd_configs:
+          - role: endpoints
+            namespaces:
+              names: ['gtcx']
+        relabel_configs:
+          - source_labels: [__meta_kubernetes_service_name]
+            regex: gtcx-anisa
+            action: keep
+        metrics_path: /metrics
+        scrape_interval: 15s
+
       # Node exporter (if deployed as DaemonSet)
       - job_name: 'kubernetes-nodes'
         kubernetes_sd_configs:
@@ -176,6 +202,8 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /etc/prometheus/
+            - name: rules
+              mountPath: /etc/prometheus/rules/
             - name: data
               mountPath: /prometheus
           livenessProbe:
@@ -205,8 +233,92 @@ spec:
         - name: config
           configMap:
             name: prometheus-config
+        - name: rules
+          configMap:
+            name: prometheus-rules
         - name: data
           emptyDir: {}
+---
+# -----------------------------------------------------------------------------
+# Prometheus Rules ConfigMap
+# -----------------------------------------------------------------------------
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-rules
+  namespace: gtcx-monitoring
+  labels:
+    app.kubernetes.io/name: prometheus
+    app.kubernetes.io/part-of: gtcx
+data:
+  intelligence-alerts.yml: |
+    groups:
+      - name: intelligence.rules
+        rules:
+          - alert: IntelligenceHighErrorRate
+            expr: rate(intelligence_errors_total[5m]) / rate(intelligence_requests_total[5m]) > 0.05
+            for: 5m
+            labels:
+              severity: warning
+              service: intelligence
+            annotations:
+              summary: "Intelligence error rate above 5%"
+          - alert: IntelligenceLowConfidence
+            expr: histogram_quantile(0.5, rate(intelligence_confidence_bucket[5m])) < 0.5
+            for: 10m
+            labels:
+              severity: critical
+              service: intelligence
+            annotations:
+              summary: "Median AI confidence below 0.50"
+          - alert: IntelligenceCircuitBreakerTripped
+            expr: increase(intelligence_circuit_trips_total[5m]) > 0
+            for: 1m
+            labels:
+              severity: critical
+              service: intelligence
+            annotations:
+              summary: "Circuit breaker tripped on {{ $labels.service }}"
+          - alert: IntelligenceHighLatency
+            expr: histogram_quantile(0.95, rate(intelligence_request_duration_ms_bucket[5m])) > 5000
+            for: 5m
+            labels:
+              severity: warning
+              service: intelligence
+            annotations:
+              summary: "P95 latency above 5 seconds"
+          - alert: IntelligenceHighFallbackRate
+            expr: rate(intelligence_degraded_total[5m]) / rate(intelligence_requests_total[5m]) > 0.10
+            for: 5m
+            labels:
+              severity: warning
+              service: intelligence
+            annotations:
+              summary: "Intelligence fallback/degraded rate above 10%"
+          - alert: IntelligenceBufferFull
+            expr: intelligence_buffer_utilization > 0.90
+            for: 2m
+            labels:
+              severity: warning
+              service: intelligence
+            annotations:
+              summary: "Buffer utilization above 90%"
+          - alert: IntelligenceConsensusStaleness
+            expr: intelligence_consensus_staleness_seconds > 300
+            for: 5m
+            labels:
+              severity: warning
+              service: intelligence
+            annotations:
+              summary: "Consensus data stale for over 5 minutes"
+          - alert: IntelligenceServiceDown
+            expr: intelligence_health_status == 0
+            for: 1m
+            labels:
+              severity: critical
+              service: intelligence
+            annotations:
+              summary: "Intelligence service health check failing"
 ---
 # -----------------------------------------------------------------------------
 # Prometheus Service
