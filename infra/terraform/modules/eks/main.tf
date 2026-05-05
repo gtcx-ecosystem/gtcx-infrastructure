@@ -109,9 +109,9 @@ variable "enable_gpu_nodes" {
 }
 
 variable "gpu_instance_types" {
-  description = "GPU instance types for training node group"
+  description = "GPU instance types for training node group (g4dn in af-south-1, g5 in eu-west-1/us-east-1)"
   type        = list(string)
-  default     = ["g5.xlarge"]
+  default     = ["g4dn.xlarge"]
 }
 
 variable "gpu_max_size" {
