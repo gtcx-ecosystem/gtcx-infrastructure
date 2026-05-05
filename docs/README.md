@@ -10,6 +10,7 @@ docs/
 ├── agile/               Roadmap, sprints, backlog, testing, retrospectives
 ├── architecture/        System design, trust model, network, offline, migrations
 ├── assessments/         Repo audits, remediation plans, ecosystem integration
+├── audit/               QA reviews, audit roadmaps, infrastructure assessments
 ├── compliance/          Regulatory frameworks, controls, SOC2, accessibility
 ├── decisions/           Architecture Decision Records (ADRs)
 ├── devops/              Environments, CI/CD, monitoring, QA, release management
@@ -23,6 +24,12 @@ docs/
 ├── scripts/             Doc hygiene automation
 ├── security/            Architecture, threat model, NIST, CMMC, FIPS, STIG
 └── specs/               System specs (CI/CD, observability, resilience, scaling, testing)
+
+---
+
+## Audit
+
+- [Infrastructure Improvement Roadmap](audit/qa-reviews/2026-05-05-infrastructure-improvement-roadmap.md) — 2026-05-05 QA Review findings and roadmap
 ```
 
 ---
