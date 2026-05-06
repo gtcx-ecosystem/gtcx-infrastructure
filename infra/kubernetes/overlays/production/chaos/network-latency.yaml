@@ -1,0 +1,37 @@
+# =============================================================================
+# Chaos Experiment — Network Latency (Protocol Egress)
+# =============================================================================
+# Injects 100ms latency into protocol service egress traffic.
+# Validates timeout handling and circuit breaker behavior.
+# =============================================================================
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChaosEngine
+metadata:
+  name: gtcx-network-latency
+  namespace: litmus
+spec:
+  appinfo:
+    appns: gtcx-production
+    applabel: 'tier=protocol'
+    appkind: deployment
+  engineState: 'active'
+  experiments:
+    - name: network-latency
+      spec:
+        components:
+          env:
+            - name: TARGET_CONTAINER
+              value: 'protocols'
+            - name: NETWORK_INTERFACE
+              value: 'eth0'
+            - name: LIB_IMAGE
+              value: 'litmuschaos/go-runner:3.0.0'
+            - name: TC_IMAGE
+              value: 'gaiadocker/iproute2'
+            - name: NETWORK_LATENCY
+              value: '100'
+            - name: TOTAL_CHAOS_DURATION
+              value: '300'
+            - name: JITTER
+              value: '10'
+        probe: []

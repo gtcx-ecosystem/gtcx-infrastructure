@@ -31,7 +31,15 @@ log_error() { echo -e "${RED}[ERROR]${NC} $1"; }
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 INFRA_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
-ECOSYSTEM_ROOT="$(cd "${INFRA_ROOT}/../.." && pwd)"
+ECOSYSTEM_ROOT="${GTCX_ECOSYSTEM_ROOT:-$(cd "${INFRA_ROOT}/../.." && pwd)}"
+
+if [[ ! -d "${ECOSYSTEM_ROOT}/gtcx-intelligence" ]] || [[ ! -d "${ECOSYSTEM_ROOT}/gtcx-protocols" ]]; then
+    log_error "Cannot find required ecosystem repos in ${ECOSYSTEM_ROOT}"
+    log_error "Set GTCX_ECOSYSTEM_ROOT or ensure repos are cloned alongside gtcx-infrastructure:"
+    log_error "  ../gtcx-intelligence"
+    log_error "  ../gtcx-protocols"
+    exit 1
+fi
 
 AWS_REGION="${AWS_REGION:-af-south-1}"
 AWS_ACCOUNT_ID="${AWS_ACCOUNT_ID:-}"

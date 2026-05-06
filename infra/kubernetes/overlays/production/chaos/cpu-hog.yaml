@@ -1,0 +1,31 @@
+# =============================================================================
+# Chaos Experiment — CPU Hog (AGX Platform)
+# =============================================================================
+# Spikes CPU on a single AGX pod to validate HPA scale-out.
+# If HPA does not react within 2 minutes, the experiment should be aborted.
+# =============================================================================
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChaosEngine
+metadata:
+  name: gtcx-cpu-hog
+  namespace: litmus
+spec:
+  appinfo:
+    appns: gtcx-production
+    applabel: 'app=gtcx-agx-prod'
+    appkind: deployment
+  engineState: 'active'
+  experiments:
+    - name: pod-cpu-hog
+      spec:
+        components:
+          env:
+            - name: CPU_CORES
+              value: '2'
+            - name: TOTAL_CHAOS_DURATION
+              value: '300'
+            - name: TARGET_CONTAINER
+              value: 'agx'
+            - name: PODS_AFFECTED_PERC
+              value: '25'
+        probe: []

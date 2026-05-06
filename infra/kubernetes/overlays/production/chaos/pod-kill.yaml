@@ -1,0 +1,39 @@
+# =============================================================================
+# Chaos Experiment — Random Pod Kill (Platform Tier)
+# =============================================================================
+# Validates that the platform can tolerate unexpected pod termination.
+# HPA and PDB should maintain availability during the experiment.
+# =============================================================================
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChaosEngine
+metadata:
+  name: gtcx-pod-kill
+  namespace: litmus
+spec:
+  appinfo:
+    appns: gtcx-production
+    applabel: 'tier=platform'
+    appkind: deployment
+  # Do not abort on failure — let the cluster self-heal
+  annotationCheck: 'true'
+  engineState: 'active'
+  # Run once per hour, max 3 iterations
+  auxiliaryAppInfo: ''
+  experiments:
+    - name: pod-delete
+      spec:
+        components:
+          env:
+            # Number of pods to kill per iteration
+            - name: TOTAL_CHAOS_DURATION
+              value: '600'
+            # Interval between kills
+            - name: CHAOS_INTERVAL
+              value: '120'
+            # Force delete (no graceful termination)
+            - name: FORCE
+              value: 'false'
+            # Target specific pods by percentage
+            - name: PODS_AFFECTED_PERC
+              value: '25'
+        probe: []

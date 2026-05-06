@@ -93,6 +93,7 @@ function showHelp() {
   gtcx-ctl evidence rollback-capture --environment=<env> [--reason=<text>] [--smoke-base-url=<url>]
   gtcx-ctl evidence prepare-intelligence-env --terraform-output-file=<path> [--mode=<value>] [--failure-target=<value>]
   gtcx-ctl evidence release-bundle --environment=<env> --version=<tag> --commit=<sha> --smoke-base-url=<url> --rollback-target=<target> --image=<name>=<ref> [--sbom=<name>=<path>] [--scan=<name>=<status>]
+  gtcx-ctl validate --environment=<env> [--dry-run]
 
 Notes:
   - This is a bounded operator interface over infra/scripts.
@@ -214,6 +215,22 @@ if (area === 'evidence') {
   }
 
   fail(`Unknown evidence action: ${action}`);
+}
+
+if (area === 'validate') {
+  const { flags } = parseFlags(args);
+  const environment = flags.get('environment');
+
+  if (!environment || typeof environment !== 'string') {
+    fail('validate requires --environment=<development|staging|testnet-pilot|production>');
+  }
+
+  const commandArgs = [formatFlag('environment', environment)];
+  if (flags.get('dry-run') === true) {
+    commandArgs.push('--dry-run');
+  }
+
+  runNodeScript(path.join(controlPlaneDir, 'validate-environment.mjs'), commandArgs);
 }
 
 fail(`Unknown area: ${area}`);

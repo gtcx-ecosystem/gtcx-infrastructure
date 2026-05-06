@@ -154,12 +154,14 @@ fi
 tmp_output="$(mktemp)"
 trap 'rm -f "${tmp_output}"' EXIT
 
-emit_line "SMOKE_EVIDENCE_BASE_URL" "${SMOKE_BASE_URL}" >> "${tmp_output}"
-emit_line "ANTHROPIC_API_KEY" "${ANTHROPIC_KEY}" >> "${tmp_output}"
-emit_line "OPENAI_API_KEY" "${OPENAI_KEY}" >> "${tmp_output}"
-emit_line "COMPLY_ADVANTAGE_API_KEY" "${COMPLY_ADVANTAGE_KEY}" >> "${tmp_output}"
-emit_line "INTELLIGENCE_PROVIDER_MODE" "${EFFECTIVE_PROVIDER_MODE}" >> "${tmp_output}"
-emit_line "INTELLIGENCE_PROVIDER_FAILURE_TARGET" "${EFFECTIVE_PROVIDER_FAILURE_TARGET}" >> "${tmp_output}"
+{
+    emit_line "SMOKE_EVIDENCE_BASE_URL" "${SMOKE_BASE_URL}"
+    emit_line "ANTHROPIC_API_KEY" "${ANTHROPIC_KEY}"
+    emit_line "OPENAI_API_KEY" "${OPENAI_KEY}"
+    emit_line "COMPLY_ADVANTAGE_API_KEY" "${COMPLY_ADVANTAGE_KEY}"
+    emit_line "INTELLIGENCE_PROVIDER_MODE" "${EFFECTIVE_PROVIDER_MODE}"
+    emit_line "INTELLIGENCE_PROVIDER_FAILURE_TARGET" "${EFFECTIVE_PROVIDER_FAILURE_TARGET}"
+} >> "${tmp_output}"
 
 if [[ -n "${WRITE_ENV_FILE}" ]]; then
     cp "${tmp_output}" "${WRITE_ENV_FILE}"
