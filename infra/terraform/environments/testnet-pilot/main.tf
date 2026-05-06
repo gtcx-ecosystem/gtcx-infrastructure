@@ -126,6 +126,24 @@ variable "domain_name" {
   default     = "gtcxprotocol.org"
 }
 
+variable "smoke_evidence_base_url" {
+  description = "Canonical external base URL for deployment smoke evidence in this environment"
+  type        = string
+  default     = "https://api.testnet.gtcx.io"
+}
+
+variable "provider_failure_mode" {
+  description = "Provider routing mode for degraded-mode evidence: normal, sandbox, or forced-failure"
+  type        = string
+  default     = "sandbox"
+}
+
+variable "provider_failure_target" {
+  description = "Target provider to force-fail during degraded-mode evidence runs: anthropic, openai, comply-advantage, or all"
+  type        = string
+  default     = "all"
+}
+
 variable "vault_address" {
   description = "Vault server address (e.g., http://vault.vault:8200 for in-cluster)"
   type        = string
@@ -572,6 +590,33 @@ output "ml_pipeline_registry_table" {
 output "trace_pipeline_queue_url" {
   description = "SQS trace events queue URL"
   value       = module.trace_pipeline.queue_url
+}
+
+output "smoke_evidence_base_url" {
+  description = "Canonical base URL for deployment smoke evidence"
+  value       = var.smoke_evidence_base_url
+}
+
+output "provider_failure_mode" {
+  description = "Configured provider routing mode for degraded-mode evidence"
+  value       = var.provider_failure_mode
+}
+
+output "provider_failure_target" {
+  description = "Configured provider failure target for degraded-mode evidence"
+  value       = var.provider_failure_target
+}
+
+output "sandbox_secret_arns" {
+  description = "Secrets Manager ARNs for sandbox provider credentials and provider-mode toggles"
+  value = {
+    anthropic_sandbox        = module.secrets.anthropic_sandbox_api_key_secret_arn
+    openai_sandbox           = module.secrets.openai_sandbox_api_key_secret_arn
+    comply_advantage_sandbox = module.secrets.comply_advantage_sandbox_api_key_secret_arn
+    provider_mode            = module.secrets.provider_mode_secret_arn
+    provider_failure_target  = module.secrets.provider_failure_target_secret_arn
+  }
+  sensitive = true
 }
 
 output "argo_workflows_namespace" {

@@ -23,6 +23,36 @@ aws secretsmanager put-secret-value \
   --secret-id gtcx/intelligence/comply-advantage-api-key \
   --secret-string '{"api_key":"..."}'
 
+# Intelligence service — OpenAI API key
+aws secretsmanager put-secret-value \
+  --secret-id gtcx/intelligence/openai-api-key \
+  --secret-string '{"api_key":"sk-proj-..."}'
+
+# Intelligence service — Anthropic sandbox API key
+aws secretsmanager put-secret-value \
+  --secret-id gtcx/intelligence/anthropic-sandbox-api-key \
+  --secret-string '{"api_key":"sk-ant-sandbox-..."}'
+
+# Intelligence service — OpenAI sandbox API key
+aws secretsmanager put-secret-value \
+  --secret-id gtcx/intelligence/openai-sandbox-api-key \
+  --secret-string '{"api_key":"sk-proj-sandbox-..."}'
+
+# Intelligence service — ComplyAdvantage sandbox API key
+aws secretsmanager put-secret-value \
+  --secret-id gtcx/intelligence/comply-advantage-sandbox-api-key \
+  --secret-string '{"api_key":"sandbox-..."}'
+
+# Intelligence service — provider routing mode
+aws secretsmanager put-secret-value \
+  --secret-id gtcx/intelligence/provider-mode \
+  --secret-string 'sandbox'
+
+# Intelligence service — provider failure target
+aws secretsmanager put-secret-value \
+  --secret-id gtcx/intelligence/provider-failure-target \
+  --secret-string 'all'
+
 # Database URL (operational)
 aws secretsmanager put-secret-value \
   --secret-id gtcx/database/operational-url \
@@ -43,6 +73,8 @@ kubectl get secret intelligence-secrets -n intelligence -o jsonpath='{.data}' | 
 ## Rotation
 
 Database passwords rotate automatically via Lambda (30-day cycle). API keys must be rotated manually.
+
+Sandbox provider keys should be rotated independently from production keys.
 
 ## Security
 

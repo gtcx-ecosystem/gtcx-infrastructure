@@ -52,6 +52,23 @@ Production overlays MUST override base secrets using one of:
 | `AWS_ACCESS_KEY_ID`     | AWS service credentials (if not using IRSA)   | 90 days                |
 | `AWS_SECRET_ACCESS_KEY` | AWS service credentials (if not using IRSA)   | 90 days                |
 
+### Intelligence Provider Secrets
+
+For intelligence evidence and degraded-mode testing, maintain separate secrets for:
+
+| Secret Key                             | Purpose                                              |
+| -------------------------------------- | ---------------------------------------------------- |
+| `ANTHROPIC_API_KEY`                    | Primary Anthropic production credential              |
+| `OPENAI_API_KEY`                       | Primary OpenAI production credential                 |
+| `COMPLY_ADVANTAGE_API_KEY`             | Primary ComplyAdvantage production credential        |
+| `ANTHROPIC_SANDBOX_API_KEY`            | Anthropic sandbox credential for evidence runs       |
+| `OPENAI_SANDBOX_API_KEY`               | OpenAI sandbox credential for evidence runs          |
+| `COMPLY_ADVANTAGE_SANDBOX_API_KEY`     | ComplyAdvantage sandbox credential for evidence runs |
+| `INTELLIGENCE_PROVIDER_MODE`           | `normal`, `sandbox`, or `forced-failure`             |
+| `INTELLIGENCE_PROVIDER_FAILURE_TARGET` | `anthropic`, `openai`, `comply-advantage`, or `all`  |
+
+`INTELLIGENCE_PROVIDER_MODE=forced-failure` is the preferred non-code path for degraded-mode deployment verification. It should be used only in a staging or testnet environment with an approved smoke target.
+
 ### Creating Secrets Per Environment
 
 ```bash

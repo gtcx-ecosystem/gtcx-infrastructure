@@ -91,6 +91,10 @@ validate_inputs() {
             ENVIRONMENT="staging"
             NAMESPACE="gtcx-staging"
             ;;
+        testnet|testnet-pilot)
+            ENVIRONMENT="testnet-pilot"
+            NAMESPACE="gtcx-testnet"
+            ;;
         production|prod)
             ENVIRONMENT="production"
             NAMESPACE="gtcx-production"
@@ -188,7 +192,7 @@ push_images() {
     local images=("agx" "protocols")
     for img in "${images[@]}"; do
         local local_tag="gtcx/${img}:${VERSION}"
-        local ecr_tag="${ECR_REGISTRY}/gtcx-${ENVIRONMENT}-${img}:${VERSION}"
+        local ecr_tag="${ECR_REGISTRY}/gtcx-${img}:${VERSION}"
 
         docker tag "${local_tag}" "${ecr_tag}"
         docker push "${ecr_tag}"
@@ -208,7 +212,7 @@ build_images() {
 
     # Determine version
     if [[ -z "${VERSION}" ]]; then
-        VERSION=$(git rev-parse --short HEAD 2>/dev/null || date -u +"%Y%m%d%H%M%S")
+        VERSION="sha-$(git rev-parse --short HEAD 2>/dev/null || date -u +"%Y%m%d%H%M%S")"
     fi
 
     log_info "Version: ${VERSION}"
@@ -276,8 +280,8 @@ deploy() {
     # Update image tags in kustomization
     log_info "Updating image tags..."
     cd "overlays/${ENVIRONMENT}"
-    kustomize edit set image "gtcx/agx=${ECR_REGISTRY}/gtcx-${ENVIRONMENT}-agx:${VERSION}"
-    kustomize edit set image "gtcx/protocols=${ECR_REGISTRY}/gtcx-${ENVIRONMENT}-protocols:${VERSION}"
+    kustomize edit set image "gtcx/agx=${ECR_REGISTRY}/gtcx-agx:${VERSION}"
+    kustomize edit set image "gtcx/protocols=${ECR_REGISTRY}/gtcx-protocols:${VERSION}"
     cd "${PROJECT_ROOT}/infra/kubernetes"
 
     # Apply configuration
@@ -391,6 +395,13 @@ rollback_deployment() {
     for dep in ${deployments}; do
         kubectl rollout status "deployment/${dep}" -n "${NAMESPACE}" --timeout=300s
     done
+
+    local evidence_dir="${PROJECT_ROOT}/infra/security/reports/rollback-evidence/${ENVIRONMENT}/$(date -u +%Y%m%dT%H%M%SZ)"
+    if [[ -x "${PROJECT_ROOT}/infra/scripts/capture-rollback-evidence.sh" ]]; then
+        "${PROJECT_ROOT}/infra/scripts/capture-rollback-evidence.sh" "${ENVIRONMENT}" \
+            --output-dir="${evidence_dir}" \
+            --reason="deploy-rollback" || log_warning "Rollback evidence capture failed"
+    fi
 
     log_success "Rollback completed"
 }

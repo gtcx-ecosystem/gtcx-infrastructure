@@ -94,6 +94,12 @@ The script runs these steps in order:
 
 Rollback runs `kubectl rollout undo` on each deployment labeled `app.kubernetes.io/part-of=gtcx` in the target namespace, then waits for rollout status.
 
+After rollback, capture evidence with:
+
+```bash
+./infra/scripts/capture-rollback-evidence.sh staging --reason=manual-rollback
+```
+
 **Before deploying to production**: always confirm the previous stable image tag so rollback target is known.
 
 ---

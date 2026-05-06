@@ -58,6 +58,60 @@ resource "aws_secretsmanager_secret" "database_url" {
   })
 }
 
+resource "aws_secretsmanager_secret" "openai_api_key" {
+  name        = "gtcx/intelligence/openai-api-key"
+  description = "OpenAI API key for intelligence LLM calls"
+
+  tags = merge(local.common_tags, {
+    Name = "gtcx-${var.environment}-openai-api-key"
+  })
+}
+
+resource "aws_secretsmanager_secret" "anthropic_sandbox_api_key" {
+  name        = "gtcx/intelligence/anthropic-sandbox-api-key"
+  description = "Anthropic sandbox API key for non-production evidence and degraded-mode testing"
+
+  tags = merge(local.common_tags, {
+    Name = "gtcx-${var.environment}-anthropic-sandbox-api-key"
+  })
+}
+
+resource "aws_secretsmanager_secret" "openai_sandbox_api_key" {
+  name        = "gtcx/intelligence/openai-sandbox-api-key"
+  description = "OpenAI sandbox API key for non-production evidence and degraded-mode testing"
+
+  tags = merge(local.common_tags, {
+    Name = "gtcx-${var.environment}-openai-sandbox-api-key"
+  })
+}
+
+resource "aws_secretsmanager_secret" "comply_advantage_sandbox_api_key" {
+  name        = "gtcx/intelligence/comply-advantage-sandbox-api-key"
+  description = "ComplyAdvantage sandbox API key for non-production evidence and degraded-mode testing"
+
+  tags = merge(local.common_tags, {
+    Name = "gtcx-${var.environment}-comply-advantage-sandbox-api-key"
+  })
+}
+
+resource "aws_secretsmanager_secret" "provider_mode" {
+  name        = "gtcx/intelligence/provider-mode"
+  description = "Provider routing mode for intelligence evidence runs: normal, sandbox, or forced-failure"
+
+  tags = merge(local.common_tags, {
+    Name = "gtcx-${var.environment}-provider-mode"
+  })
+}
+
+resource "aws_secretsmanager_secret" "provider_failure_target" {
+  name        = "gtcx/intelligence/provider-failure-target"
+  description = "Optional provider failure target for degraded-mode testing: anthropic, openai, comply-advantage, or all"
+
+  tags = merge(local.common_tags, {
+    Name = "gtcx-${var.environment}-provider-failure-target"
+  })
+}
+
 # -----------------------------------------------------------------------------
 # Automatic Rotation — Database URL (30-day schedule)
 # -----------------------------------------------------------------------------
@@ -175,7 +229,13 @@ resource "aws_iam_policy" "intelligence_secrets_reader" {
         ]
         Resource = [
           aws_secretsmanager_secret.anthropic_api_key.arn,
+          aws_secretsmanager_secret.openai_api_key.arn,
           aws_secretsmanager_secret.comply_advantage_api_key.arn,
+          aws_secretsmanager_secret.anthropic_sandbox_api_key.arn,
+          aws_secretsmanager_secret.openai_sandbox_api_key.arn,
+          aws_secretsmanager_secret.comply_advantage_sandbox_api_key.arn,
+          aws_secretsmanager_secret.provider_mode.arn,
+          aws_secretsmanager_secret.provider_failure_target.arn,
           aws_secretsmanager_secret.database_url.arn,
         ]
       },
@@ -309,9 +369,45 @@ resource "kubectl_manifest" "external_secret" {
           }
         },
         {
+          secretKey = "OPENAI_API_KEY"
+          remoteRef = {
+            key = aws_secretsmanager_secret.openai_api_key.name
+          }
+        },
+        {
           secretKey = "COMPLY_ADVANTAGE_API_KEY"
           remoteRef = {
             key = aws_secretsmanager_secret.comply_advantage_api_key.name
+          }
+        },
+        {
+          secretKey = "ANTHROPIC_SANDBOX_API_KEY"
+          remoteRef = {
+            key = aws_secretsmanager_secret.anthropic_sandbox_api_key.name
+          }
+        },
+        {
+          secretKey = "OPENAI_SANDBOX_API_KEY"
+          remoteRef = {
+            key = aws_secretsmanager_secret.openai_sandbox_api_key.name
+          }
+        },
+        {
+          secretKey = "COMPLY_ADVANTAGE_SANDBOX_API_KEY"
+          remoteRef = {
+            key = aws_secretsmanager_secret.comply_advantage_sandbox_api_key.name
+          }
+        },
+        {
+          secretKey = "INTELLIGENCE_PROVIDER_MODE"
+          remoteRef = {
+            key = aws_secretsmanager_secret.provider_mode.name
+          }
+        },
+        {
+          secretKey = "INTELLIGENCE_PROVIDER_FAILURE_TARGET"
+          remoteRef = {
+            key = aws_secretsmanager_secret.provider_failure_target.name
           }
         },
         {
