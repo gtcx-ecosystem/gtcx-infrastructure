@@ -25,6 +25,7 @@
     "check:fine-tune-workflow-policy": "node tools/policy/check-fine-tune-workflow-policy.mjs",
     "check:workflow-image-contract": "node tools/policy/check-workflow-image-contract.mjs",
     "typecheck": "turbo run typecheck",
+    "ctl": "node ./tools/control-plane/gtcx-ctl.mjs",
     "docker:build": "docker compose build",
     "docker:up": "docker compose up -d",
     "docker:down": "docker compose down",
