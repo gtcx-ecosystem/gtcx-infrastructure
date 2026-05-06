@@ -23,7 +23,7 @@ services:
 
   # Primary PostgreSQL (operational data)
   postgres:
-    image: postgres:16-alpine
+    image: postgres:16.4-alpine
     container_name: gtcx-postgres
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-gtcx}
@@ -45,7 +45,7 @@ services:
 
   # Audit PostgreSQL (append-only, separate instance per AUDITABLE principle)
   postgres-audit:
-    image: postgres:16-alpine
+    image: postgres:16.4-alpine
     container_name: gtcx-postgres-audit
     environment:
       POSTGRES_USER: ${POSTGRES_AUDIT_USER:-gtcx_audit}
@@ -70,7 +70,7 @@ services:
 
   # Redis (cache, never in critical path per RESILIENT principle)
   redis:
-    image: redis:7-alpine
+    image: redis:7.2.4-alpine
     container_name: gtcx-redis
     ports:
       - '6379:6379'
@@ -90,7 +90,7 @@ services:
 
   # NATS with JetStream — cross-service domain event pub/sub
   nats:
-    image: nats:2.10-alpine
+    image: nats:2.10.11-alpine
     container_name: gtcx-nats
     command:
       - '--config'

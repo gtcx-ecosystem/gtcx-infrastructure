@@ -1,0 +1,12 @@
+# =============================================================================
+# GTCX Security Policies — Kyverno
+# =============================================================================
+# These policies require Kyverno to be installed in the cluster.
+# See README.md for installation instructions.
+# =============================================================================
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - reject-latest-tag.yaml
+  - require-resource-limits.yaml

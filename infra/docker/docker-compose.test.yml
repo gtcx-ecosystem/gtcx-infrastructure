@@ -25,7 +25,7 @@ services:
   # ===========================================================================
 
   postgres:
-    image: postgres:16-alpine
+    image: postgres:16.4-alpine
     container_name: gtcx-test-postgres
     environment:
       POSTGRES_USER: gtcx_test
@@ -43,7 +43,7 @@ services:
       - gtcx-test-network
 
   postgres-audit:
-    image: postgres:16-alpine
+    image: postgres:16.4-alpine
     container_name: gtcx-test-postgres-audit
     environment:
       POSTGRES_USER: gtcx_test_audit
@@ -60,7 +60,7 @@ services:
       - gtcx-test-network
 
   redis:
-    image: redis:7-alpine
+    image: redis:7.2.4-alpine
     container_name: gtcx-test-redis
     tmpfs:
       - /data

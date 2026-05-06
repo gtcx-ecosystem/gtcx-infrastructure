@@ -1,0 +1,42 @@
+# =============================================================================
+# Kyverno Policy — Reject :latest Image Tags
+# =============================================================================
+# Prevents pods from using non-deterministic image tags in production.
+# Requires Kyverno admission controller to be installed in the cluster.
+#
+# Install prerequisite:
+#   helm install kyverno kyverno/kyverno -n kyverno --create-namespace
+#
+# Apply:
+#   kubectl apply -f reject-latest-tag.yaml
+# =============================================================================
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: reject-latest-tag
+  annotations:
+    policies.kyverno.io/title: 'Reject Latest Image Tag'
+    policies.kyverno.io/category: 'Best Practices'
+    policies.kyverno.io/severity: 'medium'
+    policies.kyverno.io/subject: 'Pod'
+    policies.kyverno.io/description: >-
+      The ':latest' tag is mutable and can lead to unpredictable deployments.
+      This policy validates that images do not use the 'latest' tag.
+spec:
+  validationFailureAction: Enforce
+  background: true
+  rules:
+    - name: validate-image-tag
+      match:
+        resources:
+          kinds:
+            - Pod
+          namespaces:
+            - gtcx-production
+            - gtcx-staging
+      validate:
+        message: "Using ':latest' tag is not allowed. Use an immutable tag (e.g., semver or commit SHA)."
+        pattern:
+          spec:
+            containers:
+              - image: '!*:latest'

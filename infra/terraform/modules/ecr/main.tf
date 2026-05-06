@@ -152,6 +152,88 @@ output "registry_id" {
   value       = values(aws_ecr_repository.repos)[0].registry_id
 }
 
+# ---------------------------------------------------------------------------
+# Repository Policy — Restrict push to account CI role, block public access
+# ---------------------------------------------------------------------------
+variable "trusted_ci_role_arn" {
+  description = "IAM role ARN allowed to push images (e.g., GitHub Actions OIDC role)"
+  type        = string
+  default     = ""
+}
+
+resource "aws_ecr_repository_policy" "restrict_push" {
+  for_each   = toset(var.repositories)
+  repository = aws_ecr_repository.repos[each.key].name
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "AllowPull"
+        Effect = "Allow"
+        Principal = {
+          AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
+        }
+        Action = [
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:GetDownloadUrlForLayer",
+          "ecr:BatchGetImage"
+        ]
+      },
+      {
+        Sid    = "AllowPushFromCI"
+        Effect = "Allow"
+        Principal = {
+          AWS = var.trusted_ci_role_arn != "" ? var.trusted_ci_role_arn : "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
+        }
+        Action = [
+          "ecr:CompleteLayerUpload",
+          "ecr:UploadLayerPart",
+          "ecr:InitiateLayerUpload",
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:PutImage"
+        ]
+      }
+    ]
+  })
+}
+
+# ---------------------------------------------------------------------------
+# Lifecycle Policy — Expire :latest quickly to discourage use
+# ---------------------------------------------------------------------------
+resource "aws_ecr_lifecycle_policy" "expire_latest" {
+  for_each   = toset(var.repositories)
+  repository = aws_ecr_repository.repos[each.key].name
+
+  policy = jsonencode({
+    rules = [
+      {
+        rulePriority = 1
+        description  = "Expire latest tag after 1 day"
+        selection = {
+          tagStatus     = "tagged"
+          tagPrefixList = ["latest"]
+          countType     = "sinceImagePushed"
+          countUnit     = "days"
+          countNumber   = 1
+        }
+        action = {
+          type = "expire"
+        }
+      }
+    ]
+  })
+}
+
+# ---------------------------------------------------------------------------
+# Data
+# ---------------------------------------------------------------------------
+data "aws_caller_identity" "current" {}
+
+# ---------------------------------------------------------------------------
+# Outputs
+# ---------------------------------------------------------------------------
+
 output "repository_arns" {
   description = "List of ECR repository ARNs"
   value       = [for repo in aws_ecr_repository.repos : repo.arn]
