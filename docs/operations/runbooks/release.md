@@ -69,6 +69,27 @@ After the workflow completes:
 - [ ] npm package `@gtcx/sdk` is published at the expected version (`npm view @gtcx/sdk versions`)
 - [ ] Container image tags and cosign signatures are present in GHCR
 - [ ] No new vulnerabilities introduced (`pnpm audit` on the published version)
+- [ ] Release evidence bundle is generated and archived for the target environment
+
+---
+
+## Step 4 — Generate Release Evidence Bundle
+
+Before promotion or pilot sign-off, generate the structured release bundle:
+
+```bash
+pnpm ctl evidence release-bundle \
+  --environment=staging \
+  --version=vX.Y.Z \
+  --commit=<git-sha> \
+  --smoke-base-url=https://api.testnet.gtcx.io \
+  --rollback-target=<previous-known-good-tag> \
+  --image=agx=<immutable-image-ref> \
+  --image=protocols=<immutable-image-ref>
+```
+
+See [release-evidence.md](release-evidence.md) for the full contract and
+optional SBOM/scan fields.
 
 ---
 

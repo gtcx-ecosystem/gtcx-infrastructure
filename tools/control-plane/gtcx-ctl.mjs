@@ -6,12 +6,14 @@ import { spawnSync } from 'node:child_process';
 
 const repoRoot = process.cwd();
 const infraScriptsDir = path.join(repoRoot, 'infra', 'scripts');
+const controlPlaneDir = path.join(repoRoot, 'tools', 'control-plane');
 
 const scriptMap = {
   deploy: path.join(infraScriptsDir, 'deploy.sh'),
   rollbackEvidence: path.join(infraScriptsDir, 'capture-rollback-evidence.sh'),
   workflow: path.join(infraScriptsDir, 'fine-tune-workflow.sh'),
   prepareEvidenceEnv: path.join(infraScriptsDir, 'prepare-intelligence-evidence-env.sh'),
+  releaseEvidence: path.join(controlPlaneDir, 'generate-release-evidence.mjs'),
 };
 
 function fail(message) {
@@ -68,6 +70,20 @@ function runScript(scriptPath, args) {
   process.exit(result.status ?? 1);
 }
 
+function runNodeScript(scriptPath, args) {
+  requireScript(scriptPath);
+  const result = spawnSync('node', [scriptPath, ...args], {
+    cwd: repoRoot,
+    stdio: 'inherit',
+  });
+
+  if (result.error) {
+    fail(result.error.message);
+  }
+
+  process.exit(result.status ?? 1);
+}
+
 function showHelp() {
   console.log(`Usage:
   gtcx-ctl deploy plan --environment=<env> [--version=<tag>] [--canary=<n>]
@@ -76,6 +92,7 @@ function showHelp() {
   gtcx-ctl workflow <status|trigger|suspend|resume> [workflow flags...]
   gtcx-ctl evidence rollback-capture --environment=<env> [--reason=<text>] [--smoke-base-url=<url>]
   gtcx-ctl evidence prepare-intelligence-env --terraform-output-file=<path> [--mode=<value>] [--failure-target=<value>]
+  gtcx-ctl evidence release-bundle --environment=<env> --version=<tag> --commit=<sha> --smoke-base-url=<url> --rollback-target=<target> --image=<name>=<ref> [--sbom=<name>=<path>] [--scan=<name>=<status>]
 
 Notes:
   - This is a bounded operator interface over infra/scripts.
@@ -170,6 +187,30 @@ if (area === 'evidence') {
       }
     }
     runScript(scriptMap.prepareEvidenceEnv, commandArgs);
+  }
+
+  if (action === 'release-bundle') {
+    const required = ['environment', 'version', 'commit', 'smoke-base-url', 'rollback-target'];
+    for (const key of required) {
+      if (typeof flags.get(key) !== 'string') {
+        fail(`release-bundle requires --${key}=...`);
+      }
+    }
+
+    const commandArgs = required.map((key) => formatFlag(key, flags.get(key)));
+    for (const key of ['approval-ticket', 'output-dir']) {
+      if (typeof flags.get(key) === 'string') {
+        commandArgs.push(formatFlag(key, flags.get(key)));
+      }
+    }
+
+    for (const arg of args) {
+      if (arg.startsWith('--image=') || arg.startsWith('--sbom=') || arg.startsWith('--scan=')) {
+        commandArgs.push(arg);
+      }
+    }
+
+    runNodeScript(scriptMap.releaseEvidence, commandArgs);
   }
 
   fail(`Unknown evidence action: ${action}`);

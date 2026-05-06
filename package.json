@@ -26,6 +26,7 @@
     "check:workflow-image-contract": "node tools/policy/check-workflow-image-contract.mjs",
     "typecheck": "turbo run typecheck",
     "ctl": "node ./tools/control-plane/gtcx-ctl.mjs",
+    "evidence:release-bundle": "node ./tools/control-plane/generate-release-evidence.mjs",
     "docker:build": "docker compose build",
     "docker:up": "docker compose up -d",
     "docker:down": "docker compose down",
