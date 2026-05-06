@@ -6,6 +6,7 @@
 - the eval step gates that artifact with a real result
 - the promoter updates a real promotion target
 - one staging end-to-end workflow run succeeds
+- `enable_red_team_workflow` remains `false` unless a separate red-team runtime, image pin, and operator decision are ready
 
 Before setting `enable_fine_tune_workflow = true` in any Terraform environment:
 
@@ -15,5 +16,7 @@ Before setting `enable_fine_tune_workflow = true` in any Terraform environment:
 4. Run the policy guard:
    `pnpm check:fine-tune-workflow-policy`
 5. Run `terraform plan` and confirm the workflow policy guard passes.
+6. Use the manual operator path in [fine-tune-workflow-operations.md](./fine-tune-workflow-operations.md) for one staging/testnet run before any cron enablement.
 
 The workflow must not be enabled with `:latest` tags.
+The red-team step must not be enabled by setting `red_team_image` alone; it requires `enable_red_team_workflow = true`.

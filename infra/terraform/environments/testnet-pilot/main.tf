@@ -470,8 +470,10 @@ module "workflow_orchestration" {
   trace_queue_arn              = module.trace_pipeline.queue_arn
   ecr_repository_arns          = module.ecr.repository_arns
   enable_fine_tune_workflow    = false
+  enable_red_team_workflow     = false
   enablement_evidence_manifest = ""
   curator_image                = "${module.ecr.repository_urls["gtcx-intelligence-sdk"]}:sha-manual-pin-required"
+  trainer_image                = "${module.ecr.repository_urls["gtcx-intelligence-trainer"]}:sha-manual-pin-required"
   evaluator_image              = "${module.ecr.repository_urls["gtcx-intelligence-sdk"]}:sha-manual-pin-required"
   promoter_image               = "${module.ecr.repository_urls["gtcx-intelligence-sdk"]}:sha-manual-pin-required"
   red_team_image               = ""

@@ -44,6 +44,9 @@ jobs:
       - name: Fine-tune workflow policy check
         run: pnpm check:fine-tune-workflow-policy
 
+      - name: Workflow image contract check
+        run: pnpm check:workflow-image-contract
+
       - name: Build
         run: pnpm build
 

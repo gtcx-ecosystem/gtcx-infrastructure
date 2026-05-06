@@ -8,7 +8,7 @@
 #   ./infra/scripts/build-push.sh                    # Build all, push all
 #   ./infra/scripts/build-push.sh protocols           # Build + push one service
 #   ./infra/scripts/build-push.sh --list              # List available services
-#   ./infra/scripts/build-push.sh --version=sha-abc   # Custom version tag
+#   ./infra/scripts/build-push.sh --version=sha-abc   # Custom immutable tag
 #
 # Prerequisites:
 #   - Docker running
@@ -45,7 +45,7 @@ TARGET_SERVICE=""
 
 service_exists() {
     case "$1" in
-        protocols|agx) return 0 ;;
+        protocols|agx|intelligence-sdk|trainer|redteam) return 0 ;;
         *) return 1 ;;
     esac
 }
@@ -54,6 +54,9 @@ service_dockerfile() {
     case "$1" in
         protocols) echo "infra/docker/Dockerfile.protocols" ;;
         agx) echo "infra/docker/Dockerfile.platforms" ;;
+        intelligence-sdk) echo "infra/docker/Dockerfile.intelligence" ;;
+        trainer) echo "${ECOSYSTEM_ROOT}/gtcx-intelligence/intelligence/trainer/Dockerfile" ;;
+        redteam) echo "${ECOSYSTEM_ROOT}/gtcx-intelligence/intelligence/red-team/Dockerfile" ;;
         *) return 1 ;;
     esac
 }
@@ -62,6 +65,7 @@ service_context() {
     case "$1" in
         protocols) echo "${ECOSYSTEM_ROOT}/gtcx-protocols" ;;
         agx) echo "${ECOSYSTEM_ROOT}/6-platforms" ;;
+        intelligence-sdk|trainer|redteam) echo "${ECOSYSTEM_ROOT}/gtcx-intelligence" ;;
         *) return 1 ;;
     esac
 }
@@ -70,11 +74,23 @@ service_args() {
     case "$1" in
         protocols) echo "" ;;
         agx) echo "--build-arg PLATFORM=agx --build-arg APP_PORT=3000" ;;
+        intelligence-sdk|trainer|redteam) echo "" ;;
         *) return 1 ;;
     esac
 }
 
-ALL_SERVICES=(protocols agx)
+service_ecr_repo() {
+    case "$1" in
+        protocols) echo "gtcx-protocols" ;;
+        agx) echo "gtcx-agx" ;;
+        intelligence-sdk) echo "gtcx-intelligence-sdk" ;;
+        trainer) echo "gtcx-intelligence-trainer" ;;
+        redteam) echo "gtcx-intelligence-redteam" ;;
+        *) return 1 ;;
+    esac
+}
+
+ALL_SERVICES=(protocols agx intelligence-sdk trainer redteam)
 
 # =============================================================================
 # Parse arguments
@@ -147,12 +163,17 @@ build_and_push() {
     local svc="$1"
     local registry="$2"
 
-    local dockerfile="${INFRA_ROOT}/$(service_dockerfile "$svc")"
+    local dockerfile_ref
+    dockerfile_ref="$(service_dockerfile "$svc")"
+    local dockerfile="$dockerfile_ref"
+    if [[ "${dockerfile_ref}" != /* ]]; then
+        dockerfile="${INFRA_ROOT}/${dockerfile_ref}"
+    fi
     local context
     context="$(service_context "$svc")"
     local args
     args="$(service_args "$svc")"
-    local ecr_repo="${registry}/gtcx-${svc}"
+    local ecr_repo="${registry}/$(service_ecr_repo "$svc")"
 
     # Validate
     if [[ ! -f "${dockerfile}" ]]; then
@@ -175,12 +196,10 @@ build_and_push() {
         -f "${dockerfile}" \
         ${args} \
         -t "${ecr_repo}:${VERSION}" \
-        -t "${ecr_repo}:latest" \
         "${context}"
 
     log_info "Pushing ${svc}..."
     docker push "${ecr_repo}:${VERSION}"
-    docker push "${ecr_repo}:latest"
 
     log_success "${svc} → ${ecr_repo}:${VERSION}"
 }

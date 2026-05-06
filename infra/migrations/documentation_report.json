@@ -1,0 +1,17 @@
+{
+  "timestamp": "2026-05-06T13:07:21.100378",
+  "results": [
+    {
+      "project": "DEPLOYMENT_DOCS",
+      "total_files": 5,
+      "coverage": 100.0,
+      "missing": [],
+      "complete": true
+    }
+  ],
+  "summary": {
+    "total_files": 5,
+    "average_coverage": 100.0,
+    "components_checked": 1
+  }
+}

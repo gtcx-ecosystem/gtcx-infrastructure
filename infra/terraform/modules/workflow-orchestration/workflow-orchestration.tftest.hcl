@@ -21,6 +21,7 @@ variables {
   eval_threshold        = "0.05"
   enablement_evidence_manifest = "testdata/enablement-evidence.test.json"
   enable_fine_tune_workflow = true
+  enable_red_team_workflow = false
   curator_image         = "placeholder/gtcx-intelligence-curator:sha-contract"
   trainer_image         = "placeholder/gtcx-intelligence-trainer:sha-contract"
   evaluator_image       = "placeholder/gtcx-intelligence-evaluator:sha-contract"

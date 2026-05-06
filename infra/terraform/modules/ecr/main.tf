@@ -19,6 +19,8 @@ variable "repositories" {
     "gtcx-protocols",
     "gtcx-anisa",
     "gtcx-intelligence-sdk",
+    "gtcx-intelligence-trainer",
+    "gtcx-intelligence-redteam",
   ]
 }
 

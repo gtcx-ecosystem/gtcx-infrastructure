@@ -2,10 +2,12 @@
 # Build, Scan & Push to ECR
 # =============================================================================
 # Triggered on merge to main. Builds all GTCX service images, runs Trivy
-# security scans, and pushes to ECR with commit SHA + latest tags.
+# security scans, and pushes immutable commit-SHA tags to ECR.
 #
 # Image → ECR repo mapping:
 #   intelligence-sdk → gtcx-intelligence-sdk
+#   trainer          → gtcx-intelligence-trainer
+#   redteam          → gtcx-intelligence-redteam
 #   protocols        → gtcx-protocols
 #   platforms        → gtcx-agx
 # =============================================================================
@@ -43,6 +45,20 @@ jobs:
             context_dir: intelligence
             target: ''
             ecr_repos: gtcx-intelligence-sdk
+            source_repos: gtcx-intelligence
+
+          - name: trainer
+            dockerfile: intelligence/intelligence/trainer/Dockerfile
+            context_dir: intelligence
+            target: ''
+            ecr_repos: gtcx-intelligence-trainer
+            source_repos: gtcx-intelligence
+
+          - name: redteam
+            dockerfile: intelligence/intelligence/red-team/Dockerfile
+            context_dir: intelligence
+            target: ''
+            ecr_repos: gtcx-intelligence-redteam
             source_repos: gtcx-intelligence
 
           - name: protocols
@@ -119,11 +135,11 @@ jobs:
           SHA_SHORT="${GITHUB_SHA::8}"
           REGISTRY="${{ steps.ecr-login.outputs.registry }}"
 
-          # Build once, tag for all target repos
+          # Build once, tag for all target repos with immutable SHA tags only
           TAGS=""
           IFS=',' read -ra REPOS <<< "${{ matrix.service.ecr_repos }}"
           for REPO in "${REPOS[@]}"; do
-            TAGS="$TAGS -t ${REGISTRY}/${REPO}:${SHA_SHORT} -t ${REGISTRY}/${REPO}:latest"
+            TAGS="$TAGS -t ${REGISTRY}/${REPO}:${SHA_SHORT}"
           done
 
           docker build \
@@ -178,10 +194,8 @@ jobs:
           IFS=',' read -ra REPOS <<< "${{ matrix.service.ecr_repos }}"
           for REPO in "${REPOS[@]}"; do
             docker push "${REGISTRY}/${REPO}:${SHA_SHORT}"
-            docker push "${REGISTRY}/${REPO}:latest"
             echo "### Pushed ${REPO}" >> "$GITHUB_STEP_SUMMARY"
             echo "- \`${REGISTRY}/${REPO}:${SHA_SHORT}\`" >> "$GITHUB_STEP_SUMMARY"
-            echo "- \`${REGISTRY}/${REPO}:latest\`" >> "$GITHUB_STEP_SUMMARY"
           done
 
   # Update K8s manifests with new image SHAs after all builds succeed

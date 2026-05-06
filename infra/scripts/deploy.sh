@@ -189,12 +189,9 @@ push_images() {
     for img in "${images[@]}"; do
         local local_tag="gtcx/${img}:${VERSION}"
         local ecr_tag="${ECR_REGISTRY}/gtcx-${ENVIRONMENT}-${img}:${VERSION}"
-        local ecr_latest="${ECR_REGISTRY}/gtcx-${ENVIRONMENT}-${img}:latest"
 
         docker tag "${local_tag}" "${ecr_tag}"
-        docker tag "${local_tag}" "${ecr_latest}"
         docker push "${ecr_tag}"
-        docker push "${ecr_latest}"
         log_info "Pushed ${ecr_tag}"
     done
 
@@ -211,7 +208,7 @@ build_images() {
 
     # Determine version
     if [[ -z "${VERSION}" ]]; then
-        VERSION=$(git rev-parse --short HEAD 2>/dev/null || echo "latest")
+        VERSION=$(git rev-parse --short HEAD 2>/dev/null || date -u +"%Y%m%d%H%M%S")
     fi
 
     log_info "Version: ${VERSION}"

@@ -105,6 +105,12 @@ variable "enable_fine_tune_workflow" {
   default     = false
 }
 
+variable "enable_red_team_workflow" {
+  description = "Whether to include the optional red-team scan step in the fine-tune workflow"
+  type        = bool
+  default     = false
+}
+
 variable "enablement_evidence_manifest" {
   description = "Path to the JSON evidence manifest required before enabling the fine-tune workflow"
   type        = string

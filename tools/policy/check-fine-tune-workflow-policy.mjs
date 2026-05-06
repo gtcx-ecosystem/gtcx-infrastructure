@@ -89,6 +89,16 @@ for (const relativeFile of collectEnvironmentFiles(environmentsRoot)) {
   }
 
   const enabled = isTrueLiteral(readAssignment(block, 'enable_fine_tune_workflow'));
+  const redTeamEnabled = isTrueLiteral(readAssignment(block, 'enable_red_team_workflow'));
+
+  if (redTeamEnabled && !enabled) {
+    fail(`${relativeFile}: enable_red_team_workflow=true requires enable_fine_tune_workflow=true`);
+  }
+
+  if (redTeamEnabled && !readQuoted(block, 'red_team_image')) {
+    fail(`${relativeFile}: enable_red_team_workflow=true requires red_team_image`);
+  }
+
   if (!enabled) continue;
 
   const evidenceManifest = readQuoted(block, 'enablement_evidence_manifest');
