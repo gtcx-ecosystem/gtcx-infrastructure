@@ -1,26 +1,24 @@
 /**
- * @fileoverview DID Signature Verification
+ * @fileoverview Signature Verification — Multi-Scheme
  *
- * Verifies ES256 JWT signatures from gtcx-mobile's offline queue.
- * Uses Node.js Web Crypto API — zero external dependencies.
+ * Supports both:
+ *   - gtcx-queue-envelope-v1  (Ed25519 raw signature over envelopeHash)
+ *   - did-jwt-es256           (ES256 JWT with envelopeHash in payload)
  *
- * Flow:
- *   1. Structural validation (hex nonce, ISO timestamp, did: prefix, SHA-256 envelopeHash)
- *   2. DID resolution → DID document
- *   3. Extract publicKeyJwk by keyId
- *   4. Verify JWT signature over envelopeHash
- *   5. Validate audience claim
+ * The mobile client currently emits gtcx-queue-envelope-v1.
+ * did-jwt-es256 is retained for forward compatibility.
  *
  * Principles: SECURE (P11)
  */
 
 import { resolveDid, extractPublicKeyJwk, verifyJwt } from './jwt-verify.mjs';
+import { verifyEd25519 } from './ed25519-verify.mjs';
 
 const HEX_RE = /^[0-9a-fA-F]+$/;
 const NONCE_MIN_LEN = 16; // 8 bytes hex minimum
 
 /**
- * Verify a DID-signed JWT envelope.
+ * Verify a signature according to the scheme declared in the integrity payload.
  *
  * @param {import('../types').QueueIntegrity} integrity
  * @returns {Promise<boolean>}
@@ -56,7 +54,7 @@ export async function verifyDidSignature(integrity) {
     return false;
   }
 
-  // 2–5. Cryptographic verification
+  // 2. Scheme-specific cryptographic verification
   try {
     const didDocument = await resolveDid(integrity.did);
     const publicKeyJwk = extractPublicKeyJwk(didDocument, integrity.keyId);
@@ -64,12 +62,21 @@ export async function verifyDidSignature(integrity) {
       return false;
     }
 
-    const payload = await verifyJwt(integrity.signature, publicKeyJwk, {
-      audience: integrity.audience,
-    });
-
-    // The JWT payload must contain the envelopeHash that was signed
-    return payload.envelopeHash === integrity.envelopeHash;
+    switch (integrity.scheme) {
+      case 'gtcx-queue-envelope-v1': {
+        // Ed25519 raw signature over the envelopeHash hex string
+        return verifyEd25519(integrity.envelopeHash, integrity.signature, publicKeyJwk);
+      }
+      case 'did-jwt-es256': {
+        // ES256 JWT; payload must contain matching envelopeHash
+        const payload = await verifyJwt(integrity.signature, publicKeyJwk, {
+          audience: integrity.audience,
+        });
+        return payload.envelopeHash === integrity.envelopeHash;
+      }
+      default:
+        return false;
+    }
   } catch {
     return false;
   }

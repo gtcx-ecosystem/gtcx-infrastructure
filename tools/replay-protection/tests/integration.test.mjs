@@ -14,7 +14,7 @@ import assert from 'node:assert';
 import { createServer, request as httpRequest } from 'node:http';
 
 import { computeBodyHash, computeHeadersHash, computeEnvelopeHash } from '../src/crypto/hash.mjs';
-import { getTestKeyPair, buildDidDocument, installMockFetch, uninstallMockFetch, signTestJwt } from './helpers/jwt-fixture.mjs';
+import { installMockFetch, uninstallMockFetch, signEnvelopeV1, signTestJwt } from './helpers/jwt-fixture.mjs';
 
 /** @type {import('node:http').Server} */
 let testServer;
@@ -50,6 +50,10 @@ async function makeIntegrityPayload(requestData, overrides = {}) {
   const now = new Date().toISOString();
   const nonce = overrides.nonce ?? `${Date.now().toString(16)}${Math.random().toString(16).slice(2)}`;
   const timestamp = overrides.timestamp ?? now;
+  const did = overrides.did ?? 'did:gtcx:device:test';
+  const keyId = overrides.keyId ?? 'key-1';
+  const audience = overrides.audience ?? 'gtcx-api';
+  const scheme = overrides.scheme ?? 'gtcx-queue-envelope-v1';
   const bodyHash = computeBodyHash(requestData.body);
   const headersHash = computeHeadersHash(requestData.headers);
   const envelopeHash = computeEnvelopeHash({
@@ -59,17 +63,21 @@ async function makeIntegrityPayload(requestData, overrides = {}) {
     headersHash,
     timestamp,
     nonce,
-    did: 'did:gtcx:device:test',
-    keyId: 'key-1',
-    audience: 'gtcx-api',
+    did,
+    keyId,
+    audience,
   });
-  const signature = overrides.signature ?? await signTestJwt(envelopeHash, 'gtcx-api');
+  const signature = overrides.signature ?? await (
+    scheme === 'gtcx-queue-envelope-v1'
+      ? signEnvelopeV1(envelopeHash)
+      : signTestJwt(envelopeHash, audience)
+  );
 
   return {
-    scheme: 'did-jwt-es256',
-    did: 'did:gtcx:device:test',
-    keyId: 'key-1',
-    audience: 'gtcx-api',
+    scheme,
+    did,
+    keyId,
+    audience,
     bodyHash,
     headersHash,
     timestamp,
@@ -92,23 +100,7 @@ describe('Replay Guard Integration', () => {
   let originalFetch;
 
   before(async () => {
-    const { publicKeyJwk } = await getTestKeyPair();
-    const didDoc = buildDidDocument('did:gtcx:device:test', 'key-1', publicKeyJwk);
-    const didDocHeader = buildDidDocument('did:gtcx:device:header-test', 'key-1', publicKeyJwk);
-    originalFetch = global.fetch;
-    global.fetch = async (url) => {
-      const urlStr = typeof url === 'string' ? url : (url instanceof URL ? url.href : String(url));
-      if (urlStr.includes(encodeURIComponent('did:gtcx:device:test'))) {
-        return { ok: true, status: 200, json: async () => didDoc };
-      }
-      if (urlStr.includes(encodeURIComponent('did:gtcx:device:header-test'))) {
-        return { ok: true, status: 200, json: async () => didDocHeader };
-      }
-      if (urlStr.includes(encodeURIComponent('did:gtcx:device:abc123'))) {
-        return { ok: true, status: 200, json: async () => buildDidDocument('did:gtcx:device:abc123', 'key-1', publicKeyJwk) };
-      }
-      return originalFetch(url);
-    };
+    originalFetch = await installMockFetch();
 
     const stubServer = createServer();
     await new Promise((r) => stubServer.listen(0, () => r()));
@@ -146,10 +138,9 @@ describe('Replay Guard Integration', () => {
       assert.ok(res.body.auditEventId);
     });
 
-    it('accepts a real mobile queue envelope fixture', async () => {
+    it('accepts a real mobile queue envelope fixture (gtcx-queue-envelope-v1)', async () => {
       // This fixture represents exactly what gtcx-mobile's offline queue produces.
-      // The hashes below are pre-computed from the raw serialized body and headers
-      // to prove infra and mobile agree on the canonical hashing algorithm.
+      // Ed25519 signature over the envelopeHash, scheme = gtcx-queue-envelope-v1.
       const mobileBody = '{"action":"transfer","amount":100}';
       const mobileHeaders = { 'content-type': 'application/json', 'x-request-id': 'req-abc' };
       const mobileUrl = 'http://api.gtcx.local/v1/transfer';
@@ -172,13 +163,12 @@ describe('Replay Guard Integration', () => {
       });
 
       // Verify bodyHash and headersHash match the expected mobile-computed values.
-      // envelopeHash includes the timestamp so it is computed dynamically.
       assert.strictEqual(bodyHash, '3e3fcfb382a1b6e25308382c117e39e27754f8816c0cbcec6167b657f2f83092');
       assert.strictEqual(headersHash, '77379377611b75759693c33d15b695393316b077476de62f0ee5453bb652e6ea');
 
-      const signature = await signTestJwt(envelopeHash, 'gtcx-api');
+      const signature = await signEnvelopeV1(envelopeHash);
       const integrity = {
-        scheme: 'did-jwt-es256',
+        scheme: 'gtcx-queue-envelope-v1',
         did: 'did:gtcx:device:abc123',
         keyId: 'key-1',
         audience: 'gtcx-api',
@@ -200,6 +190,23 @@ describe('Replay Guard Integration', () => {
           url: mobileUrl,
           region: 'us-east',
         },
+      });
+      assert.strictEqual(res.status, 200);
+      assert.strictEqual(res.body.allowed, true);
+      assert.strictEqual(res.body.code, 'REPLAY_OK');
+    });
+
+    it('accepts did-jwt-es256 scheme (forward compatibility)', async () => {
+      const reqData = {
+        body: '{"action":"es256-test"}',
+        headers: { 'content-type': 'application/json' },
+        method: 'POST',
+        url: 'http://api.gtcx.local/v1/es256-test',
+      };
+      const integrity = await makeIntegrityPayload(reqData, { scheme: 'did-jwt-es256', did: 'did:gtcx:device:es256-test' });
+      const res = await fetchJson('/v1/replay/verify', {
+        method: 'POST',
+        body: { integrity, ...reqData, region: 'us-east' },
       });
       assert.strictEqual(res.status, 200);
       assert.strictEqual(res.body.allowed, true);
@@ -321,13 +328,13 @@ describe('Replay Guard Integration', () => {
         keyId: 'key-1',
         audience: 'gtcx-api',
       });
-      const signature = await signTestJwt(envelopeHash, 'gtcx-api');
+      const signature = await signEnvelopeV1(envelopeHash);
 
       const res = await fetchJson('/v1/replay/verify', {
         method: 'POST',
         body: {
           ...reqData,
-          'x-gtcx-auth-scheme': 'did-jwt-es256',
+          'x-gtcx-auth-scheme': 'gtcx-queue-envelope-v1',
           'x-gtcx-did': 'did:gtcx:device:header-test',
           'x-gtcx-key-id': 'key-1',
           'x-gtcx-audience': 'gtcx-api',
@@ -343,12 +350,26 @@ describe('Replay Guard Integration', () => {
       assert.strictEqual(res.body.allowed, true);
     });
 
-    it('rejects requests with an invalid signature', async () => {
+    it('rejects requests with an invalid Ed25519 signature', async () => {
       const reqData = defaultRequestData;
-      const integrity = await makeIntegrityPayload(reqData, { signature: 'invalid.jwt.here' });
+      const integrity = await makeIntegrityPayload(reqData, { signature: 'invalid-signature-bytes' });
       const res = await fetchJson('/v1/replay/verify', {
         method: 'POST',
         body: { integrity, ...reqData, region: 'us-east' },
+      });
+      assert.strictEqual(res.status, 401);
+      assert.strictEqual(res.body.allowed, false);
+      assert.strictEqual(res.body.code, 'REPLAY_SIGNATURE');
+    });
+
+    it('rejects requests with a tampered Ed25519 signature', async () => {
+      const reqData = defaultRequestData;
+      const integrity = await makeIntegrityPayload(reqData);
+      // Flip one character in the base64url signature to corrupt it
+      const tamperedSignature = integrity.signature.slice(0, -1) + (integrity.signature.slice(-1) === 'A' ? 'B' : 'A');
+      const res = await fetchJson('/v1/replay/verify', {
+        method: 'POST',
+        body: { integrity: { ...integrity, signature: tamperedSignature }, ...reqData, region: 'us-east' },
       });
       assert.strictEqual(res.status, 401);
       assert.strictEqual(res.body.allowed, false);
