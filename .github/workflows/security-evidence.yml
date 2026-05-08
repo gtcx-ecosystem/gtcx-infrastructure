@@ -1,0 +1,314 @@
+# =============================================================================
+# Security Evidence Package — Sandbox Licensing
+# =============================================================================
+# Assembles all security scan artifacts into a single evidence package for
+# regulatory sandbox applications. Manual-trigger only.
+#
+# Scans: DAST (OWASP ZAP), Container (Trivy), SAST (CodeQL), Dependency audit
+# Output: Unified evidence package artifact (365-day retention)
+# =============================================================================
+
+name: Security Evidence — Sandbox
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Target environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - testnet
+      target_url:
+        description: 'Override DAST target URL (leave empty for environment default)'
+        required: false
+        type: string
+
+permissions:
+  contents: read
+  security-events: write
+
+concurrency:
+  group: security-evidence-${{ github.event.inputs.environment }}
+  cancel-in-progress: false
+
+env:
+  ENVIRONMENT: ${{ github.event.inputs.environment }}
+
+jobs:
+  # ──────────────────────────────────────────────
+  # 1. DAST — OWASP ZAP full scan
+  # ──────────────────────────────────────────────
+  dast-scan:
+    name: DAST — OWASP ZAP
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Resolve target URL
+        id: target
+        run: |
+          if [ -n "${{ github.event.inputs.target_url }}" ]; then
+            echo "url=${{ github.event.inputs.target_url }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "url=${{ vars.STAGING_URL }}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Validate target URL
+        run: |
+          URL="${{ steps.target.outputs.url }}"
+          if [ -z "$URL" ]; then
+            echo "::error::No target URL resolved. Set STAGING_URL in environment variables or provide target_url input."
+            exit 1
+          fi
+          echo "Scanning: $URL"
+
+      - name: OWASP ZAP full scan
+        uses: zaproxy/action-full-scan@v0.12.0
+        with:
+          target: ${{ steps.target.outputs.url }}
+          rules_file_name: '.github/zap/rules.tsv'
+          cmd_options: '-j'
+          artifact_name: ''
+          allow_issue_writing: false
+
+      - name: Collect reports
+        if: always()
+        run: |
+          TIMESTAMP=$(date -u +%Y%m%dT%H%M%SZ)
+          mkdir -p reports
+          [ -f report_html.html ] && cp report_html.html "reports/zap-report-${ENVIRONMENT}-${TIMESTAMP}.html"
+          [ -f report_json.json ] && cp report_json.json "reports/zap-report-${ENVIRONMENT}-${TIMESTAMP}.json"
+
+      - name: Upload ZAP reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: evidence-dast
+          path: reports/
+          retention-days: 90
+
+  # ──────────────────────────────────────────────
+  # 2. Container scan — Trivy on GTCX images
+  # ──────────────────────────────────────────────
+  container-scan:
+    name: Container Scan — Trivy
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        image:
+          - name: gtcx-agx
+          - name: gtcx-protocols
+          - name: gtcx-intelligence-sdk
+          - name: replay-guard
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: af-south-1
+
+      - name: Login to ECR
+        id: ecr-login
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Resolve latest image tag
+        id: resolve
+        run: |
+          REGISTRY="${{ steps.ecr-login.outputs.registry }}"
+          IMAGE="${REGISTRY}/${{ matrix.image.name }}"
+
+          # Use the latest image tag available in ECR
+          TAG=$(aws ecr describe-images \
+            --repository-name "${{ matrix.image.name }}" \
+            --query 'sort_by(imageDetails,&imagePushedAt)[-1].imageTags[0]' \
+            --output text 2>/dev/null || echo "latest")
+
+          echo "image_ref=${IMAGE}:${TAG}" >> "$GITHUB_OUTPUT"
+          echo "Scanning: ${IMAGE}:${TAG}"
+
+      - name: Trivy scan (SARIF)
+        uses: aquasecurity/trivy-action@master
+        continue-on-error: true
+        with:
+          image-ref: ${{ steps.resolve.outputs.image_ref }}
+          format: sarif
+          output: trivy-${{ matrix.image.name }}.sarif
+          severity: CRITICAL,HIGH,MEDIUM
+
+      - name: Trivy scan (JSON)
+        uses: aquasecurity/trivy-action@master
+        continue-on-error: true
+        with:
+          image-ref: ${{ steps.resolve.outputs.image_ref }}
+          format: json
+          output: trivy-${{ matrix.image.name }}.json
+          severity: CRITICAL,HIGH,MEDIUM
+
+      - name: Generate SBOM (CycloneDX)
+        uses: aquasecurity/trivy-action@master
+        continue-on-error: true
+        with:
+          image-ref: ${{ steps.resolve.outputs.image_ref }}
+          format: cyclonedx
+          output: sbom-${{ matrix.image.name }}.cdx.json
+
+      - name: Upload container scan results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: evidence-container-${{ matrix.image.name }}
+          path: |
+            trivy-${{ matrix.image.name }}.sarif
+            trivy-${{ matrix.image.name }}.json
+            sbom-${{ matrix.image.name }}.cdx.json
+          retention-days: 90
+
+  # ──────────────────────────────────────────────
+  # 3. SAST — CodeQL with custom queries
+  # ──────────────────────────────────────────────
+  sast-scan:
+    name: SAST — CodeQL
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v4
+        with:
+          languages: javascript-typescript
+          config-file: ./.github/codeql/codeql-config.yml
+
+      - name: Perform CodeQL analysis
+        uses: github/codeql-action/analyze@v4
+        with:
+          category: '/language:javascript-typescript'
+          output: codeql-results
+
+      - name: Upload CodeQL SARIF to security tab
+        uses: github/codeql-action/upload-sarif@v4
+        if: always()
+        with:
+          sarif_file: codeql-results
+
+      - name: Package CodeQL results
+        if: always()
+        run: |
+          mkdir -p sast-output
+          cp -r codeql-results/* sast-output/ 2>/dev/null || true
+          echo "CodeQL analysis completed at $(date -u +%Y%m%dT%H%M%SZ)" > sast-output/metadata.txt
+
+      - name: Upload SAST results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: evidence-sast
+          path: sast-output/
+          retention-days: 90
+
+  # ──────────────────────────────────────────────
+  # 4. Dependency audit
+  # ──────────────────────────────────────────────
+  dependency-audit:
+    name: Dependency Audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v5
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run pnpm audit
+        run: |
+          pnpm audit --json > npm-audit.json 2>&1 || true
+          echo "Audit completed at $(date -u +%Y%m%dT%H%M%SZ)"
+
+      - name: Summarise audit findings
+        run: |
+          if [ -f npm-audit.json ]; then
+            echo "## Dependency Audit" >> "$GITHUB_STEP_SUMMARY"
+            # pnpm audit --json outputs one advisory per line; count severities
+            CRITICAL=$(grep -c '"critical"' npm-audit.json 2>/dev/null || echo 0)
+            HIGH=$(grep -c '"high"' npm-audit.json 2>/dev/null || echo 0)
+            MODERATE=$(grep -c '"moderate"' npm-audit.json 2>/dev/null || echo 0)
+            echo "| Severity | Count |" >> "$GITHUB_STEP_SUMMARY"
+            echo "|----------|-------|" >> "$GITHUB_STEP_SUMMARY"
+            echo "| Critical | $CRITICAL |" >> "$GITHUB_STEP_SUMMARY"
+            echo "| High     | $HIGH |" >> "$GITHUB_STEP_SUMMARY"
+            echo "| Moderate | $MODERATE |" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Upload audit results
+        uses: actions/upload-artifact@v4
+        with:
+          name: evidence-dependency-audit
+          path: npm-audit.json
+          retention-days: 90
+
+  # ──────────────────────────────────────────────
+  # 5. Assemble evidence package
+  # ──────────────────────────────────────────────
+  assemble-evidence:
+    name: Assemble Evidence Package
+    needs: [dast-scan, container-scan, sast-scan, dependency-audit]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download all evidence artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: evidence-*
+          path: evidence-raw/
+          merge-multiple: false
+
+      - name: Run evidence assembler
+        run: |
+          chmod +x infra/scripts/assemble-sandbox-evidence.sh
+          bash infra/scripts/assemble-sandbox-evidence.sh \
+            --input-dir=evidence-raw \
+            --output-dir=evidence-package \
+            --environment="${ENVIRONMENT}" \
+            --run-id="${{ github.run_id }}" \
+            --commit="${{ github.sha }}"
+
+      - name: Upload evidence package
+        uses: actions/upload-artifact@v4
+        with:
+          name: sandbox-evidence-${{ env.ENVIRONMENT }}-${{ github.run_id }}
+          path: evidence-package/
+          retention-days: 365
+
+      - name: Post job summary
+        run: |
+          if [ -f evidence-package/summary.md ]; then
+            cat evidence-package/summary.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "## Evidence Package Assembled" >> "$GITHUB_STEP_SUMMARY"
+            echo "See artifact: sandbox-evidence-${ENVIRONMENT}-${{ github.run_id }}" >> "$GITHUB_STEP_SUMMARY"
+          fi
