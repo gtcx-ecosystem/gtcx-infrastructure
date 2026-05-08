@@ -1,3 +1,5 @@
 packages:
   # Infrastructure
   - 'infra/migrations'
+  # Tools
+  - 'tools/replay-protection'

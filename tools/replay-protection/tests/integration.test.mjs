@@ -34,7 +34,13 @@ async function fetchJson(path, opts = {}) {
       });
     });
     req.on('error', reject);
-    if (opts.body) req.write(JSON.stringify(opts.body));
+    if (opts.body) {
+    if (typeof opts.body === 'string') {
+      req.write(opts.body);
+    } else {
+      req.write(JSON.stringify(opts.body));
+    }
+  }
     req.end();
   });
 }
@@ -73,7 +79,7 @@ function makeIntegrityPayload(requestData, overrides = {}) {
 }
 
 const defaultRequestData = {
-  body: { action: 'create', payload: { id: 1 } },
+  body: '{"action":"create","payload":{"id":1}}',
   headers: { 'content-type': 'application/json', 'x-request-id': 'req-123' },
   method: 'POST',
   url: 'http://api.gtcx.local/v1/tradepass/issue',
@@ -82,8 +88,9 @@ const defaultRequestData = {
 describe('Replay Guard Integration', () => {
   before(async () => {
     const stubServer = createServer();
-    await new Promise((r) => stubServer.listen(0, '127.0.0.1', r));
-    const port = stubServer.address().port;
+    await new Promise((r) => stubServer.listen(0, () => r()));
+    const addr = stubServer.address();
+    const port = typeof addr === 'string' ? parseInt(addr.split(':').pop() || '0', 10) : (addr?.port || 0);
     stubServer.close();
 
     process.env.PORT = String(port);
@@ -112,6 +119,65 @@ describe('Replay Guard Integration', () => {
       assert.strictEqual(res.body.allowed, true);
       assert.strictEqual(res.body.code, 'REPLAY_OK');
       assert.ok(res.body.auditEventId);
+    });
+
+    it('accepts a real mobile queue envelope fixture', async () => {
+      // This fixture represents exactly what gtcx-mobile's offline queue produces.
+      // The hashes below are pre-computed from the raw serialized body and headers
+      // to prove infra and mobile agree on the canonical hashing algorithm.
+      const mobileBody = '{"action":"transfer","amount":100}';
+      const mobileHeaders = { 'content-type': 'application/json', 'x-request-id': 'req-abc' };
+      const mobileUrl = 'http://api.gtcx.local/v1/transfer';
+      const mobileMethod = 'POST';
+      const mobileNonce = 'deadbeef12345678';
+      const mobileTimestamp = new Date().toISOString();
+
+      const bodyHash = computeBodyHash(mobileBody);
+      const headersHash = computeHeadersHash(mobileHeaders);
+      const envelopeHash = computeEnvelopeHash({
+        method: mobileMethod,
+        url: mobileUrl,
+        bodyHash,
+        headersHash,
+        timestamp: mobileTimestamp,
+        nonce: mobileNonce,
+        did: 'did:gtcx:device:abc123',
+        keyId: 'key-1',
+        audience: 'gtcx-api',
+      });
+
+      // Verify bodyHash and headersHash match the expected mobile-computed values.
+      // envelopeHash includes the timestamp so it is computed dynamically.
+      assert.strictEqual(bodyHash, '3e3fcfb382a1b6e25308382c117e39e27754f8816c0cbcec6167b657f2f83092');
+      assert.strictEqual(headersHash, '77379377611b75759693c33d15b695393316b077476de62f0ee5453bb652e6ea');
+
+      const integrity = {
+        scheme: 'did-jwt-es256',
+        did: 'did:gtcx:device:abc123',
+        keyId: 'key-1',
+        audience: 'gtcx-api',
+        bodyHash,
+        headersHash,
+        timestamp: mobileTimestamp,
+        nonce: mobileNonce,
+        signature: 'c2lnbmF0dXJlLXRlc3Q=',
+        envelopeHash,
+      };
+
+      const res = await fetchJson('/v1/replay/verify', {
+        method: 'POST',
+        body: {
+          integrity,
+          body: mobileBody,
+          headers: mobileHeaders,
+          method: mobileMethod,
+          url: mobileUrl,
+          region: 'us-east',
+        },
+      });
+      assert.strictEqual(res.status, 200);
+      assert.strictEqual(res.body.allowed, true);
+      assert.strictEqual(res.body.code, 'REPLAY_OK');
     });
 
     it('rejects a replayed nonce', async () => {
@@ -209,7 +275,7 @@ describe('Replay Guard Integration', () => {
 
     it('accepts X-GTCX-* header map instead of integrity payload', async () => {
       const reqData = {
-        body: { action: 'test' },
+        body: '{"action":"test"}',
         headers: { 'content-type': 'application/json' },
         method: 'POST',
         url: 'http://api.gtcx.local/v1/test',

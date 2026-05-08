@@ -190,7 +190,7 @@ async function handleVerify(req, res) {
   }
 
   // Accept either full QueueIntegrity payload or X-GTCX-* header map
-  /** @type {import('./types.mjs').QueueIntegrity} */
+  /** @type {import('./types').QueueIntegrity} */
   const integrity = body.integrity ?? {
     scheme: body['x-gtcx-auth-scheme'] ?? body.scheme,
     did: body['x-gtcx-did'] ?? body.did,

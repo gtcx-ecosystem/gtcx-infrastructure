@@ -1,3 +1,4 @@
+/** @typedef {import('../types').ClockSkewPolicy} ClockSkewPolicy */
 /**
  * @fileoverview Clock-Skew Policy
  *
@@ -7,7 +8,7 @@
  * Principles: RESILIENT (P12), SOVEREIGN (P6)
  */
 
-/** @type {import('../types.mjs').ClockSkewPolicy} */
+/** @type {import('../types').ClockSkewPolicy} */
 export const DEFAULT_POLICY = Object.freeze({
   windowMs: 5 * 60 * 1000,               // 5 minutes
   lowConnectivityBufferMs: 10 * 60 * 1000, // +10 minutes
@@ -24,7 +25,7 @@ export const DEFAULT_POLICY = Object.freeze({
  * Resolve the effective acceptance window for a given region.
  *
  * @param {string} [region]
- * @param {Partial<import('../types.mjs').ClockSkewPolicy>} [overrides]
+ * @param {Partial<import('../types').ClockSkewPolicy>} [overrides]
  * @returns {{ windowMs: number, maxFutureMs: number }}
  */
 export function resolveWindow(region, overrides = {}) {
@@ -46,7 +47,7 @@ export function resolveWindow(region, overrides = {}) {
  *
  * @param {string} timestamp - ISO-8601 string
  * @param {string} [region]
- * @param {Partial<import('../types.mjs').ClockSkewPolicy>} [overrides]
+ * @param {Partial<import('../types').ClockSkewPolicy>} [overrides]
  * @param {number} [nowMs] - Override current time for testing
  * @returns {{ valid: boolean; code?: string; reason?: string; skewMs: number; windowMs: number }}
  */

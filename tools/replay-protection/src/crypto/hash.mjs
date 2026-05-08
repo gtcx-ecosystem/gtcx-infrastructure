@@ -37,13 +37,23 @@ export function normalizeHeaders(headers) {
 }
 
 /**
- * Compute body hash from a JSON-serializable body.
+ * Compute body hash from the serialized body string.
+ * Matches the mobile contract exactly: mobile signs the exact bytes it sends on the wire.
+ * Callers must supply the raw serialized body string; object normalization is intentionally
+ * NOT performed here because JSON.stringify on a parsed object may differ from the
+ * original bytes (whitespace, key order, numeric precision).
  *
- * @param {unknown} body
+ * @param {string} serializedBody - The exact UTF-8 body string mobile signed
  * @returns {string}
  */
-export function computeBodyHash(body) {
-  return sha256Hex(JSON.stringify(body ?? null));
+export function computeBodyHash(serializedBody) {
+  if (typeof serializedBody !== 'string') {
+    throw new TypeError(
+      `computeBodyHash expects a serialized string (the raw body bytes), got ${typeof serializedBody}. ` +
+      'Pass the raw request body string, not a parsed object.'
+    );
+  }
+  return sha256Hex(serializedBody);
 }
 
 /**

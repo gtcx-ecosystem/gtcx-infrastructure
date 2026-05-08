@@ -18,7 +18,7 @@ const NONCE_MIN_LEN = 16; // 8 bytes hex minimum
  * Returns false for obviously malformed requests (missing fields,
  * invalid nonce format, malformed timestamp).
  *
- * @param {import('../types.mjs').QueueIntegrity} integrity
+ * @param {import('../types').QueueIntegrity} integrity
  * @returns {Promise<boolean>}
  */
 export async function verifyDidSignature(integrity) {

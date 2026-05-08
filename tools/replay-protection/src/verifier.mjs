@@ -13,7 +13,7 @@
  * Principles: SECURE (P11), RESILIENT (P12), OBSERVABLE (P15), AUDITABLE (P3)
  */
 
-import { evaluateTimestamp } from './policy/clock-skew.mjs';
+import { evaluateTimestamp, DEFAULT_POLICY } from './policy/clock-skew.mjs';
 import { logAuthFailure } from './logging/auth-failure-logger.mjs';
 import { defaultAuditCapture } from './audit/audit-capture.mjs';
 import { defaultMetrics } from './metrics/replay-metrics.mjs';
@@ -57,7 +57,7 @@ export class ReplayVerifier {
       throw new TypeError('ReplayVerifier requires opts.nonceStore');
     }
     this.#nonceStore = opts.nonceStore;
-    this.#clockSkewPolicy = opts.clockSkewPolicy ?? {};
+    this.#clockSkewPolicy = opts.clockSkewPolicy ?? DEFAULT_POLICY;
     this.#metrics = opts.metrics ?? defaultMetrics;
     this.#audit = opts.auditCapture ?? defaultAuditCapture;
     this.#verifySignature = opts.verifySignature ?? null;
@@ -69,14 +69,14 @@ export class ReplayVerifier {
   /**
    * Verify a QueueIntegrity payload against actual request data.
    *
-   * @param {import('./types.mjs').QueueIntegrity} integrity
+   * @param {import('./types').QueueIntegrity} integrity
    * @param {object} request
    * @param {unknown} request.body - Actual request body (JSON serializable)
    * @param {Record<string, string>} request.headers - Actual request headers
    * @param {string} request.method - HTTP method
    * @param {string} request.url - Request URL
-   * @param {import('./types.mjs').VerifyContext} [context]
-   * @returns {Promise<import('./types.mjs').VerifyResult>}
+   * @param {import('./types').VerifyContext} [context]
+   * @returns {Promise<import('./types').VerifyResult>}
    */
   async verify(integrity, request, context = {}) {
     const region = context.region;
@@ -213,8 +213,8 @@ export class ReplayVerifier {
   }
 
   /**
-   * @private
-   * @param {import('./types.mjs').QueueIntegrity} integrity
+   
+   * @param {import('./types').QueueIntegrity} integrity
    * @param {object} request
    * @returns {{ valid: boolean; reason?: string }}
    */
@@ -251,7 +251,7 @@ export class ReplayVerifier {
   }
 
   /**
-   * @private
+   
    */
   #maybeLog(integrity, code, reason, context) {
     if (!this.#logFailures) return;

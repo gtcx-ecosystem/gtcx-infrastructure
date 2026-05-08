@@ -1,0 +1,252 @@
+# =============================================================================
+# GTCX Audit Database — PostgreSQL StatefulSet
+# =============================================================================
+# Isolated append-only audit database per AUDITABLE principle (P3).
+# Separate from operational DB: separate credentials, storage, backup schedule.
+# Never cross-write. Never drop. 7-year retention via S3 Glacier export.
+#
+# Principles: AUDITABLE (P3), SECURE (P11), RESILIENT (P12)
+# =============================================================================
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: gtcx-postgres-audit
+  namespace: gtcx
+  labels:
+    app: gtcx-postgres-audit
+    tier: audit
+    principle: auditable
+spec:
+  serviceName: gtcx-postgres-audit
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gtcx-postgres-audit
+  template:
+    metadata:
+      labels:
+        app: gtcx-postgres-audit
+        tier: audit
+        principle: auditable
+    spec:
+      serviceAccountName: gtcx-platform
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 999
+        runAsGroup: 999
+        fsGroup: 999
+        seccompProfile:
+          type: RuntimeDefault
+      terminationGracePeriodSeconds: 60
+      containers:
+        - name: postgres-audit
+          image: postgres:16.4-alpine
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: postgres
+              containerPort: 5432
+              protocol: TCP
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: gtcx-postgres-audit
+                  key: user
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: gtcx-postgres-audit
+                  key: password
+            - name: POSTGRES_DB
+              value: gtcx_audit
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false
+            capabilities:
+              drop:
+                - ALL
+          livenessProbe:
+            exec:
+              command:
+                - pg_isready
+                - -U
+                - $(POSTGRES_USER)
+                - -d
+                - $(POSTGRES_DB)
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 6
+          readinessProbe:
+            exec:
+              command:
+                - pg_isready
+                - -U
+                - $(POSTGRES_USER)
+                - -d
+                - $(POSTGRES_DB)
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+          startupProbe:
+            exec:
+              command:
+                - pg_isready
+                - -U
+                - $(POSTGRES_USER)
+                - -d
+                - $(POSTGRES_DB)
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 12
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/postgresql/data
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+        labels:
+          app: gtcx-postgres-audit
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 20Gi
+        storageClassName: gp3-retained
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gtcx-postgres-audit
+  namespace: gtcx
+  labels:
+    app: gtcx-postgres-audit
+    tier: audit
+spec:
+  type: ClusterIP
+  ports:
+    - name: postgres
+      port: 5432
+      targetPort: postgres
+      protocol: TCP
+  selector:
+    app: gtcx-postgres-audit
+---
+# ExternalSecret for audit DB credentials
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: gtcx-postgres-audit
+  namespace: gtcx
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: gtcx-aws-secrets-manager
+  target:
+    name: gtcx-postgres-audit
+    creationPolicy: Owner
+    deletionPolicy: Retain
+  data:
+    - secretKey: user
+      remoteRef:
+        key: gtcx/production/postgres-audit
+        property: user
+    - secretKey: password
+      remoteRef:
+        key: gtcx/production/postgres-audit
+        property: password
+---
+# Prometheus ServiceMonitor for postgres-exporter (audit)
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: gtcx-postgres-audit-exporter
+  namespace: gtcx
+  labels:
+    app: gtcx-postgres-audit
+spec:
+  selector:
+    matchLabels:
+      app: gtcx-postgres-audit-exporter
+  endpoints:
+    - port: metrics
+      interval: 30s
+      path: /metrics
+---
+# postgres-exporter sidecar for audit DB metrics
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gtcx-postgres-audit-exporter
+  namespace: gtcx
+  labels:
+    app: gtcx-postgres-audit-exporter
+    tier: audit
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gtcx-postgres-audit-exporter
+  template:
+    metadata:
+      labels:
+        app: gtcx-postgres-audit-exporter
+        tier: audit
+    spec:
+      serviceAccountName: gtcx-platform
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        runAsGroup: 65534
+        fsGroup: 65534
+      containers:
+        - name: postgres-exporter
+          image: prometheuscommunity/postgres-exporter:v0.15.0
+          ports:
+            - name: metrics
+              containerPort: 9187
+          env:
+            - name: DATA_SOURCE_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: gtcx-postgres-audit
+                  key: exporter-dsn
+          resources:
+            requests:
+              cpu: 25m
+              memory: 32Mi
+            limits:
+              cpu: 100m
+              memory: 64Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+          livenessProbe:
+            httpGet:
+              path: /
+              port: metrics
+            initialDelaySeconds: 10
+            periodSeconds: 15
+          readinessProbe:
+            httpGet:
+              path: /
+              port: metrics
+            initialDelaySeconds: 5
+            periodSeconds: 10

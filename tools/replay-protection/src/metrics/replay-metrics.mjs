@@ -1,3 +1,4 @@
+/** @typedef {import('../types').ReplayMetricsSnapshot} ReplayMetricsSnapshot */
 /**
  * @fileoverview Replay Metrics
  *
@@ -48,7 +49,7 @@ export class ReplayMetrics {
   /**
    * Return a snapshot of all counters.
    *
-   * @returns {import('../types.mjs').ReplayMetricsSnapshot}
+   * @returns {import('../types').ReplayMetricsSnapshot}
    */
   snapshot() {
     return {
@@ -97,11 +98,11 @@ export class ReplayMetrics {
    * @param {0 | 1} value
    */
   setRedisConnected(value) {
-    this.#redisConnected = value;
+    this.#redisConnected = value ? 1 : 0;
   }
 
   /**
-   * @returns {0 | 1}
+   * @returns {number}
    */
   redisConnected() {
     return this.#redisConnected;

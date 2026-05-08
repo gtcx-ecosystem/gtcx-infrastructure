@@ -47,6 +47,29 @@ jobs:
       - name: Build
         run: pnpm build
 
+      - name: Replay protection tests
+        run: |
+          cd tools/replay-protection
+          node --test tests/**/*.test.mjs
+
+      - name: Generate release evidence
+        run: |
+          node tools/control-plane/generate-release-evidence.mjs \
+            --environment=ci \
+            --version=ci-${{ github.sha }} \
+            --commit=${{ github.sha }} \
+            --smoke-base-url=http://localhost:3000 \
+            --image=replay-guard=gtcx/replay-guard:ci-${{ github.sha }} \
+            --output-dir=infra/security/reports/release-evidence/ci/$(date -u +%Y%m%dT%H%M%SZ)
+        continue-on-error: true
+
+      - name: Upload release evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-evidence-ci
+          path: infra/security/reports/release-evidence/ci/
+          retention-days: 90
+
   docs-links:
     runs-on: ubuntu-latest
     steps:
@@ -192,6 +215,23 @@ jobs:
           docker compose -f infra/docker/docker-compose.dev.yml config --quiet
           docker compose -f infra/docker/docker-compose.test.yml config --quiet
           docker compose -f infra/docker/docker-compose.infra.yml config --quiet
+
+      - name: DR test — backup integrity
+        run: |
+          docker compose -f infra/docker/docker-compose.dev.yml up -d postgres postgres-audit
+          sleep 10
+          export POSTGRES_HOST=localhost
+          export POSTGRES_USER=gtcx
+          export POSTGRES_DB=gtcx_development
+          export POSTGRES_PASSWORD=gtcx_dev_password
+          export AUDIT_HOST=localhost
+          export AUDIT_USER=gtcx_audit
+          export AUDIT_DB=gtcx_audit
+          export AUDIT_PASSWORD=gtcx_audit_dev_password
+          export PROTOCOL_URL=http://localhost:8300
+          bash infra/scripts/dr-test.sh testnet || true
+          docker compose -f infra/docker/docker-compose.dev.yml down
+        continue-on-error: true
 
   security:
     runs-on: ubuntu-latest

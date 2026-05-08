@@ -47,13 +47,13 @@ export class RedisNonceStore extends NonceStore {
 
   async has(nonce) {
     const key = this.#key(nonce);
-    const result = await this.#client.exists([key]);
+    const result = await this.#client.exists(key);
     return result === 1;
   }
 
   async delete(nonce) {
     const key = this.#key(nonce);
-    await this.#client.del([key]);
+    await this.#client.del(key);
   }
 
   async health() {

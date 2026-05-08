@@ -16,7 +16,7 @@ import { computeBodyHash, computeHeadersHash, computeEnvelopeHash } from '../src
 /** @returns {import('../src/types.mjs').QueueIntegrity} */
 function makeIntegrity(overrides = {}, requestData = null) {
   const now = new Date().toISOString();
-  const body = requestData?.body ?? { test: true };
+  const body = requestData?.body ?? '{"test":true}';
   const headers = requestData?.headers ?? { 'content-type': 'application/json' };
   const method = requestData?.method ?? 'POST';
   const url = requestData?.url ?? 'http://localhost/v1/test';
@@ -54,7 +54,7 @@ function makeIntegrity(overrides = {}, requestData = null) {
 
 function makeRequestData(overrides = {}) {
   return {
-    body: { test: true },
+    body: '{"test":true}',
     headers: { 'content-type': 'application/json' },
     method: 'POST',
     url: 'http://localhost/v1/test',

@@ -49,7 +49,7 @@ function makeIntegrityPayload(requestData, overrides = {}) {
 }
 
 const defaultRequestData = {
-  body: { action: 'create' },
+  body: '{"action":"create"}',
   headers: { 'content-type': 'application/json' },
   method: 'POST',
   url: 'http://api.gtcx.local/v1/test',
@@ -198,7 +198,7 @@ describe('Failure Modes — Tampered Envelope', () => {
     const integrity = makeIntegrityPayload(req);
 
     // Attacker modifies body but keeps original integrity metadata
-    const tamperedReq = { ...req, body: { action: 'malicious' } };
+    const tamperedReq = { ...req, body: '{"action":"malicious"}' };
 
     const result = await verifier.verify(integrity, tamperedReq);
     assert.strictEqual(result.allowed, false);
@@ -250,7 +250,7 @@ describe('Acceptance Gate: REPLAY_ENVELOPE is real', () => {
     // Each tampered variant fails with REPLAY_ENVELOPE
     const bodyTamper = await verifier.verify(
       makeIntegrityPayload(req),
-      { ...req, body: { hacked: true } }
+      { ...req, body: '{"hacked":true}' }
     );
     assert.strictEqual(bodyTamper.code, 'REPLAY_ENVELOPE');
 

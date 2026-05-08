@@ -1,0 +1,130 @@
+# =============================================================================
+# Audit, Authority, and Trust Dependency Alerts
+# =============================================================================
+# Monitors the append-only audit path, DID resolver health, and downstream
+# authentication dependencies. These are the trust-bearing signals.
+#
+# Principles: AUDITABLE (P3), SECURE (P11), OBSERVABLE (P15)
+# =============================================================================
+
+groups:
+  - name: gtcx-audit-trust
+    rules:
+      # P1: Audit DB write failures — append-only path is broken
+      - alert: AuditAppendFailure
+        expr: >
+          (
+            rate(pg_stat_database_xact_rollback{datname="gtcx_audit"}[5m])
+            /
+            rate(pg_stat_database_xact_commit{datname="gtcx_audit"}[5m])
+          ) > 0.1
+        for: 2m
+        labels:
+          severity: critical
+          team: security
+        annotations:
+          summary: 'Audit DB rollback rate > 10% — append-only path may be corrupted'
+          description: 'Audit database transaction rollback rate is {{ $value | humanizePercentage }}. Audit events may be lost.'
+          runbook: 'docs/operations/runbooks/audit-append-failure.md'
+
+      # P1: Audit DB unreachable — no events being captured
+      - alert: AuditDBUnavailable
+        expr: >
+          pg_up{job="gtcx-postgres-audit-exporter"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          team: infrastructure
+        annotations:
+          summary: 'Audit PostgreSQL exporter is down — audit DB may be unreachable'
+          description: 'The postgres-exporter for the audit DB is not responding. Audit event capture may be failing silently.'
+          runbook: 'docs/operations/runbooks/audit-db-unavailable.md'
+
+      # P2: Audit event rate anomaly — sudden drop suggests service stopped auditing
+      - alert: AuditEventRateDrop
+        expr: >
+          (
+            rate(audit_events_total[15m])
+            /
+            rate(audit_events_total[15m] offset 1d)
+          ) < 0.5
+        for: 10m
+        labels:
+          severity: warning
+          team: security
+        annotations:
+          summary: 'Audit event rate dropped > 50% vs yesterday'
+          description: "Audit event ingestion has dropped to {{ $value | humanizePercentage }} of yesterday's rate. A service may have stopped appending audit events."
+          runbook: 'docs/operations/runbooks/audit-event-rate-drop.md'
+
+      # P1: DID resolver / authority outage — signature verification degraded
+      - alert: AuthorityOutage
+        expr: >
+          (
+            rate(replay_protection_total{code="REPLAY_SIGNATURE"}[5m])
+            /
+            rate(replay_protection_total[5m])
+          ) > 0.3
+        for: 3m
+        labels:
+          severity: critical
+          team: security
+        annotations:
+          summary: 'Signature rejection rate > 30% — possible DID resolver outage'
+          description: '{{ $value | humanizePercentage }} of requests are failing signature verification. The DID resolver or key rotation service may be down.'
+          runbook: 'docs/operations/runbooks/authority-outage.md'
+
+      # P2: DID resolver latency elevated
+      - alert: AuthorityLatencyHigh
+        expr: >
+          histogram_quantile(0.99,
+            sum(rate(did_resolve_duration_ms_bucket[5m])) by (le)
+          ) > 2000
+        for: 5m
+        labels:
+          severity: warning
+          team: engineering
+        annotations:
+          summary: 'DID resolver p99 latency > 2 seconds'
+          description: 'DID resolution latency is {{ $value | humanizeDuration }}. Mobile clients in low-connectivity regions may timeout.'
+
+      # P2: Downstream trust dependency degraded — Redis nonce store
+      - alert: TrustDependencyDegraded
+        expr: >
+          replay_guard_redis_connected == 0
+        for: 2m
+        labels:
+          severity: warning
+          team: infrastructure
+        annotations:
+          summary: 'Replay Guard fell back to memory store — multi-instance trust weakened'
+          description: 'Redis nonce store is unreachable. Replay protection is running in-memory, which weakens protection across pod restarts and scaling events.'
+          runbook: 'docs/operations/runbooks/replay-guard-failure.md'
+
+      # P2: Backup export failures
+      - alert: AuditBackupExportFailure
+        expr: >
+          increase(aws_rds_snapshot_export_failure_total[1h]) > 0
+        for: 5m
+        labels:
+          severity: warning
+          team: infrastructure
+        annotations:
+          summary: 'Audit RDS snapshot export to S3 failed'
+          description: 'The automated RDS snapshot export to S3 for audit retention has failed. Check Lambda logs and IAM permissions.'
+
+      # P3: Audit DB storage approaching limit
+      - alert: AuditDBStorageHigh
+        expr: >
+          (
+            pg_stat_database_stat_user_tables_size{datname="gtcx_audit"}
+            /
+            10737418240
+          ) > 0.8
+        for: 10m
+        labels:
+          severity: info
+          team: infrastructure
+        annotations:
+          summary: 'Audit DB storage > 80% of 10Gi PVC'
+          description: 'Audit database is using {{ $value | humanizePercentage }} of allocated storage. Consider expanding PVC or triggering early S3 export.'

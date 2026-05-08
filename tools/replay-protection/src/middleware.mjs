@@ -29,8 +29,8 @@ import { defaultAuditCapture } from './audit/audit-capture.mjs';
  * @property {number} [nonceTtlMs]
  * @property {import('./policy/clock-skew.mjs').ClockSkewPolicy} [clockSkewPolicy]
  * @property {boolean} [logFailures]
- * @property {string[]} [exemptPaths] — Regex strings or exact paths to skip (e.g. ["/health", "/metrics"])
- * @property {boolean} [skipHashVerification] — For bootstrap / migration only
+ * @property {string[]} [exemptPaths] - Regex strings or exact paths to skip (e.g. ["/health", "/metrics"])
+ * @property {boolean} [skipHashVerification] - For bootstrap / migration only
  */
 
 /**
@@ -65,7 +65,7 @@ export function replayGuardMiddleware(opts) {
       return;
     }
 
-    /** @type {import('./types.mjs').QueueIntegrity} */
+    /** @type {import('./types').QueueIntegrity} */
     const integrity = {
       scheme: req.headers['x-gtcx-auth-scheme'] ?? '',
       did: req.headers['x-gtcx-did'] ?? '',

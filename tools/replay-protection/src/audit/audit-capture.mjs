@@ -11,7 +11,7 @@ import { randomUUID } from 'node:crypto';
 
 /**
  * @typedef {Function} AuditSink
- * @param {import('../types.mjs').AuditEvent} event
+ * @param {import('../types').AuditEvent} event
  * @returns {Promise<void> | void}
  */
 
@@ -57,10 +57,10 @@ export class AuditCapture {
    * @param {number} [params.clockSkewMs]
    * @param {number} [params.acceptanceWindowMs]
    * @param {boolean} [params.isDelayedOfflineReplay]
-   * @returns {Promise<import('../types.mjs').AuditEvent>}
+   * @returns {Promise<import('../types').AuditEvent>}
    */
   async capture(params) {
-    /** @type {import('../types.mjs').AuditEvent} */
+    /** @type {import('../types').AuditEvent} */
     const event = {
       eventId: randomUUID(),
       timestampMs: Date.now(),
