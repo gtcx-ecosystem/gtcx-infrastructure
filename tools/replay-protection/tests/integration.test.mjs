@@ -77,8 +77,8 @@ describe('Replay Guard Integration', () => {
             bodyHash: 'a'.repeat(64),
             headersHash: 'b'.repeat(64),
             timestamp: new Date().toISOString(),
-            nonce: `int-nonce-${Date.now()}`,
-            signature: 'sig',
+            nonce: `${Date.now().toString(16)}${Math.random().toString(16).slice(2)}`,
+            signature: 'c2lnbmF0dXJl',
             envelopeHash: 'c'.repeat(64),
           },
           region: 'us-east',
@@ -91,7 +91,7 @@ describe('Replay Guard Integration', () => {
     });
 
     it('rejects a replayed nonce', async () => {
-      const nonce = `replay-nonce-${Date.now()}`;
+      const nonce = `${Date.now().toString(16)}${Math.random().toString(16).slice(2)}`;
       const integrity = {
         scheme: 'did-jwt-es256',
         did: 'did:gtcx:device:test2',
@@ -101,7 +101,7 @@ describe('Replay Guard Integration', () => {
         headersHash: 'b'.repeat(64),
         timestamp: new Date().toISOString(),
         nonce,
-        signature: 'sig',
+        signature: 'c2lnbmF0dXJl',
         envelopeHash: 'c'.repeat(64),
       };
 
@@ -133,8 +133,8 @@ describe('Replay Guard Integration', () => {
             bodyHash: 'a'.repeat(64),
             headersHash: 'b'.repeat(64),
             timestamp: new Date(Date.now() - 10 * 60 * 1000).toISOString(),
-            nonce: `stale-nonce-${Date.now()}`,
-            signature: 'sig',
+            nonce: `${Date.now().toString(16)}${Math.random().toString(16).slice(2)}`,
+            signature: 'c2lnbmF0dXJl',
             envelopeHash: 'c'.repeat(64),
           },
         },
@@ -155,8 +155,8 @@ describe('Replay Guard Integration', () => {
             bodyHash: 'a'.repeat(64),
             headersHash: 'b'.repeat(64),
             timestamp: new Date(Date.now() + 10 * 60 * 1000).toISOString(),
-            nonce: `future-nonce-${Date.now()}`,
-            signature: 'sig',
+            nonce: `${Date.now().toString(16)}${Math.random().toString(16).slice(2)}`,
+            signature: 'c2lnbmF0dXJl',
             envelopeHash: 'c'.repeat(64),
           },
         },
@@ -175,8 +175,8 @@ describe('Replay Guard Integration', () => {
           'x-gtcx-audience': 'gtcx-api',
           'x-gtcx-body-sha256': 'a'.repeat(64),
           'x-gtcx-timestamp': new Date().toISOString(),
-          'x-gtcx-nonce': `header-nonce-${Date.now()}`,
-          'x-gtcx-signature': 'sig',
+          'x-gtcx-nonce': `${Date.now().toString(16)}${Math.random().toString(16).slice(2)}`,
+          'x-gtcx-signature': 'c2lnbmF0dXJl',
         },
       });
       assert.strictEqual(res.status, 200);
@@ -195,8 +195,8 @@ describe('Replay Guard Integration', () => {
             bodyHash: 'a'.repeat(64),
             headersHash: 'b'.repeat(64),
             timestamp: new Date(Date.now() - 8 * 60 * 1000).toISOString(), // 8 min old
-            nonce: `global-south-nonce-${Date.now()}`,
-            signature: 'sig',
+            nonce: `${Date.now().toString(16)}${Math.random().toString(16).slice(2)}`,
+            signature: 'c2lnbmF0dXJl',
             envelopeHash: 'c'.repeat(64),
           },
           region: 'global-south',
@@ -230,8 +230,8 @@ describe('Replay Guard Integration', () => {
             bodyHash: 'a'.repeat(64),
             headersHash: 'b'.repeat(64),
             timestamp: new Date().toISOString(),
-            nonce: `metrics-nonce-${Date.now()}`,
-            signature: 'sig',
+            nonce: `${Date.now().toString(16)}${Math.random().toString(16).slice(2)}`,
+            signature: 'c2lnbmF0dXJl',
             envelopeHash: 'c'.repeat(64),
           },
         },

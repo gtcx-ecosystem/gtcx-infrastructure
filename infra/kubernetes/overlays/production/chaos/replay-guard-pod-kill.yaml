@@ -1,0 +1,51 @@
+# =============================================================================
+# Chaos Experiment — Replay Guard Pod Kill
+# =============================================================================
+# Validates that replay-protection availability is maintained during
+# unexpected pod termination. HPA should scale replacements within 30s.
+#
+# Exit Gate: replay rejection rate must not drop to zero during chaos.
+# =============================================================================
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChaosEngine
+metadata:
+  name: gtcx-replay-guard-pod-kill
+  namespace: litmus
+spec:
+  appinfo:
+    appns: gtcx-production
+    applabel: 'app=gtcx-replay-guard'
+    appkind: deployment
+  annotationCheck: 'true'
+  engineState: 'active'
+  experiments:
+    - name: pod-delete
+      spec:
+        components:
+          env:
+            - name: TOTAL_CHAOS_DURATION
+              value: '300'
+            - name: CHAOS_INTERVAL
+              value: '60'
+            - name: FORCE
+              value: 'false'
+            - name: PODS_AFFECTED_PERC
+              value: '50'
+        probe:
+          - name: replay-guard-health-probe
+            type: promProbe
+            mode: Continuous
+            runProperties:
+              probeTimeout: '10s'
+              retry: 2
+              interval: '15s'
+              probePollingInterval: '5s'
+              initialDelay: '5s'
+            promProbe/inputs:
+              endpoint: 'http://prometheus.monitoring:9090'
+              query: |
+                sum(rate(replay_protection_total{code=~"REPLAY_NONCE|REPLAY_STALE|REPLAY_FUTURE"}[1m]))
+              comparator:
+                type: float
+                criteria: gt
+                value: '0'

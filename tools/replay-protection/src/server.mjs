@@ -29,6 +29,7 @@ import { MemoryNonceStore } from './store/memory-nonce-store.mjs';
 import { RedisNonceStore } from './store/redis-nonce-store.mjs';
 import { ReplayMetrics } from './metrics/replay-metrics.mjs';
 import { AuditCapture, consoleSink } from './audit/audit-capture.mjs';
+import { verifyDidSignature } from './crypto/did-verify.mjs';
 
 // ---------------------------------------------------------------------------
 // Config
@@ -87,12 +88,7 @@ const verifier = new ReplayVerifier({
     maxFutureMs: MAX_FUTURE_MS,
     lowConnectivityRegions: ['global-south', 'rural', 'mesh', 'satellite'],
   },
-  verifySignature: async (integrity) => {
-    // TODO: wire to DID resolution + JWT verification
-    // For now, accept all signatures in bootstrap mode;
-    // production must override this with real crypto.
-    return true;
-  },
+  verifySignature: verifyDidSignature,
 });
 
 // ---------------------------------------------------------------------------

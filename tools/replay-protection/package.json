@@ -14,7 +14,8 @@
     "./policy/clock-skew": "./src/policy/clock-skew.mjs",
     "./audit": "./src/audit/audit-capture.mjs",
     "./metrics": "./src/metrics/replay-metrics.mjs",
-    "./logging": "./src/logging/auth-failure-logger.mjs"
+    "./logging": "./src/logging/auth-failure-logger.mjs",
+    "./crypto/did-verify": "./src/crypto/did-verify.mjs"
   },
   "scripts": {
     "test": "node --test tests/**/*.test.mjs",

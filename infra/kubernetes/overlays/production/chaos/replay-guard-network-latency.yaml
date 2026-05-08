@@ -1,0 +1,58 @@
+# =============================================================================
+# Chaos Experiment — Replay Guard Network Latency
+# =============================================================================
+# Injects 200ms latency into replay-guard ingress traffic.
+# Validates that mobile clients in low-connectivity regions still pass
+# timestamp window checks (15 min tolerance) even with added latency.
+#
+# Exit Gate: no increase in REPLAY_FUTURE rejections (clock skew should
+# not be affected by network latency).
+# =============================================================================
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChaosEngine
+metadata:
+  name: gtcx-replay-guard-network-latency
+  namespace: litmus
+spec:
+  appinfo:
+    appns: gtcx-production
+    applabel: 'app=gtcx-replay-guard'
+    appkind: deployment
+  engineState: 'active'
+  experiments:
+    - name: network-latency
+      spec:
+        components:
+          env:
+            - name: TARGET_CONTAINER
+              value: 'replay-guard'
+            - name: NETWORK_INTERFACE
+              value: 'eth0'
+            - name: LIB_IMAGE
+              value: 'litmuschaos/go-runner:3.0.0'
+            - name: TC_IMAGE
+              value: 'gaiadocker/iproute2'
+            - name: NETWORK_LATENCY
+              value: '200'
+            - name: TOTAL_CHAOS_DURATION
+              value: '300'
+            - name: JITTER
+              value: '20'
+        probe:
+          - name: replay-guard-future-rate-probe
+            type: promProbe
+            mode: Continuous
+            runProperties:
+              probeTimeout: '10s'
+              retry: 2
+              interval: '15s'
+              probePollingInterval: '5s'
+              initialDelay: '5s'
+            promProbe/inputs:
+              endpoint: 'http://prometheus.monitoring:9090'
+              query: |
+                sum(rate(replay_protection_total{code="REPLAY_FUTURE"}[1m]))
+              comparator:
+                type: float
+                criteria: lt
+                value: '0.1'
