@@ -44,6 +44,18 @@ jobs:
       - name: Infrastructure validation smoke
         run: pnpm test
 
+      - name: Terraform binary gate
+        run: |
+          echo "Checking for committed Terraform binaries or state files..."
+          VIOLATIONS=$(git diff --name-only origin/main...HEAD | grep -E '\.terraform/|\.tfstate|\.tfstate\.' || true)
+          if [ -n "$VIOLATIONS" ]; then
+            echo "::error::Committed Terraform artifacts detected:"
+            echo "$VIOLATIONS"
+            echo "Run: git filter-repo --path-glob '*.tfstate*' --path-glob '.terraform/**' --invert-paths"
+            exit 1
+          fi
+          echo "No Terraform artifacts in diff."
+
       - name: Build
         run: pnpm build
 

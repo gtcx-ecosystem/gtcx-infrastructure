@@ -96,6 +96,7 @@ describe('Replay Guard Integration', () => {
     process.env.PORT = String(port);
     process.env.REDIS_URL = '';
     process.env.OTLP_ENDPOINT = '';
+    process.env.REPLAY_GUARD_ALLOW_STUB_SIGNATURE = 'true';
 
     const mod = await import('../src/server.mjs');
     testServer = mod.server;

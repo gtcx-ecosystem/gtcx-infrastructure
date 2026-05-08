@@ -88,6 +88,11 @@ spec:
               value: 'http://gtcx-otel-collector.monitoring:4318/v1/metrics'
             - name: OTLP_PUSH_INTERVAL_MS
               value: '30000'
+            - name: AUDIT_DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: gtcx-postgres-audit
+                  key: dsn
           resources:
             requests:
               cpu: 50m

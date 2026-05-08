@@ -169,6 +169,14 @@ spec:
       remoteRef:
         key: gtcx/production/postgres-audit
         property: password
+    - secretKey: dsn
+      remoteRef:
+        key: gtcx/production/postgres-audit
+        property: dsn
+    - secretKey: exporter-dsn
+      remoteRef:
+        key: gtcx/production/postgres-audit
+        property: exporter-dsn
 ---
 # Prometheus ServiceMonitor for postgres-exporter (audit)
 apiVersion: monitoring.coreos.com/v1

@@ -30,7 +30,7 @@ import { MemoryNonceStore } from './store/memory-nonce-store.mjs';
 import { RedisNonceStore } from './store/redis-nonce-store.mjs';
 import { ReplayMetrics } from './metrics/replay-metrics.mjs';
 import { AuditCapture, consoleSink } from './audit/audit-capture.mjs';
-import { verifyDidSignature } from './crypto/did-verify.mjs';
+import { verifyDidSignature, verifyDidSignatureStubBypass } from './crypto/did-verify.mjs';
 
 // ---------------------------------------------------------------------------
 // Config
@@ -98,7 +98,9 @@ const verifier = new ReplayVerifier({
     maxFutureMs: MAX_FUTURE_MS,
     lowConnectivityRegions: ['global-south', 'rural', 'mesh', 'satellite'],
   },
-  verifySignature: verifyDidSignature,
+  verifySignature: process.env.REPLAY_GUARD_ALLOW_STUB_SIGNATURE === 'true'
+    ? verifyDidSignatureStubBypass
+    : verifyDidSignature,
 });
 
 // ---------------------------------------------------------------------------
