@@ -6,8 +6,8 @@
  * Uses Node.js Web Crypto API — no external dependencies.
  */
 
-import { generateEs256KeyPair, signJwt } from '../../src/crypto/jwt-verify.mjs';
 import { generateEd25519KeyPair, signEd25519 } from '../../src/crypto/ed25519-verify.mjs';
+import { generateEs256KeyPair, signJwt } from '../../src/crypto/jwt-verify.mjs';
 
 /** @type {object | null} */
 let cachedEs256KeyPair = null;

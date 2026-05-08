@@ -21,16 +21,15 @@
  * Principles: SECURE (P11), OBSERVABLE (P15), RESILIENT (P12)
  */
 
-import { createServer } from 'node:http';
-import { request as httpRequest } from 'node:http';
+import { createServer, request as httpRequest } from 'node:http';
 import { request as httpsRequest } from 'node:https';
 
-import { ReplayVerifier } from './verifier.mjs';
-import { MemoryNonceStore } from './store/memory-nonce-store.mjs';
-import { RedisNonceStore } from './store/redis-nonce-store.mjs';
-import { ReplayMetrics } from './metrics/replay-metrics.mjs';
 import { AuditCapture, consoleSink } from './audit/audit-capture.mjs';
 import { verifyDidSignature, verifyDidSignatureStubBypass } from './crypto/did-verify.mjs';
+import { ReplayMetrics } from './metrics/replay-metrics.mjs';
+import { MemoryNonceStore } from './store/memory-nonce-store.mjs';
+import { RedisNonceStore } from './store/redis-nonce-store.mjs';
+import { ReplayVerifier } from './verifier.mjs';
 
 // ---------------------------------------------------------------------------
 // Config

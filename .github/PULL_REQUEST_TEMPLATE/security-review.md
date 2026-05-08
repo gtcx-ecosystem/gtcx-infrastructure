@@ -27,7 +27,7 @@ Complete the checklist below. For each applicable threat, describe the mitigatio
 | **D** — Denial of Service (availability)      | [ ] Yes / [ ] No | <!-- describe -->  |
 | **E** — Elevation of Privilege (authz bypass) | [ ] Yes / [ ] No | <!-- describe -->  |
 
-**Full threat model required?** [ ] Yes — link: ****\_**** / [ ] No — change is low risk
+**Full threat model required?** [ ] Yes — link: \***\*\_\*\*** / [ ] No — change is low risk
 
 ---
 
@@ -58,7 +58,7 @@ Does this PR introduce, modify, or remove a trust boundary?
 
 ### Sign-off
 
-- [ ] **Security champion review** — @****\_**** has reviewed the STRIDE assessment and security checklist
+- [ ] **Security champion review** — @\***\*\_\*\*** has reviewed the STRIDE assessment and security checklist
 
 **Reviewer notes:**
 

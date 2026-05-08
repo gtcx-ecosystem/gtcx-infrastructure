@@ -7,13 +7,13 @@
  * can run correctly in a horizontally scaled deployment.
  */
 
-import { describe, it } from 'node:test';
 import assert from 'node:assert';
+import { describe, it } from 'node:test';
 
+import { computeBodyHash, computeHeadersHash, computeEnvelopeHash } from '../src/crypto/hash.mjs';
+import { ReplayMetrics } from '../src/metrics/replay-metrics.mjs';
 import { MemoryNonceStore } from '../src/store/memory-nonce-store.mjs';
 import { ReplayVerifier } from '../src/verifier.mjs';
-import { ReplayMetrics } from '../src/metrics/replay-metrics.mjs';
-import { computeBodyHash, computeHeadersHash, computeEnvelopeHash } from '../src/crypto/hash.mjs';
 
 function makeIntegrityPayload(requestData, overrides = {}) {
   const now = new Date().toISOString();

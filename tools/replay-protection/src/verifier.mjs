@@ -13,11 +13,11 @@
  * Principles: SECURE (P11), RESILIENT (P12), OBSERVABLE (P15), AUDITABLE (P3)
  */
 
-import { evaluateTimestamp, DEFAULT_POLICY } from './policy/clock-skew.mjs';
-import { logAuthFailure } from './logging/auth-failure-logger.mjs';
 import { defaultAuditCapture } from './audit/audit-capture.mjs';
-import { defaultMetrics } from './metrics/replay-metrics.mjs';
 import { computeBodyHash, computeHeadersHash, computeEnvelopeHash } from './crypto/hash.mjs';
+import { logAuthFailure } from './logging/auth-failure-logger.mjs';
+import { defaultMetrics } from './metrics/replay-metrics.mjs';
+import { evaluateTimestamp, DEFAULT_POLICY } from './policy/clock-skew.mjs';
 
 /**
  * @typedef {object} VerifierOptions

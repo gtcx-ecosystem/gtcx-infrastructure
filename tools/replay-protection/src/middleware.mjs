@@ -16,9 +16,9 @@
  * Principles: SECURE (P11), RESILIENT (P12)
  */
 
-import { ReplayVerifier } from './verifier.mjs';
-import { defaultMetrics } from './metrics/replay-metrics.mjs';
 import { defaultAuditCapture } from './audit/audit-capture.mjs';
+import { defaultMetrics } from './metrics/replay-metrics.mjs';
+import { ReplayVerifier } from './verifier.mjs';
 
 /**
  * @typedef {object} MiddlewareOptions

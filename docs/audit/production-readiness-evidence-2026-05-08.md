@@ -2,60 +2,60 @@
 
 ## GTCX Infrastructure Replay Protection
 
-| Gate | Status | Evidence |
-|------|--------|----------|
-| **Code Complete** | ✅ | `tools/replay-protection/` — 13 source files, 27 tests |
-| **Tests Pass** | ✅ | `node --test` — 27/27 pass (19 unit + 8 integration) |
-| **Lint Clean** | ✅ | `pnpm run lint` — 0 errors in gtcx-infrastructure |
-| **Containerized** | ✅ | `Dockerfile` — Alpine, non-root, healthcheck |
-| **K8s Deployable** | ✅ | `replay-guard.yaml` — Deployment, Service, PDB, HPA |
-| **Observability** | ✅ | Prometheus metrics + OTLP push + structured logging |
-| **Secrets Management** | ✅ | External Secrets Operator for Redis URL |
-| **Chaos Tested** | ✅ | `replay-guard-pod-kill.yaml`, `replay-guard-network-latency.yaml` |
-| **Runbook** | ✅ | `docs/operations/runbooks/replay-guard-failure.md` |
-| **Mobile Contract** | ✅ | Verifies all 8 `X-GTCX-*` headers per mobile spec |
+| Gate                   | Status | Evidence                                                          |
+| ---------------------- | ------ | ----------------------------------------------------------------- |
+| **Code Complete**      | ✅     | `tools/replay-protection/` — 13 source files, 27 tests            |
+| **Tests Pass**         | ✅     | `node --test` — 27/27 pass (19 unit + 8 integration)              |
+| **Lint Clean**         | ✅     | `pnpm run lint` — 0 errors in gtcx-infrastructure                 |
+| **Containerized**      | ✅     | `Dockerfile` — Alpine, non-root, healthcheck                      |
+| **K8s Deployable**     | ✅     | `replay-guard.yaml` — Deployment, Service, PDB, HPA               |
+| **Observability**      | ✅     | Prometheus metrics + OTLP push + structured logging               |
+| **Secrets Management** | ✅     | External Secrets Operator for Redis URL                           |
+| **Chaos Tested**       | ✅     | `replay-guard-pod-kill.yaml`, `replay-guard-network-latency.yaml` |
+| **Runbook**            | ✅     | `docs/operations/runbooks/replay-guard-failure.md`                |
+| **Mobile Contract**    | ✅     | Verifies all 8 `X-GTCX-*` headers per mobile spec                 |
 
 ## Ecosystem Lint Status
 
-| Repo | Errors | Warnings | Notes |
-|------|--------|----------|-------|
-| gtcx-infrastructure | 0 | 0 | ✅ |
-| gtcx-protocols | 0 | ~70 | ✅ |
-| gtcx-core | 0 | 0 | ✅ |
-| gtcx-intelligence | 0 | 12 | ✅ |
-| baseline-os | 0 | 0 | ✅ |
-| sensei-ai | 0 | ~500 | mostly `no-explicit-any` |
-| compliance-os | 0 | 8 | ✅ |
-| ledger-ui | 0 | ~160 | 61 CVEs pending dependency patch |
-| gtcx-mobile | 0 | ~42 | ✅ |
-| gtcx-markets | 0 | 0 | committed locally (no remote) |
-| veritas | 0 | 0 | ✅ |
-| terra-os | 0 | 19 | ✅ |
-| nyota-ai | — | — | no lint script |
-| gtcx-agentic | 0 | 0 | ✅ |
-| gtcx-agile | 0 | 0 | ✅ |
-| exploration-os | — | — | no lint script |
-| 6-platforms | — | — | ESLint config migration in progress |
-| 9-hardware | 0 | 0 | ✅ |
-| terminal-os | 0 | 0 | ✅ |
+| Repo                | Errors | Warnings | Notes                               |
+| ------------------- | ------ | -------- | ----------------------------------- |
+| gtcx-infrastructure | 0      | 0        | ✅                                  |
+| gtcx-protocols      | 0      | ~70      | ✅                                  |
+| gtcx-core           | 0      | 0        | ✅                                  |
+| gtcx-intelligence   | 0      | 12       | ✅                                  |
+| baseline-os         | 0      | 0        | ✅                                  |
+| sensei-ai           | 0      | ~500     | mostly `no-explicit-any`            |
+| compliance-os       | 0      | 8        | ✅                                  |
+| ledger-ui           | 0      | ~160     | 61 CVEs pending dependency patch    |
+| gtcx-mobile         | 0      | ~42      | ✅                                  |
+| gtcx-markets        | 0      | 0        | committed locally (no remote)       |
+| veritas             | 0      | 0        | ✅                                  |
+| terra-os            | 0      | 19       | ✅                                  |
+| nyota-ai            | —      | —        | no lint script                      |
+| gtcx-agentic        | 0      | 0        | ✅                                  |
+| gtcx-agile          | 0      | 0        | ✅                                  |
+| exploration-os      | —      | —        | no lint script                      |
+| 6-platforms         | —      | —        | ESLint config migration in progress |
+| 9-hardware          | 0      | 0        | ✅                                  |
+| terminal-os         | 0      | 0        | ✅                                  |
 
 ## Remaining 10/10 Blockers
 
 1. **ledger-ui vulnerabilities** — 11 high, 43 moderate, 8 low CVEs
-   - *Blocked:* `pnpm audit` ETIMEDOUT to registry.npmjs.org
-   - *Action:* Retry from network with better connectivity
+   - _Blocked:_ `pnpm audit` ETIMEDOUT to registry.npmjs.org
+   - _Action:_ Retry from network with better connectivity
 
 2. **gtcx-markets remote** — Committed locally, no GitHub repo exists
-   - *Action:* Create `gtcx-ecosystem/gtcx-markets` repo via GitHub UI or API
+   - _Action:_ Create `gtcx-ecosystem/gtcx-markets` repo via GitHub UI or API
 
 3. **Real DID signature verification** — Stub validates structure only
-   - *Action:* Wire `@gtcx/crypto` DID resolver when available
+   - _Action:_ Wire `@gtcx/crypto` DID resolver when available
 
 4. **6-platforms ESLint** — ESLint 9 + eslint-config-next incompatibility
-   - *Action:* Downgrade to ESLint 8 or migrate to flat config
+   - _Action:_ Downgrade to ESLint 8 or migrate to flat config
 
 5. **Native mobile key custody** — Non-exportable keystore signing
-   - *Action:* `gtcx-mobile` — iOS SecureEnclave / Android Keystore module
+   - _Action:_ `gtcx-mobile` — iOS SecureEnclave / Android Keystore module
 
 ---
 

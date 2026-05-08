@@ -78,7 +78,7 @@ function defaultQuery(connectionString) {
   return async (/** @type {string} */ sql, /** @type {any[]} */ params) => {
     if (!pool) {
       try {
-        // @ts-ignore pg is an optional peer dependency
+        // @ts-expect-error pg is an optional peer dependency
         const { Pool } = await import('pg');
         pool = new Pool({ connectionString, max: 5 });
       } catch {

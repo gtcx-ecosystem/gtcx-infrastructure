@@ -9,12 +9,13 @@
  * Uses only Node.js built-ins — no external test framework.
  */
 
-import { describe, it, before, after } from 'node:test';
 import assert from 'node:assert';
 import { createServer, request as httpRequest } from 'node:http';
+import { describe, it, before, after } from 'node:test';
 
 import { computeBodyHash, computeHeadersHash, computeEnvelopeHash } from '../src/crypto/hash.mjs';
-import { installMockFetch, uninstallMockFetch, signEnvelopeV1, signTestJwt } from './helpers/jwt-fixture.mjs';
+
+import { installMockFetch, signEnvelopeV1, signTestJwt } from './helpers/jwt-fixture.mjs';
 
 /** @type {import('node:http').Server} */
 let testServer;

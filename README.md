@@ -85,10 +85,10 @@ gtcx-infrastructure/
 ├── infra/
 │   ├── docker/              # Dockerfiles + Compose (dev, infra, test)
 │   ├── kubernetes/
-│   │   ├── base/            # K8s manifests (6 services + NATS + monitoring)
+│   │   ├── base/            # K8s manifests (14 services + NATS + monitoring)
 │   │   └── overlays/        # dev, staging, production, testnet
 │   ├── terraform/
-│   │   ├── modules/         # 17 reusable modules
+│   │   ├── modules/         # 20 reusable modules
 │   │   │   ├── vpc/         # VPC with 3 subnet tiers, NAT, flow logs, VPC endpoints
 │   │   │   ├── database/    # Dual RDS (operational + append-only audit)
 │   │   │   ├── eks/         # EKS cluster, IRSA, KMS, GPU node pool
@@ -105,40 +105,44 @@ gtcx-infrastructure/
 │   │   │   ├── vault/       # HashiCorp Vault (HA, KMS unseal, dynamic creds, PKI)
 │   │   │   ├── ml-pipeline/ # S3 datasets, model registry (DynamoDB), IRSA
 │   │   │   ├── trace-pipeline/ # Tempo (S3 backend), SQS event stream
-│   │   │   └── (15/17 modules have native Terraform tests)
+│   │   │   └── (18/20 modules have native Terraform tests)
 │   │   └── environments/
 │   │       ├── testnet-pilot/  # Live in af-south-1
 │   │       └── zimbabwe-pilot/ # ZWCMP deployment
 │   ├── monitoring/          # SLO recording rules, alert configs
 │   ├── scripts/             # deploy.sh, migrate.sh, build-push.sh
 │   └── security/            # Access control, data protection policies
-├── docs/                    # Architecture, ops, security, specs (50+ docs)
+├── docs/                    # Architecture, ops, security, compliance, GTM (250+ docs)
 │   ├── decisions/           # 11 ADRs
-│   ├── operations/runbooks/ # 12 runbooks (deploy, rollback, DR, incident)
+│   ├── operations/runbooks/ # 25 runbooks (deploy, rollback, DR, incident, release, chaos)
 │   └── audit/qa-reviews/    # Session audits, roadmap, hardening strategy
 └── CLAUDE.md                # Agent conventions and commands
 ```
 
 ## Terraform Modules
 
-| Module         | Purpose                                                            | Tests   |
-| -------------- | ------------------------------------------------------------------ | ------- |
-| vpc            | VPC, subnets, NAT, flow logs, VPC endpoints                        | 6 runs  |
-| database       | Dual PostgreSQL (operational + audit), encryption, Secrets Manager | 6 runs  |
-| eks            | EKS cluster, IRSA, KMS, control plane logging                      | 5 runs  |
-| ecr            | Container registry, KMS encryption, lifecycle, scan-on-push        | 6 runs  |
-| alb            | ALB controller, ACM, WAFv2 (OWASP + SQLi + rate limiting)          | 7 runs  |
-| backup         | Audit snapshot export to S3 with 7-year Glacier retention          | 7 runs  |
-| detective      | CloudTrail + GuardDuty + SNS security alerts                       | 8 runs  |
-| compliance     | AWS Config recorder + 7 managed compliance rules                   | 9 runs  |
-| compliance-db  | Reusable dual-DB for African fintech (7 jurisdictions)             | 7 runs  |
-| event-bus      | NATS JetStream security group + EBS volumes                        | 7 runs  |
-| kyc-documents  | S3 KYC storage with FATF retention and IRSA                        | 7 runs  |
-| secrets        | Secrets Manager + IRSA for intelligence services                   | 3 runs  |
-| ci             | CI/CD IAM roles                                                    | —       |
-| vault          | HashiCorp Vault HA (KMS unseal, dynamic DB creds, PKI, AWS engine) | 16 runs |
-| ml-pipeline    | S3 datasets + models, DynamoDB model registry, IRSA                | 12 runs |
-| trace-pipeline | Tempo (S3 backend), SQS trace events + DLQ, IRSA                   | 11 runs |
+| Module                 | Purpose                                                                 | Tests   |
+| ---------------------- | ----------------------------------------------------------------------- | ------- |
+| vpc                    | VPC, subnets, NAT, flow logs, VPC endpoints                             | 5 runs  |
+| database               | Dual PostgreSQL (operational + audit), encryption, Secrets Manager      | 6 runs  |
+| eks                    | EKS cluster, IRSA, KMS, control plane logging                           | 4 runs  |
+| ecr                    | Container registry, KMS encryption, lifecycle, scan-on-push             | 6 runs  |
+| alb                    | ALB controller, ACM, WAFv2 (OWASP + SQLi + rate limiting)               | 6 runs  |
+| backup                 | Audit snapshot export to S3 with 7-year Glacier retention               | 7 runs  |
+| detective              | CloudTrail + GuardDuty + SNS security alerts                            | 8 runs  |
+| compliance             | AWS Config recorder + managed compliance rules + encryption enforcement | 9 runs  |
+| compliance-db          | Reusable dual-DB for African fintech (11 jurisdictions)                 | 7 runs  |
+| event-bus              | NATS JetStream security group + EBS volumes                             | 7 runs  |
+| kms-signing            | KMS asymmetric signing keys (ECC_NIST_P256) + CloudTrail audit          | 6 runs  |
+| kyc-documents          | S3 KYC storage with FATF retention and IRSA                             | 7 runs  |
+| secrets                | Secrets Manager + IRSA for intelligence services                        | 3 runs  |
+| ci                     | CI/CD IAM roles                                                         | —       |
+| vault                  | HashiCorp Vault HA (KMS unseal, dynamic DB creds, PKI, AWS engine)      | 15 runs |
+| ml-pipeline            | S3 datasets + models, DynamoDB model registry, IRSA                     | 12 runs |
+| trace-pipeline         | Tempo (S3 backend), SQS trace events + DLQ, IRSA                        | 11 runs |
+| multi-region           | Route53 failover, RDS cross-region replica, S3 replication              | —       |
+| workflow-orchestration | Step Functions + SQS + Lambda orchestration                             | 6 runs  |
+| worm-audit             | S3 Object Lock (WORM) for immutable audit storage                       | 10 runs |
 
 ## Testnet Pilot (Live)
 

@@ -4,14 +4,14 @@
  * Uses Node.js built-in test runner (no external test framework required).
  */
 
-import { describe, it } from 'node:test';
 import assert from 'node:assert';
+import { describe, it } from 'node:test';
 
+import { AuditCapture } from '../src/audit/audit-capture.mjs';
+import { computeBodyHash, computeHeadersHash, computeEnvelopeHash } from '../src/crypto/hash.mjs';
+import { ReplayMetrics } from '../src/metrics/replay-metrics.mjs';
 import { MemoryNonceStore } from '../src/store/memory-nonce-store.mjs';
 import { ReplayVerifier } from '../src/verifier.mjs';
-import { ReplayMetrics } from '../src/metrics/replay-metrics.mjs';
-import { AuditCapture, consoleSink } from '../src/audit/audit-capture.mjs';
-import { computeBodyHash, computeHeadersHash, computeEnvelopeHash } from '../src/crypto/hash.mjs';
 
 /** @returns {import('../src/types.mjs').QueueIntegrity} */
 function makeIntegrity(overrides = {}, requestData = null) {

@@ -11,8 +11,8 @@
  * Principles: SECURE (P11)
  */
 
-import { resolveDid, extractPublicKeyJwk, verifyJwt } from './jwt-verify.mjs';
 import { verifyEd25519 } from './ed25519-verify.mjs';
+import { resolveDid, extractPublicKeyJwk, verifyJwt } from './jwt-verify.mjs';
 
 const HEX_RE = /^[0-9a-fA-F]+$/;
 const NONCE_MIN_LEN = 16; // 8 bytes hex minimum
