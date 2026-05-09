@@ -1,0 +1,27 @@
+{
+  "name": "@gtcx/compliance-gateway",
+  "version": "0.1.0",
+  "description": "AI-native compliance query gateway — natural language to protocol handler routing",
+  "type": "module",
+  "main": "src/server.mjs",
+  "scripts": {
+    "start": "node src/server.mjs",
+    "dev": "node --watch src/server.mjs"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "@ai-sdk/anthropic": "^1.0.0",
+    "ai": "^4.0.0"
+  },
+  "keywords": [
+    "gtcx",
+    "compliance",
+    "ai-gateway",
+    "african-fintech",
+    "mcp"
+  ],
+  "license": "MIT",
+  "private": true
+}
