@@ -21,8 +21,8 @@ locals {
   workflow_enabled       = var.enable_fine_tune_workflow
   trainer_enabled        = trimspace(var.trainer_image) != ""
   red_team_enabled       = var.enable_red_team_workflow && trimspace(var.red_team_image) != ""
-  evidence_manifest_path = trimspace(var.enablement_evidence_manifest) != "" ? "${path.root}/${trimspace(var.enablement_evidence_manifest)}" : ""
-  evidence_manifest      = local.workflow_enabled && local.evidence_manifest_path != "" && fileexists(local.evidence_manifest_path) ? jsondecode(file(local.evidence_manifest_path)) : null
+  evidence_manifest_path = trimspace(var.enablement_evidence_manifest) != "" ? "${path.root}/${trimspace(var.enablement_evidence_manifest)}" : "${path.module}/empty.json"
+  evidence_manifest      = local.workflow_enabled && trimspace(var.enablement_evidence_manifest) != "" && fileexists(local.evidence_manifest_path) ? jsondecode(file(local.evidence_manifest_path)) : null
 
   fine_tune_steps = concat(
     [

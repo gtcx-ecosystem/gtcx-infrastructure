@@ -25,10 +25,10 @@ eks_node_max_size       = 3
 # API access — restricted to operator IP
 # Update admin_cidr_blocks when your IP changes
 enable_public_api = true
-admin_cidr_blocks = ["196.50.223.130/32"]
+admin_cidr_blocks = ["102.182.46.107/32", "196.50.223.130/32"]
 
 # Domain — ACM certificate for HTTPS
-domain_name = "gtcxprotocol.org"
+domain_name = "gtcx.trade"
 
 tags = {
   Deployment = "TESTNET"
