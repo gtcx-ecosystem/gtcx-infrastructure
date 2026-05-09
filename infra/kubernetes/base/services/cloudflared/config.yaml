@@ -1,0 +1,11 @@
+tunnel: b750343c-a43d-4d1e-b80e-44298348fac4
+credentials-file: /etc/cloudflared/credentials.json
+
+ingress:
+  - hostname: api.gtcx.trade
+    service: http://gtcx-protocols.gtcx.svc.cluster.local:8300
+  - hostname: testnet.gtcx.trade
+    service: http://gtcx-protocols.gtcx.svc.cluster.local:8300
+  - hostname: replay.gtcx.trade
+    service: http://replay-guard.gtcx.svc.cluster.local:8400
+  - service: http_status:404
