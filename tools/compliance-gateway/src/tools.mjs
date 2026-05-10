@@ -8,6 +8,8 @@
 
 import { z } from 'zod';
 
+import { canAccessTool, isMutatingToolName } from './policy.mjs';
+
 const PROTOCOL_BASE_URL = process.env.PROTOCOL_BASE_URL || 'http://gtcx-protocols.gtcx.svc.cluster.local:8300';
 
 // ---------------------------------------------------------------------------
@@ -15,18 +17,33 @@ const PROTOCOL_BASE_URL = process.env.PROTOCOL_BASE_URL || 'http://gtcx-protocol
 // ---------------------------------------------------------------------------
 
 function protocolTool(protocol, handler, description, schema) {
+  const executeWithAccess = async (args, accessProfile = null) => {
+    const headers = { 'Content-Type': 'application/json' };
+    if (accessProfile?.subject) {
+      headers['X-GTCX-Gateway-Principal'] = accessProfile.subject;
+      headers['X-GTCX-Gateway-Permissions'] = accessProfile.permissions.join(',');
+    }
+    if (accessProfile?.approval?.valid) {
+      headers['X-GTCX-Approval-Ticket'] = accessProfile.approval.ticket;
+      headers['X-GTCX-Approved-By'] = accessProfile.approval.approvedBy;
+      headers['X-GTCX-Approval-Reason'] = accessProfile.approval.reason;
+      headers['X-Idempotency-Key'] = accessProfile.approval.idempotencyKey;
+    }
+
+    const url = `${PROTOCOL_BASE_URL}/v1/${protocol}/${handler}`;
+    const res = await fetch(url, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify(args),
+    });
+    return res.json();
+  };
+
   return {
     description,
     parameters: schema,
-    execute: async (args) => {
-      const url = `${PROTOCOL_BASE_URL}/v1/${protocol}/${handler}`;
-      const res = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(args),
-      });
-      return res.json();
-    },
+    execute: async (args) => executeWithAccess(args),
+    executeWithAccess,
   };
 }
 
@@ -321,7 +338,7 @@ const panx = {
 // Export all tools
 // ---------------------------------------------------------------------------
 
-export const tools = {
+export const toolDefinitions = {
   ...tradepass,
   ...gci,
   ...geotag,
@@ -330,4 +347,45 @@ export const tools = {
   ...panx,
 };
 
-export const toolCount = Object.keys(tools).length;
+/**
+ * @param {{
+ *   approval: { valid: boolean },
+ *   canMutate: boolean,
+ *   canQuery: boolean,
+ *   permissions: string[],
+ *   subject: string,
+ * }} accessProfile
+ */
+export function createToolRegistry(accessProfile) {
+  return Object.fromEntries(
+    Object.entries(toolDefinitions)
+      .filter(([name]) => canAccessTool(name, accessProfile))
+      .map(([name, definition]) => ([
+        name,
+        {
+          description: definition.description,
+          parameters: definition.parameters,
+          execute: async (args) => definition.executeWithAccess(args, accessProfile),
+        },
+      ]))
+  );
+}
+
+/**
+ * @param {{
+ *   canMutate: boolean,
+ *   canQuery: boolean,
+ * }} accessProfile
+ */
+export function listToolsForAccess(accessProfile) {
+  return Object.entries(toolDefinitions)
+    .filter(([name]) => canAccessTool(name, accessProfile))
+    .map(([name, definition]) => ({
+      name,
+      description: definition.description,
+      mode: isMutatingToolName(name) ? 'mutating' : 'read-only',
+      approvalRequired: isMutatingToolName(name),
+    }));
+}
+
+export const toolCount = Object.keys(toolDefinitions).length;

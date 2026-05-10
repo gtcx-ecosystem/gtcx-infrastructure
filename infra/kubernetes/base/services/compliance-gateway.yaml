@@ -29,12 +29,19 @@ spec:
               containerPort: 8500
               protocol: TCP
           env:
+            - name: NODE_ENV
+              value: 'production'
             - name: PORT
               value: '8500'
             - name: PROTOCOL_BASE_URL
               value: 'http://gtcx-protocols.gtcx.svc.cluster.local:8300'
             - name: MODEL
               value: 'claude-sonnet-4-20250514'
+            - name: COMPLIANCE_GATEWAY_AUTH_TOKENS_JSON
+              valueFrom:
+                secretKeyRef:
+                  name: compliance-gateway-secrets
+                  key: COMPLIANCE_GATEWAY_AUTH_TOKENS_JSON
             - name: ANTHROPIC_API_KEY
               valueFrom:
                 secretKeyRef:

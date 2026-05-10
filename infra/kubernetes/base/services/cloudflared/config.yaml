@@ -6,8 +6,6 @@ ingress:
     service: http://gtcx-protocols.gtcx.svc.cluster.local:8300
   - hostname: testnet.gtcx.trade
     service: http://gtcx-protocols.gtcx.svc.cluster.local:8300
-  - hostname: query.gtcx.trade
-    service: http://compliance-gateway.gtcx.svc.cluster.local:8500
   - hostname: replay.gtcx.trade
     service: http://replay-guard.gtcx.svc.cluster.local:8400
   - service: http_status:404

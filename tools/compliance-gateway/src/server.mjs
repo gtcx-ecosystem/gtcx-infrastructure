@@ -24,8 +24,15 @@
 
 import { createServer } from 'node:http';
 import { generateText } from 'ai';
-import { tools, toolCount } from './tools.mjs';
+import {
+  authenticateHeaders,
+  buildAccessProfile,
+  loadAuthState,
+  parseApprovalContext,
+} from './auth.mjs';
+import { buildRuntimePolicyPrompt } from './policy.mjs';
 import { systemPrompt } from './system-prompt.mjs';
+import { createToolRegistry, listToolsForAccess, toolCount } from './tools.mjs';
 import {
   selectProvider,
   getFallbackChain,
@@ -35,6 +42,21 @@ import {
 } from './providers.mjs';
 
 const PORT = Number(process.env.PORT ?? 8500);
+const authState = loadAuthState(process.env);
+
+/**
+ * @param {import('node:http').IncomingMessage} req
+ * @param {import('node:http').ServerResponse} res
+ * @param {string} requiredPermission
+ */
+function requirePermission(req, res, requiredPermission) {
+  const auth = authenticateHeaders(req.headers, authState, requiredPermission);
+  if (!auth.ok) {
+    sendJson(res, auth.status, { error: auth.error });
+    return null;
+  }
+  return auth.principal;
+}
 
 // ---------------------------------------------------------------------------
 // Query handler with fallback chain
@@ -45,6 +67,13 @@ async function handleQuery(req, res) {
     return sendJson(res, 405, { error: 'Method not allowed' });
   }
 
+  const principal = requirePermission(req, res, 'query:read');
+  if (!principal) {
+    return;
+  }
+
+  const approval = parseApprovalContext(req.headers);
+  const accessProfile = buildAccessProfile(principal, approval);
   const body = await readBody(req);
   let parsed;
   try {
@@ -77,13 +106,15 @@ async function handleQuery(req, res) {
   const fallbacks = getFallbackChain(primary);
   const chain = [primary, ...fallbacks];
   const errors = [];
+  const tools = createToolRegistry(accessProfile);
+  const runtimePolicy = buildRuntimePolicyPrompt(accessProfile);
 
   for (const provider of chain) {
     try {
       const start = Date.now();
       const result = await generateText({
         model: provider.createModel(),
-        system: systemPrompt,
+        system: `${systemPrompt}\n\n${runtimePolicy}`,
         prompt: userMessage,
         tools,
         maxSteps: 5,
@@ -111,6 +142,12 @@ async function handleQuery(req, res) {
           latencyMs,
           fallbacksAvailable: fallbacks.length,
           estimatedCost: estimateCost(provider, result.usage),
+        },
+        authz: {
+          approvalTicket: approval.ticket,
+          mutatingToolsEnabled: accessProfile.canMutate,
+          permissions: accessProfile.permissions,
+          subject: accessProfile.subject,
         },
         usage: result.usage,
       });
@@ -173,21 +210,32 @@ const server = createServer(async (req, res) => {
     if (url === '/v1/query') {
       await handleQuery(req, res);
     } else if (url === '/health') {
-      sendJson(res, 200, {
-        status: 'healthy',
+      sendJson(res, authState.configurationError ? 503 : 200, {
+        authConfigured: !authState.configurationError,
+        authMode: authState.defaulted ? 'dev-default-readonly' : 'configured',
+        status: authState.configurationError ? 'unhealthy' : 'healthy',
         tools: toolCount,
         providers: providerCount,
         availableProviders: getProviders().map((p) => p.name),
+        ...(authState.configurationError ? { error: authState.configurationError } : {}),
       });
     } else if (url === '/v1/tools') {
+      const principal = requirePermission(req, res, 'tools:read');
+      if (!principal) {
+        return;
+      }
+      const accessProfile = buildAccessProfile(principal, parseApprovalContext(req.headers));
       sendJson(res, 200, {
+        availableCount: listToolsForAccess(accessProfile).length,
         count: toolCount,
-        tools: Object.entries(tools).map(([name, t]) => ({
-          name,
-          description: t.description,
-        })),
+        mutatingToolsEnabled: accessProfile.canMutate,
+        tools: listToolsForAccess(accessProfile),
       });
     } else if (url === '/v1/providers') {
+      const principal = requirePermission(req, res, 'providers:read');
+      if (!principal) {
+        return;
+      }
       sendJson(res, 200, {
         count: providerCount,
         routing: {
@@ -215,9 +263,17 @@ const server = createServer(async (req, res) => {
 
 server.listen(PORT, () => {
   const providers = getProviders();
+  if (authState.defaulted) {
+    console.warn(JSON.stringify({
+      level: 'warn',
+      message: 'Compliance Gateway is using the default development read-only token. Configure COMPLIANCE_GATEWAY_AUTH_TOKENS_JSON before any shared use.',
+    }));
+  }
   console.log(JSON.stringify({
+    authConfigured: !authState.configurationError,
     level: 'info',
     message: 'Compliance Gateway listening',
+    nodeEnv: authState.nodeEnv,
     port: PORT,
     tools: toolCount,
     providers: providers.length,
