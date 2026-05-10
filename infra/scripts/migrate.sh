@@ -19,7 +19,8 @@
 #
 # Environment:
 #   DATABASE_URL   — postgres://user:pass@host:5432/dbname  (required)
-#   AUDIT_DATABASE_URL — optional separate audit DB
+#   AUDIT_DATABASE_URL — separate audit DB admin URL (required outside development for verification)
+#   AUDIT_WRITER_DATABASE_URL — audit-writer URL for live negative DML probe (required outside development)
 # =============================================================================
 
 set -euo pipefail
@@ -226,9 +227,137 @@ SQL
 # -----------------------------------------------------------------------------
 
 setup_audit_constraints() {
-    # Verify no UPDATE/DELETE privileges exist on audit tables
-    # Enforced via database role grants in the SQL schema files
-    log_success "Audit constraints verified (enforced via schema)"
+    local audit_admin_url="${AUDIT_DATABASE_URL:-}"
+    local audit_writer_url="${AUDIT_WRITER_DATABASE_URL:-}"
+
+    if [[ -z "${audit_admin_url}" ]]; then
+        if [[ "${ENVIRONMENT}" == "development" ]]; then
+            log_warning "AUDIT_DATABASE_URL not set — skipping audit immutability verification in development"
+            return 0
+        fi
+        log_error "AUDIT_DATABASE_URL is required to verify audit immutability in ${ENVIRONMENT}"
+        exit 1
+    fi
+
+    if [[ -z "${audit_writer_url}" ]]; then
+        if [[ "${ENVIRONMENT}" == "development" ]]; then
+            log_warning "AUDIT_WRITER_DATABASE_URL not set — skipping live audit-writer probe in development"
+        else
+            log_error "AUDIT_WRITER_DATABASE_URL is required for live audit immutability verification in ${ENVIRONMENT}"
+            exit 1
+        fi
+    fi
+
+    log_info "Verifying audit database role grants..."
+    psql "${audit_admin_url}" -X -v ON_ERROR_STOP=1 <<'SQL'
+DO $$
+DECLARE
+    tbl RECORD;
+    fq_table text;
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'gtcx_audit_writer') THEN
+        RAISE EXCEPTION 'gtcx_audit_writer role is missing';
+    END IF;
+
+    IF NOT EXISTS (
+        SELECT 1
+        FROM pg_tables
+        WHERE schemaname NOT IN ('pg_catalog', 'information_schema')
+    ) THEN
+        RAISE EXCEPTION 'No non-system tables found in audit database';
+    END IF;
+
+    FOR tbl IN
+        SELECT schemaname, tablename
+        FROM pg_tables
+        WHERE schemaname NOT IN ('pg_catalog', 'information_schema')
+        ORDER BY schemaname, tablename
+    LOOP
+        fq_table := format('%I.%I', tbl.schemaname, tbl.tablename);
+
+        IF has_table_privilege('gtcx_audit_writer', fq_table, 'UPDATE') THEN
+            RAISE EXCEPTION 'gtcx_audit_writer unexpectedly has UPDATE on %', fq_table;
+        END IF;
+
+        IF has_table_privilege('gtcx_audit_writer', fq_table, 'DELETE') THEN
+            RAISE EXCEPTION 'gtcx_audit_writer unexpectedly has DELETE on %', fq_table;
+        END IF;
+
+        IF has_table_privilege('PUBLIC', fq_table, 'UPDATE') THEN
+            RAISE EXCEPTION 'PUBLIC unexpectedly has UPDATE on %', fq_table;
+        END IF;
+
+        IF has_table_privilege('PUBLIC', fq_table, 'DELETE') THEN
+            RAISE EXCEPTION 'PUBLIC unexpectedly has DELETE on %', fq_table;
+        END IF;
+
+        IF NOT has_table_privilege('gtcx_audit_writer', fq_table, 'INSERT') THEN
+            RAISE EXCEPTION 'gtcx_audit_writer is missing INSERT on %', fq_table;
+        END IF;
+    END LOOP;
+END
+$$;
+SQL
+
+    if [[ -n "${audit_writer_url}" ]]; then
+        log_info "Running live negative DML probe as audit writer..."
+        psql "${audit_writer_url}" -X -v ON_ERROR_STOP=1 <<'SQL'
+DO $$
+DECLARE
+    tbl RECORD;
+    first_column text;
+BEGIN
+    FOR tbl IN
+        SELECT schemaname, tablename
+        FROM pg_tables
+        WHERE schemaname NOT IN ('pg_catalog', 'information_schema')
+        ORDER BY schemaname, tablename
+    LOOP
+        SELECT a.attname
+          INTO first_column
+          FROM pg_attribute a
+         WHERE a.attrelid = format('%I.%I', tbl.schemaname, tbl.tablename)::regclass
+           AND a.attnum > 0
+           AND NOT a.attisdropped
+         ORDER BY a.attnum
+         LIMIT 1;
+
+        IF first_column IS NULL THEN
+            CONTINUE;
+        END IF;
+
+        BEGIN
+            EXECUTE format(
+                'UPDATE %I.%I SET %I = %I WHERE false',
+                tbl.schemaname,
+                tbl.tablename,
+                first_column,
+                first_column
+            );
+            RAISE EXCEPTION 'Live UPDATE probe unexpectedly succeeded on %.%', tbl.schemaname, tbl.tablename;
+        EXCEPTION
+            WHEN insufficient_privilege THEN
+                NULL;
+        END;
+
+        BEGIN
+            EXECUTE format(
+                'DELETE FROM %I.%I WHERE false',
+                tbl.schemaname,
+                tbl.tablename
+            );
+            RAISE EXCEPTION 'Live DELETE probe unexpectedly succeeded on %.%', tbl.schemaname, tbl.tablename;
+        EXCEPTION
+            WHEN insufficient_privilege THEN
+                NULL;
+        END;
+    END LOOP;
+END
+$$;
+SQL
+    fi
+
+    log_success "Audit constraints verified (grants + live negative probe)"
 }
 
 # -----------------------------------------------------------------------------
