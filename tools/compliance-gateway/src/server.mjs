@@ -3,35 +3,41 @@
  *
  * Natural language interface to GTCX protocol handlers.
  * Routes compliance queries to the correct protocol endpoints
- * using Claude as the reasoning layer.
+ * using cost-optimized multi-provider LLM routing.
  *
  * Endpoints:
- *   POST /v1/query    — natural language compliance query
- *   GET  /health      — liveness
- *   GET  /v1/tools    — list available tools
+ *   POST /v1/query      — natural language compliance query
+ *   GET  /health        — liveness + provider status
+ *   GET  /v1/tools      — list available protocol tools
+ *   GET  /v1/providers  — list available LLM providers + routing config
+ *
+ * Provider priority (by query complexity):
+ *   Simple  → Free tier (Gemini Flash, Groq Llama)
+ *   Medium  → Cost-optimized (DeepSeek, Gemini, GPT-4.1-mini)
+ *   Complex → Frontier (Claude Sonnet, GPT-4.1, Gemini Pro)
  *
  * Environment:
- *   ANTHROPIC_API_KEY    — Claude API key
- *   PROTOCOL_BASE_URL    — Protocol service URL (default: cluster-internal)
- *   PORT                 — Server port (default: 8500)
- *   MODEL                — Claude model (default: claude-sonnet-4-20250514)
+ *   ANTHROPIC_API_KEY, GOOGLE_API_KEY, OPENAI_API_KEY,
+ *   DEEPSEEK_API_KEY, GROQ_API_KEY, OPENROUTER_API_KEY
+ *   PROTOCOL_BASE_URL, PORT, PREFERRED_PROVIDER
  */
 
 import { createServer } from 'node:http';
 import { generateText } from 'ai';
-import { createAnthropic } from '@ai-sdk/anthropic';
 import { tools, toolCount } from './tools.mjs';
 import { systemPrompt } from './system-prompt.mjs';
+import {
+  selectProvider,
+  getFallbackChain,
+  getProviders,
+  providerCount,
+  classifyComplexity,
+} from './providers.mjs';
 
 const PORT = Number(process.env.PORT ?? 8500);
-const MODEL = process.env.MODEL ?? 'claude-sonnet-4-20250514';
-
-const anthropic = createAnthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-});
 
 // ---------------------------------------------------------------------------
-// Request handler
+// Query handler with fallback chain
 // ---------------------------------------------------------------------------
 
 async function handleQuery(req, res) {
@@ -58,46 +64,92 @@ async function handleQuery(req, res) {
     context ? `Additional context: ${JSON.stringify(context)}` : '',
   ].filter(Boolean).join('\n');
 
-  try {
-    const result = await generateText({
-      model: anthropic(MODEL),
-      system: systemPrompt,
-      prompt: userMessage,
-      tools,
-      maxSteps: 5,
-      temperature: 0,
+  const complexity = classifyComplexity(query);
+  const primary = selectProvider(query);
+
+  if (!primary) {
+    return sendJson(res, 503, {
+      error: 'No LLM providers configured',
+      hint: 'Set at least one of: GOOGLE_API_KEY, GROQ_API_KEY, ANTHROPIC_API_KEY, OPENAI_API_KEY, DEEPSEEK_API_KEY',
     });
-
-    const toolCalls = result.steps
-      .flatMap((step) => step.toolCalls || [])
-      .map((call) => ({
-        tool: call.toolName,
-        args: call.args,
-      }));
-
-    const toolResults = result.steps
-      .flatMap((step) => step.toolResults || [])
-      .map((r) => ({
-        tool: r.toolName,
-        result: r.result,
-      }));
-
-    sendJson(res, 200, {
-      answer: result.text,
-      toolCalls,
-      toolResults,
-      model: MODEL,
-      usage: result.usage,
-    });
-  } catch (err) {
-    console.error(JSON.stringify({
-      level: 'error',
-      type: 'compliance-gateway.query.failed',
-      error: err?.message,
-      query: query.substring(0, 200),
-    }));
-    sendJson(res, 500, { error: 'Query failed', detail: err?.message });
   }
+
+  const fallbacks = getFallbackChain(primary);
+  const chain = [primary, ...fallbacks];
+  const errors = [];
+
+  for (const provider of chain) {
+    try {
+      const start = Date.now();
+      const result = await generateText({
+        model: provider.createModel(),
+        system: systemPrompt,
+        prompt: userMessage,
+        tools,
+        maxSteps: 5,
+        temperature: 0,
+      });
+      const latencyMs = Date.now() - start;
+
+      const toolCalls = result.steps
+        .flatMap((step) => step.toolCalls || [])
+        .map((call) => ({ tool: call.toolName, args: call.args }));
+
+      const toolResults = result.steps
+        .flatMap((step) => step.toolResults || [])
+        .map((r) => ({ tool: r.toolName, result: r.result }));
+
+      return sendJson(res, 200, {
+        answer: result.text,
+        toolCalls,
+        toolResults,
+        routing: {
+          provider: provider.name,
+          model: provider.model,
+          tier: provider.tier,
+          complexity,
+          latencyMs,
+          fallbacksAvailable: fallbacks.length,
+          estimatedCost: estimateCost(provider, result.usage),
+        },
+        usage: result.usage,
+      });
+    } catch (err) {
+      errors.push({ provider: provider.name, error: err?.message });
+      console.error(JSON.stringify({
+        level: 'warn',
+        type: 'compliance-gateway.provider.failed',
+        provider: provider.name,
+        error: err?.message,
+        fallbacksRemaining: chain.length - errors.length - 1,
+      }));
+      // Continue to next provider in fallback chain
+    }
+  }
+
+  // All providers failed
+  sendJson(res, 502, {
+    error: 'All LLM providers failed',
+    attempts: errors,
+    query: query.substring(0, 200),
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Cost estimation
+// ---------------------------------------------------------------------------
+
+function estimateCost(provider, usage) {
+  if (!usage) return null;
+  const inputCost = ((usage.promptTokens || 0) / 1_000_000) * provider.inputCostPer1M;
+  const outputCost = ((usage.completionTokens || 0) / 1_000_000) * provider.outputCostPer1M;
+  return {
+    inputTokens: usage.promptTokens,
+    outputTokens: usage.completionTokens,
+    inputCostUSD: Math.round(inputCost * 10000) / 10000,
+    outputCostUSD: Math.round(outputCost * 10000) / 10000,
+    totalCostUSD: Math.round((inputCost + outputCost) * 10000) / 10000,
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -121,13 +173,35 @@ const server = createServer(async (req, res) => {
     if (url === '/v1/query') {
       await handleQuery(req, res);
     } else if (url === '/health') {
-      sendJson(res, 200, { status: 'healthy', tools: toolCount, model: MODEL });
+      sendJson(res, 200, {
+        status: 'healthy',
+        tools: toolCount,
+        providers: providerCount,
+        availableProviders: getProviders().map((p) => p.name),
+      });
     } else if (url === '/v1/tools') {
       sendJson(res, 200, {
         count: toolCount,
         tools: Object.entries(tools).map(([name, t]) => ({
           name,
           description: t.description,
+        })),
+      });
+    } else if (url === '/v1/providers') {
+      sendJson(res, 200, {
+        count: providerCount,
+        routing: {
+          simple: 'Free tier (Gemini Flash, Groq Llama)',
+          medium: 'Cost-optimized (DeepSeek, Gemini, GPT-4.1-mini)',
+          complex: 'Frontier (Claude Sonnet, GPT-4.1, Gemini Pro)',
+        },
+        providers: getProviders().map((p) => ({
+          name: p.name,
+          model: p.model,
+          tier: p.tier,
+          inputCostPer1M: p.inputCostPer1M,
+          outputCostPer1M: p.outputCostPer1M,
+          maxTools: p.maxTools,
         })),
       });
     } else {
@@ -140,12 +214,15 @@ const server = createServer(async (req, res) => {
 });
 
 server.listen(PORT, () => {
+  const providers = getProviders();
   console.log(JSON.stringify({
     level: 'info',
     message: 'Compliance Gateway listening',
     port: PORT,
     tools: toolCount,
-    model: MODEL,
+    providers: providers.length,
+    providerNames: providers.map((p) => p.name),
+    routing: 'cost-optimized (simple→free, medium→cheap, complex→frontier)',
   }));
 });
 
