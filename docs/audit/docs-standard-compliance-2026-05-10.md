@@ -8,17 +8,17 @@
 
 ## Compliance Scores
 
-| Axis                |      Score | Findings                                                                                                                                                                                                              |
-| ------------------- | ---------: | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Structural          |     7.8/10 | Canonical minimums are present; repo retains approved top-level deviations (`agents/`, `agile/`, `devops/`, `gtm/`, `decisions/`) documented in [`docs/documentation-governance.md`](../documentation-governance.md). |
-| Naming              |    10.0/10 | All markdown filenames now comply with lowercase-with-hyphens, with ADR and `README.md` exceptions preserved.                                                                                                         |
-| Frontmatter         |     9.8/10 | Substantive docs now carry `Status / Date / Owner`; draft template examples were explicitly marked as draft.                                                                                                          |
-| Linking             |     9.6/10 | Broken internal links and stale numbered-taxonomy references were repaired or neutralized; cross-repo references were converted to non-broken repo-relative code references where this repo is not authoritative.     |
-| Length              |     7.2/10 | Several architecture and regulatory docs still exceed the recommended size thresholds and should be split in a later pass.                                                                                            |
-| Agentic Conventions |     8.4/10 | Top matter is clearer and status-driven, but some long legacy docs still mix reference, process, and narrative concerns.                                                                                              |
-| RAG Indexing        |     9.2/10 | `.baseline/config.json` now excludes historical, archive, template, and deletion paths per the standard contract.                                                                                                     |
-| Master INDEX        |     9.1/10 | `docs/README.md` remains the master index and now links the repo-local governance note; the doc count and timestamp should be refreshed again after the master audit lands.                                           |
-| **Overall**         | **8.9/10** | Standards compliance is materially improved and acceptance-check clean, with remaining issues concentrated in structural taxonomy drift and document length.                                                          |
+| Axis                |      Score | Findings                                                                                                                                                                                                                    |
+| ------------------- | ---------: | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Structural          |     7.8/10 | Canonical minimums are present; repo retains approved top-level deviations in `agents/`, `agile/`, `devops/`, `gtm/`, and `decisions/`, documented in [`docs/documentation-governance.md`](../documentation-governance.md). |
+| Naming              |    10.0/10 | All markdown filenames now comply with lowercase-with-hyphens, with ADR and `README.md` exceptions preserved.                                                                                                               |
+| Frontmatter         |     9.8/10 | Substantive docs now carry `Status / Date / Owner`; draft template examples were explicitly marked as draft.                                                                                                                |
+| Linking             |     9.6/10 | Broken internal links and stale numbered-taxonomy references were repaired or neutralized; cross-repo references were converted to non-broken repo-relative code references where this repo is not authoritative.           |
+| Length              |     7.2/10 | Several architecture and regulatory docs still exceed the recommended size thresholds and should be split in a later pass.                                                                                                  |
+| Agentic Conventions |     8.4/10 | Top matter is clearer and status-driven, but some long legacy docs still mix reference, process, and narrative concerns.                                                                                                    |
+| RAG Indexing        |     9.2/10 | `.baseline/config.json` now excludes historical, archive, template, and deletion paths per the standard contract.                                                                                                           |
+| Master INDEX        |     9.1/10 | `docs/README.md` remains the master index and now links the repo-local governance note; the doc count and timestamp should be refreshed again after the master audit lands.                                                 |
+| **Overall**         | **8.9/10** | Standards compliance is materially improved and acceptance-check clean, with remaining issues concentrated in structural taxonomy drift and document length.                                                                |
 
 ## Violations Fixed
 

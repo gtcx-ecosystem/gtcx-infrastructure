@@ -1,6 +1,6 @@
 # GTCX Infrastructure — Documentation Index
 
-> Last updated: 2026-05-10 | 258 documents indexed
+> Last updated: 2026-05-10 | 259 documents indexed
 
 Single source of truth for all infrastructure documentation.
 
