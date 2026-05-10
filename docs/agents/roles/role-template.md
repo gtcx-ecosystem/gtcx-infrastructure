@@ -1,5 +1,9 @@
 # {Role Name} — gtcx-infrastructure
 
+> **Status:** Draft
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Archetype:** {Role Name} (defined in `1-agentic/archetypes/{role-archetype}`)
 **Repo scope:** `gtcx-infrastructure` — all deployment, infrastructure-as-code, and operational tooling for the GTCX ecosystem
 
@@ -77,7 +81,7 @@ Before working in this role, read in order:
 
 ## Reference
 
-- [`docs/architecture/`](../../2-docs/1-architecture/) — architecture overview
-- [`docs/decisions/`](../../2-docs/1-architecture/decisions/) — all ADRs
-- [`docs/agents/workflows/safety-rules.md`](../4-workflows/safety-rules.md) — escalation triggers
+- [`docs/architecture/`](../../architecture) — architecture overview
+- [`docs/decisions/`](../../decisions) — all ADRs
+- [`docs/agents/workflows/safety-rules.md`](../workflows/agent-safety-rules.md) — escalation triggers
 - `1-agentic/archetypes/{role-archetype}` — canonical archetype definition

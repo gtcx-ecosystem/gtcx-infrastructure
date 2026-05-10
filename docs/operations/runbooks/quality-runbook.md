@@ -1,5 +1,9 @@
 # Quality Gates Runbook — gtcx-infrastructure
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 Required quality gates and triage order. Run this sequence before every release and after any CI gate failure.
 
 ---
@@ -57,6 +61,6 @@ Resolve failures in this order — fix each before moving to the next:
 
 ## Reference
 
-- [`docs/devops/release/release-checklist.md`](../7-release-mgmt/release-checklist.md) — release gate checklist
-- [`docs/agents/workflows/tasks/investigate-ci-failure.md`](../../../1-agents/4-workflows/tasks/investigate-ci-failure.md) — investigation protocol
-- [`docs/agents/workflows/safety-rules.md`](../../../1-agents/4-workflows/safety-rules.md) — what requires human approval
+- [`docs/devops/release/release-checklist.md`](../../devops/release/release-checklist.md) — release gate checklist
+- [`docs/agents/workflows/tasks/investigate-ci-failure.md`](../../agents/workflows/investigate-ci-failure.md) — investigation protocol
+- [`docs/agents/workflows/safety-rules.md`](../../agents/workflows/agent-safety-rules.md) — what requires human approval

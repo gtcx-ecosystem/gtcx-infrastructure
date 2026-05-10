@@ -1,5 +1,9 @@
 # Deployment — {project-name}
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 Infrastructure requirements, reference architecture, and deployment procedures.
 
 ---

@@ -1,5 +1,9 @@
 # Automated Rollback Runbook
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 ## Overview
 
 GTCX supports automated and manual rollback with full evidence capture.

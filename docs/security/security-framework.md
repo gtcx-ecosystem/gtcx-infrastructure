@@ -1,5 +1,9 @@
 # GTCX Security Infrastructure
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 _Enterprise-Grade Security Framework Aligned with 12 Architectural Principles_
 _Version 2.0_
 
@@ -352,9 +356,9 @@ infrastructure/security/
 
 ### Internal Documentation
 
-- [Security Package](/packages/security/README.md)
-- [Agent Compliance Framework](/agentic/compliance/framework.md)
-- [Safety Rules](/agentic/directives/safety-rules.md)
+- Security Package (`packages/security/README.md`)
+- Agent Compliance Framework (`agentic/compliance/framework.md`)
+- Safety Rules (`agentic/directives/safety-rules.md`)
 
 ### External Standards
 

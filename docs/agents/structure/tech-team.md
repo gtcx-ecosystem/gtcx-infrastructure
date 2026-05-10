@@ -1,5 +1,9 @@
 # Technology Team Structure
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 > Engineering and product organization for [Organization Name]
 
 ---
@@ -235,6 +239,6 @@ Protecting sources and data:
 
 ## References
 
-- [Newsroom Structure](./newsroom.md)
-- [AI Architecture](../../.gtcx/decisions/)
-- [ADR-003: AI-Native Architecture](../../.gtcx/decisions/ADR-003-ai-native-architecture.md)
+- [Newsroom Structure](tech-team.md)
+- [AI Architecture](../../decisions)
+- [ADR-003: AI-Native Architecture](../../decisions/ADR-003-ai-native-architecture.md)

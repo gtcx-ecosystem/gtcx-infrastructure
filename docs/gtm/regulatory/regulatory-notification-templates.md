@@ -1,5 +1,9 @@
 # Regulatory Notification Templates
 
+> **Status:** Draft
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Classification:** Confidential
 **Owner:** General Counsel + CISO
 **Version:** 1.0

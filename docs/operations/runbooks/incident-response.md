@@ -1,5 +1,9 @@
 # Guide: Incident Response
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 ## Severity Levels
 
 | Severity          | Description                                                 | Examples                                                      | Response SLA |
@@ -142,5 +146,5 @@ Conduct a post-mortem within 48 hours (P1) or 72 hours (P2):
 
 - [disaster-recovery.md](disaster-recovery.md)
 - [monitoring.md](monitoring.md)
-- [compliance/controls-matrix.md](../compliance/controls-matrix.md)
-- [\docs/engineering/security/cryptographic-inventory.md](../../3-engineering/security/cryptographic-inventory.md)
+- [compliance/controls-matrix.md](../../compliance/controls-matrix.md)
+- [\docs/engineering/security/cryptographic-inventory.md](../../security/security-architecture.md)

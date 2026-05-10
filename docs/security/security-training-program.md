@@ -1,5 +1,9 @@
 # GTCX Security Training Program
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 ## Program Objectives
 
 Establish a continuous security education program that reduces human-factor risk, builds security into the development lifecycle, and meets compliance requirements for financial services and trade infrastructure.

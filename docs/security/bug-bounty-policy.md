@@ -1,5 +1,9 @@
 # GTCX Bug Bounty Program Policy
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 ## Program Overview
 
 GTCX operates a vulnerability disclosure and bug bounty program to incentivize responsible security research across our platform. We value the security community's contributions and commit to working collaboratively with researchers who report vulnerabilities in good faith.

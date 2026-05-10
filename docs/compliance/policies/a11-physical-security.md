@@ -1,5 +1,9 @@
 # POL-11: Physical and Environmental Security
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Annex A Reference:** A.11 — Physical Controls
 **Effective Date:** 2026-05-08
 **Review Cycle:** Annual

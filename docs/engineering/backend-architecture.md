@@ -1,5 +1,9 @@
 # Infrastructure Architecture — gtcx-infrastructure
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Repo type:** DevOps / IaC tooling (no application runtime)
 **Primary languages:** HCL (Terraform), YAML (Kubernetes), TypeScript (scripts), Shell
 **Last updated:** 2026-03-08
@@ -184,7 +188,7 @@ Security posture is managed through three components:
 
 CI gates include weekly container image scans and weekly `pnpm audit` dependency checks. Critical CVEs block release.
 
-Refer to [`docs/compliance/soc2-evidence-pipeline.md`](../5-compliance/soc2-evidence-pipeline.md) for SOC2 evidence collection.
+Refer to [`docs/compliance/soc2-evidence-pipeline.md`](../compliance/soc2-evidence-pipeline.md) for SOC2 evidence collection.
 
 ---
 
@@ -230,9 +234,9 @@ Scheduled:
 
 ## Documentation References
 
-- [system-overview.md](../../1-architecture/system-overview.md) — full infrastructure map
-- [trust-model.md](../../1-architecture/trust-model.md) — zero-trust security zones
-- [network-architecture.md](../../1-architecture/network-architecture.md) — network topology and PANX transport
-- [deploy runbook](../../4-operations/runbooks/deploy.md) — deployment procedures
-- [migrate runbook](../../4-operations/runbooks/migrate.md) — migration discipline
-- [ci-cd.md](../../4-devops/3-ci-cd-pipelines/ci-cd.md) — CI gates and pipeline
+- [system-overview.md](../architecture/system-overview.md) — full infrastructure map
+- [trust-model.md](../architecture/trust-model.md) — zero-trust security zones
+- [network-architecture.md](../architecture/network-architecture.md) — network topology and PANX transport
+- [deploy runbook](../operations/runbooks/deploy.md) — deployment procedures
+- [migrate runbook](../operations/runbooks/migrate.md) — migration discipline
+- [ci-cd.md](../devops/ci-cd/ci-cd.md) — CI gates and pipeline

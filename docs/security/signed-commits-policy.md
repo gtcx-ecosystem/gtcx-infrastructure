@@ -1,5 +1,9 @@
 # Signed Git Commits Policy
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Purpose:** Ensure all code changes are cryptographically attributable to verified developers.
 **Compliance:** SOC 2 CC6.1 (Logical Access), ISO 27001 A.9.4.2, FFIEC Change Management
 **Effective date:** TBD (enforce after all maintainers enrolled)

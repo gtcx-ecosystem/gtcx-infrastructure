@@ -1,5 +1,9 @@
 # Runbook: Database Failover
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 > **Owner**: Platform Engineering
 > **Last reviewed**: 2026-03-18
 > **Severity**: P0

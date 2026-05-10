@@ -1,5 +1,9 @@
 # Task Playbook: Write an ADR
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Owner:** Lead engineer / DevOps engineer
 **Safety tier:** Autonomous (propose) / Requires approval (accept)
 
@@ -71,7 +75,7 @@ Use `docs/engineering/6-decisions/adr-template.md` exactly. Fill every section:
 Add the new ADR to `docs/engineering/6-decisions/README.md`:
 
 ```markdown
-| [ADR-NNN](./NNN-title.md) | Brief description | Proposed |
+| ADR-NNN (`NNN-title.md`) | Brief description | Proposed |
 ```
 
 ---
@@ -81,7 +85,7 @@ Add the new ADR to `docs/engineering/6-decisions/README.md`:
 Update the superseded ADR's status field:
 
 ```markdown
-**Status**: Superseded by [ADR-NNN](./NNN-title.md)
+**Status**: Superseded by ADR-NNN (`NNN-title.md`)
 ```
 
 Add the superseded ADR to the new ADR's References section.
@@ -124,5 +128,5 @@ ADRs in `Proposed` status are complete and reviewable. Do not change status to `
 
 ## Reference
 
-- [`docs/engineering/6-decisions/`](../../../2-docs/3-engineering/6-decisions/) — ADR index and template
-- [`docs/agents/workflows/safety-rules.md`](../safety-rules.md) — approval requirements
+- [`docs/engineering/6-decisions/`](../../decisions) — ADR index and template
+- [`docs/agents/workflows/safety-rules.md`](agent-safety-rules.md) — approval requirements

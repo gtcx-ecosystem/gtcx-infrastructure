@@ -1,5 +1,9 @@
 # Architecture Documentation Standard (Agentic Guide)
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 Purpose: define how architecture documentation is structured, authored, and maintained.
 
 ## Scope

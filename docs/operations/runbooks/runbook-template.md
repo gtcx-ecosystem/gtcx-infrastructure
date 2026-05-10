@@ -1,5 +1,9 @@
 # Runbook: [Service or Incident Type]
 
+> **Status:** Draft
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 > **Owner**: [Team / On-call engineer]
 > **Last reviewed**: {YYYY-MM-DD}
 > **Severity**: [P0 / P1 / P2 / P3]

@@ -1,5 +1,9 @@
 # Definition of Ready
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 Criteria that must be met before a user story can enter a sprint. Stories that do not meet these criteria should be refined first.
 
 ---

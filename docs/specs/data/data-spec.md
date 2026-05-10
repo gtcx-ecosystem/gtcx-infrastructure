@@ -1,5 +1,9 @@
 # [Project Name] Data Specification
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Document ID**: [DOC-DATA-NNN]
 **Version**: {version}
 **Date**: {YYYY-MM-DD}

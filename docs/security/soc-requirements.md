@@ -1,5 +1,9 @@
 # SOC Requirements Specification
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Classification:** Internal
 **Owner:** CISO
 **Version:** 1.0

@@ -1,5 +1,9 @@
 # Deployment Runbook
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 > End-to-end guide for deploying GTCX infrastructure to a new or existing environment.
 
 ---

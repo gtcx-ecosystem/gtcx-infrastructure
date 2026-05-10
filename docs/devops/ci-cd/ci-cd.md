@@ -1,5 +1,9 @@
 # CI/CD Pipeline — gtcx-infrastructure
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 CI/CD expectations and workflow. Every change to this repo runs through these gates before it reaches `main`.
 
 ---
@@ -57,6 +61,6 @@ Before a release tag is cut:
 
 ## Reference
 
-- [`docs/operations/runbooks/quality-runbook.md`](../2-runbooks/quality-runbook.md) — triage order when gates fail
-- [`docs/devops/release/release-checklist.md`](../7-release-mgmt/release-checklist.md) — release checklist
-- [`docs/agents/workflows/tasks/cut-release.md`](../../../1-agents/4-workflows/tasks/cut-release.md) — release task playbook
+- [`docs/operations/runbooks/quality-runbook.md`](../../operations/runbooks/quality-runbook.md) — triage order when gates fail
+- [`docs/devops/release/release-checklist.md`](../release/release-checklist.md) — release checklist
+- [`docs/agents/workflows/tasks/cut-release.md`](../../agents/workflows/cut-release.md) — release task playbook

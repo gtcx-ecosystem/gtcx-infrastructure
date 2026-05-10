@@ -1,5 +1,9 @@
 # Release Runbook
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 Safe release process for the GTCX Protocol monorepo — preflight, dry-run, tagging, and rollback decisions.
 
 ---
@@ -128,11 +132,11 @@ If the release contains schema breaking changes (MAJOR version bump):
 3. Announce the breaking change in release notes with migration instructions.
 4. Do not deprecate the previous MAJOR version until consumers have confirmed migration.
 
-See [data-models.md §6](../../2-specs/data-models.md) for the schema migration pattern.
+See [data-models.md §6](../../specs/data/data-spec.md) for the schema migration pattern.
 
 ---
 
 ## Reference
 
-- [git-workflow.md](../../3-engineering/git-workflow.md)
+- Git workflow conventions are enforced through repo policy, commit review, and the CI release gate.
 - [disaster-recovery.md](disaster-recovery.md)

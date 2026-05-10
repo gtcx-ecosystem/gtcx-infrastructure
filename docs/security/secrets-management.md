@@ -1,5 +1,9 @@
 # Secrets Management
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 > How secrets are handled across GTCX infrastructure environments.
 
 ---

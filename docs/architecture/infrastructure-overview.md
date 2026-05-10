@@ -1,5 +1,9 @@
 # GTCX Infrastructure
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 > **Enterprise-scale deployment infrastructure aligned with 30 Engineering Principles**
 
 ## Overview

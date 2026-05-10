@@ -1,5 +1,9 @@
 # Alternative Network Concepts
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Strategic Exploration: Pre-[Platform A]/[Platform B] Naming**
 
 ---

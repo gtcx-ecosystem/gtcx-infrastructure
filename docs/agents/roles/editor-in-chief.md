@@ -1,8 +1,10 @@
-> **EXAMPLE** — This file shows how to define an Editor-in-Chief role using the [contributors.md](../contributors.md) framework. Replace all `[placeholder]` values and organization-specific details before use.
-
----
+> **EXAMPLE** — This file shows how to define an Editor-in-Chief role using the [contributors.md](contributors.md) framework. Replace all `[placeholder]` values and organization-specific details before use.
 
 # Editor-in-Chief
+
+> **Status:** Draft
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
 
 **The editorial voice and quality standard for [Organization Name]**
 

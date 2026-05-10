@@ -1,5 +1,9 @@
 # DISA STIG Compliance Mapping — gtcx-infrastructure
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Assessment date:** 2026-04-06
 **Classification:** Internal
 **Applicable STIGs:** Container Platform SRG, Kubernetes STIG, PostgreSQL STIG, Network STIG

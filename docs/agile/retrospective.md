@@ -1,5 +1,9 @@
 # Sprint Retrospective — Sprint {N}
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Sprint dates:** {YYYY-MM-DD} to {YYYY-MM-DD}
 **Retrospective date:** {YYYY-MM-DD}
 **Duration:** {X} hours

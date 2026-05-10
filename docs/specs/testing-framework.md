@@ -1,5 +1,9 @@
 # GTCX Testing Framework
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 | Field   | Value                                                                                   |
 | ------- | --------------------------------------------------------------------------------------- |
 | Scope   | All code repositories in the GTCX ecosystem                                             |
@@ -210,6 +214,6 @@ The ecosystem currently has approximately 60 real assertions across 4 test files
 
 - [Resilience Framework](./resilience-framework.md) -- Degradation tiers and offline mode capabilities that drive offline test scenarios
 - [CI/CD Pipeline](./cicd-pipeline.md) -- Pipeline stages, quality gates, and enforcement mechanisms
-- [Security Policies](../security/policies-overview.md) -- Security policy framework informing security test requirements
-- [PRINCIPLES.md](../../../docs/PRINCIPLES.md) -- P29: "Every module has automated tests" and the philosophical basis for test-first development
+- [Security Policy](../security/security-policy.md) -- Security policy framework informing security test requirements
+- Testing principles align with the ecosystem engineering standards and the repo-local quality gates documented here.
 - [Infrastructure Architecture](../architecture/infrastructure-architecture-overview.md) -- Deployment topology informing integration and E2E test environments

@@ -1,5 +1,9 @@
 # Technology Stack — gtcx-infrastructure
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Last updated:** 2026-03-08
 
 ---
@@ -173,7 +177,7 @@ Production deployments are GitOps-only. No `kubectl apply` commands are run manu
 
 ## Reference
 
-- [dev-setup.md](../dev-setup.md) — local setup and tool prerequisites
-- [deployment.md](../4-deployment/deployment.md) — deployment runbook
-- [ci-cd-pipelines/](../../4-devops/3-ci-cd-pipelines/) — full CI/CD pipeline documentation
-- [runbooks/](../../4-devops/2-runbooks/) — operational runbooks
+- dev-setup.md (`./dev-setup.md`) — local setup and tool prerequisites
+- [deployment.md](../deployment/deployment.md) — deployment runbook
+- [CI/CD pipeline docs](../../devops/ci-cd/ci-cd.md) — full CI/CD pipeline documentation
+- [runbooks/](../../operations/runbooks) — operational runbooks

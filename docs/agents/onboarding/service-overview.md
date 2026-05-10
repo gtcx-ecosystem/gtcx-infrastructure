@@ -1,5 +1,9 @@
 # Service Overview — gtcx-infrastructure
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 > Understand this repo in 5 minutes.
 
 ---

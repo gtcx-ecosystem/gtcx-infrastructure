@@ -1,5 +1,9 @@
 # Microservices Architecture — {Service Name}
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Service type:** Core / Support / Gateway / Integration
 **Language:** {TypeScript / Python / Go / Rust}
 **Container:** Docker / Kubernetes
@@ -151,7 +155,7 @@ class {WorkflowName}Saga {
 
     for (const step of this.steps) {
       try {
-        await this[step](context);
+        await thisstep (`context`);
         compensations.push(this[`compensate_${step}`]);
       } catch (error) {
         for (const compensate of compensations.reverse()) {

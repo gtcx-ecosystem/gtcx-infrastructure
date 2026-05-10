@@ -1,5 +1,9 @@
 # Compliance Templates
 
+> **Status:** Draft
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 Country-agnostic compliance rule templates for GTCX Protocol deployments.
 
 ## Overview
@@ -84,7 +88,7 @@ const result = await engine.check({
 4. Test with local regulatory experts
 5. Version and deploy
 
-See [Template Authoring Guide](./AUTHORING.md) for details.
+See Template Authoring Guide (`AUTHORING.md`) for details.
 
 ## AI Agent Integration
 

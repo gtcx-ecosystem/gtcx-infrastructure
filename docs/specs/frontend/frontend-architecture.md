@@ -1,5 +1,9 @@
 # [Project Name] Frontend Architecture
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Document ID**: [DOC-FRONTEND-NNN]
 **Version**: {version}
 **Date**: {YYYY-MM-DD}

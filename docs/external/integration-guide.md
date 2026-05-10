@@ -1,5 +1,9 @@
 # Integration Guide
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 Full integration walkthrough for platform builders, exchange operators, and institutional participants connecting to the GTCX Protocol.
 
 ---
@@ -247,5 +251,5 @@ Testnet credentials, lots, and settlements are fully functional but do not invol
 ## Reference
 
 - [quickstart.md](quickstart.md)
-- [sdk-guide.md](../3-engineering/sdk-guide.md)
-- [protocol-index.md](../2-specs/protocol-index.md)
+- sdk-guide.md (`./3-engineering/sdk-guide.md`)
+- protocol-index.md (`./2-specs/protocol-index.md`)

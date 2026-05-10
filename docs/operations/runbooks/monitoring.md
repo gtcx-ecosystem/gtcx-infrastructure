@@ -1,5 +1,9 @@
 # Guide: Monitoring and Observability
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 How to instrument, monitor, and alert on the GTCX Protocol layer in production.
 
 ## Observability Stack
@@ -125,4 +129,4 @@ When Redis or Postgres become unavailable, the protocol layer emits error-level 
 - [incident-response.md](incident-response.md)
 - [production-store-integration.md](production-store-integration.md)
 - [docs/reference/performance-slos.md](../../reference/performance-slos.md)
-- [\docs/decisions/002-in-memory-stub-guards.md](../../1-architecture/decisions/002-in-memory-stub-guards.md)
+- [\docs/decisions/002-in-memory-stub-guards.md](../../decisions/002-in-memory-stub-guards.md)

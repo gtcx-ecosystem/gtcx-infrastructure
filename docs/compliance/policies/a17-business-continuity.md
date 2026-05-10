@@ -1,5 +1,9 @@
 # POL-17: Business Continuity
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Annex A Reference:** A.17 — Business Continuity
 **Effective Date:** 2026-05-08
 **Review Cycle:** Annual

@@ -1,5 +1,9 @@
 # Quickstart
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 Get up and running with the GTCX Protocol SDK in under 10 minutes.
 
 ---
@@ -172,5 +176,5 @@ try {
 
 - [integration-guide.md](integration-guide.md) — Full walkthrough with authentication, offline handling, and webhook setup
 - [governance.md](governance.md) — Becoming a validator or government participant
-- [../2-specs/protocol-index.md](../2-specs/protocol-index.md) — Protocol dependency map and integration contracts
-- [../3-engineering/sdk-guide.md](../3-engineering/sdk-guide.md) — Full SDK reference for all six protocols
+- Protocol dependency maps and integration contracts are maintained in the protocol and product repos.
+- SDK reference material is maintained in the service and protocol repos.

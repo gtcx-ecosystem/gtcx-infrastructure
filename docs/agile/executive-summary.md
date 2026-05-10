@@ -1,5 +1,9 @@
 # Executive Summary — gtcx-infrastructure
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 ---
 
 ## Product Vision
@@ -71,5 +75,5 @@ Terraform modules provision AWS resources (EKS, RDS, ElastiCache, S3, IAM) with 
 ## References
 
 - [Phased Roadmap](./phased-roadmap.md)
-- [Product Backlog](../2-scrum-board/8-backlog/backlog.md)
-- [Sprint Planning](../2-scrum-board/5-sprints/sprint-planning.md)
+- [Product Backlog](backlog.md)
+- [Sprint Planning](sprint-planning.md)

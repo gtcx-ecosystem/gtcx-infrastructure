@@ -1,5 +1,9 @@
 # Legal Review — Release Checklist
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Release**: {version}
 **Review Date**: {date}
 **Reviewer**: {legal-reviewer}

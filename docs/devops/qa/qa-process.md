@@ -1,5 +1,9 @@
 # QA Process
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Owner**: [QA Lead / Engineering Lead]
 **Review Cycle**: Quarterly or after major process changes
 

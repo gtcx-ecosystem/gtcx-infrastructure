@@ -1,5 +1,9 @@
 # NIST 800-53 Rev 5 Control Mapping — gtcx-infrastructure
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Assessment date:** 2026-04-06
 **Framework:** NIST SP 800-53 Revision 5
 **Baseline:** Moderate

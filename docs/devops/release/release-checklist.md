@@ -1,5 +1,9 @@
 # Release Checklist — gtcx-infrastructure
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 Complete this checklist for every release. All items must be checked before deploying to production. Gate execution is documented in the quality runbook.
 
 ---
@@ -75,5 +79,5 @@ Execute only after human approval:
 
 ## Reference
 
-- [`docs/4-devops/2-runbooks/quality-runbook.md`](../2-runbooks/quality-runbook.md) — full gate sequence and triage order
-- [`docs/agents/workflows/tasks/cut-release.md`](../../../1-agents/4-workflows/tasks/cut-release.md) — release task playbook
+- [`docs/4-devops/2-runbooks/quality-runbook.md`](../../operations/runbooks/quality-runbook.md) — full gate sequence and triage order
+- [`docs/agents/workflows/tasks/cut-release.md`](../../agents/workflows/cut-release.md) — release task playbook

@@ -1,5 +1,9 @@
 # Data Flow Diagram — External API and Egress Mapping
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 What leaves the VPC, where it goes, what data it carries, and what agreements govern it.
 
 ---

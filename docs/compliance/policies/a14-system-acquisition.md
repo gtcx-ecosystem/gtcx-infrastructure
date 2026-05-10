@@ -1,5 +1,9 @@
 # POL-14: System Acquisition, Development and Maintenance
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Annex A Reference:** A.14 — System Development Controls
 **Effective Date:** 2026-05-08
 **Review Cycle:** Annual

@@ -1,5 +1,9 @@
 # Changelog
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 All notable changes to [Organization Name] products and platform are documented here.
 
 This changelog follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) conventions and [Semantic Versioning](https://semver.org/).

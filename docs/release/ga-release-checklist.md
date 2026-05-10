@@ -1,5 +1,9 @@
 # [Service Name] v[X.Y] GA Release Checklist
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Owner**: [Team Name]
 **Scope**: [Service / Product Name]
 **Target**: v[X.Y] GA

@@ -1,5 +1,9 @@
 # Sovereign Accessibility Principles
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Making verification infrastructure available to everyone who needs it**
 
 ---

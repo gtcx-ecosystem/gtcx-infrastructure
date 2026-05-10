@@ -1,5 +1,9 @@
 # GTCX CI/CD Pipeline Specification
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 | Field   | Value                                                                                          |
 | ------- | ---------------------------------------------------------------------------------------------- |
 | Scope   | All repositories in the GTCX ecosystem                                                         |
@@ -197,13 +201,13 @@ Feature Branch ──→ PR ──→ main ──→ Staging (auto) ──→ Pr
 | Edge sites               | Provisioned via Ansible playbooks; government data center specifications per jurisdiction                       |
 | Compliance               | Jurisdiction-specific compliance checks in deployment pipeline (e.g., data residency verification)              |
 
-**Adding a new jurisdiction**: Copy Terraform environment template, configure jurisdiction-specific values (HSM, database, networking), run `terraform plan` for review, apply after compliance team approval. No application code changes required. See [Scalability Framework](./scalability-framework.md) for commodity and jurisdiction scaling.
+**Adding a new jurisdiction**: Copy the Terraform environment template, configure jurisdiction-specific values for HSM, database, and networking, run `terraform plan` for review, and apply only after compliance team approval. No application code changes are required. See [Scalability Framework](./scalability-framework.md) for commodity and jurisdiction scaling.
 
 ## Deep Dives
 
 - [Testing Framework](./testing-framework.md) -- Test types, coverage targets, and property-based testing requirements enforced by this pipeline
 - [Resilience Framework](./resilience-framework.md) -- Recovery targets and degradation tiers that inform deployment safety
 - [Infrastructure Architecture](../architecture/infrastructure-architecture-overview.md) -- Kubernetes cluster configuration, Terraform structure, and edge deployment topology
-- [Security Policies](../security/policies-overview.md) -- Security scanning requirements and vulnerability management policy
+- [Security Policies](../security/security-policy.md) -- Security scanning requirements and vulnerability management policy
 - [Observability Framework](./observability-framework.md) -- Metrics and alerting that drive canary health checks
 - Terraform configurations: `gtcx-infrastructure/infra/terraform/`

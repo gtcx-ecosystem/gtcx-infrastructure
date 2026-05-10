@@ -1,5 +1,9 @@
 # Industry Landscape
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 > [Organization Name] market — structure, players, and dynamics
 
 ---
@@ -248,5 +252,5 @@ Year [X] target ([X]% of SAM): **$[X]K–$[X]M ARR**
 
 ## References
 
-- [Competitor profiles](../../../1-product/2-market/competitors/)
-- [Market analysis](../../../1-product/2-market/)
+- [Competitor profiles](competitors.md)
+- [Market analysis](.)

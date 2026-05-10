@@ -1,5 +1,9 @@
 # Security Architecture — {Project Name}
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Security level:** {Critical / High / Medium / Standard}
 **Compliance requirements:** {GDPR / SOC2 / PCI-DSS / HIPAA / other}
 **Risk tolerance:** {Zero / Low / Medium}

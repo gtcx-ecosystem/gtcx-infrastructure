@@ -29,6 +29,7 @@ Read before touching anything:
 
 1. `docs/agents/onboarding/orientation.md` — repo map, environment topology, key commands
 2. `docs/agents/workflows/agent-safety-rules.md` — three-tier authority structure (Autonomous / Requires Approval / Never)
+3. `docs/documentation-governance.md` — approved repo-local documentation deviations from the ecosystem baseline
 
 ## Key Rules
 

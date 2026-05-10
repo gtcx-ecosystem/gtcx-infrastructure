@@ -1,5 +1,9 @@
 # Threat Model — {System Name}
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Version:** {version}
 **Classification:** {Public / Internal / Confidential / Secret}
 **Threat model date:** {YYYY-MM-DD}

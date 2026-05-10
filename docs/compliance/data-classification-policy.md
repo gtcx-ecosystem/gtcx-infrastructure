@@ -1,5 +1,9 @@
 # Data Classification Policy
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Document ID**: GTCX-DCP-001
 **Version**: 1.0
 **Date**: May 2026

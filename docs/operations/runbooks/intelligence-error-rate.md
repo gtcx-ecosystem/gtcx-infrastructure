@@ -1,5 +1,9 @@
 # Intelligence Error Rate Runbook
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 ## Alert
 
 - `IntelligenceHighErrorRate` — error rate > 5%

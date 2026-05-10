@@ -1,5 +1,9 @@
 # GTCX Migration Stack
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 > **Universal data transformation, verification, and guidance infrastructure**
 
 ## Overview

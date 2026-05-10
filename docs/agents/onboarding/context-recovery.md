@@ -1,5 +1,9 @@
 # Agent Context Recovery — gtcx-infrastructure
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 How to recover agent context across sessions, prevent drift, and maintain continuity in a codebase where incorrect assumptions cause downstream problems.
 
 ---
@@ -129,6 +133,6 @@ When any of these appear: run Quick Recovery before continuing.
 ## Reference
 
 - [`orientation.md`](./orientation.md) — codebase map and session-start reading order
-- [`../4-workflows/safety-rules.md`](../4-workflows/safety-rules.md) — what requires human approval
-- [`../../2-docs/1-architecture/decisions/`](../../2-docs/1-architecture/decisions/) — all ADRs
-- [`../../4-sessions/README.md`](../../4-sessions/README.md) — session document structure
+- [`../4-workflows/safety-rules.md`](../workflows/agent-safety-rules.md) — what requires human approval
+- [`../../2-docs/1-architecture/decisions/`](../../decisions) — all ADRs
+- Session transcripts are not canonical repo documentation; recover context from `docs/README.md`, `CLAUDE.md`, and recent git history instead.

@@ -1,5 +1,9 @@
 # Fine-Tune Workflow Operations
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 Operator path for one-off staging/testnet workflow runs and fast CronWorkflow suspension.
 
 This runbook does **not** change the enablement policy in [fine-tune-workflow-enablement.md](./fine-tune-workflow-enablement.md). The policy remains:

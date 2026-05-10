@@ -1,5 +1,9 @@
 # Codebase Orientation — gtcx-infrastructure
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 Session-start protocol for any agent or contributor entering this repo.
 
 ---
@@ -97,6 +101,6 @@ See `docs/operations/runbooks/quality-runbook.md` for the full gate sequence and
 
 ## Reference
 
-- [`safety-rules.md`](../4-workflows/safety-rules.md) — what requires human approval
+- [`safety-rules.md`](../workflows/agent-safety-rules.md) — what requires human approval
 - [`context-recovery.md`](./context-recovery.md) — how to recover agent context across sessions
-- [`docs/operations/runbooks/quality-runbook.md`](../../2-docs/4-devops/2-runbooks/quality-runbook.md) — full pre-commit gate sequence
+- [`docs/operations/runbooks/quality-runbook.md`](../../operations/runbooks/quality-runbook.md) — full pre-commit gate sequence

@@ -1,5 +1,9 @@
 # Project Specification — {project-name}
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 ## Executive Summary
 
 {2–3 paragraph overview: purpose, value proposition, key stakeholders.}

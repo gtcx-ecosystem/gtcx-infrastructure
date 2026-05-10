@@ -1,5 +1,9 @@
 # Bank-Grade 10/10 Remediation Plan
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Target:** Achieve 10/10 across all control domains under FFIEC, PCI-DSS, SOC 2, and ISO 27001 frameworks.
 **Timeline:** 12 months (4 phases, 3 months each)
 **Governance:** Quarterly board security committee review + monthly steering committee

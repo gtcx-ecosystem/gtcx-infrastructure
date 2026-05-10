@@ -1,8 +1,10 @@
-> **EXAMPLE** — This file shows how to apply the [contributors.md](../contributors.md) template for a regional lead role. Replace all `[placeholder]` values and organization-specific details before use.
-
----
+> **EXAMPLE** — This file shows how to apply the [contributors.md](contributors.md) template for a regional lead role. Replace all `[placeholder]` values and organization-specific details before use.
 
 # Bureau Chiefs
+
+> **Status:** Draft
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
 
 > Regional leadership for [Organization Name] coverage
 
@@ -153,6 +155,6 @@ Editor-in-Chief
 ## References
 
 - [Editor-in-Chief](./editor-in-chief.md)
-- [Contributors](../contributors.md)
-- [Newsroom Structure](../../3-structure/newsroom.md)
-- [Editorial Independence](../../5-governance/editorial-independence.md)
+- [Contributors](contributors.md)
+- [Newsroom Structure](../structure/tech-team.md)
+- [Editorial Independence](../governance/editorial-independence.md)

@@ -1,5 +1,9 @@
 # Incident Response Plan v1.0
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Classification:** Confidential
 **Owner:** Chief Information Security Officer (CISO)
 **Effective Date:** **\_\_\_\_**

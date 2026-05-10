@@ -1,5 +1,9 @@
 # GTCX Platform Internal Security Assessment
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 ---
 
 | Field              | Value                                               |

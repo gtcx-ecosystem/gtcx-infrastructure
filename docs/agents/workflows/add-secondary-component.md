@@ -1,5 +1,9 @@
 # Task Playbook: Add a Secondary-Language Component
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Owner:** DevOps/SRE Engineer or Infrastructure Security Engineer (depending on component type)
 **Safety tier:** Requires human approval before proceeding
 
@@ -156,7 +160,7 @@ pnpm build
 
 ## Reference
 
-- [`docs/5-specs/4-backend/packages/`](../../../2-docs/5-specs/4-backend/packages/) — component specifications
-- [`docs/engineering/6-decisions/`](../../../2-docs/3-engineering/6-decisions/) — ADR index
+- Component specifications live in the owning package or service docs; add a repo-local spec only when this repo becomes the authority.
+- [`docs/engineering/6-decisions/`](../../decisions) — ADR index
 - [`docs/agents/workflows/tasks/write-adr.md`](./write-adr.md) — ADR workflow
-- [`docs/agents/workflows/safety-rules.md`](../safety-rules.md) — approval requirements
+- [`docs/agents/workflows/safety-rules.md`](agent-safety-rules.md) — approval requirements

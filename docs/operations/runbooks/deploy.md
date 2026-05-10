@@ -1,5 +1,9 @@
 # Deploy Runbook — gtcx-infrastructure
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 Process for deploying GTCX services to any environment using `./infra/scripts/deploy.sh`.
 
 ---
@@ -135,7 +139,7 @@ Escalate to human review immediately if:
 
 ## Reference
 
-- [`infra/scripts/deploy.sh`](../../../../infra/scripts/deploy.sh) — deploy script
-- [`docs/agents/safety-rules.md`](../../../1-agents/safety-rules.md) — authority tiers
-- [`docs/architecture/system-overview.md`](../../1-architecture/system-overview.md) — full stack overview
+- [`infra/scripts/deploy.sh`](../../../infra/scripts/deploy.sh) — deploy script
+- [`docs/agents/safety-rules.md`](../../agents/workflows/agent-safety-rules.md) — authority tiers
+- [`docs/architecture/system-overview.md`](../../architecture/system-overview.md) — full stack overview
 - [`docs/operations/runbooks/migrate.md`](./migrate.md) — migration process

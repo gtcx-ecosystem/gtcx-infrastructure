@@ -1,5 +1,9 @@
 # Developer Setup — gtcx-infrastructure
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 ---
 
 ## Prerequisites

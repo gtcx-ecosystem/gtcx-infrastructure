@@ -1,5 +1,9 @@
 # Approval Flows
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 > Decision authority and sign-off requirements for [Organization Name] content
 
 ---
@@ -287,4 +291,4 @@ _Note: CEO override of editorial decisions is logged and reported to board._
 ## References
 
 - [Story Lifecycle](./story-lifecycle.md)
-- [Editorial Independence](../5-governance/editorial-independence.md)
+- [Editorial Independence](../governance/editorial-independence.md)

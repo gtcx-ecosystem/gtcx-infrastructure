@@ -1,5 +1,9 @@
 # Regulatory Framework
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 Regulatory landscape, per-commodity compliance obligations, and how the GTCX Protocol layer maps to each framework. Configuration is jurisdiction- and commodity-specific — no regulatory framework is hardcoded.
 
 ---
@@ -126,5 +130,5 @@ GCI scores are cached and re-evaluated at PvP settlement time. A score drop belo
 ## Reference
 
 - [controls-matrix.md](controls-matrix.md)
-- [operator-types.md](../../2-specs/operator-types.md)
-- [data-models.md](../../2-specs/data-models.md)
+- Operator role definitions are maintained in the product and protocol repos, not in this infrastructure repository.
+- [data-models.md](../specs/data/data-spec.md)

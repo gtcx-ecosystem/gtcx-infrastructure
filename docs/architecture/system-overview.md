@@ -1,5 +1,9 @@
 # System Overview — gtcx-infrastructure
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 `gtcx-infrastructure` owns all deployment, IaC, and operational tooling for the GTCX ecosystem. It has no application logic. It orchestrates, deploys, and operates the services defined in other repos.
 
 ---
@@ -193,7 +197,7 @@ pnpm lint && pnpm typecheck
 
 ## Reference
 
-- [`docs/agents/orientation.md`](../../1-agents/orientation.md) — session-start reading order
-- [`docs/agents/safety-rules.md`](../../1-agents/safety-rules.md) — authority tiers
-- [`docs/4-operations/runbooks/deploy.md`](../4-operations/runbooks/deploy.md) — deploy process
-- [`docs/4-operations/runbooks/migrate.md`](../4-operations/runbooks/migrate.md) — migration discipline
+- [`docs/agents/orientation.md`](../agents/onboarding/orientation.md) — session-start reading order
+- [`docs/agents/safety-rules.md`](../agents/workflows/agent-safety-rules.md) — authority tiers
+- [`docs/4-operations/runbooks/deploy.md`](../operations/runbooks/deploy.md) — deploy process
+- [`docs/4-operations/runbooks/migrate.md`](../operations/runbooks/migrate.md) — migration discipline

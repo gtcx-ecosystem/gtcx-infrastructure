@@ -1,5 +1,9 @@
 # Security Policy
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 > Access control, data handling, vulnerability management, and dependency security standards for [Organization Name].
 
 ---

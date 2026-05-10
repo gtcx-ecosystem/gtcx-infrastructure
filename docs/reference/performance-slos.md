@@ -1,5 +1,9 @@
 # Metrics — gtcx-protocols
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 Protocol performance targets and KPI reference for the GTCX Protocol layer.
 
 ## Protocol Performance Targets

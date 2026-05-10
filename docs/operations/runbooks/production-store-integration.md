@@ -1,8 +1,12 @@
 # Production Store Integration
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 How to replace in-memory stubs with production-grade persistence. Covers Redis (rate limiting, replay cache) and Postgres (audit log). Also documents the fail-open/fail-closed policy matrix.
 
-Prerequisite: understand the stub guard system before this runbook. See [ADR-002](../../1-architecture/decisions/002-in-memory-stub-guards.md).
+Prerequisite: understand the stub guard system before this runbook. See [ADR-002](../../decisions/002-in-memory-stub-guards.md).
 
 ---
 
@@ -211,5 +215,5 @@ After replacing all stubs:
 
 ## Reference
 
-- [ADR-002: In-Memory Stub Guards](../../1-architecture/decisions/002-in-memory-stub-guards.md)
+- [ADR-002: In-Memory Stub Guards](../../decisions/002-in-memory-stub-guards.md)
 - [disaster-recovery.md](disaster-recovery.md)

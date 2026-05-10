@@ -1,5 +1,9 @@
 # LLM Routing Strategy — Compliance Gateway
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 _Last updated: 2026-05-10. Sources: OpenRouter API, pricepertoken.com, getdeploying.com, provider docs._
 
 ---

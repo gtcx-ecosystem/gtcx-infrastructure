@@ -1,5 +1,9 @@
 # Glossary
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 > Domain terminology, acronyms, and standardized definitions for [Organization Name].
 
 ---
@@ -42,7 +46,7 @@
 
 **[Term D1]** — [Definition]
 
-**Data Classification** — The process of categorizing data by sensitivity and access requirements. See [Institutional Benchmarks](../../3-standards/2-institutional-benchmarks/institutional-benchmarks.md) for the full classification framework.
+**Data Classification** — The process of categorizing data by sensitivity and access requirements. See the shared institutional benchmark framework maintained outside this repository for the full classification model.
 
 ---
 

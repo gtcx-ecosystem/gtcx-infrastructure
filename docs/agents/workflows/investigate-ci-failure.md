@@ -1,5 +1,9 @@
 # Task Playbook: Investigate a CI Failure
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Owner:** DevOps engineer (triage) + relevant role (fix)
 **Safety tier:** Autonomous (investigation) / role-dependent (fix)
 
@@ -130,5 +134,5 @@ When escalating: state the gate that failed, the full error output, the root cau
 
 ## Reference
 
-- [`docs/agents/workflows/safety-rules.md`](../safety-rules.md) — what requires escalation
-- [`docs/operations/runbooks/quality-runbook.md`](../../../2-docs/4-devops/2-runbooks/quality-runbook.md) — full gate sequence
+- [`docs/agents/workflows/safety-rules.md`](agent-safety-rules.md) — what requires escalation
+- [`docs/operations/runbooks/quality-runbook.md`](../../operations/runbooks/quality-runbook.md) — full gate sequence

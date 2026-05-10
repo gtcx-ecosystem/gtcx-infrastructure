@@ -1,5 +1,9 @@
 # Legal Sign-Off
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 > Legal review requirements and sign-off gates for [Organization Name] releases.
 
 ---

@@ -1,5 +1,9 @@
 # Information Architecture
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 > The structural design of [Organization Name]'s product — how content, navigation, and features are organized and labeled.
 
 ---

@@ -1,5 +1,9 @@
 # Separation of Duties Matrix
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Classification:** Internal — Restricted  
 **Owner:** CISO  
 **Effective date:** 2026-05-08  

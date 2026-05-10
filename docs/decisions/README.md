@@ -16,6 +16,6 @@ Architecture Decision Records (ADRs) capturing key design choices and their rati
 
 ## Adding a New ADR
 
-Use the template at [`repo/2-docs/3-engineering/6-decisions/adr-template.md`](../../2-docs/engineering/6-decisions/adr-template.md).
+Use the template at [`repo/2-docs/3-engineering/6-decisions/adr-template.md`](adr-template.md).
 
 ADRs follow the format: `ADR-{NNN}-{kebab-case-title}.md`

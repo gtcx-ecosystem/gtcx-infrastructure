@@ -1,5 +1,9 @@
 # Disaster Recovery Runbook
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 Recovery procedures for protocol services (TradePass, GeoTag, GCI, VaultMark, PvP, PANX), shared packages, and supporting state stores (audit logs, replay cache, rate limits).
 
 ---

@@ -1,5 +1,9 @@
 # Pilot Agreement Template — GTCX Platform Evaluation
 
+> **Status:** Draft
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **This is a template. Customize for each pilot engagement.**
 
 ---

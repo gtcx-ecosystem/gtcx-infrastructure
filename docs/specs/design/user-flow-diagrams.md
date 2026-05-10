@@ -1,5 +1,9 @@
 # User Flow Diagrams
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 > End-to-end journey maps for [Organization Name]'s key user flows.
 
 ---

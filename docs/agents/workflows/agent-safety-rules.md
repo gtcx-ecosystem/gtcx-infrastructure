@@ -1,5 +1,9 @@
 # Agent Safety Rules
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 Critical rules for protecting the codebase and its collaborators.
 
 ## Prime Directive: Do No Harm

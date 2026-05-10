@@ -1,5 +1,9 @@
 # Latency SLO Breach Runbook
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 ## Alert
 
 - `AGXLatencySLOBreach` — p95 > 500ms

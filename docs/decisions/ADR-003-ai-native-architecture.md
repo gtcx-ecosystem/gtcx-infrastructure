@@ -140,6 +140,6 @@ human_gates:
 
 ## References
 
-- [AI-Native Standards](../../../system/3-standards/4-ai-native/README.md)
-- [Autonomous Agent Workflow Guide](../../../system/2-guides/autonomous-agent-workflow.md)
-- [ADR-007: Content-First Architecture](ADR-007-content-first-architecture.md)
+- AI-native standards are maintained in the shared ecosystem governance stack, not in this repository.
+- Autonomous agent workflow guidance lives in the shared ecosystem guidance stack, not in this repository.
+- ADR-007: Content-First Architecture (`ADR-007-content-first-architecture.md`)

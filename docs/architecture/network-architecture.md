@@ -1,5 +1,9 @@
 # Network Architecture
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Protocol:** GTCX Protocol Layer
 **Version:** 3.0.0
 

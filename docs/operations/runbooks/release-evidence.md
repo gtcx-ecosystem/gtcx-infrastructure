@@ -1,5 +1,9 @@
 # Release Evidence Bundle
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 Generate a machine-readable release bundle before promotion or pilot sign-off.
 
 ## Purpose

@@ -1,5 +1,9 @@
 # Priority Framework
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 Classification system for work items, bugs, features, and improvements.
 
 ---

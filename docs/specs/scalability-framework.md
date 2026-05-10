@@ -1,5 +1,9 @@
 # GTCX Scalability Framework
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 | Field   | Value                                                                                                      |
 | ------- | ---------------------------------------------------------------------------------------------------------- |
 | Scope   | All production services across the GTCX ecosystem                                                          |
@@ -212,4 +216,4 @@ The protocol layer is designed to be commodity-agnostic. `commodityType` is a st
 - [Observability Framework](./observability-framework.md) -- Performance metrics, alerting thresholds, and dashboards for monitoring scaling behavior
 - [CI/CD Pipeline](./cicd-pipeline.md) -- Canary deployment and auto-rollback mechanisms that protect against scaling-induced regressions
 - [Infrastructure Architecture](../architecture/infrastructure-architecture-overview.md) -- Kubernetes cluster configuration, Terraform structure, and edge deployment topology
-- [Ecosystem Architecture](../../../docs/architecture/ecosystem-architecture-overview.md) -- Service topology, three-tier architecture, and cross-cutting intelligence layer
+- Shared ecosystem architecture guidance informs service topology, three-tier architecture, and the cross-cutting intelligence layer.

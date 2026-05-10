@@ -1,5 +1,9 @@
 # Content Schema
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 > Data structures for [Organization Name] content objects
 
 ---
@@ -471,4 +475,4 @@ Full JSON Schema available at:
 ## References
 
 - [Database Schema](./database-schema.md)
-- [Editorial Independence](../../../../repo/1-agents/governance/editorial-independence.md)
+- [Editorial Independence](../agents/governance/editorial-independence.md)

@@ -1,5 +1,9 @@
 # Monitoring Setup
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Owner**: [Platform / SRE Lead]
 **Review Cycle**: Quarterly or after significant infrastructure changes
 
@@ -180,6 +184,6 @@ All inter-service calls must be instrumented with distributed traces.
 
 ## On-Call
 
-See [runbook-template.md](../2-runbooks/runbook-template.md) for on-call rotation and incident response procedures.
+See [runbook-template.md](../../operations/runbooks/runbook-template.md) for on-call rotation and incident response procedures.
 
 **Monitoring tool access**: All engineers have read access. Write access (creating/editing dashboards, alert rules) requires [Platform / SRE] team approval.

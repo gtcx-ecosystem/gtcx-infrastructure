@@ -1,5 +1,9 @@
 # Agent Guide
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 Guidelines for AI agents working in any project repo that uses this SOP structure.
 
 ## Core Principles

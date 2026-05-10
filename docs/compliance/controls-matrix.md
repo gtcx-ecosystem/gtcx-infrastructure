@@ -1,5 +1,9 @@
 # Controls Matrix
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 Unified security control mapping across NIST 800-53 Rev 5, SOC 2 Trust Services Criteria (TSC), and ISO 27001:2022 Annex A. Each entry documents the GTCX implementation and current status.
 
 ## Status Definitions
@@ -81,16 +85,16 @@ Unified security control mapping across NIST 800-53 Rev 5, SOC 2 Trust Services 
 | IA-01 | IA-2 Identification and Authentication | CC6.1 | A.9.2     | Unique user identification   | DID-based identity in TradePass. DID format: `did:gtcx:<jurisdiction>_<sha256_prefix>`. Types: `individual`, `organization`, `cooperative`. Ed25519 for credential verification.                                               | IMPLEMENTED |
 | IA-02 | IA-4 Identifier Management             | CC6.1 | A.9.2     | Identifier lifecycle         | DID generation via `issueTradePassDid()`: SHA-256 over `jurisdiction:timestamp:randomBytes(16)`. Jurisdiction validation: 2-6 uppercase alphanumerics. **GAP**: No DID deactivation/revocation beyond status changes.          | PARTIAL     |
 | IA-03 | IA-5 Authenticator Management          | CC6.1 | A.9.4     | Credential lifecycle         | TradePass: `issueCredential()` with `Ed25519Signature2020`, `revokeCredential()` with reason tracking, `updateCredentialStatus()`. `expirationDate` for time-bounded validity. `presentCredential()` for selective disclosure. | IMPLEMENTED |
-| IA-04 | IA-8 External User Authentication      | CC6.1 | A.9.2     | Non-organizational user auth | PANX oracle: unique `OracleNode.id` + `publicKey`. Oracle lifecycle: `active`, `inactive`, `suspended`, `probation`. Reputation scoring (0–100). **GAP**: No federated identity or external IdP integration.                   | PARTIAL     |
+| IA-04 | IA-8 External User Authentication      | CC6.1 | A.9.2     | Non-organizational user auth | PANX oracle: unique `OracleNode.id` + `publicKey`. Oracle lifecycle: `active`, `inactive`, `suspended`, `probation`. Reputation scoring on a 0 to 100 scale. **GAP**: No federated identity or external IdP integration.       | PARTIAL     |
 
 ---
 
 ## Risk Assessment
 
-| ID    | NIST 800-53                 | SOC 2 | ISO 27001 | Description              | GTCX Implementation                                                                                                                                                                                                                                                         | Status  |
-| ----- | --------------------------- | ----- | --------- | ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| RA-01 | RA-3 Risk Assessment        | CC3.2 | A.8.2     | Conduct risk assessments | STRIDE threat models: see [../security/threat-models.md](../../3-engineering/security/threat-models.md). GCI provides risk quantification (0–100) across 5 weighted factor categories with tier classification. **GAP**: No formal organizational risk assessment document. | PLANNED |
-| RA-02 | RA-5 Vulnerability Scanning | CC7.1 | A.12.6    | Vulnerability scanning   | Trivy container scanning in CI. `pnpm audit` for dependencies. `eslint-plugin-security` static analysis. TypeScript strict mode catches type-related vulnerabilities. Pinned Docker digest for reproducibility. **GAP**: No DAST. No penetration testing schedule.          | PARTIAL |
+| ID    | NIST 800-53                 | SOC 2 | ISO 27001 | Description              | GTCX Implementation                                                                                                                                                                                                                                                | Status  |
+| ----- | --------------------------- | ----- | --------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------- |
+| RA-01 | RA-3 Risk Assessment        | CC3.2 | A.8.2     | Conduct risk assessments | STRIDE threat model reference: [threat-model.md](../security/threat-model.md). GCI provides risk quantification on a 0 to 100 scale across 5 weighted factor categories with tier classification. **GAP**: No formal organizational risk assessment document.      | PLANNED |
+| RA-02 | RA-5 Vulnerability Scanning | CC7.1 | A.12.6    | Vulnerability scanning   | Trivy container scanning in CI. `pnpm audit` for dependencies. `eslint-plugin-security` static analysis. TypeScript strict mode catches type-related vulnerabilities. Pinned Docker digest for reproducibility. **GAP**: No DAST. No penetration testing schedule. | PARTIAL |
 
 ---
 
@@ -133,5 +137,5 @@ Unified security control mapping across NIST 800-53 Rev 5, SOC 2 Trust Services 
 
 ## Reference
 
-- [threat-models.md](../../3-engineering/security/threat-models.md)
-- [cryptographic-inventory.md](../../3-engineering/security/cryptographic-inventory.md)
+- [threat-models.md](../security/threat-model.md)
+- [cryptographic-inventory.md](../security/security-architecture.md)

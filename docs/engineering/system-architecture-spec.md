@@ -1,6 +1,10 @@
 # System Architecture Specification — {system-name}
 
-> Formal security-focused specification. For the lightweight component design doc, see [system-design-template.md](system-design-template.md).
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
+> Formal security-focused specification. For the lightweight component design doc, see system-design-template.md (`system-design-template.md`).
 
 ---
 

@@ -1,5 +1,9 @@
 # SOC 2 Evidence Pipeline (Compliance API)
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Owner**: Security + Platform
 **Scope**: Compliance API (Gateway)
 **Goal**: Standardize evidence collection for SOC 2 Type II readiness.

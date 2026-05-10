@@ -1,5 +1,9 @@
 # Production Readiness Evidence — 2026-05-08
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 ## GTCX Infrastructure Replay Protection
 
 | Gate                   | Status | Evidence                                                          |

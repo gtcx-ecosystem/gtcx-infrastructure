@@ -1,5 +1,9 @@
 # Environment Configuration — gtcx-infrastructure
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 > Environment topology, configuration profiles, and secrets management for the GTCX infrastructure layer.
 
 ---

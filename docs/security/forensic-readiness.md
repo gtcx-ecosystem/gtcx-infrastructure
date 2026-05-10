@@ -1,5 +1,9 @@
 # Forensic Readiness Procedure
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Classification:** Confidential
 **Owner:** CISO
 **Version:** 1.0

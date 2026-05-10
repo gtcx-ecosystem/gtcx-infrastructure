@@ -1,5 +1,9 @@
 # Rollback Evidence
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 Use this runbook after a failed deploy, failed canary, or manual rollback to preserve cluster state and recovery proof.
 
 The evidence bundle is generated locally and written under `infra/security/reports/rollback-evidence/`. That path is already ignored by git and should stay uncommitted unless a separate evidence retention process requires export.

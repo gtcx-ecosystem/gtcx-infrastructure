@@ -1,0 +1,88 @@
+{
+  "version": "0.2.0-beta.1",
+  "name": "gtcx-infrastructure",
+  "projectRoot": "/Users/amanianai/Sites/gtcx-ecosystem/gtcx-infrastructure",
+  "createdAt": "2026-04-07T11:28:03.548Z",
+  "detection": {
+    "runtime": "node",
+    "runtimeVersion": ">=20.0.0",
+    "providers": [],
+    "frameworks": []
+  },
+  "knowledge": [
+    {
+      "path": "./.claude"
+    },
+    {
+      "path": "./README.md"
+    },
+    {
+      "path": "./CLAUDE.md"
+    },
+    {
+      "path": "./CHANGELOG.md"
+    },
+    {
+      "path": "./SECURITY.md"
+    },
+    {
+      "path": "./docs",
+      "exclude": [
+        "docs/audit/_historical/**",
+        "docs/archive/**",
+        "docs/templates/**",
+        "_archive/**",
+        "_delete/**",
+        "**/node_modules/**",
+        "**/dist/**"
+      ]
+    }
+  ],
+  "index": {
+    "documents": 412,
+    "indexedAt": "2026-04-07T11:28:03.548Z"
+  },
+  "layers": {
+    "armed": 7,
+    "total": 7,
+    "score": 100,
+    "status": "ready",
+    "results": [
+      {
+        "id": "lang",
+        "passed": true,
+        "score": 100
+      },
+      {
+        "id": "frame",
+        "passed": true,
+        "score": 100
+      },
+      {
+        "id": "studio",
+        "passed": true,
+        "score": 100
+      },
+      {
+        "id": "govern",
+        "passed": true,
+        "score": 100
+      },
+      {
+        "id": "experience",
+        "passed": true,
+        "score": 100
+      },
+      {
+        "id": "autonomy",
+        "passed": true,
+        "score": 100
+      },
+      {
+        "id": "persona",
+        "passed": true,
+        "score": 100
+      }
+    ]
+  }
+}

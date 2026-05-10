@@ -1,5 +1,9 @@
 # Frontend Epics — {Project Name}
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 Suggested epic structure for frontend products. Adapt to your project — remove epics that don't apply, add product-specific ones, adjust priorities.
 
 ---

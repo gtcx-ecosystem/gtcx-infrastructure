@@ -1,5 +1,9 @@
 # Agent Checklist
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 Pre-flight and validation checklists for AI agents and developers.
 
 ---

@@ -1,5 +1,9 @@
 # Database Schema — {Project Name}
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Database type:** {PostgreSQL / MongoDB / DynamoDB / MySQL}
 **Version:** {version}
 **ORM / query layer:** {Prisma / TypeORM / SQLAlchemy / raw SQL}

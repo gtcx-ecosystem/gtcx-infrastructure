@@ -1,5 +1,9 @@
 # Open Infrastructure Principles
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Building systems that others can build upon**
 
 ---

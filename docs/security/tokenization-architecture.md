@@ -1,5 +1,9 @@
 # Tokenization Architecture
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 > PII tokenization design using HashiCorp Vault Transit for format-preserving encryption across GTCX services.
 
 ---

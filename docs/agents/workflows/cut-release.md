@@ -1,5 +1,9 @@
 # Task Playbook: Apply an Infrastructure Change
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Owner:** DevOps engineer (gates + approval) + Lead engineer (sign-off)
 **Safety tier:** Requires human approval before applying to any environment
 
@@ -179,6 +183,6 @@ Only after staging verification passes and human explicitly confirms production 
 
 ## Reference
 
-- [`docs/devops/release/release-checklist.md`](../../../2-docs/4-devops/7-release-mgmt/release-checklist.md) — release checklist
-- [`docs/devops/ci-cd/ci-cd.md`](../../../2-docs/4-devops/3-ci-cd-pipelines/ci-cd.md) — CI/CD pipeline reference
-- [`docs/agents/workflows/safety-rules.md`](../safety-rules.md) — approval requirements and three-tier authority
+- [`docs/devops/release/release-checklist.md`](../../devops/release/release-checklist.md) — release checklist
+- [`docs/devops/ci-cd/ci-cd.md`](../../devops/ci-cd/ci-cd.md) — CI/CD pipeline reference
+- [`docs/agents/workflows/safety-rules.md`](agent-safety-rules.md) — approval requirements and three-tier authority

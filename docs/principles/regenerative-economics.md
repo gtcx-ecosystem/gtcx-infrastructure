@@ -1,5 +1,9 @@
 # Regenerative Economics Principles
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Building systems that create more value than they extract**
 
 ---

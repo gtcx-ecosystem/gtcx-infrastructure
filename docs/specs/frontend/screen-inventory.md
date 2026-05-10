@@ -1,5 +1,9 @@
 # Screen Inventory and Navigation Map — {Project Name}
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 A complete list of all screens in the product, organized by category, with navigation structure and role access matrix.
 
 ---

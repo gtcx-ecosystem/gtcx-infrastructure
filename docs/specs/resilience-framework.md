@@ -1,10 +1,14 @@
 # GTCX Resilience Framework
 
-| Field   | Value                                                                                                                                                                                                                                   |
-| ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Scope   | All production services across the GTCX ecosystem                                                                                                                                                                                       |
-| Status  | Specification                                                                                                                                                                                                                           |
-| Related | [Infrastructure Architecture](../architecture/infrastructure-architecture-overview.md), [Security Framework](../security/policies-overview.md), [Ecosystem Architecture](../../../docs/architecture/ecosystem-architecture-overview.md) |
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
+| Field   | Value                                                                                                                                                                             |
+| ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Scope   | All production services across the GTCX ecosystem                                                                                                                                 |
+| Status  | Specification                                                                                                                                                                     |
+| Related | [Infrastructure Architecture](../architecture/infrastructure-architecture-overview.md), [Security Policy](../security/security-policy.md), shared ecosystem architecture guidance |
 
 ## Design Principles
 
@@ -188,7 +192,7 @@ Tier 4 leverages the offline-first architecture that already exists in the proto
 
 ## Incident Response Integration
 
-This framework integrates with the existing [Incident Response](../security/incident-response.md) procedures:
+This framework integrates with the existing [Incident Response](../operations/runbooks/incident-response.md) procedures:
 
 | Degradation Tier | Incident Severity | Response                                                                               |
 | ---------------- | ----------------- | -------------------------------------------------------------------------------------- |
@@ -200,7 +204,7 @@ This framework integrates with the existing [Incident Response](../security/inci
 ## Deep Dives
 
 - [Infrastructure Architecture](../architecture/infrastructure-architecture-overview.md) -- Deployment pipeline, environments, and edge architecture
-- [Security Policies](../security/policies-overview.md) -- Security policy framework and standards
-- [Incident Response](../security/incident-response.md) -- Security incident response procedures
-- [Edge Proxy Overview](../edge-proxy-overview.md) -- Edge proxy architecture for field connectivity
-- [Data Protection](../security/data-protection.md) -- Data protection and encryption standards
+- [Security Policies](../security/security-policy.md) -- Security policy framework and standards
+- [Incident Response](../operations/runbooks/incident-response.md) -- Security incident response procedures
+- Edge Proxy Overview (`./edge-proxy-overview.md`) -- Edge proxy architecture for field connectivity
+- [Data Protection](../compliance/data-classification-policy.md) -- Data protection and encryption standards

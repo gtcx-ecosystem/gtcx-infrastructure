@@ -1,5 +1,9 @@
 # Contributors
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 > The distributed network powering [Organization Name] intelligence
 
 ---
@@ -253,7 +257,7 @@ Contributors submit via **[Submission Platform]**:
 
 ## References
 
-- [Regional Lead role definition](./examples/bureau-chiefs.md)
-- [Editor-in-Chief role definition](./examples/editor-in-chief.md)
-- [Editorial Independence](../5-governance/editorial-independence.md)
-- [Conflict of Interest Policy](../5-governance/conflict-of-interest.md)
+- [Regional Lead role definition](bureau-chiefs.md)
+- [Editor-in-Chief role definition](editor-in-chief.md)
+- [Editorial Independence](../governance/editorial-independence.md)
+- [Conflict of Interest Policy](../governance/conflict-of-interest.md)

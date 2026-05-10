@@ -1,5 +1,9 @@
 # Guide: Identifying Roles That Should Be Added
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 How to systematically audit an organization's role coverage and identify gaps that need new role definitions.
 
 ---
@@ -202,7 +206,7 @@ Before submitting the role gap report:
 ## References
 
 - [contributors.md](./contributors.md) — contributor role template
-- [examples/bureau-chiefs.md](./examples/bureau-chiefs.md) — regional lead role example
-- [examples/editor-in-chief.md](./examples/editor-in-chief.md) — senior editorial role example
-- [4-workflows/approval-flows.md](../4-workflows/approval-flows.md) — approval authority reference
-- [5-governance/](../5-governance/) — governance and decision authority policies
+- [examples/bureau-chiefs.md](bureau-chiefs.md) — regional lead role example
+- [examples/editor-in-chief.md](editor-in-chief.md) — senior editorial role example
+- [4-workflows/approval-flows.md](../workflows/approval-flows.md) — approval authority reference
+- [5-governance/](../governance) — governance and decision authority policies

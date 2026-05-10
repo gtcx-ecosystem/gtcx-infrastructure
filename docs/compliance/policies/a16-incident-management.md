@@ -1,5 +1,9 @@
 # POL-16: Information Security Incident Management
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Annex A Reference:** A.16 — Incident Management
 **Effective Date:** 2026-05-08
 **Review Cycle:** Annual

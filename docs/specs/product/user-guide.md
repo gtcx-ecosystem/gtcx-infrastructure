@@ -1,5 +1,9 @@
 # {Product Name} — User Guide
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Version:** {version}
 **Last updated:** {YYYY-MM-DD}
 **Author:** {name}

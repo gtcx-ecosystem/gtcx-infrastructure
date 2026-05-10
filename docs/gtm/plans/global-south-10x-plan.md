@@ -1,5 +1,9 @@
 # Global South 10/10 — Production Readiness Plan
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Context:** GTCX operates in Zimbabwe, Kenya, Nigeria, South Africa, and expanding across the Big 8 African markets. The regulatory environment is central bank sandbox licensing, not FFIEC examination. The infrastructure reality is af-south-1 with intermittent connectivity. The capital constraint is seed-to-Series A, not Goldman Sachs IT budget.
 
 **This plan replaces** the $750K-$1.3M, 12-month FFIEC/SOC 2/ISO 27001 remediation plan with what actually matters for getting — and keeping — a central bank sandbox license in the Global South.

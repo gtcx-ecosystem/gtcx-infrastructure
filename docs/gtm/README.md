@@ -2,6 +2,8 @@
 
 Everything needed to enter African central bank sandboxes and scale to full licensing.
 
+See [GTM Documentation Overview](overview.md) for scope boundaries and ownership.
+
 ---
 
 ## Sandbox Application (`sandbox-application/`)

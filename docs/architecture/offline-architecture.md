@@ -1,5 +1,9 @@
 # Offline Architecture
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Protocol:** GTCX Protocol Layer
 **Version:** 3.0.0
 
@@ -148,4 +152,4 @@ The maximum offline queue duration across all components is **30 days**. After 3
 ## Reference
 
 - [system-overview.md](system-overview.md)
-- [production-store-integration.md](../4-operations/runbooks/production-store-integration.md)
+- [production-store-integration.md](../operations/runbooks/production-store-integration.md)

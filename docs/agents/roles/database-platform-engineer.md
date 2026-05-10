@@ -1,5 +1,9 @@
 # Role: Database Platform Engineer
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 ## Archetype
 
 `1-agentic/archetypes/database-platform-engineer`

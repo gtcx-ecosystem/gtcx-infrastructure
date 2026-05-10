@@ -1,5 +1,9 @@
 # Developer Quickstart — gtcx-infrastructure
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 Get local infrastructure running and understand the repo in under 10 minutes.
 
 ---
@@ -57,7 +61,7 @@ terraform init
 terraform plan
 ```
 
-No automated apply runs without human review. See [ci-cd.md](../../2-docs/4-devops/3-ci-cd-pipelines/ci-cd.md) for the full approval gate.
+No automated apply runs without human review. See [ci-cd.md](../../devops/ci-cd/ci-cd.md) for the full approval gate.
 
 ---
 
@@ -129,10 +133,10 @@ Two databases are a hard constraint. They are never merged:
 
 - [service-overview.md](service-overview.md) — what this repo manages and why
 - [developer-setup.md](developer-setup.md) — full prerequisites and environment setup
-- [system-overview.md](../../2-docs/1-architecture/system-overview.md) — complete infrastructure architecture
-- [deploy runbook](../../2-docs/4-operations/runbooks/deploy.md) — step-by-step deployment
-- [migrate runbook](../../2-docs/4-operations/runbooks/migrate.md) — migration discipline
-- [safety-rules.md](../4-workflows/safety-rules.md) — what requires human approval
+- [system-overview.md](../../architecture/system-overview.md) — complete infrastructure architecture
+- [deploy runbook](../../operations/runbooks/deploy.md) — step-by-step deployment
+- [migrate runbook](../../operations/runbooks/migrate.md) — migration discipline
+- [safety-rules.md](../workflows/agent-safety-rules.md) — what requires human approval
 
 ---
 

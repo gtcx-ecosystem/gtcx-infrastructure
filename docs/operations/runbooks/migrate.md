@@ -1,5 +1,9 @@
 # Migration Runbook — gtcx-infrastructure
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 Process for running database migrations using `./infra/scripts/migrate.sh`.
 
 **Hard rule**: A migration that has run in any environment is immutable. Never modify it — write a forward migration instead.
@@ -169,8 +173,8 @@ Escalate to human review immediately if:
 
 ## Reference
 
-- [`infra/scripts/migrate.sh`](../../../../infra/scripts/migrate.sh) — migration runner
-- [`infra/migrations/config/`](../../../../infra/migrations/config/) — per-environment configs
-- [`infra/migrations/scripts/check_docs.py`](../../../../infra/migrations/scripts/check_docs.py) — validation
-- [`docs/agents/safety-rules.md`](../../../1-agents/safety-rules.md) — authority tiers
-- [`docs/architecture/system-overview.md`](../../1-architecture/system-overview.md) — two-database architecture
+- [`infra/scripts/migrate.sh`](../../../infra/scripts/migrate.sh) — migration runner
+- `infra/migrations/config/` — per-environment configs
+- [`infra/migrations/scripts/check_docs.py`](../../../infra/migrations/scripts/check_docs.py) — validation
+- [`docs/agents/safety-rules.md`](../../agents/workflows/agent-safety-rules.md) — authority tiers
+- [`docs/architecture/system-overview.md`](../../architecture/system-overview.md) — two-database architecture

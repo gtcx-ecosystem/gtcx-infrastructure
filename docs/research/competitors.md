@@ -1,5 +1,9 @@
 # [Competitor Category] — Competitive Analysis
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **[Describe the incumbent category — e.g., "The dominant information infrastructure for [market]"]**
 
 ---

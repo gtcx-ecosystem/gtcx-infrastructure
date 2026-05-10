@@ -1,10 +1,14 @@
 # GTCX Data Governance Specification
 
-| Field   | Value                                                                                                                        |
-| ------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| Scope   | All data across the GTCX ecosystem                                                                                           |
-| Status  | Specification                                                                                                                |
-| Related | [Security Framework](../../../gtcx-core/docs/specs/security-framework.md), [Resilience Framework](./resilience-framework.md) |
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
+| Field   | Value                                                                                                              |
+| ------- | ------------------------------------------------------------------------------------------------------------------ |
+| Scope   | All data across the GTCX ecosystem                                                                                 |
+| Status  | Specification                                                                                                      |
+| Related | Security framework `gtcx-core/docs/specs/security-framework.md`; [Resilience Framework](./resilience-framework.md) |
 
 ## Design Principles
 
@@ -125,6 +129,6 @@ All third-party processors require:
 
 ## Deep Dives
 
-- [Security Framework](../../../gtcx-core/docs/specs/security-framework.md) -- Cryptographic standards, key management, threat models
+- Security framework reference: `gtcx-core/docs/specs/security-framework.md` -- Cryptographic standards, key management, and threat models
 - [Resilience Framework](./resilience-framework.md) -- Key recovery procedures, backup integrity, disaster recovery
-- [Ecosystem Architecture Overview](../../../docs/architecture/ecosystem-architecture-overview.md) -- System topology and data flow across tiers
+- Shared ecosystem architecture guidance informs system topology and data flow across tiers.

@@ -1,5 +1,9 @@
 # License Compliance
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Last Reviewed**: {date}
 **Reviewer**: {name}
 **Release**: {version}

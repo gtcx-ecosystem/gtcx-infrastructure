@@ -1,5 +1,9 @@
 # {Service Name} — Compliance Requirements
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Document ID**: {SVC}-COMPLIANCE-001
 **Version**: 1.0
 **Date**: {Month Year}

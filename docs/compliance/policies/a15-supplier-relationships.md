@@ -1,5 +1,9 @@
 # POL-15: Supplier Relationships
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Annex A Reference:** A.15 — Supplier Controls
 **Effective Date:** 2026-05-08
 **Review Cycle:** Annual

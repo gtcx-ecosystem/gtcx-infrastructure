@@ -1,5 +1,9 @@
 # POL-18: Compliance
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Annex A Reference:** A.18 — Compliance
 **Effective Date:** 2026-05-08
 **Review Cycle:** Annual

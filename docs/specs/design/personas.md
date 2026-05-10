@@ -1,5 +1,9 @@
 # User Personas
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 > Archetypal user profiles that represent [Organization Name]'s key audiences. All product and design decisions should be grounded in one or more of these personas.
 
 ---

@@ -1,5 +1,9 @@
 # Board Resolution: Recovery Time & Recovery Point Objectives
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Document ID:** GTCX-BRD-DR-001
 **Classification:** Confidential — Board Use Only
 **Effective Date:** 2026-05-08

@@ -1,5 +1,9 @@
 # Sprint Phase 2: 9+ Production-Readiness Roadmap
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Goal:** Close the 5 remaining trust-bearing audit gaps to move `gtcx-infrastructure` from 7.5 → 9+.
 
 **Target completion:** 4–6 weeks (can be parallelized across 3 work streams)

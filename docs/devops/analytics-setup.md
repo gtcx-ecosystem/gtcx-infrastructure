@@ -1,5 +1,9 @@
 # Analytics Setup
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 > KPI definitions, instrumentation standards, and dashboard specifications for [Organization Name].
 
 ---

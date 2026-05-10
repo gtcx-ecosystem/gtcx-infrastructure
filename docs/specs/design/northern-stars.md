@@ -1,5 +1,9 @@
 # North Stars
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 > The north star metric and design targets that define "winning" for [Organization Name]. Everything we build should move these numbers.
 
 ---

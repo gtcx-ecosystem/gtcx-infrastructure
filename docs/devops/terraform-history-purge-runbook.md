@@ -1,5 +1,9 @@
 # Terraform Binary History Purge Runbook
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 ## Problem
 
 `.terraform/` directories and `*.tfstate` files were accidentally committed to Git history in `infra/terraform/environments/testnet-pilot/` and other paths. These binaries bloat the repo and may contain sensitive state.

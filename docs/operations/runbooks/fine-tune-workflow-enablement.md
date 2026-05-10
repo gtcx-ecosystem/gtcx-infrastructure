@@ -1,5 +1,9 @@
 # Fine-Tune Workflow Enablement
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 `enable_fine_tune_workflow` must remain `false` until all of the following are true:
 
 - `fine_tune.py` produces a real model artifact

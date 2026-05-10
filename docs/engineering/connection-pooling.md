@@ -1,5 +1,9 @@
 # Connection Pooling
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 ## Overview
 
 Application-level connection pooling is required for all services connecting to PostgreSQL. RDS `max_connections` is not explicitly set in the parameter group, so applications must manage their own pool sizes to avoid exhausting database connections.

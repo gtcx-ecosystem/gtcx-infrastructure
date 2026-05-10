@@ -97,4 +97,4 @@ import { methodology } from '@gtx/intelligence/indices/ctii/src/methodology';
 ## References
 
 - Adapted from [Protocol Partner] ADR-006
-- [Content-First Architecture](./ADR-007-content-first-architecture.md)
+- Content-First Architecture (`ADR-007-content-first-architecture.md`)

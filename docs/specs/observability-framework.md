@@ -1,5 +1,9 @@
 # GTCX Observability Framework
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 | Field   | Value                                                                                   |
 | ------- | --------------------------------------------------------------------------------------- |
 | Scope   | All production services across the GTCX ecosystem                                       |
@@ -198,7 +202,7 @@ Any modification to a historical entry breaks the chain, and the daily integrity
 ## Deep Dives
 
 - [Resilience Framework](./resilience-framework.md) -- SLOs, error budgets, and alerting thresholds that drive observability configuration
-- [Security Policies](../security/policies-overview.md) -- Audit requirements, data protection standards, and PII handling rules
+- [Security Policy](../security/security-policy.md) -- Audit requirements, data protection standards, and PII handling rules
 - [Infrastructure Architecture](../architecture/infrastructure-architecture-overview.md) -- Deployment topology, Kubernetes configuration, and monitoring infrastructure
-- [Data Protection](../security/data-protection.md) -- Data classification and retention policies governing telemetry storage
-- [Ecosystem Architecture](../../../docs/architecture/ecosystem-architecture-overview.md) -- Service topology and cross-service dependencies
+- [Data Protection](../compliance/data-classification-policy.md) -- Data classification and retention policies governing telemetry storage
+- Shared ecosystem architecture guidance informs cross-service dependency monitoring.

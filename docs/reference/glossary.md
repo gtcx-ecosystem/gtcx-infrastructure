@@ -1,5 +1,9 @@
 # Glossary
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 Definitions for all protocol-specific terms, acronyms, and concepts used across the GTCX Protocol layer. Terms are organized alphabetically within thematic groups.
 
 ---
@@ -71,7 +75,7 @@ Maximum acceptable downtime in a disaster scenario. Target: 4 hours.
 The identity model where each participant controls their own identity (DID) and credentials without dependence on a central authority. TradePass implements SSI via W3C Verifiable Credentials.
 
 **Semantic versioning**
-The versioning scheme for packages and schemas: `MAJOR.MINOR.PATCH`. MAJOR bumps indicate breaking changes requiring migration. See [data-models.md §6](../2-specs/data-models.md).
+The versioning scheme for packages and schemas: `MAJOR.MINOR.PATCH`. MAJOR bumps indicate breaking changes requiring migration. See data-models.md §6 (`./2-specs/data-models.md`).
 
 **Stub guard**
 The `enforceStubGuard()` function that throws `StubNotAllowedError` if an in-memory stub implementation is detected in a non-development environment. Defined in ADR-002.
@@ -245,5 +249,5 @@ Input validation utilities: `assertNonEmptyString()`, `assertValidDid()`, `asser
 
 ## Reference
 
-- [operator-types.md](../2-specs/operator-types.md)
-- [protocol-index.md](../2-specs/protocol-index.md)
+- operator-types.md (`./2-specs/operator-types.md`)
+- protocol-index.md (`./2-specs/protocol-index.md`)

@@ -1,5 +1,9 @@
 # Accessibility Checklist
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Standard**: WCAG 2.1 Level AA
 **Review Cycle**: Per release + quarterly audit
 **Owner**: [Engineering Lead / Design Lead]

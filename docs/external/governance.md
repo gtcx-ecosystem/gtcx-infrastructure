@@ -1,5 +1,9 @@
 # Governance
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 Network governance, validator participation, protocol versioning, and dispute resolution.
 
 ---
@@ -126,5 +130,5 @@ Security patches bypass the full process — they are released immediately and a
 
 ## Reference
 
-- [operator-types.md](../2-specs/operator-types.md)
-- [protocol-index.md](../2-specs/protocol-index.md)
+- operator-types.md (`./2-specs/operator-types.md`)
+- protocol-index.md (`./2-specs/protocol-index.md`)

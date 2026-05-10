@@ -1,5 +1,9 @@
 # Key Ceremony Runbook
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Purpose:** Document the procedures for KMS signing key generation, rotation, and revocation.
 **Compliance:** FFIEC Key Management, PCI-DSS Requirement 3.6, ISO 27001 A.10.1
 **Review cycle:** Quarterly (or after any key compromise event)

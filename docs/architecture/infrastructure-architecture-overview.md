@@ -1,11 +1,15 @@
 # GTCX Infrastructure -- Architecture Overview
 
-| Field       | Value                                                                                                                                                   |
-| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Layer       | Supporting                                                                                                                                              |
-| Depends on  | Nothing (standalone DevOps tooling)                                                                                                                     |
-| Consumed by | All repos (deployment, security, templates)                                                                                                             |
-| Related     | [Ecosystem Architecture](../../../docs/architecture/ecosystem-architecture-overview.md), [Dependency Map](../../../docs/architecture/dependency-map.md) |
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
+| Field       | Value                                                                                         |
+| ----------- | --------------------------------------------------------------------------------------------- |
+| Layer       | Supporting                                                                                    |
+| Depends on  | Nothing (standalone DevOps tooling)                                                           |
+| Consumed by | All repos (deployment, security, templates)                                                   |
+| Related     | Shared ecosystem architecture guidance and dependency maps maintained outside this repository |
 
 ## Role in the Ecosystem
 
@@ -93,7 +97,7 @@ Field sites operate on solar power with satellite connectivity (Starlink/VSAT). 
 | L2    | Low-bandwidth (VSAT)           | Near-real-time sync, compressed payloads |
 | L3    | Full (fiber/4G)                | Real-time streaming, full analytics      |
 
-Mesh networking between nearby field sites enables peer-to-peer data sharing even at L0. See [Edge Proxy Overview](../edge-proxy-overview.md) for the full edge architecture.
+Mesh networking between nearby field sites enables peer-to-peer data sharing even at L0. See Edge Proxy Overview (`./edge-proxy-overview.md`) for the full edge architecture.
 
 ## Key Design Decisions
 
@@ -106,19 +110,19 @@ Mesh networking between nearby field sites enables peer-to-peer data sharing eve
 
 ## Deep Dives
 
-- [Infrastructure Overview](../infrastructure-overview.md) -- High-level architecture of the deployment stack
-- [Digital Infrastructure Framework](../digital-infrastructure-framework.md) -- End-to-end digital infrastructure design
-- [Six-Month Deployment Roadmap](../six-month-deployment-roadmap.md) -- Phased deployment plan across environments
-- [Security Policies](../security/policies-overview.md) -- Security policy framework and standards
-- [Access Control](../security/access-control.md) -- Access control policies and role definitions
-- [Data Protection](../security/data-protection.md) -- Data protection and encryption standards
-- [Incident Response](../security/incident-response.md) -- Security incident response procedures
-- [Edge Proxy Overview](../edge-proxy-overview.md) -- Edge proxy architecture for field connectivity
-- [Compliance OS Overview](../compliance-os-overview.md) -- Compliance operating system and automation
-- [Migrations Overview](../migrations-overview.md) -- Data and service migration strategies
-- [Infrastructure Economics](../infrastructure-economics.md) -- Cost modeling and optimization
-- [Compliance Templates](../compliance-templates-overview.md) -- Compliance template engine overview
-- [Storage as Infrastructure](../storage-as-infrastructure.md) -- Storage architecture and data persistence
+- [Infrastructure Overview](infrastructure-overview.md) -- High-level architecture of the deployment stack
+- Digital Infrastructure Framework (`./digital-infrastructure-framework.md`) -- End-to-end digital infrastructure design
+- Six-Month Deployment Roadmap (`./six-month-deployment-roadmap.md`) -- Phased deployment plan across environments
+- [Security Policies](../security/security-policy.md) -- Security policy framework and standards
+- [Access Control](../../infra/security/policies/access-control.md) -- Access control policies and role definitions
+- [Data Protection](../compliance/data-classification-policy.md) -- Data protection and encryption standards
+- [Incident Response](../operations/runbooks/incident-response.md) -- Security incident response procedures
+- Edge Proxy Overview (`./edge-proxy-overview.md`) -- Edge proxy architecture for field connectivity
+- Compliance OS Overview (`./compliance-os-overview.md`) -- Compliance operating system and automation
+- [Migrations Overview](migrations-overview.md) -- Data and service migration strategies
+- Infrastructure Economics (`./infrastructure-economics.md`) -- Cost modeling and optimization
+- [Compliance Templates](../compliance/compliance-templates-overview.md) -- Compliance template engine overview
+- Storage as Infrastructure (`./storage-as-infrastructure.md`) -- Storage architecture and data persistence
 - [Resilience Framework](../specs/resilience-framework.md) -- SPOF analysis, recovery targets, degradation tiers, and chaos testing
 - [Testing Framework](../specs/testing-framework.md) -- Test strategy, coverage targets, and CI test gates
 - [Observability Framework](../specs/observability-framework.md) -- Metrics, logging, tracing, and alerting

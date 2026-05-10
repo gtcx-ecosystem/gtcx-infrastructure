@@ -84,8 +84,8 @@ The substance of this repo's governance is stable regardless of how `1-agentic` 
 
 ## Reference
 
-- [`docs/agents/README.md`](../README.md) — team roster and role overview
-- [`docs/agents/3-structure/coordination.md`](../3-structure/coordination.md) — multi-role coordination protocol
-- [`docs/agents/workflows/safety-rules.md`](../4-workflows/safety-rules.md) — safety rules
+- `docs/agents/README.md` (`./README.md`) — team roster and role overview
+- `docs/agents/3-structure/coordination.md` (`./3-structure/coordination.md`) — multi-role coordination protocol
+- [`docs/agents/workflows/safety-rules.md`](../workflows/agent-safety-rules.md) — safety rules
 - `1-agentic` — GTCX internal AI development platform
 - `ai-1-baseline` — Baseline Protocol

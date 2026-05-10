@@ -1,5 +1,9 @@
 # GTCX Risk Register
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Owner:** CISO
 **Last Updated:** 2026-05-08
 **Review Cycle:** Quarterly

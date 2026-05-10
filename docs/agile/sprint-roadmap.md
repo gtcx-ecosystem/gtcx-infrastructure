@@ -1,5 +1,9 @@
 # [Product Name] — Roadmap
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 ## Phase 1: Foundation ([Q/Year])
 
 **Goal:** Core products live, initial content cadence established.

@@ -101,7 +101,7 @@ profiles:
 ## Related Decisions
 
 - [ADR-004: Offline-First Mobile](./ADR-004-offline-first-mobile.md)
-- [ADR-008: Multi-Channel Distribution](./ADR-008-multi-channel-distribution.md)
+- ADR-008: Multi-Channel Distribution (`ADR-008-multi-channel-distribution.md`)
 
 ## References
 

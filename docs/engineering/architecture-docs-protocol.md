@@ -1,5 +1,9 @@
 # Protocol: Architecture Documentation
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 ## Version
 
 1.0
@@ -32,8 +36,8 @@ Defines the minimum architecture documentation required for any system or servic
 
 ## Reference
 
-- [ADR Template](../6-decisions/adr-template.md)
-- [System Design Template](./system-design-template.md)
+- [ADR Template](../decisions/adr-template.md)
+- System Design Template (`system-design-template.md`)
 
 ## Metadata
 

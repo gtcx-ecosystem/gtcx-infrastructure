@@ -1,5 +1,9 @@
 # Guide: Documentation Hygiene Runbook
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 How to run a documentation hygiene check across the repo.
 
 ## Checks
@@ -36,8 +40,8 @@ grep -rn 'TODO\|FIXME\|PLACEHOLDER\|TBD\|COMING SOON' . --include='*.md'
 ### Broken Internal Links
 
 ```bash
-grep -rn '\[.*\](\./\|\.\./' . --include='*.md' | while read line; do
-  file=$(echo "$line" | cut -d: -f1)
+grep -rn '\.*\ (`\./\|\.\./' . --include='*.md' | while read line; do
+  file=$(echo "$line" | cut -d: -f1`)
   link=$(echo "$line" | grep -o '(\.[^)]*\.md)' | tr -d '()')
   if [ -n "$link" ]; then
     dir=$(dirname "$file")

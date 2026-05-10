@@ -1,5 +1,9 @@
 # Story Lifecycle
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 > From idea to publication — the [Organization Name] content workflow
 
 ---
@@ -266,4 +270,4 @@ Total: 5-10 days
 ## References
 
 - [Approval Flows](./approval-flows.md)
-- [Editorial Independence](../5-governance/editorial-independence.md)
+- [Editorial Independence](../governance/editorial-independence.md)

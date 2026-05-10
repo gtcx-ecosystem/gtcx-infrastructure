@@ -1,5 +1,9 @@
 # Design System — {project-name}
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 ## Design Principles
 
 - **Consistency**: {how consistency is maintained across the system}

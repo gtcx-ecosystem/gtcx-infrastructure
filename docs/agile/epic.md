@@ -1,5 +1,9 @@
 # [Epic Name] — Sprint [N] ([Milestone Name])
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 > **Sprint:** [N]
 > **Dates:** [YYYY-MM-DD] to [YYYY-MM-DD]
 > **Goal:** [One sentence — what this sprint delivers and why.]

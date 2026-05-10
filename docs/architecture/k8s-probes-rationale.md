@@ -1,5 +1,9 @@
 # K8s Health Probes — Rationale and Coverage
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 ## Verified Coverage (2026-05)
 
 All **Deployments** in `infra/kubernetes/base/services/` have liveness + readiness probes:

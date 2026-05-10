@@ -1,5 +1,9 @@
 # Trust Model
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Protocol:** GTCX Protocol Layer
 **Version:** 3.0.0
 
@@ -142,4 +146,4 @@ This design means GTCX cannot revoke a producer's access by compromising a centr
 ## Reference
 
 - [system-overview.md](system-overview.md)
-- [cryptographic-inventory.md](../3-engineering/security/cryptographic-inventory.md)
+- [cryptographic-inventory.md](../security/security-architecture.md)

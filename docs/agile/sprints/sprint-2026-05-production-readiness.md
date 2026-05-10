@@ -1,5 +1,9 @@
 # Sprint: Production-Readiness Closure — May 2026
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Goal:** Close the 6 remaining trust-bearing audit gaps to move `gtcx-infrastructure` from 6.5 → 8+.
 
 **Sprint duration:** 1 cycle (single-session burst)

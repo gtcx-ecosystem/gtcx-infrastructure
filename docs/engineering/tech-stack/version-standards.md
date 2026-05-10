@@ -1,5 +1,9 @@
 # Version Standards
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 Purpose: define the minimum supported versions and lifecycle policy for core runtime components.
 
 ## Standards

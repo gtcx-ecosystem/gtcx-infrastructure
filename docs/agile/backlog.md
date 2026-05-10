@@ -1,5 +1,9 @@
 # Backlog — [Product Name]
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 ## Must Have (Phase 1)
 
 - [Platform A] [web / app] with [X] subscription tiers

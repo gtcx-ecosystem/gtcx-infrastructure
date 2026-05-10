@@ -1,5 +1,9 @@
 # Guide: ADRs vs System Design
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 When to use an ADR versus a system design document.
 
 ## Use an ADR When
@@ -23,7 +27,7 @@ When to use an ADR versus a system design document.
 ## Reference
 
 - [ADR Template](./adr-template.md)
-- [System Design Template](../2-system-design/system-design-template.md)
+- System Design Template (`./2-system-design/system-design-template.md`)
 
 ## Metadata
 

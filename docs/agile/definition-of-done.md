@@ -1,5 +1,9 @@
 # Definition of Done — gtcx-infrastructure
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 Quality criteria that must be satisfied before any work item in `gtcx-infrastructure` is considered complete.
 
 ---
@@ -74,6 +78,6 @@ When DoD cannot be met:
 
 ## Reference
 
-- [`docs/devops/release/release-checklist.md`](../../../../2-docs/4-devops/7-release-mgmt/release-checklist.md) — release gate checklist
-- [`docs/operations/runbooks/quality-runbook.md`](../../../../2-docs/4-devops/2-runbooks/quality-runbook.md) — full gate sequence
-- [`docs/agile/qa-test-plan.md`](../6-testing/uat/uat-evidence-log.md) — UAT evidence log
+- [`docs/devops/release/release-checklist.md`](../devops/release/release-checklist.md) — release gate checklist
+- [`docs/operations/runbooks/quality-runbook.md`](../operations/runbooks/quality-runbook.md) — full gate sequence
+- `docs/agile/qa-test-plan.md` (`./6-testing/uat/uat-evidence-log.md`) — UAT evidence log

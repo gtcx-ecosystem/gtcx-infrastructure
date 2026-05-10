@@ -1,6 +1,10 @@
 # API Specification — {api-name}
 
-> Full API specification. For a lightweight architecture-level overview, see [api-design-template.md](api-design-template.md).
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
+> Full API specification. For a lightweight architecture-level overview, see api-design-template.md (`api-design-template.md`).
 
 ## 1. Overview
 

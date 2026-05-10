@@ -1,5 +1,9 @@
 # Cosign Image Signing — CI Integration Guide
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 Exact changes required in `.github/workflows/build-push-ecr.yml` to enable
 keyless Cosign signing of all container images pushed to ECR.
 

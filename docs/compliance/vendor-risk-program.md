@@ -1,5 +1,9 @@
 # GTCX Vendor Risk Management Program
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Owner:** CISO
 **Effective Date:** 2026-05-08
 **Review Cycle:** Annual

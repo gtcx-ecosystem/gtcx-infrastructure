@@ -1,5 +1,9 @@
 # Intelligence Evidence
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 Use this runbook to prepare environment variables for the intelligence repo evidence runners from the infra-managed testnet contract.
 
 This runbook does not execute the evidence scripts itself. It prepares the smoke target and provider credentials/toggles that the intelligence repo needs.

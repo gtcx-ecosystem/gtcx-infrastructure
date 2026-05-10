@@ -1,5 +1,9 @@
 # Conflict of Interest Policy
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 > Protecting [Organization Name]' integrity and credibility
 
 ---

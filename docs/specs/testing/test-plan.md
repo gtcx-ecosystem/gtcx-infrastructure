@@ -1,5 +1,9 @@
 # [Project Name] Test Plan
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Document ID**: [DOC-TEST-NNN]
 **Version**: {version}
 **Date**: {YYYY-MM-DD}

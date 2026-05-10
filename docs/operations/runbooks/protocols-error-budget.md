@@ -1,5 +1,9 @@
 # Protocols Error Budget Runbook
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 ## Alert
 
 - `ProtocolsErrorBudgetFastBurn` — 14.4x burn rate (page immediately)

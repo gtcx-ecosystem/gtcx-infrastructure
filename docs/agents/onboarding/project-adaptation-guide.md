@@ -1,5 +1,9 @@
 # Project Adaptation Guide
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 How to adapt SOP templates for a new or existing project.
 
 ## Quick Start

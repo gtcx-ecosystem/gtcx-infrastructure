@@ -1,5 +1,9 @@
 # Feature Backlog — {Project Name}
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 A structured breakdown of epics, features, and user stories with prioritization and estimation guidance.
 
 ---

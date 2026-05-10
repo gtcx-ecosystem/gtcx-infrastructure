@@ -1,5 +1,9 @@
 # Board Security Committee Charter
 
+> **Status:** Current
+> **Date:** 2026-05-10
+> **Owner:** GTCX Infrastructure
+
 **Effective Date:** 2026-05-08
 **Review Cycle:** Annual
 **Approved By:** Board of Directors
