@@ -2,7 +2,7 @@
  * @fileoverview Nonce Store Interface
  *
  * Abstracts nonce storage so verifiers can run in-memory (dev/test),
- * Redis (production clustered), or any other backend.
+ * Redis (production clustered), or another backend.
  *
  * Principles: RESILIENT (P12), SECURE (P11)
  */

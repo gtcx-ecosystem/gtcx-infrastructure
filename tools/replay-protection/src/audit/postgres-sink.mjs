@@ -8,11 +8,25 @@
  */
 
 /**
+ * @typedef {(sql: string, params: readonly unknown[]) => Promise<void>} PostgresQuery
+ * @typedef {{ query(sql: string, params: readonly unknown[]): Promise<void>, release(): void }} PostgresPoolClient
+ * @typedef {{ connect(): Promise<PostgresPoolClient> }} PostgresPool
+ */
+
+/**
+ * @param {unknown} error
+ * @returns {string}
+ */
+function errorMessage(error) {
+  return error instanceof Error ? error.message : String(error);
+}
+
+/**
  * Create a PostgreSQL audit sink.
  *
  * @param {object} opts
  * @param {string} opts.connectionString - PostgreSQL connection string (e.g. from AUDIT_DATABASE_URL)
- * @param {Function} [opts.query] - Async query function `(sql, params) => Promise<void>`.
+ * @param {PostgresQuery} [opts.query] - Async query function `(sql, params) => Promise<void>`.
  *   Defaults to a thin wrapper around `pg` if available. If `pg` is not installed,
  *   the sink degrades to a no-op with a warning.
  * @returns {import('./audit-capture.mjs').AuditSink}
@@ -54,13 +68,13 @@ export function createPostgresSink(opts) {
           event.isDelayedOfflineReplay ?? null,
         ]
       );
-    } catch (/** @type {any} */ err) {
+    } catch (err) {
       // Best-effort: do not block verification on audit write failure.
        
       console.error(JSON.stringify({
         level: 'error',
         type: 'audit.sink.postgres.write_failed',
-        message: err?.message,
+        message: errorMessage(err),
         eventId: event.eventId,
       }));
     }
@@ -73,13 +87,16 @@ export function createPostgresSink(opts) {
  */
 /** @param {string} connectionString */
 function defaultQuery(connectionString) {
-  /** @type {any} */
+  /** @type {PostgresPool | null} */
   let pool = null;
-  return async (/** @type {string} */ sql, /** @type {any[]} */ params) => {
+  return async (
+    /** @type {string} */ sql,
+    /** @type {readonly unknown[]} */ params
+  ) => {
     if (!pool) {
       try {
         // @ts-expect-error pg is an optional peer dependency
-        const { Pool } = await import('pg');
+        const { Pool } = /** @type {{ Pool: new (opts: { connectionString: string, max: number }) => PostgresPool }} */ (await import('pg'));
         pool = new Pool({ connectionString, max: 5 });
       } catch {
          

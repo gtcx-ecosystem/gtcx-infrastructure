@@ -51,7 +51,16 @@ const NODE_ENV = process.env.NODE_ENV ?? 'development';
 
 /** @type {import('./store/nonce-store.mjs').NonceStore} */
 let nonceStore = new MemoryNonceStore();
+/** @type {string | null} */
 let trafficBlockReason = null;
+
+/**
+ * @param {unknown} error
+ * @returns {string}
+ */
+function errorMessage(error) {
+  return error instanceof Error ? error.message : String(error);
+}
 
 async function initRedis() {
   const redisUrl = process.env.REDIS_URL;
@@ -92,12 +101,12 @@ async function initRedis() {
       console.error(JSON.stringify({
         level: 'error',
         message: trafficBlockReason,
-        error: /** @type {any} */ (err)?.message,
+        error: errorMessage(err),
       }));
       return false;
     }
 
-    console.error(JSON.stringify({ level: 'warn', message: 'Redis unavailable, falling back to memory store', error: /** @type {any} */ (err)?.message }));
+    console.error(JSON.stringify({ level: 'warn', message: 'Redis unavailable, falling back to memory store', error: errorMessage(err) }));
     return false;
   }
 }
@@ -317,9 +326,9 @@ const server = createServer(async (req, res) => {
     } else {
       sendJson(res, 404, { error: 'Not found' });
     }
-  } catch (/** @type {any} */ err) {
+  } catch (err) {
      
-    console.error(JSON.stringify({ level: 'error', message: 'Unhandled server error', error: err?.message }));
+    console.error(JSON.stringify({ level: 'error', message: 'Unhandled server error', error: errorMessage(err) }));
     sendJson(res, 500, { error: 'Internal server error' });
   }
 });

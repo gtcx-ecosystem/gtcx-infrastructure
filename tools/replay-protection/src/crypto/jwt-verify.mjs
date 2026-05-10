@@ -16,6 +16,20 @@ const DID_RESOLVER_TIMEOUT_MS = Number(process.env.DID_RESOLVER_TIMEOUT_MS || 50
  */
 
 /**
+ * @param {unknown} value
+ * @returns {DidDocument}
+ */
+function normalizeDidDocument(value) {
+  if (!value || typeof value !== 'object') {
+    throw new Error('DID resolver returned a non-object response');
+  }
+  if ('didDocument' in value && value.didDocument && typeof value.didDocument === 'object') {
+    return /** @type {DidDocument} */ (value.didDocument);
+  }
+  return /** @type {DidDocument} */ (value);
+}
+
+/**
  * Resolve a DID to a DID document via HTTP.
  *
  * @param {string} did
@@ -30,9 +44,8 @@ export async function resolveDid(did) {
     if (!res.ok) {
       throw new Error(`DID resolver returned ${res.status}`);
     }
-    /** @type {any} */
     const doc = await res.json();
-    return doc.didDocument ?? doc;
+    return normalizeDidDocument(doc);
   } finally {
     clearTimeout(timer);
   }

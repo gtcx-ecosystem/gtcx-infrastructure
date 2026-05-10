@@ -18,6 +18,10 @@ const HEX_RE = /^[0-9a-fA-F]+$/;
 const NONCE_MIN_LEN = 16; // 8 bytes hex minimum
 
 /**
+ * @typedef {Record<string, unknown> & { envelopeHash?: string }} VerifiedJwtPayload
+ */
+
+/**
  * Verify a signature according to the scheme declared in the integrity payload.
  *
  * @param {import('../types').QueueIntegrity} integrity
@@ -69,7 +73,7 @@ export async function verifyDidSignature(integrity) {
       }
       case 'did-jwt-es256': {
         // ES256 JWT; payload must contain matching envelopeHash
-        const payload = /** @type {any} */ (await verifyJwt(integrity.signature, publicKeyJwk, {
+        const payload = /** @type {VerifiedJwtPayload} */ (await verifyJwt(integrity.signature, publicKeyJwk, {
           audience: integrity.audience,
         }));
         return payload.envelopeHash === integrity.envelopeHash;

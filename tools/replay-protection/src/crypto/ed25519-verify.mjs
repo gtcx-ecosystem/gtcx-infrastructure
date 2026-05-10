@@ -62,9 +62,11 @@ export async function generateEd25519KeyPair() {
     true,
     ['sign', 'verify']
   );
-  const kp = /** @type {any} */ (keyPair);
-  const privateKeyJwk = await crypto.subtle.exportKey('jwk', kp.privateKey);
-  const publicKeyJwk = await crypto.subtle.exportKey('jwk', kp.publicKey);
+  if (!('privateKey' in keyPair) || !('publicKey' in keyPair)) {
+    throw new TypeError('Ed25519 key generation did not return a key pair');
+  }
+  const privateKeyJwk = await crypto.subtle.exportKey('jwk', keyPair.privateKey);
+  const publicKeyJwk = await crypto.subtle.exportKey('jwk', keyPair.publicKey);
   return { privateKeyJwk, publicKeyJwk };
 }
 

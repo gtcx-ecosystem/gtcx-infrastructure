@@ -130,7 +130,7 @@ export class ReplayVerifier {
 
     // --- 3. Hash verification (body, headers, envelope) ---
     if (!this.#skipHashVerification) {
-      const hashResult = this.#verifyHashes(integrity, /** @type {any} */ (request));
+      const hashResult = this.#verifyHashes(integrity, request);
       if (!hashResult.valid) {
         this.#metrics.inc('rejected_envelope_total');
         this.#metrics.observeClockSkew(tsEval.skewMs);

@@ -3,6 +3,13 @@ declare module 'redis' {
     url?: string;
     socket?: { tls?: boolean; reconnectStrategy?: (retries: number) => number | false };
   }
+  export interface RedisClientEventMap {
+    connect: [];
+    end: [];
+    error: [Error];
+    ready: [];
+    reconnecting: [];
+  }
   export interface RedisClientType {
     connect(): Promise<void>;
     disconnect(): Promise<void>;
@@ -16,7 +23,11 @@ declare module 'redis' {
     del(...keys: string[]): Promise<number>;
     exists(...keys: string[]): Promise<number>;
     ping(): Promise<string>;
-    on(event: string, listener: (...args: any[]) => void): void;
+    on<EventName extends keyof RedisClientEventMap>(
+      event: EventName,
+      listener: (...args: RedisClientEventMap[EventName]) => void
+    ): void;
+    on(event: string, listener: (...args: unknown[]) => void): void;
   }
   export function createClient(options?: RedisClientOptions): RedisClientType;
 }

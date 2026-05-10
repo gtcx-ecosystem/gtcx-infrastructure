@@ -1,6 +1,6 @@
 ## GTCX Infrastructure — Remediation Plan
 
-> **Status:** Active — Sprint 1 in progress
+> **Status:** Active — Sprint 2 in progress
 > **Date:** 2026-05-10
 > **Owner:** GTCX Infrastructure
 

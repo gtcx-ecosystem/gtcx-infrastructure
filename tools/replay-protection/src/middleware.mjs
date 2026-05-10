@@ -34,8 +34,61 @@ import { ReplayVerifier } from './verifier.mjs';
  */
 
 /**
+ * @typedef {{
+ *   body?: unknown,
+ *   gtcxReplayAudit?: import('./types').AuditEvent,
+ *   headers: Record<string, string | string[] | undefined>,
+ *   id?: string,
+ *   ip?: string,
+ *   method?: string,
+ *   originalUrl?: string,
+ *   path?: string,
+ *   protocol?: string,
+ *   socket?: { remoteAddress?: string },
+ *   url?: string,
+ * }} ReplayMiddlewareRequest
+ *
+ * @typedef {{
+ *   end(body: string): void,
+ *   setHeader(name: string, value: string): void,
+ *   statusCode: number,
+ * }} ReplayMiddlewareResponse
+ *
+ * @typedef {() => void} ReplayMiddlewareNext
+ */
+
+/**
+ * @param {Record<string, string | string[] | undefined>} headers
+ * @returns {Record<string, string>}
+ */
+function normalizeRequestHeaders(headers) {
+  return Object.fromEntries(
+    Object.entries(headers)
+      .map(([key, value]) => {
+        if (Array.isArray(value)) {
+          return [key, value[0] ?? ''];
+        }
+        return [key, value ?? ''];
+      })
+  );
+}
+
+/**
+ * @param {Record<string, string | string[] | undefined>} headers
+ * @param {string} name
+ * @returns {string}
+ */
+function readHeader(headers, name) {
+  const value = headers[name];
+  if (Array.isArray(value)) {
+    return value[0] ?? '';
+  }
+  return value ?? '';
+}
+
+/**
  * @param {MiddlewareOptions} opts
- * @returns {(req: any, res: any, next: Function) => Promise<void>}
+ * @returns {(req: ReplayMiddlewareRequest, res: ReplayMiddlewareResponse, next: ReplayMiddlewareNext) => Promise<void>}
  */
 export function replayGuardMiddleware(opts) {
   const verifier = new ReplayVerifier({
@@ -67,31 +120,31 @@ export function replayGuardMiddleware(opts) {
 
     /** @type {import('./types').QueueIntegrity} */
     const integrity = {
-      scheme: req.headers['x-gtcx-auth-scheme'] ?? '',
-      did: req.headers['x-gtcx-did'] ?? '',
-      keyId: req.headers['x-gtcx-key-id'] ?? '',
-      audience: req.headers['x-gtcx-audience'] ?? '',
-      bodyHash: req.headers['x-gtcx-body-sha256'] ?? '',
-      headersHash: req.headers['x-gtcx-headers-hash'] ?? '',
-      timestamp: req.headers['x-gtcx-timestamp'] ?? '',
+      scheme: readHeader(req.headers, 'x-gtcx-auth-scheme'),
+      did: readHeader(req.headers, 'x-gtcx-did'),
+      keyId: readHeader(req.headers, 'x-gtcx-key-id'),
+      audience: readHeader(req.headers, 'x-gtcx-audience'),
+      bodyHash: readHeader(req.headers, 'x-gtcx-body-sha256'),
+      headersHash: readHeader(req.headers, 'x-gtcx-headers-hash'),
+      timestamp: readHeader(req.headers, 'x-gtcx-timestamp'),
       nonce: String(nonce),
-      signature: req.headers['x-gtcx-signature'] ?? '',
-      envelopeHash: req.headers['x-gtcx-envelope-hash'] ?? '',
+      signature: readHeader(req.headers, 'x-gtcx-signature'),
+      envelopeHash: readHeader(req.headers, 'x-gtcx-envelope-hash'),
     };
 
     const requestData = {
       body: req.body ?? null,
-      headers: req.headers ?? {},
+      headers: normalizeRequestHeaders(req.headers ?? {}),
       method: req.method ?? 'GET',
       url: `${req.protocol ?? 'http'}://${req.headers.host ?? 'localhost'}${req.originalUrl ?? req.url ?? '/'}`,
     };
 
     const context = {
-      region: req.headers['x-gtcx-region'],
-      requestId: req.headers['x-request-id'] ?? req.id,
-      deviceId: req.headers['x-gtcx-device-id'],
+      region: readHeader(req.headers, 'x-gtcx-region') || undefined,
+      requestId: readHeader(req.headers, 'x-request-id') || req.id,
+      deviceId: readHeader(req.headers, 'x-gtcx-device-id') || undefined,
       remoteAddress: req.ip ?? req.socket?.remoteAddress,
-      userAgent: req.headers['user-agent'],
+      userAgent: readHeader(req.headers, 'user-agent') || undefined,
     };
 
     const result = await verifier.verify(integrity, requestData, context);
