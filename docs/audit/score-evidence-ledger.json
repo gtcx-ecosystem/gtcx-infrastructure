@@ -59,7 +59,7 @@
     {
       "id": "investor-lens",
       "name": "Investor Lens",
-      "currentScore": 6.2,
+      "currentScore": 7.8,
       "maxScore": 10,
       "history": [
         {
@@ -69,13 +69,21 @@
           "ciRun": null,
           "artifact": "docs/audit/master-audit-2026-05-10.md",
           "reason": "Initial master audit baseline"
+        },
+        {
+          "date": "2026-05-12",
+          "score": 7.8,
+          "commit": "29dbf06",
+          "ciRun": null,
+          "artifact": "docs/audit/master-audit-2026-05-12.md",
+          "reason": "Master audit 2026-05-12: Phase 3 institutional controls, SIGNAL 8.60/10, contract tests, WAF/Flow Logs Terraform, SLSA L3 provenance verified, honest SCORING_FRAMEWORK recalculation"
         }
       ]
     },
     {
       "id": "enterprise-buyer",
       "name": "Enterprise Buyer Lens",
-      "currentScore": 5.9,
+      "currentScore": 8.0,
       "maxScore": 10,
       "history": [
         {
@@ -85,13 +93,21 @@
           "ciRun": null,
           "artifact": "docs/audit/master-audit-2026-05-10.md",
           "reason": "Initial master audit baseline"
+        },
+        {
+          "date": "2026-05-12",
+          "score": 8.0,
+          "commit": "29dbf06",
+          "ciRun": null,
+          "artifact": "docs/audit/master-audit-2026-05-12.md",
+          "reason": "Master audit 2026-05-12: Phase 3 institutional controls, SIGNAL 8.60/10, contract tests, WAF/Flow Logs Terraform, SLSA L3 provenance verified, honest SCORING_FRAMEWORK recalculation"
         }
       ]
     },
     {
       "id": "sovereign-dfi",
       "name": "African Sovereign / DFI Lens",
-      "currentScore": 6.4,
+      "currentScore": 7.9,
       "maxScore": 10,
       "history": [
         {
@@ -101,6 +117,14 @@
           "ciRun": null,
           "artifact": "docs/audit/master-audit-2026-05-10.md",
           "reason": "Initial master audit baseline"
+        },
+        {
+          "date": "2026-05-12",
+          "score": 7.9,
+          "commit": "29dbf06",
+          "ciRun": null,
+          "artifact": "docs/audit/master-audit-2026-05-12.md",
+          "reason": "Master audit 2026-05-12: Phase 3 institutional controls, SIGNAL 8.60/10, contract tests, WAF/Flow Logs Terraform, SLSA L3 provenance verified, honest SCORING_FRAMEWORK recalculation"
         }
       ]
     },

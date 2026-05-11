@@ -107,7 +107,7 @@ describe('Replay Guard Integration', () => {
     await new Promise((r) => stubServer.listen(0, () => r()));
     const addr = stubServer.address();
     const port = typeof addr === 'string' ? parseInt(addr.split(':').pop() || '0', 10) : (addr?.port || 0);
-    stubServer.close();
+    await new Promise((r) => stubServer.close(r));
 
     process.env.PORT = String(port);
     process.env.REDIS_URL = '';
@@ -366,8 +366,15 @@ describe('Replay Guard Integration', () => {
     it('rejects requests with a tampered Ed25519 signature', async () => {
       const reqData = defaultRequestData;
       const integrity = await makeIntegrityPayload(reqData);
-      // Flip one character in the base64url signature to corrupt it
-      const tamperedSignature = integrity.signature.slice(0, -1) + (integrity.signature.slice(-1) === 'A' ? 'B' : 'A');
+      // Flip one character in the base64url signature to corrupt it.
+      // We modify a character in the middle (not the last) because the final
+      // base64url character may only encode 2 bits of the 64-byte Ed25519
+      // signature; changing it to 'A' can accidentally preserve those 2 bits.
+      const idx = Math.floor(integrity.signature.length / 2);
+      const tamperedSignature =
+        integrity.signature.slice(0, idx) +
+        (integrity.signature[idx] === 'A' ? 'B' : 'A') +
+        integrity.signature.slice(idx + 1);
       const res = await fetchJson('/v1/replay/verify', {
         method: 'POST',
         body: { integrity: { ...integrity, signature: tamperedSignature }, ...reqData, region: 'us-east' },

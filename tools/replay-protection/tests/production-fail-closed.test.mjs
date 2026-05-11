@@ -43,7 +43,7 @@ describe('Replay Guard Production Fail-Closed', () => {
     await new Promise((r) => stubServer.listen(0, () => r()));
     const addr = stubServer.address();
     const port = typeof addr === 'string' ? parseInt(addr.split(':').pop() || '0', 10) : (addr?.port || 0);
-    stubServer.close();
+    await new Promise((r) => stubServer.close(r));
 
     process.env.PORT = String(port);
     process.env.NODE_ENV = 'production';

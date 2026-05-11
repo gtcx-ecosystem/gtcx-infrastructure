@@ -1,3 +1,7 @@
+> **Status:** Current
+> **Date:** 2026-05-12
+> **Owner:** GTCX Infrastructure
+
 # GTCX Infrastructure — Master Audit & Bank-Grade Certification
 
 **Date:** 2026-05-12
