@@ -3,6 +3,9 @@ name: 'GTCX Crypto Misuse Analysis'
 queries:
   - uses: security-extended
   - uses: ./.github/codeql/crypto-misuse.ql
+  - uses: ./.github/codeql/jwt-misuse.ql
+  - uses: ./.github/codeql/sql-injection.ql
+  - uses: ./.github/codeql/insecure-deserialization.ql
 
 paths:
   - tools/

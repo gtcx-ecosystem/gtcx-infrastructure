@@ -1,0 +1,83 @@
+# =============================================================================
+# Linkerd Mesh Authorization Policies — Staging
+# =============================================================================
+# mTLS with deny-by-default for staging environment.
+# Only explicitly allowed service identities can communicate.
+#
+# Verification: linkerd authz -n gtcx-staging
+# =============================================================================
+
+# Default deny all traffic within the mesh
+apiVersion: policy.linkerd.io/v1alpha1
+kind: MeshTLSAuthentication
+metadata:
+  name: default-deny
+  namespace: gtcx-staging
+spec:
+  identities: []
+---
+# Allow replay-guard to call protocols
+apiVersion: policy.linkerd.io/v1alpha1
+kind: AuthorizationPolicy
+metadata:
+  name: replay-guard-to-protocols
+  namespace: gtcx-staging
+spec:
+  targetRef:
+    group: ''
+    kind: Service
+    name: gtcx-protocols-staging
+  requiredAuthenticationRefs:
+    - name: replay-guard-auth
+      kind: MeshTLSAuthentication
+      group: policy.linkerd.io
+---
+apiVersion: policy.linkerd.io/v1alpha1
+kind: MeshTLSAuthentication
+metadata:
+  name: replay-guard-auth
+  namespace: gtcx-staging
+spec:
+  identities:
+    - 'gtcx-staging.gtcx-replay-guard-staging.serviceaccount.identity.linkerd.cluster.local'
+---
+# Allow protocols to call postgres (operational)
+apiVersion: policy.linkerd.io/v1alpha1
+kind: AuthorizationPolicy
+metadata:
+  name: protocols-to-postgres
+  namespace: gtcx-staging
+spec:
+  targetRef:
+    group: ''
+    kind: Service
+    name: gtcx-postgres-staging
+  requiredAuthenticationRefs:
+    - name: protocols-auth
+      kind: MeshTLSAuthentication
+      group: policy.linkerd.io
+---
+apiVersion: policy.linkerd.io/v1alpha1
+kind: MeshTLSAuthentication
+metadata:
+  name: protocols-auth
+  namespace: gtcx-staging
+spec:
+  identities:
+    - 'gtcx-staging.gtcx-protocols-staging.serviceaccount.identity.linkerd.cluster.local'
+---
+# Allow protocols to call postgres-audit
+apiVersion: policy.linkerd.io/v1alpha1
+kind: AuthorizationPolicy
+metadata:
+  name: protocols-to-postgres-audit
+  namespace: gtcx-staging
+spec:
+  targetRef:
+    group: ''
+    kind: Service
+    name: gtcx-postgres-audit-staging
+  requiredAuthenticationRefs:
+    - name: protocols-auth
+      kind: MeshTLSAuthentication
+      group: policy.linkerd.io

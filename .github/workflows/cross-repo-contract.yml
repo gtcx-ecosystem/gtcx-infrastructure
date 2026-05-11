@@ -1,0 +1,79 @@
+name: Cross-Repo Contract Matrix
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  contract-matrix:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        repo:
+          - name: gtcx-protocols
+            path: protocols
+            test-command: pnpm test
+          - name: gtcx-core
+            path: core
+            test-command: pnpm test
+          - name: gtcx-infrastructure
+            path: infrastructure
+            test-command: bash infra/scripts/validate.sh quick
+    steps:
+      - name: Checkout infrastructure (this repo)
+        uses: actions/checkout@v6
+        with:
+          path: infrastructure
+
+      - name: Checkout ${{ matrix.repo.name }}
+        uses: actions/checkout@v6
+        with:
+          repository: gtcx-ecosystem/${{ matrix.repo.name }}
+          token: ${{ secrets.GTCX_REPO_TOKEN }}
+          path: ${{ matrix.repo.path }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '20'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Run contract tests — infrastructure
+        if: matrix.repo.name == 'gtcx-infrastructure'
+        run: |
+          cd infrastructure
+          node --test tools/contract-tests/*.test.mjs
+
+      - name: Run contract tests — protocol API schema
+        if: matrix.repo.name == 'gtcx-protocols'
+        run: |
+          cd infrastructure
+          node --test tools/contract-tests/protocol-schema.test.mjs
+
+      - name: Run ${{ matrix.repo.name }} tests
+        if: matrix.repo.name != 'gtcx-infrastructure'
+        run: |
+          cd ${{ matrix.repo.path }}
+          ${{ matrix.repo.test-command }}
+
+      - name: Upload contract evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: contract-evidence-${{ matrix.repo.name }}-${{ github.run_id }}
+          path: |
+            infrastructure/tools/contract-tests/
+            ${{ matrix.repo.path }}/test-results/
+          retention-days: 90

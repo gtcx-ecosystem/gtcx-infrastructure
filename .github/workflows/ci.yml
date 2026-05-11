@@ -117,6 +117,12 @@ jobs:
       - name: Incident-drill validation
         run: node tools/scripts/incident-drill-validator.mjs
 
+      - name: SIGNAL scorecard validation
+        run: node tools/scripts/validate-signal.mjs
+
+      - name: Protocol API contract tests
+        run: node --test tools/contract-tests/protocol-schema.test.mjs
+
       - name: Install k6
         run: |
           K6_VERSION="v0.52.0"
@@ -285,8 +291,14 @@ jobs:
       - name: Kustomize build — staging overlay
         run: kubectl kustomize infra/kubernetes/overlays/staging/ > /dev/null
 
+      - name: Kustomize build — staging linkerd overlay
+        run: kubectl kustomize infra/kubernetes/overlays/staging/linkerd/ > /dev/null
+
       - name: Kustomize build — production overlay
         run: kubectl kustomize infra/kubernetes/overlays/production/ > /dev/null
+
+      - name: Kustomize build — production linkerd overlay
+        run: kubectl kustomize infra/kubernetes/overlays/production/linkerd/ > /dev/null
 
       - name: Docker Compose config validation
         run: |

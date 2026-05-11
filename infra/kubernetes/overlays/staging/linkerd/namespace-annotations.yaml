@@ -1,0 +1,14 @@
+# =============================================================================
+# Linkerd Data-Plane Injection — Staging Namespace Annotations
+# =============================================================================
+# Enables Linkerd sidecar injection for the staging namespace.
+# After applying, restart all deployments: kubectl rollout restart deployment -n gtcx-staging
+#
+# Verification: linkerd viz stat deploy -n gtcx-staging
+# =============================================================================
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: gtcx-staging
+  annotations:
+    linkerd.io/inject: enabled

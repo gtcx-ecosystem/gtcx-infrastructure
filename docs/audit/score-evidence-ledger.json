@@ -11,7 +11,7 @@
     {
       "id": "core-weighted",
       "name": "Core Weighted Score",
-      "currentScore": 7.6,
+      "currentScore": 8.5,
       "maxScore": 10,
       "history": [
         {
@@ -45,6 +45,14 @@
           "ciRun": null,
           "artifact": "docs/audit/master-audit-2026-05-11.md",
           "reason": "Phase 2 partial: staging Terraform+K8s configs, pen-test scope doc, chaos PR validation, quarterly DR workflow, PagerDuty simulation, staging ingress/TLS/NetworkPolicies"
+        },
+        {
+          "date": "2026-05-11",
+          "score": 8.5,
+          "commit": "37e60f9",
+          "ciRun": null,
+          "artifact": "docs/audit/signal-scorecard.json",
+          "reason": "Phase 3: SIGNAL scorecard validator + CI gate (8.60/10), protocol API contract tests, cross-repo CI matrix, Linkerd staging configs, WAF + VPC Flow Logs Terraform, JIT access tool, custom CodeQL queries (crypto-misuse, jwt-misuse, sql-injection, insecure-deserialization), OWASP ZAP DAST workflow"
         }
       ]
     },
@@ -139,7 +147,7 @@
     {
       "id": "security",
       "name": "Security",
-      "currentScore": 7.3,
+      "currentScore": 8.2,
       "maxScore": 10,
       "history": [
         {
@@ -173,6 +181,14 @@
           "ciRun": null,
           "artifact": "docs/audit/master-audit-2026-05-11.md",
           "reason": "Phase 2 partial: pen-test scope doc, staging ingress/TLS/NetworkPolicies, chaos manifest validation in CI, PagerDuty drill simulation"
+        },
+        {
+          "date": "2026-05-11",
+          "score": 8.2,
+          "commit": "37e60f9",
+          "ciRun": null,
+          "artifact": "docs/audit/signal-scorecard.json",
+          "reason": "Phase 3: SIGNAL scorecard (8.60/10), WAF Terraform, VPC Flow Logs, Linkerd mesh configs, JIT access tool, 4 custom CodeQL queries, ZAP DAST workflow, protocol contract tests"
         }
       ]
     },
@@ -235,7 +251,7 @@
     {
       "id": "enterprise-readiness",
       "name": "Enterprise / Production Readiness",
-      "currentScore": 7.2,
+      "currentScore": 8.0,
       "maxScore": 10,
       "history": [
         {
@@ -269,6 +285,14 @@
           "ciRun": null,
           "artifact": "docs/audit/master-audit-2026-05-11.md",
           "reason": "Phase 2 partial: quarterly DR workflow, chaos PR gate, staging smoke test harness, PagerDuty incident drill simulation"
+        },
+        {
+          "date": "2026-05-11",
+          "score": 8.0,
+          "commit": "37e60f9",
+          "ciRun": null,
+          "artifact": "docs/audit/signal-scorecard.json",
+          "reason": "Phase 3: SIGNAL scorecard CI gate, contract tests, WAF + Flow Logs Terraform, Linkerd mesh configs, JIT access tool, CodeQL + ZAP DAST workflows"
         }
       ]
     },

@@ -1,0 +1,203 @@
+{
+  "version": 1,
+  "framework": "SIGNAL",
+  "description": "Agentic AI Maturity Scorecard for GTCX Compliance Gateway",
+  "date": "2026-05-10",
+  "evaluator": "Platform AI Safety",
+  "pillars": [
+    {
+      "id": "supervision",
+      "name": "Supervision",
+      "description": "Human oversight of AI-initiated actions before consequential effects",
+      "weight": 0.25,
+      "maxScore": 10,
+      "currentScore": 8.0,
+      "metrics": [
+        {
+          "id": "S1",
+          "name": "Mutating tool approval gating",
+          "description": "All mutating tool invocations require explicit approval context",
+          "evidence": "tools/compliance-gateway/src/auth.mjs:buildAccessProfile requires valid approval ticket + approvedBy + reason + idempotencyKey",
+          "status": "pass",
+          "score": 10
+        },
+        {
+          "id": "S2",
+          "name": "Audit trail for every AI action",
+          "description": "Every compliance query and tool call is logged with principal, timestamp, and outcome",
+          "evidence": "tools/compliance-gateway/src/server.mjs logs all queries with routing, authz, and usage; replay-protection emits audit events",
+          "status": "pass",
+          "score": 9
+        },
+        {
+          "id": "S3",
+          "name": "Real-time anomaly detection",
+          "description": "Unusual query patterns or tool usage trigger alerts",
+          "evidence": "Not yet implemented — planned for Phase 4",
+          "status": "planned",
+          "score": 5
+        }
+      ]
+    },
+    {
+      "id": "integrity",
+      "name": "Integrity",
+      "description": "Data and behavior integrity guarantees for AI systems",
+      "weight": 0.25,
+      "maxScore": 10,
+      "currentScore": 8.5,
+      "metrics": [
+        {
+          "id": "I1",
+          "name": "Replay protection for signed requests",
+          "description": "Mobile queue integrity payloads are cryptographically verified",
+          "evidence": "tools/replay-protection/src/verifier.mjs: ReplayVerifier verifies nonce, timestamp, bodyHash, headersHash, envelopeHash, and Ed25519 signature",
+          "status": "pass",
+          "score": 10
+        },
+        {
+          "id": "I2",
+          "name": "Audit immutability",
+          "description": "Audit database cannot be modified after write",
+          "evidence": "infra/scripts/test-audit-immutability.sh: live privilege check + negative DML probe in CI; audit DB runs as separate user with no UPDATE/DELETE privileges",
+          "status": "pass",
+          "score": 10
+        },
+        {
+          "id": "I3",
+          "name": "Tamper-evident release evidence",
+          "description": "Release artifacts are signed and SBOM-attested",
+          "evidence": ".github/workflows/build-push-ecr.yml: Cosign keyless signing + SBOM generation; generate-release-evidence.mjs produces immutable evidence bundles",
+          "status": "pass",
+          "score": 9
+        },
+        {
+          "id": "I4",
+          "name": "WORM audit storage",
+          "description": "Audit events stored with cryptographic proof of immutability",
+          "evidence": "Not yet implemented — planned for Phase 4",
+          "status": "planned",
+          "score": 4
+        }
+      ]
+    },
+    {
+      "id": "governance",
+      "name": "Governance",
+      "description": "Policies, access control, and accountability for AI systems",
+      "weight": 0.2,
+      "maxScore": 10,
+      "currentScore": 7.5,
+      "metrics": [
+        {
+          "id": "G1",
+          "name": "Authentication boundary",
+          "description": "All AI gateway endpoints require valid bearer token",
+          "evidence": "tools/compliance-gateway/src/auth.mjs: authenticateHeaders requires Bearer token; constant-time comparison; 401/403 tests pass",
+          "status": "pass",
+          "score": 10
+        },
+        {
+          "id": "G2",
+          "name": "Tool segregation",
+          "description": "Read-only and mutating tools are separated by permission + approval",
+          "evidence": "tools/compliance-gateway/src/policy.mjs: canAccessTool blocks mutating tools when canMutate=false; createToolRegistry filters by accessProfile",
+          "status": "pass",
+          "score": 10
+        },
+        {
+          "id": "G3",
+          "name": "Separation of duties matrix",
+          "description": "Documented SoD with board approval and quarterly review",
+          "evidence": "docs/security/security-framework.md: SoD matrix with quarterly reviews; infra/security/policies/access-control.md: RBAC roles and permission structure",
+          "status": "pass",
+          "score": 8
+        },
+        {
+          "id": "G4",
+          "name": "Break-glass procedure",
+          "description": "Emergency access with time limits and mandatory post-incident review",
+          "evidence": "docs/security/break-glass-procedure.md: 15-minute max session, two-person rule, auto-alerts, evidence requirements, regulatory traceability",
+          "status": "pass",
+          "score": 9
+        }
+      ]
+    },
+    {
+      "id": "non-proliferation",
+      "name": "Non-Proliferation",
+      "description": "Preventing harmful capabilities from being exposed or misused",
+      "weight": 0.15,
+      "maxScore": 10,
+      "currentScore": 8.0,
+      "metrics": [
+        {
+          "id": "N1",
+          "name": "No public mutation path",
+          "description": "query.gtcx.trade is not published until zero-trust boundary exists",
+          "evidence": "tools/policy/check-security-control-boundaries.mjs: enforces query.gtcx.trade absence; CI step fails if re-added",
+          "status": "pass",
+          "score": 10
+        },
+        {
+          "id": "N2",
+          "name": "Network segmentation",
+          "description": "Pods communicate only via required ports; network traffic is logged for audit",
+          "evidence": "infra/kubernetes/overlays/staging/network-policies.yaml: default-deny-all with explicit egress/ingress rules; infra/terraform/modules/flow-logs/main.tf: VPC Flow Logs for all traffic with 365-day retention",
+          "status": "pass",
+          "score": 9
+        },
+        {
+          "id": "N3",
+          "name": "Container image signing enforcement",
+          "description": "Unsigned images rejected at admission",
+          "evidence": "infra/kubernetes/base/policies/require-signed-images.yaml: Kyverno ClusterPolicy verifies Cosign signatures; build-push-ecr.yml signs images",
+          "status": "pass",
+          "score": 8
+        },
+        {
+          "id": "N4",
+          "name": "mTLS service mesh",
+          "description": "All pod-to-pod communication is TLS-encrypted",
+          "evidence": "infra/kubernetes/overlays/production/linkerd/mesh-policies.yaml + namespace-annotations.yaml: deny-by-default Linkerd mesh policies; infra/kubernetes/overlays/staging/linkerd/: staging equivalents. Sidecar injection pending Q3 2026 (ADR-007).",
+          "status": "partial",
+          "score": 6
+        }
+      ]
+    },
+    {
+      "id": "alignment",
+      "name": "Alignment",
+      "description": "Runtime policy enforcement ensures AI behavior matches governance intent",
+      "weight": 0.15,
+      "maxScore": 10,
+      "currentScore": 7.0,
+      "metrics": [
+        {
+          "id": "A1",
+          "name": "Runtime policy prompt",
+          "description": "LLM receives explicit runtime policy describing caller permissions",
+          "evidence": "tools/compliance-gateway/src/policy.mjs: buildRuntimePolicyPrompt injects caller subject, permissions, and mutating-tool status into system prompt",
+          "status": "pass",
+          "score": 10
+        },
+        {
+          "id": "A2",
+          "name": "Fail-closed behavior",
+          "description": "Service refuses traffic when critical dependencies are unavailable",
+          "evidence": "tools/replay-protection/src/server.mjs: returns 503 when Redis unavailable in production; tools/replay-protection/tests/production-fail-closed.test.mjs verifies",
+          "status": "pass",
+          "score": 10
+        },
+        {
+          "id": "A3",
+          "name": "SIGNAL scorecard CI gate",
+          "description": "Scorecard validation runs in CI and blocks PRs on regression",
+          "evidence": "tools/scripts/validate-signal.mjs: validates schema, computes weighted score, fails CI if score < threshold; docs/audit/signal-scorecard.json: 5-pillar maturity scorecard",
+          "status": "pass",
+          "score": 9
+        }
+      ]
+    }
+  ]
+}

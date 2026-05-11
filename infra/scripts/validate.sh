@@ -235,6 +235,16 @@ run_kyverno_policy_validation() {
     (cd "${PROJECT_ROOT}" && node tools/scripts/kyverno-policy-validator.mjs)
 }
 
+run_signal_scorecard_validation() {
+    log_info "Running SIGNAL scorecard validation..."
+    (cd "${PROJECT_ROOT}" && node tools/scripts/validate-signal.mjs)
+}
+
+run_contract_tests() {
+    log_info "Running protocol API contract tests..."
+    (cd "${PROJECT_ROOT}" && node --test tools/contract-tests/protocol-schema.test.mjs)
+}
+
 run_chaos_manifest_validation() {
     log_info "Running chaos manifest validation..."
     (cd "${PROJECT_ROOT}" && node tools/scripts/chaos-manifest-validator.mjs)
@@ -270,6 +280,8 @@ case "${MODE}" in
         run_kyverno_policy_validation
         run_chaos_manifest_validation
         run_pagerduty_drill_simulation
+        run_signal_scorecard_validation
+        run_contract_tests
         ;;
     full)
         run_policy_checks
@@ -292,6 +304,8 @@ case "${MODE}" in
         run_kustomize_validation
         run_compose_validation
         run_load_tests
+        run_signal_scorecard_validation
+        run_contract_tests
         ;;
     --help|-h|help)
         usage

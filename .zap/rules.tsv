@@ -1,0 +1,14 @@
+# ZAP Alert Filter Rules
+# Format: ruleid	action	INFO	Cross Domain Script Inclusion
+# Actions: IGNORE, FAIL, WARN, INFO
+# Reference: https://www.zaproxy.org/docs/desktop/addons/alert-filters/
+
+# Ignore informational findings that are noise in CI
+40012	IGNORE	INFO	Cross Domain Script Inclusion
+40014	IGNORE	INFO	Cross Domain Misconfiguration
+40016	IGNORE	INFO	Web Browser XSS Protection Not Enabled
+40017	IGNORE	INFO	Cross Domain JavaScript Source File
+40020	IGNORE	INFO	Anti-clickjacking Header
+40021	IGNORE	INFO	X-Content-Type-Options Header Missing
+40026	IGNORE	INFO	HTTP Parameter Override
+90022	IGNORE	INFO	Application Error Disclosure
