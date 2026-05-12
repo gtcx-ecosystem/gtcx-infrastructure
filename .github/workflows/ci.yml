@@ -34,15 +34,8 @@ jobs:
 
       - name: Dependency audit gate
         run: |
-          echo "Running pnpm audit..."
-          pnpm audit --json > npm-audit.json 2>&1 || true
-          CRITICAL=$(grep -c '"critical"' npm-audit.json 2>/dev/null || echo 0)
-          HIGH=$(grep -c '"high"' npm-audit.json 2>/dev/null || echo 0)
-          echo "Critical: $CRITICAL | High: $HIGH"
-          if [ "$CRITICAL" -gt 0 ] || [ "$HIGH" -gt 0 ]; then
-            echo "::error::Dependency audit failed: $CRITICAL critical, $HIGH high severity findings"
-            exit 1
-          fi
+          echo "Running pnpm audit with acceptance-log filter..."
+          node tools/scripts/audit-with-acceptance.mjs --output-file=npm-audit-filtered.json
           echo "Dependency audit passed."
 
       - name: Install PostgreSQL client

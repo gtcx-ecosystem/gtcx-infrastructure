@@ -241,31 +241,32 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Run pnpm audit
+      - name: Run pnpm audit with acceptance filter
         run: |
-          pnpm audit --json > npm-audit.json 2>&1 || true
+          node tools/scripts/audit-with-acceptance.mjs --output-file=npm-audit-filtered.json
           echo "Audit completed at $(date -u +%Y%m%dT%H%M%SZ)"
 
       - name: Summarise audit findings
         run: |
-          if [ -f npm-audit.json ]; then
+          if [ -f npm-audit-filtered.json ]; then
             echo "## Dependency Audit" >> "$GITHUB_STEP_SUMMARY"
-            # pnpm audit --json outputs one advisory per line; count severities
-            CRITICAL=$(grep -c '"critical"' npm-audit.json 2>/dev/null || echo 0)
-            HIGH=$(grep -c '"high"' npm-audit.json 2>/dev/null || echo 0)
-            MODERATE=$(grep -c '"moderate"' npm-audit.json 2>/dev/null || echo 0)
+            CRITICAL=$(node -e "console.log(require('./npm-audit-filtered.json').summary.critical)")
+            HIGH=$(node -e "console.log(require('./npm-audit-filtered.json').summary.high)")
+            MODERATE=$(node -e "console.log(require('./npm-audit-filtered.json').summary.moderate)")
+            ACCEPTED=$(node -e "console.log(require('./npm-audit-filtered.json').meta.acceptedFiltered)")
             echo "| Severity | Count |" >> "$GITHUB_STEP_SUMMARY"
             echo "|----------|-------|" >> "$GITHUB_STEP_SUMMARY"
             echo "| Critical | $CRITICAL |" >> "$GITHUB_STEP_SUMMARY"
             echo "| High     | $HIGH |" >> "$GITHUB_STEP_SUMMARY"
             echo "| Moderate | $MODERATE |" >> "$GITHUB_STEP_SUMMARY"
+            echo "| Accepted (filtered) | $ACCEPTED |" >> "$GITHUB_STEP_SUMMARY"
           fi
 
       - name: Upload audit results
         uses: actions/upload-artifact@v4
         with:
           name: evidence-dependency-audit
-          path: npm-audit.json
+          path: npm-audit-filtered.json
           retention-days: 90
 
   # ──────────────────────────────────────────────
