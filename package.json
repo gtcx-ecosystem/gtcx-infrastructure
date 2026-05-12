@@ -40,6 +40,7 @@
   "devDependencies": {
     "@eslint/js": "^9.28.0",
     "@types/node": "^22.10.0",
+    "c8": "^11.0.0",
     "eslint": "^9",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import-x": "^4.16.2",
