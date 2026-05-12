@@ -347,7 +347,7 @@
     {
       "id": "enterprise-readiness",
       "name": "Enterprise / Production Readiness",
-      "currentScore": 8.7,
+      "currentScore": 8.75,
       "maxScore": 10,
       "history": [
         {
@@ -429,6 +429,14 @@
           "ciRun": null,
           "artifact": "infra/terraform/modules/worm-audit/main.tf",
           "reason": "WORM storage live + anomaly detector containerized (Dockerfile + K8s manifest). Staging platform now has all M2 hardening components deployed."
+        },
+        {
+          "date": "2026-05-12",
+          "score": 8.75,
+          "commit": null,
+          "ciRun": null,
+          "artifact": "infra/terraform/environments/production/main.tf",
+          "reason": "Production Terraform environment configured: VPC (10.4.0.0/16), EKS (3\u00d7 t3.medium), RDS (db.t3.medium, 100GB), WAF, Flow Logs, WORM, CI role. Validated. Awaiting backend bootstrap + cost approval."
         }
       ]
     },
