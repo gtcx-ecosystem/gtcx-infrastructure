@@ -24,8 +24,8 @@ eks_node_desired_size   = 2
 eks_node_min_size       = 2
 eks_node_max_size       = 4
 
-# API access — bastion recommended; public API for kubectl during setup
-enable_public_api = true
+# API access — private only for staging security
+enable_public_api = false
 admin_cidr_blocks = []
 
 # Domain — ACM certificate for HTTPS
