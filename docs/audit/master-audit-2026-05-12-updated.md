@@ -20,6 +20,7 @@
 | Core Weighted Score          | **8.85/10** | production-ready              |
 | Investor Lens                |  **7.8/10** | serious production candidate  |
 | Enterprise Buyer Lens        |  **8.0/10** | serious production candidate  |
+| Ecosystem Integration        |  **8.3/10** | shared platform fully adopted |
 | African Sovereign / DFI Lens |  **7.9/10** | serious production candidate  |
 | SIGNAL Framework             | **8.89/10** | institutional controls active |
 
@@ -29,7 +30,7 @@
 
 1. **Pen-test vendor engagement** — Send RFP to SensePost + Nclose (vendor shortlist complete)
 2. **SOC 2 auditor engagement** — Gap analysis + teaming agreement outreach
-3. **Production Terraform environment** — Create prod environment based on staging pattern
+3. **Production Terraform environment** — Backend bootstrapped, plan generated (86 resources), awaiting cost approval + apply
 
 ---
 
@@ -94,22 +95,25 @@
 
 ### M2 Hardening (Completed)
 
-| Item                               | Status | Evidence                      |
-| ---------------------------------- | ------ | ----------------------------- |
-| Staging Terraform apply            | ✅     | 76 resources created          |
-| WAF + Flow Logs                    | ✅     | Live in af-south-1            |
-| WORM audit storage module          | ✅     | Deployed to staging           |
-| Chaos network partition tests      | ✅     | 4/4 pass                      |
-| TruffleHog secret scanning         | ✅     | CI workflow active            |
-| pnpm audit gate                    | ✅     | With acceptance-log filter    |
-| SLO burn-rate alerts               | ✅     | Prometheus rules              |
-| On-call drill template             | ✅     | Evidence log + scenarios      |
-| Package rename docs                | ✅     | 20 files updated              |
-| Ecosystem repo review              | ✅     | 25 repos surveyed             |
-| gtcx-core12 + gtcx-amis deprecated | ✅     | ADR-009                       |
-| Platform compliance governance     | ✅     | Inheritance model established |
-| gtcx-intelligence onboarded        | ✅     | Shared CI role + ECR registry |
-| Anomaly detector containerized     | ✅     | Dockerfile + K8s manifest     |
+| Item                               | Status | Evidence                                            |
+| ---------------------------------- | ------ | --------------------------------------------------- |
+| Staging Terraform apply            | ✅     | 76 resources created                                |
+| WAF + Flow Logs                    | ✅     | Live in af-south-1                                  |
+| WORM audit storage module          | ✅     | Deployed to staging                                 |
+| Chaos network partition tests      | ✅     | 4/4 pass                                            |
+| TruffleHog secret scanning         | ✅     | CI workflow active                                  |
+| pnpm audit gate                    | ✅     | With acceptance-log filter                          |
+| SLO burn-rate alerts               | ✅     | Prometheus rules                                    |
+| On-call drill template             | ✅     | Evidence log + scenarios                            |
+| Package rename docs                | ✅     | 20 files updated                                    |
+| Ecosystem repo review              | ✅     | 25 repos surveyed                                   |
+| gtcx-core12 + gtcx-amis deprecated | ✅     | ADR-009                                             |
+| Platform compliance governance     | ✅     | Inheritance model established                       |
+| gtcx-intelligence onboarded        | ✅     | Shared CI role + ECR registry                       |
+| Anomaly detector containerized     | ✅     | Dockerfile + K8s manifest                           |
+| Anomaly detector image built       | ✅     | CI workflow, ECR push verified                      |
+| 100% shared platform onboarding    | ✅     | 23/23 active repos have AWS_ROLE_ARN + ECR_REGISTRY |
+| Production backend bootstrapped    | ✅     | S3 + DynamoDB in us-east-1                          |
 
 ---
 
@@ -119,7 +123,7 @@
 | ---------- | --------------- | ------- | ------------ | --------- | --------- |
 | Core       | 5.9             | 6.8–8.5 | **8.85**     | 9.3       | 10.0      |
 | Security   | 4.5             | 6.2–8.2 | **8.8**      | 9.6       | 10.0      |
-| Enterprise | 6.3             | 6.8–8.0 | **8.7**      | 9.5       | 10.0      |
+| Enterprise | 6.3             | 6.8–8.0 | **8.8**      | 9.5       | 10.0      |
 | SIGNAL     | —               | 8.6     | **8.89**     | —         | —         |
 
 ---
@@ -133,6 +137,7 @@
 | M3        | WORM storage append-only verified        | 1 day       | None               | Yes            |
 | M3        | Anomaly detector deployed to staging EKS | 1 day       | Image build + push | Yes            |
 | M3        | Production environment                   | 2–3 days    | Cost approval      | No             |
+| M3        | Anomaly detector deployed to staging EKS | 1 day       | None               | Yes            |
 | M3        | Cross-repo package adoption              | 1 week      | Publish + PRs      | Yes            |
 | M4        | SOC 2 Type 1 attestation                 | 3–6 months  | Auditor + evidence | No             |
 | M4        | ISO 27001 certification                  | 6–12 months | Auditor + evidence | No             |
@@ -161,6 +166,8 @@
 | M2 continued | 22661e2 | Package rename docs + compliance governance + deprecation ADR |
 | M2 finalized | 05a654f | WORM deployed + anomaly detector containerized                |
 | Ledger bump  | c4a176e | Security 8.8, Enterprise 8.7                                  |
+| Ledger bump  | 7ebca03 | Ecosystem 8.3, Enterprise 8.8, 100% onboarding, image built   |
+| Prod backend | —       | S3 gtcx-terraform-state-production + DynamoDB locks table     |
 
 ---
 
