@@ -1,6 +1,7 @@
 # GTCX Infrastructure — Penetration Test Scope & RFP
 
-**Status:** Pending procurement  
+**Status:** Vendor shortlist complete — awaiting leadership selection & RFP send
+**Shortlist:** See [`pen-test-vendor-shortlist.md`](./pen-test-vendor-shortlist.md)  
 **Owner:** Security/Leadership  
 **Date:** 2026-05-11
 **Engagement type:** Black-box + grey-box hybrid

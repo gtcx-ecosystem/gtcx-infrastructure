@@ -323,7 +323,7 @@
     {
       "id": "enterprise-readiness",
       "name": "Enterprise / Production Readiness",
-      "currentScore": 8.6,
+      "currentScore": 8.65,
       "maxScore": 10,
       "history": [
         {
@@ -389,6 +389,14 @@
           "ciRun": null,
           "artifact": "infra/terraform/environments/staging/terraform.tfstate",
           "reason": "Live staging environment with all production-readiness components: EKS, RDS, WAF, Flow Logs, shared CI role. Service repos onboard via 2 GitHub variables."
+        },
+        {
+          "date": "2026-05-12",
+          "score": 8.65,
+          "commit": null,
+          "ciRun": null,
+          "artifact": "docs/audit/pen-test-vendor-shortlist.md",
+          "reason": "Pen-test vendor shortlist complete: Orange Cyberdefense SensePost (recommended), Nclose (fallback), Telspace Africa. Evaluation criteria weighted for CREST/AI-experience/POPIA. RFP template ready for 2026-05-13 send."
         }
       ]
     },
@@ -412,7 +420,7 @@
           "commit": null,
           "ciRun": null,
           "artifact": "docs/audit/signal-scorecard.json",
-          "reason": "M2 Hardening partial: I4 WORM audit storage (4→6), S3 real-time anomaly detection (5→6), chaos network partition resilience (4/4 pass), FIPS endpoints all environments"
+          "reason": "M2 Hardening partial: I4 WORM audit storage (4\u21926), S3 real-time anomaly detection (5\u21926), chaos network partition resilience (4/4 pass), FIPS endpoints all environments"
         },
         {
           "date": "2026-05-12",
@@ -420,7 +428,7 @@
           "commit": null,
           "ciRun": null,
           "artifact": "docs/audit/signal-scorecard.json",
-          "reason": "M2 Hardening continued: S3 anomaly detection (6→7, CI-validated), secret scanning (TruffleHog), dependency audit gate, SLO burn-rate alerts, on-call drill template"
+          "reason": "M2 Hardening continued: S3 anomaly detection (6\u21927, CI-validated), secret scanning (TruffleHog), dependency audit gate, SLO burn-rate alerts, on-call drill template"
         }
       ]
     },
