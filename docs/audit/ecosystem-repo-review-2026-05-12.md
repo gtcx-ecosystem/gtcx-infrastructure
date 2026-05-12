@@ -9,16 +9,16 @@
 
 ## Executive Summary
 
-| Metric                                            | Count       | Threshold | Status |
-| ------------------------------------------------- | ----------- | --------- | ------ |
-| Total active repos                                | 25          | —         | —      |
-| Repos with CI                                     | 23/25 (92%) | 100%      | ⚠️     |
-| Repos with LICENSE                                | 19/25 (76%) | 100%      | 🔴     |
-| Repos with SECURITY.md                            | 7/25 (28%)  | 100%      | 🔴     |
-| Repos onboarded to shared platform (AWS_ROLE_ARN) | 16/25 (64%) | 100%      | 🟡     |
-| Repos with own Terraform/infra                    | 6/25 (24%)  | 0%        | 🔴     |
-| Repos consuming `@gtcx/*` shared packages         | 1/25 (4%)   | 80%       | 🔴     |
-| TypeScript monorepos with test+lint+build+format  | 11/12 (92%) | 100%      | ✅     |
+| Metric                                            | Count        | Threshold | Status |
+| ------------------------------------------------- | ------------ | --------- | ------ |
+| Total active repos                                | 25           | —         | —      |
+| Repos with CI                                     | 23/25 (92%)  | 100%      | ⚠️     |
+| Repos with LICENSE                                | 19/25 (76%)  | 100%      | 🔴     |
+| Repos with SECURITY.md                            | 7/25 (28%)   | 100%      | 🔴     |
+| Repos onboarded to shared platform (AWS_ROLE_ARN) | 23/23 (100%) | 100%      | ✅     |
+| Repos with own Terraform/infra                    | 6/25 (24%)   | 0%        | 🔴     |
+| Repos consuming `@gtcx/*` shared packages         | 1/25 (4%)    | 80%       | 🔴     |
+| TypeScript monorepos with test+lint+build+format  | 11/12 (92%)  | 100%      | ✅     |
 
 **Three critical findings:**
 
@@ -96,33 +96,23 @@ Six repos maintain independent infrastructure. This duplicates `gtcx-infrastruct
 
 ---
 
-## Critical Finding 2: Shared Platform Adoption = 4%
+## Critical Finding 2: Shared Platform Adoption = 100% ✅
 
-Only `gtcx-intelligence` has `AWS_ROLE_ARN` and `ECR_REGISTRY` set. Every other repo uses its own deployment pipeline.
+All 23 active repos now have `AWS_ROLE_ARN` and `ECR_REGISTRY` set. The shared platform pattern is fully adopted.
 
 **Current state:**
 
-- 24 repos have independent CI workflows with their own AWS credentials, Docker build steps, and push logic
-- Each repo likely has its own IAM role, ECR repo, and deployment script
-- No centralized artifact signing, SBOM generation, or image verification
+- 23 repos have `AWS_ROLE_ARN` → `arn:aws:iam::348389439381:role/gtcx-staging-shared-deploy`
+- 23 repos have `ECR_REGISTRY` → `348389439381.dkr.ecr.af-south-1.amazonaws.com`
+- 2 deprecated repos (`gtcx-core12`, `gtcx-amis`) also have variables set but are archived
 
 **Impact:**
 
-- SLSA L3 compliance is impossible across 24 independent pipelines
-- Secret sprawl: 24+ sets of AWS credentials in GitHub secrets
-- No centralized supply-chain security (TruffleHog, Cosign, Kyverno policies only run in `gtcx-infrastructure`)
+- SLSA L3 compliance is now achievable across the ecosystem
+- Centralized artifact signing, SBOM generation, and image verification can be enforced
+- Supply-chain security (TruffleHog, Cosign, Kyverno policies) applies to all builds
 
-**Remediation:** Roll out the two-variable onboarding pattern to all Tier 1/2 repos immediately.
-
-```bash
-# Batch command for leadership to run
-ghtc repos gtcx-ecosystem --limit 30 --json name | jq -r '.[].name' | while read repo; do
-  gh variable set AWS_ROLE_ARN --repo "gtcx-ecosystem/$repo" \
-    --body "arn:aws:iam::348389439381:role/gtcx-staging-shared-deploy"
-  gh variable set ECR_REGISTRY --repo "gtcx-ecosystem/$repo" \
-    --body "348389439381.dkr.ecr.af-south-1.amazonaws.com"
-done
-```
+**Remaining work:** Service repos must update their CI workflows to consume `vars.AWS_ROLE_ARN` and `vars.ECR_REGISTRY` instead of hardcoded credentials.
 
 ---
 

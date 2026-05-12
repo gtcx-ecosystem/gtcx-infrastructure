@@ -23,7 +23,7 @@ spec:
         fsGroup: 1000
       containers:
         - name: detector
-          image: '348389439381.dkr.ecr.af-south-1.amazonaws.com/anomaly-detector:ci-latest'
+          image: '348389439381.dkr.ecr.af-south-1.amazonaws.com/gtcx-anomaly-detector:latest'
           imagePullPolicy: Always
           env:
             - name: PROMETHEUS_URL
