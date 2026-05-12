@@ -203,7 +203,7 @@
     {
       "id": "security",
       "name": "Security",
-      "currentScore": 8.7,
+      "currentScore": 8.8,
       "maxScore": 10,
       "history": [
         {
@@ -269,6 +269,14 @@
           "ciRun": null,
           "artifact": "infra/terraform/environments/staging/terraform.tfstate",
           "reason": "WAF Web ACL live in af-south-1 (verified), VPC Flow Logs active with 365d retention, shared CI deploy role with least-privilege ECR/EKS access. Network segmentation now operational."
+        },
+        {
+          "date": "2026-05-12",
+          "score": 8.8,
+          "commit": null,
+          "ciRun": null,
+          "artifact": "infra/terraform/modules/worm-audit/main.tf",
+          "reason": "WORM audit storage deployed to staging: S3 Object Lock COMPLIANCE mode (2557 days), KMS encryption, public access blocked, verified via AWS CLI"
         }
       ]
     },
@@ -331,7 +339,7 @@
     {
       "id": "enterprise-readiness",
       "name": "Enterprise / Production Readiness",
-      "currentScore": 8.65,
+      "currentScore": 8.7,
       "maxScore": 10,
       "history": [
         {
@@ -405,6 +413,14 @@
           "ciRun": null,
           "artifact": "docs/audit/pen-test-vendor-shortlist.md",
           "reason": "Pen-test vendor shortlist complete: Orange Cyberdefense SensePost (recommended), Nclose (fallback), Telspace Africa. Evaluation criteria weighted for CREST/AI-experience/POPIA. RFP template ready for 2026-05-13 send."
+        },
+        {
+          "date": "2026-05-12",
+          "score": 8.7,
+          "commit": null,
+          "ciRun": null,
+          "artifact": "infra/terraform/modules/worm-audit/main.tf",
+          "reason": "WORM storage live + anomaly detector containerized (Dockerfile + K8s manifest). Staging platform now has all M2 hardening components deployed."
         }
       ]
     },
