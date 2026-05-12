@@ -307,7 +307,7 @@
     {
       "id": "ecosystem-integration",
       "name": "Ecosystem Integration",
-      "currentScore": 7.5,
+      "currentScore": 8.0,
       "maxScore": 10,
       "history": [
         {
@@ -317,6 +317,14 @@
           "ciRun": null,
           "artifact": "docs/audit/master-audit-2026-05-10.md",
           "reason": "Initial master audit baseline"
+        },
+        {
+          "date": "2026-05-12",
+          "score": 8.0,
+          "commit": null,
+          "ciRun": null,
+          "artifact": "docs/audit/ecosystem-repo-review-2026-05-12.md",
+          "reason": "Batch-onboarded 15 repos to shared platform (AWS_ROLE_ARN + ECR_REGISTRY). Shared CI adoption 4% \u2192 64%. Anomaly detector build-push workflow created."
         }
       ]
     },

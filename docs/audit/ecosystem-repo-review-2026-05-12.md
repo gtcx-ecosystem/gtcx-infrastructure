@@ -15,7 +15,7 @@
 | Repos with CI                                     | 23/25 (92%) | 100%      | ⚠️     |
 | Repos with LICENSE                                | 19/25 (76%) | 100%      | 🔴     |
 | Repos with SECURITY.md                            | 7/25 (28%)  | 100%      | 🔴     |
-| Repos onboarded to shared platform (AWS_ROLE_ARN) | 1/25 (4%)   | 100%      | 🔴     |
+| Repos onboarded to shared platform (AWS_ROLE_ARN) | 16/25 (64%) | 100%      | 🟡     |
 | Repos with own Terraform/infra                    | 6/25 (24%)  | 0%        | 🔴     |
 | Repos consuming `@gtcx/*` shared packages         | 1/25 (4%)   | 80%       | 🔴     |
 | TypeScript monorepos with test+lint+build+format  | 11/12 (92%) | 100%      | ✅     |
