@@ -55,19 +55,19 @@
 
 ### Tier 3 — Immature or High-Risk
 
-| Repo                | Lang   | CI  | Test | Lint | Build | Docker | K8s | SEC | LIC | Shared Platform | Notes                                                                      |
-| ------------------- | ------ | --- | ---- | ---- | ----- | ------ | --- | --- | --- | --------------- | -------------------------------------------------------------------------- |
-| `terminal-os`       | TS     | ✅  | ✅   | ✅   | ✅    | ✅     | ❌  | ❌  | ✅  | ❌              | No description. Missing SECURITY.md.                                       |
-| `griot-ai`          | TS     | ✅  | ✅   | ✅   | ✅    | ✅     | ❌  | ❌  | ❌  | ❌              | No description. **Missing LICENSE + SECURITY.md.**                         |
-| `gtcx-markets`      | TS     | ✅  | ✅   | ✅   | ✅    | ❌     | ❌  | ❌  | ❌  | ❌              | **Missing LICENSE + SECURITY.md.**                                         |
-| `gtcx-agile`        | JS     | ✅  | ✅   | ✅   | ✅    | ❌     | ❌  | ❌  | ❌  | ❌              | **Missing LICENSE + SECURITY.md.**                                         |
-| `veritas-ai`        | TS     | ❌  | ✅   | ✅   | ✅    | ❌     | ❌  | ❌  | ❌  | ❌              | **No CI. Missing LICENSE + SECURITY.md.**                                  |
-| `exploration-os`    | JS     | ✅  | ❌   | ✅   | ❌    | ❌     | ❌  | ❌  | ❌  | ❌              | No description. **No tests, no build, no LICENSE, no SECURITY.md.**        |
-| `nyota-ai`          | Python | ✅  | ❌   | ✅   | ✅    | ❌     | ❌  | ❌  | ✅  | ❌              | No description. **No tests, no SECURITY.md.**                              |
-| `gtcx-docs`         | JS     | ✅  | ❌   | ✅   | ❌    | ❌     | ❌  | ❌  | ✅  | ❌              | Docs hub. **No tests, no build, no typecheck, no SECURITY.md.**            |
-| `gtcx-complianceos` | TS     | ✅  | ✅   | ✅   | ✅    | ❌     | ❌  | ❌  | ✅  | ❌              | **Own K8s (5). Missing SECURITY.md.**                                      |
-| `gtcx-core12`       | Python | ❌  | ❌   | ❌   | ❌    | ❌     | ❌  | ❌  | ✅  | ❌              | No description. **No CI, no tests, no build, no SECURITY.md.**             |
-| `gtcx-amis`         | JS     | ❌  | ❌   | ❌   | ❌    | ❌     | ❌  | ❌  | ❌  | ❌              | No description. **No CI, no tests, no build, no LICENSE, no SECURITY.md.** |
+| Repo                | Lang   | CI  | Test | Lint | Build | Docker | K8s | SEC | LIC | Shared Platform | Notes                                                                                      |
+| ------------------- | ------ | --- | ---- | ---- | ----- | ------ | --- | --- | --- | --------------- | ------------------------------------------------------------------------------------------ |
+| `terminal-os`       | TS     | ✅  | ✅   | ✅   | ✅    | ✅     | ❌  | ❌  | ✅  | ❌              | No description. Missing SECURITY.md.                                                       |
+| `griot-ai`          | TS     | ✅  | ✅   | ✅   | ✅    | ✅     | ❌  | ❌  | ❌  | ❌              | No description. **Missing LICENSE + SECURITY.md.**                                         |
+| `gtcx-markets`      | TS     | ✅  | ✅   | ✅   | ✅    | ❌     | ❌  | ❌  | ❌  | ❌              | **Missing LICENSE + SECURITY.md.**                                                         |
+| `gtcx-agile`        | JS     | ✅  | ✅   | ✅   | ✅    | ❌     | ❌  | ❌  | ❌  | ❌              | **Missing LICENSE + SECURITY.md.**                                                         |
+| `veritas-ai`        | TS     | ❌  | ✅   | ✅   | ✅    | ❌     | ❌  | ❌  | ❌  | ❌              | **No CI. Missing LICENSE + SECURITY.md.**                                                  |
+| `exploration-os`    | JS     | ✅  | ❌   | ✅   | ❌    | ❌     | ❌  | ❌  | ❌  | ❌              | No description. **No tests, no build, no LICENSE, no SECURITY.md.**                        |
+| `nyota-ai`          | Python | ✅  | ❌   | ✅   | ✅    | ❌     | ❌  | ❌  | ✅  | ❌              | No description. **No tests, no SECURITY.md.**                                              |
+| `gtcx-docs`         | JS     | ✅  | ❌   | ✅   | ❌    | ❌     | ❌  | ❌  | ✅  | ❌              | Docs hub. **No tests, no build, no typecheck, no SECURITY.md.**                            |
+| `gtcx-complianceos` | TS     | ✅  | ✅   | ✅   | ✅    | ❌     | ❌  | ❌  | ✅  | ❌              | **Own K8s (5). Missing SECURITY.md.**                                                      |
+| `gtcx-core12` ⛔    | Python | ❌  | ❌   | ❌   | ❌    | ❌     | ❌  | ❌  | ✅  | ❌              | **DEPRECATED** — functionality merged into `gtcx-core`. Archive pending.                   |
+| `gtcx-amis` ⛔      | JS     | ❌  | ❌   | ❌   | ❌    | ❌     | ❌  | ❌  | ❌  | ❌              | **DEPRECATED** — AMANI specs migrated to `gtcx-infrastructure` templates. Archive pending. |
 
 ---
 
@@ -162,22 +162,22 @@ Only `gtcx-protocols` consumes `@gtcx/*` shared packages. `gtcx-core` (crypto, t
 
 ### P1 — This Month (Blocks SOC 2 & Pilot)
 
-| Action                                                      | Owner                | Effort    |
-| ----------------------------------------------------------- | -------------------- | --------- |
-| Migrate `sensei-ai` Terraform to `gtcx-infrastructure`      | Platform Engineering | 2 weeks   |
-| Migrate `terra-os` Terraform to `gtcx-infrastructure`       | Platform Engineering | 2 weeks   |
-| Migrate `gtcx-platforms` Terraform to `gtcx-infrastructure` | Platform Engineering | 1 week    |
-| Publish `gtcx-core` to GitHub Packages                      | Platform Engineering | 3 days    |
-| Add `@gtcx/core` dependency to all TS repos                 | Each repo owner      | 1 hr/repo |
-| Deprecate `gtcx-core12` (Python) or merge into `gtcx-core`  | Architecture         | 1 week    |
+| Action                                                         | Owner                               | Effort    |
+| -------------------------------------------------------------- | ----------------------------------- | --------- |
+| Migrate `sensei-ai` Terraform to `gtcx-infrastructure`         | Platform Engineering                | 2 weeks   |
+| Migrate `terra-os` Terraform to `gtcx-infrastructure`          | Platform Engineering                | 2 weeks   |
+| Migrate `gtcx-platforms` Terraform to `gtcx-infrastructure`    | Platform Engineering                | 1 week    |
+| Publish `gtcx-core` to GitHub Packages                         | Platform Engineering                | 3 days    |
+| Add `@gtcx/core` dependency to all TS repos                    | Each repo owner                     | 1 hr/repo |
+| ~~Deprecate `gtcx-core12` (Python) or merge into `gtcx-core`~~ | ✅ **DONE** — Deprecated 2026-05-12 | —         |
 
 ### P2 — Next Quarter (Quality & Maintainability)
 
-| Action                                                                                | Owner                | Effort      |
-| ------------------------------------------------------------------------------------- | -------------------- | ----------- |
-| Archive or merge `exploration-os`, `gtcx-amis`, `veritas-ai` if unmaintained          | Leadership           | 1 day       |
-| Add K8s manifests to all Tier 1 repos (using platform base)                           | Each repo owner      | 2 days/repo |
-| Standardize CI across all repos (shared composite actions from `gtcx-infrastructure`) | Platform Engineering | 2 weeks     |
+| Action                                                                                | Owner                                                                                     | Effort      |
+| ------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ----------- |
+| ~~Archive or merge `exploration-os`, `gtcx-amis`, `veritas-ai` if unmaintained~~      | ✅ `gtcx-amis` deprecated 2026-05-12. `exploration-os`, `veritas-ai` remain under review. | —           |
+| Add K8s manifests to all Tier 1 repos (using platform base)                           | Each repo owner                                                                           | 2 days/repo |
+| Standardize CI across all repos (shared composite actions from `gtcx-infrastructure`) | Platform Engineering                                                                      | 2 weeks     |
 
 ---
 

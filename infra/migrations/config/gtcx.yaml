@@ -9,7 +9,7 @@ version: '1.0'
 # =============================================================================
 maba:
   # Target schema for all transformations
-  target_schema: 'gtcx-core12'
+  target_schema: 'gtcx-core'
 
   # Enabled connectors
   connectors:

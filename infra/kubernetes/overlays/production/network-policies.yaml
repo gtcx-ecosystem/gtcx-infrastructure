@@ -307,3 +307,83 @@ spec:
       ports:
         - protocol: TCP
           port: 443
+
+---
+# =============================================================================
+# gtcx-intelligence Network Policy
+# =============================================================================
+# AI/ML inference services — ANISA, red-team, trainer, SDK
+# =============================================================================
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: gtcx-intelligence-policy
+  namespace: gtcx-production
+  labels:
+    app.kubernetes.io/part-of: gtcx
+    app.kubernetes.io/component: intelligence
+spec:
+  podSelector:
+    matchLabels:
+      tier: intelligence
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    # Allow from API gateway
+    - from:
+        - podSelector:
+            matchLabels:
+              app: gtcx-agx-prod
+      ports:
+        - protocol: TCP
+          port: 3000
+        - protocol: TCP
+          port: 8080
+    # Allow from Prometheus (scrape)
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: gtcx-monitoring
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: prometheus
+      ports:
+        - protocol: TCP
+          port: 9090
+        - protocol: TCP
+          port: 8080
+  egress:
+    # Allow to protocol services (data for inference)
+    - to:
+        - podSelector:
+            matchLabels:
+              tier: protocol
+      ports:
+        - protocol: TCP
+          port: 3000
+    # Allow to external AI APIs (OpenAI, Anthropic, etc.)
+    - to: []
+      ports:
+        - protocol: TCP
+          port: 443
+    # Allow to database (RDS in database subnets)
+    - to:
+        - ipBlock:
+            cidr: 10.0.128.0/17
+      ports:
+        - protocol: TCP
+          port: 5432
+    # Allow to Redis (ElastiCache in database subnets)
+    - to:
+        - ipBlock:
+            cidr: 10.0.128.0/17
+      ports:
+        - protocol: TCP
+          port: 6379
+    # Allow DNS resolution
+    - to:
+        - namespaceSelector: {}
+      ports:
+        - protocol: UDP
+          port: 53

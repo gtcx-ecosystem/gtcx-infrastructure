@@ -56,7 +56,7 @@ maba/connectors/
 │   ├── graphql/          # GraphQL endpoint
 │   └── streaming/        # Kafka, Pulsar streams
 └── domain/
-    ├── gtcx-core12/      # GTCX commodity schema
+    ├── gtcx-core/        # GTCX commodity schema
     ├── land-cadastre/    # Land records schema
     ├── kyc-aml/          # Financial compliance schema
     └── custom/           # Your domain schema
@@ -74,7 +74,7 @@ engine = TransformationEngine()
 # Configure for your domain
 engine.configure(
     source_connector="databases/postgresql",
-    target_schema="domain/gtcx-core12",
+    target_schema="domain/gtcx-core",
     options={
         "ai_mapping": True,
         "confidence_threshold": 0.85,
@@ -109,4 +109,4 @@ Full agile-pm documentation in `agile-pm/` folder:
 - API specification: `04 - spec/api-specification-template.md`
 - Sprint planning: `06 - planning/`
 
-_Source: Originally from the GTCX monorepo migration tools; now maintained in gtcx-amis (MABA specs) and gtcx-infrastructure (templates)_
+_Source: Originally from the GTCX monorepo migration tools; now maintained in gtcx-infrastructure (templates)_

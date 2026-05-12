@@ -152,4 +152,4 @@ Full agile-pm documentation in `agile-pm/` folder:
 - Technical architecture: `04 - spec/`
 - Language support: `11 - support/`
 
-_Source: Originally from the GTCX monorepo migration tools; now maintained in gtcx-amis (AMANI specs) and gtcx-infrastructure (templates)_
+_Source: Originally from the GTCX monorepo migration tools; now maintained in gtcx-infrastructure (templates)_

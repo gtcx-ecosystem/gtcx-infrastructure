@@ -220,9 +220,9 @@ Each principle has a primary owner repo where its implementation is most critica
 | P18 Localized     | gtcx-app, gtcx-design             | Frontier     |
 | P19 Accessible    | gtcx-app, gtcx-design             | Frontier     |
 | P20 Hardware      | gtcx-hardware                     | Frontier     |
-| P21 Universal     | gtcx-amis                         | Scale        |
+| P21 Universal     | gtcx-core                         | Scale        |
 | P22 Portable      | gtcx-infrastructure               | Scale        |
-| P23 Interoperable | gtcx-amis                         | Scale        |
+| P23 Interoperable | gtcx-protocols                    | Scale        |
 | P24 Scalable      | gtcx-infrastructure               | Scale        |
 | P25 Extensible    | gtcx-agentic                      | Scale        |
 | P26 Researched    | gtcx-docs                         | Craft        |

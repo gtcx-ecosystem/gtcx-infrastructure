@@ -83,7 +83,7 @@ Three reusable workflow templates cover the entire ecosystem. Individual reposit
 
 ### 3. Documentation
 
-**Used by**: gtcx-docs, gtcx-amis
+**Used by**: gtcx-docs
 
 | Step          | Command                                   | Purpose                      |
 | ------------- | ----------------------------------------- | ---------------------------- |
