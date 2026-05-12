@@ -179,7 +179,7 @@
     {
       "id": "repo-hygiene",
       "name": "Repo / Folder Hygiene",
-      "currentScore": 8.1,
+      "currentScore": 8.3,
       "maxScore": 10,
       "history": [
         {
@@ -189,6 +189,14 @@
           "ciRun": null,
           "artifact": "docs/audit/master-audit-2026-05-10.md",
           "reason": "Initial master audit baseline"
+        },
+        {
+          "date": "2026-05-12",
+          "score": 8.3,
+          "commit": null,
+          "ciRun": null,
+          "artifact": "docs/decisions/009-deprecate-gtcx-core12-gtcx-amis.md",
+          "reason": "Deprecated gtcx-core12 (superseded by gtcx-core) and gtcx-amis (superseded by gtcx-infrastructure templates). Reduced active repo count 25\u219223. Updated all internal references."
         }
       ]
     },
