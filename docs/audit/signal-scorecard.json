@@ -33,9 +33,9 @@
           "id": "S3",
           "name": "Real-time anomaly detection",
           "description": "Unusual query patterns or tool usage trigger alerts",
-          "evidence": "Not yet implemented — planned for Phase 4",
-          "status": "planned",
-          "score": 5
+          "evidence": "tools/anomaly-detector/detector.mjs: PoC with 5 detection rules; docs/architecture/anomaly-detection.md: approved architecture with acceptance criteria. Deployment pending.",
+          "status": "partial",
+          "score": 6
         }
       ]
     },
@@ -75,9 +75,9 @@
           "id": "I4",
           "name": "WORM audit storage",
           "description": "Audit events stored with cryptographic proof of immutability",
-          "evidence": "Not yet implemented — planned for Phase 4",
-          "status": "planned",
-          "score": 4
+          "evidence": "infra/terraform/modules/worm-audit/main.tf: S3 Object Lock in COMPLIANCE mode, KMS encryption, deny-unencrypted/deny-non-SSL policies. Deployment pending.",
+          "status": "partial",
+          "score": 6
         }
       ]
     },

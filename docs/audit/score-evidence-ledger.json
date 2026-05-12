@@ -53,6 +53,14 @@
           "ciRun": null,
           "artifact": "docs/audit/signal-scorecard.json",
           "reason": "Phase 3: SIGNAL scorecard validator + CI gate (8.60/10), protocol API contract tests, cross-repo CI matrix, Linkerd staging configs, WAF + VPC Flow Logs Terraform, JIT access tool, custom CodeQL queries (crypto-misuse, jwt-misuse, sql-injection, insecure-deserialization), OWASP ZAP DAST workflow"
+        },
+        {
+          "date": "2026-05-12",
+          "score": 8.65,
+          "commit": null,
+          "ciRun": null,
+          "artifact": "docs/audit/signal-scorecard.json",
+          "reason": "M2 Hardening partial: WORM audit storage Terraform module (S3 Object Lock COMPLIANCE), real-time anomaly detector PoC (5 rules + architecture doc), chaos network partition resilience (4/4 tests pass), FIPS endpoints on all providers"
         }
       ]
     },
@@ -213,6 +221,14 @@
           "ciRun": null,
           "artifact": "docs/audit/signal-scorecard.json",
           "reason": "Phase 3: SIGNAL scorecard (8.60/10), WAF Terraform, VPC Flow Logs, Linkerd mesh configs, JIT access tool, 4 custom CodeQL queries, ZAP DAST workflow, protocol contract tests"
+        },
+        {
+          "date": "2026-05-12",
+          "score": 8.4,
+          "commit": null,
+          "ciRun": null,
+          "artifact": "docs/audit/signal-scorecard.json",
+          "reason": "M2 Hardening partial: WORM audit storage module (S3 Object Lock + KMS), anomaly detector PoC (rule-based detection + metrics), chaos network partition resilience validated, FIPS endpoints all environments"
         }
       ]
     },
@@ -317,6 +333,38 @@
           "ciRun": null,
           "artifact": "docs/audit/signal-scorecard.json",
           "reason": "Phase 3: SIGNAL scorecard CI gate, contract tests, WAF + Flow Logs Terraform, Linkerd mesh configs, JIT access tool, CodeQL + ZAP DAST workflows"
+        },
+        {
+          "date": "2026-05-12",
+          "score": 8.2,
+          "commit": null,
+          "ciRun": null,
+          "artifact": "docs/audit/signal-scorecard.json",
+          "reason": "M2 Hardening partial: WORM audit storage (enterprise immutability), anomaly detection (enterprise observability), chaos resilience (enterprise reliability)"
+        }
+      ]
+    },
+    {
+      "id": "signal",
+      "name": "SIGNAL Framework",
+      "currentScore": 8.81,
+      "maxScore": 10,
+      "history": [
+        {
+          "date": "2026-05-11",
+          "score": 8.6,
+          "commit": "37e60f9",
+          "ciRun": null,
+          "artifact": "docs/audit/signal-scorecard.json",
+          "reason": "Phase 3: Initial SIGNAL scorecard with 21 controls, validator + CI gate, 0 critical failures"
+        },
+        {
+          "date": "2026-05-12",
+          "score": 8.81,
+          "commit": null,
+          "ciRun": null,
+          "artifact": "docs/audit/signal-scorecard.json",
+          "reason": "M2 Hardening partial: I4 WORM audit storage (4→6), S3 real-time anomaly detection (5→6), chaos network partition resilience (4/4 pass), FIPS endpoints all environments"
         }
       ]
     },
