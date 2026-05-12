@@ -28,6 +28,9 @@
   "engines": {
     "node": ">=20.0.0"
   },
+  "dependencies": {
+    "pg": "^8.15.0"
+  },
   "peerDependencies": {
     "redis": "^4.6.0"
   },
