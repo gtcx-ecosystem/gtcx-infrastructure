@@ -335,7 +335,62 @@ Engineering alone can reach ~8.9. The final 1.1 points require external validati
 
 ---
 
-## 10. Audit Trail (Commits This Session)
+## 10. Audit Grade Prompts (Automated Assessment Suite)
+
+GTCX now maintains a complete automated audit prompt suite for all five commercial grades. These prompts are designed for execution by AI agents (Kimi Code CLI, GitHub Copilot, etc.) to produce reproducible, evidence-based grade assessments.
+
+### 10.1 Prompt Inventory
+
+| Grade       | Prompt File                                            | Validator                    | Execution Time | Current Status                               |
+| ----------- | ------------------------------------------------------ | ---------------------------- | -------------- | -------------------------------------------- |
+| Partnership | `docs/audit/prompts/partnership-grade-audit-prompt.md` | Self (AI agent)              | 15–30 min      | ✅ Ready — 8.5/10                            |
+| Enterprise  | `docs/audit/prompts/enterprise-grade-audit-prompt.md`  | Self + External              | 2–4 hours      | ⚠️ 4.5/10 — SOC 2 + pen-test pending         |
+| Investment  | `docs/audit/prompts/investment-grade-audit-prompt.md`  | Self + External + Legal      | 4–8 hours      | ⚠️ 3.0/10 — financial audit blocked          |
+| Bank        | `docs/audit/prompts/bank-grade-audit-prompt.md`        | Self + External + Regulatory | 6–12 hours     | ⚠️ 2.5/10 — SOC 2 Type II + red team blocked |
+| Government  | `docs/audit/prompts/government-grade-audit-prompt.md`  | Self + 3PAO + Clearance      | 8–16 hours     | ⚠️ 1.5/10 — SITA + FIPS 140-2 L3 blocked     |
+| **Master**  | `docs/audit/prompts/master-audit-prompt.md`            | Orchestrator                 | 12–24 hours    | ✅ Framework complete                        |
+
+### 10.2 Execution Protocol
+
+Grades MUST be assessed in dependency order:
+
+```
+Partnership (P-GAP) ≥ 8.0
+  └─→ Enterprise (E-GAP) ≥ 8.5
+        ├─→ Investment (I-GAP) ≥ 8.5
+        └─→ Bank (B-GAP) ≥ 9.0
+              └─→ Government (G-GAP) ≥ 9.5
+```
+
+If a grade fails its threshold, the orchestrator HALTS and generates a remediation roadmap before proceeding.
+
+### 10.3 Evidence Output
+
+Each prompt produces:
+
+1. **Evidence JSON** at `docs/audit/prompts/evidence/<grade>-grade-evidence.json`
+2. **Raw command output** at `docs/audit/prompts/evidence/raw/<grade>-<timestamp>.log`
+3. **Remediation roadmap** (if failed) at `docs/audit/remediation-roadmap-<grade>.md`
+
+### 10.4 Current Grade Scorecard
+
+| Grade       | Score   | Threshold | Status  | Primary Blocker              | Commercial Unlock          |
+| ----------- | ------- | --------- | ------- | ---------------------------- | -------------------------- |
+| Partnership | **8.5** | 8.0       | ✅ Pass | None                         | API partners, integrations |
+| Enterprise  | **4.5** | 8.5       | ❌ Fail | SOC 2 Type I + pen-test      | Fortune 500 contracts      |
+| Investment  | **3.0** | 8.5       | ❌ Fail | Financial audit + code audit | Series B/C funding         |
+| Bank        | **2.5** | 9.0       | ❌ Fail | SOC 2 Type II + red team     | Banking partnerships       |
+| Government  | **1.5** | 9.5       | ❌ Fail | SITA + FIPS 140-2 L3         | Sovereign contracts        |
+
+### 10.5 Related Framework Documents
+
+- `docs/audit/audit-grade-framework.md` — Full five-tier grade definitions with control matrices
+- `docs/audit/bank-grade-rating-framework.md` — Internal vs external dual-rating methodology
+- `docs/audit/10-10-roadmap-2026-05-12.md` — Engineering roadmap to 10/10
+
+---
+
+## 11. Audit Trail (Commits This Session)
 
 | Phase       | Commit  | What                                                            |
 | ----------- | ------- | --------------------------------------------------------------- |
@@ -344,7 +399,7 @@ Engineering alone can reach ~8.9. The final 1.1 points require external validati
 
 ---
 
-## 10. Sign-Off
+## 12. Sign-Off
 
 | Role               | Status  | Date       |
 | ------------------ | ------- | ---------- |
