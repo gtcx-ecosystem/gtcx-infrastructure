@@ -1,0 +1,38 @@
+# =============================================================================
+# Anomaly Detector — Staging Configuration
+# =============================================================================
+# Staging runs with synthetic data for validation and shorter intervals
+# for faster feedback loops.
+# =============================================================================
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: anomaly-detector
+  namespace: gtcx-staging
+spec:
+  schedule: '*/2 * * * *' # Every 2 minutes in staging (faster feedback)
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: detector
+              env:
+                - name: PROMETHEUS_URL
+                  value: 'http://prometheus.monitoring.svc.cluster.local:9090'
+                - name: NODE_ENV
+                  value: 'staging'
+              # Override command for staging: use synthetic data for validation
+              command:
+                - node
+                - detector.mjs
+                - '--threshold=5'
+                - '--window=120000'
+                - '--synthetic-data=/app/test-fixtures/synthetic-metrics.json'
+              resources:
+                requests:
+                  memory: '32Mi'
+                  cpu: '25m'
+                limits:
+                  memory: '64Mi'
+                  cpu: '50m'

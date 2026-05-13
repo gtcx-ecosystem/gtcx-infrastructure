@@ -1,0 +1,137 @@
+{
+  "model": "anomaly-detector",
+  "version": "1.0.0",
+  "description": "Benchmark for anomaly detection on query rate and mutating tool metrics",
+  "cases": [
+    {
+      "id": "ad-001",
+      "input": {
+        "metric": "query_rate",
+        "value": 3.2,
+        "threshold": 10,
+        "baseline": 2.1
+      },
+      "expected": {
+        "anomaly": false,
+        "severity": null
+      }
+    },
+    {
+      "id": "ad-002",
+      "input": {
+        "metric": "query_rate",
+        "value": 15.7,
+        "threshold": 10,
+        "baseline": 2.1
+      },
+      "expected": {
+        "anomaly": true,
+        "severity": "high"
+      }
+    },
+    {
+      "id": "ad-003",
+      "input": {
+        "metric": "mutating_tool_rate",
+        "value": 0,
+        "threshold": 1,
+        "baseline": 0.1
+      },
+      "expected": {
+        "anomaly": false,
+        "severity": null
+      }
+    },
+    {
+      "id": "ad-004",
+      "input": {
+        "metric": "mutating_tool_rate",
+        "value": 5,
+        "threshold": 1,
+        "baseline": 0.1
+      },
+      "expected": {
+        "anomaly": true,
+        "severity": "critical"
+      }
+    },
+    {
+      "id": "ad-005",
+      "input": {
+        "metric": "query_rate",
+        "value": 9.9,
+        "threshold": 10,
+        "baseline": 2.1
+      },
+      "expected": {
+        "anomaly": false,
+        "severity": null
+      }
+    },
+    {
+      "id": "ad-006",
+      "input": {
+        "metric": "query_rate",
+        "value": 10.1,
+        "threshold": 10,
+        "baseline": 2.1
+      },
+      "expected": {
+        "anomaly": true,
+        "severity": "high"
+      }
+    },
+    {
+      "id": "ad-007",
+      "input": {
+        "metric": "error_rate",
+        "value": 0.001,
+        "threshold": 0.05,
+        "baseline": 0.005
+      },
+      "expected": {
+        "anomaly": false,
+        "severity": null
+      }
+    },
+    {
+      "id": "ad-008",
+      "input": {
+        "metric": "error_rate",
+        "value": 0.12,
+        "threshold": 0.05,
+        "baseline": 0.005
+      },
+      "expected": {
+        "anomaly": true,
+        "severity": "high"
+      }
+    },
+    {
+      "id": "ad-009",
+      "input": {
+        "metric": "query_rate",
+        "value": 1.5,
+        "threshold": 10,
+        "baseline": 2.1
+      },
+      "expected": {
+        "anomaly": false,
+        "severity": null
+      }
+    },
+    {
+      "id": "ad-010",
+      "input": {
+        "metric": "query_rate",
+        "value": 50.0,
+        "threshold": 10,
+        "baseline": 2.1
+      },
+      "expected": {
+        "anomaly": true,
+        "severity": "critical"
+      }
+    }
+  ]
+}

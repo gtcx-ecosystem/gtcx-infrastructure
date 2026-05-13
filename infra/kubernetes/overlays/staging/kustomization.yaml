@@ -42,9 +42,17 @@ images:
     newTag: v0.1.0-staging
   - name: gtcx/protocols
     newTag: v0.1.0-staging
+  # Anomaly detector — staging uses latest validated build
+  - name: gtcx-anomaly-detector
+    newName: 348389439381.dkr.ecr.af-south-1.amazonaws.com/gtcx-anomaly-detector
+    newTag: staging-latest
 
 # Staging resource limits (moderate)
 patches:
+  - path: anomaly-detector-patch.yaml
+    target:
+      kind: CronJob
+      name: anomaly-detector
   - patch: |-
       - op: replace
         path: /spec/template/spec/containers/0/resources/requests/cpu

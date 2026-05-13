@@ -1,0 +1,72 @@
+# =============================================================================
+# Eval Pipeline — AI Output Validation
+# =============================================================================
+# Runs evaluation benchmarks against all registered AI models.
+# Fails CI if any model falls below its threshold.
+#
+# Triggered on:
+#   - Changes to eval pipeline code
+#   - Changes to model cards or benchmarks
+#   - Changes to AI service code
+# =============================================================================
+
+name: Eval Pipeline — AI Output Validation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/eval-pipeline/**'
+      - 'docs/ml/model-cards/**'
+      - 'tools/anomaly-detector/**'
+      - 'tools/compliance-gateway/**'
+      - 'tools/replay-protection/**'
+      - '.github/workflows/eval-pipeline.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'tools/eval-pipeline/**'
+      - 'docs/ml/model-cards/**'
+      - 'tools/anomaly-detector/**'
+      - 'tools/compliance-gateway/**'
+      - 'tools/replay-protection/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  eval:
+    runs-on: ubuntu-latest
+    name: Evaluate AI Models
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run Eval Pipeline
+        run: |
+          cd tools/eval-pipeline
+          node eval.mjs --all | tee eval-results.json
+
+      - name: Upload eval results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: eval-results-${{ github.run_id }}
+          path: tools/eval-pipeline/eval-results.json
+          retention-days: 90
+
+      - name: Parse results for PR comment
+        if: github.event_name == 'pull_request'
+        id: parse
+        run: |
+          cd tools/eval-pipeline
+          PASSED=$(node eval.mjs --all 2>/dev/null | jq '.passed')
+          FAILED=$(node eval.mjs --all 2>/dev/null | jq '.failed')
+          echo "passed=$PASSED" >> "$GITHUB_OUTPUT"
+          echo "failed=$FAILED" >> "$GITHUB_OUTPUT"

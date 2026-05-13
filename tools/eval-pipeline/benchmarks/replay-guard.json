@@ -1,0 +1,127 @@
+{
+  "model": "replay-guard",
+  "version": "1.0.0",
+  "description": "Benchmark for signature validation and replay attack detection",
+  "cases": [
+    {
+      "id": "rg-001",
+      "input": {
+        "signature": "a1b2c3d4e5f6789012345678901234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef12345678",
+        "timestamp": 1715515200000,
+        "nonce": "nonce-001-abc123"
+      },
+      "expected": {
+        "valid": true,
+        "replay": false
+      }
+    },
+    {
+      "id": "rg-002",
+      "input": {
+        "signature": "a1b2c3d4e5f6789012345678901234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef12345678",
+        "timestamp": 1715515200000,
+        "nonce": "nonce-001-abc123"
+      },
+      "expected": {
+        "valid": false,
+        "replay": true
+      }
+    },
+    {
+      "id": "rg-003",
+      "input": {
+        "signature": "invalid-signature",
+        "timestamp": 1715515200000,
+        "nonce": "nonce-002-def456"
+      },
+      "expected": {
+        "valid": false,
+        "replay": false
+      }
+    },
+    {
+      "id": "rg-004",
+      "input": {
+        "signature": "a1b2c3d4e5f6789012345678901234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef12345678",
+        "timestamp": 1715428800000,
+        "nonce": "nonce-003-ghi789"
+      },
+      "expected": {
+        "valid": false,
+        "replay": false
+      }
+    },
+    {
+      "id": "rg-005",
+      "input": {
+        "signature": "a1b2c3d4e5f6789012345678901234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef12345678",
+        "timestamp": 1715515200000,
+        "nonce": "nonce-004-jkl012"
+      },
+      "expected": {
+        "valid": true,
+        "replay": false
+      }
+    },
+    {
+      "id": "rg-006",
+      "input": {
+        "signature": "a1b2c3d4e5f6789012345678901234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef12345678",
+        "timestamp": 1715515200000,
+        "nonce": "nonce-005-mno345"
+      },
+      "expected": {
+        "valid": true,
+        "replay": false
+      }
+    },
+    {
+      "id": "rg-007",
+      "input": {
+        "signature": "",
+        "timestamp": 1715515200000,
+        "nonce": "nonce-006-pqr678"
+      },
+      "expected": {
+        "valid": false,
+        "replay": false
+      }
+    },
+    {
+      "id": "rg-008",
+      "input": {
+        "signature": "a1b2c3d4e5f6789012345678901234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef12345678",
+        "timestamp": 1715515200000,
+        "nonce": "nonce-007-stu901"
+      },
+      "expected": {
+        "valid": true,
+        "replay": false
+      }
+    },
+    {
+      "id": "rg-009",
+      "input": {
+        "signature": "a1b2c3d4e5f6789012345678901234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef12345678",
+        "timestamp": 1715515200000,
+        "nonce": "nonce-008-vwx234"
+      },
+      "expected": {
+        "valid": true,
+        "replay": false
+      }
+    },
+    {
+      "id": "rg-010",
+      "input": {
+        "signature": "a1b2c3d4e5f6789012345678901234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef12345678",
+        "timestamp": 1715515200000,
+        "nonce": "nonce-009-yzab567"
+      },
+      "expected": {
+        "valid": true,
+        "replay": false
+      }
+    }
+  ]
+}

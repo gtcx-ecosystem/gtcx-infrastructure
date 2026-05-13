@@ -1,0 +1,107 @@
+{
+  "model": "compliance-gateway",
+  "version": "1.0.0",
+  "description": "Benchmark for natural-language to tool routing accuracy",
+  "cases": [
+    {
+      "id": "cg-001",
+      "input": {
+        "query": "Send 100 ZAR to account 1234567890"
+      },
+      "expected": {
+        "tool": "transfer",
+        "confidence": 0.95
+      }
+    },
+    {
+      "id": "cg-002",
+      "input": {
+        "query": "What is my current balance?"
+      },
+      "expected": {
+        "tool": "query",
+        "confidence": 0.95
+      }
+    },
+    {
+      "id": "cg-003",
+      "input": {
+        "query": "Transfer 500 USD to John Doe"
+      },
+      "expected": {
+        "tool": "transfer",
+        "confidence": 0.95
+      }
+    },
+    {
+      "id": "cg-004",
+      "input": {
+        "query": "Show me my transaction history"
+      },
+      "expected": {
+        "tool": "query",
+        "confidence": 0.9
+      }
+    },
+    {
+      "id": "cg-005",
+      "input": {
+        "query": "Pay invoice INV-2026-001 for 2500 ZAR"
+      },
+      "expected": {
+        "tool": "transfer",
+        "confidence": 0.9
+      }
+    },
+    {
+      "id": "cg-006",
+      "input": {
+        "query": "What is the exchange rate today?"
+      },
+      "expected": {
+        "tool": "query",
+        "confidence": 0.85
+      }
+    },
+    {
+      "id": "cg-007",
+      "input": {
+        "query": "Send money to my savings account"
+      },
+      "expected": {
+        "tool": "transfer",
+        "confidence": 0.95
+      }
+    },
+    {
+      "id": "cg-008",
+      "input": {
+        "query": "List all my connected accounts"
+      },
+      "expected": {
+        "tool": "query",
+        "confidence": 0.9
+      }
+    },
+    {
+      "id": "cg-009",
+      "input": {
+        "query": "Deposit 1000 ZAR into my investment portfolio"
+      },
+      "expected": {
+        "tool": "transfer",
+        "confidence": 0.9
+      }
+    },
+    {
+      "id": "cg-010",
+      "input": {
+        "query": "How much interest did I earn this month?"
+      },
+      "expected": {
+        "tool": "query",
+        "confidence": 0.85
+      }
+    }
+  ]
+}
