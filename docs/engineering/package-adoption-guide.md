@@ -1,6 +1,6 @@
 ---
 title: 'Cross-Repo Package Adoption Guide'
-status: 'deprecated'
+status: 'current'
 date: '2026-05-10'
 owner: 'crypto-security-engineer'
 role: 'crypto-security-engineer'
@@ -11,10 +11,12 @@ review_cycle: 'monthly'
 
 # Cross-Repo Package Adoption Guide
 
-**Date:** 2026-05-13
+**Date:** 2026-05-12
+**Updated:** 2026-05-12
 **Scope:** All TypeScript service repos in `gtcx-ecosystem/*`
-**Target:** 80% of active TS repos consuming `@gtcx/*` shared packages
+**Target:** 80% of active TS repos consuming `@gtcx/*` shared packages by Q3 2026
 **Owner:** Platform Engineering
+**M3 Dependency:** Ecosystem Integration score blocked until ≥10 repos adopted
 
 ---
 

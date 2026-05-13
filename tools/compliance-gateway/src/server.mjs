@@ -52,7 +52,7 @@ const authState = loadAuthState(process.env);
 function requirePermission(req, res, requiredPermission) {
   const auth = authenticateHeaders(req.headers, authState, requiredPermission);
   if (!auth.ok) {
-    sendJson(res, auth.status, { error: auth.error });
+    sendJson(res, auth.status, { error: auth.error }, req);
     return null;
   }
   return auth.principal;
@@ -64,7 +64,7 @@ function requirePermission(req, res, requiredPermission) {
 
 async function handleQuery(req, res) {
   if (req.method !== 'POST') {
-    return sendJson(res, 405, { error: 'Method not allowed' });
+    return sendJson(res, 405, { error: 'Method not allowed' }, req);
   }
 
   const principal = requirePermission(req, res, 'query:read');
@@ -79,12 +79,12 @@ async function handleQuery(req, res) {
   try {
     parsed = JSON.parse(body);
   } catch {
-    return sendJson(res, 400, { error: 'Invalid JSON' });
+    return sendJson(res, 400, { error: 'Invalid JSON' }, req);
   }
 
   const { query, jurisdiction, context } = parsed;
   if (!query || typeof query !== 'string') {
-    return sendJson(res, 400, { error: 'Missing "query" field' });
+    return sendJson(res, 400, { error: 'Missing "query" field' }, req);
   }
 
   const userMessage = [
@@ -100,7 +100,7 @@ async function handleQuery(req, res) {
     return sendJson(res, 503, {
       error: 'No LLM providers configured',
       hint: 'Set at least one of: GOOGLE_API_KEY, GROQ_API_KEY, ANTHROPIC_API_KEY, OPENAI_API_KEY, DEEPSEEK_API_KEY',
-    });
+    }, req);
   }
 
   const fallbacks = getFallbackChain(primary);
@@ -150,7 +150,7 @@ async function handleQuery(req, res) {
           subject: accessProfile.subject,
         },
         usage: result.usage,
-      });
+      }, req);
     } catch (err) {
       errors.push({ provider: provider.name, error: err?.message });
       console.error(JSON.stringify({
@@ -169,7 +169,7 @@ async function handleQuery(req, res) {
     error: 'All LLM providers failed',
     attempts: errors,
     query: query.substring(0, 200),
-  });
+  }, req);
 }
 
 // ---------------------------------------------------------------------------
@@ -199,14 +199,115 @@ async function readBody(req) {
   return Buffer.concat(chunks).toString('utf-8');
 }
 
-function sendJson(res, status, body) {
-  res.writeHead(status, { 'Content-Type': 'application/json' });
-  res.end(JSON.stringify(body));
+// ---------------------------------------------------------------------------
+// Adaptive Low-Bandwidth Mode (Global South Resilience)
+// ---------------------------------------------------------------------------
+
+function detectLowBandwidth(req) {
+  const saveData = req.headers['save-data'];
+  if (saveData === 'on') return true;
+  const lowBwParam = new URL(req.url ?? '/', 'http://localhost').searchParams.get('lowBandwidth');
+  if (lowBwParam === 'true' || lowBwParam === '1') return true;
+  // Detect slow connections via Downlink hint (if available)
+  const downlink = parseFloat(req.headers['downlink'] || '10');
+  if (downlink < 0.5) return true; // Less than 500 Kbps
+  return false;
+}
+
+function stripForLowBandwidth(body, endpoint) {
+  if (!body || typeof body !== 'object') return body;
+  const stripped = { ...body };
+
+  if (endpoint === '/v1/query') {
+    // Keep answer, toolCalls, routing.provider; strip detailed cost, authz, usage
+    delete stripped.authz;
+    delete stripped.usage;
+    if (stripped.routing) {
+      stripped.routing = {
+        provider: stripped.routing.provider,
+        latencyMs: stripped.routing.latencyMs,
+      };
+    }
+    if (stripped.toolResults) {
+      // Truncate tool results to first 200 chars
+      stripped.toolResults = stripped.toolResults.map((r) => ({
+        tool: r.tool,
+        result: typeof r.result === 'string' ? r.result.substring(0, 200) : r.result,
+      }));
+    }
+  }
+
+  if (endpoint === '/v1/tools') {
+    // Strip tool descriptions, keep only names and parameters
+    if (stripped.tools) {
+      stripped.tools = stripped.tools.map((t) => ({
+        name: t.name,
+        parameters: t.parameters,
+      }));
+    }
+  }
+
+  if (endpoint === '/v1/providers') {
+    // Strip cost details, keep only names and tiers
+    if (stripped.providers) {
+      stripped.providers = stripped.providers.map((p) => ({
+        name: p.name,
+        tier: p.tier,
+      }));
+    }
+  }
+
+  // Add low-bandwidth indicator
+  stripped._lowBandwidth = true;
+  return stripped;
+}
+
+import { brotliCompressSync, gzipSync } from 'node:zlib';
+
+function sendJson(res, status, body, req) {
+  const isLowBandwidth = req ? detectLowBandwidth(req) : false;
+  let payload = body;
+
+  if (isLowBandwidth) {
+    payload = stripForLowBandwidth(body, req?.url);
+  }
+
+  const json = JSON.stringify(payload);
+  const acceptEncoding = req?.headers?.['accept-encoding'];
+
+  let data = Buffer.from(json);
+  let encoding = null;
+
+  if (acceptEncoding) {
+    if (acceptEncoding.includes('br')) {
+      try {
+        data = brotliCompressSync(data);
+        encoding = 'br';
+      } catch { /* fallback */ }
+    }
+    if (!encoding && acceptEncoding.includes('gzip')) {
+      data = gzipSync(data);
+      encoding = 'gzip';
+    }
+  }
+
+  const headers = {
+    'Content-Type': 'application/json',
+    'Cache-Control': isLowBandwidth ? 'max-age=300, public' : 'no-cache',
+    'X-Low-Bandwidth': isLowBandwidth ? 'true' : 'false',
+  };
+
+  if (encoding) {
+    headers['Content-Encoding'] = encoding;
+  }
+
+  res.writeHead(status, headers);
+  res.end(data);
 }
 
 const server = createServer(async (req, res) => {
   try {
-    const url = req.url ?? '/';
+    const url = new URL(req.url ?? '/', 'http://localhost').pathname;
     if (url === '/v1/query') {
       await handleQuery(req, res);
     } else if (url === '/health') {
@@ -218,7 +319,7 @@ const server = createServer(async (req, res) => {
         providers: providerCount,
         availableProviders: getProviders().map((p) => p.name),
         ...(authState.configurationError ? { error: authState.configurationError } : {}),
-      });
+      }, req);
     } else if (url === '/v1/tools') {
       const principal = requirePermission(req, res, 'tools:read');
       if (!principal) {
@@ -230,7 +331,7 @@ const server = createServer(async (req, res) => {
         count: toolCount,
         mutatingToolsEnabled: accessProfile.canMutate,
         tools: listToolsForAccess(accessProfile),
-      });
+      }, req);
     } else if (url === '/v1/providers') {
       const principal = requirePermission(req, res, 'providers:read');
       if (!principal) {
@@ -251,13 +352,13 @@ const server = createServer(async (req, res) => {
           outputCostPer1M: p.outputCostPer1M,
           maxTools: p.maxTools,
         })),
-      });
+      }, req);
     } else {
-      sendJson(res, 404, { error: 'Not found' });
+      sendJson(res, 404, { error: 'Not found' }, req);
     }
   } catch (err) {
     console.error(JSON.stringify({ level: 'error', message: err?.message }));
-    sendJson(res, 500, { error: 'Internal server error' });
+    sendJson(res, 500, { error: 'Internal server error' }, req);
   }
 });
 
