@@ -467,7 +467,7 @@
     {
       "id": "signal",
       "name": "SIGNAL Framework",
-      "currentScore": 8.89,
+      "currentScore": 8.97,
       "maxScore": 10,
       "history": [
         {
@@ -493,6 +493,14 @@
           "ciRun": null,
           "artifact": "docs/audit/signal-scorecard.json",
           "reason": "M2 Hardening continued: S3 anomaly detection (6\u21927, CI-validated), secret scanning (TruffleHog), dependency audit gate, SLO burn-rate alerts, on-call drill template"
+        },
+        {
+          "date": "2026-05-13",
+          "score": 8.97,
+          "commit": "9396789",
+          "ciRun": null,
+          "artifact": "docs/audit/signal-scorecard.json",
+          "reason": "SIGNAL scorecard recalculated after anomaly detector deployment. S3 supervision 7\u21928 (deployed to EKS). All pillar scores updated: Supervision 9.0, Integrity 8.75, Governance 9.25, Non-proliferation 8.25, Alignment 9.67. Overall: 8.97/10."
         }
       ]
     },

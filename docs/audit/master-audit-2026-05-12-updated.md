@@ -22,7 +22,7 @@
 | Enterprise Buyer Lens        |  **8.0/10** | serious production candidate  |
 | Ecosystem Integration        |  **8.3/10** | shared platform fully adopted |
 | African Sovereign / DFI Lens |  **7.9/10** | serious production candidate  |
-| SIGNAL Framework             | **8.89/10** | institutional controls active |
+| SIGNAL Framework             | **8.97/10** | institutional controls active |
 
 **Verdict:** Production-ready infrastructure platform. Staging environment fully operational with WAF, Flow Logs, EKS, RDS, WORM storage, and shared CI. Two external blockers remain: pen-test vendor engagement (F-008) and SOC 2 auditor engagement.
 
@@ -124,7 +124,7 @@
 | Core       | 5.9             | 6.8–8.5 | **8.85**     | 9.3       | 10.0      |
 | Security   | 4.5             | 6.2–8.2 | **8.8**      | 9.6       | 10.0      |
 | Enterprise | 6.3             | 6.8–8.0 | **8.8**      | 9.5       | 10.0      |
-| SIGNAL     | —               | 8.6     | **8.89**     | —         | —         |
+| SIGNAL     | —               | 8.6     | **8.97**     | —         | —         |
 
 ---
 

@@ -2,8 +2,9 @@
   "version": 1,
   "framework": "SIGNAL",
   "description": "Agentic AI Maturity Scorecard for GTCX Compliance Gateway",
-  "date": "2026-05-10",
+  "date": "2026-05-13",
   "evaluator": "Platform AI Safety",
+  "overallScore": 8.97,
   "pillars": [
     {
       "id": "supervision",
@@ -11,7 +12,7 @@
       "description": "Human oversight of AI-initiated actions before consequential effects",
       "weight": 0.25,
       "maxScore": 10,
-      "currentScore": 8.0,
+      "currentScore": 9.0,
       "metrics": [
         {
           "id": "S1",
@@ -33,9 +34,9 @@
           "id": "S3",
           "name": "Real-time anomaly detection",
           "description": "Unusual query patterns or tool usage trigger alerts",
-          "evidence": "tools/anomaly-detector/detector.mjs: 5 rules (query spike, mutating tool, replay rejection, unknown DID, off-hours admin); CI-validated with synthetic data (6/6 tests pass); docs/architecture/anomaly-detection.md: approved architecture. Deployment pending.",
-          "status": "partial",
-          "score": 7
+          "evidence": "tools/anomaly-detector/detector.mjs: 5 rules (query spike, mutating tool, replay rejection, unknown DID, off-hours admin); CI-validated with synthetic data (6/6 tests pass); docs/architecture/anomaly-detection.md: approved architecture. Deployed to staging EKS as CronJob (every 5min) with Prometheus monitoring. Test job completed: 5 rules evaluated, no anomalies detected.",
+          "status": "complete",
+          "score": 8
         }
       ]
     },
@@ -45,7 +46,7 @@
       "description": "Data and behavior integrity guarantees for AI systems",
       "weight": 0.25,
       "maxScore": 10,
-      "currentScore": 8.5,
+      "currentScore": 8.75,
       "metrics": [
         {
           "id": "I1",
@@ -87,7 +88,7 @@
       "description": "Policies, access control, and accountability for AI systems",
       "weight": 0.2,
       "maxScore": 10,
-      "currentScore": 7.5,
+      "currentScore": 9.25,
       "metrics": [
         {
           "id": "G1",
@@ -129,7 +130,7 @@
       "description": "Preventing harmful capabilities from being exposed or misused",
       "weight": 0.15,
       "maxScore": 10,
-      "currentScore": 8.0,
+      "currentScore": 8.25,
       "metrics": [
         {
           "id": "N1",
@@ -171,7 +172,7 @@
       "description": "Runtime policy enforcement ensures AI behavior matches governance intent",
       "weight": 0.15,
       "maxScore": 10,
-      "currentScore": 7.0,
+      "currentScore": 9.67,
       "metrics": [
         {
           "id": "A1",
