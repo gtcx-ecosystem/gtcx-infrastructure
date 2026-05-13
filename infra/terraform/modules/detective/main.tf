@@ -78,6 +78,24 @@ resource "aws_kms_key" "cloudtrail" {
           }
         }
       },
+      {
+        Sid       = "AllowCloudWatchLogs"
+        Effect    = "Allow"
+        Principal = { Service = "logs.${var.region}.amazonaws.com" }
+        Action = [
+          "kms:Encrypt*",
+          "kms:Decrypt*",
+          "kms:ReEncrypt*",
+          "kms:GenerateDataKey*",
+          "kms:Describe*"
+        ]
+        Resource = "*"
+        Condition = {
+          ArnLike = {
+            "kms:EncryptionContext:aws:logs:arn" = "arn:aws:logs:${var.region}:${data.aws_caller_identity.current.account_id}:log-group:*"
+          }
+        }
+      },
     ]
   })
 
@@ -176,10 +194,50 @@ resource "aws_s3_bucket_policy" "cloudtrail" {
 # CloudTrail
 # -----------------------------------------------------------------------------
 
+# CloudWatch Logs log group for CloudTrail
+data "aws_iam_policy_document" "cloudwatch_assume" {
+  statement {
+    actions = ["sts:AssumeRole"]
+    principals {
+      type        = "Service"
+      identifiers = ["cloudtrail.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_role" "cloudtrail_cloudwatch" {
+  name               = "gtcx-${var.environment}-cloudtrail-cloudwatch"
+  assume_role_policy = data.aws_iam_policy_document.cloudwatch_assume.json
+  tags               = local.common_tags
+}
+
+resource "aws_iam_role_policy" "cloudtrail_cloudwatch" {
+  name = "gtcx-${var.environment}-cloudtrail-cloudwatch-policy"
+  role = aws_iam_role.cloudtrail_cloudwatch.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect   = "Allow"
+      Action   = ["logs:CreateLogStream", "logs:PutLogEvents"]
+      Resource = "${aws_cloudwatch_log_group.cloudtrail.arn}:*"
+    }]
+  })
+}
+
+resource "aws_cloudwatch_log_group" "cloudtrail" {
+  name              = "/aws/cloudtrail/gtcx-${var.environment}"
+  retention_in_days = 365
+  kms_key_id        = aws_kms_key.cloudtrail.arn
+  tags              = local.common_tags
+}
+
 resource "aws_cloudtrail" "main" {
   name                          = "gtcx-${var.environment}-trail"
   s3_bucket_name                = aws_s3_bucket.cloudtrail.id
   kms_key_id                    = aws_kms_key.cloudtrail.arn
+  cloud_watch_logs_group_arn    = "${aws_cloudwatch_log_group.cloudtrail.arn}:*"
+  cloud_watch_logs_role_arn     = aws_iam_role.cloudtrail_cloudwatch.arn
   is_multi_region_trail         = false
   enable_log_file_validation    = true
   include_global_service_events = true
@@ -287,4 +345,92 @@ output "guardduty_detector_id" {
 output "security_alerts_topic_arn" {
   description = "SNS topic ARN for security alerts — subscribe your incident channel"
   value       = aws_sns_topic.security_alerts.arn
+}
+
+# -----------------------------------------------------------------------------
+# CIS CloudWatch Metric Filters & Alarms
+# -----------------------------------------------------------------------------
+# Each filter matches a specific CloudTrail management event pattern.
+# Alarms fire when ANY matching event occurs (threshold = 1).
+# -----------------------------------------------------------------------------
+
+locals {
+  cis_metric_filters = {
+    unauthorized-api-calls = {
+      pattern = "{ ($.errorCode = \"*UnauthorizedOperation\") || ($.errorCode = \"AccessDenied*\") }"
+    }
+    console-signin-without-mfa = {
+      pattern = "{ ($.eventName = \"ConsoleLogin\") && ($.additionalEventData.MFAUsed != \"Yes\") }"
+    }
+    root-usage = {
+      pattern = "{ $.userIdentity.type = \"Root\" && $.userIdentity.invokedBy NOT EXISTS && $.eventType != \"AwsServiceEvent\" }"
+    }
+    iam-policy-changes = {
+      pattern = "{ ($.eventName = \"DeleteGroupPolicy\") || ($.eventName = \"DeleteRolePolicy\") || ($.eventName = \"DeleteUserPolicy\") || ($.eventName = \"PutGroupPolicy\") || ($.eventName = \"PutRolePolicy\") || ($.eventName = \"PutUserPolicy\") || ($.eventName = \"CreatePolicy\") || ($.eventName = \"DeletePolicy\") || ($.eventName = \"CreatePolicyVersion\") || ($.eventName = \"DeletePolicyVersion\") || ($.eventName = \"AttachRolePolicy\") || ($.eventName = \"DetachRolePolicy\") || ($.eventName = \"AttachUserPolicy\") || ($.eventName = \"DetachUserPolicy\") || ($.eventName = \"AttachGroupPolicy\") || ($.eventName = \"DetachGroupPolicy\") }"
+    }
+    cloudtrail-config-changes = {
+      pattern = "{ ($.eventName = \"CreateTrail\") || ($.eventName = \"UpdateTrail\") || ($.eventName = \"DeleteTrail\") || ($.eventName = \"StartLogging\") || ($.eventName = \"StopLogging\") }"
+    }
+    vpc-changes = {
+      pattern = "{ ($.eventName = \"CreateVpc\") || ($.eventName = \"DeleteVpc\") || ($.eventName = \"ModifyVpcAttribute\") || ($.eventName = \"AcceptVpcPeeringConnection\") || ($.eventName = \"CreateVpcPeeringConnection\") || ($.eventName = \"DeleteVpcPeeringConnection\") || ($.eventName = \"RejectVpcPeeringConnection\") || ($.eventName = \"AttachClassicLinkVpc\") || ($.eventName = \"DetachClassicLinkVpc\") || ($.eventName = \"DisableVpcClassicLink\") || ($.eventName = \"EnableVpcClassicLink\") }"
+    }
+    s3-policy-changes = {
+      pattern = "{ ($.eventSource = \"s3.amazonaws.com\") && (($.eventName = \"PutBucketAcl\") || ($.eventName = \"PutBucketPolicy\") || ($.eventName = \"PutBucketCors\") || ($.eventName = \"PutBucketLifecycle\") || ($.eventName = \"PutBucketReplication\") || ($.eventName = \"DeleteBucketPolicy\") || ($.eventName = \"DeleteBucketCors\") || ($.eventName = \"DeleteBucketLifecycle\") || ($.eventName = \"DeleteBucketReplication\") ) }"
+    }
+    security-group-changes = {
+      pattern = "{ ($.eventName = \"AuthorizeSecurityGroupIngress\") || ($.eventName = \"AuthorizeSecurityGroupEgress\") || ($.eventName = \"RevokeSecurityGroupIngress\") || ($.eventName = \"RevokeSecurityGroupEgress\") || ($.eventName = \"CreateSecurityGroup\") || ($.eventName = \"DeleteSecurityGroup\") }"
+    }
+    nacl-changes = {
+      pattern = "{ ($.eventName = \"CreateNetworkAcl\") || ($.eventName = \"CreateNetworkAclEntry\") || ($.eventName = \"DeleteNetworkAcl\") || ($.eventName = \"DeleteNetworkAclEntry\") || ($.eventName = \"ReplaceNetworkAclEntry\") || ($.eventName = \"ReplaceNetworkAclAssociation\") }"
+    }
+    network-gateway-changes = {
+      pattern = "{ ($.eventName = \"CreateCustomerGateway\") || ($.eventName = \"DeleteCustomerGateway\") || ($.eventName = \"AttachInternetGateway\") || ($.eventName = \"CreateInternetGateway\") || ($.eventName = \"DeleteInternetGateway\") || ($.eventName = \"DetachInternetGateway\") }"
+    }
+    route-table-changes = {
+      pattern = "{ ($.eventName = \"CreateRoute\") || ($.eventName = \"CreateRouteTable\") || ($.eventName = \"ReplaceRoute\") || ($.eventName = \"ReplaceRouteTableAssociation\") || ($.eventName = \"DeleteRouteTable\") || ($.eventName = \"DeleteRoute\") || ($.eventName = \"DisassociateRouteTable\") }"
+    }
+    cmk-changes = {
+      pattern = "{ ($.eventSource = \"kms.amazonaws.com\") && (($.eventName = \"DisableKey\") || ($.eventName = \"ScheduleKeyDeletion\") ) }"
+    }
+    console-auth-failures = {
+      pattern = "{ ($.eventName = \"ConsoleLogin\") && ($.errorMessage = \"Failed authentication\") }"
+    }
+    config-changes = {
+      pattern = "{ ($.eventSource = \"config.amazonaws.com\") && (($.eventName = \"StopConfigurationRecorder\") || ($.eventName = \"DeleteDeliveryChannel\") || ($.eventName = \"PutDeliveryChannel\") || ($.eventName = \"PutConfigurationRecorder\") ) }"
+    }
+  }
+}
+
+resource "aws_cloudwatch_log_metric_filter" "cis" {
+  for_each = local.cis_metric_filters
+
+  name           = "gtcx-${var.environment}-${each.key}"
+  pattern        = each.value.pattern
+  log_group_name = aws_cloudwatch_log_group.cloudtrail.name
+
+  metric_transformation {
+    name          = "gtcx-${var.environment}-${each.key}"
+    namespace     = "CIS/AWS"
+    value         = "1"
+    default_value = "0"
+  }
+}
+
+resource "aws_cloudwatch_metric_alarm" "cis" {
+  for_each = local.cis_metric_filters
+
+  alarm_name          = "gtcx-${var.environment}-${each.key}"
+  alarm_description   = "CIS control: ${each.key} — triggers on any matching CloudTrail event"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = 1
+  metric_name         = aws_cloudwatch_log_metric_filter.cis[each.key].metric_transformation[0].name
+  namespace           = "CIS/AWS"
+  period              = 300
+  statistic           = "Sum"
+  threshold           = 1
+  treat_missing_data  = "notBreaching"
+  alarm_actions       = [aws_sns_topic.security_alerts.arn]
+  ok_actions          = [aws_sns_topic.security_alerts.arn]
+
+  tags = local.common_tags
 }
