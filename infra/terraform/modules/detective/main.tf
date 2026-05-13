@@ -27,6 +27,12 @@ variable "tags" {
   default     = {}
 }
 
+variable "enable_guardduty" {
+  description = "Whether to create a GuardDuty detector (only one per region allowed)"
+  type        = bool
+  default     = true
+}
+
 locals {
   common_tags = merge(var.tags, {
     Environment = var.environment
@@ -193,6 +199,8 @@ resource "aws_cloudtrail" "main" {
 # -----------------------------------------------------------------------------
 
 resource "aws_guardduty_detector" "main" {
+  count = var.enable_guardduty ? 1 : 0
+
   enable = true
 
   finding_publishing_frequency = "FIFTEEN_MINUTES"
@@ -272,8 +280,8 @@ output "cloudtrail_bucket" {
 }
 
 output "guardduty_detector_id" {
-  description = "GuardDuty detector ID"
-  value       = aws_guardduty_detector.main.id
+  description = "GuardDuty detector ID (empty if not created)"
+  value       = try(aws_guardduty_detector.main[0].id, "")
 }
 
 output "security_alerts_topic_arn" {

@@ -77,6 +77,10 @@ review_cycle: 'quarterly'
 | FIPS Endpoints                 | ✅ Enabled  | All environments except af-south-1 (unavailable)     |
 | AWS Config Compliance Rules    | ✅ Active   | 8 managed rules, all resources COMPLIANT             |
 | Config Service-Linked Role     | ✅ Fixed    | AWSServiceRoleForConfig (Security Hub best practice) |
+| CloudTrail Production          | ✅ Live     | gtcx-production-trail, KMS encrypted, S3 retention   |
+| S3 SSL Enforcement             | ✅ Fixed    | 14/14 buckets with SSL-only policies                 |
+| IAM Console Access Hygiene     | ✅ Fixed    | gtcx-terraform login profile removed                 |
+| Unused EBS Cleanup             | ✅ Fixed    | vol-0f35703a176f8a445 (5GB testnet orphan) deleted   |
 | WORM Append-Only Verified      | ✅ Verified | Explicit deny on overwrite, COMPLIANCE mode          |
 | Docs Machine-Readable Format   | ✅ Complete | 306 docs with YAML frontmatter                       |
 | Anomaly Detector Prod Manifest | ✅ Ready    | SHA-pinned in production kustomization               |
@@ -176,22 +180,24 @@ review_cycle: 'quarterly'
 
 ## 6. Audit Trail
 
-| Phase        | Commit  | What                                                                    |
-| ------------ | ------- | ----------------------------------------------------------------------- |
-| M1           | 05e69fc | Fixes + FIPS + link checker + anomaly arch                              |
-| M2 partial   | 3f75ced | WORM module + anomaly PoC + chaos tests + FIPS all                      |
-| M2 completed | 627748c | Staging live + WAF/Flow Logs + shared CI + repo review                  |
-| M2 continued | 22661e2 | Package rename docs + compliance governance + deprecation ADR           |
-| M2 finalized | 05a654f | WORM deployed + anomaly detector containerized                          |
-| Ledger bump  | c4a176e | Security 8.8, Enterprise 8.7                                            |
-| Ledger bump  | 7ebca03 | Ecosystem 8.3, Enterprise 8.8, 100% onboarding, image built             |
-| Prod backend | —       | S3 gtcx-terraform-state-production + DynamoDB locks table               |
-| K8s deploy   | —       | Anomaly detector CronJob in staging EKS, Prometheus monitoring          |
-| Config rules | c837c98 | AWS Config 8 managed rules applied in production, all COMPLIANT         |
-| Config SLR   | —       | Service-linked role AWSServiceRoleForConfig created, recorder updated   |
-| WORM verify  | —       | Append-only verified via explicit deny policy test                      |
-| Docs MR      | a3828ff | 283 docs migrated to YAML frontmatter + 23 index READMEs                |
-| Prod anomaly | —       | Production kustomization updated with SHA-pinned anomaly detector image |
+| Phase        | Commit  | What                                                                          |
+| ------------ | ------- | ----------------------------------------------------------------------------- |
+| M1           | 05e69fc | Fixes + FIPS + link checker + anomaly arch                                    |
+| M2 partial   | 3f75ced | WORM module + anomaly PoC + chaos tests + FIPS all                            |
+| M2 completed | 627748c | Staging live + WAF/Flow Logs + shared CI + repo review                        |
+| M2 continued | 22661e2 | Package rename docs + compliance governance + deprecation ADR                 |
+| M2 finalized | 05a654f | WORM deployed + anomaly detector containerized                                |
+| Ledger bump  | c4a176e | Security 8.8, Enterprise 8.7                                                  |
+| Ledger bump  | 7ebca03 | Ecosystem 8.3, Enterprise 8.8, 100% onboarding, image built                   |
+| Prod backend | —       | S3 gtcx-terraform-state-production + DynamoDB locks table                     |
+| K8s deploy   | —       | Anomaly detector CronJob in staging EKS, Prometheus monitoring                |
+| Config rules | c837c98 | AWS Config 8 managed rules applied in production, all COMPLIANT               |
+| Config SLR   | —       | Service-linked role AWSServiceRoleForConfig created, recorder updated         |
+| WORM verify  | —       | Append-only verified via explicit deny policy test                            |
+| Docs MR      | a3828ff | 283 docs migrated to YAML frontmatter + 23 index READMEs                      |
+| Prod anomaly | —       | Production kustomization updated with SHA-pinned anomaly detector image       |
+| CloudTrail   | 826d9bd | Production CloudTrail live: KMS encrypted, S3 lifecycle 7yr, GuardDuty SNS    |
+| S3 SSL       | —       | 14 buckets SSL-enforced; 1 unused EBS deleted; gtcx-terraform console revoked |
 
 ---
 

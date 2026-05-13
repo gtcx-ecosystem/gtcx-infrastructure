@@ -276,6 +276,25 @@ module "worm_audit" {
 }
 
 # -----------------------------------------------------------------------------
+# Detective Controls — CloudTrail + GuardDuty
+# -----------------------------------------------------------------------------
+# GuardDuty already enabled manually (detector e2cf...); set enable_guardduty
+# = false to avoid conflict. CloudTrail is created by this module.
+# -----------------------------------------------------------------------------
+
+module "detective" {
+  source = "../../modules/detective"
+
+  environment      = var.environment
+  region           = var.region
+  enable_guardduty = false
+
+  tags = merge(var.tags, {
+    Environment = "production"
+  })
+}
+
+# -----------------------------------------------------------------------------
 # Outputs
 # -----------------------------------------------------------------------------
 
