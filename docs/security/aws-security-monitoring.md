@@ -79,24 +79,28 @@ aws securityhub get-findings \
 - All supported resources
 - Global resources (IAM roles, policies)
 
-**Compliance rules to add:**
+**Compliance rules applied:**
 
-- [ ] `cloudtrail-enabled` — CloudTrail must be active
-- [ ] `ec2-volume-inuse-check` — No unattached EBS volumes
-- [ ] `s3-bucket-public-read-prohibited` — No public S3 buckets
-- [ ] `rds-storage-encrypted` — RDS must be encrypted
-- [ ] `restricted-ssh` — No SSH (port 22) open to 0.0.0.0/0
+| Rule                                 | Source      | Scope       | Status       |
+| ------------------------------------ | ----------- | ----------- | ------------ |
+| `cloudtrail-enabled`                 | AWS Managed | Account     | ✅ COMPLIANT |
+| `ec2-volume-inuse-check`             | AWS Managed | All regions | ✅ COMPLIANT |
+| `s3-bucket-public-read-prohibited`   | AWS Managed | All regions | ✅ COMPLIANT |
+| `rds-storage-encrypted`              | AWS Managed | All regions | ✅ COMPLIANT |
+| `restricted-ssh`                     | AWS Managed | All regions | ✅ COMPLIANT |
+| `s3-bucket-ssl-requests-only`        | AWS Managed | All regions | ✅ COMPLIANT |
+| `mfa-enabled-for-iam-console-access` | AWS Managed | Account     | ✅ COMPLIANT |
+| `rds-instance-public-access-check`   | AWS Managed | All regions | ✅ COMPLIANT |
+
+**Terraform:** `infra/terraform/modules/config-rules/main.tf`
 
 ```bash
-# Add compliance rule
-aws configservice put-config-rule \
-  --config-rule '{
-    "ConfigRuleName": "s3-bucket-public-read-prohibited",
-    "Source": {
-      "Owner": "AWS",
-      "SourceIdentifier": "S3_BUCKET_PUBLIC_READ_PROHIBITED"
-    }
-  }' \
+# List all rules
+aws configservice describe-config-rules --region af-south-1
+
+# Check compliance for a specific rule
+aws configservice get-compliance-details-by-config-rule \
+  --config-rule-name gtcx-production-rds-storage-encrypted \
   --region af-south-1
 ```
 
@@ -109,9 +113,10 @@ aws configservice put-config-rule \
 | GuardDuty    | ~$10–$20               |
 | Security Hub | ~$5–$10                |
 | AWS Config   | ~$5–$15                |
-| **Total**    | **~$20–$45**           |
+| Config Rules | ~$2–$5 (8 rules)       |
+| **Total**    | **~$22–$50**           |
 
 ---
 
-_Document version: 1.0_
+_Document version: 1.1_
 _Next review: After first GuardDuty finding or 2026-06-13_

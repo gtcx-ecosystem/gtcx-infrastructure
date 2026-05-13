@@ -18,12 +18,13 @@
 | Dimension                    |       Score | Rating Band                   |
 | ---------------------------- | ----------: | ----------------------------- |
 | Core Weighted Score          | **8.85/10** | production-ready              |
+| Security                     |  **8.9/10** | compliance rules active       |
 | Investor Lens                |  **7.8/10** | serious production candidate  |
 | Enterprise Buyer Lens        |  **8.0/10** | serious production candidate  |
 | Enterprise Readiness         | **8.95/10** | production live               |
+| SIGNAL Framework             | **9.10/10** | institutional controls active |
 | Ecosystem Integration        |  **8.3/10** | shared platform fully adopted |
 | African Sovereign / DFI Lens |  **7.9/10** | serious production candidate  |
-| SIGNAL Framework             | **8.97/10** | institutional controls active |
 
 **Verdict:** Production-ready infrastructure platform. **Both staging and production environments are fully operational** with WAF, Flow Logs, EKS, RDS, WORM storage, and shared CI. Two external blockers remain: pen-test vendor engagement (F-008) and SOC 2 auditor engagement.
 
@@ -67,6 +68,7 @@
 | Kyverno Policy Validation      | ✅ In CI    | Staging + production overlays                    |
 | Chaos Network Partition        | ✅ Passing  | 4/4 subtests                                     |
 | FIPS Endpoints                 | ✅ Enabled  | All environments except af-south-1 (unavailable) |
+| AWS Config Compliance Rules    | ✅ Active   | 8 managed rules, all resources COMPLIANT         |
 
 ### 1.3 GTM Readiness
 
@@ -77,9 +79,9 @@
 
 1. Pen-test vendor engagement (F-008) — vendor shortlist ready, awaiting leadership send
 2. SOC 2 Type 1 auditor engagement — gap analysis complete, awaiting budget
-3. Production environment deployment — pattern established, needs cost approval
-4. mTLS mesh sidecar injection — pending Q3 2026 (ADR-007)
-5. Cross-repo package adoption — `@gtcx/core` published but not consumed by siblings
+3. mTLS mesh sidecar injection — pending Q3 2026 (ADR-007)
+4. Cross-repo package adoption — `@gtcx/core` published but not consumed by siblings
+5. Shared CI composite action adoption in sibling repos — 3 actions created, needs PRs
 
 ---
 
@@ -123,25 +125,26 @@
 | Dimension  | M0 (2026-05-10) | M1      | M2 (Current) | M3 Target | M4 (10.0) |
 | ---------- | --------------- | ------- | ------------ | --------- | --------- |
 | Core       | 5.9             | 6.8–8.5 | **8.85**     | 9.3       | 10.0      |
-| Security   | 4.5             | 6.2–8.2 | **8.8**      | 9.6       | 10.0      |
+| Security   | 4.5             | 6.2–8.2 | **8.9**      | 9.6       | 10.0      |
 | Enterprise | 6.3             | 6.8–8.0 | **8.95**     | 9.5       | 10.0      |
-| SIGNAL     | —               | 8.6     | **8.97**     | —         | —         |
+| SIGNAL     | —               | 8.6     | **9.10**     | —         | —         |
 
 ---
 
 ## 4. Remaining Critical Path
 
-| Milestone | Item                                     | Effort      | Blocker            | Parallelizable |
-| --------- | ---------------------------------------- | ----------- | ------------------ | -------------- |
-| M3        | Pen-test report received                 | 3–4 weeks   | Budget + vendor    | No             |
-| M3        | SOC 2 Type 1 gap analysis                | 2–4 weeks   | Auditor engagement | No             |
-| M3        | WORM storage append-only verified        | 1 day       | None               | Yes            |
-| M3        | Anomaly detector deployed to staging EKS | 1 day       | None               | Yes            |
-| M3        | ~~Production environment~~               | ✅ **DONE** | Live 2026-05-13    | No             |
-| M3        | Anomaly detector deployed to staging EKS | 1 day       | None               | Yes            |
-| M3        | Cross-repo package adoption              | 1 week      | Publish + PRs      | Yes            |
-| M4        | SOC 2 Type 1 attestation                 | 3–6 months  | Auditor + evidence | No             |
-| M4        | ISO 27001 certification                  | 6–12 months | Auditor + evidence | No             |
+| Milestone | Item                                         | Effort      | Blocker            | Parallelizable |
+| --------- | -------------------------------------------- | ----------- | ------------------ | -------------- |
+| M3        | Pen-test report received                     | 3–4 weeks   | Budget + vendor    | No             |
+| M3        | SOC 2 Type 1 gap analysis                    | 2–4 weeks   | Auditor engagement | No             |
+| M3        | WORM storage append-only verified            | 1 day       | None               | Yes            |
+| M3        | ~~Anomaly detector deployed to staging EKS~~ | ✅ **DONE** | Live 2026-05-13    | Yes            |
+| M3        | ~~Production environment~~                   | ✅ **DONE** | Live 2026-05-13    | No             |
+| M3        | ~~AWS Config compliance rules~~              | ✅ **DONE** | Live 2026-05-13    | Yes            |
+| M3        | Cross-repo package adoption                  | 1 week      | Publish + PRs      | Yes            |
+| M3        | Shared CI composite action adoption          | 1 week      | Cross-repo PRs     | Yes            |
+| M4        | SOC 2 Type 1 attestation                     | 3–6 months  | Auditor + evidence | No             |
+| M4        | ISO 27001 certification                      | 6–12 months | Auditor + evidence | No             |
 
 ---
 
@@ -151,25 +154,27 @@
 
 1. Pen-test report clean (+0.3 Security)
 2. SOC 2 gap analysis no critical gaps (+0.2 Enterprise)
-3. Production environment live (+0.2 Enterprise)
+3. ~~Production environment live~~ ✅ DONE (+0.2 Enterprise)
 4. ~~Anomaly detector running in staging~~ ✅ DONE (+0.2 Agentic)
-5. Cross-repo package adoption 80% (+0.1 Ecosystem)
+5. AWS Config compliance rules with 0 non-compliant (+0.1 Security)
+6. Cross-repo package adoption 80% (+0.1 Ecosystem)
 
 ---
 
 ## 6. Audit Trail
 
-| Phase        | Commit  | What                                                           |
-| ------------ | ------- | -------------------------------------------------------------- |
-| M1           | 05e69fc | Fixes + FIPS + link checker + anomaly arch                     |
-| M2 partial   | 3f75ced | WORM module + anomaly PoC + chaos tests + FIPS all             |
-| M2 completed | 627748c | Staging live + WAF/Flow Logs + shared CI + repo review         |
-| M2 continued | 22661e2 | Package rename docs + compliance governance + deprecation ADR  |
-| M2 finalized | 05a654f | WORM deployed + anomaly detector containerized                 |
-| Ledger bump  | c4a176e | Security 8.8, Enterprise 8.7                                   |
-| Ledger bump  | 7ebca03 | Ecosystem 8.3, Enterprise 8.8, 100% onboarding, image built    |
-| Prod backend | —       | S3 gtcx-terraform-state-production + DynamoDB locks table      |
-| K8s deploy   | —       | Anomaly detector CronJob in staging EKS, Prometheus monitoring |
+| Phase        | Commit  | What                                                            |
+| ------------ | ------- | --------------------------------------------------------------- |
+| M1           | 05e69fc | Fixes + FIPS + link checker + anomaly arch                      |
+| M2 partial   | 3f75ced | WORM module + anomaly PoC + chaos tests + FIPS all              |
+| M2 completed | 627748c | Staging live + WAF/Flow Logs + shared CI + repo review          |
+| M2 continued | 22661e2 | Package rename docs + compliance governance + deprecation ADR   |
+| M2 finalized | 05a654f | WORM deployed + anomaly detector containerized                  |
+| Ledger bump  | c4a176e | Security 8.8, Enterprise 8.7                                    |
+| Ledger bump  | 7ebca03 | Ecosystem 8.3, Enterprise 8.8, 100% onboarding, image built     |
+| Prod backend | —       | S3 gtcx-terraform-state-production + DynamoDB locks table       |
+| K8s deploy   | —       | Anomaly detector CronJob in staging EKS, Prometheus monitoring  |
+| Config rules | c837c98 | AWS Config 8 managed rules applied in production, all COMPLIANT |
 
 ---
 

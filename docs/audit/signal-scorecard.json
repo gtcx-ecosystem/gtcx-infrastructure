@@ -4,7 +4,7 @@
   "description": "Agentic AI Maturity Scorecard for GTCX Compliance Gateway",
   "date": "2026-05-13",
   "evaluator": "Platform AI Safety",
-  "overallScore": 8.97,
+  "overallScore": 9.1,
   "pillars": [
     {
       "id": "supervision",
@@ -46,7 +46,7 @@
       "description": "Data and behavior integrity guarantees for AI systems",
       "weight": 0.25,
       "maxScore": 10,
-      "currentScore": 8.75,
+      "currentScore": 9.25,
       "metrics": [
         {
           "id": "I1",
@@ -76,9 +76,9 @@
           "id": "I4",
           "name": "WORM audit storage",
           "description": "Audit events stored with cryptographic proof of immutability",
-          "evidence": "infra/terraform/modules/worm-audit/main.tf: S3 Object Lock in COMPLIANCE mode, KMS encryption, deny-unencrypted/deny-non-SSL policies. Deployment pending.",
-          "status": "partial",
-          "score": 6
+          "evidence": "infra/terraform/modules/worm-audit/main.tf: S3 Object Lock in COMPLIANCE mode, KMS encryption, deny-unencrypted/deny-non-SSL policies. Deployed to production (gtcx-worm-audit-production-af-south-1). Verified via AWS CLI: COMPLIANCE mode, 2557-day retention.",
+          "status": "pass",
+          "score": 9
         }
       ]
     },
