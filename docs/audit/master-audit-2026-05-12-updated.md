@@ -135,7 +135,7 @@
 | M3        | Pen-test report received                 | 3–4 weeks   | Budget + vendor    | No             |
 | M3        | SOC 2 Type 1 gap analysis                | 2–4 weeks   | Auditor engagement | No             |
 | M3        | WORM storage append-only verified        | 1 day       | None               | Yes            |
-| M3        | Anomaly detector deployed to staging EKS | 1 day       | Image build + push | Yes            |
+| M3        | Anomaly detector deployed to staging EKS | 1 day       | None               | Yes            |
 | M3        | Production environment                   | 2–3 days    | Cost approval      | No             |
 | M3        | Anomaly detector deployed to staging EKS | 1 day       | None               | Yes            |
 | M3        | Cross-repo package adoption              | 1 week      | Publish + PRs      | Yes            |
@@ -151,23 +151,24 @@
 1. Pen-test report clean (+0.3 Security)
 2. SOC 2 gap analysis no critical gaps (+0.2 Enterprise)
 3. Production environment live (+0.2 Enterprise)
-4. Anomaly detector running in staging (+0.2 Agentic)
+4. ~~Anomaly detector running in staging~~ ✅ DONE (+0.2 Agentic)
 5. Cross-repo package adoption 80% (+0.1 Ecosystem)
 
 ---
 
 ## 6. Audit Trail
 
-| Phase        | Commit  | What                                                          |
-| ------------ | ------- | ------------------------------------------------------------- |
-| M1           | 05e69fc | Fixes + FIPS + link checker + anomaly arch                    |
-| M2 partial   | 3f75ced | WORM module + anomaly PoC + chaos tests + FIPS all            |
-| M2 completed | 627748c | Staging live + WAF/Flow Logs + shared CI + repo review        |
-| M2 continued | 22661e2 | Package rename docs + compliance governance + deprecation ADR |
-| M2 finalized | 05a654f | WORM deployed + anomaly detector containerized                |
-| Ledger bump  | c4a176e | Security 8.8, Enterprise 8.7                                  |
-| Ledger bump  | 7ebca03 | Ecosystem 8.3, Enterprise 8.8, 100% onboarding, image built   |
-| Prod backend | —       | S3 gtcx-terraform-state-production + DynamoDB locks table     |
+| Phase        | Commit  | What                                                           |
+| ------------ | ------- | -------------------------------------------------------------- |
+| M1           | 05e69fc | Fixes + FIPS + link checker + anomaly arch                     |
+| M2 partial   | 3f75ced | WORM module + anomaly PoC + chaos tests + FIPS all             |
+| M2 completed | 627748c | Staging live + WAF/Flow Logs + shared CI + repo review         |
+| M2 continued | 22661e2 | Package rename docs + compliance governance + deprecation ADR  |
+| M2 finalized | 05a654f | WORM deployed + anomaly detector containerized                 |
+| Ledger bump  | c4a176e | Security 8.8, Enterprise 8.7                                   |
+| Ledger bump  | 7ebca03 | Ecosystem 8.3, Enterprise 8.8, 100% onboarding, image built    |
+| Prod backend | —       | S3 gtcx-terraform-state-production + DynamoDB locks table      |
+| K8s deploy   | —       | Anomaly detector CronJob in staging EKS, Prometheus monitoring |
 
 ---
 

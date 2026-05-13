@@ -1,5 +1,12 @@
-apiVersion: apps/v1
-kind: Deployment
+# =============================================================================
+# Anomaly Detector — Periodic Scan (CronJob)
+# =============================================================================
+# The anomaly detector evaluates rules and exits (batch design).
+# CronJob is the correct abstraction for this workload.
+# =============================================================================
+
+apiVersion: batch/v1
+kind: CronJob
 metadata:
   name: anomaly-detector
   namespace: gtcx
@@ -7,67 +14,61 @@ metadata:
     app: anomaly-detector
     version: v1
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: anomaly-detector
-  template:
+  schedule: '*/5 * * * *'
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
     metadata:
       labels:
         app: anomaly-detector
         version: v1
     spec:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-        fsGroup: 1000
-      containers:
-        - name: detector
-          image: '348389439381.dkr.ecr.af-south-1.amazonaws.com/gtcx-anomaly-detector:latest'
-          imagePullPolicy: Always
-          env:
-            - name: PROMETHEUS_URL
-              value: 'http://prometheus.monitoring.svc.cluster.local:9090'
-            - name: NODE_ENV
-              value: 'production'
-          resources:
-            requests:
-              memory: '64Mi'
-              cpu: '50m'
-            limits:
-              memory: '128Mi'
-              cpu: '100m'
+      activeDeadlineSeconds: 300
+      backoffLimit: 2
+      template:
+        metadata:
+          labels:
+            app: anomaly-detector
+            version: v1
+        spec:
           securityContext:
-            allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
-            capabilities:
-              drop:
-                - ALL
-          livenessProbe:
-            exec:
-              command:
-                - node
-                - -e
-                - 'process.exit(0)'
-            initialDelaySeconds: 30
-            periodSeconds: 60
-          readinessProbe:
-            exec:
-              command:
-                - node
-                - -e
-                - 'process.exit(0)'
-            initialDelaySeconds: 5
-            periodSeconds: 10
-      affinity:
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 100
-              podAffinityTerm:
-                labelSelector:
-                  matchExpressions:
-                    - key: app
-                      operator: In
-                      values:
-                        - anomaly-detector
-                topologyKey: kubernetes.io/hostname
+            runAsNonRoot: true
+            runAsUser: 1000
+            fsGroup: 1000
+          restartPolicy: OnFailure
+          containers:
+            - name: detector
+              image: '348389439381.dkr.ecr.af-south-1.amazonaws.com/gtcx-anomaly-detector:latest'
+              imagePullPolicy: Always
+              env:
+                - name: PROMETHEUS_URL
+                  value: 'http://prometheus.monitoring.svc.cluster.local:9090'
+                - name: NODE_ENV
+                  value: 'production'
+              resources:
+                requests:
+                  memory: '64Mi'
+                  cpu: '50m'
+                limits:
+                  memory: '128Mi'
+                  cpu: '100m'
+              securityContext:
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: true
+                capabilities:
+                  drop:
+                    - ALL
+---
+# Service for Prometheus scraping (if metrics are exposed)
+apiVersion: v1
+kind: Service
+metadata:
+  name: anomaly-detector
+  namespace: gtcx
+spec:
+  selector:
+    app: anomaly-detector
+  ports:
+    - port: 9090
+      targetPort: 9090

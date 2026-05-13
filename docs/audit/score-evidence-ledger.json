@@ -355,7 +355,7 @@
     {
       "id": "enterprise-readiness",
       "name": "Enterprise / Production Readiness",
-      "currentScore": 8.8,
+      "currentScore": 8.85,
       "maxScore": 10,
       "history": [
         {
@@ -453,6 +453,14 @@
           "ciRun": "https://github.com/gtcx-ecosystem/gtcx-infrastructure/actions/runs/25756297277",
           "artifact": "348389439381.dkr.ecr.af-south-1.amazonaws.com/gtcx-anomaly-detector:77dda36",
           "reason": "Anomaly detector image built and pushed to ECR via CI (multi-arch, scan-on-push, verified). IAM policy updated to include ecr:DescribeImages."
+        },
+        {
+          "date": "2026-05-13",
+          "score": 8.85,
+          "commit": null,
+          "ciRun": null,
+          "artifact": "infra/kubernetes/base/services/anomaly-detector.yaml",
+          "reason": "Anomaly detector deployed to staging EKS as CronJob (every 5min). 5 rules active. Prometheus monitoring namespace created. EKS endpoint re-secured (public access disabled)."
         }
       ]
     },
