@@ -143,23 +143,24 @@ Only `gtcx-protocols` consumes `@gtcx/*` shared packages. `gtcx-core` (crypto, t
 
 ### P0 — This Week (Blocks Security & Compliance)
 
-| Action                                             | Owner                | Effort        |
-| -------------------------------------------------- | -------------------- | ------------- |
-| Add `SECURITY.md` to all 18 repos missing it       | Each repo owner      | 1 hr/repo     |
-| Add `LICENSE` to 6 repos missing it                | Each repo owner      | 15 min/repo   |
-| Batch-onboard all Tier 1/2 repos to shared CI role | Platform Engineering | 2 hrs         |
-| Freeze new independent Terraform in service repos  | Leadership           | 0 hr (policy) |
+| Action                                                 | Owner                                                 | Effort        |
+| ------------------------------------------------------ | ----------------------------------------------------- | ------------- |
+| Add `SECURITY.md` to all 18 repos missing it           | Each repo owner                                       | 1 hr/repo     |
+| Add `LICENSE` to 6 repos missing it                    | Each repo owner                                       | 15 min/repo   |
+| ~~Batch-onboard all Tier 1/2 repos to shared CI role~~ | ✅ **DONE** — 23/23 active repos onboarded 2026-05-12 | —             |
+| Freeze new independent Terraform in service repos      | Leadership                                            | 0 hr (policy) |
 
 ### P1 — This Month (Blocks SOC 2 & Pilot)
 
-| Action                                                         | Owner                               | Effort    |
-| -------------------------------------------------------------- | ----------------------------------- | --------- |
-| Migrate `sensei-ai` Terraform to `gtcx-infrastructure`         | Platform Engineering                | 2 weeks   |
-| Migrate `terra-os` Terraform to `gtcx-infrastructure`          | Platform Engineering                | 2 weeks   |
-| Migrate `gtcx-platforms` Terraform to `gtcx-infrastructure`    | Platform Engineering                | 1 week    |
-| Publish `gtcx-core` to GitHub Packages                         | Platform Engineering                | 3 days    |
-| Add `@gtcx/core` dependency to all TS repos                    | Each repo owner                     | 1 hr/repo |
-| ~~Deprecate `gtcx-core12` (Python) or merge into `gtcx-core`~~ | ✅ **DONE** — Deprecated 2026-05-12 | —         |
+| Action                                                         | Owner                                                      | Effort    |
+| -------------------------------------------------------------- | ---------------------------------------------------------- | --------- |
+| Migrate `sensei-ai` Terraform to `gtcx-infrastructure`         | Platform Engineering                                       | 2 weeks   |
+| Migrate `terra-os` Terraform to `gtcx-infrastructure`          | Platform Engineering                                       | 2 weeks   |
+| Migrate `gtcx-platforms` Terraform to `gtcx-infrastructure`    | Platform Engineering                                       | 1 week    |
+| Publish `gtcx-core` to GitHub Packages                         | Platform Engineering                                       | 3 days    |
+| Add `@gtcx/core` dependency to all TS repos                    | Each repo owner                                            | 1 hr/repo |
+| ~~Create package adoption guide~~                              | ✅ **DONE** — `docs/engineering/package-adoption-guide.md` | —         |
+| ~~Deprecate `gtcx-core12` (Python) or merge into `gtcx-core`~~ | ✅ **DONE** — Deprecated 2026-05-12                        | —         |
 
 ### P2 — Next Quarter (Quality & Maintainability)
 
