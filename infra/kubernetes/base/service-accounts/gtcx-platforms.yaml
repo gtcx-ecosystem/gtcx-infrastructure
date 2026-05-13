@@ -1,0 +1,14 @@
+# =============================================================================
+# gtcx-platforms ServiceAccount — IRSA-enabled
+# =============================================================================
+# Links the gtcx-platforms workload to the AWS IAM role for KMS signing.
+# Apply this manifest to the gtcx namespace in production EKS.
+# =============================================================================
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: gtcx-platforms
+  namespace: gtcx
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::348389439381:role/gtcx-production-platforms-irsa
+    eks.amazonaws.com/sts-regional-endpoints: 'true'

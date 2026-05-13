@@ -295,6 +295,67 @@ module "detective" {
 }
 
 # -----------------------------------------------------------------------------
+# KMS Signing Keys — Asymmetric ECC_NIST_P256 for protocol signing
+# -----------------------------------------------------------------------------
+# Per SECURE (P11): FIPS 140-2 Level 2 validated HSM backing.
+# Per AUDITABLE (P3): Every KMS API call logged via CloudTrail.
+# -----------------------------------------------------------------------------
+
+module "kms_signing" {
+  source = "../../modules/kms-signing"
+
+  environment            = var.environment
+  signing_role_arns      = [module.irsa_platform.platforms_role_arn]
+  admin_role_arns        = [module.ci.deploy_role_arn]
+  alarm_sns_topic_arns   = [module.detective.security_alerts_topic_arn]
+}
+
+# -----------------------------------------------------------------------------
+# IRSA — gtcx-platforms Service Account
+# -----------------------------------------------------------------------------
+# Allows gtcx-platforms pods in the gtcx namespace to assume AWS IAM roles
+# and call KMS Sign for protocol signing operations.
+# -----------------------------------------------------------------------------
+
+module "irsa_platform" {
+  source = "../../modules/irsa-platform"
+
+  environment         = var.environment
+  oidc_provider_arn   = module.eks.oidc_provider_arn
+  oidc_provider_url   = replace(module.eks.oidc_provider_url, "https://", "")
+  kms_signing_key_arn = "" # Attached below after kms_signing is created
+
+  tags = merge(var.tags, {
+    Environment = "production"
+  })
+}
+
+# Attach KMS signing policy to platforms IRSA role after key exists
+resource "aws_iam_role_policy" "platforms_kms" {
+  name = "gtcx-production-platforms-kms-sign"
+  role = module.irsa_platform.platforms_role_name
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Sid    = "AllowKmsSign"
+      Effect = "Allow"
+      Action = [
+        "kms:Sign",
+        "kms:GetPublicKey",
+        "kms:DescribeKey",
+      ]
+      Resource = module.kms_signing.signing_key_arn
+      Condition = {
+        StringEquals = {
+          "kms:SigningAlgorithm" = "ECDSA_SHA_256"
+        }
+      }
+    }]
+  })
+}
+
+# -----------------------------------------------------------------------------
 # Outputs
 # -----------------------------------------------------------------------------
 

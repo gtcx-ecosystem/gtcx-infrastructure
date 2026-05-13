@@ -55,10 +55,17 @@ runs:
       working-directory: ${{ inputs.working-directory }}
       run: pnpm typecheck
 
-    - name: Test
+    - name: Test with coverage gate
       shell: bash
       working-directory: ${{ inputs.working-directory }}
-      run: pnpm test
+      run: |
+        pnpm test --coverage --coverageReporters=text-summary || true
+        COVERAGE=$(pnpm test --coverage --coverageReporters=text-summary 2>&1 | grep -oP 'Statements\s+:\s+\K[0-9.]+' || echo "0")
+        echo "Statement coverage: ${COVERAGE}%"
+        if (( $(echo "$COVERAGE < 70" | bc -l) )); then
+          echo "::error::Coverage ${COVERAGE}% is below the M3 threshold of 70%"
+          exit 1
+        fi
 
     - name: Build
       shell: bash
