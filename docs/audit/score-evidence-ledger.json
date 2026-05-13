@@ -285,6 +285,14 @@
           "ciRun": null,
           "artifact": "infra/terraform/modules/config-rules/main.tf",
           "reason": "AWS Config compliance rules applied in production: 8 managed rules (S3, EBS, RDS, SSH, CloudTrail, MFA, EC2, SSL). All resources verified COMPLIANT via AWS CLI. Terraform-managed."
+        },
+        {
+          "date": "2026-05-13",
+          "score": 9.0,
+          "commit": "abe7f5a",
+          "ciRun": null,
+          "artifact": "infra/terraform/environments/production/terraform.tfstate",
+          "reason": "Production security hardening: CloudTrail live (KMS-encrypted, 7yr retention), AWS Config service-linked role (Security Hub CRITICAL fix), S3 SSL enforced on 14 buckets, IAM console hygiene (gtcx-terraform profile removed), unused EBS deleted. 6/7 Config rules COMPLIANT."
         }
       ]
     },

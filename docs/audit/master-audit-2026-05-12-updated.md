@@ -22,16 +22,16 @@ review_cycle: 'quarterly'
 
 ## Executive Summary
 
-| Dimension                    |       Score | Rating Band                   |
-| ---------------------------- | ----------: | ----------------------------- |
-| Core Weighted Score          | **8.85/10** | production-ready              |
-| Security                     |  **8.9/10** | compliance rules active       |
-| Investor Lens                |  **7.8/10** | serious production candidate  |
-| Enterprise Buyer Lens        |  **8.0/10** | serious production candidate  |
-| Enterprise Readiness         | **8.95/10** | production live               |
-| SIGNAL Framework             | **9.10/10** | institutional controls active |
-| Ecosystem Integration        |  **8.3/10** | shared platform fully adopted |
-| African Sovereign / DFI Lens |  **7.9/10** | serious production candidate  |
+| Dimension                    |       Score | Rating Band                       |
+| ---------------------------- | ----------: | --------------------------------- |
+| Core Weighted Score          | **8.85/10** | production-ready                  |
+| Security                     |  **9.0/10** | hardened — CloudTrail + SSL + SLR |
+| Investor Lens                |  **7.8/10** | serious production candidate      |
+| Enterprise Buyer Lens        |  **8.0/10** | serious production candidate      |
+| Enterprise Readiness         | **8.95/10** | production live                   |
+| SIGNAL Framework             | **9.10/10** | institutional controls active     |
+| Ecosystem Integration        |  **8.3/10** | shared platform fully adopted     |
+| African Sovereign / DFI Lens |  **7.9/10** | serious production candidate      |
 
 **Verdict:** Production-ready infrastructure platform. **Both staging and production environments are fully operational** with WAF, Flow Logs, EKS, RDS, WORM storage, and shared CI. Two external blockers remain: pen-test vendor engagement (F-008) and SOC 2 auditor engagement.
 
@@ -140,7 +140,7 @@ review_cycle: 'quarterly'
 | Dimension  | M0 (2026-05-10) | M1      | M2 (Current) | M3 Target | M4 (10.0) |
 | ---------- | --------------- | ------- | ------------ | --------- | --------- |
 | Core       | 5.9             | 6.8–8.5 | **8.85**     | 9.3       | 10.0      |
-| Security   | 4.5             | 6.2–8.2 | **8.9**      | 9.6       | 10.0      |
+| Security   | 4.5             | 6.2–8.2 | **9.0**      | 9.6       | 10.0      |
 | Enterprise | 6.3             | 6.8–8.0 | **8.95**     | 9.5       | 10.0      |
 | SIGNAL     | —               | 8.6     | **9.10**     | —         | —         |
 
