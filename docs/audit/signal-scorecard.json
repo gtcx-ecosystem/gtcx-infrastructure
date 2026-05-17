@@ -35,7 +35,7 @@
           "name": "Real-time anomaly detection",
           "description": "Unusual query patterns or tool usage trigger alerts",
           "evidence": "tools/anomaly-detector/detector.mjs: 5 rules (query spike, mutating tool, replay rejection, unknown DID, off-hours admin); CI-validated with synthetic data (6/6 tests pass); docs/architecture/anomaly-detection.md: approved architecture. Deployed to staging EKS as CronJob (every 5min) with Prometheus monitoring. Test job completed: 5 rules evaluated, no anomalies detected.",
-          "status": "complete",
+          "status": "pass",
           "score": 8
         }
       ]

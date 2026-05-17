@@ -75,10 +75,10 @@ jobs:
           cd tools/replay-protection
           node --test tests/verifier.test.mjs tests/integration.test.mjs
 
-      - name: Replay protection coverage
+      - name: Replay protection coverage gate
         run: |
           cd tools/replay-protection
-          pnpm test:coverage
+          pnpm test:coverage:gate
           echo "## Coverage Summary" >> "$GITHUB_STEP_SUMMARY"
           echo "\`\`\`" >> "$GITHUB_STEP_SUMMARY"
           npx c8 report --reporter=text --include='src/**' --exclude='tests/**' 2>/dev/null || true

@@ -155,7 +155,7 @@
     {
       "id": "code-quality",
       "name": "Code Quality",
-      "currentScore": 7.6,
+      "currentScore": 7.7,
       "maxScore": 10,
       "history": [
         {
@@ -173,6 +173,14 @@
           "ciRun": null,
           "artifact": "docs/audit/master-audit-2026-05-11.md",
           "reason": "Phase 1: HTTP integration test coverage expanded for compliance gateway and replay protection"
+        },
+        {
+          "date": "2026-05-17",
+          "score": 7.7,
+          "commit": "1831713",
+          "ciRun": null,
+          "artifact": "tools/replay-protection/package.json",
+          "reason": "M3 Certification: Branch coverage CI gate enforced at \u226590% (c8 --check-coverage --branches=90). Replay-protection at 90.25% branch coverage."
         }
       ]
     },
@@ -203,7 +211,7 @@
     {
       "id": "security",
       "name": "Security",
-      "currentScore": 8.8,
+      "currentScore": 8.9,
       "maxScore": 10,
       "history": [
         {
@@ -300,7 +308,15 @@
           "commit": "3469bf6",
           "ciRun": null,
           "artifact": "infra/terraform/modules/detective/main.tf",
-          "reason": "CIS CloudWatch monitoring: 14 metric filters + alarms for CloudTrail events. CloudTrail delivers to CloudWatch Logs. Alarms cover: unauthorized API, root usage, IAM policy, VPC, S3, security group, NACL, gateway, route table, CMK, console auth, MFA, CloudTrail config, AWS Config changes. All alarms → SNS security-alerts topic."
+          "reason": "CIS CloudWatch monitoring: 14 metric filters + alarms for CloudTrail events. CloudTrail delivers to CloudWatch Logs. Alarms cover: unauthorized API, root usage, IAM policy, VPC, S3, security group, NACL, gateway, route table, CMK, console auth, MFA, CloudTrail config, AWS Config changes. All alarms \u2192 SNS security-alerts topic."
+        },
+        {
+          "date": "2026-05-17",
+          "score": 8.9,
+          "commit": "d4c947d",
+          "ciRun": null,
+          "artifact": "tools/scripts/kyverno-policy-validator.mjs",
+          "reason": "M3 Certification: Kyverno policy validation passes for all 4 M1 services + anomaly-detector. Automated rollback on critical anomalies deployed with RBAC."
         }
       ]
     },
@@ -379,7 +395,7 @@
     {
       "id": "enterprise-readiness",
       "name": "Enterprise / Production Readiness",
-      "currentScore": 8.95,
+      "currentScore": 9.0,
       "maxScore": 10,
       "history": [
         {
@@ -492,7 +508,15 @@
           "commit": null,
           "ciRun": null,
           "artifact": "infra/terraform/environments/production/terraform.tfstate",
-          "reason": "Production environment LIVE: VPC, EKS (3× t3.medium), RDS (db.t3.medium × 2), WAF, Flow Logs, WORM audit storage, shared CI deploy role. 86 resources. Verified via AWS CLI."
+          "reason": "Production environment LIVE: VPC, EKS (3\u00d7 t3.medium), RDS (db.t3.medium \u00d7 2), WAF, Flow Logs, WORM audit storage, shared CI deploy role. 86 resources. Verified via AWS CLI."
+        },
+        {
+          "date": "2026-05-17",
+          "score": 9.0,
+          "commit": "d4c947d",
+          "ciRun": null,
+          "artifact": "tools/scripts/verify-reproducible-build.mjs",
+          "reason": "M3 Certification: Reproducible builds verified (SLSA L2 provenance), anomaly detector automated rollback operational, on-call drill #002 executed with evidence log."
         }
       ]
     },
