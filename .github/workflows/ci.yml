@@ -163,6 +163,29 @@ jobs:
       - name: Docs-standard validation
         run: node tools/scripts/docs-standard-validator.mjs --baseline=.docs-exceptions.json
 
+  eval-pipeline:
+    runs-on: ubuntu-latest
+    name: Eval Pipeline — AI Output Validation
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run eval pipeline
+        run: |
+          cd tools/eval-pipeline
+          node eval.mjs --all | tee eval-results.json
+
+      - name: Upload eval results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: eval-results-ci
+          path: tools/eval-pipeline/eval-results.json
+          retention-days: 90
+
   iac-validation:
     runs-on: ubuntu-latest
     steps:

@@ -22,12 +22,13 @@ eks_node_desired_size   = 1
 eks_node_min_size       = 1
 eks_node_max_size       = 3
 
-# API access — use Cloudflare Tunnel for service traffic.
-# EKS public API is for kubectl only; disable once bastion is set up.
-# Operator IPs are set via AWS CLI, not committed to source:
+# API access — Cloudflare Tunnel handles all service traffic.
+# EKS public API endpoint is DISABLED. Operators must use AWS Systems Manager
+# Session Manager or a bastion host for kubectl access.
+# If emergency public access is needed, use AWS CLI (not committed):
 #   aws eks update-cluster-config --name gtcx-testnet-pilot \
-#     --resources-vpc-config publicAccessCidrs=$(curl -s https://api.ipify.org)/32
-enable_public_api = true
+#     --resources-vpc-config publicAccessCidrs=<OPERATOR_IP>/32
+enable_public_api = false
 admin_cidr_blocks = []
 
 # Domain — ACM certificate for HTTPS

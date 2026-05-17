@@ -130,24 +130,31 @@ resource "aws_iam_role_policy" "remediation_s3" {
   name = "gtcx-${var.environment}-s3-encryption-remediation"
   role = aws_iam_role.remediation.id
 
+  # Scope S3 actions to GTCX-owned buckets only.
+  # KMS actions are scoped to keys in the current AWS account.
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
       {
+        Sid    = "EncryptGTCXBuckets"
         Effect = "Allow"
         Action = [
           "s3:PutEncryptionConfiguration",
           "s3:GetEncryptionConfiguration",
         ]
-        Resource = "arn:aws:s3:::*"
+        Resource = length(var.remediation_bucket_arns) > 0 ? var.remediation_bucket_arns : [
+          aws_s3_bucket.config.arn,
+          "${aws_s3_bucket.config.arn}/*",
+        ]
       },
       {
+        Sid    = "UseAccountKMSKeys"
         Effect = "Allow"
         Action = [
           "kms:Describe*",
           "kms:GenerateDataKey",
         ]
-        Resource = "*"
+        Resource = "arn:aws:kms:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:key/*"
       },
     ]
   })

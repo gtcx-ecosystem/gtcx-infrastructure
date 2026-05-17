@@ -22,6 +22,12 @@ variable "tags" {
   default     = {}
 }
 
+variable "remediation_bucket_arns" {
+  description = "S3 bucket ARNs the remediation role may encrypt. Defaults to the module's config snapshot bucket."
+  type        = list(string)
+  default     = []
+}
+
 locals {
   common_tags = merge(var.tags, {
     Environment = var.environment

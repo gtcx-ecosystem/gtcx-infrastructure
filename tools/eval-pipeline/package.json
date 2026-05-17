@@ -1,0 +1,20 @@
+{
+  "name": "@gtcx/eval-pipeline",
+  "version": "0.1.0",
+  "description": "GTCX AI output evaluation pipeline — benchmark runner and CI gate",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "eval": "node eval.mjs",
+    "eval:all": "node eval.mjs --all"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "keywords": [
+    "gtcx",
+    "eval",
+    "ai",
+    "benchmark"
+  ]
+}

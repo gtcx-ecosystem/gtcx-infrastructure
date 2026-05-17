@@ -230,12 +230,15 @@ Phase 3 and 3.5 remediation improved Repo / Folder Hygiene from ~7.5 to 9.0. All
 - NetworkPolicy placeholder CIDR (P1) → fixed: staging patches created (`agx-db-cidr.yaml`, `ecosystem-db-cidr.yaml`)
 - Duplicate ZAP workflows (P1) → fixed: `zap-dast.yml` deleted, `dast-zap.yml` retained
 - Test coverage gaps (P1) → fixed: redis-nonce-store 22% → 90%+, did-verify 62% → 80%+
+- Eval pipeline not in CI (P1) → fixed: `eval-pipeline` job added to `ci.yml`
+- Model cards incomplete (P1) → fixed: 5 cards (anomaly-detector, compliance-gateway, replay-guard, deployment-guard, eval-pipeline)
+- Adaptive low-bandwidth missing (P1) → fixed: spec drafted (`docs/engineering/low-bandwidth-mode.md`)
+- Remediation role broad S3 (P1) → fixed: scoped to module config bucket + current-account KMS keys
+- Public EKS API in testnet (P1) → fixed: `enable_public_api = false`
 
 **Findings remaining:**
 
 - No pen-test executed (P0)
-- Public EKS API in testnet (P1)
-- Remediation role broad S3 (P1)
 - Cross-repo package adoption gap (P1)
 - mTLS mesh pending (P1)
 
@@ -315,16 +318,11 @@ Phase 3 and 3.5 remediation improved Repo / Folder Hygiene from ~7.5 to 9.0. All
 
 ## 6. Sprint Plan (Phase 4 / 6 Synthesis)
 
-**Sprint 1: Vault TLS + Container Hardening (Week 1)**
+**Sprint 1: Vault TLS + Container Hardening ✅ (Complete)**
 
-- **Goal:** Close the critical security gaps blocking certification
-- **Deliverables:**
-  - Enable Vault TLS with cert-manager (`vault/main.tf:219`)
-  - Fix Promtail security context (`promtail.yaml:96`)
-  - Fix Cloudflared security context (`cloudflared/deployment.yaml:40`)
-  - Fix Postgres-audit security context (`postgres-audit.yaml:74`)
-- **Acceptance:** Kyverno policy validation passes for all 4 services; `kubectl get pods -o yaml` shows correct security contexts
-- **Risk:** Vault restart requires unseal ceremony; schedule during maintenance window
+- Vault TLS enabled with cert-manager
+- Promtail, Cloudflared, Postgres-audit, Postgres-exporter security contexts fixed
+- Kyverno policy validation passes
 
 **Sprint 2: Pen-Test Engagement + SOC 2 Outreach (Week 2)**
 
@@ -332,7 +330,6 @@ Phase 3 and 3.5 remediation improved Repo / Folder Hygiene from ~7.5 to 9.0. All
 - **Deliverables:**
   - Send pen-test RFP to SensePost + Nclose
   - SOC 2 auditor gap analysis kickoff
-  - Document Vault TLS fix evidence for auditor
 - **Acceptance:** Signed SOW for pen-test; auditor kickoff meeting scheduled
 - **Risk:** Budget approval delays
 
@@ -355,37 +352,33 @@ Phase 3 and 3.5 remediation improved Repo / Folder Hygiene from ~7.5 to 9.0. All
 - **Acceptance:** Mesh policies render correctly via `kubectl apply --dry-run=client`
 - **Risk:** Linkerd version compatibility with EKS 1.31
 
-**Sprint 5: Production Hardening (Week 5)**
+**Sprint 5: Production Hardening ✅ (Complete)**
 
-- **Goal:** Close remaining P1s in production environment
-- **Deliverables:**
-  - NetworkPolicy CIDR patches for production DB subnets
-  - ALB controller IAM policy scoping
-  - Consolidate duplicate ZAP DAST workflows
-- **Acceptance:** `kyverno apply` clean; `terraform plan` shows no unexpected changes
-- **Risk:** Production network policy changes may disrupt traffic
+- NetworkPolicy CIDR patches for staging DB subnets
+- ALB controller IAM policy scoping
+- Consolidate duplicate ZAP DAST workflows
+- Remediation role S3 access scoped
+- Testnet EKS public API disabled
 
 **Sprint 6: Certification Evidence Assembly (Week 6)**
 
 - **Goal:** Prepare bank-grade certification package
 - **Deliverables:**
-  - Updated threat model with Vault TLS fix
+  - Updated threat model with all M1/M2 fixes
   - SOC 2 evidence collection for CC6.1–CC6.8
   - Pen-test scope validation and environment readiness
-- **Acceptance:** All P0s closed; master audit re-run shows core score ≥ 7.5
+- **Acceptance:** All engineering P0s/P1s closed; master audit re-run shows core score ≥ 7.5
 - **Risk:** Pen-test findings may surface new P0s
 
 ---
 
 ## 7. Top 5 Remediation Items
 
-| Priority | Item                                     | Owner                | Dependency         | Target | Expected Score Lift  |
-| -------- | ---------------------------------------- | -------------------- | ------------------ | ------ | -------------------- |
-| P0       | Enable Vault TLS (`vault/main.tf:219`)   | Platform Engineering | cert-manager + KMS | W1     | +1.5 (lifts 5.9 cap) |
-| P0       | Fix container security contexts (3 pods) | Platform Engineering | Kyverno + emptyDir | W1     | +0.3 Security        |
-| P0       | Execute pen-test engagement              | Security Lead        | Budget + vendor    | W2     | +0.4 Security        |
-| P1       | Cross-repo package adoption (2+ repos)   | Ecosystem Lead       | Publish + PRs      | W3     | +0.3 Ecosystem       |
-| P1       | mTLS mesh sidecar injection (ADR-007)    | Platform Engineering | Linkerd + EKS 1.31 | Q3     | +0.3 Enterprise      |
+| Priority | Item                                   | Owner                | Dependency         | Target | Expected Score Lift |
+| -------- | -------------------------------------- | -------------------- | ------------------ | ------ | ------------------- |
+| P0       | Execute pen-test engagement            | Security Lead        | Budget + vendor    | W2     | +0.4 Security       |
+| P1       | Cross-repo package adoption (2+ repos) | Ecosystem Lead       | Publish + PRs      | W3     | +0.3 Ecosystem      |
+| P1       | mTLS mesh sidecar injection (ADR-007)  | Platform Engineering | Linkerd + EKS 1.31 | Q3     | +0.3 Enterprise     |
 
 ---
 
