@@ -80,10 +80,28 @@ resource "aws_iam_role_policy" "alb_controller" {
   name = "gtcx-${var.environment}-alb-controller-policy"
   role = aws_iam_role.alb_controller.id
 
+  # ---------------------------------------------------------------------------
+  # AWS Load Balancer Controller IAM Policy
+  # ---------------------------------------------------------------------------
+  # This policy follows the principle of least privilege where possible.
+  # Some actions require Resource = "*" because the controller dynamically
+  # creates AWS resources (ALBs, target groups, security groups) based on
+  # Kubernetes Ingress/Service annotations — ARNs are not known at policy
+  # creation time.
+  #
+  # Scoped actions:
+  #   - ec2:CreateSecurityGroup  → restricted to the cluster VPC via ec2:VpcId
+  #   - iam:CreateServiceLinkedRole → restricted to ELB service only
+  #
+  # Shield Advanced create/delete actions are omitted because this module
+  # does not configure Shield Advanced. If Shield Advanced is adopted later,
+  # add "shield:CreateProtection" and "shield:DeleteProtection".
+  # ---------------------------------------------------------------------------
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
       {
+        Sid    = "DescribeAWSResources"
         Effect = "Allow"
         Action = [
           "ec2:DescribeAccountAttributes",
@@ -104,6 +122,13 @@ resource "aws_iam_role_policy" "alb_controller" {
           "ec2:DescribeListeners",
           "ec2:DescribeRules",
           "elasticloadbalancing:Describe*",
+        ]
+        Resource = "*"
+      },
+      {
+        Sid    = "ManageELBResources"
+        Effect = "Allow"
+        Action = [
           "elasticloadbalancing:CreateLoadBalancer",
           "elasticloadbalancing:DeleteLoadBalancer",
           "elasticloadbalancing:CreateTargetGroup",
@@ -124,7 +149,56 @@ resource "aws_iam_role_policy" "alb_controller" {
           "elasticloadbalancing:SetSubnets",
           "elasticloadbalancing:AddTags",
           "elasticloadbalancing:RemoveTags",
-          "iam:CreateServiceLinkedRole",
+        ]
+        Resource = "*"
+      },
+      {
+        Sid      = "CreateSecurityGroupInVPC"
+        Effect   = "Allow"
+        Action   = "ec2:CreateSecurityGroup"
+        Resource = "*"
+        Condition = {
+          StringEquals = {
+            "ec2:VpcId" = var.vpc_id
+          }
+        }
+      },
+      {
+        Sid    = "ManageSecurityGroups"
+        Effect = "Allow"
+        Action = [
+          "ec2:AuthorizeSecurityGroupIngress",
+          "ec2:RevokeSecurityGroupIngress",
+          "ec2:DeleteSecurityGroup",
+          "ec2:CreateTags",
+          "ec2:DeleteTags",
+        ]
+        Resource = "*"
+      },
+      {
+        Sid      = "CreateELBServiceLinkedRole"
+        Effect   = "Allow"
+        Action   = "iam:CreateServiceLinkedRole"
+        Resource = "*"
+        Condition = {
+          StringEquals = {
+            "iam:AWSServiceName" = "elasticloadbalancing.amazonaws.com"
+          }
+        }
+      },
+      {
+        Sid    = "ShieldReadOnly"
+        Effect = "Allow"
+        Action = [
+          "shield:GetSubscriptionState",
+          "shield:DescribeProtection",
+        ]
+        Resource = "*"
+      },
+      {
+        Sid    = "Integrations"
+        Effect = "Allow"
+        Action = [
           "cognito-idp:DescribeUserPoolClient",
           "acm:ListCertificates",
           "acm:DescribeCertificate",
@@ -136,24 +210,8 @@ resource "aws_iam_role_policy" "alb_controller" {
           "wafv2:GetWebACLForResource",
           "wafv2:AssociateWebACL",
           "wafv2:DisassociateWebACL",
-          "shield:GetSubscriptionState",
-          "shield:DescribeProtection",
-          "shield:CreateProtection",
-          "shield:DeleteProtection",
           "tag:GetResources",
           "tag:TagResources",
-        ]
-        Resource = "*"
-      },
-      {
-        Effect = "Allow"
-        Action = [
-          "ec2:AuthorizeSecurityGroupIngress",
-          "ec2:RevokeSecurityGroupIngress",
-          "ec2:CreateSecurityGroup",
-          "ec2:DeleteSecurityGroup",
-          "ec2:CreateTags",
-          "ec2:DeleteTags",
         ]
         Resource = "*"
       },

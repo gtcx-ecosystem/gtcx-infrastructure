@@ -219,17 +219,22 @@ Phase 3 and 3.5 remediation improved Repo / Folder Hygiene from ~7.5 to 9.0. All
 - 3 missing top-level READMEs (infra/, scripts/, tools/) (Phase 3.5)
 - Stale `.docs-exceptions.json` regenerated (Phase 3)
 
-**Findings remaining (carried to Phase 5):**
+**Findings closed (M1 + M2 engineering):**
 
-- Vault TLS disabled (P0)
-- Promtail root (P0)
-- Cloudflared mutable rootfs (P0)
-- Postgres-audit mutable rootfs (P0)
+- Vault TLS disabled (P0) → fixed: `tls_disable = 0` + cert-manager Certificate
+- Promtail root (P0) → fixed: `runAsUser: 10001`, `seccompProfile: RuntimeDefault`
+- Cloudflared mutable rootfs (P0) → fixed: `readOnlyRootFilesystem: true` + `emptyDir`
+- Postgres-audit mutable rootfs (P0) → fixed: `readOnlyRootFilesystem: true` + `emptyDir`
+- Postgres-exporter root (P0) → fixed: `runAsUser: 65534`
+- ALB controller broad IAM (P1) → fixed: scoped `ec2:CreateSecurityGroup` to VPC, `iam:CreateServiceLinkedRole` to ELB service, removed `shield:CreateProtection`/`DeleteProtection`
+- NetworkPolicy placeholder CIDR (P1) → fixed: staging patches created (`agx-db-cidr.yaml`, `ecosystem-db-cidr.yaml`)
+- Duplicate ZAP workflows (P1) → fixed: `zap-dast.yml` deleted, `dast-zap.yml` retained
+- Test coverage gaps (P1) → fixed: redis-nonce-store 22% → 90%+, did-verify 62% → 80%+
+
+**Findings remaining:**
+
 - No pen-test executed (P0)
 - Public EKS API in testnet (P1)
-- ALB controller broad IAM (P1)
-- NetworkPolicy placeholder CIDR (P1)
-- Duplicate ZAP workflows (P1)
 - Remediation role broad S3 (P1)
 - Cross-repo package adoption gap (P1)
 - mTLS mesh pending (P1)
@@ -467,8 +472,12 @@ The most leveraged fix is Vault TLS — it alone lifts the 5.9 cap and unlocks h
 | ----------- | --------- | ----------------------------------------------------------------- |
 | 3. Standard | `0f96b42` | docs: enforce ecosystem docs-standard — 6 READMEs + frontmatter   |
 | 3.5 Hygiene | `810605d` | chore: enforce repo folder hygiene — top-level READMEs + .gitkeep |
-| 6. Master   | `TBD`     | docs(audit): master forensic certification                        |
+| 6. Master   | `cbc74a4` | docs(audit): master forensic certification                        |
 | 7. Overview | `TBD`     | docs(overview): comprehensive repo overview                       |
+| M1 Cap-Lift | `1690b6b` | security: Vault TLS + container hardening (5 P0 fixes)            |
+| M2 Harden   | `aba53ec` | security: ZAP consolidation + NetworkPolicy CIDR patches          |
+| M2 Tests    | `1496d47` | test: redis-nonce-store + did-verify coverage (84% → 90.5%)       |
+| M2 ALB      | `TBD`     | security: ALB controller IAM policy scoping + Terraform tests     |
 
 ---
 

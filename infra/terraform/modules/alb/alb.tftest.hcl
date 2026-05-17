@@ -47,6 +47,25 @@ run "alb_controller_iam_role_created" {
   }
 }
 
+run "alb_controller_policy_scoped" {
+  command = plan
+
+  assert {
+    condition     = strcontains(aws_iam_role_policy.alb_controller.policy, "\"ec2:VpcId\"")
+    error_message = "ALB controller policy must scope ec2:CreateSecurityGroup to the cluster VPC"
+  }
+
+  assert {
+    condition     = strcontains(aws_iam_role_policy.alb_controller.policy, "\"iam:AWSServiceName\"")
+    error_message = "ALB controller policy must scope iam:CreateServiceLinkedRole to the ELB service"
+  }
+
+  assert {
+    condition     = strcontains(aws_iam_role_policy.alb_controller.policy, "\"shield:CreateProtection\"") == false
+    error_message = "ALB controller policy must not include shield:CreateProtection when Shield Advanced is not configured"
+  }
+}
+
 # -----------------------------------------------------------------------------
 # WAF configuration
 # -----------------------------------------------------------------------------
