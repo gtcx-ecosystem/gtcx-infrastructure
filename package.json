@@ -36,7 +36,9 @@
     "lint:shell": "shellcheck infra/scripts/*.sh",
     "quality:governance:check": "node tools/scripts/docs-standard-validator.mjs",
     "docs:check-links": "node tools/scripts/docs-link-checker.mjs",
-    "prepare": "husky"
+    "prepare": "husky",
+    "agent:sync": "node scripts/agent-sync/sync.mjs",
+    "agent:check": "node scripts/agent-sync/sync.mjs --check"
   },
   "devDependencies": {
     "@eslint/js": "^9.28.0",
