@@ -29,6 +29,7 @@
     "node": ">=20.0.0"
   },
   "dependencies": {
+    "@gtcx/crypto": "^2.0.0",
     "pg": "^8.15.0"
   },
   "peerDependencies": {

@@ -239,8 +239,8 @@ Phase 3 and 3.5 remediation improved Repo / Folder Hygiene from ~7.5 to 9.0. All
 **Findings remaining:**
 
 - No pen-test executed (P0)
-- Cross-repo package adoption gap (P1)
-- mTLS mesh pending (P1)
+- Cross-repo package adoption gap (P1) → partially addressed: `@gtcx/crypto` and `@gtcx/types` added to `gtcx-protocols` and `gtcx-platforms`; migration guide drafted; full inline adoption pending sibling repo PRs
+- mTLS mesh pending (P1) → partially addressed: ADR-007 accepted, service identity mapping + canary rollout strategy + expanded mesh policies prepared; runtime injection scheduled Q3
 
 ---
 

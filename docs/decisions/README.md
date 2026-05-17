@@ -23,6 +23,7 @@ Architecture Decision Records (ADRs) capturing key design choices and their rati
 | [ADR-004](ADR-004-offline-first-mobile.md)      | Offline-First Mobile Architecture   | Accepted |
 | [ADR-005](ADR-005-jurisdiction-plugins.md)      | Jurisdiction Plugin Architecture    | Accepted |
 | [ADR-006](ADR-006-package-boundaries.md)        | Package Boundaries and Dependencies | Accepted |
+| [ADR-007](adr-007-mtls-service-mesh.md)         | mTLS and Service Mesh Architecture  | Accepted |
 | [ADR-011](ADR-011-connectivity-profiles.md)     | Connectivity Profiles               | Accepted |
 
 ## Adding a New ADR

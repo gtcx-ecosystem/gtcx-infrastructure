@@ -41,6 +41,81 @@ spec:
   identities:
     - 'gtcx-staging.gtcx-replay-guard-staging.serviceaccount.identity.linkerd.cluster.local'
 ---
+# Allow agx to call protocols
+apiVersion: policy.linkerd.io/v1alpha1
+kind: AuthorizationPolicy
+metadata:
+  name: agx-to-protocols
+  namespace: gtcx-staging
+spec:
+  targetRef:
+    group: ''
+    kind: Service
+    name: gtcx-protocols-staging
+  requiredAuthenticationRefs:
+    - name: agx-auth
+      kind: MeshTLSAuthentication
+      group: policy.linkerd.io
+---
+apiVersion: policy.linkerd.io/v1alpha1
+kind: MeshTLSAuthentication
+metadata:
+  name: agx-auth
+  namespace: gtcx-staging
+spec:
+  identities:
+    - 'gtcx-staging.gtcx-agx-staging.serviceaccount.identity.linkerd.cluster.local'
+---
+# Allow platform to call protocols
+apiVersion: policy.linkerd.io/v1alpha1
+kind: AuthorizationPolicy
+metadata:
+  name: platform-to-protocols
+  namespace: gtcx-staging
+spec:
+  targetRef:
+    group: ''
+    kind: Service
+    name: gtcx-protocols-staging
+  requiredAuthenticationRefs:
+    - name: platform-auth
+      kind: MeshTLSAuthentication
+      group: policy.linkerd.io
+---
+apiVersion: policy.linkerd.io/v1alpha1
+kind: MeshTLSAuthentication
+metadata:
+  name: platform-auth
+  namespace: gtcx-staging
+spec:
+  identities:
+    - 'gtcx-staging.gtcx-platform-staging.serviceaccount.identity.linkerd.cluster.local'
+---
+# Allow compliance-gateway to call protocols
+apiVersion: policy.linkerd.io/v1alpha1
+kind: AuthorizationPolicy
+metadata:
+  name: compliance-gateway-to-protocols
+  namespace: gtcx-staging
+spec:
+  targetRef:
+    group: ''
+    kind: Service
+    name: gtcx-protocols-staging
+  requiredAuthenticationRefs:
+    - name: compliance-gateway-auth
+      kind: MeshTLSAuthentication
+      group: policy.linkerd.io
+---
+apiVersion: policy.linkerd.io/v1alpha1
+kind: MeshTLSAuthentication
+metadata:
+  name: compliance-gateway-auth
+  namespace: gtcx-staging
+spec:
+  identities:
+    - 'gtcx-staging.gtcx-compliance-gateway-staging.serviceaccount.identity.linkerd.cluster.local'
+---
 # Allow protocols to call postgres (operational)
 apiVersion: policy.linkerd.io/v1alpha1
 kind: AuthorizationPolicy
@@ -79,5 +154,21 @@ spec:
     name: gtcx-postgres-audit-staging
   requiredAuthenticationRefs:
     - name: protocols-auth
+      kind: MeshTLSAuthentication
+      group: policy.linkerd.io
+---
+# Allow compliance-gateway to call postgres-audit
+apiVersion: policy.linkerd.io/v1alpha1
+kind: AuthorizationPolicy
+metadata:
+  name: compliance-gateway-to-postgres-audit
+  namespace: gtcx-staging
+spec:
+  targetRef:
+    group: ''
+    kind: Service
+    name: gtcx-postgres-audit-staging
+  requiredAuthenticationRefs:
+    - name: compliance-gateway-auth
       kind: MeshTLSAuthentication
       group: policy.linkerd.io

@@ -13,7 +13,7 @@ review_cycle: 'on-change'
 
 ## Status
 
-**Proposed** — awaiting security review and infrastructure budget approval.
+**Accepted** — Phase 1 complete (documentation + policy templates). Phase 2 (cert-manager + Linkerd sidecar injection) scheduled Q3 2026. Phase 3 (deny-by-default authorization) templates prepared in `infra/kubernetes/overlays/*/linkerd/`.
 
 ## Context
 
