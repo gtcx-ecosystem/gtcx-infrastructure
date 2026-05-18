@@ -301,11 +301,11 @@ Key controls active in production:
 
 ### 7.3 Audit Trail
 
-| Document                                                                          | Date       | Score                     |
-| --------------------------------------------------------------------------------- | ---------- | ------------------------- |
-| [master-audit-2026-05-17.md](../audit/master-audit-2026-05-17.md)                 | 2026-05-17 | 5.9/10 (capped)           |
-| [master-audit-2026-05-12-updated.md](../audit/master-audit-2026-05-12-updated.md) | 2026-05-12 | 8.85/10 (prior, inflated) |
-| [10-10-roadmap-2026-05-17.md](../audit/10-10-roadmap-2026-05-17.md)               | 2026-05-17 | Target: 10.0              |
+| Document                                                                                  | Date       | Score                     |
+| ----------------------------------------------------------------------------------------- | ---------- | ------------------------- |
+| [master-audit-2026-05-17.md](../audit/master-audit-2026-05-17.md)                         | 2026-05-17 | 5.9/10 (capped)           |
+| [master-audit-2026-05-12-updated.md](../audit/archive/master-audit-2026-05-12-updated.md) | 2026-05-12 | 8.85/10 (prior, inflated) |
+| [10-10-roadmap-2026-05-17.md](../audit/10-10-roadmap-2026-05-17.md)                       | 2026-05-17 | Target: 10.0              |
 
 ---
 

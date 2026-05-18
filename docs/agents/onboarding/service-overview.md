@@ -103,7 +103,7 @@ gtcx-infrastructure/
 │   │   └── scripts/              # check_docs.py, generate_docs.py
 │   ├── security/
 │   │   ├── policies/             # Access control, data protection, IR
-│   │   ├── scripts/              # security-status.js
+│   │   ├── scripts/              # (security-status.js moved to tools/scripts/)
 │   │   └── reports/              # Audit reports
 │   ├── scripts/
 │   │   ├── deploy.sh             # Production deployment (canary, rollback)
@@ -123,16 +123,16 @@ gtcx-infrastructure/
 
 ## Key Files
 
-| File                                        | Purpose                                                    |
-| ------------------------------------------- | ---------------------------------------------------------- |
-| `infra/docker/docker-compose.infra.yml`     | Local infrastructure services — start here first           |
-| `infra/kubernetes/base/`                    | Shared K8s resources for all environments                  |
-| `infra/kubernetes/overlays/production/`     | Production-specific manifests — changes require approval   |
-| `infra/terraform/modules/database/`         | Dual RDS provisioning with deletion protection on audit DB |
-| `infra/terraform/environments/template/`    | Scaffold for new environments                              |
-| `infra/scripts/deploy.sh`                   | Canonical deployment entry point                           |
-| `infra/scripts/migrate.sh`                  | Migration runner with dry-run and environment guards       |
-| `infra/security/scripts/security-status.js` | Security posture scanner                                   |
+| File                                     | Purpose                                                    |
+| ---------------------------------------- | ---------------------------------------------------------- |
+| `infra/docker/docker-compose.infra.yml`  | Local infrastructure services — start here first           |
+| `infra/kubernetes/base/`                 | Shared K8s resources for all environments                  |
+| `infra/kubernetes/overlays/production/`  | Production-specific manifests — changes require approval   |
+| `infra/terraform/modules/database/`      | Dual RDS provisioning with deletion protection on audit DB |
+| `infra/terraform/environments/template/` | Scaffold for new environments                              |
+| `infra/scripts/deploy.sh`                | Canonical deployment entry point                           |
+| `infra/scripts/migrate.sh`               | Migration runner with dry-run and environment guards       |
+| `tools/scripts/security-status.js`       | Security posture scanner                                   |
 
 ---
 

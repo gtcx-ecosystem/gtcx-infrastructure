@@ -124,4 +124,3 @@ Alerting: PagerDuty alert if > 5% of active devices in a region are in `offline`
 
 - [Resilience Framework](../specs/resilience-framework.md)
 - [Replay Guard Model Card](../ml/model-cards/replay-guard-model-card.md)
-- [Chaos Engineering Runbook](../devops/runbooks/chaos-test-procedure.md)

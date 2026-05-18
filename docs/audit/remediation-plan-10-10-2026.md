@@ -123,7 +123,7 @@ review_cycle: 'quarterly'
 
 ## Files Referenced
 
-- `docs/audit/master-audit-2026-05-11.md` — This audit document
+- `docs/audit/archive/master-audit-2026-05-11.md` — This audit document
 - `docs/audit/score-evidence-ledger.json` — Score history with artifacts
 - `tools/compliance-gateway/tests/server.integration.test.mjs` — HTTP integration tests
 - `tools/replay-protection/tests/production-fail-closed.test.mjs` — Production 503 test

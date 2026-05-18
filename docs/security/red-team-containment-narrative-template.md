@@ -1,8 +1,16 @@
+---
+status: 'current'
+date: '2026-05-17'
+owner: 'infrastructure-security-team'
+role: 'infrastructure-security-team'
+tier: 'critical'
+tags: ['security', 'compliance', 'operations']
+review_cycle: 'per-exercise'
+---
+
 # Red Team Containment Narrative Template
 
 **Classification:** Confidential  
-**Owner:** Infrastructure Security Team  
-**Review Cycle:** Per exercise  
 **Version:** 1.0
 
 ---

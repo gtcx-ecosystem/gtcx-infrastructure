@@ -86,7 +86,7 @@ pnpm lint
 pnpm typecheck
 
 # Run the security scanner
-node infra/security/scripts/security-status.js
+node tools/scripts/security-status.js
 
 # Bootstrap a new environment
 ./infra/scripts/setup.sh
@@ -165,4 +165,4 @@ Confirm your setup is working:
 - [ ] PostgreSQL reachable on port 5432: `psql -h localhost -U gtcx -d gtcx_development`
 - [ ] Grafana accessible at http://localhost:3030
 - [ ] Jaeger UI accessible at http://localhost:16686
-- [ ] `node infra/security/scripts/security-status.js` runs without fatal errors
+- [ ] `node tools/scripts/security-status.js` runs without fatal errors

@@ -268,7 +268,7 @@ Not all customers need the highest grade. We match grade to risk:
 ## 9. Related Documents
 
 - `docs/audit/bank-grade-rating-framework.md` — Internal vs external dual-rating for Bank-Grade specifically
-- `docs/audit/10-10-roadmap-2026-05-12.md` — Full engineering roadmap
+- `docs/audit/archive/10-10-roadmap-2026-05-12.md` — Full engineering roadmap
 - `docs/audit/pen-test-scope-2026.md` — Penetration test scope
 - `docs/compliance/soc2-gap-analysis.md` — SOC 2 readiness checklist
 - `docs/engineering/gtcx-platforms-m3-contract.md` — M3 cross-repo deliverables

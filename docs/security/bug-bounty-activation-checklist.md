@@ -1,7 +1,16 @@
+---
+status: 'draft'
+date: '2026-05-17'
+owner: 'infrastructure-security-team'
+role: 'infrastructure-security-team'
+tier: 'standard'
+tags: ['security', 'compliance', 'operations']
+review_cycle: 'quarterly'
+---
+
 # Bug Bounty Program — Activation Checklist
 
 **Classification:** Internal  
-**Owner:** Infrastructure Security Team  
 **Target Launch:** Post-SOC 2 Type 1  
 **Budget:** $50,000–$100,000/year  
 **Platform:** HackerOne (recommended) or Bugcrowd

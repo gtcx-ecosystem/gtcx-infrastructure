@@ -147,5 +147,5 @@ done
 ## 7. Related Documents
 
 - `docs/architecture/` — Architecture diagrams and deep-dives
-- `docs/audit/10-10-roadmap-2026-05-12.md` — Roadmap including ADR registry completion
+- `docs/audit/archive/10-10-roadmap-2026-05-12.md` — Roadmap including ADR registry completion
 - `docs/engineering/` — Engineering standards and conventions

@@ -285,7 +285,7 @@ Post_Mortem:
 ./scripts/isolate.sh --system=<name> --preserve-evidence
 
 # Check security status
-./scripts/security-status.js
+../../tools/scripts/security-status.js
 ```
 
 ## 9. Training & Drills

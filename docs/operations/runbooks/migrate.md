@@ -193,6 +193,6 @@ Escalate to human review immediately if:
 
 - [`infra/scripts/migrate.sh`](../../../infra/scripts/migrate.sh) — migration runner
 - [`infra/scripts/test-audit-immutability.sh`](../../../infra/scripts/test-audit-immutability.sh) — live audit immutability fixture
-- [`infra/migrations/scripts/check_docs.py`](../../../infra/migrations/scripts/check_docs.py) — migration doc validation
+- [`infra/migrations/scripts/check_docs.py`](../../../tools/scripts/check_docs.py) — migration doc validation
 - [`docs/agents/workflows/agent-safety-rules.md`](../../agents/workflows/agent-safety-rules.md) — authority tiers
 - [`docs/architecture/system-overview.md`](../../architecture/system-overview.md) — system overview

@@ -109,5 +109,5 @@ review_cycle: 'weekly'
 ## Related Documents
 
 - `docs/engineering/package-adoption-guide.md` — Full adoption pattern
-- `docs/audit/10-10-roadmap-2026-05-12.md` — M3 Ecosystem Integration targets
+- `docs/audit/archive/10-10-roadmap-2026-05-12.md` — M3 Ecosystem Integration targets
 - `docs/audit/ecosystem-repo-review-2026-05-12.md` — Initial repo survey

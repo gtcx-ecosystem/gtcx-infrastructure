@@ -48,7 +48,7 @@ infra/
     scripts/                  Migration utilities (check_docs.py, generate_docs.py)
   security/                 Security posture
     policies/                 Access control, data protection, incident response
-    scripts/                  security-status.js scanner
+    scripts/                  (security-status.js moved to tools/scripts/)
     reports/                  Audit reports
   scripts/                  Operational scripts
     deploy.sh                 Production deployment (canary, rollback)
@@ -196,7 +196,7 @@ docker compose -f infra/docker/docker-compose.dev.yml up -d
 cd infra/terraform/environments/{env} && terraform plan
 
 # Security scan
-node infra/security/scripts/security-status.js
+node tools/scripts/security-status.js
 
 # Lint and typecheck scripts
 pnpm lint && pnpm typecheck

@@ -21,7 +21,7 @@ caps_fired: 2
 **Auditor:** Kimi Code CLI (Kimi k1.6)
 **Methodology:** `gtcx-ecosystem/audit/prompts/master/forensic-master-prompt.md`
 **Reference framework:** `gtcx-ecosystem/audit/SCORING_FRAMEWORK.md`
-**Prior master audit:** [master-audit-2026-05-12-updated.md](./master-audit-2026-05-12-updated.md)
+**Prior master audit:** [master-audit-2026-05-12-updated.md](./archive/master-audit-2026-05-12-updated.md)
 **Delta baseline:** Within 30 days — focus on hygiene fixes and forensic verification gaps
 
 ---

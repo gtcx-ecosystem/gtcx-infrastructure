@@ -1,8 +1,8 @@
 import js from '@eslint/js';
+import prettier from 'eslint-config-prettier';
+import importX from 'eslint-plugin-import-x';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
-import importX from 'eslint-plugin-import-x';
-import prettier from 'eslint-config-prettier';
 
 export default tseslint.config(
   // Global ignores
@@ -60,7 +60,7 @@ export default tseslint.config(
 
   // Override for infrastructure scripts — allow console
   {
-    files: ['infra/**/scripts/**/*.js', 'infra/**/scripts/**/*.mjs'],
+    files: ['infra/**/scripts/**/*.js', 'infra/**/scripts/**/*.mjs', 'tools/scripts/**/*.js'],
     rules: {
       'no-console': 'off',
     },

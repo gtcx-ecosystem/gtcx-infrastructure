@@ -13,7 +13,7 @@ review_cycle: 'on-change'
 
 How to replace in-memory stubs with production-grade persistence. Covers Redis (rate limiting, replay cache) and Postgres (audit log). Also documents the fail-open/fail-closed policy matrix.
 
-Prerequisite: understand the stub guard system before this runbook. See [ADR-002](../../decisions/002-in-memory-stub-guards.md).
+Prerequisite: understand the stub guard system before this runbook. See [ADR-010](../../decisions/ADR-010-in-memory-stub-guards.md).
 
 ---
 
@@ -222,5 +222,5 @@ After replacing all stubs:
 
 ## Reference
 
-- [ADR-002: In-Memory Stub Guards](../../decisions/002-in-memory-stub-guards.md)
+- [ADR-010: In-Memory Stub Guards](../../decisions/ADR-010-in-memory-stub-guards.md)
 - [disaster-recovery.md](disaster-recovery.md)

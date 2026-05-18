@@ -193,7 +193,7 @@ kubectl apply -k infra/kubernetes/overlays/development
 | Local       | `psql -h localhost -U gtcx -d gtcx_development -c "SELECT 1"` | `1`                  |
 | Staging     | `kubectl get pods -n gtcx-staging`                            | All Running          |
 | Production  | `kubectl get pods -n gtcx-production`                         | All Running          |
-| Any         | `node infra/security/scripts/security-status.js`              | No critical findings |
+| Any         | `node tools/scripts/security-status.js`                       | No critical findings |
 
 ---
 

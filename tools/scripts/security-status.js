@@ -10,6 +10,7 @@
  * - P12 (Observability): Detailed metrics and recommendations
  */
 
+/* eslint-disable @typescript-eslint/no-require-imports */
 const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
@@ -74,7 +75,7 @@ class SecurityStatus {
           this.status.vulnerabilities.moderate = vulns.moderate || 0;
           this.status.vulnerabilities.low = vulns.low || vulns.info || 0;
         }
-      } catch (parseError) {
+      } catch {
         console.log('   ⚠️  Could not parse audit output');
       }
 

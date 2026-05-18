@@ -335,7 +335,7 @@ Incident_Response:
 infrastructure/security/
 ├── README.md              # This document
 ├── scripts/
-│   └── security-status.js # Monorepo security scanner
+│   └── (security-status.js moved to tools/scripts/)
 ├── policies/
 │   ├── access-control.md  # Access control policies
 │   ├── data-protection.md # Data handling policies

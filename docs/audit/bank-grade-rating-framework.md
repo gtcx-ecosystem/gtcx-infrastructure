@@ -190,7 +190,7 @@ Bank-Grade Score = (9.0 × 0.40) + (0.0 × 0.60) = 3.6/10
 
 ## 7. Related Documents
 
-- `docs/audit/10-10-roadmap-2026-05-12.md` — Full 10/10 score trajectory
+- `docs/audit/archive/10-10-roadmap-2026-05-12.md` — Full 10/10 score trajectory
 - `docs/audit/pen-test-scope-2026.md` — Pen-test scope including gtcx-platforms
 - `docs/engineering/gtcx-platforms-m3-contract.md` — Cross-repo M3 deliverables
 - `docs/compliance/soc2-gap-analysis.md` — SOC 2 readiness checklist

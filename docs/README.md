@@ -88,9 +88,9 @@ Single source of truth for all infrastructure documentation.
 - [ADR-007](decisions/ADR-007-kustomize-over-helm.md) — Kustomize over Helm
 - [ADR-008](decisions/ADR-008-dual-database-architecture.md) — Dual database architecture
 - [ADR-011](decisions/ADR-011-connectivity-profiles.md) — Connectivity profiles
-- [ADR-007 mTLS Service Mesh](decisions/adr-007-mtls-service-mesh.md) — mTLS service mesh decision
-- [001 Error Taxonomy](decisions/001-error-taxonomy.md) — Standardized error classification
-- [002 In-Memory Stub Guards](decisions/002-in-memory-stub-guards.md) — Test double safety boundaries
+- [ADR-013 mTLS Service Mesh](decisions/ADR-013-mtls-service-mesh.md) — mTLS service mesh decision
+- [ADR-009 Error Taxonomy](decisions/ADR-009-error-taxonomy.md) — Standardized error classification
+- [ADR-010 In-Memory Stub Guards](decisions/ADR-010-in-memory-stub-guards.md) — Test double safety boundaries
 - [ADR Guide](decisions/adr-guide.md) — How to write an ADR
 - [ADR Template](decisions/adr-template.md) — Blank ADR scaffold
 

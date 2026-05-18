@@ -143,7 +143,7 @@ The deploy script is the most complete artifact in this repo. The canary monitor
 - `policies/access-control.md`: RBAC spec — roles (system_admin, platform_operator, field_inspector, producer, auditor), typed permission format (`resource:action:scope`), session timeout tables, API key rotation requirements, compliance checklists
 - `policies/data-protection.md`: data classification and encryption requirements
 - `policies/incident-response.md`: incident runbook with severity tiers
-- `security/scripts/security-status.js`: Node.js script for configuration status checking
+- `tools/scripts/security-status.js`: Node.js script for configuration status checking
 - `security/reports/README.md`: placeholder directory for reports
 
 These are policy documents, not enforcement artifacts. None of the RBAC role definitions are implemented as Kubernetes RBAC objects, OPA/Gatekeeper policies, or application middleware. They describe intent, not runtime behavior.

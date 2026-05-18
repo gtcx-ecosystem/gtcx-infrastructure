@@ -203,7 +203,7 @@
           "score": 8.3,
           "commit": null,
           "ciRun": null,
-          "artifact": "docs/decisions/009-deprecate-gtcx-core12-gtcx-amis.md",
+          "artifact": "docs/decisions/ADR-012-deprecate-gtcx-core12-gtcx-amis.md",
           "reason": "Deprecated gtcx-core12 (superseded by gtcx-core) and gtcx-amis (superseded by gtcx-infrastructure templates). Reduced active repo count 25\u219223. Updated all internal references."
         }
       ]
