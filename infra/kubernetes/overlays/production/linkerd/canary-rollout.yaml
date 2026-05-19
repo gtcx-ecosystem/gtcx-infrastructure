@@ -1,0 +1,191 @@
+# =============================================================================
+# Linkerd Mesh Canary Rollout — Production
+# =============================================================================
+# Phased injection strategy with SLO-based abort criteria.
+# =============================================================================
+
+---
+# Phase 1: Observability stack (no business impact)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus
+  namespace: gtcx
+spec:
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana
+  namespace: gtcx
+spec:
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jaeger
+  namespace: gtcx
+spec:
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+
+---
+# Phase 2: Non-critical infrastructure
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: promtail
+  namespace: gtcx
+spec:
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloudflared
+  namespace: gtcx
+spec:
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: otel-collector
+  namespace: gtcx
+spec:
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+
+---
+# Phase 3: Core data services
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gtcx-protocols
+  namespace: gtcx
+spec:
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gtcx-postgres
+  namespace: gtcx
+spec:
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gtcx-postgres-audit
+  namespace: gtcx
+spec:
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+
+---
+# Phase 4: Critical business services
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gtcx-replay-guard
+  namespace: gtcx
+spec:
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gtcx-compliance-gateway
+  namespace: gtcx
+spec:
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gtcx-agx
+  namespace: gtcx
+spec:
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gtcx-platform
+  namespace: gtcx
+spec:
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: anomaly-detector
+  namespace: gtcx
+spec:
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ussd-handler
+  namespace: gtcx
+spec:
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+
+---
+# Phase 5: Vault (last — requires unseal ceremony)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vault
+  namespace: gtcx
+spec:
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled

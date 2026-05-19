@@ -1,0 +1,19 @@
+{
+  "name": "@gtcx/audit-signer",
+  "version": "0.1.0",
+  "description": "Cryptographic audit record signing for consequential AI flows",
+  "type": "module",
+  "main": "src/index.mjs",
+  "scripts": {
+    "test": "node --test tests/**/*.test.mjs",
+    "test:coverage": "c8 --check-coverage --branches 90 --statements 90 --functions 90 --lines 90 --reporter=text --reporter=json --reporter=lcov --include='src/**' node --test tests/**/*.test.mjs",
+    "test:coverage:gate": "c8 --check-coverage --branches 90 --statements 90 --functions 90 --lines 90 --reporter=text --reporter=json --reporter=lcov --include='src/**' node --test tests/**/*.test.mjs"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "c8": "^11.0.0"
+  }
+}

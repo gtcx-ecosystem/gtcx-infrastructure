@@ -172,3 +172,53 @@ spec:
     - name: compliance-gateway-auth
       kind: MeshTLSAuthentication
       group: policy.linkerd.io
+---
+# Allow anomaly-detector to call prometheus
+apiVersion: policy.linkerd.io/v1alpha1
+kind: AuthorizationPolicy
+metadata:
+  name: anomaly-detector-to-prometheus
+  namespace: gtcx
+spec:
+  targetRef:
+    group: ''
+    kind: Service
+    name: prometheus
+  requiredAuthenticationRefs:
+    - name: anomaly-detector-auth
+      kind: MeshTLSAuthentication
+      group: policy.linkerd.io
+---
+apiVersion: policy.linkerd.io/v1alpha1
+kind: MeshTLSAuthentication
+metadata:
+  name: anomaly-detector-auth
+  namespace: gtcx
+spec:
+  identities:
+    - 'gtcx.anomaly-detector.serviceaccount.identity.linkerd.cluster.local'
+---
+# Allow ussd-handler to call protocols
+apiVersion: policy.linkerd.io/v1alpha1
+kind: AuthorizationPolicy
+metadata:
+  name: ussd-handler-to-protocols
+  namespace: gtcx
+spec:
+  targetRef:
+    group: ''
+    kind: Service
+    name: gtcx-protocols
+  requiredAuthenticationRefs:
+    - name: ussd-handler-auth
+      kind: MeshTLSAuthentication
+      group: policy.linkerd.io
+---
+apiVersion: policy.linkerd.io/v1alpha1
+kind: MeshTLSAuthentication
+metadata:
+  name: ussd-handler-auth
+  namespace: gtcx
+spec:
+  identities:
+    - 'gtcx.ussd-handler.serviceaccount.identity.linkerd.cluster.local'

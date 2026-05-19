@@ -1,0 +1,192 @@
+# =============================================================================
+# Linkerd Mesh Canary Rollout — Staging
+# =============================================================================
+# Phased injection strategy to minimize blast radius.
+# Apply each phase, wait for stability metrics, then proceed.
+# =============================================================================
+
+---
+# Phase 1: Observability stack (no business impact)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus-staging
+  namespace: gtcx-staging
+spec:
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana-staging
+  namespace: gtcx-staging
+spec:
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jaeger-staging
+  namespace: gtcx-staging
+spec:
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+
+---
+# Phase 2: Non-critical infrastructure
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: promtail-staging
+  namespace: gtcx-staging
+spec:
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloudflared-staging
+  namespace: gtcx-staging
+spec:
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: otel-collector-staging
+  namespace: gtcx-staging
+spec:
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+
+---
+# Phase 3: Core data services
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gtcx-protocols-staging
+  namespace: gtcx-staging
+spec:
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gtcx-postgres-staging
+  namespace: gtcx-staging
+spec:
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gtcx-postgres-audit-staging
+  namespace: gtcx-staging
+spec:
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+
+---
+# Phase 4: Critical business services
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gtcx-replay-guard-staging
+  namespace: gtcx-staging
+spec:
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gtcx-compliance-gateway-staging
+  namespace: gtcx-staging
+spec:
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gtcx-agx-staging
+  namespace: gtcx-staging
+spec:
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gtcx-platform-staging
+  namespace: gtcx-staging
+spec:
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: anomaly-detector-staging
+  namespace: gtcx-staging
+spec:
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ussd-handler-staging
+  namespace: gtcx-staging
+spec:
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+
+---
+# Phase 5: Vault (last — requires unseal coordination)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vault-staging
+  namespace: gtcx-staging
+spec:
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled

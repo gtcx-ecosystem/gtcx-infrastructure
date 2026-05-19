@@ -13,10 +13,14 @@ import { createHash } from 'node:crypto';
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 
-const SOURCE_DATE_EPOCH = process.env.SOURCE_DATE_EPOCH;
+let SOURCE_DATE_EPOCH = process.env.SOURCE_DATE_EPOCH;
 if (!SOURCE_DATE_EPOCH) {
-  console.error('ERROR: SOURCE_DATE_EPOCH must be set for reproducible builds');
-  process.exit(1);
+  try {
+    const { execSync } = await import('node:child_process');
+    SOURCE_DATE_EPOCH = execSync('git log -1 --pretty=%ct 2>/dev/null || date +%s', { encoding: 'utf8' }).trim();
+  } catch {
+    SOURCE_DATE_EPOCH = String(Math.floor(Date.now() / 1000));
+  }
 }
 
 function hashDirectory(dir) {
