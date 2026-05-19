@@ -126,8 +126,25 @@ jobs:
       - name: PagerDuty incident drill simulation
         run: node tools/scripts/incident-drill-pagerduty-simulation.mjs --dry-run
 
-      - name: Compliance gateway integration tests
-        run: node --test tools/compliance-gateway/tests/server.integration.test.mjs
+      - name: Compliance gateway tests
+        run: |
+          cd tools/compliance-gateway
+          pnpm test
+
+      - name: Compliance gateway coverage gate
+        run: |
+          cd tools/compliance-gateway
+          pnpm test:coverage:gate
+
+      - name: Deployment guard tests
+        run: |
+          cd tools/deployment-guard
+          pnpm test
+
+      - name: Deployment guard coverage gate
+        run: |
+          cd tools/deployment-guard
+          pnpm test:coverage:gate
 
       - name: Incident-drill validation
         run: node tools/scripts/incident-drill-validator.mjs

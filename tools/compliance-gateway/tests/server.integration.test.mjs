@@ -201,6 +201,162 @@ describe('Compliance Gateway Integration', () => {
     });
   });
 
+  describe('POST /v1/query — input validation', () => {
+    it('returns 405 for GET /v1/query', async () => {
+      const res = await fetchJson('/v1/query', {
+        headers: { authorization: 'Bearer readonly-test-token' },
+      });
+      assert.strictEqual(res.status, 405);
+      assert.match(res.body.error, /Method not allowed/);
+    });
+
+    it('returns 400 for invalid JSON body', async () => {
+      const res = await fetchJson('/v1/query', {
+        method: 'POST',
+        headers: {
+          authorization: 'Bearer readonly-test-token',
+          'Content-Type': 'application/json',
+        },
+        body: 'not-json',
+      });
+      assert.strictEqual(res.status, 400);
+      assert.match(res.body.error, /Invalid JSON/);
+    });
+
+    it('returns 400 when query field is missing', async () => {
+      const res = await fetchJson('/v1/query', {
+        method: 'POST',
+        headers: {
+          authorization: 'Bearer readonly-test-token',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ jurisdiction: 'ZA' }),
+      });
+      assert.strictEqual(res.status, 400);
+      assert.match(res.body.error, /Missing "query" field/);
+    });
+
+    it('returns 400 when query field is not a string', async () => {
+      const res = await fetchJson('/v1/query', {
+        method: 'POST',
+        headers: {
+          authorization: 'Bearer readonly-test-token',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ query: 123 }),
+      });
+      assert.strictEqual(res.status, 400);
+      assert.match(res.body.error, /Missing "query" field/);
+    });
+  });
+
+  describe('Low bandwidth mode', () => {
+    it('strips verbose fields when Save-Data: on', async () => {
+      const res = await fetchJson('/v1/providers', {
+        headers: {
+          authorization: 'Bearer readonly-test-token',
+          'Save-Data': 'on',
+        },
+      });
+      assert.strictEqual(res.status, 200);
+      assert.strictEqual(res.body._lowBandwidth, true);
+      if (res.body.providers && res.body.providers.length > 0) {
+        assert.ok(!('inputCostPer1M' in res.body.providers[0]), 'should strip cost details in low-bandwidth mode');
+      }
+    });
+
+    it('strips verbose fields via ?lowBandwidth=true query param', async () => {
+      const res = await fetchJson('/v1/tools?lowBandwidth=true', {
+        headers: { authorization: 'Bearer readonly-test-token' },
+      });
+      assert.strictEqual(res.status, 200);
+      assert.strictEqual(res.body._lowBandwidth, true);
+      if (res.body.tools && res.body.tools.length > 0) {
+        const tool = res.body.tools[0];
+        const keys = Object.keys(tool);
+        assert.deepStrictEqual(keys, ['name'], 'should only include name in low-bandwidth mode');
+      }
+    });
+
+    it('activates low bandwidth when downlink < 0.5', async () => {
+      const res = await fetchJson('/health', {
+        headers: { Downlink: '0.3' },
+      });
+      assert.strictEqual(res.status, 200);
+      assert.strictEqual(res.body._lowBandwidth, true);
+    });
+  });
+
+  describe('Compression', () => {
+    it('supports gzip compression when requested', async () => {
+      const url = new URL('/health', baseUrl);
+      const res = await new Promise((resolve, reject) => {
+        const req = httpRequest(url, {
+          method: 'GET',
+          headers: { 'Accept-Encoding': 'gzip' },
+        }, (response) => {
+          const chunks = [];
+          response.on('data', (c) => chunks.push(c));
+          response.on('end', () => {
+            resolve({
+              status: response.statusCode,
+              encoding: response.headers['content-encoding'],
+              body: Buffer.concat(chunks),
+            });
+          });
+        });
+        req.on('error', reject);
+        req.end();
+      });
+      assert.strictEqual(res.status, 200);
+      assert.strictEqual(res.encoding, 'gzip');
+      // Verify it's actually gzipped by checking magic bytes
+      assert.ok(res.body[0] === 0x1f && res.body[1] === 0x8b, 'response should be gzip compressed');
+    });
+
+    it('supports brotli compression when requested', async () => {
+      const url = new URL('/health', baseUrl);
+      const res = await new Promise((resolve, reject) => {
+        const req = httpRequest(url, {
+          method: 'GET',
+          headers: { 'Accept-Encoding': 'br' },
+        }, (response) => {
+          const chunks = [];
+          response.on('data', (c) => chunks.push(c));
+          response.on('end', () => {
+            resolve({
+              status: response.statusCode,
+              encoding: response.headers['content-encoding'],
+              body: Buffer.concat(chunks),
+            });
+          });
+        });
+        req.on('error', reject);
+        req.end();
+      });
+      assert.strictEqual(res.status, 200);
+      assert.strictEqual(res.encoding, 'br');
+    });
+  });
+
+  describe('Query with context', () => {
+    it('returns 503 with context included in error', async () => {
+      const res = await fetchJson('/v1/query', {
+        method: 'POST',
+        headers: {
+          authorization: 'Bearer readonly-test-token',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          query: 'Check compliance',
+          jurisdiction: 'ZA',
+          context: { shipmentId: 'SHP-123' },
+        }),
+      });
+      assert.strictEqual(res.status, 503);
+    });
+  });
+
   describe('Unknown routes', () => {
     it('returns 404 for unmapped paths', async () => {
       const res = await fetchJson('/v1/unknown');

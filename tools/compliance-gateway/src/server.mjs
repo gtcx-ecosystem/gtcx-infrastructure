@@ -269,7 +269,8 @@ function sendJson(res, status, body, req) {
   let payload = body;
 
   if (isLowBandwidth) {
-    payload = stripForLowBandwidth(body, req?.url);
+    const endpoint = req ? new URL(req.url ?? '/', 'http://localhost').pathname : undefined;
+    payload = stripForLowBandwidth(body, endpoint);
   }
 
   const json = JSON.stringify(payload);
