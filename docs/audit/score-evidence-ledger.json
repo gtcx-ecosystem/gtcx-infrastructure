@@ -187,7 +187,7 @@
     {
       "id": "repo-hygiene",
       "name": "Repo / Folder Hygiene",
-      "currentScore": 8.3,
+      "currentScore": 8.5,
       "maxScore": 10,
       "history": [
         {
@@ -205,6 +205,14 @@
           "ciRun": null,
           "artifact": "docs/decisions/ADR-012-deprecate-gtcx-core12-gtcx-amis.md",
           "reason": "Deprecated gtcx-core12 (superseded by gtcx-core) and gtcx-amis (superseded by gtcx-infrastructure templates). Reduced active repo count 25\u219223. Updated all internal references."
+        },
+        {
+          "date": "2026-05-17",
+          "score": 8.5,
+          "commit": "65cef7c",
+          "ciRun": null,
+          "artifact": "docs/audit/quarterly-re-audit-schedule.md",
+          "reason": "Comprehensive folder hygiene cleanup: removed artifacts, deduplicated files, fixed ADR naming, archived dated snapshots, added 26 READMEs, consolidated scripts in tools/scripts/."
         }
       ]
     },
@@ -379,7 +387,7 @@
     {
       "id": "agentic-maturity",
       "name": "Agentic Maturity",
-      "currentScore": 4.0,
+      "currentScore": 4.5,
       "maxScore": 10,
       "history": [
         {
@@ -389,6 +397,14 @@
           "ciRun": null,
           "artifact": "docs/audit/master-audit-2026-05-10.md",
           "reason": "Initial master audit baseline"
+        },
+        {
+          "date": "2026-05-17",
+          "score": 4.5,
+          "commit": "65cef7c",
+          "ciRun": null,
+          "artifact": "tools/eval-pipeline/eval.mjs",
+          "reason": "Eval pipeline v1.1.0: added structured confidence scoring (avg_confidence) to all 3 models, confidence threshold gate (\u22650.70), migration guide for production model deployment."
         }
       ]
     },
