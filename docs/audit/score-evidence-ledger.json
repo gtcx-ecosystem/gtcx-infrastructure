@@ -189,6 +189,22 @@
           "ciRun": null,
           "artifact": "tools/ussd-handler/package.json",
           "reason": "USSD handler v0.1.0 added to repo with 91.04% branch coverage. New critical service enforces c8 gate from inception (Statements 99.14%, Branch 91.04%, Functions 93.87%, Lines 99.14%)."
+        },
+        {
+          "date": "2026-05-17",
+          "score": 7.9,
+          "commit": "5d5c064",
+          "ciRun": null,
+          "artifact": "tools/low-bandwidth/package.json",
+          "reason": "Low-bandwidth middleware v0.1.0 added with 95.77% branch coverage. Server-side adaptive bandwidth reduction for frontier deployments."
+        },
+        {
+          "date": "2026-05-17",
+          "score": 8.2,
+          "commit": "47cc347",
+          "ciRun": null,
+          "artifact": "tools/audit-signer/package.json",
+          "reason": "Audit-signer v0.1.0: Ed25519 signed audit records for consequential AI flows with hash-linked chains, tamper detection, NDJSON export. 34 tests, 100% coverage."
         }
       ]
     },
@@ -333,6 +349,14 @@
           "ciRun": null,
           "artifact": "tools/scripts/kyverno-policy-validator.mjs",
           "reason": "M3 Certification: Kyverno policy validation passes for all 4 M1 services + anomaly-detector. Automated rollback on critical anomalies deployed with RBAC."
+        },
+        {
+          "date": "2026-05-17",
+          "score": 9.1,
+          "commit": "47cc347",
+          "ciRun": null,
+          "artifact": "infra/kubernetes/overlays/production/linkerd/mesh-policies.yaml",
+          "reason": "mTLS mesh configs complete: 16-service deny-by-default Linkerd policies, canary rollout strategy, service identity mapping (30 identities), verify-mesh-injection.mjs validation script. SIGNAL Non-Proliferation pillar 8.3→9.0."
         }
       ]
     },
@@ -365,6 +389,14 @@
           "ciRun": null,
           "artifact": "tools/ussd-handler/package.json",
           "reason": "USSD handler v0.1.0: full HTTP server with /ussd webhook, /health, /metrics; 6-language localization (EN/Shona/Ndebele/Swahili/Zulu/FR); PBKDF2 PIN auth with lockout; Redis + Memory session stores; 112 tests passing; c8 branch coverage 91.04% with CI gate"
+        },
+        {
+          "date": "2026-05-17",
+          "score": 7.9,
+          "commit": "5d5c064",
+          "ciRun": null,
+          "artifact": "tools/low-bandwidth/package.json",
+          "reason": "Low-bandwidth middleware v0.1.0: content negotiation (gtcx-lbw-v1), compact-json + minimal-binary encoders, schema-based response trimming, degradation telemetry with PagerDuty alerting logic, HTTP middleware. 114 tests, 95.77% branch coverage."
         }
       ]
     },
@@ -557,6 +589,14 @@
           "ciRun": null,
           "artifact": "tools/scripts/verify-reproducible-build.mjs",
           "reason": "M3 Certification: Reproducible builds verified (SLSA L2 provenance), anomaly detector automated rollback operational, on-call drill #002 executed with evidence log."
+        },
+        {
+          "date": "2026-05-17",
+          "score": 9.2,
+          "commit": "47cc347",
+          "ciRun": null,
+          "artifact": "docs/architecture/mtls-service-identity-mapping.md",
+          "reason": "Enterprise readiness: mTLS mesh configs complete with canary rollout, identity mapping, verification script. Reproducible build validator auto-fallback."
         }
       ]
     },
