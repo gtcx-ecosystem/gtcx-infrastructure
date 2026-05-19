@@ -120,6 +120,9 @@ jobs:
       - name: Kyverno policy validation
         run: node tools/scripts/kyverno-policy-validator.mjs
 
+      - name: Master validation (all gates)
+        run: node tools/scripts/validate-all.mjs
+
       - name: Chaos manifest validation
         run: node tools/scripts/chaos-manifest-validator.mjs
 
