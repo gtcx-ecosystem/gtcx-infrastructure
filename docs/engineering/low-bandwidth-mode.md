@@ -1,6 +1,6 @@
 ---
 title: 'Adaptive Low-Bandwidth Mode'
-status: 'draft'
+status: 'implemented'
 date: '2026-05-17'
 owner: 'frontier-infra-engineer'
 role: 'frontier-infra-engineer'
@@ -12,8 +12,8 @@ review_cycle: 'quarterly'
 # Adaptive Low-Bandwidth Mode
 
 **Scope:** All GTCX production services deployed to frontier regions  
-**Status:** Draft specification — implementation pending M3  
-**Related:** [Resilience Framework](../specs/resilience-framework.md), [Replay Guard](../operations/runbooks/replay-guard-failure.md)
+**Status:** v0.1.0 implemented and integrated into compliance-gateway  
+**Related:** [Resilience Framework](../specs/resilience-framework.md), [Replay Guard](../operations/runbooks/replay-guard-failure.md), [`tools/low-bandwidth`](../../tools/low-bandwidth/)
 
 ---
 
@@ -32,7 +32,7 @@ Current services assume always-on, low-latency connectivity. This document speci
 ## 2. Design Principles
 
 1. **Offline-first data structures** — All user actions must be queueable locally and replayable when connectivity returns.
-2. **Progressive payload reduction** — Automatically reduce response size as bandwidth drops (JSON → MessagePack → binary delta).
+2. **Progressive payload reduction** — Automatically reduce response size as bandwidth drops (JSON → compact JSON → minimal binary).
 3. **Time-shifted tolerance** — Extend replay windows for low-connectivity regions without compromising security.
 4. **Never fail silently** — Every degradation emits a structured telemetry event.
 
@@ -40,26 +40,62 @@ Current services assume always-on, low-latency connectivity. This document speci
 
 ## 3. Degradation Levels
 
-| Level       | Trigger (est. bandwidth) | Behavior                                                       |
-| ----------- | ------------------------ | -------------------------------------------------------------- |
-| **Normal**  | > 2 Mbps                 | Full JSON API, real-time sync, 5-min replay window             |
-| **Reduced** | 0.5–2 Mbps               | MessagePack encoding, batched sync, 15-min replay window       |
-| **Minimal** | < 0.5 Mbps               | Binary delta sync, USSD fallback channel, 15-min replay window |
-| **Offline** | 0 Mbps                   | Local queue only, full autonomy for 72 hours                   |
+| Level       | Trigger (est. bandwidth) | Behavior                                                         |
+| ----------- | ------------------------ | ---------------------------------------------------------------- |
+| **Normal**  | > 2 Mbps                 | Full JSON API, real-time sync, 5-min replay window               |
+| **Reduced** | 0.5–2 Mbps               | Compact JSON encoding, batched sync, 15-min replay window        |
+| **Minimal** | < 0.5 Mbps               | Minimal binary sync, USSD fallback channel, 15-min replay window |
+| **Offline** | 0 Mbps                   | Local queue only, full autonomy for 72 hours                     |
 
 ---
 
-## 4. Implementation Areas
+## 4. Implementation
 
-### 4.1 Protocol Layer
+### 4.1 Shipped v0.1.0 (`tools/low-bandwidth`)
 
-- **Negotiation:** Client sends `Accept-Encoding: gtcx-lbw-v1` header; server responds with smallest viable format.
-- **Payload sizes:**
-  - Normal: ~4 KB per transaction envelope
-  - Reduced: ~1.2 KB (MessagePack + field omission)
-  - Minimal: ~200 B (binary delta + essential fields only)
+The server-side low-bandwidth toolkit is implemented as `@gtcx/low-bandwidth` with the following modules:
 
-### 4.2 Replay Guard
+**Encoder (`src/encoder.mjs`)**
+
+- `encode(value, encoding)` — serializes to `json`, `compact-json`, or `minimal-binary`
+- `decode(data, encoding)` — deserializes from any supported format
+- `encodeMinimalBinary(value)` / `decodeMinimalBinary(buf)` — custom v1 binary protocol with type-tagged primitive fields (uint8/16/32, int32, float64, string, bool, null)
+
+**Negotiator (`src/negotiator.mjs`)**
+
+- `resolveLevel(req)` — determines degradation level from `Save-Data`, `?lowBandwidth`, and `Downlink` headers
+- `acceptsLowBandwidth(req)` — boolean check for client intent
+- `mostRestrictive(levels)` — computes the most restrictive level from a list
+- `encodingForLevel(level)` — maps `normal→json`, `reduced→compact-json`, `minimal/offline→minimal-binary`
+- `replayWindowForLevel(level)` — returns 5 min (normal) or 15 min (reduced/minimal/offline)
+
+**Trimmer (`src/trimmer.mjs`)**
+
+- `trimObject(obj, schema)` — schema-based field omission for response payloads
+- `buildMinimalResponse(fullResponse, endpoint)` — endpoint-aware stripping (e.g., `/v1/query` keeps `answer` + `routing.provider`, strips `authz` + `usage`)
+- `estimateReduction(before, after)` — telemetry helper for payload savings
+
+**Telemetry (`src/telemetry.mjs`)**
+
+- `createDegradationEvent(req, level)` — structured event with region, bandwidth, latency, queue depth
+- `shouldAlert(events)` — triggers PagerDuty if > 5% of devices in a region are offline > 30 min
+- `toPrometheusMetrics(events)` — converts events to Prometheus exposition format
+
+**Middleware (`src/middleware.mjs`)**
+
+- `createTransform(options)` — returns `{ transform(req, data) }` that detects level, trims, and encodes
+- `createEventFromRequest(req, level)` — builds degradation events from HTTP requests
+
+### 4.2 Compliance-Gateway Integration
+
+The compliance-gateway (`tools/compliance-gateway`) integrates low-bandwidth directly in `src/server.mjs`:
+
+- `detectLowBandwidth(req)` — checks `Save-Data: on`, `?lowBandwidth=true/1`, and `Downlink < 0.5`
+- `stripForLowBandwidth(body, endpoint)` — endpoint-specific trimming for `/v1/query`, `/v1/tools`, `/v1/providers`
+- `sendJson(res, status, body, req)` — applies low-bandwidth stripping + `gzip`/`brotli` compression
+- Responses include `X-Low-Bandwidth: true/false` and `Cache-Control: max-age=300, public` when in low-bandwidth mode
+
+### 4.3 Replay Guard
 
 The replay guard already supports region-specific clock-skew windows (see `docs/ml/model-cards/replay-guard-model-card.md`):
 
@@ -68,23 +104,22 @@ The replay guard already supports region-specific clock-skew windows (see `docs/
 
 This aligns with low-bandwidth mode without additional changes.
 
-### 4.3 Client Queue
+### 4.4 Client Queue (Future)
 
 - **Mobile SDK:** SQLite-backed queue with automatic compression (zstd)
 - **Max queue depth:** 10,000 transactions (~2 MB compressed)
 - **Sync strategy:** Exponential backoff with jitter; batch up to 50 transactions per sync
 
-### 4.4 Server-Side Adaptation
+### 4.5 Server-Side Adaptation (Future)
 
 - **CDN edge caching:** Static assets cached at Cloudflare POPs in Johannesburg, Lagos, Nairobi
-- **API response trimming:** `?mode=minimal` query parameter omits non-essential fields
 - **Connection keep-alive:** Extended to 300s to reduce TLS handshake overhead
 
 ---
 
 ## 5. Telemetry & Observability
 
-Every degradation event must emit:
+Every degradation event emits:
 
 ```json
 {
@@ -104,7 +139,7 @@ Alerting: PagerDuty alert if > 5% of active devices in a region are in `offline`
 
 ## 6. Security Considerations
 
-- ** replay window extension:** Already covered by replay-guard regional policy. The 15-minute window is still cryptographically bounded by nonce uniqueness.
+- **Replay window extension:** Already covered by replay-guard regional policy. The 15-minute window is still cryptographically bounded by nonce uniqueness.
 - **Queue encryption:** Local SQLite queue must be encrypted at rest using device-bound keys.
 - **Tamper detection:** Each queued transaction includes an Ed25519 signature; replay verifies integrity.
 
@@ -112,9 +147,11 @@ Alerting: PagerDuty alert if > 5% of active devices in a region are in `offline`
 
 ## 7. Acceptance Criteria
 
-- [ ] Mobile SDK implements `gtcx-lbw-v1` negotiation
-- [ ] Server responds with MessagePack when requested
-- [ ] `?mode=minimal` reduces average response size by ≥ 70%
+- [x] Server-side encoder supports `json`, `compact-json`, and `minimal-binary` formats
+- [x] `stripForLowBandwidth` reduces average response size by ≥ 70% for `/v1/query` and `/v1/providers`
+- [x] Compliance-gateway detects low-bandwidth via `Save-Data`, query params, and `Downlink` headers
+- [x] Telemetry emits structured degradation events with region, bandwidth, and latency
+- [ ] Mobile SDK implements negotiation and local queueing
 - [ ] 72-hour offline autonomy demonstrated in chaos test
 - [ ] Telemetry dashboard shows degradation events by region
 
@@ -122,5 +159,7 @@ Alerting: PagerDuty alert if > 5% of active devices in a region are in `offline`
 
 ## 8. References
 
+- [`tools/low-bandwidth`](../../tools/low-bandwidth/) — v0.1.0 implementation
+- [`tools/compliance-gateway/src/server.mjs`](../../tools/compliance-gateway/src/server.mjs) — gateway integration
 - [Resilience Framework](../specs/resilience-framework.md)
 - [Replay Guard Model Card](../ml/model-cards/replay-guard-model-card.md)

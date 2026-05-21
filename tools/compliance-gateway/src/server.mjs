@@ -34,8 +34,8 @@ import { buildRuntimePolicyPrompt } from './policy.mjs';
 import { systemPrompt } from './system-prompt.mjs';
 import { createToolRegistry, listToolsForAccess, toolCount } from './tools.mjs';
 import {
-  selectProvider,
-  getFallbackChain,
+  selectProvider as defaultSelectProvider,
+  getFallbackChain as defaultGetFallbackChain,
   getProviders,
   providerCount,
   classifyComplexity,
@@ -62,7 +62,11 @@ function requirePermission(req, res, requiredPermission) {
 // Query handler with fallback chain
 // ---------------------------------------------------------------------------
 
-async function handleQuery(req, res) {
+async function handleQuery(req, res, deps = {
+  generateText,
+  selectProvider: defaultSelectProvider,
+  getFallbackChain: defaultGetFallbackChain,
+}) {
   if (req.method !== 'POST') {
     return sendJson(res, 405, { error: 'Method not allowed' }, req);
   }
@@ -94,7 +98,7 @@ async function handleQuery(req, res) {
   ].filter(Boolean).join('\n');
 
   const complexity = classifyComplexity(query);
-  const primary = selectProvider(query);
+  const primary = deps.selectProvider(query);
 
   if (!primary) {
     return sendJson(res, 503, {
@@ -103,7 +107,7 @@ async function handleQuery(req, res) {
     }, req);
   }
 
-  const fallbacks = getFallbackChain(primary);
+  const fallbacks = deps.getFallbackChain(primary);
   const chain = [primary, ...fallbacks];
   const errors = [];
   const tools = createToolRegistry(accessProfile);
@@ -112,7 +116,7 @@ async function handleQuery(req, res) {
   for (const provider of chain) {
     try {
       const start = Date.now();
-      const result = await generateText({
+      const result = await deps.generateText({
         model: provider.createModel(),
         system: `${systemPrompt}\n\n${runtimePolicy}`,
         prompt: userMessage,
@@ -384,4 +388,4 @@ server.listen(PORT, () => {
   }));
 });
 
-export { server };
+export { server, handleQuery, estimateCost, stripForLowBandwidth, sendJson };
