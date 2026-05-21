@@ -6,24 +6,26 @@
  * so clients can self-correct without revealing internal details.
  */
 
+import { readFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
 import { z } from 'zod';
 
-// Jurisdiction codes the gateway accepts today. New jurisdictions are
-// added via the plugin catalog (terraform-aws-compliance-db plugins);
-// extending this enum is the deliberate signal that a new market is live.
-export const JURISDICTION_CODES = [
-  'zimbabwe',
-  'ghana',
-  'kenya',
-  'nigeria',
-  'south-africa',
-  'rwanda',
-  'tanzania',
-  'uganda',
-  'zambia',
-  'malawi',
-  'global',
-];
+// Single source of truth: the canonical jurisdiction catalog ships with
+// @gtcx/compliance-data. Extending it is a deliberate signal that a new
+// market is live; the schema picks up the new code on next deploy.
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const jurisdictionsFile = join(__dirname, '../../compliance-data/jurisdictions.json');
+let JURISDICTION_CODES = ['global'];
+try {
+  const data = JSON.parse(readFileSync(jurisdictionsFile, 'utf-8'));
+  JURISDICTION_CODES = [...Object.keys(data.jurisdictions || {}), 'global'];
+} catch {
+  // Compliance-data file missing in a sandbox; fall back to a single
+  // safe value rather than crashing the gateway at startup.
+}
+export { JURISDICTION_CODES };
 
 export const QueryBodySchema = z
   .object({

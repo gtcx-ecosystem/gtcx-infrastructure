@@ -1,0 +1,19 @@
+# =============================================================================
+# Tool Versions — pinned for deterministic clone-to-green-tests.
+# =============================================================================
+# `mise install` resolves every dependency below. CI uses the same file so the
+# version observed in development matches the version observed in CI matches
+# the version observed in production base images.
+#
+# Update by editing this file + running `mise install`. Never bump in CI alone.
+# =============================================================================
+
+[tools]
+node = "20.18.0"
+pnpm = "9.15.0"
+terraform = "1.7.5"
+kubectl = "1.30.2"
+shellcheck = "0.10.0"
+
+[env]
+NODE_ENV = "development"

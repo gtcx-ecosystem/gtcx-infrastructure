@@ -1,0 +1,71 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":dependencyDashboard",
+    ":semanticCommits",
+    ":separateMajorReleases"
+  ],
+  "timezone": "Africa/Johannesburg",
+  "schedule": ["before 6am on monday"],
+  "labels": ["dependencies"],
+  "rangeStrategy": "bump",
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["before 6am on monday"]
+  },
+  "packageRules": [
+    {
+      "matchManagers": ["npm"],
+      "matchPaths": ["tools/**"],
+      "groupName": "tools-npm",
+      "groupSlug": "tools-npm",
+      "semanticCommitType": "chore",
+      "semanticCommitScope": "deps"
+    },
+    {
+      "matchManagers": ["dockerfile"],
+      "groupName": "docker-base-images",
+      "semanticCommitType": "chore",
+      "semanticCommitScope": "deps"
+    },
+    {
+      "matchManagers": ["terraform"],
+      "groupName": "terraform-modules",
+      "semanticCommitType": "chore",
+      "semanticCommitScope": "infra"
+    },
+    {
+      "matchManagers": ["github-actions"],
+      "groupName": "github-actions",
+      "semanticCommitType": "chore",
+      "semanticCommitScope": "ci"
+    },
+    {
+      "matchPackagePatterns": ["^@ai-sdk/", "^ai$"],
+      "groupName": "ai-sdk",
+      "semanticCommitType": "chore",
+      "semanticCommitScope": "deps",
+      "prPriority": 2,
+      "reviewers": ["amanianai"]
+    },
+    {
+      "matchUpdateTypes": ["major"],
+      "addLabels": ["major-upgrade"],
+      "prPriority": -1
+    },
+    {
+      "matchUpdateTypes": ["patch"],
+      "automerge": false
+    }
+  ],
+  "vulnerabilityAlerts": {
+    "enabled": true,
+    "schedule": ["at any time"],
+    "labels": ["security"],
+    "prPriority": 5
+  },
+  "dependencyDashboardLabels": ["dependencies", "dashboard"],
+  "prConcurrentLimit": 5,
+  "prHourlyLimit": 2
+}

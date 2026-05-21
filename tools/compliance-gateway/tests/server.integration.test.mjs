@@ -230,7 +230,7 @@ describe('Compliance Gateway Integration', () => {
           authorization: 'Bearer readonly-test-token',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ jurisdiction: 'south-africa' }),
+        body: JSON.stringify({ jurisdiction: 'south_africa' }),
       });
       assert.strictEqual(res.status, 400);
       assert.match(res.body.error, /query/);
@@ -363,7 +363,7 @@ describe('Compliance Gateway Integration', () => {
         },
         body: JSON.stringify({
           query: 'Check compliance',
-          jurisdiction: 'south-africa',
+          jurisdiction: 'south_africa',
           context: { shipmentId: 'SHP-123' },
         }),
       });
