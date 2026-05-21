@@ -36,6 +36,7 @@ import {
   signAuditEvent,
   getChainState,
   verifyAuditBody,
+  getSignerHealth,
 } from './audit.mjs';
 import { systemPrompt } from './system-prompt.mjs';
 import { createToolRegistry, listToolsForAccess, toolCount } from './tools.mjs';
@@ -50,6 +51,19 @@ import {
 const PORT = Number(process.env.PORT ?? 8500);
 const authState = loadAuthState(process.env);
 const auditInit = initAuditSigner(process.env);
+
+// Fail-closed: in production, the gateway must not run without a signing
+// key. Tamper-evident audit is a stated contract; refuse to serve without it.
+if (process.env.NODE_ENV === 'production' && !auditInit.initialized) {
+  console.error(JSON.stringify({
+    level: 'fatal',
+    type: 'audit.signer.startupRefused',
+    message: 'Compliance Gateway refusing to start: audit signing key not configured in production.',
+    error: auditInit.error,
+  }));
+  // eslint-disable-next-line no-process-exit
+  process.exit(78); // EX_CONFIG
+}
 
 // ---------------------------------------------------------------------------
 // Runtime policy (from ConfigMap — adjustable without code changes)
@@ -410,14 +424,25 @@ const server = createServer(async (req, res) => {
       const result = verifyAuditBody(body);
       sendJson(res, 200, result, req);
     } else if (url === '/health') {
-      sendJson(res, authState.configurationError ? 503 : 200, {
+      const signerHealth = getSignerHealth();
+      const productionUnsigned =
+        process.env.NODE_ENV === 'production' && !signerHealth.signing;
+      const unhealthy = authState.configurationError || productionUnsigned;
+      sendJson(res, unhealthy ? 503 : 200, {
         authConfigured: !authState.configurationError,
         authMode: authState.defaulted ? 'dev-default-readonly' : 'configured',
-        status: authState.configurationError ? 'unhealthy' : 'healthy',
+        audit: {
+          signing: signerHealth.signing,
+          ephemeral: signerHealth.ephemeral,
+          maxInMemoryRecords: signerHealth.maxInMemoryRecords,
+          ...getChainState(),
+        },
+        status: unhealthy ? 'unhealthy' : 'healthy',
         tools: toolCount,
         providers: providerCount,
         availableProviders: getProviders().map((p) => p.name),
         ...(authState.configurationError ? { error: authState.configurationError } : {}),
+        ...(productionUnsigned ? { error: 'audit signing not configured in production' } : {}),
       }, req);
     } else if (url === '/v1/tools') {
       const principal = requirePermission(req, res, 'tools:read');

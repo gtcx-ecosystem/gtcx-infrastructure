@@ -19,16 +19,25 @@ import {
 let keyPair = null;
 const chain = createChain();
 let initialized = false;
+let checkpointHash = '';
+let checkpointCount = 0;
+
+const MAX_IN_MEMORY_RECORDS = Number(process.env.AUDIT_CHAIN_MAX_RECORDS || '10000');
 
 /**
  * Initialize the audit signer from environment.
+ *
+ * In production, this fails closed: if AUDIT_SIGNING_KEY_B64 is absent or
+ * invalid, the returned `initialized` flag is false and the caller MUST
+ * treat that as fatal (exit, refuse readiness). Non-production environments
+ * generate an ephemeral key so developers can run the gateway locally.
  *
  * @param {NodeJS.ProcessEnv} [env=process.env]
  * @returns {{ initialized: boolean; ephemeral: boolean; error?: string }}
  */
 export function initAuditSigner(env = process.env, force = false) {
   if (initialized && !force) {
-    return { initialized: true, ephemeral: keyPair === null };
+    return { initialized: keyPair !== null, ephemeral: keyPair !== null && !env.AUDIT_SIGNING_KEY_B64 };
   }
 
   const keyB64 = env.AUDIT_SIGNING_KEY_B64;
@@ -62,13 +71,14 @@ export function initAuditSigner(env = process.env, force = false) {
     return { initialized: true, ephemeral: true };
   }
 
-  console.warn(JSON.stringify({
-    level: 'warn',
+  console.error(JSON.stringify({
+    level: 'error',
     type: 'audit.signer.noKey',
-    message: 'AUDIT_SIGNING_KEY_B64 not set in production; audit records will not be signed',
+    message: 'AUDIT_SIGNING_KEY_B64 is required in production. Refusing to start without a signing key.',
   }));
   initialized = true;
-  return { initialized: false, ephemeral: false };
+  keyPair = null;
+  return { initialized: false, ephemeral: false, error: 'AUDIT_SIGNING_KEY_B64 missing in production' };
 }
 
 /**
@@ -95,18 +105,39 @@ export function signAuditEvent({ actor, action, target, reason, payload }) {
     record: signed,
   }));
 
+  // Bound in-memory chain. The full chain is durable in the sink (stdout
+  // shipped to log aggregation, optionally NATS JetStream). The in-memory
+  // copy is for fast verification on /v1/audit/chain and /v1/audit/verify.
+  if (chain.records.length > MAX_IN_MEMORY_RECORDS) {
+    checkpointHash = chain.lastHash;
+    checkpointCount += chain.records.length;
+    chain.records.length = 0;
+    console.log(JSON.stringify({
+      type: 'audit.checkpoint',
+      checkpointHash,
+      totalRecords: checkpointCount,
+      timestamp: new Date().toISOString(),
+    }));
+  }
+
   return signed;
 }
 
 /**
  * Get the current chain state (metadata only).
  *
- * @returns {{ lastHash: string; recordCount: number; verified: boolean }}
+ * `recordCount` is the in-memory window; `totalRecords` includes records
+ * that have been checkpointed out of memory. The chain is still verifiable
+ * from the durable sink via `verifyAuditBody(ndjson)`.
+ *
+ * @returns {{ lastHash: string; recordCount: number; totalRecords: number; checkpointHash: string; verified: boolean }}
  */
 export function getChainState() {
   return {
     lastHash: chain.lastHash,
     recordCount: chain.records.length,
+    totalRecords: checkpointCount + chain.records.length,
+    checkpointHash,
     verified: verifyChain(chain).valid,
   };
 }
@@ -137,6 +168,8 @@ export function exportChainNdjson() {
 export function resetChain() {
   chain.records.length = 0;
   chain.lastHash = '';
+  checkpointHash = '';
+  checkpointCount = 0;
 }
 
 /**
@@ -146,4 +179,18 @@ export function resetAuditSigner() {
   keyPair = null;
   initialized = false;
   resetChain();
+}
+
+/**
+ * Indicates whether the gateway is producing signed audit evidence.
+ * Used by /health to make the signing posture observable.
+ *
+ * @returns {{ signing: boolean; ephemeral: boolean; maxInMemoryRecords: number }}
+ */
+export function getSignerHealth() {
+  return {
+    signing: keyPair !== null,
+    ephemeral: keyPair !== null && !process.env.AUDIT_SIGNING_KEY_B64,
+    maxInMemoryRecords: MAX_IN_MEMORY_RECORDS,
+  };
 }
