@@ -40,6 +40,7 @@ import {
   getChainState,
   verifyAuditBody,
   getSignerHealth,
+  buildEvidenceBundle,
 } from './audit.mjs';
 import { systemPrompt } from './system-prompt.mjs';
 import { createToolRegistry, listToolsForAccess, toolCount } from './tools.mjs';
@@ -307,6 +308,26 @@ async function handleQuery(req, res, deps = {
 }
 
 // ---------------------------------------------------------------------------
+// Morning-brief narrative builder
+// ---------------------------------------------------------------------------
+
+function buildBriefNarrative({ chainState, spend, signing }) {
+  const lines = [];
+  if (!signing) {
+    lines.push('⚠ Audit signing is DISABLED. Investigate before consequential traffic.');
+  } else {
+    lines.push(`Audit chain is healthy: ${chainState.totalRecords} records, head ${chainState.lastHash.slice(0, 12)}…`);
+  }
+  if (spend.spentUsd > 0) {
+    const pct = Math.min(100, Math.round((spend.spentUsd / spend.limits.dailyUsd) * 100));
+    lines.push(`Today: $${spend.spentUsd.toFixed(4)} / $${spend.limits.dailyUsd} (${pct}% of daily budget).`);
+  } else {
+    lines.push(`Today: no LLM spend yet.`);
+  }
+  return lines.join(' ');
+}
+
+// ---------------------------------------------------------------------------
 // Cost estimation
 // ---------------------------------------------------------------------------
 
@@ -478,6 +499,39 @@ const server = createServer(async (req, res) => {
         return;
       }
       sendJson(res, 200, getChainState(), req);
+    } else if (url === '/v1/audit/evidence-bundle') {
+      const principal = requirePermission(req, res, 'audit:read');
+      if (!principal) {
+        return;
+      }
+      const sinceParam = new URL(req.url ?? '/', 'http://localhost').searchParams.get('since') ?? undefined;
+      sendJson(res, 200, buildEvidenceBundle({
+        tenantId: principal.tenantId,
+        since: sinceParam,
+      }), req);
+    } else if (url === '/v1/brief') {
+      const principal = requirePermission(req, res, 'query:read');
+      if (!principal) {
+        return;
+      }
+      const sinceParam = new URL(req.url ?? '/', 'http://localhost').searchParams.get('since') ?? undefined;
+      const chainState = getChainState();
+      const spend = getSpend(principal.subject, principal.tenantId);
+      sendJson(res, 200, {
+        tenantId: principal.tenantId,
+        since: sinceParam,
+        producedAt: new Date().toISOString(),
+        chainHead: chainState.lastHash,
+        recordCount: chainState.recordCount,
+        totalRecords: chainState.totalRecords,
+        spend,
+        signing: getSignerHealth().signing,
+        narrative: buildBriefNarrative({
+          chainState,
+          spend,
+          signing: getSignerHealth().signing,
+        }),
+      }, req);
     } else if (url === '/v1/audit/verify') {
       const principal = requirePermission(req, res, 'audit:read');
       if (!principal) {

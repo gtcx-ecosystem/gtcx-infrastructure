@@ -1,0 +1,28 @@
+{
+  "name": "@gtcx/compliance-gateway-mcp",
+  "version": "0.1.0",
+  "description": "Model Context Protocol server exposing the GTCX compliance gateway to AI agents",
+  "type": "module",
+  "main": "src/server.mjs",
+  "bin": {
+    "gtcx-compliance-mcp": "src/server.mjs"
+  },
+  "scripts": {
+    "start": "node src/server.mjs",
+    "test": "node --test tests/**/*.test.mjs",
+    "test:coverage:gate": "node --test tests/**/*.test.mjs"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "keywords": [
+    "gtcx",
+    "mcp",
+    "model-context-protocol",
+    "compliance",
+    "ai-agent",
+    "ai-gateway"
+  ],
+  "license": "MIT",
+  "private": true
+}

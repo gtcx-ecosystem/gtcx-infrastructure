@@ -1,17 +1,50 @@
 {
   "name": "@gtcx/audit-signer",
   "version": "0.1.0",
-  "description": "Cryptographic audit record signing for consequential AI flows",
+  "description": "Ed25519-signed, hash-linked audit chain for AI compliance flows. Tamper-evident records, third-party verifiable.",
   "type": "module",
   "main": "src/index.mjs",
+  "exports": {
+    ".": "./src/index.mjs",
+    "./signer": "./src/signer.mjs",
+    "./chain": "./src/chain.mjs"
+  },
+  "files": [
+    "src/",
+    "README.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
   "scripts": {
     "test": "node --test tests/**/*.test.mjs",
     "test:coverage": "c8 --check-coverage --branches 90 --statements 90 --functions 90 --lines 90 --reporter=text --reporter=json --reporter=lcov --include='src/**' node --test tests/**/*.test.mjs",
-    "test:coverage:gate": "c8 --check-coverage --branches 90 --statements 90 --functions 90 --lines 90 --reporter=text --reporter=json --reporter=lcov --include='src/**' node --test tests/**/*.test.mjs"
+    "test:coverage:gate": "c8 --check-coverage --branches 90 --statements 90 --functions 90 --lines 90 --reporter=text --reporter=json --reporter=lcov --include='src/**' node --test tests/**/*.test.mjs",
+    "prepublishOnly": "node --test tests/**/*.test.mjs"
   },
   "engines": {
     "node": ">=20.0.0"
   },
+  "keywords": [
+    "audit",
+    "audit-trail",
+    "tamper-evident",
+    "ed25519",
+    "hash-chain",
+    "compliance",
+    "ai-compliance",
+    "evidence",
+    "regulatory"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gtcx-ecosystem/gtcx-infrastructure.git",
+    "directory": "tools/audit-signer"
+  },
+  "homepage": "https://github.com/gtcx-ecosystem/gtcx-infrastructure/tree/main/tools/audit-signer",
+  "license": "MIT",
   "dependencies": {},
   "devDependencies": {
     "c8": "^11.0.0"

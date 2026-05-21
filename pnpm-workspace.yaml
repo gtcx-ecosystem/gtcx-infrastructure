@@ -10,3 +10,4 @@ packages:
   - 'tools/low-bandwidth'
   - 'tools/ussd-handler'
   - 'tools/eval-pipeline'
+  - 'tools/compliance-gateway-mcp'

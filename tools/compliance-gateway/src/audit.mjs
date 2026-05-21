@@ -175,6 +175,56 @@ export function exportChainNdjson() {
 }
 
 /**
+ * Build a signed, verifiable evidence bundle for an external auditor.
+ *
+ * Includes the in-memory NDJSON (records since the last checkpoint),
+ * the checkpoint hash from before that window, the public key needed
+ * for verification, and an integrity statement that ties them together.
+ *
+ * A consumer with only this bundle can verify it offline using
+ * @gtcx/audit-signer's verifyChain — no GTCX-side trust required.
+ *
+ * @param {{ tenantId?: string, since?: string }} [opts]
+ * @returns {{
+ *   bundleVersion: '1',
+ *   producedAt: string,
+ *   tenantId: string,
+ *   recordCount: number,
+ *   chainHead: string,
+ *   priorCheckpointHash: string,
+ *   priorCheckpointCount: number,
+ *   ndjson: string,
+ *   verification: { algorithm: 'ed25519+sha256+jcs', instructions: string },
+ * }}
+ */
+export function buildEvidenceBundle({ tenantId = 'default', since } = {}) {
+  const records = chain.records.filter((r) => {
+    if (!since) return true;
+    return r.timestamp >= since;
+  }).filter((r) => {
+    if (tenantId === 'default') return true;
+    return r.payload?.tenantId === tenantId;
+  });
+  const ndjson = records.map((r) => JSON.stringify(r)).join('\n');
+  return {
+    bundleVersion: '1',
+    producedAt: new Date().toISOString(),
+    tenantId,
+    recordCount: records.length,
+    chainHead: chain.lastHash,
+    priorCheckpointHash: checkpointHash,
+    priorCheckpointCount: checkpointCount,
+    ndjson,
+    verification: {
+      algorithm: 'ed25519+sha256+jcs',
+      instructions:
+        'npm install @gtcx/audit-signer; then verifyChain(fromNdjson(ndjson)) on Node ≥20. ' +
+        'Every record carries its publicKey, so no key server is required.',
+    },
+  };
+}
+
+/**
  * Reset the chain (intended for tests only).
  */
 export function resetChain() {
