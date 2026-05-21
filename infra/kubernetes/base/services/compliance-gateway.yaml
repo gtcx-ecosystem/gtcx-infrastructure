@@ -47,6 +47,37 @@ spec:
                 secretKeyRef:
                   name: compliance-gateway-secrets
                   key: ANTHROPIC_API_KEY
+            # Runtime policy overrides from ConfigMap
+            - name: GTCX_DEGRADATION_MODE
+              valueFrom:
+                configMapKeyRef:
+                  name: gtcx-runtime-policies
+                  key: GTCX_DEGRADATION_MODE
+            - name: GTCX_LBW_STRIP_FIELDS
+              valueFrom:
+                configMapKeyRef:
+                  name: gtcx-runtime-policies
+                  key: GTCX_LBW_STRIP_FIELDS
+            - name: GTCX_LBW_COMPRESSION
+              valueFrom:
+                configMapKeyRef:
+                  name: gtcx-runtime-policies
+                  key: GTCX_LBW_COMPRESSION
+            - name: GTCX_LBW_CACHE_SECONDS
+              valueFrom:
+                configMapKeyRef:
+                  name: gtcx-runtime-policies
+                  key: GTCX_LBW_CACHE_SECONDS
+            - name: GTCX_FEATURE_SIGNED_AUDIT
+              valueFrom:
+                configMapKeyRef:
+                  name: gtcx-runtime-policies
+                  key: GTCX_FEATURE_SIGNED_AUDIT
+            - name: GTCX_FEATURE_FEEDBACK_LOOP
+              valueFrom:
+                configMapKeyRef:
+                  name: gtcx-runtime-policies
+                  key: GTCX_FEATURE_FEEDBACK_LOOP
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:

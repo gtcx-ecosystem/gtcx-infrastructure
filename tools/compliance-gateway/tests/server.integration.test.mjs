@@ -57,12 +57,12 @@ describe('Compliance Gateway Integration', () => {
       {
         token: 'readonly-test-token',
         subject: 'readonly-operator',
-        permissions: ['query:read', 'tools:read', 'providers:read'],
+        permissions: ['query:read', 'tools:read', 'providers:read', 'audit:read'],
       },
       {
         token: 'mutate-test-token',
         subject: 'security-operator',
-        permissions: ['query:read', 'query:mutate', 'tools:read', 'providers:read'],
+        permissions: ['query:read', 'query:mutate', 'tools:read', 'providers:read', 'audit:read'],
       },
       {
         token: 'limited-test-token',

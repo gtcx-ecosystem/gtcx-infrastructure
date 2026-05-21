@@ -31,6 +31,12 @@ import {
   parseApprovalContext,
 } from './auth.mjs';
 import { buildRuntimePolicyPrompt } from './policy.mjs';
+import {
+  initAuditSigner,
+  signAuditEvent,
+  getChainState,
+  verifyAuditBody,
+} from './audit.mjs';
 import { systemPrompt } from './system-prompt.mjs';
 import { createToolRegistry, listToolsForAccess, toolCount } from './tools.mjs';
 import {
@@ -43,6 +49,20 @@ import {
 
 const PORT = Number(process.env.PORT ?? 8500);
 const authState = loadAuthState(process.env);
+const auditInit = initAuditSigner(process.env);
+
+// ---------------------------------------------------------------------------
+// Runtime policy (from ConfigMap — adjustable without code changes)
+// ---------------------------------------------------------------------------
+
+const runtimePolicy = {
+  degradationMode: process.env.GTCX_DEGRADATION_MODE || 'auto',
+  lbwStripFields: (process.env.GTCX_LBW_STRIP_FIELDS || 'authz,usage,toolResults').split(',').map((s) => s.trim()).filter(Boolean),
+  lbwCompression: process.env.GTCX_LBW_COMPRESSION || 'br',
+  lbwCacheSeconds: Number(process.env.GTCX_LBW_CACHE_SECONDS || '300'),
+  featureSignedAudit: process.env.GTCX_FEATURE_SIGNED_AUDIT === 'true',
+  featureFeedbackLoop: process.env.GTCX_FEATURE_FEEDBACK_LOOP === 'true',
+};
 
 /**
  * @param {import('node:http').IncomingMessage} req
@@ -52,9 +72,21 @@ const authState = loadAuthState(process.env);
 function requirePermission(req, res, requiredPermission) {
   const auth = authenticateHeaders(req.headers, authState, requiredPermission);
   if (!auth.ok) {
+    signAuditEvent({
+      actor: 'unknown',
+      action: `auth:failure`,
+      target: req.url,
+      reason: `${requiredPermission}: ${auth.error}`,
+    });
     sendJson(res, auth.status, { error: auth.error }, req);
     return null;
   }
+  signAuditEvent({
+    actor: auth.principal.subject,
+    action: `auth:success`,
+    target: req.url,
+    payload: { permission: requiredPermission, permissions: auth.principal.permissions },
+  });
   return auth.principal;
 }
 
@@ -101,6 +133,12 @@ async function handleQuery(req, res, deps = {
   const primary = deps.selectProvider(query);
 
   if (!primary) {
+    signAuditEvent({
+      actor: principal.subject,
+      action: 'query:failure',
+      target: query.substring(0, 200),
+      payload: { reason: 'no-providers-configured', status: 503 },
+    });
     return sendJson(res, 503, {
       error: 'No LLM providers configured',
       hint: 'Set at least one of: GOOGLE_API_KEY, GROQ_API_KEY, ANTHROPIC_API_KEY, OPENAI_API_KEY, DEEPSEEK_API_KEY',
@@ -134,6 +172,12 @@ async function handleQuery(req, res, deps = {
         .flatMap((step) => step.toolResults || [])
         .map((r) => ({ tool: r.toolName, result: r.result }));
 
+      signAuditEvent({
+        actor: principal.subject,
+        action: 'query:success',
+        target: query.substring(0, 200),
+        payload: { provider: provider.name, complexity, latencyMs, status: 200 },
+      });
       return sendJson(res, 200, {
         answer: result.text,
         toolCalls,
@@ -169,6 +213,12 @@ async function handleQuery(req, res, deps = {
   }
 
   // All providers failed
+  signAuditEvent({
+    actor: principal.subject,
+    action: 'query:failure',
+    target: query.substring(0, 200),
+    payload: { errors: errors.map((e) => ({ provider: e.provider, error: e.error })), status: 502 },
+  });
   sendJson(res, 502, {
     error: 'All LLM providers failed',
     attempts: errors,
@@ -208,6 +258,11 @@ async function readBody(req) {
 // ---------------------------------------------------------------------------
 
 function detectLowBandwidth(req) {
+  // Runtime policy override takes precedence
+  if (runtimePolicy.degradationMode === 'normal') return false;
+  if (['reduced', 'minimal', 'offline'].includes(runtimePolicy.degradationMode)) return true;
+
+  // Auto-detection from client headers
   const saveData = req.headers['save-data'];
   if (saveData === 'on') return true;
   const lowBwParam = new URL(req.url ?? '/', 'http://localhost').searchParams.get('lowBandwidth');
@@ -216,6 +271,26 @@ function detectLowBandwidth(req) {
   const downlink = parseFloat(req.headers['downlink'] || '10');
   if (downlink < 0.5) return true; // Less than 500 Kbps
   return false;
+}
+
+function getDegradationLevel(req) {
+  if (runtimePolicy.degradationMode !== 'auto') {
+    return runtimePolicy.degradationMode;
+  }
+  const downlink = parseFloat(req?.headers?.['downlink'] || '10');
+  if (downlink < 0.5) return 'minimal';
+  if (downlink < 2) return 'reduced';
+  return 'normal';
+}
+
+function logDegradationEvent(req, level) {
+  console.log(JSON.stringify({
+    type: 'resilience.degradation',
+    level,
+    endpoint: req?.url,
+    mode: runtimePolicy.degradationMode,
+    timestamp: new Date().toISOString(),
+  }));
 }
 
 function stripForLowBandwidth(body, endpoint) {
@@ -275,6 +350,7 @@ function sendJson(res, status, body, req) {
   if (isLowBandwidth) {
     const endpoint = req ? new URL(req.url ?? '/', 'http://localhost').pathname : undefined;
     payload = stripForLowBandwidth(body, endpoint);
+    logDegradationEvent(req, getDegradationLevel(req));
   }
 
   const json = JSON.stringify(payload);
@@ -298,8 +374,9 @@ function sendJson(res, status, body, req) {
 
   const headers = {
     'Content-Type': 'application/json',
-    'Cache-Control': isLowBandwidth ? 'max-age=300, public' : 'no-cache',
+    'Cache-Control': isLowBandwidth ? `max-age=${runtimePolicy.lbwCacheSeconds}, public` : 'no-cache',
     'X-Low-Bandwidth': isLowBandwidth ? 'true' : 'false',
+    'X-Degradation-Mode': runtimePolicy.degradationMode,
   };
 
   if (encoding) {
@@ -315,6 +392,23 @@ const server = createServer(async (req, res) => {
     const url = new URL(req.url ?? '/', 'http://localhost').pathname;
     if (url === '/v1/query') {
       await handleQuery(req, res);
+    } else if (url === '/v1/audit/chain') {
+      const principal = requirePermission(req, res, 'audit:read');
+      if (!principal) {
+        return;
+      }
+      sendJson(res, 200, getChainState(), req);
+    } else if (url === '/v1/audit/verify') {
+      const principal = requirePermission(req, res, 'audit:read');
+      if (!principal) {
+        return;
+      }
+      if (req.method !== 'POST') {
+        return sendJson(res, 405, { error: 'Method not allowed' }, req);
+      }
+      const body = await readBody(req);
+      const result = verifyAuditBody(body);
+      sendJson(res, 200, result, req);
     } else if (url === '/health') {
       sendJson(res, authState.configurationError ? 503 : 200, {
         authConfigured: !authState.configurationError,
@@ -377,6 +471,8 @@ server.listen(PORT, () => {
   }
   console.log(JSON.stringify({
     authConfigured: !authState.configurationError,
+    auditInitialized: auditInit.initialized,
+    auditEphemeral: auditInit.ephemeral,
     level: 'info',
     message: 'Compliance Gateway listening',
     nodeEnv: authState.nodeEnv,

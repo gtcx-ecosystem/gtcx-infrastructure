@@ -16,6 +16,7 @@ resources:
   - cert-manager.yaml
   - services/vault-tls.yaml
   - configmaps/base-config.yaml
+  - configmaps/runtime-policies.yaml
   - services/nats.yaml
   - services/api.yaml
   - services/protocols.yaml

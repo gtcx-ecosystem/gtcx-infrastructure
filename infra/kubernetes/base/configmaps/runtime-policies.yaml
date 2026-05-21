@@ -1,0 +1,55 @@
+# =============================================================================
+# GTCX Runtime Policy ConfigMap
+# =============================================================================
+# Central configuration for adaptive degradation, low-bandwidth mode,
+# and feature flags that must be adjustable at runtime without code changes.
+#
+# Consumed by: compliance-gateway (and future services)
+# Override in environment overlays for per-env tuning.
+# =============================================================================
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gtcx-runtime-policies
+  namespace: gtcx
+  labels:
+    app.kubernetes.io/component: policy
+    app.kubernetes.io/part-of: gtcx
+data:
+  # ---------------------------------------------------------------------------
+  # Degradation mode
+  #   auto     — detect from client headers (Save-Data, Downlink)
+  #   normal   — full JSON, no stripping (override for debugging)
+  #   reduced  — compact JSON, moderate field stripping
+  #   minimal  — minimal binary, aggressive stripping
+  #   offline  — local queue only, reject non-essential requests
+  # ---------------------------------------------------------------------------
+  GTCX_DEGRADATION_MODE: 'auto'
+
+  # ---------------------------------------------------------------------------
+  # Low-bandwidth stripping rules (comma-separated field names)
+  # Applied when degradation mode is reduced/minimal/offline
+  # ---------------------------------------------------------------------------
+  GTCX_LBW_STRIP_FIELDS: 'authz,usage,toolResults'
+
+  # ---------------------------------------------------------------------------
+  # Compression preference
+  #   gzip  — universally supported, moderate ratio
+  #   br    — best ratio, higher CPU (default when available)
+  #   none  — disable compression (debug only)
+  # ---------------------------------------------------------------------------
+  GTCX_LBW_COMPRESSION: 'br'
+
+  # ---------------------------------------------------------------------------
+  # Cache-Control max-age for low-bandwidth responses (seconds)
+  # Higher values reduce repeated payload transfer on flaky networks
+  # ---------------------------------------------------------------------------
+  GTCX_LBW_CACHE_SECONDS: '300'
+
+  # ---------------------------------------------------------------------------
+  # Feature flags
+  # ---------------------------------------------------------------------------
+  GTCX_FEATURE_FEDERATION: 'false'
+  GTCX_FEATURE_OFFLINE_SYNC: 'true'
+  GTCX_FEATURE_SIGNED_AUDIT: 'true'
+  GTCX_FEATURE_FEEDBACK_LOOP: 'true'
