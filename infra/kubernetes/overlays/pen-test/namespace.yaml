@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: gtcx-pen-test
+  labels:
+    gtcx.io/environment: pen-test
+    gtcx.io/blast-radius: contained
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/warn: restricted
+  annotations:
+    gtcx.io/purpose: External penetration test isolated namespace
+    gtcx.io/teardown-after: '2026-08-31'
