@@ -12,13 +12,14 @@
 FROM node:20-alpine AS deps
 WORKDIR /app
 COPY package.json ./
-# nats + aws-sdk are runtime deps but soft-loaded so the test image
-# can omit them. Production builds install them via:
-#   npm install --omit=dev --no-package-lock nats @aws-sdk/client-s3
+# Production deps. @gtcx/audit-signer lives on npm at v0.1.0+;
+# nats + aws-sdk are soft-loaded by the sidecar's source but pinned
+# here so the image is self-contained and production-ready.
 RUN apk add --no-cache tini && \
     npm install --omit=dev --no-package-lock --no-fund --no-audit \
-      nats@^2 \
-      @aws-sdk/client-s3@^3
+      '@gtcx/audit-signer@^0.1.0' \
+      'nats@^2' \
+      '@aws-sdk/client-s3@^3'
 
 # -----------------------------------------------------------------------------
 # Runtime image
@@ -35,13 +36,6 @@ COPY --from=deps /sbin/tini /sbin/tini
 COPY --from=deps /app/node_modules ./node_modules
 COPY package.json ./
 COPY src/ ./src/
-
-# Workspace package — vendored by copying tools/audit-signer's published
-# tarball at build time. In CI this happens via a turbo prune step.
-# For now, the package is resolved by the parent workspace when running
-# locally; the published image must include it explicitly:
-#   npm pack ../audit-signer && tar -xzf gtcx-audit-signer-*.tgz -C node_modules/@gtcx/
-# A future iteration moves this into a turbo prune Dockerfile.
 
 USER auditflush
 
