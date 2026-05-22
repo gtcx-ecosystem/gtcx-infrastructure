@@ -6,23 +6,18 @@
  * so clients can self-correct without revealing internal details.
  */
 
-import { readFileSync } from 'node:fs';
-import { dirname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
-
 import { z } from 'zod';
 
 // Single source of truth: the canonical jurisdiction catalog ships with
 // @gtcx/compliance-data. Extending it is a deliberate signal that a new
 // market is live; the schema picks up the new code on next deploy.
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const jurisdictionsFile = join(__dirname, '../../compliance-data/jurisdictions.json');
 let JURISDICTION_CODES = ['global'];
 try {
-  const data = JSON.parse(readFileSync(jurisdictionsFile, 'utf-8'));
+  const mod = await import('@gtcx/compliance-data/jurisdictions', { with: { type: 'json' } });
+  const data = mod.default ?? mod;
   JURISDICTION_CODES = [...Object.keys(data.jurisdictions || {}), 'global'];
 } catch {
-  // Compliance-data file missing in a sandbox; fall back to a single
+  // Compliance-data not resolvable in a sandbox; fall back to a single
   // safe value rather than crashing the gateway at startup.
 }
 export { JURISDICTION_CODES };

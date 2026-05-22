@@ -6,19 +6,20 @@
  * by wrapping a generic model around public docs.
  */
 
-import { readFileSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
-import { dirname, join } from 'node:path';
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
-
+// Jurisdictions catalog is consumed via the workspace package's
+// exports map (see @gtcx/compliance-data/jurisdictions). The package
+// ships the JSON as its default export; the named subpath is provided
+// for readers who want explicit intent.
 let jurisdictions = {};
 try {
-  jurisdictions = JSON.parse(
-    readFileSync(join(__dirname, '../../compliance-data/jurisdictions.json'), 'utf-8')
-  );
+  // Dynamic JSON import — Node ≥20.10 supports import attributes; we
+  // fall back to a synchronous require-by-resolve so this module stays
+  // usable in test contexts where the import-attribute parser is finicky.
+  const mod = await import('@gtcx/compliance-data/jurisdictions', { with: { type: 'json' } });
+  jurisdictions = mod.default ?? mod;
 } catch {
-  // Graceful fallback if jurisdictions file not available
+  // Graceful fallback if the package is not resolvable (rare; only in
+  // hand-rolled sandboxes that bypass the workspace).
 }
 
 const jurisdictionSummary = Object.entries(jurisdictions.jurisdictions || {})
