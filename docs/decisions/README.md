@@ -34,6 +34,9 @@ Architecture Decision Records (ADRs) capturing key design choices and their rati
 | [ADR-015](ADR-015-per-tenant-jetstream-subject-routing.md) | Per-Tenant JetStream Subject Routing                | Accepted |
 | [ADR-016](ADR-016-fail-closed-audit-signing.md)            | Fail-Closed Audit Signing in Production             | Accepted |
 | [ADR-017](ADR-017-adaptive-policy-tuning.md)               | Adaptive Policy Tuning with Signed Transitions      | Accepted |
+| [ADR-018](ADR-018-pen-test-contained-overlay.md)           | Pen-Test Contained-Blast-Radius Kubernetes Overlay  | Accepted |
+| [ADR-019](ADR-019-workspace-boundary-discipline.md)        | Workspace Package Boundary Discipline               | Accepted |
+| [ADR-020](ADR-020-per-package-coverage-thresholds.md)      | Per-Package Coverage Thresholds                     | Accepted |
 
 ## Adding a New ADR
 
