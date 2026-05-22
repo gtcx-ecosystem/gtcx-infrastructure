@@ -1,6 +1,7 @@
 ---
 audit_type: master
 target_repo: gtcx-infrastructure
+audit_date: 2026-05-17
 status: current
 date: 2026-05-17
 owner: frontier-infra-engineer
