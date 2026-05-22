@@ -11,7 +11,7 @@
     {
       "id": "core-weighted",
       "name": "Core Weighted Score",
-      "currentScore": 8.85,
+      "currentScore": 9.0,
       "maxScore": 10,
       "history": [
         {
@@ -77,6 +77,22 @@
           "ciRun": null,
           "artifact": "infra/terraform/environments/staging/terraform.tfstate",
           "reason": "Staging environment fully operational: VPC, EKS cluster, RDS operational+audit, WAF Web ACL, VPC Flow Logs, shared CI deploy role. 76 resources created. Verified via AWS CLI."
+        },
+        {
+          "date": "2026-05-17",
+          "score": 8.48,
+          "commit": "4b4024e",
+          "ciRun": null,
+          "artifact": "docs/audit/master-audit-2026-05-17.md",
+          "reason": "Master audit cycle 7. Honest forensic recalculation after Phase 5.5 surfaced prior inflation; all critical caps lifted (Vault TLS, container security contexts); 5 P0 + 7 P1 remaining (all internal-engineering)."
+        },
+        {
+          "date": "2026-05-22",
+          "score": 9.0,
+          "commit": "dcc72b3",
+          "ciRun": null,
+          "artifact": "docs/audit/full-audit-2026-05-22.md",
+          "reason": "Round-4 full audit post-substrate-completion. Cycle 1 (6 sprints + 4 hygiene rounds) + Cycle 2.5 (11 internal-completion stories) shipped: fail-closed audit signing, NATS+WORM durable sink, per-tenant boundary, adaptive policy with signed transitions, @gtcx/audit-signer published to npm, audit-flush sidecar with kustomize wiring, 4 new ADRs, DPIA, SOC 2 evidence inventory. 17/17 validate-all gates pass. SIGNAL 9.60."
         }
       ]
     },
@@ -435,7 +451,7 @@
     {
       "id": "agentic-maturity",
       "name": "Agentic Maturity",
-      "currentScore": 7.5,
+      "currentScore": 9.6,
       "maxScore": 10,
       "history": [
         {
@@ -461,6 +477,22 @@
           "ciRun": null,
           "artifact": "tools/compliance-gateway/tests/",
           "reason": "Compliance gateway coverage gates: auth boundary, tool segregation, approval gating, multi-provider routing, low-bandwidth mode all tested and CI-gated at \u226590%."
+        },
+        {
+          "date": "2026-05-22",
+          "score": 9.29,
+          "commit": "39feaf5",
+          "ciRun": null,
+          "artifact": "docs/audit/signal-scorecard.json",
+          "reason": "SIGNAL scorecard v1: 5-pillar maturity scorecard with evidence pointers. Supervision 9.0 (mutating tool approval, audit trail, anomaly detection); Integrity 9.25; Governance 9.25; Non-Proliferation 8.25; Alignment 9.67."
+        },
+        {
+          "date": "2026-05-22",
+          "score": 9.6,
+          "commit": "5e6e443",
+          "ciRun": null,
+          "artifact": "docs/audit/signal-scorecard.json",
+          "reason": "SIGNAL scorecard v2: substrate hardening complete. S2 (audit trail) 9\u219210 (fail-closed in production + NATS+WORM durability + restart-recovery proven). I4 (WORM audit storage) 9\u219210 (testnet wires both worm_audit + audit-flush-irsa modules). A2 (fail-closed) 10/10 (gateway exits EX_CONFIG 78 + adaptive policy quarantines). validate-signal.mjs CI gate confirms 9.60."
         }
       ]
     },
