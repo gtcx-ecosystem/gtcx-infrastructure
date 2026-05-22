@@ -8,13 +8,17 @@
   "scripts": {
     "start": "node src/index.mjs",
     "test": "node --test tests/**/*.test.mjs",
-    "test:coverage:gate": "node --test tests/**/*.test.mjs"
+    "test:coverage:gate": "node --test tests/**/*.test.mjs",
+    "test:integration": "node test/run-integration.mjs"
   },
   "engines": {
     "node": ">=20.0.0"
   },
   "dependencies": {
     "@gtcx/audit-signer": "workspace:*"
+  },
+  "devDependencies": {
+    "nats": "^2.28.0"
   },
   "keywords": [
     "gtcx",

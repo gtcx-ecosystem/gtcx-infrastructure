@@ -260,6 +260,22 @@ run_pagerduty_drill_simulation() {
     (cd "${PROJECT_ROOT}" && node tools/scripts/incident-drill-pagerduty-simulation.mjs --dry-run)
 }
 
+run_nats_integration() {
+    # NATS JetStream round-trip test for audit-flush. Spins up a
+    # dockerized broker, publishes one signed record, verifies it
+    # consumes and chain-verifies. Tears down on exit.
+    if ! command -v docker >/dev/null 2>&1; then
+        if [[ "${GTCX_SKIP_NATS_INTEGRATION:-0}" == "1" ]]; then
+            log_warning "docker not available and GTCX_SKIP_NATS_INTEGRATION=1 — skipping nats-integration gate (CI must NOT use this)"
+            return 0
+        fi
+        log_error "docker not installed — required for nats-integration gate"
+        return 1
+    fi
+    log_info "Running NATS JetStream integration test..."
+    (cd "${PROJECT_ROOT}" && pnpm -F @gtcx/audit-flush test:integration)
+}
+
 run_load_tests() {
     # k6 is a required quality gate in full validation. The runner allows
     # GTCX_SKIP_LOAD_TESTS=1 for emergency unblocking, but the default
@@ -319,6 +335,7 @@ case "${MODE}" in
         run_kustomize_validation
         run_compose_validation
         run_load_tests
+        run_nats_integration
         run_signal_scorecard_validation
         run_contract_tests
         ;;
