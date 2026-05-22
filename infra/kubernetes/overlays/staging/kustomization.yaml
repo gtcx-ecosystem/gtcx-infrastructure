@@ -49,6 +49,8 @@ images:
 
 # Staging resource limits (moderate)
 patches:
+  # Audit-flush — staging image + IRSA role + WORM bucket
+  - path: audit-flush-patch.yaml
   # NetworkPolicy — per-environment database subnet CIDR
   - target:
       kind: NetworkPolicy

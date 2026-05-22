@@ -51,6 +51,9 @@ images:
 
 # Production resource configuration
 patches:
+  # Audit-flush — production image (3 replicas) + IRSA role + WORM bucket
+  - path: audit-flush-patch.yaml
+
   # API service - production resources
   - patch: |-
       - op: replace

@@ -1,0 +1,47 @@
+# =============================================================================
+# Audit-Flush — Production overlay patch
+# =============================================================================
+# Production sizing + IRSA role + WORM bucket. The WORM bucket has Object
+# Lock in COMPLIANCE mode with 2557-day retention; deletion is impossible
+# at the bucket level regardless of IAM grants.
+# =============================================================================
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: audit-flush
+  namespace: gtcx
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::348389439381:role/gtcx-production-audit-flush-irsa
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: audit-flush
+  namespace: gtcx
+spec:
+  replicas: 3
+  template:
+    spec:
+      containers:
+        - name: flusher
+          image: 348389439381.dkr.ecr.af-south-1.amazonaws.com/gtcx-audit-flush:v0.1.0
+          env:
+            - name: NATS_URL
+              value: nats://nats.gtcx.svc.cluster.local:4222
+            - name: AUDIT_NATS_SUBJECT
+              value: gtcx.audit.>
+            - name: AUDIT_S3_BUCKET
+              value: gtcx-worm-audit-production-af-south-1
+            - name: AUDIT_S3_REGION
+              value: af-south-1
+            - name: AUDIT_FLUSH_BATCH_SIZE
+              value: '1000'
+            - name: AUDIT_FLUSH_INTERVAL_MS
+              value: '5000'
+          resources:
+            requests:
+              cpu: 200m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
