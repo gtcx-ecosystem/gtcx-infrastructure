@@ -1,0 +1,28 @@
+{
+  "name": "@gtcx/audit-flush",
+  "version": "0.1.0",
+  "description": "Sidecar that ships signed audit records from NATS JetStream to WORM S3 with chain verification",
+  "type": "module",
+  "main": "src/index.mjs",
+  "private": true,
+  "scripts": {
+    "start": "node src/index.mjs",
+    "test": "node --test tests/**/*.test.mjs",
+    "test:coverage:gate": "node --test tests/**/*.test.mjs"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "@gtcx/audit-signer": "workspace:*"
+  },
+  "keywords": [
+    "gtcx",
+    "audit",
+    "worm",
+    "sidecar",
+    "nats",
+    "s3"
+  ],
+  "license": "MIT"
+}

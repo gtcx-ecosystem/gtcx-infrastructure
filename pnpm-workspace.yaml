@@ -11,3 +11,4 @@ packages:
   - 'tools/ussd-handler'
   - 'tools/eval-pipeline'
   - 'tools/compliance-gateway-mcp'
+  - 'tools/audit-flush'
