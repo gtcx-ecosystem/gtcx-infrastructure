@@ -39,7 +39,10 @@ import { startAdaptiveScheduler, defaultThresholds } from './adaptive-policy.mjs
 
 // In-flight /v1/query count, exposed to the HPA via the
 // compliance_gateway_inflight_requests metric (autoscaling.v2 Pods target).
+// Initialized to 0 at module load so /metrics always exposes the series
+// (Prometheus expects long-running gauges to be present even when zero).
 let inflightQueries = 0;
+setGauge('compliance_gateway_inflight_requests', undefined, 0);
 import {
   initAuditSigner,
   signAuditEvent,

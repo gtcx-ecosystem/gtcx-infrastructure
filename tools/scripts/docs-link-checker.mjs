@@ -15,8 +15,14 @@
 
 import { readFileSync, existsSync, readdirSync, statSync } from 'node:fs';
 import { resolve, dirname, join, relative } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const DOCS_ROOT = resolve(process.cwd(), 'docs');
+// REPO_ROOT is resolved relative to this script's location, not cwd, so
+// the link checker works from any working directory (including from
+// inside a tools/* package after a publish or test run).
+const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
+const REPO_ROOT = resolve(SCRIPT_DIR, '..', '..');
+const DOCS_ROOT = resolve(REPO_ROOT, 'docs');
 
 function walk(dir, files = []) {
   for (const entry of readdirSync(dir)) {

@@ -21,8 +21,13 @@
 
 import { readdirSync, readFileSync, statSync, existsSync } from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const REPO_ROOT = process.cwd();
+// REPO_ROOT is resolved relative to this script's location, not cwd.
+// The script lives at <repo>/tools/scripts/, so two dirname() calls land
+// at the repo root regardless of where the user invoked it from.
+const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url));
+const REPO_ROOT = path.resolve(SCRIPT_DIR, '..', '..');
 const DOCS_ROOT = path.join(REPO_ROOT, 'docs');
 
 // ---------------------------------------------------------------------------

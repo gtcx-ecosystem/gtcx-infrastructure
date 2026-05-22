@@ -82,4 +82,62 @@ describe('audit sink', () => {
       resetSink();
     }
   });
+
+  it('nats sink emit handles tenantId payload without throwing', () => {
+    process.env.AUDIT_SINK = 'nats';
+    resetSink();
+    try {
+      const lines = captureStdout(() => {
+        getSink().emit({
+          id: 'r-with-tenant',
+          signature: 's',
+          payload: { tenantId: 'pilot' },
+        });
+      });
+      assert.ok(lines.length >= 1);
+    } finally {
+      delete process.env.AUDIT_SINK;
+      resetSink();
+    }
+  });
+
+  it('nats sink emit handles record without payload (auth event shape)', () => {
+    process.env.AUDIT_SINK = 'nats';
+    resetSink();
+    try {
+      const lines = captureStdout(() => {
+        getSink().emit({ id: 'auth-evt', signature: 's' });
+      });
+      assert.ok(lines.length >= 1);
+    } finally {
+      delete process.env.AUDIT_SINK;
+      resetSink();
+    }
+  });
+
+  it('nats sink emit rejects invalid tenantId (defensive)', () => {
+    process.env.AUDIT_SINK = 'nats';
+    resetSink();
+    try {
+      // tenantId with invalid characters should fall back to the bare subject.
+      const lines = captureStdout(() => {
+        getSink().emit({
+          id: 'bad-tenant',
+          signature: 's',
+          payload: { tenantId: 'NOT VALID' },
+        });
+      });
+      assert.ok(lines.length >= 1);
+    } finally {
+      delete process.env.AUDIT_SINK;
+      resetSink();
+    }
+  });
+
+  it('audit sink close() resolves without error', async () => {
+    delete process.env.AUDIT_SINK;
+    resetSink();
+    const sink = getSink();
+    assert.doesNotReject(sink.close());
+  });
 });

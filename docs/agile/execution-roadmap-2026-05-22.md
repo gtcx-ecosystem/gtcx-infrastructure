@@ -1,3 +1,13 @@
+---
+title: 'GTCX Infrastructure — Execution Roadmap'
+status: 'current'
+date: '2026-05-22'
+owner: 'platform-engineering'
+tier: 'standard'
+tags: ['agile', 'roadmap', 'audit']
+review_cycle: 'on-change'
+---
+
 # GTCX Infrastructure — Execution Roadmap
 
 **Date:** 2026-05-22  
@@ -474,7 +484,7 @@
 
 - [ ] `CHANGELOG.md` updated with Sprint 1–6 changes
 - [ ] `README.md` updated with new packages and architecture diagram
-- [ ] All ADRs linked in `adr/README.md`
+- [ ] All ADRs linked in `docs/decisions/README.md`
 - [ ] `docs/runbooks/` has runbooks for: audit signing, feedback loop, mobile SDK sync
 
 ---

@@ -10,11 +10,19 @@
 
 import { execSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const RED = '\x1b[31m';
 const GREEN = '\x1b[32m';
 const YELLOW = '\x1b[33m';
 const RESET = '\x1b[0m';
+
+// Resolve REPO_ROOT from the script location, not cwd. Every gate runs
+// with cwd defaulting to the repo root so paths like `tools/scripts/...`
+// resolve correctly no matter where the user invoked validate-all from.
+const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url));
+const REPO_ROOT = path.resolve(SCRIPT_DIR, '..', '..');
 
 let totalPassed = 0;
 let totalFailed = 0;
@@ -23,10 +31,15 @@ function run(name, command, cwd) {
   process.stdout.write(`[VALIDATE] ${name} ... `);
   try {
     execSync(command, {
-      cwd: cwd || process.cwd(),
+      cwd: cwd || REPO_ROOT,
       stdio: 'pipe',
       encoding: 'utf8',
       timeout: 120000,
+      // Node's default 1MB stdout buffer overflows on packages with
+      // hundreds of TAP-formatted node:test output lines (compliance-
+      // gateway is currently 187 tests). Raise to 32MB so the script
+      // can never falsely report ENOBUFS as a gate failure.
+      maxBuffer: 32 * 1024 * 1024,
     });
     console.log(`${GREEN}PASS${RESET}`);
     totalPassed++;
@@ -59,11 +72,16 @@ const packages = [
   'tools/ussd-handler',
   'tools/low-bandwidth',
   'tools/audit-signer',
+  'tools/audit-flush',
+  'tools/compliance-gateway-mcp',
+  'tools/compliance-data',
+  'tools/eval-pipeline',
 ];
 
 for (const pkg of packages) {
-  if (existsSync(`${pkg}/package.json`)) {
-    run(pkg, 'pnpm run test:coverage:gate', pkg);
+  const pkgPath = path.join(REPO_ROOT, pkg);
+  if (existsSync(path.join(pkgPath, 'package.json'))) {
+    run(pkg, 'pnpm run test:coverage:gate', pkgPath);
   }
 }
 
