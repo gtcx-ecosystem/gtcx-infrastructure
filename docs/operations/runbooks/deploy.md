@@ -41,6 +41,45 @@ Before any deployment:
 
 ## Deploy Script Sequence
 
+The script runs these steps in order. Production (canary path) shown; staging skips step 5.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant Op as Operator
+    participant Script as deploy.sh
+    participant Kube as kubectl
+    participant Build as Docker / ECR
+    participant Scan as Trivy + Cosign
+    participant Canary as Canary pods (5% traffic)
+    participant Prod as Production pods
+
+    Op->>Script: ./deploy.sh production --approval-ticket=GTCX-NNN
+    Script->>Script: 1. resolve env alias, validate approval ticket
+    Script->>Kube: 2. cluster-info + pre-deploy health
+    Kube-->>Script: cluster OK
+    Script->>Build: 3. docker build + push to ECR
+    Build-->>Script: image digest sha256:...
+    Script->>Scan: 4. Trivy scan + Cosign verify
+    Scan-->>Script: 0 critical/high CVEs
+    rect rgba(124, 45, 18, 0.08)
+        Note over Script,Canary: 5. Canary phase (production only)
+        Script->>Canary: deploy at 5% traffic weight
+        Canary-->>Script: health checks pass
+        Script->>Canary: ramp 5% → 25%
+        Canary-->>Script: error rate within SLO
+        Script->>Canary: ramp 25% → 100%
+    end
+    Script->>Prod: 6. full rollout (kustomize apply)
+    Prod-->>Script: rollout status succeeded
+    Script->>Kube: 7. post-deploy verification<br/>(audit-chain head, /health, metrics)
+    Kube-->>Op: deploy OK
+
+    rect rgba(220, 38, 38, 0.08)
+        Note over Script,Prod: Auto-rollback triggers if any post-deploy<br/>health check fails — see automated-rollback.md
+    end
+```
+
 The script runs these steps in order:
 
 ### 1. Input Validation

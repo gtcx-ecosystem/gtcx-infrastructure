@@ -63,6 +63,38 @@ Before starting recovery:
 
 ## Recovery Procedure
 
+```mermaid
+sequenceDiagram
+    autonumber
+    participant IC as Incident Commander
+    participant Eng as Engineering
+    participant Comms as Comms
+    participant DB as RDS (operational + audit)
+    participant Cache as Redis
+    participant App as Application
+    participant Audit as Audit chain (WORM)
+
+    IC->>Comms: 1. declare incident<br/>(severity, scope, ETA)
+    IC->>Eng: 2. freeze changes<br/>(kill switch, halt deploys)
+    Eng->>DB: 3. restore from point-in-time backup
+    DB-->>Eng: PITR restore complete
+    Eng->>Cache: 4. restore Redis state<br/>(replay or rebuild)
+    Cache-->>Eng: cache warmed
+    Eng->>App: 5. rehydrate + verify integrity<br/>(row counts, FK constraints)
+    App-->>Eng: schema + data consistent
+    Eng->>App: 6. smoke-test protocol APIs<br/>(/health, /v1/audit/chain)
+    App-->>Eng: smoke tests pass
+    Eng->>Audit: 7. validate audit log<br/>(chain head matches pre-incident)
+    Audit-->>Eng: verifyChain → valid: true
+    IC->>App: 8. resume traffic<br/>(ramp 5% → 25% → 100%)
+    App-->>Comms: SLOs holding
+    IC->>Comms: 9. post-incident<br/>(RTO/RPO achieved, post-mortem due)
+
+    rect rgba(220, 38, 38, 0.08)
+        Note over IC,Audit: If audit-chain validation (step 7) FAILS:<br/>do NOT resume traffic. Engage<br/>audit-chain-incident-response.md.
+    end
+```
+
 ### Step 1 — Declare incident
 
 - Designate an incident commander.
