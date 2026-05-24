@@ -17,7 +17,7 @@ Single source of truth for all infrastructure documentation.
 
 ## 0. Start Here
 
-- [Documentation Governance](documentation-governance.md) — Repo-local documentation rules and approved taxonomy deviations
+- [Documentation Governance](governance/documentation-deviations.md) — Repo-local documentation rules and approved taxonomy deviations
 - [Orientation](agents/onboarding/orientation.md) — Repo map, environment topology, key commands
 - [Developer Quickstart](agents/onboarding/developer-quickstart.md) — Clone to running in under 10 minutes
 - [Agent Safety Rules](agents/workflows/agent-safety-rules.md) — Three-tier authority structure

@@ -53,10 +53,17 @@ function extractTableDimension(line) {
   return cells[0];
 }
 
+// Historical/archived subfolders carry frozen claims from prior cycles —
+// they're evidence-of-the-past, not active claims requiring ledger entries.
+// Active claims live in the top-level audit files (master-audit-*.md,
+// full-audit-*.md, etc.) which ARE scanned.
+const EXCLUDED_SUBDIRS = new Set(['historical-cycles', 'remediation', 'archive']);
+
 function scanDir(dir) {
   for (const entry of readdirSync(dir, { withFileTypes: true })) {
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) {
+      if (EXCLUDED_SUBDIRS.has(entry.name)) continue;
       scanDir(full);
     } else if (entry.isFile() && entry.name.endsWith('.md')) {
       const content = readFileSync(full, 'utf8');

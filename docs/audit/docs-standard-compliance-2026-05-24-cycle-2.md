@@ -147,7 +147,7 @@ When PR #57 merges, the Cycle 1 audit doc and the new docs from PR #57 will land
 
 - Cycle 1 audit (on PR #57 branch): `docs/audit/docs-standard-compliance-2026-05-24.md`
 - [`../README.md`](../README.md) — docs index
-- [`../documentation-governance.md`](../documentation-governance.md) — repo-local deviations
+- [`../documentation-governance.md`](../governance/documentation-deviations.md) — repo-local deviations
 - [`../audit/full-audit-2026-05-22.md`](./full-audit-2026-05-22.md) — substrate audit (Cycle 1 + 2.5)
 - [`../audit/signal-scorecard.json`](./signal-scorecard.json) — SIGNAL v2 9.60/10
 - Protocol 1: https://github.com/gtcx-ecosystem/gtcx-docs/blob/main/system-sop/1-protocols/1-docs-structure/protocol.md
