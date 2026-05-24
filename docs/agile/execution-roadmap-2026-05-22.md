@@ -26,24 +26,25 @@ The remaining critical path is **external clocks** (pen-test report, SOC 2 Type 
 
 ## Roadmap Status
 
-| Cycle | Sprint | Theme                                     | Status                          | Delivered                                                                                            |
-| ----- | ------ | ----------------------------------------- | ------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| 1     | S1     | Audit-Signer Integration (Phase 1.3)      | ✅ Closed 2026-05-22            | Signed audit chain, fail-closed in production, durable sink, /v1/audit/chain + /v1/audit/verify      |
-| 1     | S2     | Feedback Loop + Telemetry (Phase 1.4)     | ✅ Closed 2026-05-22            | /metrics endpoint, adaptive policy tuner, per-principal budget + QPS, cost telemetry                 |
-| 1     | S3     | Mobile SDK + Offline-First (Phase 1.1)    | 🔄 Deferred to Cycle 3          | Existing `tools/low-bandwidth` covers the server-side adaptive path; client SDK is its own track     |
-| 1     | S4     | Full Audit Update (AI Maturity + GTM)     | ✅ Closed 2026-05-22            | SIGNAL scorecard v2 at 9.60, full-audit-2026-05-22.md persisted, score-evidence ledger refreshed     |
-| 1     | S5     | Infrastructure Hardening (Audit findings) | ✅ Closed 2026-05-22            | Per-tenant boundary, HPA, audit-flush IRSA + sidecar + container source, IRSA wired in 3 envs        |
-| 1     | S6     | Final Polish + Validation                 | ✅ Closed 2026-05-22            | 17/17 master validation, conventional commits enforced, atomic micro-commits throughout              |
-| 1     | R2     | Residual hygiene cleanup                  | ✅ Closed 2026-05-22            | HPA inflight gauge, audit target sanitization, dev-cred fail-fast, deep import → package import      |
-| 1     | R3     | Audit-flush + IRSA + adaptive policy      | ✅ Closed 2026-05-22            | Container source, Dockerfile, IRSA module, runbook, SIGNAL v2, integration tests                     |
-| 1     | R4     | Hygiene sweep                             | ✅ Closed 2026-05-22            | cwd-independent validators, /adr/ deleted, doc-standard 0 violations, coverage gate documented       |
-| 1     | R5     | Audit canonicalization                    | ✅ Closed 2026-05-22            | gtcx-agentic/audit standards applied: repo-overlay.md, full-audit-2026-05-22.md, schema frontmatter  |
-| 2     | S7     | External Engagement Activation            | ⏳ Planned 2026-05-26           | Pen-test send, SOC 2 send, audit-flush image build + push, prometheus-adapter wiring                 |
-| 2     | S8     | Tenant Validation                         | ⏳ Planned 2026-06-02           | Synthetic second tenant onboarded end-to-end via runbook; empirical SLA captured                     |
-| 2     | S9     | Distribution Edge                         | ⏳ Planned 2026-06-09 (2 weeks) | Docs site, HN post for @gtcx/audit-signer, Terraform Registry listing, outreach                      |
-| 2     | S10    | Production Hardening Cycle                | ⏳ Planned 2026-06-30 (2 weeks) | NATS integration test, live DR restoration, live on-call drill, Redis-backed adaptive state if scale |
-| 2     | S11    | Pen-test Findings Triage                  | ⏳ Triggered (~2026-07-25)      | Fix P0/P1 within 30 days of report; re-test                                                          |
-| 2     | S12    | mTLS Mesh Runtime                         | ⏳ Q3 2026                      | Linkerd sidecar injection per existing canary plan; ADR-007 runtime                                  |
+| Cycle | Sprint | Theme                                     | Status                              | Delivered                                                                                            |
+| ----- | ------ | ----------------------------------------- | ----------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| 1     | S1     | Audit-Signer Integration (Phase 1.3)      | ✅ Closed 2026-05-22                | Signed audit chain, fail-closed in production, durable sink, /v1/audit/chain + /v1/audit/verify      |
+| 1     | S2     | Feedback Loop + Telemetry (Phase 1.4)     | ✅ Closed 2026-05-22                | /metrics endpoint, adaptive policy tuner, per-principal budget + QPS, cost telemetry                 |
+| 1     | S3     | Mobile SDK + Offline-First (Phase 1.1)    | 🔄 Deferred to Cycle 3              | Existing `tools/low-bandwidth` covers the server-side adaptive path; client SDK is its own track     |
+| 1     | S4     | Full Audit Update (AI Maturity + GTM)     | ✅ Closed 2026-05-22                | SIGNAL scorecard v2 at 9.60, full-audit-2026-05-22.md persisted, score-evidence ledger refreshed     |
+| 1     | S5     | Infrastructure Hardening (Audit findings) | ✅ Closed 2026-05-22                | Per-tenant boundary, HPA, audit-flush IRSA + sidecar + container source, IRSA wired in 3 envs        |
+| 1     | S6     | Final Polish + Validation                 | ✅ Closed 2026-05-22                | 17/17 master validation, conventional commits enforced, atomic micro-commits throughout              |
+| 1     | R2     | Residual hygiene cleanup                  | ✅ Closed 2026-05-22                | HPA inflight gauge, audit target sanitization, dev-cred fail-fast, deep import → package import      |
+| 1     | R3     | Audit-flush + IRSA + adaptive policy      | ✅ Closed 2026-05-22                | Container source, Dockerfile, IRSA module, runbook, SIGNAL v2, integration tests                     |
+| 1     | R4     | Hygiene sweep                             | ✅ Closed 2026-05-22                | cwd-independent validators, /adr/ deleted, doc-standard 0 violations, coverage gate documented       |
+| 1     | R5     | Audit canonicalization                    | ✅ Closed 2026-05-22                | gtcx-agentic/audit standards applied: repo-overlay.md, full-audit-2026-05-22.md, schema frontmatter  |
+| 2     | S7     | External Engagement Activation            | ⏳ Planned 2026-05-26               | Pen-test send, SOC 2 send, audit-flush image build + push, prometheus-adapter wiring                 |
+| 2     | MOB-W1 | Mobile-Prod Cross-Repo Week 1             | ⏳ Planned 2026-05-26 (parallel S7) | #49 staging URL + TLS, #50 /audit/bundles verifier, #51 nonce replay, #52 /audit/query (Bearer)      |
+| 2     | S8     | Tenant Validation                         | ⏳ Planned 2026-06-02               | Synthetic second tenant onboarded end-to-end via runbook; empirical SLA captured                     |
+| 2     | S9     | Distribution Edge                         | ⏳ Planned 2026-06-09 (2 weeks)     | Docs site, HN post for @gtcx/audit-signer, Terraform Registry listing, outreach                      |
+| 2     | S10    | Production Hardening Cycle                | ⏳ Planned 2026-06-30 (2 weeks)     | NATS integration test, live DR restoration, live on-call drill, Redis-backed adaptive state if scale |
+| 2     | S11    | Pen-test Findings Triage                  | ⏳ Triggered (~2026-07-25)          | Fix P0/P1 within 30 days of report; re-test                                                          |
+| 2     | S12    | mTLS Mesh Runtime                         | ⏳ Q3 2026                          | Linkerd sidecar injection per existing canary plan; ADR-007 runtime                                  |
 
 ## Universal Definition of Done
 
@@ -293,6 +294,134 @@ Compressed retrospective form. Full per-sprint detail in commit history under ea
 4. `feat(infra): prometheus-adapter custom metric registration`
 5. `docs(audit): pen-test RFP send log` (records receipts as evidence)
 6. `docs(audit): SOC 2 outreach send log`
+
+---
+
+## Sprint MOB-W1 — Mobile-Prod Cross-Repo Week 1
+
+**Sprint window:** 2026-05-26 → 2026-05-30 (runs parallel to Sprint 7)
+**Sprint goal:** Land the four staging-environment dependencies that gtcx-mobile's 30-day production rollout needs for W1 (W4 Zimbabwe go-live). Cross-repo coordination via #gtcx-mobile-prod Slack standup, daily 09:00 GMT.
+**Capacity:** 8 story points
+**Sprint owner:** Platform Engineering Lead
+
+This thread is **parallel to Sprint 7**, not a replacement. EXT-003 (audit-flush container) inside Sprint 7 is itself a blocker for MOB-W1-002 deploy; the two sprints are sequenced through that one dependency.
+
+### Unblock chain (cross-repo, recorded across both repos)
+
+```
+gtcx-infrastructure#49 (staging URL + TLS for TradePass identity service)
+    ↓ unblocks
+gtcx-protocols#60 (43 emitted DID documents resolvable at the URL)
+    ↓ unblocks
+gtcx-infrastructure#50 (verifier resolves X-GTCX-DID → public key via the deployed
+                        TradePass identity service)
+    ↓ unblocks
+gtcx-mobile production rollout (W4 Zimbabwe go-live)
+```
+
+Cross-references:
+
+- `docs/agile/execution-roadmap-2026-05-22.md` (this row)
+- gtcx-infrastructure issues [#49](https://github.com/gtcx-ecosystem/gtcx-infrastructure/issues/49), [#50](https://github.com/gtcx-ecosystem/gtcx-infrastructure/issues/50), [#51](https://github.com/gtcx-ecosystem/gtcx-infrastructure/issues/51), [#52](https://github.com/gtcx-ecosystem/gtcx-infrastructure/issues/52), [#55](https://github.com/gtcx-ecosystem/gtcx-infrastructure/issues/55) (gtcx-protocols #60 tracker)
+- gtcx-protocols#60 comment recording the chain from their side: [link](https://github.com/gtcx-ecosystem/gtcx-protocols/issues/60#issuecomment-4528532180)
+
+### [MOB-W1-001] Provision \*.staging.gtcx.trade + /health (gtcx-infrastructure#49)
+
+**Priority:** P0 | **Points:** 2 | **Assignee:** Platform Engineering
+
+**User story:** As **gtcx-mobile**, I want **a stable staging hostname with valid TLS** so that **the 30-day pilot can validate the signed-edge transport end-to-end against `https://geotag.staging.gtcx.trade`**.
+
+**Acceptance criteria:**
+
+- [ ] `https://geotag.staging.gtcx.trade/health` returns `{ status: 'ok', version: '<short-sha>' }` from any caller (no auth on `/health`).
+- [ ] Publicly-trusted TLS cert (Let's Encrypt or ACM).
+- [ ] SPKI fingerprint posted as a comment on #49 within 30 minutes of cert issuance.
+- [ ] Reachable from EU + East Africa POPs (cohort coverage: ZW, GH, NA, BW, CD).
+
+**Dependencies:** AWS credentials current; Route53 zone delegation in place (we own `gtcx.trade`).
+
+**Unblocks:** gtcx-protocols#60 (so the 43 emitted DID documents can be served at the stable URL); MOB-W1-002 (verifier needs the audience).
+
+### [MOB-W1-002] Deploy POST /audit/bundles verifier (gtcx-infrastructure#50)
+
+**Priority:** P0 | **Points:** 3 | **Assignee:** Platform Engineering
+
+**User story:** As **gtcx-mobile**, I want **server-side signature verification + chain validation of audit bundles** so that **field-captured events ingest cryptographically into the substrate**.
+
+**Acceptance criteria:**
+
+- [ ] Verifier handler shipped behind `AUDIT_BUNDLES_ENABLED=1` feature flag.
+- [ ] Envelope verification per the 9-field canonical form (`gtcx-mobile/apps/mobile/gtcx/lib/auth-token.ts:166-215`).
+- [ ] DID resolution via TradePass `/identity/${did}` once gtcx-protocols#60 deployment lands.
+- [ ] Within-bundle `previousHash`/`eventHash` chain validation with partial-accept semantics (200 with partial `acceptedIds`).
+- [ ] 409 `nonce-replayed` on `X-GTCX-Nonce` replay within 5-minute TTL.
+- [ ] End-to-end test: mobile bundle ingest → signature verifies → bundle persists to WORM via audit-flush.
+
+**Dependencies:**
+
+- **MOB-W1-001** (staging hostname)
+- **EXT-003** (Sprint 7) — audit-flush container image to ECR (without it, bundles ingest but don't reach WORM)
+- **gtcx-infrastructure#55** — tracks gtcx-protocols#60 deployment readiness
+
+**Stub branch already landed:** `feat/audit-bundles-verifier` — 7 commits, 92 unit tests, verifier + chain validator + nonce gate + mockable DID resolver. Production wiring (real TradePass URL) waits on gtcx-protocols#60.
+
+### [MOB-W1-003] Deploy nonce store + replay-rejection (gtcx-infrastructure#51)
+
+**Priority:** P0 | **Points:** 1 | **Assignee:** Platform Engineering
+
+**User story:** As **gtcx-mobile**, I want **server-side replay rejection** so that **a stolen envelope replayed from a different device cannot smuggle audit events**.
+
+**Acceptance criteria:**
+
+- [ ] In-memory NonceGate with 5-min TTL (2-min `MAX_SIGNING_CONTEXT_AGE_MS` + 3-min skew buffer).
+- [ ] Replayed nonce within TTL → 409 `nonce-replayed` p99 ≤ 200ms.
+- [ ] Capacity envelope: 5 countries × 50 operators × 200 captures/day × 5-min retention ≈ 17K entries × 200 bytes ≈ 3.4 MB.
+
+**Dependencies:** MOB-W1-002 (lands in the same PR — same handler).
+
+**Status:** Implementation complete on `feat/audit-bundles-verifier`; awaiting end-to-end staging deploy with #50.
+
+### [MOB-W1-004] Deploy POST /audit/query (gtcx-infrastructure#52)
+
+**Priority:** P0 | **Points:** 2 | **Assignee:** Platform Engineering
+
+**User story:** As **the web portal regulator**, I want **`/audit/query` to serve real audit events scoped by tenant** so that **the audit-review page renders live data instead of the demo fixture**.
+
+**Acceptance criteria:**
+
+- [ ] Endpoint accepts `QueryAuditRequest` per `gtcx-mobile/apps/web/portal/lib/audit-client.ts`.
+- [ ] Bearer-only auth for W1 (signed-edge dual-auth deferred to Sprint 22+).
+- [ ] `X-GTCX-Tenant-Id` lowercase ISO-2 country code → per-tenant namespace per ADR-015.
+- [ ] `totalMatched` computed as `min(matched, limit + 1)` for scalability; `truncated` flag is the load-bearing indicator.
+- [ ] `outcome` taxonomy stored as-received (mobile's 4-state enum coexists with our internal event types).
+
+**Dependencies:** MOB-W1-002 (handler infrastructure); WORM bucket access path.
+
+### MOB-W1 UAT
+
+| #   | Scenario                                                             | Owner        | Status |
+| --- | -------------------------------------------------------------------- | ------------ | ------ |
+| 1   | Staging URL reachable from EU + EA POPs                              | Platform Eng | ☐      |
+| 2   | SPKI fingerprint pinned in `apps/mobile/gtcx/CERT_PINS.md`           | gtcx-mobile  | ☐      |
+| 3   | Real mobile-signed bundle ingests + verifies                         | Joint        | ☐      |
+| 4   | Replayed nonce returns 409 within 200ms                              | Joint        | ☐      |
+| 5   | Web portal `/audit-review` renders live data (DEMO DATA banner gone) | gtcx-mobile  | ☐      |
+
+### MOB-W1 risks
+
+| Risk                                                               | Severity | Likelihood | Mitigation                                                            |
+| ------------------------------------------------------------------ | -------- | ---------- | --------------------------------------------------------------------- |
+| gtcx-protocols#60 deployment slips → #50 production wiring blocked | High     | Medium     | Mock DID resolver landed in stub branch; switch to real on #60 close  |
+| EXT-003 audit-flush image slips → #50 deploy blocked               | High     | Low        | EXT-003 is Sprint 7's P0; visible in same #gtcx-mobile-prod standup   |
+| AWS creds expired or zone delegation missing → #49 cannot ship     | Medium   | Low        | Pre-check Monday; flag at standup if missing                          |
+| @gtcx/sdk not published → schema duplication across consumers      | Medium   | High       | Coordinate with gtcx-protocols on publish ownership (ADR-021 pattern) |
+
+### MOB-W1 commit plan
+
+1. Branch `feat/audit-bundles-verifier` — 7 commits already landed (schemas, canonical, DID resolver, envelope verifier, chain validator, nonce gate, handler).
+2. PR opens as draft post-Monday-standup ratification.
+3. Production wiring lands as a follow-up commit when gtcx-protocols#60 deploys.
+4. `/audit/query` (#52) lands as a separate PR after #50 review opens.
 
 ---
 
