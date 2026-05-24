@@ -15,9 +15,11 @@ Incident response, escalation procedures, and on-call rotation.
 
 ## Contents
 
-| File                                       | Description                                                                            |
-| ------------------------------------------ | -------------------------------------------------------------------------------------- |
-| [runbook-template.md](runbook-template.md) | Incident classification, on-call rotation, response playbooks, escalation, post-mortem |
+| File                                                                 | Description                                                                            |
+| -------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| [runbook-template.md](runbook-template.md)                           | Incident classification, on-call rotation, response playbooks, escalation, post-mortem |
+| [audit-chain-incident-response.md](audit-chain-incident-response.md) | P0 path when `verifyChain` reports `valid: false` on a production batch                |
+| [audit-signing-key-rotation.md](audit-signing-key-rotation.md)       | Scheduled + compromise-suspected Ed25519 keypair rotation for the audit-signer         |
 
 ## What belongs here
 
