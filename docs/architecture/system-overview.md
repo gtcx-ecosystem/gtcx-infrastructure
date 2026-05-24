@@ -1,7 +1,7 @@
 ---
 title: 'System Overview — gtcx-infrastructure'
 status: 'current'
-date: '2026-05-10'
+date: '2026-05-24'
 owner: 'frontier-infra-engineer'
 role: 'frontier-infra-engineer'
 tier: 'critical'
@@ -11,9 +11,181 @@ review_cycle: 'quarterly'
 
 # System Overview — gtcx-infrastructure
 
+> **Status:** Current
+> **Date:** 2026-05-24
+> **Owner:** Frontier Infrastructure Engineer
+> **Read this first** before making any cross-module change.
+
 `gtcx-infrastructure` owns all deployment, IaC, and operational tooling for the GTCX ecosystem. It has no application logic. It orchestrates, deploys, and operates the services defined in other repos.
 
 **Compliance boundary:** `gtcx-infrastructure` also owns platform-level compliance (SOC 2, pen-test, shared policies). Service repos inherit platform compliance and only maintain application-layer controls. See [`platform-compliance-governance.md`](../compliance/platform-compliance-governance.md).
+
+---
+
+## Scope
+
+- **In scope:** Container images, Kubernetes manifests, Terraform modules, deployment scripts, the compliance-substrate runtime (compliance-gateway, audit-signer, audit-flush sidecar, replay-protection), shared CI policies, master-validation gates.
+- **Out of scope:** Application/protocol business logic (lives in `gtcx-protocols`, `gtcx-platforms`, `gtcx-intelligence`), mobile/web frontends (live in `gtcx-mobile`), individual protocol specs.
+
+## Architecture Principles
+
+1. **Tamper-evident by default.** Every consequential decision the substrate makes produces a signed audit record (`@gtcx/audit-signer`) that flows to WORM S3 via NATS+JetStream. No code path bypasses signing.
+2. **Fail-closed in production.** Production gateways refuse to start without a configured signing key (`process.exit(78)`). The contract is mathematical, not best-effort.
+3. **Tenant boundary is structural, not declarative.** Per-tenant JetStream subjects and WORM prefixes (ADR-015) — even a misbehaving tool cannot write tenant A's data to tenant B's prefix.
+4. **Trust boundaries map to AWS account + namespace + IAM.** No cross-tenant trust crosses an IAM role; no cross-namespace trust crosses a Kubernetes NetworkPolicy.
+5. **Substrate, not framework.** The substrate ships primitives (audit-signer, compliance-db, compliance-gateway-mcp). Consumers compose them; we don't dictate consumer architecture.
+
+---
+
+## System architecture
+
+The substrate has three operational layers and four primitives. The compliance-gateway is the policy enforcement point; the audit-signer + NATS + audit-flush + WORM is the tamper-evidence pipeline; the MCP server is the discovery surface for AI agents.
+
+```mermaid
+graph TB
+    subgraph External["External"]
+        Agent["AI Agent<br/>(Claude / MCP host)"]
+        Mobile["gtcx-mobile<br/>(field operator)"]
+        Verifier["Independent Verifier<br/>(regulator, auditor)"]
+    end
+
+    subgraph Discovery["Layer 3 — Discovery"]
+        MCP["@gtcx/<br/>compliance-gateway-mcp"]
+    end
+
+    subgraph Application["Layer 1 — Application"]
+        GW["compliance-gateway<br/>HTTP API<br/>/v1/query · /v1/audit/* · /audit/bundles"]
+    end
+
+    subgraph Audit["Layer 2 — Audit"]
+        direction TB
+        Signer["@gtcx/audit-signer<br/>(Ed25519 hash chain)"]
+        NATS["NATS JetStream<br/>gtcx.audit.&gt;"]
+        Flush["audit-flush sidecar<br/>verify → batch NDJSON"]
+        Signer --> NATS --> Flush
+    end
+
+    subgraph Data["Data"]
+        DB[("terraform-aws-compliance-db<br/>operational + audit DBs,<br/>KYC bucket")]
+        WORM[("WORM S3<br/>Object Lock COMPLIANCE<br/>2557-day retention")]
+    end
+
+    Agent -- "MCP stdio (read-only)" --> MCP
+    Agent -- "HTTPS (read + gated mutate)" --> GW
+    Mobile -- "POST /audit/bundles<br/>signed-edge envelope" --> GW
+    MCP --> GW
+    GW --> Signer
+    GW --> DB
+    Flush --> WORM
+    WORM -. "NDJSON + audit-signer<br/>verifies offline" .-> Verifier
+
+    classDef primitive fill:#047857,stroke:#065f46,color:#fff;
+    classDef transport fill:#1e40af,stroke:#1e3a8a,color:#fff;
+    classDef sink fill:#7c2d12,stroke:#92400e,color:#fff;
+    classDef external fill:#374151,stroke:#1f2937,color:#fff;
+    class GW,Signer,MCP primitive;
+    class NATS,Flush transport;
+    class WORM,DB sink;
+    class Agent,Mobile,Verifier external;
+```
+
+## Data flow
+
+Every consequential request follows the same write path through signing → durable transport → immutable persistence. Reads short-circuit at the gateway or hit the WORM bucket directly for evidence bundles.
+
+```mermaid
+graph LR
+    A["HTTP request<br/>(ALB+WAFv2)"] --> B["authenticate<br/>+ checkBudget"]
+    B --> C["signAuditEvent<br/>(auth:success)"]
+    C --> D["validate body<br/>(Zod, ≤4KB)"]
+    D --> E["selectProvider<br/>+ classifyComplexity"]
+    E --> F["LLM call<br/>(latency wall)"]
+    F --> G["recordSpend<br/>+ incrementCounter"]
+    G --> H["signAuditEvent<br/>(query:success)"]
+    H --> I["sendJson<br/>(low-bandwidth strip if needed)"]
+    C -. publish .-> J[("NATS JetStream")]
+    H -. publish .-> J
+    J --> K["audit-flush"]
+    K --> L[("WORM S3")]
+```
+
+## Trust boundaries
+
+Four boundaries inside the substrate, each mapped to an AWS / Kubernetes / cryptographic enforcement primitive. STRIDE companion at [`docs/security/threat-model-2026-05.md`](../security/threat-model-2026-05.md).
+
+```mermaid
+graph TB
+    subgraph PublicInternet["Public Internet"]
+        Client["Client / Agent / Mobile"]
+    end
+
+    subgraph VPC["VPC — af-south-1"]
+        subgraph EKS["EKS — gtcx-production namespace"]
+            ALB["ALB + WAFv2"]
+            GW["compliance-gateway pods"]
+            Flush["audit-flush sidecar"]
+            NATS["NATS JetStream broker"]
+        end
+        subgraph DataPlane["Data Plane — IAM-isolated"]
+            RDSOp[("RDS gtcx_development")]
+            RDSAudit[("RDS gtcx_audit<br/>deletion_protection=true")]
+        end
+        subgraph S3Plane["S3 — Object Lock COMPLIANCE"]
+            WORM[("gtcx-worm-audit-production<br/>2557-day retention")]
+        end
+    end
+
+    Client -- "TLS 1.3<br/>signed-edge envelope" --> ALB
+    ALB -- "internal TLS" --> GW
+    GW -- "TLS + SQL" --> RDSOp
+    GW -- "append-only SQL" --> RDSAudit
+    GW -- "gtcx.audit.&lt;svc&gt;.&lt;tenant&gt;" --> NATS
+    NATS --> Flush
+    Flush -- "IRSA write-only IAM" --> WORM
+
+    classDef boundary stroke:#dc2626,stroke-width:3px;
+    class PublicInternet,VPC,EKS,DataPlane,S3Plane boundary;
+```
+
+## Deployment topology
+
+EKS in `af-south-1` (primary pilot region), three overlays (testnet / staging / production), HPA scales the gateway on a custom in-flight requests metric, audit-flush sidecar runs alongside each gateway pod.
+
+```mermaid
+graph TB
+    subgraph Region["AWS af-south-1"]
+        subgraph EKS["EKS cluster (gtcx-production-cluster)"]
+            subgraph NSProd["namespace: gtcx-production"]
+                subgraph GWPods["compliance-gateway (HPA 1→8)"]
+                    P1["pod 1<br/>+ audit-flush sidecar"]
+                    P2["pod 2<br/>+ audit-flush sidecar"]
+                end
+                NATS["NATS JetStream<br/>(single broker, HA: post-pilot)"]
+                MCP["compliance-gateway-mcp<br/>(stdio per-agent)"]
+            end
+            subgraph NSIntel["namespace: intelligence"]
+                Anisa["anisa<br/>cultural-intelligence"]
+                Sdk["intelligence-sdk"]
+            end
+        end
+        subgraph DataPlane["Managed data plane"]
+            RDSOp[("RDS PostgreSQL 16<br/>gtcx-production-operational<br/>multi-AZ")]
+            RDSAudit[("RDS PostgreSQL 16<br/>gtcx-production-audit<br/>deletion_protection=true")]
+            WORM[("S3<br/>gtcx-worm-audit-production-af-south-1")]
+            KMS[("KMS CMK<br/>alias/gtcx-audit-signer-prod")]
+        end
+    end
+
+    P1 --> RDSOp
+    P1 --> RDSAudit
+    P1 --> NATS
+    P2 --> RDSOp
+    P2 --> RDSAudit
+    P2 --> NATS
+    NATS --> WORM
+    P1 -. signs with .-> KMS
+    P2 -. signs with .-> KMS
+```
 
 ---
 
@@ -204,9 +376,27 @@ pnpm lint && pnpm typecheck
 
 ---
 
+## Key architectural decisions
+
+| Decision                                             | Rationale                                                                                                         | Trade-off                                                              |
+| ---------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| Two-database PostgreSQL (operational + audit)        | Append-only audit isolated from operational mutations; survives root-account compromise via `deletion_protection` | Operational complexity (two backup policies, two connection pools)     |
+| Kustomize over Helm                                  | Declarative overlays per environment; fewer template indirection layers (ADR-007)                                 | No package manager ergonomics; PRs touch each overlay explicitly       |
+| NATS JetStream as audit transport                    | Per-tenant subject routing, sub-ms publish, durable consumer (ADR-014)                                            | Single broker is a pilot SPOF; HA cluster post-pilot                   |
+| Fail-closed audit signing in production              | `process.exit(78)` if no signing key configured (ADR-016)                                                         | A misconfigured deploy fails fast instead of silently running unsigned |
+| Per-tenant JetStream subjects + WORM prefixes        | Structural tenant isolation, not just declarative (ADR-015)                                                       | Slightly higher cardinality in subject space                           |
+| Coverage gate at 85% branches for compliance-gateway | Documented deviation from 90% baseline due to startup-listener and broker-integration paths (ADR-020)             | Per-package threshold introduces variance                              |
+
+## Related documents
+
+- [`compliance-substrate-deep-dive.md`](./compliance-substrate-deep-dive.md) — long-form failure modes, scaling story, observability surface
+- [`../security/threat-model-2026-05.md`](../security/threat-model-2026-05.md) — STRIDE
+- [`../operations/slo-definitions.md`](../operations/slo-definitions.md) — SLIs / SLOs
+- [`../decisions/README.md`](../decisions/README.md) — ADR registry (21 ADRs)
+
 ## Reference
 
-- [`docs/agents/orientation.md`](../agents/onboarding/orientation.md) — session-start reading order
-- [`docs/agents/safety-rules.md`](../agents/workflows/agent-safety-rules.md) — authority tiers
-- [`docs/4-operations/runbooks/deploy.md`](../operations/runbooks/deploy.md) — deploy process
-- [`docs/4-operations/runbooks/migrate.md`](../operations/runbooks/migrate.md) — migration discipline
+- [`docs/agents/onboarding/orientation.md`](../agents/onboarding/orientation.md) — session-start reading order
+- [`docs/agents/workflows/agent-safety-rules.md`](../agents/workflows/agent-safety-rules.md) — authority tiers
+- [`docs/operations/runbooks/deploy.md`](../operations/runbooks/deploy.md) — deploy process
+- [`docs/operations/runbooks/migrate.md`](../operations/runbooks/migrate.md) — migration discipline

@@ -1,8 +1,20 @@
+---
+title: 'GTCX Infrastructure — Repository Overview'
+status: 'current'
+date: '2026-05-24'
+owner: 'frontier-infra-engineer'
+role: 'frontier-infra-engineer'
+tier: 'strategic'
+tags: ['overview', 'metrics', 'gaps', 'infrastructure', 'substrate']
+review_cycle: 'monthly'
+---
+
 # GTCX Infrastructure — Repository Overview
 
-> **Last updated:** 2026-05-17
-> **Latest audit:** [master-audit-2026-05-17.md](../audit/master-audit-2026-05-17.md)
-> **Latest roadmap:** [10-10-roadmap-2026-05-17.md](../audit/10-10-roadmap-2026-05-17.md)
+> **Last updated:** 2026-05-24
+> **Latest audit:** [`full-audit-2026-05-22.md`](../audit/full-audit-2026-05-22.md) (core 9.0, SIGNAL v2 9.60)
+> **Latest roadmap:** [`execution-roadmap-2026-05-22.md`](../agile/execution-roadmap-2026-05-22.md)
+> **Docs standard:** Protocol 1 v2.0 + Protocol 13 — alignment audit at [`docs-standard-compliance-2026-05-24.md`](../audit/docs-standard-compliance-2026-05-24.md)
 > **Single source of truth:** This document is the canonical entry point. If you find conflicting information, this document wins.
 
 ---
@@ -11,9 +23,9 @@
 
 **For a 10-year-old:** This repo contains the blueprints and tools for building a super-secure computer system that helps people in Africa trade minerals fairly.
 
-**For a CTO:** GTCX Infrastructure is the deployment, operations, and security platform for the GTCX ecosystem. It provides Terraform modules for AWS infrastructure, Kubernetes manifests for container orchestration, Docker images for services, and operational tooling for compliance, anomaly detection, and chaos engineering. The platform is **production-live** in af-south-1 with staging and production environments, but has **critical security gaps** (Vault TLS disabled, container security violations) that block bank-grade certification.
+**For a CTO:** GTCX Infrastructure is the deployment, operations, and security platform for the GTCX ecosystem and the runtime for the compliance substrate (`@gtcx/audit-signer`, `terraform-aws-compliance-db`, `@gtcx/compliance-gateway-mcp`). It provides Terraform modules for AWS infrastructure, Kubernetes manifests, container images, and operational tooling for compliance, anomaly detection, and chaos engineering. The platform is **production-live** in af-south-1 with testnet, staging, and production overlays. As of 2026-05-22 audit: 0 critical open findings; pen-test RFP sent (4 firms); SOC 2 Type 1 engagement in flight.
 
-**For an investor:** GTCX Infrastructure is the foundational layer that enables the entire GTCX platform to run securely and scale across African markets. It creates moat through deep ecosystem integration (23 repos onboarded to shared CI), operational maturity (SLOs, chaos tests, WORM audit storage), and regulatory readiness (SOC 2 checklist 70% complete). Current bank-grade score: **5.9/10 (capped)** — honest raw score 7.56/10. The 5.9 cap is caused by a single critical finding (Vault TLS disabled) that can be resolved in 1–2 weeks, uncapping the score to 7.56 and enabling rapid progression to 9.0+ within 3–4 months.
+**For an investor:** GTCX Infrastructure is the foundational layer that enables the entire GTCX platform to run securely and scale across African markets. It creates moat through three independently-adoptable substrate primitives (one published to npm as of 2026-05-22; Terraform Registry submission in flight), deep ecosystem integration (23 repos onboarded to shared CI), operational maturity (SLOs, chaos tests, WORM audit storage), and regulatory readiness (SOC 2 evidence pipeline 70% complete). Current scores: **core 9.0/10**, **SIGNAL v2 9.60/10** ([`signal-scorecard.json`](../audit/signal-scorecard.json)). W4 Zimbabwe pilot in flight under Sprint MOB-W1 ([`execution-roadmap`](../agile/execution-roadmap-2026-05-22.md)).
 
 ---
 
