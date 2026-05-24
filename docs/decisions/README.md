@@ -37,6 +37,7 @@ Architecture Decision Records (ADRs) capturing key design choices and their rati
 | [ADR-018](ADR-018-pen-test-contained-overlay.md)           | Pen-Test Contained-Blast-Radius Kubernetes Overlay  | Accepted |
 | [ADR-019](ADR-019-workspace-boundary-discipline.md)        | Workspace Package Boundary Discipline               | Accepted |
 | [ADR-020](ADR-020-per-package-coverage-thresholds.md)      | Per-Package Coverage Thresholds                     | Accepted |
+| [ADR-021](ADR-021-npm-publish-discipline.md)               | npm Publish Discipline + Supply-Chain Roadmap       | Accepted |
 
 ## Adding a New ADR
 
