@@ -21,7 +21,6 @@
     "@ai-sdk/openai": "^1.0.0",
     "@gtcx/audit-signer": "workspace:*",
     "@gtcx/compliance-data": "workspace:*",
-    "@gtcx/replay-protection": "workspace:*",
     "ai": "^4.0.0",
     "zod": "^3.23.0"
   },
