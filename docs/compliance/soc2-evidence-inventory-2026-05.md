@@ -47,7 +47,7 @@ review_cycle: 'quarterly'
 | CC3.1 Risk identification | [`docs/audit/master-audit-2026-05-17.md`](../audit/master-audit-2026-05-17.md) · [`docs/audit/full-audit-2026-05-22.md`](../audit/full-audit-2026-05-22.md) — quarterly cadence + on-change re-audits                   | 🟢    |
 | CC3.2 Risk analysis       | [`docs/audit/score-evidence-ledger.json`](../audit/score-evidence-ledger.json) — per-finding evidence + severity                                                                                                        | 🟢    |
 | CC3.3 Risk to fraud       | [`tools/eval-pipeline/injection-suite.mjs`](../../tools/eval-pipeline/injection-suite.mjs) — 10-payload red-team · [`tools/anomaly-detector/detector.mjs`](../../tools/anomaly-detector/detector.mjs) — 5 rules CronJob | 🟢    |
-| CC3.4 Risk from change    | [`docs/decisions/README.md`](../decisions/README.md) — 17 ADRs with consequence analysis                                                                                                                                | 🟢    |
+| CC3.4 Risk from change    | [`docs/architecture/decisions/README.md`](../architecture/decisions/README.md) — 17 ADRs with consequence analysis                                                                                                      | 🟢    |
 
 ### CC4 — Monitoring
 

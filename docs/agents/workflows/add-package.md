@@ -170,6 +170,6 @@ All gates must pass before the component is considered ready for review.
 
 ## Reference
 
-- [`docs/engineering/6-decisions/`](../../decisions) — ADR index
+- [`docs/architecture/decisions/`](../../architecture/decisions/) — ADR index
 - [`docs/agents/workflows/tasks/write-adr.md`](./write-adr.md) — ADR workflow
 - [`docs/agents/workflows/safety-rules.md`](agent-safety-rules.md) — approval requirements

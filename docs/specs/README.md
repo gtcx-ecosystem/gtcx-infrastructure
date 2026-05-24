@@ -13,7 +13,7 @@ review_cycle: 'on-change'
 
 Substrate specifications — repo-local conventions and frameworks that don't fit elsewhere in the v2.0 standard taxonomy. Each spec is a substantive document (>140 lines) describing a system-level concern.
 
-For architecture decisions, see [`../decisions/README.md`](../decisions/README.md). For API contracts, see [`../api/README.md`](../api/README.md). For runbooks, see [`../operations/runbooks/README.md`](../operations/runbooks/README.md).
+For architecture decisions, see [`../decisions/README.md`](../architecture/decisions/README.md). For API contracts, see [`../api/README.md`](../api/README.md). For runbooks, see [`../operations/runbooks/README.md`](../operations/runbooks/README.md).
 
 ## Contents
 

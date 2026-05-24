@@ -11,7 +11,7 @@ review_cycle: 'on-change'
 
 # Engineering
 
-Engineering documentation for the GTCX compliance substrate — build, integration, cross-repo coordination, and tech-stack conventions specific to this repo. For architecture decisions see [`../decisions/README.md`](../decisions/README.md); for runbooks see [`../operations/runbooks/README.md`](../operations/runbooks/README.md); for API specs see [`../api/openapi.yaml`](../api/openapi.yaml).
+Engineering documentation for the GTCX compliance substrate — build, integration, cross-repo coordination, and tech-stack conventions specific to this repo. For architecture decisions see [`../decisions/README.md`](../architecture/decisions/README.md); for runbooks see [`../operations/runbooks/README.md`](../operations/runbooks/README.md); for API specs see [`../api/openapi.yaml`](../api/openapi.yaml).
 
 ## Contents
 

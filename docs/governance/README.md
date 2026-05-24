@@ -29,7 +29,7 @@ Three decision tiers, mapped to three authority levels:
 | **Architectural** (cross-module, new boundary, new dependency)                                          | ADR + protocol architect approval                                           | Public ADR                                 | Hard (new ADR superseding the old)           |
 | **Substrate-contract** (changes the audit chain, signing scheme, trust boundary, or external API shape) | ADR + protocol architect + security lead approval + cross-repo coordination | Public ADR + cross-team standup discussion | Very hard (back-compat shim or version bump) |
 
-The full architectural decision register is at [`../decisions/README.md`](../decisions/README.md) — 21 ADRs as of 2026-05-24.
+The full architectural decision register is at [`../decisions/README.md`](../architecture/decisions/README.md) — 21 ADRs as of 2026-05-24.
 
 ## Roles + responsibilities
 
@@ -79,12 +79,12 @@ Rules:
 
 ## Release governance
 
-| Release tier                                               | Approval gate                                          | Audit evidence                                                                                                                                                                         |
-| ---------------------------------------------------------- | ------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Substrate primitives** (npm packages, Terraform modules) | ADR-021 four-rule npm publish discipline               | [`../decisions/ADR-021-npm-publish-discipline.md`](../decisions/ADR-021-npm-publish-discipline.md), [`../security/credential-rotation-log.md`](../security/credential-rotation-log.md) |
-| **Substrate runtime** (compliance-gateway, audit-flush)    | Canary deploy + automated rollback                     | [`../operations/runbooks/deploy.md`](../operations/runbooks/deploy.md), [`../operations/runbooks/automated-rollback.md`](../operations/runbooks/automated-rollback.md)                 |
-| **Production deployment**                                  | Approval ticket (`GTCX-NNN`) required + human approval | [`../operations/runbooks/deploy.md`](../operations/runbooks/deploy.md) §Approval gates                                                                                                 |
-| **Master validation**                                      | 17/17 gates pass on every PR (block merge on failure)  | [`../../tools/scripts/validate-all.mjs`](../../tools/scripts/validate-all.mjs)                                                                                                         |
+| Release tier                                               | Approval gate                                          | Audit evidence                                                                                                                                                                                      |
+| ---------------------------------------------------------- | ------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Substrate primitives** (npm packages, Terraform modules) | ADR-021 four-rule npm publish discipline               | [`../decisions/ADR-021-npm-publish-discipline.md`](../architecture/decisions/ADR-021-npm-publish-discipline.md), [`../security/credential-rotation-log.md`](../security/credential-rotation-log.md) |
+| **Substrate runtime** (compliance-gateway, audit-flush)    | Canary deploy + automated rollback                     | [`../operations/runbooks/deploy.md`](../operations/runbooks/deploy.md), [`../operations/runbooks/automated-rollback.md`](../operations/runbooks/automated-rollback.md)                              |
+| **Production deployment**                                  | Approval ticket (`GTCX-NNN`) required + human approval | [`../operations/runbooks/deploy.md`](../operations/runbooks/deploy.md) §Approval gates                                                                                                              |
+| **Master validation**                                      | 17/17 gates pass on every PR (block merge on failure)  | [`../../tools/scripts/validate-all.mjs`](../../tools/scripts/validate-all.mjs)                                                                                                                      |
 
 ## Cross-repo coordination
 
@@ -142,7 +142,7 @@ Individual provider model cards are not currently maintained — provider docs a
 ## Related documents
 
 - [`../README.md`](../README.md) — docs index
-- [`../decisions/README.md`](../decisions/README.md) — full ADR register (21 ADRs)
+- [`../decisions/README.md`](../architecture/decisions/README.md) — full ADR register (21 ADRs)
 - [`../security/bug-bounty-policy.md`](../security/bug-bounty-policy.md) — coordinated security disclosure
 - [`../compliance/board-security-committee-charter.md`](../compliance/board-security-committee-charter.md) — corporate-side governance
 - [`../agents/workflows/agent-safety-rules.md`](../agents/workflows/agent-safety-rules.md) — AI agent authority tiers

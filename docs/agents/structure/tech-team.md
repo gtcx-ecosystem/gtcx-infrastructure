@@ -245,5 +245,5 @@ Protecting sources and data:
 ## References
 
 - [Newsroom Structure](tech-team.md)
-- [AI Architecture](../../decisions)
-- [ADR-003: AI-Native Architecture](../../decisions/ADR-003-ai-native-architecture.md)
+- [AI Architecture](../../architecture/decisions/)
+- [ADR-003: AI-Native Architecture](../../architecture/decisions/ADR-003-ai-native-architecture.md)

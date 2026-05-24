@@ -100,7 +100,7 @@ When multiple runbooks apply simultaneously, follow this precedence:
 
 - Monitoring architecture → the [`monitoring.md`](./monitoring.md) runbook
 - Deployment automation source → CI workflows under `.github/workflows/`
-- Architecture decisions about operational behavior → [`../../decisions/README.md`](../../decisions/README.md) (ADRs)
+- Architecture decisions about operational behavior → [`../../decisions/README.md`](../../architecture/decisions/README.md) (ADRs)
 - SLO definitions → [`../slo-definitions.md`](../slo-definitions.md)
 
 ## Adding a new runbook

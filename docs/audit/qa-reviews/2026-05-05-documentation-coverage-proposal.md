@@ -41,7 +41,7 @@ We will utilize the existing `docs/scripts/doc-hygiene-check.sh` and integrate i
 The script will use `git diff` to analyze the scope of the PR:
 
 - **Infrastructure Changes:** Detects changes in `infra/terraform/` or `infra/kubernetes/`.
-- **Missing Evidence:** Checks if new or updated files are present in `docs/architecture/`, `docs/decisions/`, or `docs/specs/`.
+- **Missing Evidence:** Checks if new or updated files are present in `docs/architecture/`, `docs/architecture/decisions/`, or `docs/specs/`.
 - **Outcome:** Exit with Code 1, blocking the merge until an ADR or Spec update is included.
 
 ### 2.2 Proposed Script Enhancement

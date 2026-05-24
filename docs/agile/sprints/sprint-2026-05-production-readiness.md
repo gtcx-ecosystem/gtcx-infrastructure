@@ -27,7 +27,7 @@ review_cycle: 'on-change'
 | 3   | **Wire postgres-audit into K8s**     | 5            | `AUDIT_DATABASE_URL` plumbed into replay-guard via ConfigMap/Secret; audit schema migration SQL committed; postgres sink added to `AuditCapture`; CI validates migrations    | In Progress |
 | 4   | **DR scripts exercised in CI**       | 3            | `.github/workflows/dr-test.yml` runs `dr-test.sh` on schedule + on-demand; evidence artifacts uploaded; failure notifies                                                     | In Progress |
 | 5   | **Terraform binary CI gate**         | 2            | CI step rejects PRs containing `.terraform/` or `*.tfstate`; runbook documents history purge via `git-filter-repo`                                                           | In Progress |
-| 6   | **mTLS / service-mesh plan**         | 2            | Documented architecture decision in `docs/decisions/` with implementation phases; no committed binaries                                                                      | In Progress |
+| 6   | **mTLS / service-mesh plan**         | 2            | Documented architecture decision in `docs/architecture/decisions/` with implementation phases; no committed binaries                                                         | In Progress |
 
 ---
 

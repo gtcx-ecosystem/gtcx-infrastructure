@@ -64,7 +64,7 @@ Naming: `YYYY-MM-DD-handoff.md`
 The codebase provides context directly:
 
 - Every `docs/` folder has a README explaining what belongs there
-- ADRs in `docs/decisions/` capture significant infrastructure decisions
+- ADRs in `docs/architecture/decisions/` capture significant infrastructure decisions
 - Terraform modules have README files documenting inputs, outputs, and intended use
 - K8s manifests are organized by service and environment
 
@@ -127,13 +127,13 @@ When any of these appear: run Quick Recovery before continuing.
 
 ## File Map
 
-| File                                  | Purpose                     | When to Update                                     |
-| ------------------------------------- | --------------------------- | -------------------------------------------------- |
-| `CLAUDE.md`                           | Auto-loaded project context | When stack, structure, or conventions change       |
-| `.claude/memory/MEMORY.md`            | Persistent agent memory     | After every significant session                    |
-| `.claude/memory/*.md`                 | Topic-specific knowledge    | When patterns are confirmed across sessions        |
-| `docs/sessions/YYYY-MM-DD-handoff.md` | Session handoff             | End of every session with in-progress work         |
-| ADRs in `docs/decisions/`             | Decision record             | When significant infrastructure decisions are made |
+| File                                   | Purpose                     | When to Update                                     |
+| -------------------------------------- | --------------------------- | -------------------------------------------------- |
+| `CLAUDE.md`                            | Auto-loaded project context | When stack, structure, or conventions change       |
+| `.claude/memory/MEMORY.md`             | Persistent agent memory     | After every significant session                    |
+| `.claude/memory/*.md`                  | Topic-specific knowledge    | When patterns are confirmed across sessions        |
+| `docs/sessions/YYYY-MM-DD-handoff.md`  | Session handoff             | End of every session with in-progress work         |
+| ADRs in `docs/architecture/decisions/` | Decision record             | When significant infrastructure decisions are made |
 
 ---
 
@@ -141,5 +141,5 @@ When any of these appear: run Quick Recovery before continuing.
 
 - [`orientation.md`](./orientation.md) — codebase map and session-start reading order
 - [`../4-workflows/safety-rules.md`](../workflows/agent-safety-rules.md) — what requires human approval
-- [`../../2-docs/1-architecture/decisions/`](../../decisions) — all ADRs
+- [`../../architecture/decisions/`](../../architecture/decisions/) — all ADRs
 - Session transcripts are not canonical repo documentation; recover context from `docs/README.md`, `CLAUDE.md`, and recent git history instead.

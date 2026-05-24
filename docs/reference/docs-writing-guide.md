@@ -155,7 +155,7 @@ System design, component diagrams, trust model, and ADRs.
 | Document                                                 | Description                              |
 | -------------------------------------------------------- | ---------------------------------------- |
 | [system-overview.md](../architecture/system-overview.md) | Three-layer stack, components, data flow |
-| [decisions/](../decisions)                               | Architectural Decision Records           |
+| [decisions/](../architecture/decisions/)                 | Architectural Decision Records           |
 
 ## What Belongs Here
 

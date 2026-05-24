@@ -329,7 +329,7 @@ Key controls active in production:
 3. **Build:** `pnpm build`
 4. **Run tests:** `pnpm test` (quick validation) → `pnpm test:full` (comprehensive)
 5. **Run verification:** `bash infra/scripts/validate.sh quick`
-6. **Read ADRs:** `docs/decisions/` — start with ADR-007 (mTLS mesh) and ADR-009 (deprecation)
+6. **Read ADRs:** `docs/architecture/decisions/` — start with ADR-007 (mTLS mesh) and ADR-009 (deprecation)
 7. **Pick a first issue:** Look for `good-first-issue` labels or start with docs-standard improvements
 
 ### 8.2 For Autonomous Agents
@@ -398,7 +398,7 @@ Per the [10/10 roadmap](../audit/10-10-roadmap-2026-05-17.md):
 | `docs/compliance/soc2-readiness-checklist.md`              | SOC 2 evidence           | Compliance, buyers               |
 | `docs/gtm/regulatory/regulatory-notification-templates.md` | Regulatory templates     | Compliance, legal                |
 | `docs/operations/runbooks/`                                | Operational runbooks     | SRE, on-call engineers           |
-| `docs/decisions/adr-index.md`                              | Architecture decisions   | Engineers, architects            |
+| `docs/architecture/decisions/adr-index.md`                 | Architecture decisions   | Engineers, architects            |
 | `CLAUDE.md`                                                | Agent onboarding         | AI agents, new developers        |
 | `CONTRIBUTING.md`                                          | Contribution guide       | Open-source contributors         |
 

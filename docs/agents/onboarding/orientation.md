@@ -26,7 +26,7 @@ Session-start protocol for any agent or contributor entering this repo.
 In this order — no exceptions:
 
 1. `docs/architecture/system-overview.md` — environment topology and service boundaries
-2. `docs/decisions/` — ADRs (understand why infra is configured the way it is)
+2. `docs/architecture/decisions/` — ADRs (understand why infra is configured the way it is)
 3. `docs/operations/runbooks/quality-runbook.md` — gate sequence and failure triage
 4. `docs/agents/workflows/safety-rules.md` — before making any change
 
@@ -98,7 +98,7 @@ See `docs/operations/runbooks/quality-runbook.md` for the full gate sequence and
 | Need                   | Location                               |
 | ---------------------- | -------------------------------------- |
 | Environment topology   | `docs/architecture/system-overview.md` |
-| Architecture decisions | `docs/decisions/`                      |
+| Architecture decisions | `docs/architecture/decisions/`         |
 | Security framework     | `docs/security/`                       |
 | Operations runbooks    | `docs/operations/runbooks/`            |
 | CI/CD pipeline         | `docs/devops/ci-cd/`                   |

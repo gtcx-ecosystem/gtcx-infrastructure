@@ -138,4 +138,4 @@ GCI scores are cached and re-evaluated at PvP settlement time. A score drop belo
 
 - [controls-matrix.md](controls-matrix.md)
 - Operator role definitions are maintained in the product and protocol repos, not in this infrastructure repository.
-- [`../decisions/ADR-008-dual-database-architecture.md`](../decisions/ADR-008-dual-database-architecture.md) — Two-database schema separation (operational vs audit)
+- [`../decisions/ADR-008-dual-database-architecture.md`](../architecture/decisions/ADR-008-dual-database-architecture.md) — Two-database schema separation (operational vs audit)

@@ -79,20 +79,20 @@ Single source of truth for all infrastructure documentation.
 
 ## 4. Decisions (ADRs)
 
-- [ADR-001](decisions/ADR-001-monorepo-structure.md) — Monorepo structure
-- [ADR-002](decisions/ADR-002-commodity-agnostic-design.md) — Commodity-agnostic design
-- [ADR-003](decisions/ADR-003-ai-native-architecture.md) — AI-native architecture
-- [ADR-004](decisions/ADR-004-offline-first-mobile.md) — Offline-first mobile
-- [ADR-005](decisions/ADR-005-jurisdiction-plugins.md) — Jurisdiction plugins
-- [ADR-006](decisions/ADR-006-package-boundaries.md) — Package boundaries
-- [ADR-007](decisions/ADR-007-kustomize-over-helm.md) — Kustomize over Helm
-- [ADR-008](decisions/ADR-008-dual-database-architecture.md) — Dual database architecture
-- [ADR-011](decisions/ADR-011-connectivity-profiles.md) — Connectivity profiles
-- [ADR-013 mTLS Service Mesh](decisions/ADR-013-mtls-service-mesh.md) — mTLS service mesh decision
-- [ADR-009 Error Taxonomy](decisions/ADR-009-error-taxonomy.md) — Standardized error classification
-- [ADR-010 In-Memory Stub Guards](decisions/ADR-010-in-memory-stub-guards.md) — Test double safety boundaries
-- [ADR Guide](decisions/adr-guide.md) — How to write an ADR
-- [ADR Template](decisions/adr-template.md) — Blank ADR scaffold
+- [ADR-001](architecture/decisions/ADR-001-monorepo-structure.md) — Monorepo structure
+- [ADR-002](architecture/decisions/ADR-002-commodity-agnostic-design.md) — Commodity-agnostic design
+- [ADR-003](architecture/decisions/ADR-003-ai-native-architecture.md) — AI-native architecture
+- [ADR-004](architecture/decisions/ADR-004-offline-first-mobile.md) — Offline-first mobile
+- [ADR-005](architecture/decisions/ADR-005-jurisdiction-plugins.md) — Jurisdiction plugins
+- [ADR-006](architecture/decisions/ADR-006-package-boundaries.md) — Package boundaries
+- [ADR-007](architecture/decisions/ADR-007-kustomize-over-helm.md) — Kustomize over Helm
+- [ADR-008](architecture/decisions/ADR-008-dual-database-architecture.md) — Dual database architecture
+- [ADR-011](architecture/decisions/ADR-011-connectivity-profiles.md) — Connectivity profiles
+- [ADR-013 mTLS Service Mesh](architecture/decisions/ADR-013-mtls-service-mesh.md) — mTLS service mesh decision
+- [ADR-009 Error Taxonomy](architecture/decisions/ADR-009-error-taxonomy.md) — Standardized error classification
+- [ADR-010 In-Memory Stub Guards](architecture/decisions/ADR-010-in-memory-stub-guards.md) — Test double safety boundaries
+- [ADR Guide](architecture/decisions/adr-guide.md) — How to write an ADR
+- [ADR Template](architecture/decisions/adr-template.md) — Blank ADR scaffold
 
 ---
 

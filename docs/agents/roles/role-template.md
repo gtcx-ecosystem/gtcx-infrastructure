@@ -81,7 +81,7 @@ Before working in this role, read in order:
 
 1. `docs/agents/onboarding/orientation.md`
 2. `docs/architecture/system-overview.md` — environment topology
-3. `docs/decisions/` — ADRs relevant to this role
+3. `docs/architecture/decisions/` — ADRs relevant to this role
 4. `docs/agents/workflows/safety-rules.md`
 
 ---
@@ -89,6 +89,6 @@ Before working in this role, read in order:
 ## Reference
 
 - [`docs/architecture/`](../../architecture/system-overview.md) — architecture overview
-- [`docs/decisions/`](../../decisions) — all ADRs
+- [`docs/architecture/decisions/`](../../architecture/decisions/) — all ADRs
 - [`docs/agents/workflows/safety-rules.md`](../workflows/agent-safety-rules.md) — escalation triggers
 - `1-agentic/archetypes/{role-archetype}` — canonical archetype definition

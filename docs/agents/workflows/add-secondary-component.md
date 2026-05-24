@@ -168,6 +168,6 @@ pnpm build
 ## Reference
 
 - Component specifications live in the owning package or service docs; add a repo-local spec only when this repo becomes the authority.
-- [`docs/engineering/6-decisions/`](../../decisions) — ADR index
+- [`docs/architecture/decisions/`](../../architecture/decisions/) — ADR index
 - [`docs/agents/workflows/tasks/write-adr.md`](./write-adr.md) — ADR workflow
 - [`docs/agents/workflows/safety-rules.md`](agent-safety-rules.md) — approval requirements

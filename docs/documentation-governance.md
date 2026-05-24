@@ -24,4 +24,4 @@ This document records how the infrastructure repo treats documentation as an aud
 
 - `docs/agents/` remains a first-class collection because operator, reviewer, and agent workflows are core to how infrastructure changes are executed here.
 - `docs/agile/`, `docs/devops/`, and `docs/gtm/` remain explicit top-level collections because they map to distinct operating audiences already used across the repo.
-- `docs/decisions/` is retained as the ADR collection for this repo; a future ecosystem-wide ADR consolidation can move it to `docs/adr/` if desired.
+- `docs/architecture/decisions/` is retained as the ADR collection for this repo; a future ecosystem-wide ADR consolidation can move it to `docs/adr/` if desired.

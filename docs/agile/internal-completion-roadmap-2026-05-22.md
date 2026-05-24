@@ -159,8 +159,8 @@ The main execution roadmap (`execution-roadmap-2026-05-22.md`) mixes internal an
 - [ ] **ADR-015** — Per-tenant JetStream subject routing (vs single-stream + tenant filter).
 - [ ] **ADR-016** — Fail-closed audit signing in production (process.exit 78 on missing key vs warn-and-continue).
 - [ ] **ADR-017** — Adaptive policy tuning (signed `resilience.policy.adaptation` events on every transition).
-- [ ] Each ADR follows `docs/decisions/adr-template.md` (status, context, decision, consequences, alternatives).
-- [ ] All four linked in `docs/decisions/README.md`.
+- [ ] Each ADR follows `docs/architecture/decisions/adr-template.md` (status, context, decision, consequences, alternatives).
+- [ ] All four linked in `docs/architecture/decisions/README.md`.
 
 **Test scenarios:** Lint + frontmatter validator + `docs-link-checker` pass.
 
@@ -168,13 +168,13 @@ The main execution roadmap (`execution-roadmap-2026-05-22.md`) mixes internal an
 
 ### INT-B UAT
 
-| Scenario                 | Steps                           | Expected                                  | Verifier     | Status |
-| ------------------------ | ------------------------------- | ----------------------------------------- | ------------ | ------ |
-| Adaptive memory works    | Unit suite                      | All existing tests still green            | Platform Eng | ☐      |
-| Adaptive Redis works     | Redis backend test              | Two-pod simulation converges to same mode | Platform Eng | ☐      |
-| Feature flag default off | No env var                      | Memory backend selected                   | Platform Eng | ☐      |
-| All ADRs render          | `docs-link-checker`             | No broken refs                            | Doc Lead     | ☐      |
-| ADR registry updated     | Open `docs/decisions/README.md` | Lists ADRs 014–017                        | Doc Lead     | ☐      |
+| Scenario                 | Steps                                        | Expected                                  | Verifier     | Status |
+| ------------------------ | -------------------------------------------- | ----------------------------------------- | ------------ | ------ |
+| Adaptive memory works    | Unit suite                                   | All existing tests still green            | Platform Eng | ☐      |
+| Adaptive Redis works     | Redis backend test                           | Two-pod simulation converges to same mode | Platform Eng | ☐      |
+| Feature flag default off | No env var                                   | Memory backend selected                   | Platform Eng | ☐      |
+| All ADRs render          | `docs-link-checker`                          | No broken refs                            | Doc Lead     | ☐      |
+| ADR registry updated     | Open `docs/architecture/decisions/README.md` | Lists ADRs 014–017                        | Doc Lead     | ☐      |
 
 ---
 
