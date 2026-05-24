@@ -1,0 +1,446 @@
+openapi: 3.1.0
+info:
+  title: GTCX Compliance Gateway
+  description: |
+    HTTP API for the GTCX compliance substrate. Routes natural-language compliance
+    queries to LLM providers + protocol tools, signs every consequential decision into
+    the tamper-evident audit chain, and exposes audit-evidence endpoints for
+    independent verification.
+
+    See [`docs/api/README.md`](./README.md) for endpoint inventory, auth model,
+    error-response shapes, and versioning rules.
+  version: 0.1.0
+  license:
+    name: MIT
+    identifier: MIT
+  contact:
+    name: GTCX Platform Engineering
+    url: https://github.com/gtcx-ecosystem/gtcx-infrastructure
+
+servers:
+  - url: https://geotag.staging.gtcx.trade
+    description: Staging (Zimbabwe pilot)
+  - url: https://localhost:8500
+    description: Local development
+
+security:
+  - bearerAuth: []
+
+tags:
+  - name: health
+    description: Liveness and signing-posture checks
+  - name: query
+    description: Natural-language compliance query
+  - name: audit
+    description: Audit chain state + evidence export + offline verification
+  - name: budget
+    description: Per-principal cost + rate-limit state
+  - name: metrics
+    description: Prometheus exposition
+
+paths:
+  /health:
+    get:
+      tags: [health]
+      summary: Liveness + signing posture
+      description: |
+        No authentication. Returns 200 when the gateway pod is healthy and the audit
+        signing key is configured (in production). Returns 503 when in production
+        without a signing key (fail-closed per ADR-016).
+      security: []
+      responses:
+        '200':
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+        '503':
+          description: Unhealthy (audit signer not configured in production)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+
+  /v1/query:
+    post:
+      tags: [query]
+      summary: Natural-language compliance query
+      description: |
+        Validates the body with Zod, signs an `auth:success` audit record, routes the
+        query to an LLM provider based on complexity classification, signs a
+        `query:success` audit record on the response, and returns the natural-language
+        answer plus structured metadata.
+
+        Per-principal QPS and daily USD budget are enforced before the LLM call;
+        budget exhaustion returns 429 with a `Retry-After` header.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QueryRequest'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryResponse'
+        '400':
+          description: Validation failure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '405': { $ref: '#/components/responses/MethodNotAllowed' }
+        '429':
+          description: Rate-limit or budget exceeded
+          headers:
+            Retry-After:
+              schema: { type: integer }
+              description: Seconds to wait before retry
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BudgetExceededResponse'
+        '502':
+          description: All LLM providers failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProviderFailureResponse'
+
+  /v1/audit/chain:
+    get:
+      tags: [audit]
+      summary: Current audit-chain state
+      description: |
+        Returns the gateway's in-memory chain state: record count, last-hash, total
+        records since boot. Full chain is durable in WORM via NATS + audit-flush; this
+        endpoint is the fast-path for operators.
+      responses:
+        '200':
+          description: Chain state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChainState'
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+
+  /v1/audit/verify:
+    post:
+      tags: [audit]
+      summary: Verify a posted NDJSON chain
+      description: |
+        Accepts a body containing NDJSON-encoded signed audit records (one JSON object
+        per line) and returns the verification result. Same logic as
+        `npx @gtcx/audit-signer verify --file`; useful when the operator wants to
+        verify a batch in-process rather than downloading the WORM object.
+      requestBody:
+        required: true
+        content:
+          application/x-ndjson:
+            schema:
+              type: string
+              description: NDJSON — one signed audit record per line
+      responses:
+        '200':
+          description: Verification result (success or failure both 200)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifyResult'
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '405': { $ref: '#/components/responses/MethodNotAllowed' }
+
+  /v1/audit/evidence-bundle:
+    get:
+      tags: [audit]
+      summary: Tenant evidence bundle export
+      description: |
+        Returns the audit evidence bundle scoped to the caller's tenant. Optional
+        `since` query parameter bounds the bundle to events at or after the ISO 8601
+        timestamp. Useful for regulator-facing exports.
+      parameters:
+        - in: query
+          name: since
+          description: ISO 8601 timestamp; only events at or after this point are returned
+          required: false
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: Evidence bundle
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EvidenceBundle'
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+
+  /v1/budget:
+    get:
+      tags: [budget]
+      summary: Per-principal QPS + daily spend state
+      responses:
+        '200':
+          description: Budget state for the caller's principal
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BudgetState'
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+
+  /metrics:
+    get:
+      tags: [metrics]
+      summary: Prometheus metrics
+      description: |
+        Prometheus 0.0.4 exposition format. Includes audit signing posture, chain
+        depth, sink connectivity, in-flight requests (for HPA), per-tenant cost
+        totals, and provider-fallback counters.
+      security: []
+      responses:
+        '200':
+          description: Prometheus exposition
+          content:
+            text/plain:
+              schema:
+                type: string
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT-or-opaque
+      description: |
+        Token must carry permissions appropriate to the endpoint. Permissions:
+        `query:read`, `audit:read`, `tools:read`, `providers:read`. A token may carry
+        multiple permissions. Issuance and rotation: see
+        [`docs/security/credential-rotation-log.md`](../security/credential-rotation-log.md).
+
+  schemas:
+    HealthResponse:
+      type: object
+      required: [status, authConfigured, audit]
+      properties:
+        status:
+          type: string
+          enum: [healthy, unhealthy]
+        authConfigured: { type: boolean }
+        authMode:
+          type: string
+          enum: [dev-default-readonly, configured]
+        audit:
+          type: object
+          properties:
+            signing: { type: boolean }
+            ephemeral: { type: boolean }
+            maxInMemoryRecords: { type: integer }
+            lastHash: { type: string }
+            recordCount: { type: integer }
+            totalRecords: { type: integer }
+        tools: { type: integer }
+        providers: { type: integer }
+        availableProviders:
+          type: array
+          items: { type: string }
+        error:
+          type: string
+          description: Only present when status=unhealthy
+
+    QueryRequest:
+      type: object
+      required: [query]
+      properties:
+        query:
+          type: string
+          minLength: 1
+          maxLength: 4096
+          description: Natural-language compliance question
+        jurisdiction:
+          type: string
+          description: Jurisdiction code from `@gtcx/compliance-data/jurisdictions`, or `global`
+        context:
+          type: object
+          description: |
+            Shallow untrusted-context bag. Values must be string (≤2048), number,
+            boolean, or null. Field names ≤64 chars. Used for caller-supplied context
+            that the system prompt isolates behind a delimited block to limit prompt
+            injection.
+          additionalProperties:
+            oneOf:
+              - { type: string, maxLength: 2048 }
+              - { type: number }
+              - { type: boolean }
+              - { type: 'null' }
+
+    QueryResponse:
+      type: object
+      required: [answer]
+      properties:
+        answer: { type: string }
+        provider: { type: string }
+        complexity:
+          type: string
+          enum: [simple, medium, complex]
+        usage:
+          type: object
+          properties:
+            promptTokens: { type: integer }
+            completionTokens: { type: integer }
+        costUsd: { type: number }
+        toolResults:
+          type: array
+          items: { type: object }
+        auditRecordId: { type: string }
+
+    ValidationErrorResponse:
+      type: object
+      required: [error]
+      properties:
+        error: { type: string }
+        fieldErrors:
+          type: object
+          description: Field path → human-readable error
+          additionalProperties: { type: string }
+
+    BudgetExceededResponse:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
+          enum:
+            - Rate limit exceeded for this principal
+            - Daily LLM budget exceeded for this principal
+        retryAfterSeconds: { type: integer }
+        limits:
+          type: object
+          properties:
+            qpsLimit: { type: number }
+            dailyUsdLimit: { type: number }
+        spentUsd: { type: number }
+
+    ProviderFailureResponse:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
+          example: All LLM providers failed
+        providersAttempted:
+          type: array
+          items: { type: string }
+
+    ChainState:
+      type: object
+      required: [recordCount, totalRecords, lastHash]
+      properties:
+        recordCount:
+          type: integer
+          description: Records in the bounded in-memory chain
+        totalRecords:
+          type: integer
+          description: Total records since boot (in-memory + checkpointed)
+        lastHash:
+          type: string
+          description: Most recent record hash
+        checkpointHash:
+          type: string
+          description: Hash at the last in-memory checkpoint boundary
+
+    VerifyResult:
+      type: object
+      required: [valid]
+      properties:
+        valid: { type: boolean }
+        firstInvalidIndex:
+          type: integer
+          description: Only present when valid=false; index of first record that failed verification
+        recordsChecked: { type: integer }
+
+    EvidenceBundle:
+      type: object
+      required: [tenantId, producedAt, records]
+      properties:
+        tenantId: { type: string }
+        since:
+          type: string
+          format: date-time
+        producedAt:
+          type: string
+          format: date-time
+        recordCount: { type: integer }
+        records:
+          type: array
+          items:
+            $ref: '#/components/schemas/SignedAuditRecord'
+
+    SignedAuditRecord:
+      type: object
+      description: |
+        One node in the audit chain. Hash-linked to its predecessor via `prevHash`;
+        signed by the gateway's Ed25519 key over the canonicalized record bytes.
+      properties:
+        index: { type: integer }
+        timestamp: { type: string, format: date-time }
+        actor: { type: string }
+        action: { type: string }
+        target: { type: string }
+        reason: { type: string }
+        payload: { type: object }
+        prevHash: { type: string }
+        hash: { type: string }
+        signature: { type: string }
+        publicKey: { type: string }
+
+    BudgetState:
+      type: object
+      properties:
+        principal: { type: string }
+        tenantId: { type: string }
+        qpsLimit: { type: number }
+        qpsRemaining: { type: number }
+        dailyUsdLimit: { type: number }
+        spentUsd: { type: number }
+        windowResetsAt: { type: string, format: date-time }
+
+  responses:
+    Unauthorized:
+      description: Missing or invalid bearer token
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [error]
+            properties:
+              error: { type: string, example: Unauthorized }
+
+    Forbidden:
+      description: Token valid but lacks required permission
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [error]
+            properties:
+              error: { type: string, example: Insufficient permissions }
+
+    MethodNotAllowed:
+      description: Wrong HTTP method
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [error]
+            properties:
+              error: { type: string, example: Method not allowed }
