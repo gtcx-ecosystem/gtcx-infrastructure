@@ -1,21 +1,93 @@
 ---
 title: 'GTCX Infrastructure — Documentation Index'
-status: 'draft'
-date: '2026-05-10'
-owner: 'crypto-security-engineer'
-role: 'crypto-security-engineer'
+status: 'current'
+date: '2026-05-24'
+owner: 'frontier-infra-engineer'
+role: 'frontier-infra-engineer'
 tier: 'critical'
-tags: ['security', 'crypto', 'compliance', 'architecture', 'infrastructure']
-review_cycle: 'quarterly'
+tags: ['security', 'crypto', 'compliance', 'architecture', 'infrastructure', 'index']
+review_cycle: 'on-change'
 ---
 
 # GTCX Infrastructure — Documentation Index
 
-Single source of truth for all infrastructure documentation.
+Documentation for the GTCX compliance substrate — deployment, IaC, security, audit pipeline, and the public primitives published from this repo.
+
+> **Single source of truth:** [`overview/README.md`](./overview/README.md) — repo state, honest metrics, and gaps.
+> **Start architecture here:** [`architecture/system-overview.md`](./architecture/system-overview.md) (4 Mermaid diagrams) → [`architecture/ecosystem-integration.md`](./architecture/ecosystem-integration.md) (where this repo fits in GTCX).
+> **Docs standard:** Protocol 1 v2.0 + Protocol 13 — see [`documentation-governance.md`](./documentation-governance.md) for repo-local deviations.
 
 ---
 
-## 0. Start Here
+## Start here, by audience
+
+### Internal builder (engineer, on-call, contributor)
+
+| You need to…                     | Go to                                                                                                            |
+| -------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| Understand the system            | [`architecture/system-overview.md`](./architecture/system-overview.md)                                           |
+| Set up dev environment           | [`agents/onboarding/developer-quickstart.md`](./agents/onboarding/developer-quickstart.md)                       |
+| Deploy to staging or production  | [`operations/runbooks/deploy.md`](./operations/runbooks/deploy.md)                                               |
+| Handle an incident               | [`operations/runbooks/incident-response.md`](./operations/runbooks/incident-response.md)                         |
+| Respond to audit-chain failure   | [`operations/runbooks/audit-chain-incident-response.md`](./operations/runbooks/audit-chain-incident-response.md) |
+| Rotate the audit signing key     | [`operations/runbooks/audit-signing-key-rotation.md`](./operations/runbooks/audit-signing-key-rotation.md)       |
+| Look up an architecture decision | [`decisions/README.md`](./decisions/README.md) (21 ADRs)                                                         |
+| Check the current sprint         | [`agile/execution-roadmap-2026-05-22.md`](./agile/execution-roadmap-2026-05-22.md)                               |
+
+### External buyer (pilot government, regulator, partner)
+
+| You need to…                 | Go to                                                                    |
+| ---------------------------- | ------------------------------------------------------------------------ |
+| One-pager on what this is    | [`gtm/00-executive-brief.md`](./gtm/00-executive-brief.md)               |
+| Security posture             | [`gtm/01-security-posture.md`](./gtm/01-security-posture.md)             |
+| Compliance framework mapping | [`gtm/02-compliance-matrix.md`](./gtm/02-compliance-matrix.md)           |
+| Revenue + value-chain model  | [`architecture/business-logic.md`](./architecture/business-logic.md)     |
+| Adoption path (pilot → mass) | [`architecture/adoption-model.md`](./architecture/adoption-model.md)     |
+| Threat model                 | [`security/threat-model-2026-05.md`](./security/threat-model-2026-05.md) |
+| Latest audit                 | [`audit/full-audit-2026-05-22.md`](./audit/full-audit-2026-05-22.md)     |
+
+### AI agent / MCP host
+
+| You need to…             | Go to                                                                                            |
+| ------------------------ | ------------------------------------------------------------------------------------------------ |
+| MCP server reference     | [`external/docs-site/compliance-gateway-mcp.md`](./external/docs-site/compliance-gateway-mcp.md) |
+| Agent orientation        | [`agents/onboarding/orientation.md`](./agents/onboarding/orientation.md)                         |
+| Authority tiers + safety | [`agents/workflows/agent-safety-rules.md`](./agents/workflows/agent-safety-rules.md)             |
+
+### Independent verifier (auditor, regulator, third party)
+
+| You need to…                     | Go to                                                                                                |
+| -------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| Verify a WORM batch offline      | [`external/docs-site/audit-signer.md`](./external/docs-site/audit-signer.md)                         |
+| Substrate architecture deep-dive | [`architecture/compliance-substrate-deep-dive.md`](./architecture/compliance-substrate-deep-dive.md) |
+| Public primitives (npm)          | [`external/docs-site/index.md`](./external/docs-site/index.md)                                       |
+
+---
+
+## Folder map (v2.0 standard alignment)
+
+The v2.0 standard folder names are listed below alongside this repo's actual layout. Repo-local deviations are documented in [`documentation-governance.md`](./documentation-governance.md).
+
+| v2.0 folder     | This repo                          | Purpose                                                     |
+| --------------- | ---------------------------------- | ----------------------------------------------------------- |
+| `overview/`     | `overview/` ✅                     | Strategic overview, current metrics, honest gaps            |
+| `architecture/` | `architecture/` ✅                 | System design + Mermaid diagrams + deep-dive                |
+| `audit/`        | `audit/` ✅                        | Master audits, scoring, evidence ledger                     |
+| `compliance/`   | `compliance/` ✅                   | DPIA, SOC 2 evidence, framework assessments                 |
+| `security/`     | `security/` ✅                     | Threat models, key ceremonies, VDP, NIST mapping            |
+| `operations/`   | `operations/` ✅                   | Runbooks, SLOs, DR, monitoring                              |
+| `engineering/`  | `engineering/` ✅                  | Build, test, deploy guides                                  |
+| `gtm/`          | `gtm/` ✅                          | External-facing evidence pack (numbered 00-13)              |
+| `reference/`    | `reference/` ✅                    | Glossary, changelog, quick reference                        |
+| `governance/`   | not yet created                    | External trust portal; deferred                             |
+| `gitbook/`      | `external/docs-site/` (substitute) | External-facing docs (Astro Starlight)                      |
+| `api/`          | not yet created                    | OpenAPI specs; deferred until public API surface stabilizes |
+
+Repo-local additions (non-standard but kept): `agents/`, `agile/`, `assessments/`, `decisions/`, `devops/`, `ecosystem/`, `ml/`, `principles/`, `release/`, `remediation/`, `research/`, `specs/`, `external/`, `onboarding/`. See [`documentation-governance.md`](./documentation-governance.md) for the rationale.
+
+---
+
+## 0. Start Here (legacy quick-links)
 
 - [Documentation Governance](documentation-governance.md) — Repo-local documentation rules and approved taxonomy deviations
 - [Orientation](agents/onboarding/orientation.md) — Repo map, environment topology, key commands
