@@ -188,6 +188,6 @@ Only after staging verification passes and human explicitly confirms production 
 
 ## Reference
 
-- [`docs/devops/release/release-checklist.md`](../../devops/release/release-checklist.md) — release checklist
-- [`docs/devops/ci-cd/ci-cd.md`](../../devops/ci-cd/ci-cd.md) — CI/CD pipeline reference
+- [`docs/devops/release/release-checklist.md`](../../operations/release/release-checklist.md) — release checklist
+- [`docs/devops/ci-cd/ci-cd.md`](../../operations/ci-cd/ci-cd.md) — CI/CD pipeline reference
 - [`docs/agents/workflows/safety-rules.md`](agent-safety-rules.md) — approval requirements and three-tier authority

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Mirror `docs/external/docs-site/` from the repo root into
+// Mirror `docs/gitbook/docs-site/` from the repo root into
 // `src/content/docs/` so Astro Starlight can pick it up as content
 // collection entries.
 //
@@ -12,7 +12,7 @@ import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(__dirname, '..', '..', '..');
-const sourceDir = join(repoRoot, 'docs', 'external', 'docs-site');
+const sourceDir = join(repoRoot, 'docs', 'gitbook', 'docs-site');
 const targetDir = resolve(__dirname, '..', 'src', 'content', 'docs');
 
 const SKIP_FILES = new Set(['README.md']);

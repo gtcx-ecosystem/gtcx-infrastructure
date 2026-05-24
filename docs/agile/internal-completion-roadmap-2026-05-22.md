@@ -190,7 +190,7 @@ The main execution roadmap (`execution-roadmap-2026-05-22.md`) mixes internal an
 
 **Acceptance criteria:**
 
-- [ ] `docs/external/blog/audit-signer-launch-2026-05.md` (new) — ~1500 words.
+- [ ] `docs/gitbook/blog/audit-signer-launch-2026-05.md` (new) — ~1500 words.
 - [ ] Three angles: (a) problem ("audit trails are not tamper-evident"), (b) design (Ed25519 + RFC 8785 JCS + hash-linked chain), (c) substrate (npm + GitHub + Terraform Registry coming).
 - [ ] Code examples that copy-paste and work on Node 20.
 - [ ] No marketing fluff — match the README's tone.
@@ -212,7 +212,7 @@ The main execution roadmap (`execution-roadmap-2026-05-22.md`) mixes internal an
 
 **Acceptance criteria:**
 
-- [ ] `docs/external/docs-site/` (new directory) — markdown source for the site.
+- [ ] `docs/gitbook/docs-site/` (new directory) — markdown source for the site.
 - [ ] `index.md` — overview of the compliance substrate (gateway + audit-signer + compliance-db).
 - [ ] `audit-signer.md` — install + quick-start + API reference (mirror of the npm README, deeper).
 - [ ] `compliance-db.md` — install + jurisdiction selection + dual-DB architecture.
@@ -236,7 +236,7 @@ The main execution roadmap (`execution-roadmap-2026-05-22.md`) mixes internal an
 
 **Acceptance criteria:**
 
-- [ ] `docs/external/terraform-registry-submission-2026.md` (new) — checklist of Registry requirements with each verified.
+- [ ] `docs/gitbook/terraform-registry-submission-2026.md` (new) — checklist of Registry requirements with each verified.
 - [ ] Validated: `terraform fmt`, `terraform validate`, README contains `## Inputs`, `## Outputs`, `## Resources` sections, semver tag `v0.1.0` exists on the standalone GitHub repo.
 - [ ] Submission URL ready: `https://registry.terraform.io/github/<org>/terraform-aws-compliance-db`.
 - [ ] Document any gaps the standalone repo has vs Registry requirements (since the standalone repo is at `github.com/amani-amina-anai/terraform-aws-compliance-db`).

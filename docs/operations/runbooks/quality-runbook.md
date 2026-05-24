@@ -68,6 +68,6 @@ Resolve failures in this order — fix each before moving to the next:
 
 ## Reference
 
-- [`docs/devops/release/release-checklist.md`](../../devops/release/release-checklist.md) — release gate checklist
+- [`docs/devops/release/release-checklist.md`](../../operations/release/release-checklist.md) — release gate checklist
 - [`docs/agents/workflows/tasks/investigate-ci-failure.md`](../../agents/workflows/investigate-ci-failure.md) — investigation protocol
 - [`docs/agents/workflows/safety-rules.md`](../../agents/workflows/agent-safety-rules.md) — what requires human approval

@@ -12,7 +12,7 @@ review_cycle: 'on-change'
 
 Astro Starlight static-site config that builds the public docs at `gtcx.io/compliance`.
 
-Source-of-truth markdown lives at the repo root in [`docs/external/docs-site/`](../../docs/external/docs-site/README.md); this package's `scripts/sync-content.mjs` mirrors that directory into `src/content/docs/` before Astro reads it. The mirror is `.gitignore`-d — the canonical source is in one place only.
+Source-of-truth markdown lives at the repo root in [`docs/gitbook/docs-site/`](../../docs/gitbook/docs-site/README.md); this package's `scripts/sync-content.mjs` mirrors that directory into `src/content/docs/` before Astro reads it. The mirror is `.gitignore`-d — the canonical source is in one place only.
 
 ## Why Astro Starlight
 
@@ -30,7 +30,7 @@ The choice is reversible — the markdown source is portable.
 ```bash
 # from repo root
 pnpm install
-pnpm -F @gtcx/docs-site sync    # copy markdown from docs/external/docs-site/
+pnpm -F @gtcx/docs-site sync    # copy markdown from docs/gitbook/docs-site/
 pnpm -F @gtcx/docs-site dev     # local preview at http://localhost:4321
 pnpm -F @gtcx/docs-site build   # static output in tools/docs-site/dist/
 ```
@@ -54,14 +54,14 @@ The deploy decision is not gated on this ADR — it lands when the marketing sit
 
 ## CI
 
-`.github/workflows/docs-site-build.yml` runs the build on every PR that touches `docs/external/docs-site/`, `tools/docs-site/`, or this README. The job fails if `astro check` reports broken internal links or schema errors. It does **not** deploy — deploy is a separate, gated workflow that runs only on `main`.
+`.github/workflows/docs-site-build.yml` runs the build on every PR that touches `docs/gitbook/docs-site/`, `tools/docs-site/`, or this README. The job fails if `astro check` reports broken internal links or schema errors. It does **not** deploy — deploy is a separate, gated workflow that runs only on `main`.
 
 ## Editorial workflow
 
-See [`docs/external/docs-site/README.md`](../../docs/external/docs-site/README.md) for editorial conventions, review workflow, and tone guide. This package is the build layer only.
+See [`docs/gitbook/docs-site/README.md`](../../docs/gitbook/docs-site/README.md) for editorial conventions, review workflow, and tone guide. This package is the build layer only.
 
 ## References
 
 - ADR-021 — npm publish discipline (parallel external-surface discipline)
-- `docs/external/docs-site/` — markdown source-of-truth
+- `docs/gitbook/docs-site/` — markdown source-of-truth
 - Astro Starlight docs: https://starlight.astro.build/

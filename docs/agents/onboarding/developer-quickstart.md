@@ -68,7 +68,7 @@ terraform init
 terraform plan
 ```
 
-No automated apply runs without human review. See [ci-cd.md](../../devops/ci-cd/ci-cd.md) for the full approval gate.
+No automated apply runs without human review. See [ci-cd.md](../../operations/ci-cd/ci-cd.md) for the full approval gate.
 
 ---
 

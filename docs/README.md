@@ -226,14 +226,14 @@ Single source of truth for all infrastructure documentation.
 
 ## 10. DevOps
 
-- [CI/CD](devops/ci-cd/ci-cd.md) — Pipeline configuration and stages
-- [Environment Config](devops/environments/environment-config.md) — Environment topology and variables
-- [Monitoring Setup](devops/monitoring/monitoring-setup.md) — Monitoring stack configuration
-- [QA Process](devops/qa/qa-process.md) — Quality assurance workflow
-- [Release Checklist](devops/release/release-checklist.md) — Pre-release verification steps
-- [Legal Sign-off](devops/release/legal-sign-off.md) — Legal review gate
-- [Analytics Setup](devops/analytics-setup.md) — Analytics instrumentation
-- [Terraform History Purge Runbook](devops/terraform-history-purge-runbook.md) — Terraform state history cleanup
+- [CI/CD](operations/ci-cd/ci-cd.md) — Pipeline configuration and stages
+- [Environment Config](operations/environments/environment-config.md) — Environment topology and variables
+- [Monitoring Setup](operations/monitoring/monitoring-setup.md) — Monitoring stack configuration
+- [QA Process](operations/qa/qa-process.md) — Quality assurance workflow
+- [Release Checklist](operations/release/release-checklist.md) — Pre-release verification steps
+- [Legal Sign-off](operations/release/legal-sign-off.md) — Legal review gate
+- [Analytics Setup](operations/analytics-setup.md) — Analytics instrumentation
+- [Terraform History Purge Runbook](operations/runbooks/terraform-history-purge.md) — Terraform state history cleanup
 
 ---
 
@@ -347,9 +347,9 @@ Single source of truth for all infrastructure documentation.
 
 ## 15. External
 
-- [Governance](external/governance.md) — Public governance model
-- [Integration Guide](external/integration-guide.md) — Third-party integration guide
-- [Quickstart](external/quickstart.md) — External developer quickstart
+- [Governance](gitbook/governance.md) — Public governance model
+- [Integration Guide](gitbook/integration-guide.md) — Third-party integration guide
+- [Quickstart](gitbook/quickstart.md) — External developer quickstart
 
 ---
 
@@ -416,6 +416,6 @@ Single source of truth for all infrastructure documentation.
 | Understand agent roles         | [Role Identification Guide](agents/roles/role-identification-guide.md)                                                                                           |
 | Check SLOs                     | [Performance SLOs](reference/performance-slos.md)                                                                                                                |
 | Prepare for sandbox submission | [Sandbox Application](#sandbox-application)                                                                                                                      |
-| Review CI/CD pipeline          | [CI/CD](devops/ci-cd/ci-cd.md)                                                                                                                                   |
+| Review CI/CD pipeline          | [CI/CD](operations/ci-cd/ci-cd.md)                                                                                                                               |
 | Understand data governance     | [Data Governance](specs/data-governance.md)                                                                                                                      |
 | Review error budgets           | [AGX](operations/runbooks/agx-error-budget.md) / [ANISA](operations/runbooks/anisa-error-budget.md) / [Protocols](operations/runbooks/protocols-error-budget.md) |

@@ -7,7 +7,7 @@ name: docs-site-build
 on:
   pull_request:
     paths:
-      - 'docs/external/docs-site/**'
+      - 'docs/gitbook/docs-site/**'
       - 'tools/docs-site/**'
       - '.github/workflows/docs-site-build.yml'
   workflow_dispatch:

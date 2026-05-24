@@ -10,7 +10,7 @@ review_cycle: 'on-change'
 
 # Compliance Substrate — Architecture Deep Dive
 
-The [docs-site architecture page](../external/docs-site/architecture.md) is the one-pager. This is the long-form reference: failure modes, performance characteristics, scaling story, and the design choices that didn't fit on the one-pager. Read this when you need to operate, extend, or audit the substrate.
+The [docs-site architecture page](../gitbook/docs-site/architecture.md) is the one-pager. This is the long-form reference: failure modes, performance characteristics, scaling story, and the design choices that didn't fit on the one-pager. Read this when you need to operate, extend, or audit the substrate.
 
 ## Three layers, four primitives
 
@@ -177,7 +177,7 @@ The substitute-key case is the one nuance: a "perfect" forgery would require the
 
 ## Layer 3 — Discovery
 
-`@gtcx/compliance-gateway-mcp` is a Model Context Protocol server that exposes the read-only subset of the gateway to AI agents. Per-tool inventory at `docs/external/docs-site/compliance-gateway-mcp.md`.
+`@gtcx/compliance-gateway-mcp` is a Model Context Protocol server that exposes the read-only subset of the gateway to AI agents. Per-tool inventory at `docs/gitbook/docs-site/compliance-gateway-mcp.md`.
 
 The discovery layer is deliberately read-only. Mutating tools (TradePass issue, PvP execute) stay behind the HTTP gateway because:
 
@@ -275,7 +275,7 @@ If you find yourself wanting any of these, write the ADR explaining what the sub
 
 ## References
 
-- Diagram + contract: [`docs/external/docs-site/architecture.md`](../external/docs-site/architecture.md)
+- Diagram + contract: [`docs/gitbook/docs-site/architecture.md`](../gitbook/docs-site/architecture.md)
 - ADR-014 NATS audit transport · ADR-015 per-tenant subject routing · ADR-016 fail-closed signing · ADR-017 adaptive policy · ADR-018 pen-test overlay · ADR-019 workspace discipline · ADR-020 coverage thresholds
 - [`docs/security/threat-model-2026-05.md`](../security/threat-model-2026-05.md) — STRIDE companion to this doc
 - [`docs/operations/slo-definitions.md`](../operations/slo-definitions.md) — SLIs/SLOs for each layer

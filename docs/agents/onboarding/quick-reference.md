@@ -21,15 +21,15 @@ DevOps tooling, deployment automation, and security framework for the GTCX ecosy
 
 ## Key Documents
 
-| What              | Where                                                                                                    |
-| ----------------- | -------------------------------------------------------------------------------------------------------- |
-| Codebase map      | [`orientation.md`](orientation.md)                                                                       |
-| Safety rules      | [`../4-workflows/safety-rules.md`](../workflows/agent-safety-rules.md)                                   |
-| Architecture      | [`../../2-docs/1-architecture/system-overview.md`](../../architecture/system-overview.md)                |
-| Trust model       | [`../../2-docs/1-architecture/trust-model.md`](../../architecture/trust-model.md)                        |
-| Quality runbook   | [`../../2-docs/4-devops/2-runbooks/quality-runbook.md`](../../operations/runbooks/quality-runbook.md)    |
-| Release checklist | [`../../2-docs/4-devops/7-release-mgmt/release-checklist.md`](../../devops/release/release-checklist.md) |
-| Deploy runbook    | [`../../2-docs/4-operations/runbooks/deploy.md`](../../operations/runbooks/deploy.md)                    |
+| What              | Where                                                                                                        |
+| ----------------- | ------------------------------------------------------------------------------------------------------------ |
+| Codebase map      | [`orientation.md`](orientation.md)                                                                           |
+| Safety rules      | [`../4-workflows/safety-rules.md`](../workflows/agent-safety-rules.md)                                       |
+| Architecture      | [`../../2-docs/1-architecture/system-overview.md`](../../architecture/system-overview.md)                    |
+| Trust model       | [`../../2-docs/1-architecture/trust-model.md`](../../architecture/trust-model.md)                            |
+| Quality runbook   | [`../../2-docs/4-devops/2-runbooks/quality-runbook.md`](../../operations/runbooks/quality-runbook.md)        |
+| Release checklist | [`../../2-docs/4-devops/7-release-mgmt/release-checklist.md`](../../operations/release/release-checklist.md) |
+| Deploy runbook    | [`../../2-docs/4-operations/runbooks/deploy.md`](../../operations/runbooks/deploy.md)                        |
 
 ---
 

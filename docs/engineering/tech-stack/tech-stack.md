@@ -186,5 +186,5 @@ Production deployments are GitOps-only. No `kubectl apply` commands are run manu
 
 - dev-setup.md (`./dev-setup.md`) — local setup and tool prerequisites
 - [deployment.md](../deployment/deployment.md) — deployment runbook
-- [CI/CD pipeline docs](../../devops/ci-cd/ci-cd.md) — full CI/CD pipeline documentation
+- [CI/CD pipeline docs](../../operations/ci-cd/ci-cd.md) — full CI/CD pipeline documentation
 - [runbooks/](../../operations/runbooks) — operational runbooks

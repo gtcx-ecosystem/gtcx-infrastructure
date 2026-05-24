@@ -246,4 +246,4 @@ Scheduled:
 - [network-architecture.md](../architecture/network-architecture.md) — network topology and PANX transport
 - [deploy runbook](../operations/runbooks/deploy.md) — deployment procedures
 - [migrate runbook](../operations/runbooks/migrate.md) — migration discipline
-- [ci-cd.md](../devops/ci-cd/ci-cd.md) — CI gates and pipeline
+- [ci-cd.md](../operations/ci-cd/ci-cd.md) — CI gates and pipeline

@@ -38,7 +38,7 @@ review_cycle: 'quarterly'
 | -------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------ |
 | CC2.1 Internal information needs | [`docs/README.md`](../README.md) master INDEX · `tools/scripts/docs-link-checker.mjs` enforces no broken refs | 🟢                       |
 | CC2.2 Internal communication     | [`docs/operations/runbooks/`](../operations/runbooks/) — 25 runbooks including incident response              | 🟢                       |
-| CC2.3 External communication     | [`docs/external/`](../external/) — public docs site source + launch announcement drafts                       | 🟡 (pending publication) |
+| CC2.3 External communication     | [`docs/gitbook/`](../gitbook/) — public docs site source + launch announcement drafts                         | 🟡 (pending publication) |
 
 ### CC3 — Risk Assessment
 
