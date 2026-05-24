@@ -1,6 +1,6 @@
 ---
 title: 'Architecture — GTCX Compliance Substrate'
-status: 'draft'
+status: 'current'
 date: '2026-05-22'
 owner: 'platform-engineering'
 tier: 'standard'
@@ -14,59 +14,38 @@ How the three primitives compose into the substrate behind GTCX's compliance gat
 
 ## The picture
 
-```
-                              ┌─────────────────────┐
-                              │  AI Agent (Claude,  │
-                              │   custom, MCP host) │
-                              └──────────┬──────────┘
-                                         │
-              ┌──────────────────────────┼──────────────────────────┐
-              │ MCP stdio (read-only)    │ HTTPS (read + approval-  │
-              │                          │   gated mutate)          │
-              ▼                          ▼                          │
-   ┌───────────────────┐      ┌──────────────────────┐              │
-   │   @gtcx/          │      │  compliance-gateway  │◀─────────────┘
-   │ compliance-       │─────▶│  HTTP API            │
-   │ gateway-mcp       │      │  /v1/query           │
-   └───────────────────┘      │  /v1/audit/*         │
-                              │  /v1/brief           │
-                              │  /metrics            │
-                              └──────────┬───────────┘
-                                         │
-            ┌────────────────────────────┼────────────────────────────┐
-            │                            │                            │
-            ▼                            ▼                            ▼
-   ┌───────────────────┐      ┌──────────────────┐         ┌──────────────────┐
-   │  @gtcx/           │      │  NATS JetStream  │         │  terraform-      │
-   │  audit-signer     │      │  gtcx.audit.>    │         │  aws-compliance- │
-   │  (Ed25519 chain)  │      │                  │         │  db              │
-   └─────────┬─────────┘      └────────┬─────────┘         │  (operational +  │
-             │                         │                   │   audit DBs,     │
-             │ signed records          │ durable consumer  │   KYC bucket)    │
-             ▼                         ▼                   └──────────────────┘
-   ┌───────────────────────────────────────────────────┐
-   │  audit-flush sidecar                              │
-   │  - subscribes to gtcx.audit.>                     │
-   │  - verifies chain integrity                       │
-   │  - writes batched NDJSON to WORM S3               │
-   └──────────────────────┬────────────────────────────┘
-                          │
-                          ▼
-              ┌──────────────────────────┐
-              │  WORM S3 Bucket          │
-              │  COMPLIANCE mode         │
-              │  2557-day retention      │
-              │  per-tenant prefixes     │
-              └──────────────────────────┘
-                          │
-                          │  any auditor with NDJSON +
-                          │  @gtcx/audit-signer can verify
-                          ▼
-              ┌──────────────────────────┐
-              │  Independent Verifier    │
-              │  (regulator, partner,    │
-              │   future internal audit) │
-              └──────────────────────────┘
+```mermaid
+flowchart TD
+    Agent["AI Agent<br/>(Claude / MCP host)"]
+    MCP["@gtcx/<br/>compliance-gateway-mcp"]
+    GW["compliance-gateway<br/>HTTP API<br/>/v1/query · /v1/audit/* · /v1/brief · /metrics"]
+    Signer["@gtcx/audit-signer<br/>(Ed25519 hash chain)"]
+    NATS["NATS JetStream<br/>gtcx.audit.&gt;"]
+    DB["terraform-aws-compliance-db<br/>(operational + audit DBs,<br/>KYC bucket)"]
+    Sidecar["audit-flush sidecar<br/>subscribe → verify → batch NDJSON"]
+    WORM["WORM S3<br/>Object Lock COMPLIANCE<br/>2557-day retention<br/>per-tenant prefixes"]
+    Verifier["Independent Verifier<br/>(regulator, partner,<br/>future internal audit)"]
+
+    Agent -- "MCP stdio (read-only)" --> MCP
+    Agent -- "HTTPS (read + approval-gated mutate)" --> GW
+    MCP --> GW
+    GW --> Signer
+    GW --> NATS
+    GW --> DB
+    Signer -- "signed records" --> NATS
+    NATS -- "durable consumer" --> Sidecar
+    Sidecar --> WORM
+    WORM -. "NDJSON + @gtcx/audit-signer<br/>verifies offline" .-> Verifier
+
+    classDef primitive fill:#047857,stroke:#065f46,color:#fff;
+    classDef transport fill:#1e40af,stroke:#1e3a8a,color:#fff;
+    classDef sink fill:#7c2d12,stroke:#92400e,color:#fff;
+    classDef external fill:#374151,stroke:#1f2937,color:#fff;
+
+    class Signer,DB,MCP primitive;
+    class NATS,Sidecar transport;
+    class WORM sink;
+    class Agent,Verifier external;
 ```
 
 ## The contract

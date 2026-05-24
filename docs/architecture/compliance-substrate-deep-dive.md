@@ -24,6 +24,33 @@ The substrate has three operational layers stitched together by four primitives:
 
 Cross-cutting concerns (tenant boundary, adaptive resilience, distribution) compose with all three.
 
+```mermaid
+flowchart LR
+    subgraph Discovery["Layer 3 — Discovery"]
+        MCP["@gtcx/compliance-gateway-mcp<br/>(read-only)"]
+    end
+    subgraph Application["Layer 1 — Application"]
+        GW["compliance-gateway"]
+    end
+    subgraph Audit["Layer 2 — Audit"]
+        direction TB
+        Signer["@gtcx/audit-signer<br/>(in-process)"]
+        Transport["NATS JetStream<br/>(cross-pod, durable)"]
+        Persist["audit-flush + WORM S3<br/>(cross-region, immutable)"]
+        Signer --> Transport --> Persist
+    end
+    MCP --> GW
+    GW --> Signer
+    GW -. tenant boundary .-> Transport
+
+    classDef appLayer fill:#1e40af,stroke:#1e3a8a,color:#fff;
+    classDef auditLayer fill:#047857,stroke:#065f46,color:#fff;
+    classDef discoveryLayer fill:#7c2d12,stroke:#92400e,color:#fff;
+    class GW appLayer;
+    class Signer,Transport,Persist auditLayer;
+    class MCP discoveryLayer;
+```
+
 ## Layer 1 — Application
 
 The compliance-gateway is a single Node.js HTTP service. It receives queries on `/v1/query`, authenticates the caller, routes to protocol tools (TradePass, GCI, GeoTag, VaultMark, PvP, PANX), and returns natural-language responses.
@@ -43,6 +70,28 @@ The compliance-gateway is a single Node.js HTTP service. It receives queries on 
 ```
 
 The entire path from step 1 to step 9 is single-pod. No external state writes in the hot path except the JetStream publish in step 3 + step 8, both of which are sub-ms.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant C as Client (ALB+WAFv2)
+    participant G as compliance-gateway
+    participant S as audit-signer
+    participant N as NATS JetStream
+    participant L as LLM provider
+
+    C->>G: HTTPS POST /v1/query
+    G->>G: authenticateHeaders + checkBudget
+    G->>S: signAuditEvent("auth:success")
+    S->>N: publish gtcx.audit.compliance-gateway.&lt;tenant&gt;
+    G->>G: validateQueryBody (Zod)
+    G->>L: generateText (maxSteps: 5)
+    L-->>G: completion
+    G->>G: recordSpend + incrementCounter
+    G->>S: signAuditEvent("query:success")
+    S->>N: publish gtcx.audit.compliance-gateway.&lt;tenant&gt;
+    G-->>C: sendJson (low-bandwidth strip if needed)
+```
 
 ### Per-pod state
 
@@ -157,6 +206,17 @@ Per ADR-017, the gateway self-tunes its degradation mode based on observed laten
 | `minimal` | Strip everything except `answer`; aggressive caching       | Error rate > 10% for 2 consecutive windows |
 
 Every transition fires a signed `resilience.policy.adaptation` audit record so the substrate's degradation history is itself auditable.
+
+```mermaid
+stateDiagram-v2
+    direction LR
+    [*] --> auto
+    auto --> reduced: p95 > 5s × 3 windows
+    reduced --> auto: p95 < 4s × 3 windows
+    reduced --> minimal: errors > 10% × 2 windows
+    minimal --> reduced: errors < 5% × 2 windows
+    minimal --> auto: full recovery × 3 windows
+```
 
 ### Scaling story
 
