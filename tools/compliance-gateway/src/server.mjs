@@ -36,6 +36,9 @@ import { checkBudget, recordSpend, getSpend } from './budget.mjs';
 import { incrementCounter, setGauge, renderMetrics } from './metrics.mjs';
 import { sanitizeAuditTarget } from './audit-target.mjs';
 import { startAdaptiveScheduler, defaultThresholds } from './adaptive-policy.mjs';
+import { processBundle as processAuditBundle } from './audit-bundles/handler.mjs';
+import { createTradePassResolver, createMockResolver } from './audit-bundles/did-resolver.mjs';
+import { NonceGate } from './audit-bundles/nonce-gate.mjs';
 
 // In-flight /v1/query count, exposed to the HPA via the
 // compliance_gateway_inflight_requests metric (autoscaling.v2 Pods target).
@@ -90,6 +93,29 @@ const runtimePolicyConfig = {
   featureSignedAudit: process.env.GTCX_FEATURE_SIGNED_AUDIT === 'true',
   featureFeedbackLoop: process.env.GTCX_FEATURE_FEEDBACK_LOOP === 'true',
 };
+
+// ---------------------------------------------------------------------------
+// /audit/bundles wiring (feature-flagged for the stub branch)
+// ---------------------------------------------------------------------------
+
+const auditBundlesEnabled = process.env.AUDIT_BUNDLES_ENABLED === '1';
+const auditBundlesExpectedAudience =
+  process.env.AUDIT_BUNDLES_AUDIENCE || 'https://geotag.staging.gtcx.trade';
+const tradePassBaseUrl = process.env.TRADEPASS_BASE_URL;
+
+// Until gtcx-protocols #60 lands a real TradePass deployment behind a
+// stable URL (tracked on #55), no real DID resolver is wired and any
+// request to /audit/bundles is rejected with 503. Tests inject a
+// mockable resolver directly into processBundle; production wiring
+// happens when TRADEPASS_BASE_URL is set in the staging environment.
+const auditBundlesResolver = tradePassBaseUrl
+  ? createTradePassResolver({ baseUrl: tradePassBaseUrl })
+  : null;
+
+const auditBundlesNonceGate = new NonceGate();
+// Silence linter for the mock resolver helper — it's imported so test
+// fixtures and the eventual integration test can inject one.
+void createMockResolver;
 
 /**
  * @param {import('node:http').IncomingMessage} req
@@ -513,6 +539,34 @@ const server = createServer(async (req, res) => {
     const url = new URL(req.url ?? '/', 'http://localhost').pathname;
     if (url === '/v1/query') {
       await handleQuery(req, res);
+    } else if (url === '/audit/bundles') {
+      if (!auditBundlesEnabled) {
+        return sendJson(res, 404, { error: 'Not found' }, req);
+      }
+      if (req.method !== 'POST') {
+        return sendJson(res, 405, { error: 'Method not allowed' }, req);
+      }
+      if (!auditBundlesResolver) {
+        return sendJson(res, 503, {
+          error: 'tradepass-resolver-unconfigured',
+          acceptedIds: [],
+        }, req);
+      }
+      const body = await readBody(req);
+      const headersLower = {};
+      for (const [k, v] of Object.entries(req.headers)) {
+        if (typeof v === 'string') headersLower[k.toLowerCase()] = v;
+      }
+      const result = await processAuditBundle({
+        method: req.method,
+        url: `https://${req.headers.host ?? 'localhost'}${req.url ?? '/audit/bundles'}`,
+        body,
+        headers: headersLower,
+        expectedAudience: auditBundlesExpectedAudience,
+        resolver: auditBundlesResolver,
+        nonceGate: auditBundlesNonceGate,
+      });
+      return sendJson(res, result.status, result.body, req);
     } else if (url === '/v1/audit/chain') {
       const principal = requirePermission(req, res, 'audit:read');
       if (!principal) {
