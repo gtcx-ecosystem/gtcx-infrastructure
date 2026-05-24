@@ -137,7 +137,7 @@ If the release contains schema breaking changes (MAJOR version bump):
 3. Announce the breaking change in release notes with migration instructions.
 4. Do not deprecate the previous MAJOR version until consumers have confirmed migration.
 
-See [`engineering/database-schema.md`](../../engineering/database-schema.md) and [`decisions/ADR-008-dual-database-architecture.md`](../../decisions/ADR-008-dual-database-architecture.md) for the schema migration pattern.
+See [`decisions/ADR-008-dual-database-architecture.md`](../../decisions/ADR-008-dual-database-architecture.md) and `infra/migrations/` for the schema migration pattern.
 
 ---
 

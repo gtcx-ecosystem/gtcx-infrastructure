@@ -99,17 +99,14 @@ Single source of truth for all infrastructure documentation.
 ## 5. Engineering
 
 - [Backend Architecture](engineering/backend-architecture.md) — Service topology, build targets
-- [Microservices Architecture](engineering/microservices-architecture.md) — Monorepo service patterns
 - [API Patterns](engineering/api-patterns.md) — Design standards and conventions
-- [API Specification](engineering/api-specification.md) — Full API spec
-- [Database Schema](engineering/database-schema.md) — Schema conventions and models
-- [Content Schema](engineering/content-schema.md) — Content data models
-- [System Architecture Spec](engineering/system-architecture-spec.md) — End-to-end system specification
+- [API Specification (OpenAPI)](api/openapi.yaml) — Canonical machine-readable spec
 - [Connection Pooling](engineering/connection-pooling.md) — Database connection management
-- [Agentic Guide](engineering/agentic-guide.md) — Agentic development patterns
-- [Architecture Docs Protocol](engineering/architecture-docs-protocol.md) — Documentation standards for architecture
 - [K8s Manifest Ownership](engineering/k8s-manifest-ownership.md) — Manifest ownership and review policy
 - [LLM Routing Strategy](engineering/llm-routing-strategy.md) — Model selection and routing logic
+- [Low-Bandwidth Mode](engineering/low-bandwidth-mode.md) — Adaptive degradation for frontier regions
+- [Package Adoption Guide](engineering/package-adoption-guide.md) — Cross-repo `@gtcx/*` package adoption
+- [GTCX Platforms M3 Contract](engineering/gtcx-platforms-m3-contract.md) — Cross-repo M3 deliverables
 - [Deployment](engineering/deployment/deployment.md) — Deployment procedures and gates
 
 ### Tech Stack
