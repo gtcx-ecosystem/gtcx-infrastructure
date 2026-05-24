@@ -1,3 +1,14 @@
+---
+title: 'GTCX Infrastructure — Repository Overview'
+status: 'current'
+date: '2026-05-24'
+owner: 'frontier-infra-engineer'
+role: 'frontier-infra-engineer'
+tier: 'strategic'
+tags: ['overview', 'metrics']
+review_cycle: 'on-change'
+---
+
 # GTCX Infrastructure — Repository Overview
 
 > **Last updated:** 2026-05-17

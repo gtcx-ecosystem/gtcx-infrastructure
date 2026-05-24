@@ -1,4 +1,15 @@
-# udevops
+---
+title: 'Devops'
+status: 'current'
+date: '2026-05-24'
+owner: 'frontier-infra-engineer'
+role: 'frontier-infra-engineer'
+tier: 'standard'
+tags: ['devops', 'ci-cd', 'operations']
+review_cycle: 'on-change'
+---
+
+# Devops
 
 This directory contains devops documentation for the GTCX infrastructure.
 

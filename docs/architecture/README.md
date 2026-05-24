@@ -1,4 +1,15 @@
-# uarchitecture
+---
+title: 'Architecture'
+status: 'current'
+date: '2026-05-24'
+owner: 'protocol-architect'
+role: 'protocol-architect'
+tier: 'strategic'
+tags: ['architecture', 'design']
+review_cycle: 'on-change'
+---
+
+# Architecture
 
 This directory contains architecture documentation for the GTCX infrastructure.
 

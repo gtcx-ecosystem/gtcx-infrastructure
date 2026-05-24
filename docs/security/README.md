@@ -1,4 +1,15 @@
-# usecurity
+---
+title: 'Security'
+status: 'current'
+date: '2026-05-24'
+owner: 'frontier-infra-engineer'
+role: 'crypto-security-engineer'
+tier: 'critical'
+tags: ['security']
+review_cycle: 'on-change'
+---
+
+# Security
 
 This directory contains security documentation for the GTCX infrastructure.
 

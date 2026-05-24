@@ -1,4 +1,15 @@
-# uassessments
+---
+title: 'Assessments'
+status: 'current'
+date: '2026-05-24'
+owner: 'quality-evidence-lead'
+role: 'quality-evidence-lead'
+tier: 'informational'
+tags: ['assessment', 'audit']
+review_cycle: 'on-change'
+---
+
+# Assessments
 
 This directory contains assessments documentation for the GTCX infrastructure.
 

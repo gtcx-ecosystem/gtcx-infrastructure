@@ -1,3 +1,14 @@
+---
+title: 'Audit Archive'
+status: 'current'
+date: '2026-05-24'
+owner: 'quality-evidence-lead'
+role: 'quality-evidence-lead'
+tier: 'informational'
+tags: ['archive', 'historical']
+review_cycle: 'on-change'
+---
+
 # Audit Archive
 
 Historical snapshots of master audits and roadmaps. These are immutable records of past assessments.

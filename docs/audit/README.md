@@ -1,4 +1,15 @@
-# uaudit
+---
+title: 'Audit'
+status: 'current'
+date: '2026-05-24'
+owner: 'quality-evidence-lead'
+role: 'quality-evidence-lead'
+tier: 'critical'
+tags: ['audit', 'evidence']
+review_cycle: 'on-change'
+---
+
+# Audit
 
 This directory contains audit documentation for the GTCX infrastructure.
 

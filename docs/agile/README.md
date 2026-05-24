@@ -1,4 +1,15 @@
-# uagile
+---
+title: 'Agile'
+status: 'current'
+date: '2026-05-24'
+owner: 'frontier-infra-engineer'
+role: 'frontier-infra-engineer'
+tier: 'informational'
+tags: ['agile', 'sprint-planning']
+review_cycle: 'on-change'
+---
+
+# Agile
 
 This directory contains agile documentation for the GTCX infrastructure.
 

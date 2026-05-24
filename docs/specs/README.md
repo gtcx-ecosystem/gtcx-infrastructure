@@ -1,4 +1,15 @@
-# uspecs
+---
+title: 'Specs'
+status: 'current'
+date: '2026-05-24'
+owner: 'frontier-infra-engineer'
+role: 'frontier-infra-engineer'
+tier: 'informational'
+tags: ['specs', 'reference']
+review_cycle: 'on-change'
+---
+
+# Specs
 
 This directory contains specs documentation for the GTCX infrastructure.
 

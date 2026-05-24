@@ -1,4 +1,15 @@
-# ureference
+---
+title: 'Reference'
+status: 'current'
+date: '2026-05-24'
+owner: 'frontier-infra-engineer'
+role: 'frontier-infra-engineer'
+tier: 'informational'
+tags: ['reference', 'glossary']
+review_cycle: 'on-change'
+---
+
+# Reference
 
 This directory contains reference documentation for the GTCX infrastructure.
 

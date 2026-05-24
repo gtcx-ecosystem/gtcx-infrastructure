@@ -1,4 +1,15 @@
-# uengineering
+---
+title: 'Engineering'
+status: 'current'
+date: '2026-05-24'
+owner: 'frontier-infra-engineer'
+role: 'frontier-infra-engineer'
+tier: 'standard'
+tags: ['engineering', 'build', 'tech-stack']
+review_cycle: 'on-change'
+---
+
+# Engineering
 
 This directory contains engineering documentation for the GTCX infrastructure.
 
