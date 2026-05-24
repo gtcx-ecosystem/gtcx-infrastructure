@@ -47,12 +47,12 @@ Infrastructure changes follow a plan-review-apply sequence. No automated apply w
 
 Before a release tag is cut:
 
-| Gate                 | Action on Failure                                        |
-| -------------------- | -------------------------------------------------------- |
-| Container image scan | Escalate critical CVEs to security role — do not release |
-| Dependency audit     | `pnpm audit` — address criticals before release          |
-| UAT evidence         | Update `docs/agile/qa-test-plan.md`                      |
-| Release checklist    | Complete `docs/devops/release/release-checklist.md`      |
+| Gate                 | Action on Failure                                          |
+| -------------------- | ---------------------------------------------------------- |
+| Container image scan | Escalate critical CVEs to security role — do not release   |
+| Dependency audit     | `pnpm audit` — address criticals before release            |
+| UAT evidence         | Update `docs/agile/qa-test-plan.md`                        |
+| Release checklist    | Complete `docs/operations/release/ga-release-checklist.md` |
 
 ---
 
@@ -69,5 +69,5 @@ Before a release tag is cut:
 ## Reference
 
 - [`docs/operations/runbooks/quality-runbook.md`](../../operations/runbooks/quality-runbook.md) — triage order when gates fail
-- [`docs/devops/release/release-checklist.md`](../release/release-checklist.md) — release checklist
+- [`docs/operations/release/ga-release-checklist.md`](../../operations/release/ga-release-checklist.md) — release checklist
 - [`docs/agents/workflows/tasks/cut-release.md`](../../agents/workflows/cut-release.md) — release task playbook

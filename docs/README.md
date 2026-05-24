@@ -241,23 +241,23 @@ Single source of truth for all infrastructure documentation.
 
 ### Assessments
 
-- [Implementation Truth](assessments/implementation-truth.md) — What exists vs. what is missing
-- [Remediation Plan 10x10](assessments/remediation-plan-10x10.md) — 10-point fix list
-- [Ecosystem Integration](assessments/ecosystem-integration.md) — Cross-repo dependencies
-- [GTM Q2 Africa](assessments/gtm-q2-africa.md) — Ghana pilot infrastructure needs
-- [Pilot Agreement Template](assessments/pilot-agreement-template.md) — Partner pilot agreement scaffold
-- [Pilot Success Criteria](assessments/pilot-success-criteria.md) — Pilot evaluation metrics
+- [Implementation Truth](audit/implementation-truth.md) — What exists vs. what is missing
+- [Remediation Plan 10x10](audit/remediation/remediation-plan-10x10.md) — 10-point fix list
+- [Ecosystem Integration](audit/ecosystem-integration-assessment.md) — Cross-repo dependencies
+- [GTM Q2 Africa](audit/gtm-q2-africa-assessment.md) — Ghana pilot infrastructure needs
+- [Pilot Agreement Template](audit/pilot-agreement-template.md) — Partner pilot agreement scaffold
+- [Pilot Success Criteria](audit/pilot-success-criteria.md) — Pilot evaluation metrics
 
 ### Audit Cycles
 
-- [Auto Dev State](assessments/audit/auto-dev-state.md) — Autonomous development state tracker
-- [2026-05-04 Cycle 2](assessments/audit/2026-05-04-cycle-2.md) — Audit cycle 2 results
-- [2026-05-04 Cycle 3](assessments/audit/2026-05-04-cycle-3.md) — Audit cycle 3 results
-- [2026-05-04 Cycle 4](assessments/audit/2026-05-04-cycle-4.md) — Audit cycle 4 results
-- [2026-05-04 Full Audit](assessments/audit/2026-05-04-full-audit.md) — Complete audit report
-- [2026-05-05 Cycle 5](assessments/audit/2026-05-05-cycle-5.md) — Audit cycle 5 results
-- [2026-05-05 Cycle 6](assessments/audit/2026-05-05-cycle-6.md) — Audit cycle 6 results
-- [2026-05-05 Cycle 7 Final](assessments/audit/2026-05-05-cycle-7-final.md) — Final audit cycle results
+- [Auto Dev State](audit/historical-cycles/auto-dev-state.md) — Autonomous development state tracker
+- [2026-05-04 Cycle 2](audit/historical-cycles/2026-05-04-cycle-2.md) — Audit cycle 2 results
+- [2026-05-04 Cycle 3](audit/historical-cycles/2026-05-04-cycle-3.md) — Audit cycle 3 results
+- [2026-05-04 Cycle 4](audit/historical-cycles/2026-05-04-cycle-4.md) — Audit cycle 4 results
+- [2026-05-04 Full Audit](audit/historical-cycles/2026-05-04-full-audit.md) — Complete audit report
+- [2026-05-05 Cycle 5](audit/historical-cycles/2026-05-05-cycle-5.md) — Audit cycle 5 results
+- [2026-05-05 Cycle 6](audit/historical-cycles/2026-05-05-cycle-6.md) — Audit cycle 6 results
+- [2026-05-05 Cycle 7 Final](audit/historical-cycles/2026-05-05-cycle-7-final.md) — Final audit cycle results
 
 ### QA Reviews
 
@@ -338,10 +338,10 @@ Single source of truth for all infrastructure documentation.
 
 ## 14. Release
 
-- [GA Release Checklist](release/ga-release-checklist.md) — General availability release gate
-- [Legal Review](release/legal-review.md) — Legal sign-off requirements
-- [License Compliance](release/license-compliance.md) — OSS license audit
-- [Versioning Policy](release/versioning-policy.md) — SemVer and release tagging
+- [GA Release Checklist](operations/release/ga-release-checklist.md) — General availability release gate
+- [Legal Review](operations/release/legal-review.md) — Legal sign-off requirements
+- [License Compliance](operations/release/license-compliance.md) — OSS license audit
+- [Versioning Policy](operations/release/versioning-policy.md) — SemVer and release tagging
 
 ---
 

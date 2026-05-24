@@ -230,5 +230,5 @@ TTL: 120 seconds (auto-expire after inactivity).
 - [GSMA USSD Specification](https://www.gsma.com/)
 - [M-Pesa API Documentation](https://developer.safaricom.co.ke/)
 - [GTCX Resilience Framework](../specs/resilience-framework.md)
-- [GTCX Replay Guard Model Card](../ml/model-cards/replay-guard-model-card.md)
+- [GTCX Replay Guard Model Card](../governance/model-cards/replay-guard-model-card.md)
 - [GTCX Low-Bandwidth Mode](../engineering/low-bandwidth-mode.md)

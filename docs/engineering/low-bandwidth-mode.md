@@ -162,4 +162,4 @@ Alerting: PagerDuty alert if > 5% of active devices in a region are in `offline`
 - [`tools/low-bandwidth`](../../tools/low-bandwidth/) — v0.1.0 implementation
 - [`tools/compliance-gateway/src/server.mjs`](../../tools/compliance-gateway/src/server.mjs) — gateway integration
 - [Resilience Framework](../specs/resilience-framework.md)
-- [Replay Guard Model Card](../ml/model-cards/replay-guard-model-card.md)
+- [Replay Guard Model Card](../governance/model-cards/replay-guard-model-card.md)

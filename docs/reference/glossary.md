@@ -82,7 +82,7 @@ Maximum acceptable downtime in a disaster scenario. Target: 4 hours.
 The identity model where each participant controls their own identity (DID) and credentials without dependence on a central authority. TradePass implements SSI via W3C Verifiable Credentials.
 
 **Semantic versioning**
-The versioning scheme for packages and schemas: `MAJOR.MINOR.PATCH`. MAJOR bumps indicate breaking changes requiring migration. See [`../release/versioning-policy.md`](../release/versioning-policy.md) for the SemVer + release-tagging discipline.
+The versioning scheme for packages and schemas: `MAJOR.MINOR.PATCH`. MAJOR bumps indicate breaking changes requiring migration. See [`../release/versioning-policy.md`](../operations/release/versioning-policy.md) for the SemVer + release-tagging discipline.
 
 **Stub guard**
 The `enforceStubGuard()` function that throws `StubNotAllowedError` if an in-memory stub implementation is detected in a non-development environment. Defined in ADR-002.
