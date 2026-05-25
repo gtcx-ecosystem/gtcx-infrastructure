@@ -1,0 +1,26 @@
+# =============================================================================
+# Let's Encrypt Staging Issuer
+# =============================================================================
+# HTTP-01 solver for staging TLS. Uses the public HTTP endpoint (ALB or nginx)
+# to answer ACME challenges. Once validated, cert-manager stores the certificate
+# in the referenced TLS secret.
+#
+# NOTE: Requires an ingress controller or ALB that can route HTTP traffic to
+# the cert-manager solver pod on the `/.well-known/acme-challenge/` path.
+# If using ALB, add an HTTP:80 listener so the challenge can reach the cluster.
+# =============================================================================
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-staging
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: security@gtcx.trade
+    privateKeySecretRef:
+      name: letsencrypt-staging-account-key
+    solvers:
+      - http01:
+          ingress:
+            class: alb
+            serviceType: ClusterIP

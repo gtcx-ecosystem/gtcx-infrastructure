@@ -1,0 +1,44 @@
+# =============================================================================
+# Staging Ingress — NGINX Alternative (ALB bypass)
+# =============================================================================
+# Use this ingress if the ACM certificate in account 293488310036 is
+# unavailable and a cert-manager + Let's Encrypt path is preferred.
+#
+# Prerequisites:
+#   1. nginx-ingress controller installed in the staging cluster
+#   2. `letsencrypt-staging` ClusterIssuer applied
+#   3. DNS for geotag.staging.gtcx.trade points to the nginx LB
+#
+# To switch from ALB to nginx:
+#   kubectl delete -f ingress.yaml
+#   kubectl apply -f ingress-nginx.yaml
+# =============================================================================
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gtcx-api
+  namespace: gtcx-staging
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: 'true'
+    nginx.ingress.kubernetes.io/force-ssl-redirect: 'true'
+    nginx.ingress.kubernetes.io/proxy-body-size: '10m'
+    nginx.ingress.kubernetes.io/proxy-read-timeout: '60'
+    nginx.ingress.kubernetes.io/proxy-send-timeout: '60'
+    cert-manager.io/cluster-issuer: 'letsencrypt-staging'
+spec:
+  tls:
+    - hosts:
+        - geotag.staging.gtcx.trade
+      secretName: gtcx-staging-tls-secret
+  rules:
+    - host: geotag.staging.gtcx.trade
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: gtcx-protocols-staging
+                port:
+                  number: 8300
