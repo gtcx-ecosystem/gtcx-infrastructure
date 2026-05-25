@@ -39,7 +39,7 @@ No counter-proposal. No scope reduction.
 
 - **ETA deploy:** Tuesday 2026-05-27 (W1 day 2)
 - **Day-of-week constraint:** None. Staging deploys are routine. Monday (day 1) is reserved for Sprint 7 kickoff + EXT-003 dependency resolution.
-- **Pre-check:** AWS credentials current ✅; Route53 zone `gtcx.trade` delegated ✅. **New blocker identified 2026-05-25:** ACM certificate ARN in `ingress.yaml` references account `293488310036` but active AWS account is `348389439381`. No `*.gtcx.trade` certificate exists in current account. Resolution needed before deploy: either (a) create ACM wildcard cert in `348389439381` for `*.staging.gtcx.trade`, or (b) update ingress to reference correct ARN if cert exists in `293488310036` with cross-account access.
+- **Pre-check:** AWS credentials current ✅; Route53 zone `gtcx.trade` delegated ✅. **New blocker identified 2026-05-25:** ACM certificate ARN in `ingress.yaml` references account `293488310036` but active AWS account is `348389439381`. No `*.gtcx.trade` certificate exists in current account. **Mitigation:** nginx + letsencrypt fallback manifests committed (`ingress-nginx.yaml`, `letsencrypt-issuer.yaml`). **Terraform applied to staging + production:** audit-flush IRSA roles and S3 WORM policies created in both environments.
 - **Deliverable:** `https://geotag.staging.gtcx.trade/health` returning `{ status: 'ok', version: '<short-sha>' }` + SPKI fingerprint posted on #49.
 
 ### EXT-003 — audit-flush container (Sprint 7)
