@@ -28,10 +28,18 @@ import { QueryAuditRequestSchema } from './schemas.mjs';
  * @property {string} body                                - Raw request body
  * @property {Record<string, string>} headers             - Lowercased header map
  * @property {{ query: (filter: object) => Promise<{ events: object[], hasMore: boolean }> }} store
- * @property {(token: string) => { ok: true, tenantId?: string } | { ok: false, error: string }} [validateToken]
+ * @property {(token: string) => { ok: true, tenantId?: string, subject?: string } | { ok: false, error: string }} [validateToken]
  *   Optional token validator. If absent, any non-empty bearer is
  *   accepted (staging behavior). Production wires the real
- *   gateway-side validator.
+ *   gateway-side validator. May surface `tenantId` (fallback when no
+ *   X-GTCX-Tenant-Id header) and `subject` (actor for the audit-of-
+ *   the-query record).
+ * @property {(event: object) => void} [signAuditEvent] - Optional
+ *   injectable audit-of-the-query signer. When provided, an
+ *   `audit-query.served` record is signed into our own audit chain
+ *   on every 200 response so reads against the audit corpus are
+ *   themselves auditable (regulator who-asked-what trail). Handler
+ *   tolerates the signer being absent (tests + staging).
  *
  * @typedef {object} HandleResult
  * @property {number} status
@@ -55,12 +63,14 @@ export async function processQuery(args) {
     return { status: 401, body: { error: 'Bearer token required' } };
   }
   let tokenTenant;
+  let tokenSubject;
   if (typeof args.validateToken === 'function') {
     const v = args.validateToken(token);
     if (!v.ok) {
       return { status: 401, body: { error: v.error } };
     }
     tokenTenant = v.tenantId;
+    tokenSubject = v.subject;
   }
   // (else: staging mode — accept any non-empty bearer)
 
@@ -119,6 +129,43 @@ export async function processQuery(args) {
   // 6. Response shaping per mobile Q9
   // totalMatched = events returned + 1 if more (= min(actual, limit + 1))
   const totalMatched = storeResult.events.length + (storeResult.hasMore ? 1 : 0);
+
+  // 7. Sign audit-of-the-query record so reads against the audit corpus
+  // are themselves auditable (regulator who-asked-what trail). Closes
+  // the consistency gap with /audit/bundles audit-bundle.received
+  // signing. Tolerates the signer being absent for tests + staging.
+  if (typeof args.signAuditEvent === 'function') {
+    try {
+      args.signAuditEvent({
+        actor: tokenSubject ?? 'bearer-anon',
+        action: 'audit-query.served',
+        target: `/audit/query#tenant=${tenantId}`,
+        payload: {
+          tenantId,
+          filter: {
+            agentId: parsed.agentId ?? null,
+            actorDid: parsed.actorDid ?? null,
+            outcome: parsed.outcome ?? null,
+            from: parsed.from ?? null,
+            to: parsed.to ?? null,
+            limit: parsed.limit ?? null,
+          },
+          eventsReturned: storeResult.events.length,
+          truncated: storeResult.hasMore,
+        },
+      });
+    } catch (err) {
+      // Don't fail the request if audit signing fails; the response
+      // to the caller is already determined. Log via stderr.
+      console.error(JSON.stringify({
+        level: 'error',
+        type: 'audit-query.internalAuditSignFailed',
+        tenantId,
+        error: err?.message,
+      }));
+    }
+  }
+
   return {
     status: 200,
     body: {

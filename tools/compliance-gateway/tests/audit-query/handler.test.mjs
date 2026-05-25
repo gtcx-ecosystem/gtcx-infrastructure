@@ -206,3 +206,90 @@ describe('processQuery — store failure', () => {
     assert.strictEqual(r.body.error, 'store-failed');
   });
 });
+
+describe('processQuery — audit-of-the-query', () => {
+  it('signs audit-query.served on 200 with filter + counts', async () => {
+    const signed = [];
+    const r = await processQuery({
+      ...defaults(),
+      body: JSON.stringify({ outcome: 'continue', limit: 50 }),
+      signAuditEvent: (evt) => signed.push(evt),
+    });
+    assert.strictEqual(r.status, 200);
+    assert.strictEqual(signed.length, 1);
+    assert.strictEqual(signed[0].action, 'audit-query.served');
+    assert.strictEqual(signed[0].target, '/audit/query#tenant=zw');
+    assert.strictEqual(signed[0].payload.tenantId, 'zw');
+    assert.strictEqual(signed[0].payload.filter.outcome, 'continue');
+    assert.strictEqual(signed[0].payload.filter.limit, 50);
+    assert.strictEqual(signed[0].payload.eventsReturned, 1);
+    assert.strictEqual(signed[0].payload.truncated, false);
+  });
+
+  it('uses tokenSubject as actor when validator provides one', async () => {
+    const signed = [];
+    const r = await processQuery({
+      ...defaults(),
+      validateToken: () => ({ ok: true, subject: 'gtcx-platforms-agx' }),
+      signAuditEvent: (evt) => signed.push(evt),
+    });
+    assert.strictEqual(r.status, 200);
+    assert.strictEqual(signed[0].actor, 'gtcx-platforms-agx');
+  });
+
+  it('falls back to bearer-anon when no token subject', async () => {
+    const signed = [];
+    const r = await processQuery({
+      ...defaults(),
+      signAuditEvent: (evt) => signed.push(evt),
+    });
+    assert.strictEqual(r.status, 200);
+    assert.strictEqual(signed[0].actor, 'bearer-anon');
+  });
+
+  it('does NOT sign on 4xx (auth fail, bad tenant, malformed body)', async () => {
+    const signed = [];
+    // auth fail
+    const args1 = defaults();
+    delete args1.headers.authorization;
+    args1.signAuditEvent = (e) => signed.push(e);
+    await processQuery(args1);
+    // bad tenant
+    const args2 = defaults();
+    delete args2.headers['x-gtcx-tenant-id'];
+    args2.signAuditEvent = (e) => signed.push(e);
+    await processQuery(args2);
+    // malformed body
+    const args3 = defaults();
+    args3.body = '{not-json';
+    args3.signAuditEvent = (e) => signed.push(e);
+    await processQuery(args3);
+    assert.strictEqual(signed.length, 0, 'no signing on any 4xx path');
+  });
+
+  it('does NOT sign on 500 (store failure)', async () => {
+    const signed = [];
+    const store = { query: async () => { throw new Error('store-down'); } };
+    const r = await processQuery({
+      ...defaults(),
+      store,
+      signAuditEvent: (e) => signed.push(e),
+    });
+    assert.strictEqual(r.status, 500);
+    assert.strictEqual(signed.length, 0);
+  });
+
+  it('does NOT throw if signAuditEvent itself throws', async () => {
+    const r = await processQuery({
+      ...defaults(),
+      signAuditEvent: () => { throw new Error('sink unavailable'); },
+    });
+    assert.strictEqual(r.status, 200, 'response is unaffected by audit-signing failure');
+    assert.strictEqual(r.body.events.length, 1);
+  });
+
+  it('tolerates absent signAuditEvent without error', async () => {
+    const r = await processQuery(defaults());
+    assert.strictEqual(r.status, 200);
+  });
+});

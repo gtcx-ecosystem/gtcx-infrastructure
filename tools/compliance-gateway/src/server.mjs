@@ -540,6 +540,7 @@ const server = createServer(async (req, res) => {
         body,
         headers: headersLower,
         store: auditQueryStore,
+        signAuditEvent,
       });
       return sendJson(res, result.status, result.body, req);
     } else if (url === '/v1/audit/chain') {
