@@ -64,16 +64,16 @@ Three reusable workflow templates cover the entire ecosystem. Individual reposit
 
 **Used by**: gtcx-core, gtcx-app, gtcx-protocols, gtcx-platforms, gtcx-design
 
-| Step       | Command                                     | Caching                |
-| ---------- | ------------------------------------------- | ---------------------- |
-| Install    | `pnpm install --frozen-lockfile`            | pnpm store cache       |
-| Lint       | `turbo run lint`                            | Turborepo remote cache |
-| Type-check | `turbo run type-check`                      | Turborepo remote cache |
-| Test       | `turbo run test -- --coverage`              | Turborepo remote cache |
-| Build      | `turbo run build`                           | Turborepo remote cache |
-| Docker     | `docker build -t ghcr.io/gtcx/{repo}:{sha}` | Docker layer cache     |
+| Step       | Command                                     | Caching               |
+| ---------- | ------------------------------------------- | --------------------- |
+| Install    | `pnpm install --frozen-lockfile`            | pnpm store cache      |
+| Lint       | `turbo run lint`                            | Turborepo local cache |
+| Type-check | `turbo run type-check`                      | Turborepo local cache |
+| Test       | `turbo run test -- --coverage`              | Turborepo local cache |
+| Build      | `turbo run build`                           | Turborepo local cache |
+| Docker     | `docker build -t ghcr.io/gtcx/{repo}:{sha}` | Docker layer cache    |
 
-**Turborepo**: Parallel execution respects package dependency graph. Changed packages and their dependents are tested; unchanged packages use cached results. Remote cache (Vercel) shared across CI runners.
+**Turborepo**: Parallel execution respects package dependency graph. Changed packages and their dependents are tested; unchanged packages use cached results. Cache is local-per-runner.
 
 ### 2. Python Package
 

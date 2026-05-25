@@ -47,8 +47,8 @@ A page is a draft if its frontmatter has `status: 'draft'`. The default `pnpm de
 
 The static output (`tools/docs-site/dist/`) is what gets uploaded. Two paths are supported; the choice is operational, not a code change:
 
-- **Vercel:** point a Vercel project at this directory; build command `pnpm -F @gtcx/docs-site build`; output directory `tools/docs-site/dist`. Base path `/compliance` is set in `astro.config.mjs`.
-- **Cloudflare Pages / S3 + CloudFront:** same build command, upload `dist/` to the bucket, configure CloudFront to route `gtcx.io/compliance/*` to the bucket.
+- **Cloudflare Pages:** point a Cloudflare Pages project at this directory; build command `pnpm -F @gtcx/docs-site build`; output directory `tools/docs-site/dist`. Base path `/compliance` is set in `astro.config.mjs`.
+- **S3 + CloudFront (recommended for AWS parity):** same build command, upload `dist/` to the bucket, configure CloudFront to route `gtcx.io/compliance/*` to the bucket.
 
 The deploy decision is not gated on this ADR — it lands when the marketing site is ready to mount the subpath.
 
