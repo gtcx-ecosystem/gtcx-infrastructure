@@ -1,0 +1,107 @@
+# =============================================================================
+# Deploy to Staging
+# =============================================================================
+# Triggered on changes to Kubernetes manifests. Authenticates via OIDC,
+# applies the staging overlay, and verifies rollout health.
+#
+# Prerequisites:
+#   - AWS Deploy Role (OIDC) has EKS read/write access
+#   - GitHub Environment "staging" configured with protection rules (optional)
+# =============================================================================
+
+name: Deploy to Staging
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'infra/kubernetes/**'
+      - '.github/workflows/deploy-staging.yml'
+  workflow_dispatch: # Allow manual trigger
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AWS_REGION: af-south-1
+  CLUSTER_NAME: gtcx-staging
+  NAMESPACE: gtcx-staging
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: staging # Optional: add protection rules for manual approval
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Configure kubectl
+        run: |
+          aws eks update-kubeconfig \
+            --name "${{ env.CLUSTER_NAME }}" \
+            --region "${{ env.AWS_REGION }}"
+
+      - name: Deploy to staging
+        run: |
+          kubectl apply -k infra/kubernetes/overlays/staging/
+          echo "### Deployed to staging" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Commit: \`${GITHUB_SHA::8}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Cluster: ${{ env.CLUSTER_NAME }}" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Wait for rollouts
+        run: |
+          set +e
+          FAILED=0
+
+          for DEPLOYMENT in compliance-gateway-staging gtcx-agx-staging gtcx-protocols-staging; do
+            echo "Checking rollout for ${DEPLOYMENT}..."
+            if kubectl rollout status "deployment/${DEPLOYMENT}" \
+                -n "${{ env.NAMESPACE }}" --timeout=300s; then
+              echo "- ${DEPLOYMENT}: **healthy**" >> "$GITHUB_STEP_SUMMARY"
+            else
+              echo "- ${DEPLOYMENT}: **FAILED**" >> "$GITHUB_STEP_SUMMARY"
+              FAILED=1
+            fi
+          done
+
+          if [ "$FAILED" -ne 0 ]; then
+            echo "::error::One or more deployments failed to rollout"
+            exit 1
+          fi
+
+      - name: Smoke test — compliance-gateway health
+        run: |
+          # Port-forward to compliance-gateway and hit /health
+          kubectl port-forward -n "${{ env.NAMESPACE }}" \
+            "deployment/compliance-gateway-staging" 8080:3000 &
+          PF_PID=$!
+          sleep 5
+
+          HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
+            --max-time 10 \
+            http://localhost:8080/health || echo "000")
+
+          kill $PF_PID 2>/dev/null || true
+
+          if [ "$HTTP_CODE" = "200" ]; then
+            echo "- Smoke test (/health): **passed**" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "- Smoke test (/health): **failed** (HTTP ${HTTP_CODE})" >> "$GITHUB_STEP_SUMMARY"
+            echo "::error::Smoke test failed with HTTP ${HTTP_CODE}"
+            exit 1
+          fi
+
+      - name: Collect rollout evidence on failure
+        if: failure()
+        run: |
+          echo "### Rollout diagnostics" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          kubectl get pods -n "${{ env.NAMESPACE }}" >> "$GITHUB_STEP_SUMMARY" 2>&1 || true
+          echo '```' >> "$GITHUB_STEP_SUMMARY"

@@ -18,6 +18,7 @@ resources:
   - configmaps/base-config.yaml
   - configmaps/runtime-policies.yaml
   - services/audit-flush.yaml
+  - services/compliance-gateway.yaml
   - services/compliance-gateway-hpa.yaml
   - services/nats.yaml
   - services/redis.yaml

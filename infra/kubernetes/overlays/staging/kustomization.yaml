@@ -20,8 +20,9 @@ namespace: gtcx-staging
 resources:
   - ../../base
   - ingress.yaml
-  - ingress-nginx.yaml
-  - letsencrypt-issuer.yaml
+  # NOTE: ingress-nginx.yaml and letsencrypt-issuer.yaml are available as
+  # fallbacks in this directory but excluded from the active build until
+  # an nginx ingress controller is installed in the cluster. See #49.
   - network-policies.yaml
 
 nameSuffix: -staging
@@ -51,6 +52,11 @@ images:
 
 # Staging resource limits (moderate)
 patches:
+  # Compliance Gateway — Redis nonce store URL
+  - target:
+      kind: Deployment
+      name: compliance-gateway
+    path: patches/compliance-gateway-redis.yaml
   # Audit-flush — staging image + IRSA role + WORM bucket
   - path: audit-flush-patch.yaml
   # NetworkPolicy — per-environment database subnet CIDR
