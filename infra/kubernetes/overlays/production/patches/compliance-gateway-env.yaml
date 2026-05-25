@@ -1,0 +1,23 @@
+# =============================================================================
+# Compliance Gateway — Environment patch (production)
+# =============================================================================
+# Injects REDIS_URL and feature flags for audit bundles/query.
+# nameSuffix (-prod) is applied by the overlay kustomization.
+# =============================================================================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: compliance-gateway
+  namespace: gtcx
+spec:
+  template:
+    spec:
+      containers:
+        - name: compliance-gateway
+          env:
+            - name: REDIS_URL
+              value: 'redis://redis-prod.gtcx-production.svc.cluster.local:6379'
+            - name: AUDIT_BUNDLES_ENABLED
+              value: '1'
+            - name: AUDIT_QUERY_ENABLED
+              value: '1'

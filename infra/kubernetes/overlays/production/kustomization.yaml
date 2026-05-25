@@ -51,6 +51,11 @@ images:
 
 # Production resource configuration
 patches:
+  # Compliance Gateway — Redis nonce store URL + feature flags
+  - target:
+      kind: Deployment
+      name: compliance-gateway
+    path: patches/compliance-gateway-env.yaml
   # Audit-flush — production image (3 replicas) + IRSA role + WORM bucket
   - path: audit-flush-patch.yaml
 
