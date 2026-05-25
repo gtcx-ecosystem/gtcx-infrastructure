@@ -15,10 +15,10 @@ metadata:
   annotations:
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80}]'
-    # NOTE: Temporary HTTP-only while ACM certificate is being resolved.
-    # FIXME: Re-enable HTTPS once cert for *.staging.gtcx.trade is available.
-    # See docs/agile/cross-team-response-mobile-w1-2026-05-25.md for options.
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80},{"HTTPS":443}]'
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:af-south-1:348389439381:certificate/76306469-cb18-463b-be90-624599e1368b
+    alb.ingress.kubernetes.io/ssl-policy: ELBSecurityPolicy-TLS13-1-2-2021-06
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
     alb.ingress.kubernetes.io/healthcheck-path: /health
     alb.ingress.kubernetes.io/success-codes: '200'
     alb.ingress.kubernetes.io/group.name: gtcx-staging-api
