@@ -28,7 +28,7 @@ spec:
     spec:
       containers:
         - name: flusher
-          image: 348389439381.dkr.ecr.af-south-1.amazonaws.com/gtcx-audit-flush:v0.1.0-staging
+          image: 348389439381.dkr.ecr.af-south-1.amazonaws.com/gtcx-audit-flush:v0.1.1-staging
           env:
             - name: NATS_URL
               value: nats://nats.gtcx-staging.svc.cluster.local:4222
