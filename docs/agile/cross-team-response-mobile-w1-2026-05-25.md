@@ -45,7 +45,7 @@ No counter-proposal. No scope reduction.
 ### EXT-003 — audit-flush container (Sprint 7)
 
 - **ETA image push:** Wednesday 2026-05-28 (W1 day 3)
-- **Status:** ✅ **COMPLETE as of 2026-05-25.** Dockerfile verified, `@gtcx/audit-signer@^0.1.0` installed. Image `gtcx-audit-flush:v0.1.0` pushed to ECR `348389439381.dkr.ecr.af-south-1.amazonaws.com/gtcx-audit-flush` (staging tag `v0.1.0-staging` also available). Optional NATS integration test (`INT-A-1`, 3 pts) can run in parallel and is not a blocker.
+- **Status:** ✅ **COMPLETE as of 2026-05-25.** Dockerfile verified, `@gtcx/audit-signer@^0.1.0` installed. Image `gtcx-audit-flush:v0.1.0` pushed to ECR `348389439381.dkr.ecr.af-south-1.amazonaws.com/gtcx-audit-flush` (staging tag `v0.1.0-staging` also available). Terraform staging applied: IRSA role `arn:aws:iam::348389439381:role/gtcx-staging-audit-flush-irsa` + S3 WORM write policy created. EKS→DB security group rule created. Optional NATS integration test (`INT-A-1`, 3 pts) can run in parallel and is not a blocker.
 - **Risk:** Resolved.
 
 ### #50 — /audit/bundles verifier
