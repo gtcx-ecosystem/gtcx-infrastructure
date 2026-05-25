@@ -18,7 +18,7 @@ COPY package.json ./
 RUN apk add --no-cache tini && \
     npm install --omit=dev --no-package-lock --no-fund --no-audit \
       '@gtcx/audit-signer@^0.1.0' \
-      'nats@^2' \
+      '@nats-io/transport-node@^3' \
       '@aws-sdk/client-s3@^3'
 
 # -----------------------------------------------------------------------------

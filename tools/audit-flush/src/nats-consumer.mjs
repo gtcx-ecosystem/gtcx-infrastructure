@@ -24,7 +24,7 @@ const DURABLE_NAME = process.env.AUDIT_NATS_DURABLE || 'audit-flush';
  * @returns {Promise<{ stop: () => Promise<void> }>}
  */
 export async function startNatsConsumer(deps) {
-  const natsMod = await import('nats').catch(() => null);
+  const natsMod = await import('@nats-io/transport-node').catch(() => null);
   if (!natsMod) {
     console.error(JSON.stringify({
       level: 'warn',
