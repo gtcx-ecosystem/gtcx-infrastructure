@@ -22,12 +22,12 @@ review_cycle: 'on-change'
 
 All four MOB-W1 tickets are **confirmed in scope for W1** (2026-05-26 → 2026-05-30). Total capacity: 8 story points. Sprint owner: Platform Engineering Lead.
 
-| Ticket                      | Priority | Points | Status                        | In Scope?       |
-| --------------------------- | -------- | ------ | ----------------------------- | --------------- |
-| #49 staging URL + TLS       | P0       | 2      | Ingress fix on main           | ✅ Confirmed W1 |
-| #50 /audit/bundles verifier | P0       | 3      | **MERGED to main** 2026-05-25 | ✅ Confirmed W1 |
-| #51 nonce store + replay    | P0       | 1      | Complete in PR #56            | ✅ Confirmed W1 |
-| #52 /audit/query            | P0       | 2      | **MERGED to main** 2026-05-25 | ✅ Confirmed W1 |
+| Ticket                      | Priority | Points | Status                                 | In Scope?       |
+| --------------------------- | -------- | ------ | -------------------------------------- | --------------- |
+| #49 staging URL + TLS       | P0       | 2      | Ingress fix on main                    | ✅ Confirmed W1 |
+| #50 /audit/bundles verifier | P0       | 3      | **MERGED to main** 2026-05-25          | ✅ Confirmed W1 |
+| #51 nonce store + replay    | P0       | 1      | **MERGED** + Redis cross-replica store | ✅ Confirmed W1 |
+| #52 /audit/query            | P0       | 2      | **MERGED to main** 2026-05-25          | ✅ Confirmed W1 |
 
 No counter-proposal. No scope reduction.
 
@@ -60,7 +60,7 @@ No counter-proposal. No scope reduction.
 ### #51 — nonce store + replay rejection
 
 - **ETA deploy:** Thursday 2026-05-29 (same PR #56 as #50)
-- **Status:** Implementation complete. Ships bundled with #50.
+- **Status:** ✅ **COMPLETE + ENHANCED.** Core nonce gate merged with #50. Redis-backed cross-replica nonce store delivered (`tools/compliance-gateway/src/nonce-store/redis.mjs`) with `createNonceStore({ tenantId })` API — shared across agx/audit/crx/sgx, fallback to in-memory with WARN log. K8s Redis manifest committed. Deployment tracked in `docs/agile/issues/infra-redis-nonce-store.md`.
 
 ### #52 — /audit/query
 
