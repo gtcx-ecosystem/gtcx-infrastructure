@@ -55,7 +55,7 @@
     "tinyexec": "^1.1.2",
     "turbo": "^2.9.14",
     "typescript": "^5.7.0",
-    "typescript-eslint": "^8.59.2"
+    "typescript-eslint": "^8.60.0"
   },
   "pnpm": {
     "overrides": {
