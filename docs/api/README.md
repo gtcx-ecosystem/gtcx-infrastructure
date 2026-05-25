@@ -88,7 +88,9 @@ The canonical OpenAPI spec carries version metadata under `info.version` in `ope
 
 ## OpenAPI spec coverage
 
-The [`openapi.yaml`](./openapi.yaml) covers all 11 documented endpoints (full request / response / error schemas) plus the mobile-contract `/audit/bundles` endpoint. The mobile-contract endpoint is documented even though its implementation lives on the `feat/audit-bundles-verifier` feature branch (PR [#56](https://github.com/gtcx-ecosystem/gtcx-infrastructure/pull/56)); with the feature flag off the endpoint returns 404 (default route), and the spec documents the active-flag behavior.
+The [`openapi.yaml`](./openapi.yaml) covers all 12 documented endpoints (full request / response / error schemas), including the two mobile-contract endpoints: `/audit/bundles` (PR [#56](https://github.com/gtcx-ecosystem/gtcx-infrastructure/pull/56), `feat/audit-bundles-verifier`) and `/audit/query` (PR [#58](https://github.com/gtcx-ecosystem/gtcx-infrastructure/pull/58), `feat/audit-query`). Both are documented even though their implementations live on feature branches; with the feature flags off (`AUDIT_BUNDLES_ENABLED`, `AUDIT_QUERY_ENABLED`) the endpoints return 404 (default route), and the spec documents the active-flag behavior.
+
+The pluggable store architecture backing `/audit/query` is documented in [ADR-022](../architecture/decisions/ADR-022-pluggable-audit-query-store.md).
 
 ## What's NOT in this API
 
