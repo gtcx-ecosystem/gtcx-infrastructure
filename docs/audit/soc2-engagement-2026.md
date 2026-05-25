@@ -55,7 +55,7 @@ Stage gate S2→S3 requires SOC 2 Type 1 (per `docs/audit/master-audit-2026-05-1
 >
 > GTCX operates an AI-native compliance platform serving African commodity trade. Our infrastructure is documented as a 250+ document corpus including the master audit (`docs/audit/master-audit-2026-05-17.md`, core 8.48/10), a SIGNAL agentic-maturity scorecard (9.29/10), and 24+ operational runbooks.
 >
-> We are seeking SOC 2 Type 1 attestation against the Trust Service Criteria scope outlined in [`soc2-engagement-2026.md`](./soc2-engagement-2026.md). A penetration test is running in parallel (RFP in [`pen-test-rfp-2026.md`](./pen-test-rfp-2026.md), engagement window 2026-06-30 to 2026-07-11).
+> We are seeking SOC 2 Type 1 attestation against the Trust Service Criteria scope outlined in [`soc2-engagement-2026.md`](./soc2-engagement-2026.md). A penetration test is running in parallel (RFP in [`pen-test-rfp-2026.md`](./pen-test-rfp-2026.md), engagement window 2026-06-30 to 2026-07-11). Our latest master audit (2026-05-25) scores Partnership-Grade at 8.8/10 (certifiable) and Enterprise-Grade at 7.6/10 (pending external pen-test and SOC 2 attestation).
 >
 > Please confirm:
 >
