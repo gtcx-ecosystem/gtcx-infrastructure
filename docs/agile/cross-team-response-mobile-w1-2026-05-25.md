@@ -25,9 +25,9 @@ All four MOB-W1 tickets are **confirmed in scope for W1** (2026-05-26 → 2026-0
 | Ticket                      | Priority | Points | Status                        | In Scope?       |
 | --------------------------- | -------- | ------ | ----------------------------- | --------------- |
 | #49 staging URL + TLS       | P0       | 2      | Ingress fix on main           | ✅ Confirmed W1 |
-| #50 /audit/bundles verifier | P0       | 3      | PR #56 rebased, 17 gates PASS | ✅ Confirmed W1 |
+| #50 /audit/bundles verifier | P0       | 3      | **MERGED to main** 2026-05-25 | ✅ Confirmed W1 |
 | #51 nonce store + replay    | P0       | 1      | Complete in PR #56            | ✅ Confirmed W1 |
-| #52 /audit/query            | P0       | 2      | PR #58 rebased, 17 gates PASS | ✅ Confirmed W1 |
+| #52 /audit/query            | P0       | 2      | **MERGED to main** 2026-05-25 | ✅ Confirmed W1 |
 
 No counter-proposal. No scope reduction.
 
@@ -55,7 +55,7 @@ No counter-proposal. No scope reduction.
   - #49 ✅ (staging URL live by Tuesday)
   - EXT-003 ✅ (image in ECR by Wednesday)
   - gtcx-protocols#60: Production wiring (real TradePass DID resolver URL) lands as a **follow-up commit** once #60 closes. The mock DID resolver is already landed in PR #56; verifier ships with mock resolution and switches to real URL via config change (no redeploy).
-- **PR:** [#56](https://github.com/gtcx-ecosystem/gtcx-infrastructure/pull/56) — 8 commits, **rebased on main** (0701584), all 17 validation gates PASS. Ready for final review and merge once #49 is live.
+- **PR:** [#56](https://github.com/gtcx-ecosystem/gtcx-infrastructure/pull/56) — 8 commits, **MERGED to main** 2026-05-25. Deploys with #49.
 
 ### #51 — nonce store + replay rejection
 
@@ -65,7 +65,7 @@ No counter-proposal. No scope reduction.
 ### #52 — /audit/query
 
 - **ETA deploy:** Friday 2026-05-30 (W1 day 5, morning)
-- **PR:** [#58](https://github.com/gtcx-ecosystem/gtcx-infrastructure/pull/58) — 7 commits, **rebased on main** (0701584), all 17 validation gates PASS. Ready for review.
+- **PR:** [#58](https://github.com/gtcx-ecosystem/gtcx-infrastructure/pull/58) — 7 commits, **MERGED to main** 2026-05-25. Deploys with #49.
 - **Note:** Deploy scheduled for **Friday morning** (not afternoon) to give mobile team the afternoon for integration testing before the weekend.
 
 ---
