@@ -138,7 +138,7 @@ variable "tags" {
 
 provider "aws" {
   region            = var.region
-  use_fips_endpoint = true
+  use_fips_endpoint = contains(["us-east-1", "us-east-2", "us-west-1", "us-west-2", "us-gov-west-1", "us-gov-east-1"], var.region)
 
   default_tags {
     tags = merge(var.tags, {
