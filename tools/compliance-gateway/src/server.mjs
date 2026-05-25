@@ -39,6 +39,9 @@ import { startAdaptiveScheduler, defaultThresholds } from './adaptive-policy.mjs
 import { processBundle as processAuditBundle } from './audit-bundles/handler.mjs';
 import { createTradePassResolver, createMockResolver } from './audit-bundles/did-resolver.mjs';
 import { NonceGate } from './audit-bundles/nonce-gate.mjs';
+import { processQuery as processAuditQuery } from './audit-query/handler.mjs';
+import { InMemoryQueryStore } from './audit-query/store.mjs';
+import { NdjsonQueryStore } from './audit-query/ndjson-store.mjs';
 
 // In-flight /v1/query count, exposed to the HPA via the
 // compliance_gateway_inflight_requests metric (autoscaling.v2 Pods target).
@@ -116,6 +119,21 @@ const auditBundlesNonceGate = new NonceGate();
 // Silence linter for the mock resolver helper — it's imported so test
 // fixtures and the eventual integration test can inject one.
 void createMockResolver;
+
+// /audit/query wiring (feature-flagged)
+// ---------------------------------------------------------------------------
+
+const auditQueryEnabled = process.env.AUDIT_QUERY_ENABLED === '1';
+
+// Store selection by env var:
+// - AUDIT_QUERY_NDJSON_DIR=/path → NDJSON-file-backed (durable, staging-ready)
+// - unset                       → in-memory (dev / tests)
+// Production swaps for a WORM-backed store reading the same NDJSON
+// batches audit-flush writes; that requires AWS credentials and lands
+// when the audit-bundles ingestion path is live (gated on EXT-003).
+const auditQueryStore = process.env.AUDIT_QUERY_NDJSON_DIR
+  ? new NdjsonQueryStore({ rootDir: process.env.AUDIT_QUERY_NDJSON_DIR, fileExistenceMode: 'lazy' })
+  : new InMemoryQueryStore();
 
 /**
  * @param {import('node:http').IncomingMessage} req
@@ -566,6 +584,24 @@ const server = createServer(async (req, res) => {
         resolver: auditBundlesResolver,
         nonceGate: auditBundlesNonceGate,
         signAuditEvent,
+      });
+      return sendJson(res, result.status, result.body, req);
+    } else if (url === '/audit/query') {
+      if (!auditQueryEnabled) {
+        return sendJson(res, 404, { error: 'Not found' }, req);
+      }
+      const body = await readBody(req);
+      const headersLower = {};
+      for (const [k, v] of Object.entries(req.headers)) {
+        if (typeof v === 'string') headersLower[k.toLowerCase()] = v;
+      }
+      const result = await processAuditQuery({
+        method: req.method,
+        body,
+        headers: headersLower,
+        store: auditQueryStore,
+        signAuditEvent,
+        incrementCounter,
       });
       return sendJson(res, result.status, result.body, req);
     } else if (url === '/v1/audit/chain') {
