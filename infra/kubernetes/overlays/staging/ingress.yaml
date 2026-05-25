@@ -15,12 +15,10 @@ metadata:
   annotations:
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
-    # FIXME: ACM certificate references old account 293488310036.
-    # No *.gtcx.trade certificate exists in active account 348389439381.
-    # Use ingress-nginx.yaml + letsencrypt-issuer.yaml as fallback.
-    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:af-south-1:293488310036:certificate/gtcx-staging-wildcard
-    alb.ingress.kubernetes.io/ssl-policy: ELBSecurityPolicy-TLS13-1-2-2021-06
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80}]'
+    # NOTE: Temporary HTTP-only while ACM certificate is being resolved.
+    # FIXME: Re-enable HTTPS once cert for *.staging.gtcx.trade is available.
+    # See docs/agile/cross-team-response-mobile-w1-2026-05-25.md for options.
     alb.ingress.kubernetes.io/healthcheck-path: /health
     alb.ingress.kubernetes.io/success-codes: '200'
     alb.ingress.kubernetes.io/group.name: gtcx-staging-api
