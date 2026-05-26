@@ -1,0 +1,11 @@
+# Staging: use emptyDir for JetStream data instead of PVC.
+# EBS CSI driver is not installed; PVCs cannot provision volumes.
+- op: replace
+  path: /spec/volumeClaimTemplates
+  value: []
+- op: add
+  path: /spec/template/spec/volumes/-
+  value:
+    name: jetstream-data
+    emptyDir:
+      sizeLimit: 10Gi

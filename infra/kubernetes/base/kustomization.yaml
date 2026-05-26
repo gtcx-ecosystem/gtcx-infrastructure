@@ -18,6 +18,7 @@ resources:
   # CRDs are available (via Helm or direct install).
   - configmaps/base-config.yaml
   - configmaps/runtime-policies.yaml
+  - rbac/anomaly-detector-rollback.yaml
   # NOTE: audit-flush removed — image is ARM64-only, cluster nodes are AMD64.
   # Re-add when AMD64 image is built and pushed to ECR.
   # - services/audit-flush.yaml

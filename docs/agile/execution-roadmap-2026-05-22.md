@@ -300,7 +300,7 @@ Compressed retrospective form. Full per-sprint detail in commit history under ea
 ## Sprint MOB-W1 — Mobile-Prod Cross-Repo Week 1
 
 **Sprint window:** 2026-05-26 → 2026-05-30 (runs parallel to Sprint 7)
-**Sprint goal:** Land the four staging-environment dependencies that gtcx-mobile's 30-day production rollout needs for W1 (W4 Zimbabwe go-live). Cross-repo coordination via #gtcx-mobile-prod Slack standup, daily 09:00 GMT.
+**Sprint goal:** Land the four staging-environment dependencies that gtcx-mobile's 30-day production rollout needs for W1 (W4 Zimbabwe go-live). Cross-repo coordination via ClickUp / baseline-os standup, daily 09:00 GMT.
 **Capacity:** 8 story points
 **Sprint owner:** Platform Engineering Lead
 
@@ -417,7 +417,7 @@ Cross-references:
 | Risk                                                               | Severity | Likelihood | Mitigation                                                            |
 | ------------------------------------------------------------------ | -------- | ---------- | --------------------------------------------------------------------- |
 | gtcx-protocols#60 deployment slips → #50 production wiring blocked | High     | Medium     | Mock DID resolver landed in stub branch; switch to real on #60 close  |
-| EXT-003 audit-flush image slips → #50 deploy blocked               | High     | Low        | EXT-003 is Sprint 7's P0; visible in same #gtcx-mobile-prod standup   |
+| EXT-003 audit-flush image slips → #50 deploy blocked               | High     | Low        | EXT-003 is Sprint 7's P0; visible in same ClickUp / baseline-os standup   |
 | AWS creds expired or zone delegation missing → #49 cannot ship     | Medium   | Low        | Pre-check Monday; flag at standup if missing                          |
 | @gtcx/sdk not published → schema duplication across consumers      | Medium   | High       | Coordinate with gtcx-protocols on publish ownership (ADR-021 pattern) |
 

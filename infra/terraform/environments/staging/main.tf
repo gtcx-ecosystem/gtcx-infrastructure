@@ -40,6 +40,10 @@ terraform {
       source  = "hashicorp/vault"
       version = "~> 4.2"
     }
+    kubectl = {
+      source  = "gavinbunney/kubectl"
+      version = ">= 1.14"
+    }
   }
 
   backend "s3" {
@@ -159,6 +163,29 @@ variable "tags" {
 data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}
 
+data "aws_eks_cluster" "main" {
+  name = module.eks.cluster_name
+}
+
+data "aws_eks_cluster_auth" "main" {
+  name = module.eks.cluster_name
+}
+
+provider "helm" {
+  kubernetes {
+    host                   = data.aws_eks_cluster.main.endpoint
+    cluster_ca_certificate = base64decode(data.aws_eks_cluster.main.certificate_authority[0].data)
+    token                  = data.aws_eks_cluster_auth.main.token
+  }
+}
+
+provider "kubectl" {
+  host                   = data.aws_eks_cluster.main.endpoint
+  cluster_ca_certificate = base64decode(data.aws_eks_cluster.main.certificate_authority[0].data)
+  token                  = data.aws_eks_cluster_auth.main.token
+  load_config_file       = false
+}
+
 # -----------------------------------------------------------------------------
 # VPC Module
 # -----------------------------------------------------------------------------
@@ -221,6 +248,27 @@ module "eks" {
 }
 
 # -----------------------------------------------------------------------------
+# ALB Controller + ACM + WAF
+# -----------------------------------------------------------------------------
+
+module "alb" {
+  source = "../../modules/alb"
+
+  environment            = var.environment
+  cluster_name           = module.eks.cluster_name
+  cluster_endpoint       = module.eks.cluster_endpoint
+  cluster_ca_certificate = module.eks.cluster_ca_certificate
+  oidc_provider_arn      = module.eks.oidc_provider_arn
+  vpc_id                 = module.vpc.vpc_id
+  domain_name            = var.domain_name
+  rate_limit             = 500  # 100/min for staging (TradePass Wire #2 §10.1)
+
+  tags = merge(var.tags, {
+    Environment = "staging"
+  })
+}
+
+# -----------------------------------------------------------------------------
 # CI/CD Shared Deploy Role
 # -----------------------------------------------------------------------------
 
@@ -246,7 +294,7 @@ module "waf" {
 
   name_prefix = "gtcx-staging"
   scope       = "REGIONAL"
-  rate_limit  = 2000
+  rate_limit  = 500  # 100/min for staging (TradePass Wire #2 §10.1)
   aws_region  = var.region
 }
 
@@ -372,4 +420,14 @@ output "worm_audit_kms_key_arn" {
 output "audit_flush_role_arn" {
   description = "IAM role ARN to annotate the audit-flush ServiceAccount with"
   value       = module.audit_flush_irsa.role_arn
+}
+
+output "acm_certificate_arn" {
+  description = "ACM certificate ARN for HTTPS ingress"
+  value       = module.alb.certificate_arn
+}
+
+output "alb_waf_acl_arn" {
+  description = "WAF Web ACL ARN for ALB protection"
+  value       = module.alb.waf_web_acl_arn
 }

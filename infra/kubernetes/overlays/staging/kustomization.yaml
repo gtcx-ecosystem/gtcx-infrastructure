@@ -82,14 +82,39 @@ patches:
       - op: replace
         path: /spec/template/spec/containers/0/resources/requests/memory
         value: "384Mi"
+      - op: replace
+        path: /spec/replicas
+        value: 1
     target:
       kind: Deployment
+      name: gtcx-agx
+  - patch: |-
+      - op: replace
+        path: /spec/minReplicas
+        value: 1
+    target:
+      kind: HorizontalPodAutoscaler
       name: gtcx-agx
   # Protocols — reduce memory for t3.small nodes
   - patch: |-
       - op: replace
         path: /spec/template/spec/containers/0/resources/requests/memory
         value: "384Mi"
+      - op: replace
+        path: /spec/replicas
+        value: 1
     target:
       kind: Deployment
       name: gtcx-protocols
+  - patch: |-
+      - op: replace
+        path: /spec/minReplicas
+        value: 1
+    target:
+      kind: HorizontalPodAutoscaler
+      name: gtcx-protocols
+  # NATS — emptyDir instead of PVC (EBS CSI driver not installed in cluster)
+  - path: patches/nats-emptydir.yaml
+    target:
+      kind: StatefulSet
+      name: gtcx-nats

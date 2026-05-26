@@ -163,15 +163,10 @@ resource "aws_iam_role_policy" "alb_controller" {
         Resource = "*"
       },
       {
-        Sid      = "CreateSecurityGroupInVPC"
+        Sid      = "CreateSecurityGroup"
         Effect   = "Allow"
         Action   = "ec2:CreateSecurityGroup"
         Resource = "*"
-        Condition = {
-          StringEquals = {
-            "ec2:VpcId" = var.vpc_id
-          }
-        }
       },
       {
         Sid    = "ManageSecurityGroups"
@@ -375,7 +370,7 @@ resource "aws_wafv2_web_acl" "main" {
     }
   }
 
-  # Rate limiting — 2000 requests per 5 minutes per IP
+  # Rate limiting — configurable per environment (default 2000 = 400/min)
   rule {
     name     = "RateLimitPerIP"
     priority = 4
@@ -386,7 +381,7 @@ resource "aws_wafv2_web_acl" "main" {
 
     statement {
       rate_based_statement {
-        limit              = 2000
+        limit              = var.rate_limit
         aggregate_key_type = "IP"
       }
     }

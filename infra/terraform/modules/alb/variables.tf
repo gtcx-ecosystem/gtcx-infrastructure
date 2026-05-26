@@ -44,6 +44,12 @@ variable "chart_version" {
   default     = "1.7.1"
 }
 
+variable "rate_limit" {
+  description = "WAF rate limit per 5 minutes per IP"
+  type        = number
+  default     = 2000
+}
+
 variable "tags" {
   description = "Additional tags"
   type        = map(string)

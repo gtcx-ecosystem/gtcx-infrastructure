@@ -72,7 +72,7 @@ No counter-proposal. No scope reduction.
 
 ## 3. Daily Standup Commitment
 
-Platform Engineering Lead will join `#gtcx-mobile-prod` standup daily at 09:00 GMT Mon–Fri starting 2026-05-26.
+Platform Engineering Lead will join `ClickUp / baseline-os` standup daily at 09:00 GMT Mon–Fri starting 2026-05-26.
 
 **Standup format (infrastructure side):**
 
