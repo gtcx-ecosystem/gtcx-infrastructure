@@ -66,3 +66,9 @@ _delete/
 # Generated security reports
 infra/security/reports/rollback-evidence/
 *.tfplan
+
+# BaselineOS institutional memory (tracked)
+.baseline/
+!.baseline/definition.json
+!.baseline/memory/
+!.baseline/memory/**
