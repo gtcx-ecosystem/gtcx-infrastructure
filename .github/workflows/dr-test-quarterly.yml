@@ -79,7 +79,7 @@ jobs:
 
       - name: Upload DR evidence
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: dr-evidence-quarterly-${{ github.run_id }}
           path: |
@@ -117,7 +117,7 @@ jobs:
 
       - name: Upload quarterly report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: dr-quarterly-report-${{ github.run_id }}
           path: infra/security/reports/dr-evidence/quarterly/${{ github.event.inputs.environment || 'testnet' }}/${{ github.run_id }}/quarterly-report.md

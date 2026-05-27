@@ -114,7 +114,7 @@ jobs:
             --output-dir=infra/security/reports/release-evidence/ci/$(date -u +%Y%m%dT%H%M%SZ)
 
       - name: Upload release evidence
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: release-evidence-ci
           path: infra/security/reports/release-evidence/ci/
@@ -178,7 +178,7 @@ jobs:
           bash tools/load-tests/run-load-tests.sh --output-dir=infra/security/reports/load-evidence/ci/$(date -u +%Y%m%dT%H%M%SZ)
 
       - name: Upload load-test evidence
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: load-test-evidence-ci
           path: infra/security/reports/load-evidence/ci/
@@ -208,7 +208,7 @@ jobs:
           node eval.mjs --all | tee eval-results.json
 
       - name: Upload eval results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: eval-results-ci
@@ -377,7 +377,7 @@ jobs:
         run: kubectl kustomize infra/kubernetes/overlays/pen-test/ > infra/security/reports/kustomize-rendered/ci/pen-test.yaml
 
       - name: Upload Kustomize render evidence
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: kustomize-rendered-ci
           path: infra/security/reports/kustomize-rendered/ci/
@@ -411,7 +411,7 @@ jobs:
           docker compose -f infra/docker/docker-compose.dev.yml down
 
       - name: Upload DR evidence
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: dr-evidence-ci
           path: infra/security/reports/dr-evidence/ci/
@@ -480,7 +480,7 @@ jobs:
           output: 'sbom-cyclonedx.json'
 
       - name: Upload SBOM artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: sbom-infrastructure
           path: sbom-cyclonedx.json

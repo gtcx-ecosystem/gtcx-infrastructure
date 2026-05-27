@@ -79,7 +79,7 @@ jobs:
 
       - name: Upload DR evidence
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: dr-evidence-${{ github.run_id }}
           path: |
@@ -148,7 +148,7 @@ jobs:
 
       - name: Upload rollback evidence
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: rollback-evidence-${{ github.run_id }}
           path: infra/security/reports/rollback-evidence/${{ github.event.inputs.environment || 'testnet' }}/

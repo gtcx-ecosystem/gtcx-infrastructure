@@ -193,7 +193,7 @@ jobs:
 
       - name: Upload pod-kill report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: chaos-report-pod-kill-${{ github.run_id }}
           path: /tmp/chaos-report-pod-kill.json
@@ -281,7 +281,7 @@ jobs:
 
       - name: Upload network-partition report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: chaos-report-network-partition-${{ github.run_id }}
           path: /tmp/chaos-report-network-partition.json
@@ -361,7 +361,7 @@ jobs:
 
       - name: Upload AZ failure report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: chaos-report-az-failure-${{ github.run_id }}
           path: /tmp/chaos-report-az-failure.json
@@ -414,7 +414,7 @@ jobs:
           cat "$REPORT_FILE"
 
       - name: Upload summary report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: chaos-summary-${{ github.run_id }}
           path: /tmp/chaos-summary.md

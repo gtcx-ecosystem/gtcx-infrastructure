@@ -86,7 +86,7 @@ jobs:
 
       - name: Upload ZAP reports
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: evidence-dast
           path: reports/
@@ -163,7 +163,7 @@ jobs:
 
       - name: Upload container scan results
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: evidence-container-${{ matrix.image.name }}
           path: |
@@ -211,7 +211,7 @@ jobs:
 
       - name: Upload SAST results
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: evidence-sast
           path: sast-output/
@@ -263,7 +263,7 @@ jobs:
           fi
 
       - name: Upload audit results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: evidence-dependency-audit
           path: npm-audit-filtered.json
@@ -299,7 +299,7 @@ jobs:
             --commit="${{ github.sha }}"
 
       - name: Upload evidence package
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: sandbox-evidence-${{ env.ENVIRONMENT }}-${{ github.run_id }}
           path: evidence-package/
