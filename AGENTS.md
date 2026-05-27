@@ -64,3 +64,4 @@ Check `baseline-os/workstream/coordination/coordination-report-latest.md` for cr
 ---
 
 *Coordination contract added: 2026-05-26*
+\n## Credential Access\n\nBefore accessing any API key, token, or secret:\n\n1. Read **Protocol 19: Agent Credential Access** — `gtcx-docs/docs/governance/protocols/19-agent-credential-access/protocol.md`\n2. Request a lease from the vault. Never handle raw credential values.\n3. Never commit secrets. Never ask users for credentials in chat.\n
