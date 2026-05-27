@@ -64,4 +64,4 @@ Check `baseline-os/workstream/coordination/coordination-report-latest.md` for cr
 ---
 
 *Coordination contract added: 2026-05-26*
-\n## Credential Access\n\nBefore accessing any API key, token, or secret:\n\n1. Read **Protocol 19: Agent Credential Access** — `gtcx-docs/docs/governance/protocols/19-agent-credential-access/protocol.md`\n2. Request a lease from the vault. Never handle raw credential values.\n3. Never commit secrets. Never ask users for credentials in chat.\n
+\n## Credential Access\n\nThe credential vault is centrally located at `~/.baseline/vault` (SQLite, AES-256 encrypted).\n\nQuery the vault from any repo using the ecosystem baseline wrapper:\n\n```bash\n# List available credentials\n../bin/baseline vault list\n\n# Get a credential value\n../bin/baseline vault get ANTHROPIC_API_KEY\n\n# Check vault health\n../bin/baseline vault status\n```\n\nStandard env vars: `ANTHROPIC_API_KEY`, `OPENAI_API_KEY`, `DATABASE_URL`, `REDIS_URL`, `BASELINE_MASTER_KEY`.\n\nNever commit secrets. Never ask users for credentials in chat.\nRead Protocol 19 for the full standard.
