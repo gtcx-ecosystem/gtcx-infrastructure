@@ -126,13 +126,13 @@ target_composite: 10.0
 **Target date:** 2026-06-07  
 **Owner:** Compliance Platform
 
-| ID     | Action                                                                                                                                                              | Evidence To Produce                                                                              |
-| ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| W3-001 | Decide whether testnet-pilot requires WORM. If yes, create `gtcx-worm-audit-testnet-pilot-af-south-1`; if no, document why testnet-pilot is intentionally excluded. | AWS bucket evidence or explicit architectural exception.                                         |
-| W3-002 | Write one real signed NDJSON audit record to staging WORM.                                                                                                          | Object key, version ID, Object Lock retention, and KMS signature metadata.                       |
-| W3-003 | Verify the record with `@gtcx/audit-signer@0.1.0`.                                                                                                                  | Verification command output stored in audit evidence.                                            |
-| W3-004 | Confirm public or authenticated health evidence for staging runtime.                                                                                                | `/health` and `/metrics` evidence with expected status, auth model, and ALB behavior documented. |
-| W3-005 | Resolve or document `api.testnet.gtcxprotocol.org` DNS status.                                                                                                      | DNS record evidence or explicit decommission note.                                               |
+| ID     | Action                                                               | Evidence To Produce                                                                              |
+| ------ | -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| W3-001 | ~~Decide whether testnet-pilot requires WORM.~~                      | ~~Closed by ADR-023: testnet-pilot audit evidence routes to staging WORM with prefixed keys.~~   |
+| W3-002 | Write one real signed NDJSON audit record to staging WORM.           | Object key, version ID, Object Lock retention, and KMS signature metadata.                       |
+| W3-003 | Verify the record with `@gtcx/audit-signer@0.1.0`.                   | Verification command output stored in audit evidence.                                            |
+| W3-004 | Confirm public or authenticated health evidence for staging runtime. | `/health` and `/metrics` evidence with expected status, auth model, and ALB behavior documented. |
+| W3-005 | Resolve or document `api.testnet.gtcxprotocol.org` DNS status.       | DNS record evidence or explicit decommission note.                                               |
 
 **Exit criteria:** WORM claims are backed by AWS object-lock evidence and at least one independently verified signed record.
 

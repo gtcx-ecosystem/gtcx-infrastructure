@@ -123,7 +123,7 @@ This is now a credible production-candidate platform substrate, not yet referenc
 
 | Severity | Finding                                 | Impact                                                                             | Next Action                                                        |
 | -------- | --------------------------------------- | ---------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
-| P1       | Testnet-pilot WORM bucket absent        | Testnet audit claims lack AWS Object Lock evidence.                                | Apply or explicitly de-scope testnet-pilot WORM and capture proof. |
+| P1       | ~~Testnet-pilot WORM bucket absent~~    | ~~Testnet audit claims lack AWS Object Lock evidence.~~                            | ~~Closed by ADR-023: routes to staging WORM with prefixed keys.~~  |
 | P1       | External SOC 2 / pen-test not completed | Enterprise procurement still needs independent assurance.                          | Execute vendor engagements and add signed reports/retest evidence. |
 | P1       | Runtime endpoint evidence incomplete    | Staging public `/health` returns ALB 403; authenticated smoke not stored.          | Capture authenticated smoke evidence or expose safe public health. |
 | P2       | Release evidence not live-WORM-verified | Upload/retention automation exists, but live AWS execution proof is still pending. | Upload signed release evidence to WORM and verify retention.       |

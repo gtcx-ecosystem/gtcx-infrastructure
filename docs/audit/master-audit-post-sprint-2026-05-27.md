@@ -25,7 +25,7 @@ This is still not 10/10. The remaining ceiling is external execution evidence: v
 | Raw weighted score           |  8.95 | strong         | Weighted estimate after INT-1 through INT-5.                               |
 | Investor lens                |   8.9 | strong         | Execution credibility and repeatable evidence improved materially.         |
 | Enterprise buyer lens        |   8.6 | strong         | External attestations remain the procurement ceiling.                      |
-| Sovereign / DFI lens         |   8.8 | strong         | Regional WORM posture is strong; testnet-pilot WORM ambiguity remains.     |
+| Sovereign / DFI lens         |   8.9 | strong         | Regional WORM posture is strong; testnet-pilot resolved by ADR-023.        |
 | SIGNAL validator             |  9.60 | pass           | SIGNAL scorecard gate passes.                                              |
 | Compliance gateway coverage  | 98.55 | pass           | Gateway coverage rerun passes.                                             |
 | Redis nonce-store coverage   | 99.21 | pass           | Redis statements 99.21%, branches 95%.                                     |
@@ -79,7 +79,7 @@ This is still not 10/10. The remaining ceiling is external execution evidence: v
 | -------- | -------------------------------------------------- | ---------------------------------------------------------------------------------- |
 | P1       | Execute SOC 2 Type I engagement.                   | Signed auditor engagement, control walkthrough, report or gap letter.              |
 | P1       | Execute third-party penetration test.              | Final report, no open critical/high findings, retest proof.                        |
-| P1       | Resolve testnet-pilot WORM status.                 | AWS bucket Object Lock proof or explicit architecture exception.                   |
+| P1       | ~~Resolve testnet-pilot WORM status.~~             | ~~Closed by ADR-023: audit evidence routes to staging WORM with prefixed keys.~~   |
 | P1       | Capture authenticated staging runtime smoke.       | `runtime-smoke-evidence.json` against staging with scoped smoke credential.        |
 | P2       | Execute release-evidence WORM upload wrapper live. | `worm-upload-execution.json` with version ID, Object Lock mode, retain-until date. |
 | P2       | Run DR/fire-drill exercise.                        | Exercise report with timestamps, RTO/RPO, defects, fixes.                          |

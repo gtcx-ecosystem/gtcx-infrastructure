@@ -16,7 +16,7 @@
   },
   "findings": {
     "p0": 0,
-    "p1": 3,
+    "p1": 2,
     "p2": 1
   },
   "gates": {
@@ -65,7 +65,7 @@
   },
   "remainingGaps": [
     "External SOC 2 Type I and third-party penetration-test execution are pending vendor/legal completion.",
-    "gtcx-worm-audit-testnet-pilot-af-south-1 is absent from the AWS account (Terraform ready; requires terraform apply).",
+    "Testnet-pilot WORM resolved via ADR-023: audit evidence routes to staging WORM bucket with prefixed keys.",
     "Runtime smoke evidence command is implemented; authenticated staging execution still requires a scoped smoke credential.",
     "Signed release evidence is generated and verified locally; WORM upload and retention verification are not yet automated end to end."
   ]

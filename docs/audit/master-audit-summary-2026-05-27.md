@@ -38,21 +38,21 @@ The remediation closed the prior hygiene cap: lint, build, format, test, full va
 
 ## Scores
 
-| Score Lens                     | Score | Band        | Meaning                                                                        |
-| ------------------------------ | ----: | ----------- | ------------------------------------------------------------------------------ |
-| Core weighted score            |   9.0 | strong      | Repo-controlled sprint gates are green; assurance/runtime gaps remain.         |
-| Raw weighted score             |  8.95 | strong      | Weighted score before rounding.                                                |
-| Investor lens                  |   8.6 | strong      | Trust substrate and execution credibility are materially stronger.             |
-| Enterprise buyer lens          |   8.3 | strong beta | Procurement hygiene is strong; external attestations remain pending.           |
-| African Sovereign / DFI lens   |   8.6 | strong      | Regional WORM and low-connectivity controls are strong; testnet proof remains. |
-| SIGNAL validator               |  9.60 | strong      | Agentic scorecard is strong and independently passes.                          |
-| Compliance gateway coverage    | 98.55 | strong      | Coverage gate passes for main gateway surface.                                 |
-| Replay protection coverage     | 93.61 | strong      | Coverage gate passes for replay protection surface.                            |
-| Redis nonce-store coverage     | 95.00 | strong      | Redis branch/error coverage now clears the >90% target.                        |
-| Production WORM Object Lock    |  PASS | strong      | Production bucket has Object Lock in COMPLIANCE mode for 2557 days.            |
-| Staging WORM Object Lock       |  PASS | strong      | Staging bucket has Object Lock in COMPLIANCE mode for 2557 days.               |
-| Staging signed WORM record     |  PASS | strong      | Staging WORM record is signed, retained, versioned, and verifier-valid.        |
-| Testnet-pilot WORM Object Lock |  OPEN | gap         | No matching testnet-pilot WORM bucket found.                                   |
+| Score Lens                     | Score | Band        | Meaning                                                                              |
+| ------------------------------ | ----: | ----------- | ------------------------------------------------------------------------------------ |
+| Core weighted score            |   9.0 | strong      | Repo-controlled sprint gates are green; assurance/runtime gaps remain.               |
+| Raw weighted score             |  8.95 | strong      | Weighted score before rounding.                                                      |
+| Investor lens                  |   8.6 | strong      | Trust substrate and execution credibility are materially stronger.                   |
+| Enterprise buyer lens          |   8.3 | strong beta | Procurement hygiene is strong; external attestations remain pending.                 |
+| African Sovereign / DFI lens   |   8.9 | strong      | Regional WORM and low-connectivity controls are strong; testnet resolved by ADR-023. |
+| SIGNAL validator               |  9.60 | strong      | Agentic scorecard is strong and independently passes.                                |
+| Compliance gateway coverage    | 98.55 | strong      | Coverage gate passes for main gateway surface.                                       |
+| Replay protection coverage     | 93.61 | strong      | Coverage gate passes for replay protection surface.                                  |
+| Redis nonce-store coverage     | 95.00 | strong      | Redis branch/error coverage now clears the >90% target.                              |
+| Production WORM Object Lock    |  PASS | strong      | Production bucket has Object Lock in COMPLIANCE mode for 2557 days.                  |
+| Staging WORM Object Lock       |  PASS | strong      | Staging bucket has Object Lock in COMPLIANCE mode for 2557 days.                     |
+| Staging signed WORM record     |  PASS | strong      | Staging WORM record is signed, retained, versioned, and verifier-valid.              |
+| Testnet-pilot WORM Object Lock |  PASS | exception   | ADR-023: routes to staging WORM with prefixed keys; no dedicated bucket needed.      |
 
 ---
 
@@ -88,12 +88,12 @@ Remaining gaps:
 
 ## What Is Blocking
 
-| Severity | Finding                          | Practical Impact                                                                           |
-| -------- | -------------------------------- | ------------------------------------------------------------------------------------------ |
-| P1       | External assurance pending       | Enterprise procurement still needs vendor SOC 2 / pen-test proof.                          |
-| P1       | Testnet-pilot WORM bucket absent | Testnet audit claims are not backed by bucket evidence.                                    |
-| P1       | Runtime endpoint evidence gap    | Live health/metrics evidence needs authenticated smoke proof.                              |
-| P2       | Live WORM release evidence proof | 10/10 requires execution of upload and retention verification for signed release evidence. |
+| Severity | Finding                              | Practical Impact                                                                           |
+| -------- | ------------------------------------ | ------------------------------------------------------------------------------------------ |
+| P1       | External assurance pending           | Enterprise procurement still needs vendor SOC 2 / pen-test proof.                          |
+| P1       | ~~Testnet-pilot WORM bucket absent~~ | ~~Closed by ADR-023: routes to staging WORM with prefixed keys.~~                          |
+| P1       | Runtime endpoint evidence gap        | Live health/metrics evidence needs authenticated smoke proof.                              |
+| P2       | Live WORM release evidence proof     | 10/10 requires execution of upload and retention verification for signed release evidence. |
 
 ---
 
