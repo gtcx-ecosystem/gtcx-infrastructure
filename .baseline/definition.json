@@ -1,0 +1,411 @@
+{
+  "organization": {
+    "name": "GTCX",
+    "voice": "Technical, authoritative, institutional",
+    "industry": "Commodity Trade & Verification",
+    "size": "startup",
+    "formality": "formal"
+  },
+  "terminology": {
+    "preferred": {
+      "verification": [
+        "validation",
+        "checking"
+      ],
+      "commodity": [
+        "product",
+        "good"
+      ],
+      "producer": [
+        "farmer",
+        "miner",
+        "supplier"
+      ],
+      "TradePass": [
+        "trade pass",
+        "tradepass"
+      ],
+      "BaselineOS": [
+        "baseline os",
+        "Baseline OS",
+        "baseline-os"
+      ]
+    },
+    "glossary": {
+      "AGX": "Agricultural Exchange",
+      "CRX": "Commodity Resource Exchange",
+      "SGX": "Standards & Grading Exchange",
+      "NDPC": "National Data Protection Commission (Ghana)",
+      "AfCFTA": "African Continental Free Trade Area",
+      "DFI": "Development Finance Institution",
+      "NDT": "Non-Destructive Testing",
+      "RBI": "Risk-Based Inspection",
+      "COCOBOD": "Ghana Cocoa Board",
+      "FIC": "Financial Intelligence Centre",
+      "POPIA": "Protection of Personal Information Act (South Africa)",
+      "GCI": "Global Compliance Index",
+      "PvP": "Payment versus Payment"
+    },
+    "banned": [
+      "blockchain",
+      "Web3",
+      "crypto",
+      "token",
+      "decentralized",
+      "NFT",
+      "mining pool"
+    ]
+  },
+  "syntax": {
+    "commands": {
+      "status": {
+        "produces": "status-report",
+        "description": "System status report",
+        "aliases": [
+          "s",
+          "info"
+        ],
+        "format": "report"
+      },
+      "retro": {
+        "produces": "retrospective",
+        "description": "Sprint retrospective",
+        "aliases": [
+          "retrospective",
+          "review"
+        ],
+        "format": "document",
+        "chain": [
+          "sprint-review",
+          "reflect",
+          "sprint-insights",
+          "document"
+        ]
+      },
+      "help": {
+        "produces": "help",
+        "description": "Command reference",
+        "aliases": [
+          "h"
+        ],
+        "format": "document"
+      },
+      "platform-status": {
+        "produces": "status-report",
+        "description": "Status report for a GTCX platform",
+        "aliases": [
+          "ps"
+        ],
+        "format": "report",
+        "parameters": {
+          "platform": {
+            "description": "Platform name (agx, crx, sgx, veritas, pathways, ops)",
+            "required": true,
+            "type": "string"
+          }
+        }
+      },
+      "compliance-check": {
+        "produces": "compliance-assessment",
+        "description": "Run compliance assessment against a standard",
+        "aliases": [
+          "cc"
+        ],
+        "format": "report",
+        "parameters": {
+          "standard": {
+            "description": "Standard to check (ndpc, afcfta, cocobod)",
+            "required": true,
+            "type": "string"
+          }
+        },
+        "chain": [
+          "scope-assessment",
+          "gap-analysis",
+          "remediation-plan",
+          "evidence-bundle"
+        ]
+      },
+      "trade-analysis": {
+        "produces": "trade-analysis",
+        "description": "Analyze trade corridor or commodity flow",
+        "format": "analysis",
+        "parameters": {
+          "corridor": {
+            "description": "Trade corridor (e.g., ghana-uae)",
+            "type": "string"
+          }
+        }
+      },
+      "ecosystem-review": {
+        "produces": "ecosystem-review",
+        "description": "Review AI operations across the GTCX ecosystem",
+        "format": "report",
+        "chain": [
+          "inventory",
+          "assessment",
+          "recommendations"
+        ]
+      },
+      "inspection-report": {
+        "produces": "inspection-report",
+        "description": "Generate inspection report (SIS Inspections pattern)",
+        "format": "report",
+        "parameters": {
+          "asset": {
+            "description": "Asset identifier",
+            "required": true,
+            "type": "string"
+          },
+          "standard": {
+            "description": "Applicable standard",
+            "default": "API 510",
+            "type": "string"
+          }
+        },
+        "chain": [
+          "scope",
+          "findings",
+          "remediation",
+          "letter",
+          "certificate"
+        ]
+      }
+    },
+    "lexicon": {
+      "ndt": {
+        "meaning": "Non-Destructive Testing",
+        "context": "inspection methodology"
+      },
+      "rbi": {
+        "meaning": "Risk-Based Inspection",
+        "context": "inspection planning"
+      },
+      "api-510": {
+        "meaning": "Pressure Vessel Inspection Code",
+        "context": "standard reference"
+      },
+      "dpia": {
+        "meaning": "Data Protection Impact Assessment",
+        "context": "compliance"
+      },
+      "roo": {
+        "meaning": "Rules of Origin",
+        "context": "AfCFTA trade compliance"
+      }
+    }
+  },
+  "templates": {},
+  "authority": {
+    "levels": {
+      "developer": {
+        "spend_limit": 50
+      },
+      "platform-lead": {
+        "spend_limit": 500,
+        "approves": [
+          "deployment"
+        ]
+      },
+      "engineering-director": {
+        "spend_limit": 5000,
+        "approves": [
+          "architecture",
+          "vendor"
+        ]
+      },
+      "founder": {
+        "spend_limit": 50000,
+        "approves": [
+          "all"
+        ]
+      }
+    }
+  },
+  "workflows": {
+    "deployment": [
+      "code-review",
+      "ci-pass",
+      "staging-verify",
+      "production-deploy"
+    ],
+    "compliance_report": [
+      "data-collection",
+      "gap-analysis",
+      "remediation",
+      "evidence-export"
+    ],
+    "pilot_onboarding": [
+      "org-config",
+      "first-produce",
+      "quality-review",
+      "feedback"
+    ]
+  },
+  "layers": {
+    "lang": {
+      "terminology": {
+        "AGX": "Agricultural Exchange",
+        "CRX": "Commodity Resource Exchange",
+        "SGX": "Standards & Grading Exchange",
+        "NDPC": "National Data Protection Commission (Ghana)",
+        "AfCFTA": "African Continental Free Trade Area",
+        "DFI": "Development Finance Institution",
+        "NDT": "Non-Destructive Testing",
+        "RBI": "Risk-Based Inspection",
+        "COCOBOD": "Ghana Cocoa Board",
+        "FIC": "Financial Intelligence Centre",
+        "POPIA": "Protection of Personal Information Act (South Africa)",
+        "GCI": "Global Compliance Index",
+        "PvP": "Payment versus Payment"
+      },
+      "bannedTerms": [
+        "blockchain",
+        "Web3",
+        "crypto",
+        "token",
+        "decentralized",
+        "NFT",
+        "mining pool"
+      ],
+      "domainIntents": [],
+      "injectionResistanceLevel": "standard",
+      "outputAttribution": true,
+      "intentConfidenceThreshold": 0.6
+    },
+    "frame": {
+      "roles": {
+        "developer": {
+          "read": [
+            "*"
+          ],
+          "write": [],
+          "restricted": []
+        },
+        "platform-lead": {
+          "read": [
+            "*"
+          ],
+          "write": [
+            "deployment"
+          ],
+          "restricted": []
+        },
+        "engineering-director": {
+          "read": [
+            "*"
+          ],
+          "write": [
+            "architecture",
+            "vendor"
+          ],
+          "restricted": []
+        },
+        "founder": {
+          "read": [
+            "*"
+          ],
+          "write": [
+            "all"
+          ],
+          "restricted": []
+        }
+      },
+      "trustThresholds": {
+        "simple": 50,
+        "moderate": 60,
+        "complex": 70,
+        "epic": 85
+      },
+      "defaultAuthority": "system",
+      "frameworkComplianceEnabled": false,
+      "dependencyAuditEnabled": false,
+      "invocationTracingEnabled": true
+    },
+    "studio": {
+      "provenanceRequired": true,
+      "artifactFormats": [
+        "json",
+        "html"
+      ],
+      "templatePaths": [],
+      "hashAlgorithm": "sha256",
+      "provenanceChainEnabled": true,
+      "generationAttribution": true
+    },
+    "govern": {
+      "enabled": true,
+      "principles": [],
+      "complianceRegimes": [
+        "NDPC",
+        "AfCFTA",
+        "COCOBOD"
+      ],
+      "auditDepth": "full"
+    },
+    "experience": {
+      "consentRequired": true,
+      "oversightThreshold": "epic",
+      "maxAutonomousComplexity": "complex",
+      "oversightMode": "optional",
+      "progressiveDisclosure": true,
+      "wcagLevel": "aa"
+    },
+    "autonomy": {
+      "defaultTrustScore": 70,
+      "trustGrowthRate": 0.02,
+      "trustDecayRate": 0.05,
+      "trustMinimum": 20,
+      "maxConcurrentAgents": 10,
+      "disabledWorkflows": [],
+      "autonomyScope": "local",
+      "humanInLoopMode": "never",
+      "escalationThreshold": 50
+    },
+    "persona": {
+      "personas": [
+        {
+          "id": "developer",
+          "name": "Developer",
+          "role": "developer",
+          "domains": [],
+          "expertise": []
+        },
+        {
+          "id": "platform-lead",
+          "name": "Platform-lead",
+          "role": "platform-lead",
+          "domains": [
+            "deployment"
+          ],
+          "expertise": []
+        },
+        {
+          "id": "engineering-director",
+          "name": "Engineering-director",
+          "role": "engineering-director",
+          "domains": [
+            "architecture",
+            "vendor"
+          ],
+          "expertise": []
+        },
+        {
+          "id": "founder",
+          "name": "Founder",
+          "role": "founder",
+          "domains": [
+            "all"
+          ],
+          "expertise": []
+        }
+      ],
+      "defaultPersona": "system",
+      "trustBoundary": "flexible",
+      "driftThreshold": 0.3,
+      "sessionIsolation": true,
+      "crossSessionMemory": true
+    }
+  },
+  "version": "1.0"
+}
