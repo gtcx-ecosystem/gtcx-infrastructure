@@ -64,6 +64,8 @@ importers:
         specifier: ^3.4.0
         version: 3.8.1
 
+  tools/anomaly-detector: {}
+
   tools/audit-flush:
     dependencies:
       '@aws-sdk/client-s3':
@@ -112,6 +114,8 @@ importers:
         version: 3.25.76
 
   tools/compliance-gateway-mcp: {}
+
+  tools/control-plane: {}
 
   tools/deployment-guard:
     devDependencies:

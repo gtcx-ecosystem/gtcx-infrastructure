@@ -1,0 +1,16 @@
+{
+  "name": "@gtcx/anomaly-detector",
+  "version": "0.1.0",
+  "description": "Audit-chain anomaly detection CronJob: flags volume drops, off-hours spikes, DID-pattern outliers",
+  "type": "module",
+  "main": "detector.mjs",
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "start": "node detector.mjs"
+  },
+  "engines": {
+    "node": ">=20.18.0"
+  },
+  "license": "MIT",
+  "private": true
+}

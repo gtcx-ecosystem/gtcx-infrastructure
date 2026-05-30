@@ -1,15 +1,34 @@
 packages:
   # Infrastructure
   - 'infra/migrations'
-  # Tools
+  # Tools — Node ESM workspace packages with their own package.json,
+  # tests, and (where applicable) Dockerfile + npm publication target.
+  - 'tools/anomaly-detector'
+  - 'tools/audit-flush'
   - 'tools/audit-signer'
   - 'tools/compliance-data'
   - 'tools/compliance-gateway'
-  - 'tools/replay-protection'
-  - 'tools/deployment-guard'
-  - 'tools/low-bandwidth'
-  - 'tools/ussd-handler'
-  - 'tools/eval-pipeline'
   - 'tools/compliance-gateway-mcp'
-  - 'tools/audit-flush'
+  - 'tools/control-plane'
+  - 'tools/deployment-guard'
   - 'tools/docs-site'
+  - 'tools/eval-pipeline'
+  - 'tools/low-bandwidth'
+  - 'tools/replay-protection'
+  - 'tools/ussd-handler'
+
+# ADR-019 exemptions — directories under `tools/` that are NOT
+# workspace packages by design. Each has a single-purpose surface
+# (a validator script, a k6 load test, a markdown template) where
+# pulling in a full package.json + dependency graph would be cargo-
+# culting more than it would solve. Listed here so the workspace
+# discipline is explicit and the boundary check has something to
+# point at when a new dir lands without a justification.
+#
+#   tools/chaos              — single .test.mjs invoked from validate.sh
+#   tools/contract-tests     — single .test.mjs cross-repo schema fixture
+#   tools/policy             — root pnpm check:* delegates (4 .mjs files)
+#   tools/scripts            — root pnpm script delegates + validators
+#   tools/kubectl-access     — bash script + audit log only
+#   tools/load-tests         — k6 .js files (separate runtime, not Node)
+#   tools/templates          — markdown templates only
