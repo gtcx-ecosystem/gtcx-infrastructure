@@ -24,7 +24,9 @@
  */
 
 import { createServer } from 'node:http';
+
 import { verifyChain, fromNdjson } from '@gtcx/audit-signer';
+
 import {
   startNatsConsumer,
   drainNats,
@@ -52,7 +54,10 @@ if (!BUCKET) {
 }
 
 let buffer = [];
-const s3 = buildS3Client({ region: REGION });
+// Fail-closed: in production, refuses to start if @aws-sdk/client-s3 is
+// not loadable. Non-production runs can opt into the stub by setting
+// AUDIT_S3_ALLOW_STUB=1 (see s3-uploader.mjs).
+const s3 = await buildS3Client({ region: REGION });
 
 // ---------------------------------------------------------------------------
 // Batch flusher

@@ -19,9 +19,12 @@ import {
 import { _resetForTests as resetS3 } from '../src/s3-uploader.mjs';
 
 // Set required env BEFORE importing the index so its startup guard
-// doesn't fire process.exit during module load.
+// doesn't fire process.exit during module load. AUDIT_S3_ALLOW_STUB=1
+// permits the no-op S3 client in this unit-test environment where
+// @aws-sdk/client-s3 may not be installed. Production must fail closed.
 process.env.AUDIT_S3_BUCKET = 'gtcx-test-bucket';
 process.env.NODE_ENV = 'test';
+process.env.AUDIT_S3_ALLOW_STUB = '1';
 const { flushBatch, tenantFromSubject } = await import('../src/index.mjs');
 
 function makeChainEnvelopes(count, subject = 'gtcx.audit.compliance-gateway.pilot') {
