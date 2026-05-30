@@ -27,6 +27,7 @@ import {
   resetAuditSigner,
   buildEvidenceBundle,
   exportChainNdjson,
+  getChainState,
 } from '../src/audit.mjs';
 
 function captureStdout(fn) {
@@ -127,6 +128,19 @@ describe('buildEvidenceBundle — filters', () => {
       () => buildEvidenceBundle({ tenantId: '' }),
       /tenantId is required/,
     );
+  });
+
+  it('getChainState returns inMemoryVerified + verifiedScope (not the misleading "verified")', () => {
+    captureStdout(() => {
+      signAuditEvent({ actor: 'a', action: 'evt', target: 'x', tenantId: 'default' });
+    });
+    const state = getChainState();
+    assert.strictEqual(typeof state.inMemoryVerified, 'boolean');
+    assert.strictEqual(state.inMemoryVerified, true);
+    assert.strictEqual(state.verifiedScope, 'full-chain');
+    // The misleading prior field is gone — protects callers that assumed
+    // whole-chain coverage from being silently misled after a checkpoint.
+    assert.strictEqual(state.verified, undefined);
   });
 
   it('exportChainNdjson returns NDJSON text', () => {

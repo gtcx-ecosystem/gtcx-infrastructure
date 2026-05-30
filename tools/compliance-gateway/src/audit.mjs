@@ -146,6 +146,33 @@ export function signAuditEvent({ actor, action, target, reason, tenantId, payloa
   // shipped to log aggregation, optionally NATS JetStream). The in-memory
   // copy is for fast verification on /v1/audit/chain and /v1/audit/verify.
   if (chain.records.length > MAX_IN_MEMORY_RECORDS) {
+    // Verify BEFORE discard. The records about to be evicted were
+    // shipped to the durable sink; if they're invalid here it means
+    // either the chain was tampered in-memory OR we shipped tampered
+    // records to the sink (much worse). Either way: don't silently
+    // truncate. Emit an integrity violation and skip the truncation
+    // so the bad records remain in memory for forensic inspection
+    // until the next process restart.
+    const preCheck = verifyChain(chain);
+    if (!preCheck.valid) {
+      incrementCounter('compliance_gateway_audit_chain_integrity_violations_total', {
+        reason: preCheck.reason ?? 'unknown',
+      });
+      console.error(JSON.stringify({
+        level: 'fatal',
+        type: 'audit.chain.integrity_violation',
+        firstInvalidIndex: preCheck.firstInvalidIndex,
+        reason: preCheck.reason,
+        checkpointCount,
+        recordCount: chain.records.length,
+        message:
+          'Refusing to checkpoint a chain that does not verify. The in-memory ' +
+          'window will continue to grow until the next process restart so the ' +
+          'bad records are available for forensic inspection. Investigate ' +
+          'audit.sink integrity immediately.',
+      }));
+      return signed;
+    }
     checkpointHash = chain.lastHash;
     checkpointCount += chain.records.length;
     chain.records.length = 0;
@@ -168,15 +195,28 @@ export function signAuditEvent({ actor, action, target, reason, tenantId, payloa
  * that have been checkpointed out of memory. The chain is still verifiable
  * from the durable sink via `verifyAuditBody(ndjson)`.
  *
- * @returns {{ lastHash: string; recordCount: number; totalRecords: number; checkpointHash: string; verified: boolean }}
+ * The `inMemoryVerified` flag covers ONLY the in-memory window (records
+ * since the last checkpoint). Checkpointed-out records were verified
+ * before discard; their integrity is asserted by `checkpointHash` and
+ * preserved in the durable sink. The prior `verified` field name was
+ * misleading because it suggested whole-chain coverage; consumers
+ * relying on it for trust signals could be misled after the first
+ * checkpoint.
+ *
+ * @returns {{ lastHash: string; recordCount: number; totalRecords: number; checkpointHash: string; inMemoryVerified: boolean; verifiedScope: string }}
  */
 export function getChainState() {
+  const inMemoryVerified = verifyChain(chain).valid;
   return {
     lastHash: chain.lastHash,
     recordCount: chain.records.length,
     totalRecords: checkpointCount + chain.records.length,
     checkpointHash,
-    verified: verifyChain(chain).valid,
+    inMemoryVerified,
+    verifiedScope:
+      checkpointCount === 0
+        ? 'full-chain'
+        : `in-memory-window-since-checkpoint:${checkpointHash}`,
   };
 }
 

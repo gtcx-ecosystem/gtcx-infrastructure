@@ -8,6 +8,7 @@
 import assert from 'node:assert';
 import { createServer, request } from 'node:http';
 import { describe, it, before, after } from 'node:test';
+
 import { resetAuditSigner, resetChain, getChainState } from '../src/audit.mjs';
 
 let testServer;
@@ -118,7 +119,8 @@ describe('Audit-Signer Integration', () => {
       assert.strictEqual(res.status, 200);
       // The request's own auth:success event is in the chain by the time the body is built.
       assert.strictEqual(res.body.recordCount, 1);
-      assert.strictEqual(res.body.verified, true);
+      assert.strictEqual(res.body.inMemoryVerified, true);
+      assert.strictEqual(res.body.verifiedScope, 'full-chain');
       assert.ok(res.body.lastHash);
     });
 
@@ -133,7 +135,8 @@ describe('Audit-Signer Integration', () => {
       });
       assert.strictEqual(res.status, 200);
       assert.ok(res.body.recordCount >= 1);
-      assert.strictEqual(res.body.verified, true);
+      assert.strictEqual(res.body.inMemoryVerified, true);
+      assert.strictEqual(res.body.verifiedScope, 'full-chain');
       assert.ok(res.body.lastHash);
     });
 

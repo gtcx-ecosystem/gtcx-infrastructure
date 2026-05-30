@@ -155,7 +155,7 @@ describe('audit chain recovery across pod restart', () => {
     // an external auditor verifies each segment with verifyChain.
     const stateAfter = getChainState();
     assert.strictEqual(stateAfter.recordCount, 3);
-    assert.ok(stateAfter.verified);
+    assert.ok(stateAfter.inMemoryVerified);
     assert.notStrictEqual(stateAfter.lastHash, lastHashBeforeRestart);
   });
 });
