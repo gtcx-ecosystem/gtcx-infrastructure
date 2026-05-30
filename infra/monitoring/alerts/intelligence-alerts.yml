@@ -14,6 +14,7 @@ groups:
           severity: critical
           team: intelligence
         annotations:
+          runbook_url: 'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/docs/operations/runbooks/alerts.md#intelligencehigherrorrate'
           summary: '{{ $labels.service }} error rate > 1%'
           description: 'Service {{ $labels.service }} has error rate {{ $value | humanizePercentage }} over the last 5 minutes.'
 
@@ -30,6 +31,7 @@ groups:
           severity: warning
           team: intelligence
         annotations:
+          runbook_url: 'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/docs/operations/runbooks/alerts.md#intelligenceelevatederrorrate'
           summary: '{{ $labels.service }} error rate > 0.5%'
 
       # ANISA LLM latency p99 > 5s (critical)
@@ -40,6 +42,7 @@ groups:
           severity: critical
           team: intelligence
         annotations:
+          runbook_url: 'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/docs/operations/runbooks/alerts.md#anisahighllmlatency'
           summary: 'ANISA LLM p99 latency > 5s'
           description: 'p99 LLM latency is {{ $value }}s'
 
@@ -51,6 +54,7 @@ groups:
           severity: warning
           team: intelligence
         annotations:
+          runbook_url: 'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/docs/operations/runbooks/alerts.md#anisaelevatedllmlatency'
           summary: 'ANISA LLM p99 latency > 3s'
 
       # Cortex event buffer > 90% (critical)
@@ -61,6 +65,7 @@ groups:
           severity: critical
           team: intelligence
         annotations:
+          runbook_url: 'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/docs/operations/runbooks/alerts.md#cortexbuffernearfull'
           summary: 'Cortex event buffer > 90% full'
           description: 'Buffer utilization at {{ $value | humanizePercentage }}'
 
@@ -72,6 +77,7 @@ groups:
           severity: warning
           team: intelligence
         annotations:
+          runbook_url: 'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/docs/operations/runbooks/alerts.md#cortexbufferelevated'
           summary: 'Cortex event buffer > 80% full'
 
       # Veritas screening match rate > 50% (anomalous — possible data quality issue)
@@ -87,6 +93,7 @@ groups:
           severity: critical
           team: intelligence
         annotations:
+          runbook_url: 'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/docs/operations/runbooks/alerts.md#veritasanomalousmatchrate'
           summary: 'Veritas screening match rate > 50% (anomalous)'
           description: 'Match rate {{ $value | humanizePercentage }} — investigate for false positives or data quality issues.'
 
@@ -103,6 +110,7 @@ groups:
           severity: warning
           team: intelligence
         annotations:
+          runbook_url: 'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/docs/operations/runbooks/alerts.md#veritaselevatedmatchrate'
           summary: 'Veritas screening match rate > 30%'
 
       # PANX consensus staleness > 15 min (critical)
@@ -113,6 +121,7 @@ groups:
           severity: critical
           team: intelligence
         annotations:
+          runbook_url: 'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/docs/operations/runbooks/alerts.md#panxconsensusstale'
           summary: 'PANX consensus stale > 15 minutes'
           description: 'Last fresh consensus was {{ $value }}s ago'
 
@@ -124,6 +133,7 @@ groups:
           severity: warning
           team: intelligence
         annotations:
+          runbook_url: 'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/docs/operations/runbooks/alerts.md#panxconsensusaging'
           summary: 'PANX consensus stale > 10 minutes'
 
       # Service health degraded
@@ -134,6 +144,7 @@ groups:
           severity: warning
           team: intelligence
         annotations:
+          runbook_url: 'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/docs/operations/runbooks/alerts.md#intelligenceservicedegraded'
           summary: '{{ $labels.service }} is degraded'
           description: 'Health status: {{ $value }} (1=healthy, 0.5=degraded, 0=unhealthy)'
 
@@ -144,4 +155,5 @@ groups:
           severity: warning
           team: intelligence
         annotations:
+          runbook_url: 'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/docs/operations/runbooks/alerts.md#intelligencecircuitbreakertripped'
           summary: 'Circuit breaker tripped for {{ $labels.dependency }}'

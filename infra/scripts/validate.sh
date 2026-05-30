@@ -110,6 +110,11 @@ run_docs_standard_validation() {
     (cd "${PROJECT_ROOT}" && node tools/scripts/docs-standard-validator.mjs --baseline=.docs-exceptions.json)
 }
 
+run_alert_runbook_url_check() {
+    log_info "Running alert runbook_url annotation check..."
+    (cd "${PROJECT_ROOT}" && node tools/scripts/alerts-add-runbook-url.mjs --check)
+}
+
 run_docs_link_check() {
     log_info "Running docs link check..."
     (cd "${PROJECT_ROOT}" && node tools/scripts/docs-link-checker.mjs)
@@ -326,6 +331,7 @@ case "${MODE}" in
         run_compliance_gateway_tests
         run_deployment_guard_tests
         run_docs_standard_validation
+        run_alert_runbook_url_check
         run_docs_link_check
         run_score_ledger_validation
         run_build_evidence_generation
@@ -347,6 +353,7 @@ case "${MODE}" in
         run_compliance_gateway_tests
         run_deployment_guard_tests
         run_docs_standard_validation
+        run_alert_runbook_url_check
         run_score_ledger_validation
         run_build_evidence_generation
         run_runtime_smoke_evidence_generation

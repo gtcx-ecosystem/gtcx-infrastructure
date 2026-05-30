@@ -20,6 +20,7 @@ groups:
           severity: critical
           team: engineering
         annotations:
+          runbook_url: 'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/docs/operations/runbooks/alerts.md#protocolhigherrorrate'
           summary: 'Protocol {{ $labels.protocol }} error rate above 5%'
           description: '{{ $labels.protocol }} has {{ $value | humanizePercentage }} error rate over the last 5 minutes.'
           runbook: 'docs/2-docs/4-operations/runbooks/incident-response.md'
@@ -37,6 +38,7 @@ groups:
           severity: warning
           team: engineering
         annotations:
+          runbook_url: 'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/docs/operations/runbooks/alerts.md#protocolhighlatency'
           summary: 'Protocol {{ $labels.protocol }} average latency above 2s'
           description: '{{ $labels.protocol }} average latency is {{ $value | humanizeDuration }}.'
 
@@ -48,6 +50,7 @@ groups:
           severity: critical
           team: infrastructure
         annotations:
+          runbook_url: 'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/docs/operations/runbooks/alerts.md#protocolserverdown'
           summary: 'GTCX Protocol Server is down'
           description: 'Protocol server health check has been failing for 1 minute.'
           runbook: 'docs/2-docs/4-operations/runbooks/disaster-recovery.md'
@@ -60,6 +63,7 @@ groups:
           severity: warning
           team: engineering
         annotations:
+          runbook_url: 'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/docs/operations/runbooks/alerts.md#protocolratelimittriggered'
           summary: 'Rate limiting active — > 10 rejections/min'
           description: '{{ $value }} rate limit rejections per minute. May indicate abuse or misconfigured client.'
 
@@ -71,6 +75,7 @@ groups:
           severity: warning
           team: infrastructure
         annotations:
+          runbook_url: 'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/docs/operations/runbooks/alerts.md#protocolnotraffic'
           summary: 'No protocol traffic for 10 minutes'
           description: 'Protocol server is up but receiving zero requests. Check load balancer, DNS, or upstream services.'
 
@@ -82,5 +87,6 @@ groups:
           severity: critical
           team: engineering
         annotations:
+          runbook_url: 'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/docs/operations/runbooks/alerts.md#lotproofassemblyfailures'
           summary: 'VerifiedLotProof assembly failing'
           description: '{{ $value }} lot proof assembly failures in the last 5 minutes. Check protocol store connectivity.'

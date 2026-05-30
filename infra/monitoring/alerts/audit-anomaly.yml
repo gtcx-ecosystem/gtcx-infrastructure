@@ -24,6 +24,7 @@ groups:
           severity: warning
           team: platform
         annotations:
+          runbook_url: 'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/docs/operations/runbooks/alerts.md#auditeventvolumedropped'
           summary: 'Audit event rate dropped >50% in 5 minutes'
           description: 'The audit event ingestion rate has fallen to less than half of the trailing 1-hour baseline. Possible pipeline failure, network partition, or silenced upstream service.'
 
@@ -38,6 +39,7 @@ groups:
           severity: info
           team: security
         annotations:
+          runbook_url: 'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/docs/operations/runbooks/alerts.md#auditunusualdidpattern'
           summary: 'New DID observed in production audit stream'
           description: 'A DID was seen for the first time in the production audit stream. Review whether this is an expected onboarding or a potential unauthorized actor. DID: {{ $labels.did }}'
 
@@ -53,6 +55,7 @@ groups:
           severity: warning
           team: security
         annotations:
+          runbook_url: 'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/docs/operations/runbooks/alerts.md#auditoffhoursactivity'
           summary: 'Audit events detected during off-hours (00:00-05:00 UTC)'
           description: 'Sustained audit event activity during the 00:00-05:00 UTC window exceeds the expected threshold. This may indicate unauthorized access or a misconfigured batch job.'
 
@@ -64,6 +67,7 @@ groups:
           severity: warning
           team: security
         annotations:
+          runbook_url: 'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/docs/operations/runbooks/alerts.md#auditburstdetected'
           summary: 'Audit event burst from single DID'
           description: '>100 events/second from DID {{ $labels.did }}. Possible automated attack, credential compromise, or runaway integration. Investigate immediately.'
 
@@ -75,5 +79,6 @@ groups:
           severity: critical
           team: platform
         annotations:
+          runbook_url: 'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/docs/operations/runbooks/alerts.md#auditmerklerootmismatch'
           summary: 'Merkle root mismatch — possible audit tampering'
           description: 'The computed Merkle root for an audit window does not match the root anchored in WORM storage. This indicates either database tampering or an anchoring pipeline bug. Follow break-glass procedure immediately.'

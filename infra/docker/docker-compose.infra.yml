@@ -135,6 +135,28 @@ services:
     networks:
       - gtcx-network
 
+  # Alertmanager config rendering — envsubst expands ${PAGERDUTY_SERVICE_KEY},
+  # ${SLACK_WEBHOOK_URL}, ${SLACK_INCIDENT_WEBHOOK} from the host environment
+  # into the actual config. Prior versions bind-mounted the .yml with
+  # literal ${VAR} strings; alertmanager 0.26 does not expand them
+  # natively, so PagerDuty integrations silently received the literal
+  # placeholder and never paged anyone.
+  alertmanager-config-init:
+    image: alpine:3.20
+    container_name: gtcx-alertmanager-config-init
+    volumes:
+      - ./observability/alertmanager.yml.tpl:/tmp/alertmanager.yml.tpl:ro
+      - alertmanager-config:/out
+    environment:
+      PAGERDUTY_SERVICE_KEY: ${PAGERDUTY_SERVICE_KEY:-CHANGE_ME_DEV}
+      SLACK_WEBHOOK_URL: ${SLACK_WEBHOOK_URL:-http://localhost/no-op-slack}
+      SLACK_INCIDENT_WEBHOOK: ${SLACK_INCIDENT_WEBHOOK:-http://localhost/no-op-slack}
+    command: >
+      sh -c "apk add --no-cache gettext >/dev/null &&
+             envsubst < /tmp/alertmanager.yml.tpl > /out/alertmanager.yml &&
+             echo 'alertmanager.yml rendered'"
+    restart: 'no'
+
   # Alertmanager (Alert Routing)
   alertmanager:
     image: prom/alertmanager:v0.26.0
@@ -145,9 +167,12 @@ services:
     ports:
       - '9093:9093'
     volumes:
-      - ./observability/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+      - alertmanager-config:/etc/alertmanager:ro
     depends_on:
-      - prometheus
+      prometheus:
+        condition: service_healthy
+      alertmanager-config-init:
+        condition: service_completed_successfully
     healthcheck:
       test: ['CMD', 'wget', '-q', '--spider', 'http://localhost:9093/-/ready']
       interval: 15s
@@ -242,3 +267,5 @@ volumes:
     name: gtcx-infra-grafana-data
   loki_data:
     name: gtcx-infra-loki-data
+  alertmanager-config:
+    name: gtcx-infra-alertmanager-config

@@ -18,6 +18,7 @@ groups:
           severity: critical
           team: security
         annotations:
+          runbook_url: 'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/docs/operations/runbooks/alerts.md#replayprotectionspike'
           summary: 'Replay attack suspected — nonce rejections spiking on {{ $labels.pod }}'
           description: '{{ $value | humanize }} nonce rejections per second. Possible replay attack or clock sync issue.'
           runbook: 'docs/operations/runbooks/replay-guard-failure.md'
@@ -32,6 +33,7 @@ groups:
           severity: warning
           team: engineering
         annotations:
+          runbook_url: 'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/docs/operations/runbooks/alerts.md#replaystaletimestampspike'
           summary: 'Stale timestamp rejections elevated on {{ $labels.pod }}'
           description: '{{ $value | humanize }} stale rejections per second. Check device clock sync or offline queue age.'
           runbook: 'docs/operations/runbooks/replay-guard-failure.md'
@@ -46,6 +48,7 @@ groups:
           severity: warning
           team: engineering
         annotations:
+          runbook_url: 'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/docs/operations/runbooks/alerts.md#replayfuturetimestampspike'
           summary: 'Future timestamp rejections on {{ $labels.pod }}'
           description: '{{ $value | humanize }} future rejections per second. Devices may have incorrect system time.'
 
@@ -59,6 +62,7 @@ groups:
           severity: critical
           team: security
         annotations:
+          runbook_url: 'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/docs/operations/runbooks/alerts.md#replaysignaturefailurespike'
           summary: 'Signature verification failures spiking on {{ $labels.pod }}'
           description: '{{ $value | humanize }} signature rejections per second. Possible key rotation issue or tampering.'
           runbook: 'docs/operations/runbooks/replay-guard-failure.md'
@@ -73,6 +77,7 @@ groups:
           severity: warning
           team: engineering
         annotations:
+          runbook_url: 'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/docs/operations/runbooks/alerts.md#replayenvelopemismatchspike'
           summary: 'Envelope hash mismatches on {{ $labels.pod }}'
           description: '{{ $value | humanize }} envelope rejections per second. Check mobile serialization contract alignment.'
 
@@ -84,6 +89,7 @@ groups:
           severity: critical
           team: infrastructure
         annotations:
+          runbook_url: 'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/docs/operations/runbooks/alerts.md#replayguarddown'
           summary: 'Replay Guard is down'
           description: 'Replay Guard health check has been failing for 1 minute. Replay protection is DEGRADED.'
           runbook: 'docs/operations/runbooks/replay-guard-failure.md'
@@ -97,6 +103,7 @@ groups:
           severity: warning
           team: infrastructure
         annotations:
+          runbook_url: 'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/docs/operations/runbooks/alerts.md#replayguardredisunavailable'
           summary: 'Replay Guard Redis store unavailable'
           description: 'Replay Guard has fallen back to in-memory nonce store. Multi-instance replay protection is WEAKENED.'
           runbook: 'docs/operations/runbooks/replay-guard-failure.md'
@@ -111,5 +118,6 @@ groups:
           severity: info
           team: engineering
         annotations:
+          runbook_url: 'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/docs/operations/runbooks/alerts.md#replayextendedwindowusage'
           summary: 'Extended clock-skew window active for region {{ $labels.region }}'
           description: 'Devices in {{ $labels.region }} are using the extended 15-minute acceptance window.'
