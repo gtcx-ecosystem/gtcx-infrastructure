@@ -24,6 +24,11 @@ metadata:
     alb.ingress.kubernetes.io/group.name: gtcx-staging-api
     # WAF WebACL association
     alb.ingress.kubernetes.io/wafv2-acl-arn: arn:aws:wafv2:af-south-1:348389439381:regional/webacl/gtcx-staging-waf-af-south-1/c918a5e4-bbae-4385-aa6e-e135469c250f
+    # external-dns annotations (no-op until external-dns is deployed; safe to
+    # set in advance per INF-49 staging-dns runbook). When external-dns runs,
+    # these are the only changes needed to auto-manage Route53 A records.
+    external-dns.alpha.kubernetes.io/hostname: api.staging.gtcx.trade,geotag.staging.gtcx.trade
+    external-dns.alpha.kubernetes.io/ttl: '60'
 spec:
   ingressClassName: alb
   rules:

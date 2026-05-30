@@ -150,6 +150,30 @@ variable "domain_name" {
   default     = "gtcx.trade"
 }
 
+variable "apex_domain" {
+  description = "Apex (root) domain managed by the public hosted zone. Subdomain (e.g. staging) is derived from environment."
+  type        = string
+  default     = "gtcx.trade"
+}
+
+variable "dns_hostnames" {
+  description = "Hostname labels (under <environment>.<apex>) for which to create A (ALIAS) records pointing at the ALB. Defaults match the existing staging Ingress."
+  type        = list(string)
+  default     = ["api", "geotag"]
+}
+
+variable "alb_dns_name" {
+  description = "DNS name of the ALB created by the AWS Load Balancer Controller. Empty on first apply (before Ingress deploys); set after kubectl applies the staging Ingress and the ALB exists. See INF-49 runbook."
+  type        = string
+  default     = ""
+}
+
+variable "alb_hosted_zone_id" {
+  description = "Hosted zone ID of the ALB. af-south-1: Z268VQBMOI5EKX. Set together with alb_dns_name."
+  type        = string
+  default     = ""
+}
+
 variable "tags" {
   description = "Common tags"
   type        = map(string)
@@ -265,6 +289,39 @@ module "alb" {
 
   tags = merge(var.tags, {
     Environment = "staging"
+  })
+}
+
+# -----------------------------------------------------------------------------
+# Route53 — DNS for staging hostnames + ACM cert validation
+# -----------------------------------------------------------------------------
+# Unblocks gtcx-infrastructure#49 (INF-49): authority DID resolution at
+#   api.staging.gtcx.trade and geotag.staging.gtcx.trade requires public
+#   DNS records pointing at the ALB created by the K8s Ingress.
+#
+# First apply (before staging Ingress exists): leave alb_dns_name = "" so
+#   only ACM validation records are managed. ACM cert validation completes;
+#   the K8s Ingress can then be applied and the ALB created.
+# Second apply (Ingress + ALB live): set alb_dns_name + alb_hosted_zone_id
+#   from `kubectl get ingress -n gtcx-staging gtcx-api`. A records resolve.
+#
+# Long-term: replace the manual second-apply with external-dns inside the
+# cluster. See docs/operations/runbooks/inf-49-staging-dns.md.
+
+module "route53" {
+  source = "../../modules/route53"
+
+  environment            = var.environment
+  apex_domain            = var.apex_domain
+  subdomain              = "staging"
+  hostnames              = var.dns_hostnames
+  alb_dns_name           = var.alb_dns_name
+  alb_zone_id            = var.alb_hosted_zone_id
+  acm_validation_records = module.alb.certificate_domain_validation
+
+  tags = merge(var.tags, {
+    Environment = "staging"
+    Purpose     = "inf-49-did-resolution"
   })
 }
 
@@ -430,4 +487,19 @@ output "acm_certificate_arn" {
 output "alb_waf_acl_arn" {
   description = "WAF Web ACL ARN for ALB protection"
   value       = module.alb.waf_web_acl_arn
+}
+
+output "route53_zone_id" {
+  description = "Hosted zone ID for the apex domain"
+  value       = module.route53.zone_id
+}
+
+output "route53_hostnames" {
+  description = "FQDNs managed by the staging route53 module — these are the URLs the gtcx-protocols DID resolver must be reachable at"
+  value       = module.route53.hostname_fqdns
+}
+
+output "route53_a_records_created" {
+  description = "Whether DNS A records are wired (false on first apply before the ALB exists)"
+  value       = module.route53.a_records_created
 }
