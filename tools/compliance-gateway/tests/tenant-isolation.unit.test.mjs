@@ -11,6 +11,12 @@
 import assert from 'node:assert';
 import { afterEach, beforeEach, describe, it } from 'node:test';
 
+import {
+  buildEvidenceBundle,
+  initAuditSigner,
+  resetAuditSigner,
+  signAuditEvent,
+} from '../src/audit.mjs';
 import { loadAuthState, authenticateHeaders, buildAccessProfile, parseApprovalContext } from '../src/auth.mjs';
 import { checkBudget, getSpend, resetBudget } from '../src/budget.mjs';
 
@@ -108,5 +114,52 @@ describe('tenant boundary — budget', () => {
   it('getSpend returns the tenantId', () => {
     const s = getSpend('a', 'demo-tenant');
     assert.strictEqual(s.tenantId, 'demo-tenant');
+  });
+});
+
+describe('tenant boundary — evidence bundle (regression for default leak)', () => {
+  function silence(fn) {
+    const out = console.log;
+    const err = console.error;
+    console.log = () => {};
+    console.error = () => {};
+    try {
+      return fn();
+    } finally {
+      console.log = out;
+      console.error = err;
+    }
+  }
+
+  beforeEach(() => {
+    resetAuditSigner();
+    initAuditSigner({ NODE_ENV: 'test' }, true);
+  });
+  afterEach(() => resetAuditSigner());
+
+  it('does NOT return tenant-a records when caller is tenantId=default', () => {
+    silence(() => {
+      signAuditEvent({ actor: 'a', action: 'global', target: 'x', tenantId: 'default' });
+      signAuditEvent({ actor: 'b', action: 'mining', target: 'y', tenantId: 'tenant-a' });
+    });
+    const bundle = buildEvidenceBundle({ tenantId: 'default' });
+    assert.strictEqual(bundle.recordCount, 1, 'default principal must not see tenant-a records');
+  });
+
+  it('does NOT return tenant-b records to a tenant-a principal', () => {
+    silence(() => {
+      signAuditEvent({ actor: 'a', action: 'event', target: 'x', tenantId: 'tenant-a' });
+      signAuditEvent({ actor: 'b', action: 'event', target: 'y', tenantId: 'tenant-b' });
+    });
+    const bundle = buildEvidenceBundle({ tenantId: 'tenant-a' });
+    assert.strictEqual(bundle.recordCount, 1);
+    assert.strictEqual(bundle.tenantId, 'tenant-a');
+  });
+
+  it('refuses to build a bundle without an explicit tenantId', () => {
+    silence(() => {
+      signAuditEvent({ actor: 'a', action: 'evt', target: 'x', tenantId: 'tenant-a' });
+    });
+    assert.throws(() => buildEvidenceBundle({}), /tenantId is required/);
   });
 });

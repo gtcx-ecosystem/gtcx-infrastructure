@@ -6,6 +6,7 @@
  */
 
 import { createPrivateKey, createPublicKey } from 'node:crypto';
+
 import {
   createRecord,
   createChain,
@@ -15,6 +16,7 @@ import {
   fromNdjson,
   generateKeyPair,
 } from '@gtcx/audit-signer';
+
 import { getSink, getSinkInfo } from './audit-sink.mjs';
 import { incrementCounter } from './metrics.mjs';
 
@@ -23,6 +25,14 @@ const chain = createChain();
 let initialized = false;
 let checkpointHash = '';
 let checkpointCount = 0;
+
+// Per-record tenant tag for the in-memory window. The signed record's
+// payload is hashed (not preserved) by @gtcx/audit-signer, so this
+// sidecar map is the only place an in-memory bundle query can resolve
+// tenant ownership. Cleared on checkpoint (records evicted from memory)
+// and on resetChain. Durable per-tenant routing happens at the
+// JetStream subject level (see audit-flush `tenantFromSubject`).
+const recordTenants = new Map();
 
 const MAX_IN_MEMORY_RECORDS = Number(process.env.AUDIT_CHAIN_MAX_RECORDS || '10000');
 
@@ -86,15 +96,20 @@ export function initAuditSigner(env = process.env, force = false) {
 /**
  * Sign an audit event and append it to the chain.
  *
+ * `tenantId` is captured in the in-memory `recordTenants` sidecar map
+ * for `buildEvidenceBundle` filtering. It is also pulled from
+ * `payload.tenantId` for backward compatibility with existing call sites.
+ *
  * @param {object} params
  * @param {string} params.actor
  * @param {string} params.action
  * @param {string} params.target
  * @param {string} [params.reason]
+ * @param {string} [params.tenantId] - explicit tenant; falls back to payload.tenantId
  * @param {unknown} [params.payload]
  * @returns {import('../../audit-signer/src/signer.mjs').SignedAuditRecord | null}
  */
-export function signAuditEvent({ actor, action, target, reason, payload }) {
+export function signAuditEvent({ actor, action, target, reason, tenantId, payload }) {
   if (!keyPair) {
     return null;
   }
@@ -114,6 +129,16 @@ export function signAuditEvent({ actor, action, target, reason, payload }) {
     return null;
   }
 
+  const effectiveTenant =
+    typeof tenantId === 'string' && tenantId.length > 0
+      ? tenantId
+      : typeof payload?.tenantId === 'string' && payload.tenantId.length > 0
+        ? payload.tenantId
+        : null;
+  if (effectiveTenant) {
+    recordTenants.set(signed.id, effectiveTenant);
+  }
+
   incrementCounter('compliance_gateway_audit_records_total', { action });
   getSink().emit(signed);
 
@@ -124,6 +149,7 @@ export function signAuditEvent({ actor, action, target, reason, payload }) {
     checkpointHash = chain.lastHash;
     checkpointCount += chain.records.length;
     chain.records.length = 0;
+    recordTenants.clear();
     console.log(JSON.stringify({
       type: 'audit.checkpoint',
       checkpointHash,
@@ -184,7 +210,14 @@ export function exportChainNdjson() {
  * A consumer with only this bundle can verify it offline using
  * @gtcx/audit-signer's verifyChain — no GTCX-side trust required.
  *
- * @param {{ tenantId?: string, since?: string }} [opts]
+ * Tenant scoping is strict: records are filtered to those tagged with
+ * `payload.tenantId === tenantId`. The literal value `'default'` is
+ * a real tenant (the legacy single-tenant deployment slot and the
+ * bare-subject default in audit-flush's `tenantFromSubject`) — it does
+ * NOT grant cross-tenant access. Callers needing cross-tenant evidence
+ * must invoke the endpoint once per tenant.
+ *
+ * @param {{ tenantId: string, since?: string }} opts - tenantId is required
  * @returns {{
  *   bundleVersion: '1',
  *   producedAt: string,
@@ -197,14 +230,14 @@ export function exportChainNdjson() {
  *   verification: { algorithm: 'ed25519+sha256+jcs', instructions: string },
  * }}
  */
-export function buildEvidenceBundle({ tenantId = 'default', since } = {}) {
+export function buildEvidenceBundle({ tenantId, since } = {}) {
+  if (typeof tenantId !== 'string' || tenantId.length === 0) {
+    throw new Error('buildEvidenceBundle: tenantId is required');
+  }
   const records = chain.records.filter((r) => {
     if (!since) return true;
     return r.timestamp >= since;
-  }).filter((r) => {
-    if (tenantId === 'default') return true;
-    return r.payload?.tenantId === tenantId;
-  });
+  }).filter((r) => recordTenants.get(r.id) === tenantId);
   const ndjson = records.map((r) => JSON.stringify(r)).join('\n');
   return {
     bundleVersion: '1',
@@ -232,6 +265,7 @@ export function resetChain() {
   chain.lastHash = '';
   checkpointHash = '';
   checkpointCount = 0;
+  recordTenants.clear();
 }
 
 /**

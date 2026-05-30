@@ -17,17 +17,17 @@ import assert from 'node:assert';
 import { afterEach, beforeEach, describe, it } from 'node:test';
 
 import {
+  getSink,
+  getSinkInfo,
+  resetSink,
+} from '../src/audit-sink.mjs';
+import {
   initAuditSigner,
   signAuditEvent,
   resetAuditSigner,
   buildEvidenceBundle,
   exportChainNdjson,
 } from '../src/audit.mjs';
-import {
-  getSink,
-  getSinkInfo,
-  resetSink,
-} from '../src/audit-sink.mjs';
 
 function captureStdout(fn) {
   const original = console.log;
@@ -66,13 +66,13 @@ describe('buildEvidenceBundle — filters', () => {
 
   it('filters records by since timestamp', () => {
     captureStdout(() => {
-      signAuditEvent({ actor: 'a', action: 'old', target: 'x' });
+      signAuditEvent({ actor: 'a', action: 'old', target: 'x', tenantId: 'default' });
     });
     const cutoff = new Date(Date.now() + 1000).toISOString();
     captureStdout(() => {
-      signAuditEvent({ actor: 'a', action: 'new', target: 'y' });
+      signAuditEvent({ actor: 'a', action: 'new', target: 'y', tenantId: 'default' });
     });
-    const bundle = buildEvidenceBundle({ since: cutoff });
+    const bundle = buildEvidenceBundle({ tenantId: 'default', since: cutoff });
     // Only the second record is newer than the cutoff (it was created
     // after we computed cutoff, but with 1000ms padding to avoid clock skew).
     // The since filter is inclusive — assert recordCount is <= 2.
@@ -81,39 +81,52 @@ describe('buildEvidenceBundle — filters', () => {
     assert.ok(bundle.verification.algorithm.includes('ed25519'));
   });
 
-  it('filters records by tenantId when not default', () => {
+  it('filters records to the requested tenantId', () => {
     captureStdout(() => {
       signAuditEvent({
         actor: 'a',
         action: 'tenant-a-event',
         target: 'x',
-        payload: { tenantId: 'tenant-a' },
+        tenantId: 'tenant-a',
       });
       signAuditEvent({
         actor: 'b',
         action: 'tenant-b-event',
         target: 'y',
-        payload: { tenantId: 'tenant-b' },
+        tenantId: 'tenant-b',
       });
     });
-    // Note: createRecord strips payload (only hashed). The runtime
-    // tenant filter against record.payload.tenantId will always be
-    // false because payload is not preserved on the signed record.
-    // The bundle should return 0 records for a specific tenant — this
-    // is a known design choice (tenant routing happens at JetStream
-    // subject level, not record body level).
-    const bundle = buildEvidenceBundle({ tenantId: 'tenant-a' });
-    assert.strictEqual(typeof bundle.recordCount, 'number');
-    assert.strictEqual(bundle.tenantId, 'tenant-a');
+    const bundleA = buildEvidenceBundle({ tenantId: 'tenant-a' });
+    assert.strictEqual(bundleA.recordCount, 1);
+    assert.strictEqual(bundleA.tenantId, 'tenant-a');
+
+    const bundleB = buildEvidenceBundle({ tenantId: 'tenant-b' });
+    assert.strictEqual(bundleB.recordCount, 1);
+    assert.strictEqual(bundleB.tenantId, 'tenant-b');
   });
 
-  it('returns the full set when tenantId is default', () => {
+  it('returns only default-tagged records for tenantId=default (no cross-tenant leak)', () => {
     captureStdout(() => {
-      signAuditEvent({ actor: 'a', action: 'global', target: 'x' });
-      signAuditEvent({ actor: 'b', action: 'global', target: 'y' });
+      signAuditEvent({ actor: 'a', action: 'global', target: 'x', tenantId: 'default' });
+      signAuditEvent({ actor: 'b', action: 'global', target: 'y', tenantId: 'default' });
+      signAuditEvent({ actor: 'c', action: 'other', target: 'z', tenantId: 'tenant-a' });
     });
     const bundle = buildEvidenceBundle({ tenantId: 'default' });
-    assert.ok(bundle.recordCount >= 2);
+    // Strict filter: only the two 'default'-tagged records, never the
+    // tenant-a record. This is the regression test for the prior
+    // tenantId === 'default' short-circuit that leaked all tenants.
+    assert.strictEqual(bundle.recordCount, 2);
+  });
+
+  it('throws when tenantId is missing (no cross-tenant default fallback)', () => {
+    assert.throws(
+      () => buildEvidenceBundle({}),
+      /tenantId is required/,
+    );
+    assert.throws(
+      () => buildEvidenceBundle({ tenantId: '' }),
+      /tenantId is required/,
+    );
   });
 
   it('exportChainNdjson returns NDJSON text', () => {
