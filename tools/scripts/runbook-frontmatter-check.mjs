@@ -25,7 +25,12 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
-const RUNBOOKS_DIR = join(REPO_ROOT, 'docs', 'operations', 'runbooks');
+// Scan operations/runbooks AND the agents/ tree — both suffered the
+// session-backfill double-frontmatter pattern.
+const SCAN_DIRS = [
+  join(REPO_ROOT, 'docs', 'operations', 'runbooks'),
+  join(REPO_ROOT, 'docs', 'agents'),
+];
 const checkOnly = process.argv.includes('--check');
 
 const FRONTMATTER_RX = /^---\n([\s\S]*?)\n---/;
@@ -154,7 +159,13 @@ function main() {
       else if (entry.endsWith('.md')) files.push(p);
     }
   }
-  walk(RUNBOOKS_DIR);
+  for (const dir of SCAN_DIRS) {
+    try {
+      walk(dir);
+    } catch {
+      // Directory doesn't exist — skip silently.
+    }
+  }
 
   const offenders = [];
   let changedCount = 0;

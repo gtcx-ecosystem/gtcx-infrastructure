@@ -1,27 +1,22 @@
 ---
-title: "Developer Setup — gtcx-infrastructure"
-status: "current"
-date: "2026-05-27"
-owner: "gtcx-infrastructure"
-role: "protocol-architect"
-agent_id: "agent://gtcx-infrastructure/2026-05-27/session-backfill"
-trust_score: 60
-autonomy_level: "permissioned"
-tier: "standard"
-tags: ["documentation", "agents"]
-review_cycle: "on-change"
----
-
----
 title: 'Developer Setup — gtcx-infrastructure'
 status: 'current'
-date: '2026-05-10'
+date: '2026-05-27'
 owner: 'frontier-infra-engineer'
 role: 'frontier-infra-engineer'
 tier: 'informational'
 tags: ['security', 'crypto', 'compliance', 'infrastructure', 'api']
 review_cycle: 'monthly'
+agent_id: 'agent://gtcx-infrastructure/2026-05-27/session-backfill'
+trust_score: 60
+autonomy_level: 'permissioned'
 ---
+
+> [!WARNING]
+> **DEPRECATED — see [orientation.md](./orientation.md).**
+> This document overlaps with the canonical onboarding path and is kept
+> only so existing inbound links don't 404. New agents should start at
+> orientation.md. Content here may drift; trust orientation.md when in doubt.
 
 # Developer Setup — gtcx-infrastructure
 
