@@ -320,6 +320,66 @@ export function buildEvidenceBundle({ tenantId, since } = {}) {
 }
 
 /**
+ * Build an evidence bundle covering MULTIPLE tenants in a single
+ * verifiable artifact — the cross-jurisdictional bundle a regulator
+ * cites when auditing trade compliance across borders. Each tenant
+ * section is independently verifiable; combining them in one document
+ * is a convenience, not a trust extension.
+ *
+ * Caller MUST have authority over every tenant in `tenantIds` — this
+ * function does not check; the HTTP layer enforces the principal's
+ * tenant binding.
+ *
+ * @param {{ tenantIds: string[], since?: string }} opts
+ * @returns {{
+ *   bundleVersion: '2-multi-tenant',
+ *   producedAt: string,
+ *   tenantCount: number,
+ *   chainHead: string,
+ *   priorCheckpointHash: string,
+ *   priorCheckpointCount: number,
+ *   sections: Array<{ tenantId: string, recordCount: number, ndjson: string }>,
+ *   verification: { algorithm: string, instructions: string },
+ * }}
+ */
+export function buildMultiTenantEvidenceBundle({ tenantIds, since } = {}) {
+  if (!Array.isArray(tenantIds) || tenantIds.length === 0) {
+    throw new Error('buildMultiTenantEvidenceBundle: tenantIds[] is required');
+  }
+  const sections = tenantIds.map((tenantId) => {
+    if (typeof tenantId !== 'string' || tenantId.length === 0) {
+      throw new Error('buildMultiTenantEvidenceBundle: every tenantId must be a non-empty string');
+    }
+    const records = chain.records.filter((r) => {
+      if (since && r.timestamp < since) return false;
+      return recordTenants.get(r.id) === tenantId;
+    });
+    return {
+      tenantId,
+      recordCount: records.length,
+      ndjson: records.map((r) => JSON.stringify(r)).join('\n'),
+    };
+  });
+  return {
+    bundleVersion: '2-multi-tenant',
+    producedAt: new Date().toISOString(),
+    tenantCount: sections.length,
+    chainHead: chain.lastHash,
+    priorCheckpointHash: checkpointHash,
+    priorCheckpointCount: checkpointCount,
+    sections,
+    verification: {
+      algorithm: 'ed25519+sha256+jcs',
+      instructions:
+        'For each section, run: npm install @gtcx/audit-signer; ' +
+        'verifyChain(fromNdjson(section.ndjson)). Sections verify independently — ' +
+        'a failed section does not invalidate the others. Every record carries its ' +
+        'publicKey, so no key server is required.',
+    },
+  };
+}
+
+/**
  * Reset the chain (intended for tests only).
  */
 export function resetChain() {

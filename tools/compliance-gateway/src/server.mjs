@@ -57,6 +57,7 @@ import {
 } from './auth.mjs';
 import { checkBudget, recordSpend, getSpend } from './budget.mjs';
 import { computeConfidence } from './confidence.mjs';
+import { renderEvidenceHtml } from './evidence-renderer.mjs';
 import { incrementCounter, setGauge, renderMetrics } from './metrics.mjs';
 import { createNonceStore } from './nonce-store/redis.mjs';
 import { buildRuntimePolicyPrompt } from './policy.mjs';
@@ -778,15 +779,28 @@ const server = createServer(async (req, res) => {
       }
       const sinceParam =
         new URL(req.url ?? '/', 'http://localhost').searchParams.get('since') ?? undefined;
-      sendJson(
-        res,
-        200,
-        buildEvidenceBundle({
-          tenantId: principal.tenantId,
-          since: sinceParam,
-        }),
-        req
-      );
+      const bundle = buildEvidenceBundle({
+        tenantId: principal.tenantId,
+        since: sinceParam,
+      });
+      // Content negotiation: HTML when the caller's Accept header
+      // prefers text/html OR when ?format=html is set. Regulators
+      // open a browser; agents prefer JSON. Both surfaces are the
+      // same underlying bundle.
+      const acceptsHtml = (req.headers.accept ?? '').includes('text/html');
+      const wantsHtml =
+        acceptsHtml || new URL(req.url ?? '/', 'http://localhost').searchParams.get('format') === 'html';
+      if (wantsHtml) {
+        const html = renderEvidenceHtml(bundle);
+        res.writeHead(200, {
+          'Content-Type': 'text/html; charset=utf-8',
+          'Content-Disposition': `inline; filename="evidence-${principal.tenantId}-${new Date().toISOString().slice(0,10)}.html"`,
+          'Cache-Control': 'no-cache',
+        });
+        res.end(html);
+        return;
+      }
+      sendJson(res, 200, bundle, req);
     } else if (url === '/v1/exceptions') {
       // AI-native Pattern #3 (Exception-Based Workflow): surface only
       // events that require human judgment — auth failures, query
