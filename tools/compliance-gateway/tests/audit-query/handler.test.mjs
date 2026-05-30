@@ -1,5 +1,5 @@
-import { describe, it } from 'node:test';
 import assert from 'node:assert';
+import { describe, it } from 'node:test';
 
 import { processQuery } from '../../src/audit-query/handler.mjs';
 import { InMemoryQueryStore } from '../../src/audit-query/store.mjs';
@@ -156,6 +156,23 @@ describe('processQuery — bearer auth', () => {
     const args = defaults();
     delete args.headers['x-gtcx-tenant-id'];
     args.validateToken = () => ({ ok: true, tenantId: 'zw' });
+    const r = await processQuery(args);
+    assert.strictEqual(r.status, 200);
+  });
+
+  it('returns 403 tenant-mismatch when header tenant != token tenant', async () => {
+    const args = defaults();
+    args.headers['x-gtcx-tenant-id'] = 'ke';
+    args.validateToken = () => ({ ok: true, tenantId: 'zw', subject: 'auditor-1' });
+    const r = await processQuery(args);
+    assert.strictEqual(r.status, 403);
+    assert.strictEqual(r.body.error, 'tenant-mismatch');
+  });
+
+  it('accepts when header tenant matches token tenant', async () => {
+    const args = defaults();
+    args.headers['x-gtcx-tenant-id'] = 'zw';
+    args.validateToken = () => ({ ok: true, tenantId: 'zw', subject: 'auditor-1' });
     const r = await processQuery(args);
     assert.strictEqual(r.status, 200);
   });

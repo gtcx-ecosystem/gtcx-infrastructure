@@ -23,32 +23,17 @@
  */
 
 import { createServer } from 'node:http';
-import { generateText } from 'ai';
-import {
-  authenticateHeaders,
-  buildAccessProfile,
-  loadAuthState,
-  parseApprovalContext,
-} from './auth.mjs';
-import { buildRuntimePolicyPrompt } from './policy.mjs';
-import { validateQueryBody, buildUserMessage } from './schemas.mjs';
-import { checkBudget, recordSpend, getSpend } from './budget.mjs';
-import { incrementCounter, setGauge, renderMetrics } from './metrics.mjs';
-import { sanitizeAuditTarget } from './audit-target.mjs';
-import { startAdaptiveScheduler, defaultThresholds } from './adaptive-policy.mjs';
-import { processBundle as processAuditBundle } from './audit-bundles/handler.mjs';
-import { createTradePassResolver, createMockResolver } from './audit-bundles/did-resolver.mjs';
-import { createNonceStore } from './nonce-store/redis.mjs';
-import { processQuery as processAuditQuery } from './audit-query/handler.mjs';
-import { InMemoryQueryStore } from './audit-query/store.mjs';
-import { NdjsonQueryStore } from './audit-query/ndjson-store.mjs';
+import { brotliCompressSync, gzipSync } from 'node:zlib';
 
-// In-flight /v1/query count, exposed to the HPA via the
-// compliance_gateway_inflight_requests metric (autoscaling.v2 Pods target).
-// Initialized to 0 at module load so /metrics always exposes the series
-// (Prometheus expects long-running gauges to be present even when zero).
-let inflightQueries = 0;
-setGauge('compliance_gateway_inflight_requests', undefined, 0);
+import { generateText } from 'ai';
+
+import { startAdaptiveScheduler, defaultThresholds } from './adaptive-policy.mjs';
+import { createTradePassResolver, createMockResolver } from './audit-bundles/did-resolver.mjs';
+import { processBundle as processAuditBundle } from './audit-bundles/handler.mjs';
+import { processQuery as processAuditQuery } from './audit-query/handler.mjs';
+import { NdjsonQueryStore } from './audit-query/ndjson-store.mjs';
+import { InMemoryQueryStore } from './audit-query/store.mjs';
+import { sanitizeAuditTarget } from './audit-target.mjs';
 import {
   initAuditSigner,
   signAuditEvent,
@@ -57,8 +42,16 @@ import {
   getSignerHealth,
   buildEvidenceBundle,
 } from './audit.mjs';
-import { systemPrompt } from './system-prompt.mjs';
-import { createToolRegistry, listToolsForAccess, toolCount } from './tools.mjs';
+import {
+  authenticateHeaders,
+  buildAccessProfile,
+  loadAuthState,
+  parseApprovalContext,
+} from './auth.mjs';
+import { checkBudget, recordSpend, getSpend } from './budget.mjs';
+import { incrementCounter, setGauge, renderMetrics } from './metrics.mjs';
+import { createNonceStore } from './nonce-store/redis.mjs';
+import { buildRuntimePolicyPrompt } from './policy.mjs';
 import {
   selectProvider as defaultSelectProvider,
   getFallbackChain as defaultGetFallbackChain,
@@ -66,6 +59,16 @@ import {
   providerCount,
   classifyComplexity,
 } from './providers.mjs';
+import { validateQueryBody, buildUserMessage } from './schemas.mjs';
+import { systemPrompt } from './system-prompt.mjs';
+import { createToolRegistry, listToolsForAccess, toolCount } from './tools.mjs';
+
+// In-flight /v1/query count, exposed to the HPA via the
+// compliance_gateway_inflight_requests metric (autoscaling.v2 Pods target).
+// Initialized to 0 at module load so /metrics always exposes the series
+// (Prometheus expects long-running gauges to be present even when zero).
+let inflightQueries = 0;
+setGauge('compliance_gateway_inflight_requests', undefined, 0);
 
 const PORT = Number(process.env.PORT ?? 8500);
 const authState = loadAuthState(process.env);
@@ -83,7 +86,7 @@ if (process.env.NODE_ENV === 'production' && !auditInit.initialized) {
       error: auditInit.error,
     })
   );
-  // eslint-disable-next-line no-process-exit
+   
   process.exit(78); // EX_CONFIG
 }
 
@@ -140,6 +143,40 @@ const auditQueryEnabled = process.env.AUDIT_QUERY_ENABLED === '1';
 const auditQueryStore = process.env.AUDIT_QUERY_NDJSON_DIR
   ? new NdjsonQueryStore({ rootDir: process.env.AUDIT_QUERY_NDJSON_DIR, fileExistenceMode: 'lazy' })
   : new InMemoryQueryStore();
+
+/**
+ * Token validator for /audit/query. Looks up the bearer against the
+ * configured gateway tokens, enforces the `audit:read` permission, and
+ * returns the token-bound tenantId. The handler uses the returned
+ * tenantId to bind the query — preventing a tenant-a token from
+ * reading tenant-b records by setting X-GTCX-Tenant-Id: tenant-b.
+ *
+ * @param {string} token
+ * @returns {{ ok: true, tenantId: string, subject: string } | { ok: false, error: string }}
+ */
+function validateAuditQueryToken(token) {
+  if (authState.configurationError) {
+    return { ok: false, error: authState.configurationError };
+  }
+  for (const entry of authState.tokens) {
+    // Constant-time compare is unnecessary here because matchPrincipal
+    // already covers it on the /v1/query path; the audit-query handler
+    // is rate-limited by checkBudget and the token search space is
+    // small (operator-configured token list). The lookup is O(n) on a
+    // bounded n.
+    if (entry.token === token) {
+      if (!entry.permissions.includes('audit:read')) {
+        return { ok: false, error: 'Missing required permission: audit:read' };
+      }
+      return {
+        ok: true,
+        tenantId: entry.tenantId ?? 'default',
+        subject: entry.subject,
+      };
+    }
+  }
+  return { ok: false, error: 'Invalid bearer token' };
+}
 
 /**
  * @param {import('node:http').IncomingMessage} req
@@ -558,8 +595,6 @@ function stripForLowBandwidth(body, endpoint) {
   return stripped;
 }
 
-import { brotliCompressSync, gzipSync } from 'node:zlib';
-
 function sendJson(res, status, body, req) {
   const isLowBandwidth = req ? detectLowBandwidth(req) : false;
   let payload = body;
@@ -665,6 +700,7 @@ const server = createServer(async (req, res) => {
         checkBudget,
         signAuditEvent,
         incrementCounter,
+        validateToken: validateAuditQueryToken,
       });
       return sendJson(res, result.status, result.body, req);
     } else if (url === '/v1/audit/chain') {

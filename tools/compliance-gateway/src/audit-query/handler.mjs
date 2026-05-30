@@ -87,10 +87,33 @@ export async function processQuery(args) {
   }
   // (else: staging mode — accept any non-empty bearer)
 
-  // 3. Tenant resolution. Header takes precedence; falls back to
-  // the token's tenant claim if the validator provided one.
+  // 3. Tenant resolution.
+  //
+  // When the validator supplies a token-bound tenant, that binding wins:
+  // a header-supplied tenant is permitted ONLY if it matches the token's
+  // tenant. Any mismatch is a horizontal-privilege attempt → 403. This
+  // closes the prior bypass where a header overrode the principal's
+  // tenant binding (`tenantId = headerTenant ?? tokenTenant`).
+  //
+  // When the validator is absent (legacy/staging path), fall back to the
+  // header so existing callers continue to work.
   const headerTenant = args.headers['x-gtcx-tenant-id'];
-  const tenantId = headerTenant ?? tokenTenant;
+  let tenantId;
+  if (tokenTenant) {
+    if (headerTenant && headerTenant !== tokenTenant) {
+      inc('compliance_gateway_audit_query_requests_total', { status: '403', tenantId: tokenTenant });
+      return {
+        status: 403,
+        body: {
+          error: 'tenant-mismatch',
+          detail: 'X-GTCX-Tenant-Id does not match token-bound tenant',
+        },
+      };
+    }
+    tenantId = tokenTenant;
+  } else {
+    tenantId = headerTenant;
+  }
   if (typeof tenantId !== 'string' || tenantId.length === 0) {
     inc('compliance_gateway_audit_query_requests_total', { status: '400', tenantId: 'unknown' });
     return {
