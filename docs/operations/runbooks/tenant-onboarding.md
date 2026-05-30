@@ -39,23 +39,44 @@ The same code becomes:
 
 ## 2. Mint tenant tokens
 
-Two tokens per tenant — one read-only operator, one approval signer.
+Two tokens per tenant — one read-only operator, one approval signer. There is no `gtcx-ctl token mint` subcommand today; operators generate tokens directly and patch the gateway's `COMPLIANCE_GATEWAY_AUTH_TOKENS_JSON` config (per `tools/compliance-gateway/src/auth.mjs`).
 
 ```bash
-node tools/control-plane/gtcx-ctl.mjs token mint \
-  --tenant "$TENANT_ID" \
-  --subject "${TENANT_ID}-ops" \
-  --permissions query:read,tools:read,providers:read \
-  --label "$TENANT_ID operator"
+OPS_TOKEN=$(openssl rand -base64 48 | tr -d '=+/' | head -c 48)
+APPROVER_TOKEN=$(openssl rand -base64 48 | tr -d '=+/' | head -c 48)
 
-node tools/control-plane/gtcx-ctl.mjs token mint \
-  --tenant "$TENANT_ID" \
-  --subject "${TENANT_ID}-approver" \
-  --permissions query:read,query:mutate,tools:read,providers:read,audit:read \
-  --label "$TENANT_ID approval signer"
+cat <<JSON > new-token-entries.json
+[
+  {
+    "token": "${OPS_TOKEN}",
+    "subject": "${TENANT_ID}-ops",
+    "permissions": ["query:read", "tools:read", "providers:read"],
+    "label": "${TENANT_ID} operator",
+    "tenantId": "${TENANT_ID}"
+  },
+  {
+    "token": "${APPROVER_TOKEN}",
+    "subject": "${TENANT_ID}-approver",
+    "permissions": ["query:read", "query:mutate", "tools:read", "providers:read", "audit:read"],
+    "label": "${TENANT_ID} approval signer",
+    "tenantId": "${TENANT_ID}"
+  }
+]
+JSON
+
+# Merge into the existing auth-tokens secret (kubectl example; for prod
+# use sealed-secrets / external-secrets per your env's pattern).
+CURRENT=$(kubectl -n gtcx get secret compliance-gateway-auth -o jsonpath='{.data.COMPLIANCE_GATEWAY_AUTH_TOKENS_JSON}' | base64 -d)
+MERGED=$(jq -s 'add' <(echo "$CURRENT") new-token-entries.json)
+kubectl -n gtcx create secret generic compliance-gateway-auth \
+  --from-literal=COMPLIANCE_GATEWAY_AUTH_TOKENS_JSON="$MERGED" \
+  --dry-run=client -o yaml | kubectl apply -f -
+kubectl -n gtcx rollout restart deploy/compliance-gateway
 ```
 
-Tokens are returned once. Store in the tenant's vault and the customer's password manager — never in chat.
+Tokens are visible only at generation. Store in the tenant's vault and the customer's password manager — never in chat, never in the runbook output. Shred `new-token-entries.json` after the apply.
+
+A real `pnpm ctl token mint/rotate/revoke` CLI subcommand is on the roadmap (see Sprint 4); until then this manual procedure is the source of truth.
 
 ## 3. Configure budget overrides (optional)
 
@@ -116,8 +137,15 @@ Open Grafana → dashboard `audit-trust-tenant` → set `tenantId=${TENANT_ID}`.
 
 ## 8. Decommissioning (when a pilot ends)
 
+Strip the tenant's token entries from the auth secret and roll the deployment:
+
 ```bash
-node tools/control-plane/gtcx-ctl.mjs token revoke --tenant "$TENANT_ID" --all
+CURRENT=$(kubectl -n gtcx get secret compliance-gateway-auth -o jsonpath='{.data.COMPLIANCE_GATEWAY_AUTH_TOKENS_JSON}' | base64 -d)
+FILTERED=$(echo "$CURRENT" | jq --arg t "$TENANT_ID" 'map(select(.tenantId != $t))')
+kubectl -n gtcx create secret generic compliance-gateway-auth \
+  --from-literal=COMPLIANCE_GATEWAY_AUTH_TOKENS_JSON="$FILTERED" \
+  --dry-run=client -o yaml | kubectl apply -f -
+kubectl -n gtcx rollout restart deploy/compliance-gateway
 ```
 
 Tenant audit records remain in the WORM bucket for the FATF 7-year retention window. The chain is preserved; only the active tokens are revoked.

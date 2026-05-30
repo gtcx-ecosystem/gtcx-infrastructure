@@ -73,7 +73,7 @@ anchor rules apply.
 
 **Mitigation:**
 
-- If a recent deploy correlates: `pnpm ctl deploy rollback --service <protocol>` (S2.3 wires this command).
+- If a recent deploy correlates: `pnpm ctl deploy rollback --environment=production`. The CLI rolls back the entire environment (per-service rollback isn't supported today); coordinate with the on-call lead before executing in prod.
 - If upstream is failing: follow `disaster-recovery.md` for the affected dependency.
 
 **Escalation:** Page protocol-architect-lead if error rate persists >15m after rollback.

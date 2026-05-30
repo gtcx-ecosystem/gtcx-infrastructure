@@ -30,17 +30,17 @@ GTCX supports automated and manual rollback with full evidence capture.
 
 ```bash
 # Rollback production to previous revision
-gtcx-ctl deploy rollback --environment=production
+pnpm ctl deploy rollback --environment=production
 
 # Capture evidence
-gtcx-ctl evidence rollback-capture --environment=production --reason="SLO breach"
+pnpm ctl evidence rollback-capture --environment=production --reason="SLO breach"
 ```
 
 ## Automated Rollback Wiring (Optional)
 
 To enable automatic rollback on SLO breach:
 
-1. Configure PagerDuty webhook to call `gtcx-ctl deploy rollback`
+1. Configure PagerDuty webhook to call `pnpm ctl deploy rollback`
 2. Set environment variable `GTCX_AUTO_ROLLBACK_ENABLED=true`
 3. Ensure the CI role has `kubectl` access to the production namespace
 

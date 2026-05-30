@@ -81,6 +81,7 @@ The helper emits:
 In `gtcx-intelligence`, load those variables into your shell and run:
 
 ```bash
+# cwd: gtcx-intelligence (NOT this repo — runbook-commands-check.mjs skips this block)
 pnpm evidence:external-providers
 pnpm evidence:deployment-smoke
 pnpm evidence:production-readiness

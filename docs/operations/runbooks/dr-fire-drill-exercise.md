@@ -271,20 +271,24 @@ mkdir -p "infra/security/reports/dr-exercises/${EXERCISE_ID}"
 # Copy all evidence files into this directory
 ```
 
-2. Generate a signed release evidence bundle:
+2. Generate a signed release evidence bundle (see `pnpm ctl evidence release-bundle --help` for the full flag set — required: `--environment`, `--version`, `--commit`, and either `--build-only` or both `--smoke-base-url` + `--rollback-target`):
 
 ```bash
-pnpm ctl evidence generate-release \
-  --include="infra/security/reports/dr-exercises/${EXERCISE_ID}" \
-  --output="infra/security/reports/dr-exercises/${EXERCISE_ID}/release-evidence.ndjson"
+pnpm ctl evidence release-bundle \
+  --environment="${ENVIRONMENT}" \
+  --version="${EXERCISE_ID}" \
+  --commit="$(git rev-parse HEAD)" \
+  --build-only \
+  --image=gateway="$(yq -r '.images[0].newName' infra/kubernetes/overlays/${ENVIRONMENT}/kustomization.yaml):$(yq -r '.images[0].newTag' infra/kubernetes/overlays/${ENVIRONMENT}/kustomization.yaml)" \
+  --evidence=dr-exercise="infra/security/reports/dr-exercises/${EXERCISE_ID}" \
+  --output-dir="infra/security/reports/dr-exercises/${EXERCISE_ID}"
 ```
 
-3. Upload to WORM (when AWS credentials are available):
+3. Upload to WORM (when AWS credentials are available). `worm-upload` consumes the manifest written by `release-bundle`:
 
 ```bash
 pnpm ctl evidence worm-upload \
-  --file="infra/security/reports/dr-exercises/${EXERCISE_ID}/release-evidence.ndjson" \
-  --bucket="gtcx-worm-audit-${ENVIRONMENT}-af-south-1"
+  --manifest="infra/security/reports/dr-exercises/${EXERCISE_ID}/worm-upload.json"
 ```
 
 4. Update `docs/audit/latest.json` with the exercise ID and WORM object key.

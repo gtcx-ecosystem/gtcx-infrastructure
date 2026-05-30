@@ -43,7 +43,7 @@ AGX (Authenticated Global Exchange) platform API is failing requests at an unsus
 
 | Cause                       | Indicator               | Fix                                                           |
 | --------------------------- | ----------------------- | ------------------------------------------------------------- |
-| Bad deployment              | Rollout in last 30 min  | Rollback: `gtcx-ctl deploy rollback --environment=production` |
+| Bad deployment              | Rollout in last 30 min  | Rollback: `pnpm ctl deploy rollback --environment=production` |
 | Database slowness           | RDS latency spike       | Check RDS Performance Insights                                |
 | Downstream protocol failure | Protocols error rate up | Check protocol pods                                           |
 | Traffic spike               | Request rate 2x normal  | HPA should scale; verify limits                               |

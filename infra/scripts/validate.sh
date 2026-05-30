@@ -120,6 +120,11 @@ run_runbook_frontmatter_check() {
     (cd "${PROJECT_ROOT}" && node tools/scripts/runbook-frontmatter-check.mjs --check)
 }
 
+run_runbook_commands_check() {
+    log_info "Running runbook command validation..."
+    (cd "${PROJECT_ROOT}" && node tools/scripts/runbook-commands-check.mjs)
+}
+
 run_docs_link_check() {
     log_info "Running docs link check..."
     (cd "${PROJECT_ROOT}" && node tools/scripts/docs-link-checker.mjs)
@@ -338,6 +343,7 @@ case "${MODE}" in
         run_docs_standard_validation
         run_alert_runbook_url_check
         run_runbook_frontmatter_check
+        run_runbook_commands_check
         run_docs_link_check
         run_score_ledger_validation
         run_build_evidence_generation
@@ -361,6 +367,7 @@ case "${MODE}" in
         run_docs_standard_validation
         run_alert_runbook_url_check
         run_runbook_frontmatter_check
+        run_runbook_commands_check
         run_score_ledger_validation
         run_build_evidence_generation
         run_runtime_smoke_evidence_generation

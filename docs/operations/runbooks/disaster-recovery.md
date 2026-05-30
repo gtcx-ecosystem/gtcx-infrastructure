@@ -130,16 +130,24 @@ sequenceDiagram
 ### Step 6 — Smoke test protocol APIs
 
 ```bash
-# Run full test suite in recovery environment
+# Run full validation suite in recovery environment.
+# `pnpm test:full` exercises terraform, kustomize, compose, deploy
+# dry-run, and audit-immutability fixtures in addition to the quick
+# gates (policy + shellcheck + smoke + replay-protection +
+# compliance-gateway + control-plane + docs-standard + ledger).
 pnpm test
-pnpm test:integration
+pnpm test:full
 
-# Performance targets must be met
-pnpm check:performance
-pnpm check:performance:baseline
+# Capture runtime smoke evidence against the recovered endpoint.
+# Compare against the last green pre-DR runtime-smoke artifact in
+# infra/security/reports/release-evidence/ to confirm parity.
+pnpm ctl evidence runtime-smoke \
+  --environment="${ENVIRONMENT}" \
+  --base-url="${RECOVERY_BASE_URL}" \
+  --strict
 ```
 
-All tests must pass before resuming traffic.
+All tests must pass and the runtime-smoke evidence must be parity-clean before resuming traffic. (A dedicated performance/baseline gate is on the roadmap — for now compare evidence bundles by hand and escalate any latency regression > 25% to the protocol-architect lead.)
 
 ### Step 7 — Validate audit log
 
