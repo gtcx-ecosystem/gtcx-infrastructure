@@ -1,39 +1,35 @@
 ---
-title: "GTCX Infrastructure — Documentation Index"
-status: "current"
-date: "2026-05-27"
-owner: "gtcx-infrastructure"
-role: "protocol-architect"
-agent_id: "agent://gtcx-infrastructure/2026-05-27/session-backfill"
-trust_score: 60
-autonomy_level: "permissioned"
-tier: "standard"
-tags: ["documentation", "README.md"]
-review_cycle: "on-change"
----
-
----
 title: 'GTCX Infrastructure — Documentation Index'
 status: 'draft'
-date: '2026-05-10'
+date: '2026-05-27'
 owner: 'crypto-security-engineer'
 role: 'crypto-security-engineer'
 tier: 'critical'
 tags: ['security', 'crypto', 'compliance', 'architecture', 'infrastructure']
 review_cycle: 'quarterly'
+agent_id: 'agent://gtcx-infrastructure/2026-05-27/session-backfill'
+trust_score: 60
+autonomy_level: 'permissioned'
 ---
 
 # GTCX Infrastructure — Documentation Index
 
 Single source of truth for all infrastructure documentation.
 
+> **Doc-site architecture.** This repo has ONE public doc-site, not three.
+>
+> - **Source of truth** (markdown): [`docs/gitbook/docs-site/`](gitbook/docs-site/README.md) — what gets published at `gtcx.io/compliance`.
+> - **Build pipeline**: [`tools/docs-site/`](../tools/docs-site/README.md) — Astro Starlight static site generator. Its `scripts/sync-content.mjs` mirrors the source above into `src/content/docs/` (gitignored) before each build.
+> - **Internal docs** (this tree, `docs/`): for the engineering team, agents, and operators — not published to gtcx.io.
+>
+> The "three doc-site implementations" finding in the 2026-05-30 audit was a misreading of the directory layout. The build pipeline and the source are intentionally separated; the internal docs are a different surface entirely.
+
 ---
 
 ## 0. Start Here
 
 - [Documentation Governance](governance/documentation-deviations.md) — Repo-local documentation rules and approved taxonomy deviations
-- [Orientation](agents/onboarding/orientation.md) — Repo map, environment topology, key commands
-- [Developer Quickstart](agents/onboarding/developer-quickstart.md) — Clone to running in under 10 minutes
+- [Orientation](agents/onboarding/orientation.md) — **canonical onboarding entry point** (other onboarding files are deprecated; see [agents/onboarding/README.md](agents/onboarding/README.md))
 - [Agent Safety Rules](agents/workflows/agent-safety-rules.md) — Three-tier authority structure
 
 ---

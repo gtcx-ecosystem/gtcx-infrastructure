@@ -1,26 +1,15 @@
 ---
-title: "Guide: ADRs vs System Design"
-status: "current"
-date: "2026-05-27"
-owner: "gtcx-infrastructure"
-role: "protocol-architect"
-agent_id: "agent://gtcx-infrastructure/2026-05-27/session-backfill"
-trust_score: 60
-autonomy_level: "permissioned"
-tier: "standard"
-tags: ["documentation", "architecture"]
-review_cycle: "on-change"
----
-
----
 title: 'Guide: ADRs vs System Design'
 status: 'current'
-date: '2026-05-10'
+date: '2026-05-27'
 owner: 'frontier-infra-engineer'
 role: 'frontier-infra-engineer'
 tier: 'informational'
 tags: ['architecture', 'infrastructure', 'frontend', 'database', 'agentic']
 review_cycle: 'monthly'
+agent_id: 'agent://gtcx-infrastructure/2026-05-27/session-backfill'
+trust_score: 60
+autonomy_level: 'permissioned'
 ---
 
 # Guide: ADRs vs System Design

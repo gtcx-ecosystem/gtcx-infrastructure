@@ -1,23 +1,10 @@
 ---
-title: "GTCX Infrastructure — Master Audit & Bank-Grade Certification"
-status: "current"
-date: "2026-05-27"
-owner: "gtcx-infrastructure"
-role: "protocol-architect"
-agent_id: "agent://gtcx-infrastructure/2026-05-27/session-backfill"
-trust_score: 60
-autonomy_level: "permissioned"
-tier: "standard"
-tags: ["documentation", "audit"]
-review_cycle: "on-change"
----
-
----
+title: 'GTCX Infrastructure — Master Audit & Bank-Grade Certification'
+status: current
+date: '2026-05-27'
 audit_type: master
 target_repo: gtcx-infrastructure
 audit_date: 2026-05-17
-status: current
-date: 2026-05-17
 owner: frontier-infra-engineer
 composite: 5.9
 composite_raw: 7.56
@@ -27,6 +14,13 @@ sov_dfi: 7.65
 p0_count: 5
 p1_count: 7
 caps_fired: 2
+role: 'protocol-architect'
+agent_id: 'agent://gtcx-infrastructure/2026-05-27/session-backfill'
+trust_score: 60
+autonomy_level: 'permissioned'
+tier: 'standard'
+tags: ['documentation', 'audit']
+review_cycle: 'on-change'
 ---
 
 # GTCX Infrastructure — Master Audit & Bank-Grade Certification

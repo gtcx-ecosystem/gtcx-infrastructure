@@ -1,26 +1,15 @@
 ---
-title: "KYC/AML Record Retention Schedule"
-status: "current"
-date: "2026-05-27"
-owner: "gtcx-infrastructure"
-role: "protocol-architect"
-agent_id: "agent://gtcx-infrastructure/2026-05-27/session-backfill"
-trust_score: 60
-autonomy_level: "permissioned"
-tier: "standard"
-tags: ["documentation", "gtm"]
-review_cycle: "on-change"
----
-
----
 title: 'KYC/AML Record Retention Schedule'
 status: 'current'
-date: '2026-05-08'
+date: '2026-05-27'
 owner: 'quality-evidence-lead'
 role: 'quality-evidence-lead'
 tier: 'standard'
 tags: ['security', 'compliance', 'infrastructure', 'testing', 'api']
 review_cycle: 'on-change'
+agent_id: 'agent://gtcx-infrastructure/2026-05-27/session-backfill'
+trust_score: 60
+autonomy_level: 'permissioned'
 ---
 
 # KYC/AML Record Retention Schedule

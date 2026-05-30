@@ -1,18 +1,4 @@
 ---
-title: "GTCX Infrastructure — 10/10 Remediation Plan (2026-05-27)"
-status: "current"
-date: "2026-05-27"
-owner: "gtcx-infrastructure"
-role: "protocol-architect"
-agent_id: "agent://gtcx-infrastructure/2026-05-27/session-backfill"
-trust_score: 60
-autonomy_level: "permissioned"
-tier: "standard"
-tags: ["documentation", "audit"]
-review_cycle: "on-change"
----
-
----
 title: 'GTCX Infrastructure — 10/10 Remediation Plan'
 status: 'current'
 date: '2026-05-27'
@@ -24,6 +10,9 @@ review_cycle: 'weekly'
 source_audit: 'docs/audit/master-audit-2026-05-27.md'
 current_composite: 9.0
 target_composite: 10.0
+agent_id: 'agent://gtcx-infrastructure/2026-05-27/session-backfill'
+trust_score: 60
+autonomy_level: 'permissioned'
 ---
 
 # GTCX Infrastructure — 10/10 Remediation Plan (2026-05-27)

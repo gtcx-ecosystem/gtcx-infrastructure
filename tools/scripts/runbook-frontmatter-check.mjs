@@ -25,12 +25,13 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
-// Scan operations/runbooks AND the agents/ tree — both suffered the
-// session-backfill double-frontmatter pattern.
-const SCAN_DIRS = [
-  join(REPO_ROOT, 'docs', 'operations', 'runbooks'),
-  join(REPO_ROOT, 'docs', 'agents'),
-];
+// Scan the whole docs/ tree — the session-backfill double-frontmatter
+// pattern touched runbooks, agent docs, and the top-level index.
+// Excluded paths carry intentional non-standard frontmatter (the
+// gitbook docs-site source ships frontmatter the Astro build pipeline
+// consumes).
+const SCAN_DIRS = [join(REPO_ROOT, 'docs')];
+const EXCLUDE_SEGMENTS = new Set(['gitbook', 'node_modules', 'dist']);
 const checkOnly = process.argv.includes('--check');
 
 const FRONTMATTER_RX = /^---\n([\s\S]*?)\n---/;
@@ -153,6 +154,7 @@ function main() {
   const files = [];
   function walk(dir) {
     for (const entry of readdirSync(dir)) {
+      if (EXCLUDE_SEGMENTS.has(entry)) continue;
       const p = join(dir, entry);
       const st = statSync(p);
       if (st.isDirectory()) walk(p);

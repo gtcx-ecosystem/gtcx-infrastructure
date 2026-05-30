@@ -1,18 +1,4 @@
 ---
-title: "Vendor Engagement Readiness Pack — SOC 2 + Pen-Test"
-status: "current"
-date: "2026-05-27"
-owner: "gtcx-infrastructure"
-role: "protocol-architect"
-agent_id: "agent://gtcx-infrastructure/2026-05-27/session-backfill"
-trust_score: 60
-autonomy_level: "permissioned"
-tier: "standard"
-tags: ["documentation", "audit"]
-review_cycle: "on-change"
----
-
----
 title: 'Vendor Engagement Readiness Pack — SOC 2 + Pen-Test'
 status: 'current'
 date: '2026-05-27'
@@ -21,6 +7,9 @@ role: 'chief-auditor'
 tier: 'strategic'
 tags: ['audit', 'soc2', 'pen-test', 'vendor', 'readiness']
 review_cycle: 'on-change'
+agent_id: 'agent://gtcx-infrastructure/2026-05-27/session-backfill'
+trust_score: 60
+autonomy_level: 'permissioned'
 ---
 
 # Vendor Engagement Readiness Pack — SOC 2 + Pen-Test

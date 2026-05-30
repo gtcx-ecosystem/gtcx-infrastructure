@@ -1,25 +1,15 @@
 ---
-title: "Service Level Indicators (SLIs) + Objectives (SLOs)"
-status: "current"
-date: "2026-05-27"
-owner: "gtcx-infrastructure"
-role: "protocol-architect"
-agent_id: "agent://gtcx-infrastructure/2026-05-27/session-backfill"
-trust_score: 60
-autonomy_level: "permissioned"
-tier: "standard"
-tags: ["documentation", "operations"]
-review_cycle: "on-change"
----
-
----
 title: 'Service Level Indicators + Objectives'
 status: 'current'
-date: '2026-05-22'
+date: '2026-05-27'
 owner: 'platform-engineering'
 tier: 'critical'
 tags: ['operations', 'slo', 'sli', 'observability', 'compliance']
 review_cycle: 'quarterly'
+role: 'protocol-architect'
+agent_id: 'agent://gtcx-infrastructure/2026-05-27/session-backfill'
+trust_score: 60
+autonomy_level: 'permissioned'
 ---
 
 # Service Level Indicators (SLIs) + Objectives (SLOs)

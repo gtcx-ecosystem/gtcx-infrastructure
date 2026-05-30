@@ -1,26 +1,15 @@
 ---
-title: "Service Compliance README — Template"
-status: "current"
-date: "2026-05-27"
-owner: "gtcx-infrastructure"
-role: "protocol-architect"
-agent_id: "agent://gtcx-infrastructure/2026-05-27/session-backfill"
-trust_score: 95
-autonomy_level: "sovereign"
-tier: "critical"
-tags: ["documentation", "compliance"]
-review_cycle: "on-change"
----
-
----
 title: 'Service Compliance README — Template'
 status: 'current'
-date: '2026-05-12'
+date: '2026-05-27'
 owner: 'quality-evidence-lead'
 role: 'quality-evidence-lead'
 tier: 'critical'
 tags: ['security', 'crypto', 'compliance', 'infrastructure', 'api']
 review_cycle: 'quarterly'
+agent_id: 'agent://gtcx-infrastructure/2026-05-27/session-backfill'
+trust_score: 95
+autonomy_level: 'sovereign'
 ---
 
 # Service Compliance README — Template

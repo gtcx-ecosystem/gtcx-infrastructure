@@ -1,26 +1,15 @@
 ---
-title: "POL-15: Supplier Relationships"
-status: "current"
-date: "2026-05-27"
-owner: "gtcx-infrastructure"
-role: "protocol-architect"
-agent_id: "agent://gtcx-infrastructure/2026-05-27/session-backfill"
-trust_score: 60
-autonomy_level: "permissioned"
-tier: "standard"
-tags: ["documentation", "compliance"]
-review_cycle: "on-change"
----
-
----
 title: 'POL-15: Supplier Relationships'
 status: 'current'
-date: '2026-05-10'
+date: '2026-05-27'
 owner: 'frontier-infra-engineer'
 role: 'frontier-infra-engineer'
 tier: 'critical'
 tags: ['security', 'compliance', 'infrastructure', 'frontend', 'devops']
 review_cycle: 'quarterly'
+agent_id: 'agent://gtcx-infrastructure/2026-05-27/session-backfill'
+trust_score: 60
+autonomy_level: 'permissioned'
 ---
 
 # POL-15: Supplier Relationships

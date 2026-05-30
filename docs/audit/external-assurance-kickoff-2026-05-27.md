@@ -1,18 +1,4 @@
 ---
-title: "External Assurance Kickoff Pack - 2026-05-27"
-status: "current"
-date: "2026-05-27"
-owner: "gtcx-infrastructure"
-role: "protocol-architect"
-agent_id: "agent://gtcx-infrastructure/2026-05-27/session-backfill"
-trust_score: 60
-autonomy_level: "permissioned"
-tier: "standard"
-tags: ["documentation", "audit"]
-review_cycle: "on-change"
----
-
----
 title: 'External Assurance Kickoff Pack'
 status: 'ready'
 date: '2026-05-27'
@@ -21,6 +7,10 @@ tier: 'critical'
 tags: ['audit', 'soc2', 'pen-test', 'external-assurance']
 review_cycle: 'weekly'
 source_audit: 'docs/audit/master-audit-2026-05-27.md'
+role: 'protocol-architect'
+agent_id: 'agent://gtcx-infrastructure/2026-05-27/session-backfill'
+trust_score: 60
+autonomy_level: 'permissioned'
 ---
 
 # External Assurance Kickoff Pack - 2026-05-27

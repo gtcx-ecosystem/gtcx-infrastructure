@@ -1,26 +1,15 @@
 ---
-title: "mTLS Service Identity Mapping"
-status: "current"
-date: "2026-05-27"
-owner: "gtcx-infrastructure"
-role: "protocol-architect"
-agent_id: "agent://gtcx-infrastructure/2026-05-27/session-backfill"
-trust_score: 60
-autonomy_level: "permissioned"
-tier: "standard"
-tags: ["documentation", "architecture"]
-review_cycle: "on-change"
----
-
----
 title: 'mTLS Service Identity Mapping'
 status: 'current'
-date: '2026-05-17'
+date: '2026-05-27'
 owner: 'frontier-infra-engineer'
 role: 'platform-engineer'
 tier: 'critical'
 tags: ['security', 'mtls', 'linkerd', 'service-mesh', 'identity']
 review_cycle: 'quarterly'
+agent_id: 'agent://gtcx-infrastructure/2026-05-27/session-backfill'
+trust_score: 60
+autonomy_level: 'permissioned'
 ---
 
 # mTLS Service Identity Mapping

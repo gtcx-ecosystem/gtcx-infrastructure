@@ -1,26 +1,15 @@
 ---
-title: "Governance Documentation"
-status: "current"
-date: "2026-05-27"
-owner: "gtcx-infrastructure"
-role: "protocol-architect"
-agent_id: "agent://gtcx-infrastructure/2026-05-27/session-backfill"
-trust_score: 95
-autonomy_level: "sovereign"
-tier: "critical"
-tags: ["documentation", "governance"]
-review_cycle: "on-change"
----
-
----
 title: 'Governance Documentation'
 status: 'current'
-date: '2026-05-25'
+date: '2026-05-27'
 owner: 'ceo'
 role: 'ceo'
 tier: 'critical'
 tags: ['governance', 'king-iv', 'ethics', 'board', 'ciso', 'compliance']
 review_cycle: 'quarterly'
+agent_id: 'agent://gtcx-infrastructure/2026-05-27/session-backfill'
+trust_score: 95
+autonomy_level: 'sovereign'
 ---
 
 # Governance Documentation

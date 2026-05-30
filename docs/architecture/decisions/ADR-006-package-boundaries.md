@@ -1,26 +1,15 @@
 ---
-title: "ADR-006: Package Boundaries and Dependencies"
-status: "current"
-date: "2026-05-27"
-owner: "gtcx-infrastructure"
-role: "protocol-architect"
-agent_id: "agent://gtcx-infrastructure/2026-05-27/session-backfill"
-trust_score: 60
-autonomy_level: "permissioned"
-tier: "standard"
-tags: ["documentation", "architecture"]
-review_cycle: "on-change"
----
-
----
 title: 'ADR-006: Package Boundaries and Dependencies'
 status: 'current'
-date: '2026-05-12'
+date: '2026-05-27'
 owner: 'frontier-infra-engineer'
 role: 'frontier-infra-engineer'
 tier: 'standard'
 tags: ['architecture', 'infrastructure', 'frontend', 'backend', 'database']
 review_cycle: 'on-change'
+agent_id: 'agent://gtcx-infrastructure/2026-05-27/session-backfill'
+trust_score: 60
+autonomy_level: 'permissioned'
 ---
 
 # ADR-006: Package Boundaries and Dependencies

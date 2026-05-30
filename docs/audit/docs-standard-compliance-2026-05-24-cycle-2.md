@@ -1,36 +1,15 @@
 ---
-title: "gtcx-infrastructure — Documentation Standard Compliance Audit (Cycle 2)"
-status: "current"
-date: "2026-05-27"
-owner: "gtcx-infrastructure"
-role: "protocol-architect"
-agent_id: "agent://gtcx-infrastructure/2026-05-27/session-backfill"
-trust_score: 60
-autonomy_level: "permissioned"
-tier: "standard"
-tags: ["documentation", "audit"]
-review_cycle: "on-change"
----
-
----
 title: 'gtcx-infrastructure — Documentation Standard Compliance Audit (Cycle 2)'
 status: 'current'
-date: '2026-05-24'
+date: '2026-05-27'
 owner: 'quality-evidence-lead'
 role: 'quality-evidence-lead'
 tier: 'critical'
 tags:
-  [
-    'compliance',
-    'docs',
-    'governance',
-    'verification',
-    'audit',
-    'protocol-1',
-    'protocol-13',
-    'cycle-2',
-  ]
 review_cycle: 'quarterly'
+agent_id: 'agent://gtcx-infrastructure/2026-05-27/session-backfill'
+trust_score: 60
+autonomy_level: 'permissioned'
 ---
 
 # gtcx-infrastructure — Documentation Standard Compliance Audit (Cycle 2)

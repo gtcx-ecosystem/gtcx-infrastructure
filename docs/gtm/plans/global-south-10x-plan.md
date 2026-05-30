@@ -1,26 +1,15 @@
 ---
-title: "Global South 10/10 — Production Readiness Plan"
-status: "current"
-date: "2026-05-27"
-owner: "gtcx-infrastructure"
-role: "protocol-architect"
-agent_id: "agent://gtcx-infrastructure/2026-05-27/session-backfill"
-trust_score: 60
-autonomy_level: "permissioned"
-tier: "standard"
-tags: ["documentation", "gtm"]
-review_cycle: "on-change"
----
-
----
 title: 'Global South 10/10 — Production Readiness Plan'
 status: 'current'
-date: '2026-05-10'
+date: '2026-05-27'
 owner: 'frontier-infra-engineer'
 role: 'frontier-infra-engineer'
 tier: 'critical'
 tags: ['security', 'crypto', 'compliance', 'architecture', 'infrastructure']
 review_cycle: 'quarterly'
+agent_id: 'agent://gtcx-infrastructure/2026-05-27/session-backfill'
+trust_score: 60
+autonomy_level: 'permissioned'
 ---
 
 # Global South 10/10 — Production Readiness Plan

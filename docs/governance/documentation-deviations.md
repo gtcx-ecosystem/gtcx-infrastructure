@@ -1,26 +1,15 @@
 ---
-title: "Documentation Governance — Repo-Local Deviations"
-status: "current"
-date: "2026-05-27"
-owner: "gtcx-infrastructure"
-role: "protocol-architect"
-agent_id: "agent://gtcx-infrastructure/2026-05-27/session-backfill"
-trust_score: 60
-autonomy_level: "permissioned"
-tier: "standard"
-tags: ["documentation", "governance"]
-review_cycle: "on-change"
----
-
----
 title: 'Documentation Governance — Repo-Local Deviations'
 status: 'current'
-date: '2026-05-24'
+date: '2026-05-27'
 owner: 'frontier-infra-engineer'
 role: 'frontier-infra-engineer'
 tier: 'standard'
 tags: ['governance', 'docs', 'protocol-1', 'deviations']
 review_cycle: 'on-change'
+agent_id: 'agent://gtcx-infrastructure/2026-05-27/session-backfill'
+trust_score: 60
+autonomy_level: 'permissioned'
 ---
 
 # Documentation Governance — Repo-Local Deviations

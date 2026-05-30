@@ -1,26 +1,15 @@
 ---
-title: "Compliance"
-status: "current"
-date: "2026-05-27"
-owner: "gtcx-infrastructure"
-role: "protocol-architect"
-agent_id: "agent://gtcx-infrastructure/2026-05-27/session-backfill"
-trust_score: 95
-autonomy_level: "sovereign"
-tier: "critical"
-tags: ["documentation", "compliance"]
-review_cycle: "on-change"
----
-
----
 title: 'Compliance'
 status: 'current'
-date: '2026-05-02'
+date: '2026-05-27'
 owner: 'quality-evidence-lead'
 role: 'quality-evidence-lead'
 tier: 'critical'
 tags: ['security', 'compliance', 'infrastructure', 'mobile', 'agentic']
 review_cycle: 'quarterly'
+agent_id: 'agent://gtcx-infrastructure/2026-05-27/session-backfill'
+trust_score: 95
+autonomy_level: 'sovereign'
 ---
 
 # Compliance

@@ -1,27 +1,17 @@
 ---
-title: "Model Card — Eval Pipeline"
-status: "current"
-date: "2026-05-27"
-owner: "gtcx-infrastructure"
-role: "protocol-architect"
-agent_id: "agent://gtcx-infrastructure/2026-05-27/session-backfill"
-trust_score: 60
-autonomy_level: "permissioned"
-tier: "standard"
-tags: ["documentation", "governance"]
-review_cycle: "on-change"
----
-
----
 title: 'Model Card — Eval Pipeline'
 status: 'current'
-date: '2026-05-17'
+date: '2026-05-27'
 model_name: 'gtcx-eval-pipeline'
 model_version: '1.0.0'
 owner: 'ml-engineering'
 tier: 'critical'
 tags: ['model-card', 'eval', 'benchmark', 'ml']
 review_cycle: 'quarterly'
+role: 'protocol-architect'
+agent_id: 'agent://gtcx-infrastructure/2026-05-27/session-backfill'
+trust_score: 60
+autonomy_level: 'permissioned'
 ---
 
 # Model Card — Eval Pipeline

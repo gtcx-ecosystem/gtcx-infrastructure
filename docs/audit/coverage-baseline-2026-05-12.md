@@ -1,26 +1,15 @@
 ---
-title: "Test Coverage Baseline"
-status: "current"
-date: "2026-05-27"
-owner: "gtcx-infrastructure"
-role: "protocol-architect"
-agent_id: "agent://gtcx-infrastructure/2026-05-27/session-backfill"
-trust_score: 60
-autonomy_level: "permissioned"
-tier: "standard"
-tags: ["documentation", "audit"]
-review_cycle: "on-change"
----
-
----
 title: 'Test Coverage Baseline'
 status: 'current'
-date: '2026-05-12'
+date: '2026-05-27'
 owner: 'quality-evidence-lead'
 role: 'quality-evidence-lead'
 tier: 'critical'
 tags: ['compliance', 'infrastructure', 'frontend', 'backend', 'governance']
 review_cycle: 'quarterly'
+agent_id: 'agent://gtcx-infrastructure/2026-05-27/session-backfill'
+trust_score: 60
+autonomy_level: 'permissioned'
 ---
 
 # Test Coverage Baseline

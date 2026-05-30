@@ -1,26 +1,15 @@
 ---
-title: "ADR-022: Pluggable Audit-Query Store with Three Backends"
-status: "current"
-date: "2026-05-27"
-owner: "gtcx-infrastructure"
-role: "protocol-architect"
-agent_id: "agent://gtcx-infrastructure/2026-05-27/session-backfill"
-trust_score: 60
-autonomy_level: "permissioned"
-tier: "standard"
-tags: ["documentation", "architecture"]
-review_cycle: "on-change"
----
-
----
 title: 'ADR-022: Pluggable Audit-Query Store with Three Backends'
 status: 'accepted'
-date: '2026-05-25'
+date: '2026-05-27'
 owner: 'platform-engineering'
 role: 'protocol-architect'
 tier: 'standard'
 tags: ['architecture', 'audit-query', 'storage', 'pluggable-backend', 'staging']
 review_cycle: 'on-change'
+agent_id: 'agent://gtcx-infrastructure/2026-05-27/session-backfill'
+trust_score: 60
+autonomy_level: 'permissioned'
 ---
 
 # ADR-022: Pluggable Audit-Query Store with Three Backends

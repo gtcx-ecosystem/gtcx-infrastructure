@@ -1,26 +1,15 @@
 ---
-title: "[Product Name] — Phased Roadmap"
-status: "current"
-date: "2026-05-27"
-owner: "gtcx-infrastructure"
-role: "protocol-architect"
-agent_id: "agent://gtcx-infrastructure/2026-05-27/session-backfill"
-trust_score: 60
-autonomy_level: "permissioned"
-tier: "standard"
-tags: ["documentation", "agile"]
-review_cycle: "on-change"
----
-
----
 title: '[Product Name] — Phased Roadmap'
 status: 'current'
-date: '2026-05-02'
+date: '2026-05-27'
 owner: 'product-lead'
 role: 'product-lead'
 tier: 'standard'
 tags: ['infrastructure', 'testing', 'devops', 'mobile', 'telemetry']
 review_cycle: 'on-change'
+agent_id: 'agent://gtcx-infrastructure/2026-05-27/session-backfill'
+trust_score: 60
+autonomy_level: 'permissioned'
 ---
 
 # [Product Name] — Phased Roadmap

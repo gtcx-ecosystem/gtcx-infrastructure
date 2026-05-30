@@ -1,18 +1,4 @@
 ---
-title: "GTCX Infrastructure — Master Audit Rerun (2026-05-27)"
-status: "current"
-date: "2026-05-27"
-owner: "gtcx-infrastructure"
-role: "protocol-architect"
-agent_id: "agent://gtcx-infrastructure/2026-05-27/session-backfill"
-trust_score: 60
-autonomy_level: "permissioned"
-tier: "standard"
-tags: ["documentation", "audit"]
-review_cycle: "on-change"
----
-
----
 title: 'GTCX Infrastructure — Master Audit Rerun'
 status: 'current'
 date: '2026-05-27'
@@ -36,6 +22,9 @@ p0_count: 0
 p1_count: 3
 p2_count: 1
 caps_fired: 0
+agent_id: 'agent://gtcx-infrastructure/2026-05-27/session-backfill'
+trust_score: 60
+autonomy_level: 'permissioned'
 ---
 
 # GTCX Infrastructure — Master Audit Rerun (2026-05-27)

@@ -1,23 +1,10 @@
 ---
-title: "GTCX Infrastructure — Master Audit Report (2026-05-25)"
-status: "current"
-date: "2026-05-27"
-owner: "gtcx-infrastructure"
-role: "protocol-architect"
-agent_id: "agent://gtcx-infrastructure/2026-05-27/session-backfill"
-trust_score: 60
-autonomy_level: "permissioned"
-tier: "standard"
-tags: ["documentation", "audit"]
-review_cycle: "on-change"
----
-
----
+title: 'GTCX Infrastructure — Master Audit Report (2026-05-25)'
+status: current
+date: '2026-05-27'
 audit_type: master
 target_repo: gtcx-infrastructure
 audit_date: 2026-05-25
-status: current
-date: 2026-05-25
 owner: frontier-infra-engineer
 composite: 9.0
 composite_raw: 9.0
@@ -27,6 +14,13 @@ sov_dfi: 7.9
 p0_count: 0
 p1_count: 4
 caps_fired: 0
+role: 'protocol-architect'
+agent_id: 'agent://gtcx-infrastructure/2026-05-27/session-backfill'
+trust_score: 60
+autonomy_level: 'permissioned'
+tier: 'standard'
+tags: ['documentation', 'audit']
+review_cycle: 'on-change'
 ---
 
 # GTCX Infrastructure — Master Audit Report (2026-05-25)

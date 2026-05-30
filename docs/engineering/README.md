@@ -1,26 +1,15 @@
 ---
-title: "Engineering"
-status: "current"
-date: "2026-05-27"
-owner: "gtcx-infrastructure"
-role: "protocol-architect"
-agent_id: "agent://gtcx-infrastructure/2026-05-27/session-backfill"
-trust_score: 95
-autonomy_level: "sovereign"
-tier: "critical"
-tags: ["documentation", "engineering"]
-review_cycle: "on-change"
----
-
----
 title: 'Engineering'
 status: 'current'
-date: '2026-05-24'
+date: '2026-05-27'
 owner: 'frontier-infra-engineer'
 role: 'frontier-infra-engineer'
 tier: 'standard'
 tags: ['engineering', 'build', 'tech-stack']
 review_cycle: 'on-change'
+agent_id: 'agent://gtcx-infrastructure/2026-05-27/session-backfill'
+trust_score: 95
+autonomy_level: 'sovereign'
 ---
 
 # Engineering

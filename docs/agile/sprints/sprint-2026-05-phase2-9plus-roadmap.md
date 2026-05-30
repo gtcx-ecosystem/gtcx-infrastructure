@@ -1,26 +1,15 @@
 ---
-title: "Sprint Phase 2: 9+ Production-Readiness Roadmap"
-status: "current"
-date: "2026-05-27"
-owner: "gtcx-infrastructure"
-role: "protocol-architect"
-agent_id: "agent://gtcx-infrastructure/2026-05-27/session-backfill"
-trust_score: 60
-autonomy_level: "permissioned"
-tier: "standard"
-tags: ["documentation", "agile"]
-review_cycle: "on-change"
----
-
----
 title: 'Sprint Phase 2: 9+ Production-Readiness Roadmap'
 status: 'current'
-date: '2026-05-10'
+date: '2026-05-27'
 owner: 'frontier-infra-engineer'
 role: 'frontier-infra-engineer'
 tier: 'standard'
 tags: ['security', 'crypto', 'compliance', 'architecture', 'infrastructure']
 review_cycle: 'on-change'
+agent_id: 'agent://gtcx-infrastructure/2026-05-27/session-backfill'
+trust_score: 60
+autonomy_level: 'permissioned'
 ---
 
 # Sprint Phase 2: 9+ Production-Readiness Roadmap

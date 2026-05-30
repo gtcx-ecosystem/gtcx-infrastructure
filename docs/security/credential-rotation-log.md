@@ -1,26 +1,15 @@
 ---
-title: "Credential Rotation Log"
-status: "current"
-date: "2026-05-27"
-owner: "gtcx-infrastructure"
-role: "protocol-architect"
-agent_id: "agent://gtcx-infrastructure/2026-05-27/session-backfill"
-trust_score: 60
-autonomy_level: "permissioned"
-tier: "standard"
-tags: ["documentation", "security"]
-review_cycle: "on-change"
----
-
----
 title: 'Credential Rotation Log'
 status: 'current'
-date: '2026-05-24'
+date: '2026-05-27'
 owner: 'platform-engineering'
 role: 'security-engineer'
 tier: 'critical'
 tags: ['security', 'audit', 'credentials', 'rotation']
 review_cycle: 'quarterly'
+agent_id: 'agent://gtcx-infrastructure/2026-05-27/session-backfill'
+trust_score: 60
+autonomy_level: 'permissioned'
 ---
 
 # Credential Rotation Log

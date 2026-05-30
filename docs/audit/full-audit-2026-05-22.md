@@ -1,23 +1,10 @@
 ---
-title: "Full Audit — gtcx-infrastructure (2026-05-22, Round 4)"
-status: "current"
-date: "2026-05-27"
-owner: "gtcx-infrastructure"
-role: "protocol-architect"
-agent_id: "agent://gtcx-infrastructure/2026-05-27/session-backfill"
-trust_score: 60
-autonomy_level: "permissioned"
-tier: "standard"
-tags: ["documentation", "audit"]
-review_cycle: "on-change"
----
-
----
+title: 'Full Audit — gtcx-infrastructure (2026-05-22, Round 4)'
+status: current
+date: '2026-05-27'
 audit_type: full
 target_repo: gtcx-infrastructure
 audit_date: 2026-05-22
-status: current
-date: 2026-05-22
 owner: platform-engineering
 tier: critical
 tags: ['audit', 'full-audit', 'gtm', 'security', 'hygiene', 'production-readiness']
@@ -29,6 +16,10 @@ sov_dfi: 8.5
 p0_count: 0
 p1_count: 4
 caps_fired: 0
+role: 'protocol-architect'
+agent_id: 'agent://gtcx-infrastructure/2026-05-27/session-backfill'
+trust_score: 60
+autonomy_level: 'permissioned'
 ---
 
 # Full Audit — gtcx-infrastructure (2026-05-22, Round 4)

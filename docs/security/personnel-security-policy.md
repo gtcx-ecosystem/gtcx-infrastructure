@@ -1,26 +1,15 @@
 ---
-title: "Personnel Security Policy"
-status: "current"
-date: "2026-05-27"
-owner: "gtcx-infrastructure"
-role: "protocol-architect"
-agent_id: "agent://gtcx-infrastructure/2026-05-27/session-backfill"
-trust_score: 60
-autonomy_level: "permissioned"
-tier: "standard"
-tags: ["documentation", "security"]
-review_cycle: "on-change"
----
-
----
 title: 'Personnel Security Policy'
 status: 'current'
-date: '2026-05-25'
+date: '2026-05-27'
 owner: 'ciso'
 role: 'ciso'
 tier: 'critical'
 tags: ['security', 'personnel', 'clearance', 'background-check', 'government-grade']
 review_cycle: 'annual'
+agent_id: 'agent://gtcx-infrastructure/2026-05-27/session-backfill'
+trust_score: 60
+autonomy_level: 'permissioned'
 ---
 
 # Personnel Security Policy

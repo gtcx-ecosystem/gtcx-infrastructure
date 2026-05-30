@@ -1,26 +1,15 @@
 ---
-title: "GTCX Security Policies Library"
-status: "current"
-date: "2026-05-27"
-owner: "gtcx-infrastructure"
-role: "protocol-architect"
-agent_id: "agent://gtcx-infrastructure/2026-05-27/session-backfill"
-trust_score: 95
-autonomy_level: "sovereign"
-tier: "critical"
-tags: ["documentation", "compliance"]
-review_cycle: "on-change"
----
-
----
 title: 'GTCX Security Policies Library'
 status: 'current'
-date: '2026-05-08'
+date: '2026-05-27'
 owner: 'crypto-security-engineer'
 role: 'crypto-security-engineer'
 tier: 'critical'
 tags: ['security', 'crypto', 'compliance', 'infrastructure', 'frontend']
 review_cycle: 'quarterly'
+agent_id: 'agent://gtcx-infrastructure/2026-05-27/session-backfill'
+trust_score: 95
+autonomy_level: 'sovereign'
 ---
 
 # GTCX Security Policies Library

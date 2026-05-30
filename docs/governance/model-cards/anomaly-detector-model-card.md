@@ -1,27 +1,17 @@
 ---
-title: "Model Card — Anomaly Detector"
-status: "current"
-date: "2026-05-27"
-owner: "gtcx-infrastructure"
-role: "protocol-architect"
-agent_id: "agent://gtcx-infrastructure/2026-05-27/session-backfill"
-trust_score: 60
-autonomy_level: "permissioned"
-tier: "standard"
-tags: ["documentation", "governance"]
-review_cycle: "on-change"
----
-
----
 title: 'Model Card — Anomaly Detector'
 status: 'current'
-date: '2026-05-12'
+date: '2026-05-27'
 model_name: 'gtcx-anomaly-detector'
 model_version: '1.0.0'
 owner: 'ml-engineering'
 tier: 'critical'
 tags: ['model-card', 'anomaly-detection', 'ml']
 review_cycle: 'quarterly'
+role: 'protocol-architect'
+agent_id: 'agent://gtcx-infrastructure/2026-05-27/session-backfill'
+trust_score: 60
+autonomy_level: 'permissioned'
 ---
 
 # Model Card — Anomaly Detector

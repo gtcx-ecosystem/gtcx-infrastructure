@@ -1,26 +1,15 @@
 ---
-title: "AWS Security Monitoring — Production"
-status: "current"
-date: "2026-05-27"
-owner: "gtcx-infrastructure"
-role: "protocol-architect"
-agent_id: "agent://gtcx-infrastructure/2026-05-27/session-backfill"
-trust_score: 60
-autonomy_level: "permissioned"
-tier: "standard"
-tags: ["documentation", "security"]
-review_cycle: "on-change"
----
-
----
 title: 'AWS Security Monitoring — Production'
 status: 'current'
-date: '2026-05-10'
+date: '2026-05-27'
 owner: 'crypto-security-engineer'
 role: 'crypto-security-engineer'
 tier: 'critical'
 tags: ['security', 'compliance', 'infrastructure', 'api', 'database']
 review_cycle: 'quarterly'
+agent_id: 'agent://gtcx-infrastructure/2026-05-27/session-backfill'
+trust_score: 60
+autonomy_level: 'permissioned'
 ---
 
 # AWS Security Monitoring — Production

@@ -1,26 +1,15 @@
 ---
-title: "ESG Documentation"
-status: "current"
-date: "2026-05-27"
-owner: "gtcx-infrastructure"
-role: "protocol-architect"
-agent_id: "agent://gtcx-infrastructure/2026-05-27/session-backfill"
-trust_score: 95
-autonomy_level: "sovereign"
-tier: "critical"
-tags: ["documentation", "esg"]
-review_cycle: "on-change"
----
-
----
 title: 'ESG Documentation'
 status: 'current'
-date: '2026-05-25'
+date: '2026-05-27'
 owner: 'ceo'
 role: 'ceo'
 tier: 'critical'
 tags: ['esg', 'sustainability', 'environmental', 'social', 'governance']
 review_cycle: 'quarterly'
+agent_id: 'agent://gtcx-infrastructure/2026-05-27/session-backfill'
+trust_score: 95
+autonomy_level: 'sovereign'
 ---
 
 # ESG Documentation

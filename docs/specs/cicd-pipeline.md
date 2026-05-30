@@ -1,26 +1,15 @@
 ---
-title: "GTCX CI/CD Pipeline Specification"
-status: "current"
-date: "2026-05-27"
-owner: "gtcx-infrastructure"
-role: "protocol-architect"
-agent_id: "agent://gtcx-infrastructure/2026-05-27/session-backfill"
-trust_score: 60
-autonomy_level: "permissioned"
-tier: "standard"
-tags: ["documentation", "specs"]
-review_cycle: "on-change"
----
-
----
 title: 'GTCX CI/CD Pipeline Specification'
 status: 'current'
-date: '2026-05-10'
+date: '2026-05-27'
 owner: 'frontier-infra-engineer'
 role: 'frontier-infra-engineer'
 tier: 'informational'
 tags: ['security', 'compliance', 'architecture', 'infrastructure', 'testing']
 review_cycle: 'monthly'
+agent_id: 'agent://gtcx-infrastructure/2026-05-27/session-backfill'
+trust_score: 60
+autonomy_level: 'permissioned'
 ---
 
 # GTCX CI/CD Pipeline Specification

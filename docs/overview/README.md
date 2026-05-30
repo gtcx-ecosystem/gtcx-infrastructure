@@ -1,18 +1,4 @@
 ---
-title: "GTCX Infrastructure — Repository Overview"
-status: "current"
-date: "2026-05-27"
-owner: "gtcx-infrastructure"
-role: "protocol-architect"
-agent_id: "agent://gtcx-infrastructure/2026-05-27/session-backfill"
-trust_score: 95
-autonomy_level: "sovereign"
-tier: "critical"
-tags: ["documentation", "overview"]
-review_cycle: "on-change"
----
-
----
 title: 'GTCX Infrastructure — Repository Overview'
 status: 'current'
 date: '2026-05-27'
@@ -21,6 +7,9 @@ role: 'frontier-infra-engineer'
 tier: 'strategic'
 tags: ['overview', 'metrics']
 review_cycle: 'on-change'
+agent_id: 'agent://gtcx-infrastructure/2026-05-27/session-backfill'
+trust_score: 95
+autonomy_level: 'sovereign'
 ---
 
 # GTCX Infrastructure — Repository Overview

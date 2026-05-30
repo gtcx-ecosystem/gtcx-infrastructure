@@ -1,26 +1,15 @@
 ---
-title: "ADR-019: Workspace Package Boundary Discipline"
-status: "current"
-date: "2026-05-27"
-owner: "gtcx-infrastructure"
-role: "protocol-architect"
-agent_id: "agent://gtcx-infrastructure/2026-05-27/session-backfill"
-trust_score: 60
-autonomy_level: "permissioned"
-tier: "standard"
-tags: ["documentation", "architecture"]
-review_cycle: "on-change"
----
-
----
 title: 'ADR-019: Workspace Package Boundary Discipline'
 status: 'accepted'
-date: '2026-05-22'
+date: '2026-05-27'
 owner: 'platform-engineering'
 role: 'frontier-infra-engineer'
 tier: 'standard'
 tags: ['architecture', 'monorepo', 'packages', 'hygiene']
 review_cycle: 'on-change'
+agent_id: 'agent://gtcx-infrastructure/2026-05-27/session-backfill'
+trust_score: 60
+autonomy_level: 'permissioned'
 ---
 
 # ADR-019: Workspace Package Boundary Discipline

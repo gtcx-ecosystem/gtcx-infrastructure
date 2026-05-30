@@ -1,26 +1,15 @@
 ---
-title: "GTCX Ecosystem — Repository Health Review"
-status: "current"
-date: "2026-05-27"
-owner: "gtcx-infrastructure"
-role: "protocol-architect"
-agent_id: "agent://gtcx-infrastructure/2026-05-27/session-backfill"
-trust_score: 60
-autonomy_level: "permissioned"
-tier: "standard"
-tags: ["documentation", "audit"]
-review_cycle: "on-change"
----
-
----
 title: 'GTCX Ecosystem — Repository Health Review'
 status: 'deprecated'
-date: '2026-05-10'
+date: '2026-05-27'
 owner: 'quality-evidence-lead'
 role: 'quality-evidence-lead'
 tier: 'critical'
 tags: ['security', 'compliance', 'infrastructure', 'api', 'frontend']
 review_cycle: 'quarterly'
+agent_id: 'agent://gtcx-infrastructure/2026-05-27/session-backfill'
+trust_score: 60
+autonomy_level: 'permissioned'
 ---
 
 # GTCX Ecosystem — Repository Health Review

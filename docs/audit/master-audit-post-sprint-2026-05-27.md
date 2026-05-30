@@ -1,18 +1,4 @@
 ---
-title: "Master Audit Post-Sprint Rerun - 2026-05-27"
-status: "current"
-date: "2026-05-27"
-owner: "gtcx-infrastructure"
-role: "protocol-architect"
-agent_id: "agent://gtcx-infrastructure/2026-05-27/session-backfill"
-trust_score: 60
-autonomy_level: "permissioned"
-tier: "standard"
-tags: ["documentation", "audit"]
-review_cycle: "on-change"
----
-
----
 title: 'Master Audit Post-Sprint Rerun'
 status: 'current'
 date: '2026-05-27'
@@ -21,6 +7,10 @@ tier: 'strategic'
 tags: ['audit', 'master-audit', '10-10', 'evidence']
 review_cycle: 'weekly'
 source_audit: 'docs/audit/master-audit-rerun-2026-05-27.md'
+role: 'protocol-architect'
+agent_id: 'agent://gtcx-infrastructure/2026-05-27/session-backfill'
+trust_score: 60
+autonomy_level: 'permissioned'
 ---
 
 # Master Audit Post-Sprint Rerun - 2026-05-27
