@@ -148,6 +148,8 @@ importers:
         specifier: workspace:*
         version: link:../compliance-gateway
 
+  tools/kyc-screening: {}
+
   tools/low-bandwidth:
     devDependencies:
       c8:

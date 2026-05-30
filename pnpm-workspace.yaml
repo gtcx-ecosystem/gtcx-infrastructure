@@ -13,6 +13,7 @@ packages:
   - 'tools/deployment-guard'
   - 'tools/docs-site'
   - 'tools/eval-pipeline'
+  - 'tools/kyc-screening'
   - 'tools/low-bandwidth'
   - 'tools/replay-protection'
   - 'tools/ussd-handler'
