@@ -29,8 +29,19 @@ import { ReplayVerifier } from './verifier.mjs';
  * @property {number} [nonceTtlMs]
  * @property {import('./policy/clock-skew.mjs').ClockSkewPolicy} [clockSkewPolicy]
  * @property {boolean} [logFailures]
- * @property {string[]} [exemptPaths] - Regex strings or exact paths to skip (e.g. ["/health", "/metrics"])
+ * @property {string[]} [exemptPaths] - Exact paths or path prefixes to skip
+ *   (e.g. ["/health", "/metrics", "/_next/"]). Matched as either exact
+ *   equality OR prefix when the entry ends with `/`.
  * @property {boolean} [skipHashVerification] - For bootstrap / migration only
+ * @property {boolean} [requireNonce] - When true (default), non-exempt
+ *   paths without an X-GTCX-Nonce header are rejected with 401. The
+ *   prior fail-open behavior (passthrough on missing nonce) is available
+ *   by passing `false` and is intended ONLY for incremental rollouts
+ *   where a downstream layer independently verifies replay protection.
+ * @property {boolean} [requireSignature] - When true, the middleware
+ *   refuses to construct without an explicit `verifySignature`. Defaults
+ *   to true so a missing verifier is a config error, not a silent
+ *   signature-bypass. Legacy/test code can opt out with `false`.
  */
 
 /**
@@ -91,6 +102,14 @@ function readHeader(headers, name) {
  * @returns {(req: ReplayMiddlewareRequest, res: ReplayMiddlewareResponse, next: ReplayMiddlewareNext) => Promise<void>}
  */
 export function replayGuardMiddleware(opts) {
+  const requireSignature = opts.requireSignature ?? true;
+  if (requireSignature && typeof opts.verifySignature !== 'function') {
+    throw new TypeError(
+      'replayGuardMiddleware: verifySignature is required (or pass requireSignature: false to opt out). ' +
+        'Refusing to construct a middleware that silently skips signature verification.'
+    );
+  }
+
   const verifier = new ReplayVerifier({
     nonceStore: opts.nonceStore,
     verifySignature: opts.verifySignature ?? undefined,
@@ -102,18 +121,46 @@ export function replayGuardMiddleware(opts) {
     skipHashVerification: opts.skipHashVerification ?? false,
   });
 
-  const exempt = new Set(opts.exemptPaths ?? ['/health', '/metrics', '/_next']);
+  const exemptList = opts.exemptPaths ?? ['/health', '/metrics', '/_next/'];
+  const requireNonce = opts.requireNonce ?? true;
+
+  // Path-match supports either exact equality OR prefix match for entries
+  // ending in `/`. Set.has against the raw path was a bug — `/_next` did
+  // not match `/_next/static/foo`.
+  function isExempt(path) {
+    for (const entry of exemptList) {
+      if (entry.endsWith('/')) {
+        if (path === entry.slice(0, -1) || path.startsWith(entry)) return true;
+      } else if (path === entry) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   return async (req, res, next) => {
     const path = req.url ?? req.originalUrl ?? req.path ?? '/';
-    if (exempt.has(path)) {
+    if (isExempt(path)) {
       next();
       return;
     }
 
-    // Only protect authenticated routes that carry mobile headers
     const nonce = req.headers['x-gtcx-nonce'];
     if (!nonce) {
+      if (requireNonce) {
+        // Fail-closed: previously this passthrough was the silent bypass
+        // that let any non-exempt request skip every replay check.
+        res.statusCode = 401;
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify({
+          error: 'Replay protection rejection',
+          code: 'REPLAY_NONCE_REQUIRED',
+          reason: 'X-GTCX-Nonce header is required on this path',
+        }));
+        return;
+      }
+      // Legacy fail-open path — kept for incremental rollouts; requires
+      // explicit opt-in via `requireNonce: false`.
       next();
       return;
     }

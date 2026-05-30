@@ -12,6 +12,7 @@ import { describe, it } from 'node:test';
 
 import { computeBodyHash, computeHeadersHash, computeEnvelopeHash } from '../src/crypto/hash.mjs';
 import { ReplayMetrics } from '../src/metrics/replay-metrics.mjs';
+import { replayGuardMiddleware } from '../src/middleware.mjs';
 import { MemoryNonceStore } from '../src/store/memory-nonce-store.mjs';
 import { ReplayVerifier } from '../src/verifier.mjs';
 
@@ -230,6 +231,88 @@ describe('Failure Modes — Tampered Envelope', () => {
     assert.strictEqual(result.allowed, false);
     assert.strictEqual(result.code, 'REPLAY_ENVELOPE');
     assert.ok(result.reason?.includes('envelopeHash'));
+  });
+});
+
+describe('Middleware — fail-closed on missing nonce', () => {
+  function makeRes() {
+    return {
+      statusCode: 200,
+      headers: {},
+      body: '',
+      setHeader(name, value) { this.headers[name] = value; },
+      end(body) { this.body = body ?? ''; },
+    };
+  }
+
+  it('rejects 401 REPLAY_NONCE_REQUIRED on a non-exempt path with no nonce', async () => {
+    const mw = replayGuardMiddleware({
+      nonceStore: new MemoryNonceStore(),
+      verifySignature: async () => true,
+    });
+    const req = { url: '/api/v1/orders', method: 'POST', headers: {} };
+    const res = makeRes();
+    let nextCalled = false;
+    await mw(req, res, () => { nextCalled = true; });
+    assert.strictEqual(nextCalled, false, 'must NOT call next() on missing nonce');
+    assert.strictEqual(res.statusCode, 401);
+    const parsed = JSON.parse(res.body);
+    assert.strictEqual(parsed.code, 'REPLAY_NONCE_REQUIRED');
+  });
+
+  it('passes through on /health (exempt) even without a nonce', async () => {
+    const mw = replayGuardMiddleware({
+      nonceStore: new MemoryNonceStore(),
+      verifySignature: async () => true,
+    });
+    const req = { url: '/health', method: 'GET', headers: {} };
+    const res = makeRes();
+    let nextCalled = false;
+    await mw(req, res, () => { nextCalled = true; });
+    assert.strictEqual(nextCalled, true);
+  });
+
+  it('treats exempt prefix `/_next/` as a prefix match (regression for Set.has bug)', async () => {
+    const mw = replayGuardMiddleware({
+      nonceStore: new MemoryNonceStore(),
+      verifySignature: async () => true,
+    });
+    const req = { url: '/_next/static/chunks/main.js', method: 'GET', headers: {} };
+    const res = makeRes();
+    let nextCalled = false;
+    await mw(req, res, () => { nextCalled = true; });
+    assert.strictEqual(nextCalled, true);
+  });
+
+  it('honors legacy fail-open behavior when requireNonce: false', async () => {
+    const mw = replayGuardMiddleware({
+      nonceStore: new MemoryNonceStore(),
+      verifySignature: async () => true,
+      requireNonce: false,
+    });
+    const req = { url: '/api/v1/orders', method: 'POST', headers: {} };
+    const res = makeRes();
+    let nextCalled = false;
+    await mw(req, res, () => { nextCalled = true; });
+    assert.strictEqual(nextCalled, true);
+  });
+});
+
+describe('Middleware — refuses to construct without verifySignature', () => {
+  it('throws TypeError when verifySignature is missing and requireSignature defaults true', () => {
+    assert.throws(
+      () => replayGuardMiddleware({ nonceStore: new MemoryNonceStore() }),
+      /verifySignature is required/,
+    );
+  });
+
+  it('permits construction when caller explicitly opts out via requireSignature: false', () => {
+    assert.doesNotThrow(() => {
+      replayGuardMiddleware({
+        nonceStore: new MemoryNonceStore(),
+        requireSignature: false,
+      });
+    });
   });
 });
 
