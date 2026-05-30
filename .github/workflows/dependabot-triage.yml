@@ -1,0 +1,88 @@
+name: Dependabot triage
+
+# Labels dependabot PRs by risk class (patch / minor / major) and
+# posts a triage comment so reviewers can scan + act in O(seconds)
+# per PR. Does NOT auto-merge — see docs/agents/workflows/dependency-bumps.md
+# for the per-class merge policy. Auto-merge is a human-flipped switch
+# per repo settings; this workflow surfaces the signal that switch
+# would consume.
+
+on:
+  pull_request_target:
+    types: [opened, reopened, synchronize]
+
+permissions:
+  pull-requests: write
+  issues: write
+  contents: read
+
+concurrency:
+  group: dependabot-triage-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  triage:
+    if: ${{ github.actor == 'dependabot[bot]' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Resolve update metadata
+        id: meta
+        uses: dependabot/fetch-metadata@d7267f607e9d3fb96fc2fbe83e0af444713e90b7 # v2.4.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Label by update class
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          UPDATE_TYPE: ${{ steps.meta.outputs.update-type }}
+          DEPENDENCY_TYPE: ${{ steps.meta.outputs.dependency-type }}
+          ECOSYSTEM: ${{ steps.meta.outputs.package-ecosystem }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          set -eu
+          case "$UPDATE_TYPE" in
+            version-update:semver-patch) LABEL='deps:patch' ;;
+            version-update:semver-minor) LABEL='deps:minor' ;;
+            version-update:semver-major) LABEL='deps:major' ;;
+            *)                           LABEL='deps:other' ;;
+          esac
+          gh pr edit "$PR_NUMBER" --add-label "$LABEL" --add-label "$ECOSYSTEM"
+
+      - name: Post triage comment
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          UPDATE_TYPE: ${{ steps.meta.outputs.update-type }}
+          DEPENDENCY_TYPE: ${{ steps.meta.outputs.dependency-type }}
+          ECOSYSTEM: ${{ steps.meta.outputs.package-ecosystem }}
+          DEP_NAMES: ${{ steps.meta.outputs.dependency-names }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          set -eu
+          case "$UPDATE_TYPE" in
+            version-update:semver-patch)
+              VERDICT='**LOW risk** — patch bump. Safe to merge once CI is green.'
+              ;;
+            version-update:semver-minor)
+              VERDICT='**MEDIUM risk** — minor bump. Review changelog; merge once CI is green.'
+              ;;
+            version-update:semver-major)
+              VERDICT='**HIGH risk** — major bump. Read the changelog for breaking changes; run integration tests beyond CI.'
+              ;;
+            *)
+              VERDICT='**UNCLASSIFIED** — see Dependabot metadata.'
+              ;;
+          esac
+          BODY=$(cat <<EOF
+          ### Dependabot triage
+
+          - **Ecosystem:** \`$ECOSYSTEM\`
+          - **Update class:** \`$UPDATE_TYPE\`
+          - **Dep kind:** \`$DEPENDENCY_TYPE\`
+          - **Packages:** \`$DEP_NAMES\`
+
+          $VERDICT
+
+          Merge policy: \`docs/agents/workflows/dependency-bumps.md\`.
+          EOF
+          )
+          gh pr comment "$PR_NUMBER" --body "$BODY"
