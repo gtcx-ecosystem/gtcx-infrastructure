@@ -142,7 +142,7 @@ describe('MCP — resources (AI-native ambient context)', () => {
 
   it('resources/read for morning brief fetches /v1/brief and returns narrative', async () => {
     // Override the stub to return a realistic brief body.
-    globalThis.fetch = async (url) => ({
+    globalThis.fetch = async () => ({
       status: 200,
       text: async () =>
         JSON.stringify({
