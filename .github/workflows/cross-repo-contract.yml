@@ -29,24 +29,24 @@ jobs:
             test-command: bash infra/scripts/validate.sh quick
     steps:
       - name: Checkout infrastructure (this repo)
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           path: infrastructure
 
       - name: Checkout ${{ matrix.repo.name }}
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           repository: gtcx-ecosystem/${{ matrix.repo.name }}
           token: ${{ secrets.GTCX_REPO_TOKEN }}
           path: ${{ matrix.repo.path }}
 
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
         with:
           node-version: '20'
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
         with:
           version: 9
 
@@ -70,7 +70,7 @@ jobs:
 
       - name: Upload contract evidence
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: contract-evidence-${{ matrix.repo.name }}-${{ github.run_id }}
           path: |

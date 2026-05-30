@@ -135,6 +135,11 @@ run_fail_closed_tests() {
     (cd "${PROJECT_ROOT}" && node --test tools/scripts/fail-closed.test.mjs)
 }
 
+run_pin_actions_sha_check() {
+    log_info "Running GitHub Actions SHA-pin check..."
+    (cd "${PROJECT_ROOT}" && node tools/scripts/pin-actions-sha.mjs --check)
+}
+
 run_docs_link_check() {
     log_info "Running docs link check..."
     (cd "${PROJECT_ROOT}" && node tools/scripts/docs-link-checker.mjs)
@@ -356,6 +361,7 @@ case "${MODE}" in
         run_runbook_commands_check
         run_empty_catch_check
         run_fail_closed_tests
+        run_pin_actions_sha_check
         run_docs_link_check
         run_score_ledger_validation
         run_build_evidence_generation
@@ -382,6 +388,7 @@ case "${MODE}" in
         run_runbook_commands_check
         run_empty_catch_check
         run_fail_closed_tests
+        run_pin_actions_sha_check
         run_score_ledger_validation
         run_build_evidence_generation
         run_runtime_smoke_evidence_generation

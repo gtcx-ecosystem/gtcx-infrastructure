@@ -47,7 +47,7 @@ jobs:
     environment: ${{ github.event.inputs.environment }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
       - name: Resolve target URL
         id: target
@@ -68,7 +68,7 @@ jobs:
           echo "Scanning: $URL"
 
       - name: OWASP ZAP full scan
-        uses: zaproxy/action-full-scan@v0.12.0
+        uses: zaproxy/action-full-scan@75ee1686750ab1511a73b26b77a2aedd295053ed # v0.12.0
         with:
           target: ${{ steps.target.outputs.url }}
           rules_file_name: '.github/zap/rules.tsv'
@@ -86,7 +86,7 @@ jobs:
 
       - name: Upload ZAP reports
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: evidence-dast
           path: reports/
@@ -108,17 +108,17 @@ jobs:
           - name: replay-guard
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@7474bc4690e29a8392af63c5b98e7449536d5c3a # v4
         with:
           role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
           aws-region: af-south-1
 
       - name: Login to ECR
         id: ecr-login
-        uses: aws-actions/amazon-ecr-login@v2
+        uses: aws-actions/amazon-ecr-login@fa648b43de3d4d023bcb3f89ed6940096949c419 # v2
 
       - name: Resolve latest image tag
         id: resolve
@@ -136,7 +136,7 @@ jobs:
           echo "Scanning: ${IMAGE}:${TAG}"
 
       - name: Trivy scan (SARIF)
-        uses: aquasecurity/trivy-action@master
+        uses: aquasecurity/trivy-action@314ff8b43182423b84c50b1670b0e10f858f2d98 # pin: master (branch — review on dependabot bumps)
         continue-on-error: true
         with:
           image-ref: ${{ steps.resolve.outputs.image_ref }}
@@ -145,7 +145,7 @@ jobs:
           severity: CRITICAL,HIGH,MEDIUM
 
       - name: Trivy scan (JSON)
-        uses: aquasecurity/trivy-action@master
+        uses: aquasecurity/trivy-action@314ff8b43182423b84c50b1670b0e10f858f2d98 # pin: master (branch — review on dependabot bumps)
         continue-on-error: true
         with:
           image-ref: ${{ steps.resolve.outputs.image_ref }}
@@ -154,7 +154,7 @@ jobs:
           severity: CRITICAL,HIGH,MEDIUM
 
       - name: Generate SBOM (CycloneDX)
-        uses: aquasecurity/trivy-action@master
+        uses: aquasecurity/trivy-action@314ff8b43182423b84c50b1670b0e10f858f2d98 # pin: master (branch — review on dependabot bumps)
         continue-on-error: true
         with:
           image-ref: ${{ steps.resolve.outputs.image_ref }}
@@ -163,7 +163,7 @@ jobs:
 
       - name: Upload container scan results
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: evidence-container-${{ matrix.image.name }}
           path: |
@@ -182,22 +182,22 @@ jobs:
       security-events: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v4
+        uses: github/codeql-action/init@7211b7c8077ea37d8641b6271f6a365a22a5fbfa # v4
         with:
           languages: javascript-typescript
           config-file: ./.github/codeql/codeql-config.yml
 
       - name: Perform CodeQL analysis
-        uses: github/codeql-action/analyze@v4
+        uses: github/codeql-action/analyze@7211b7c8077ea37d8641b6271f6a365a22a5fbfa # v4
         with:
           category: '/language:javascript-typescript'
           output: codeql-results
 
       - name: Upload CodeQL SARIF to security tab
-        uses: github/codeql-action/upload-sarif@v4
+        uses: github/codeql-action/upload-sarif@7211b7c8077ea37d8641b6271f6a365a22a5fbfa # v4
         if: always()
         with:
           sarif_file: codeql-results
@@ -211,7 +211,7 @@ jobs:
 
       - name: Upload SAST results
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: evidence-sast
           path: sast-output/
@@ -225,15 +225,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v5
+        uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5
         with:
           version: 9
 
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
         with:
           node-version: '20'
           cache: 'pnpm'
@@ -263,7 +263,7 @@ jobs:
           fi
 
       - name: Upload audit results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: evidence-dependency-audit
           path: npm-audit-filtered.json
@@ -279,10 +279,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
       - name: Download all evidence artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
           pattern: evidence-*
           path: evidence-raw/
@@ -299,7 +299,7 @@ jobs:
             --commit="${{ github.sha }}"
 
       - name: Upload evidence package
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: sandbox-evidence-${{ env.ENVIRONMENT }}-${{ github.run_id }}
           path: evidence-package/

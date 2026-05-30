@@ -25,10 +25,10 @@ jobs:
     environment: ${{ github.event.inputs.environment || 'testnet' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
       - name: Setup kubectl
-        uses: azure/setup-kubectl@v4
+        uses: azure/setup-kubectl@776406bce94f63e41d621b960d78ee25c8b76ede # v4
         with:
           version: 'v1.30.0'
 
@@ -38,7 +38,7 @@ jobs:
           sudo apt-get install -y postgresql-client
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@7474bc4690e29a8392af63c5b98e7449536d5c3a # v4
         with:
           role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
           aws-region: af-south-1
@@ -79,7 +79,7 @@ jobs:
 
       - name: Upload DR evidence
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: dr-evidence-quarterly-${{ github.run_id }}
           path: |
@@ -117,7 +117,7 @@ jobs:
 
       - name: Upload quarterly report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: dr-quarterly-report-${{ github.run_id }}
           path: infra/security/reports/dr-evidence/quarterly/${{ github.event.inputs.environment || 'testnet' }}/${{ github.run_id }}/quarterly-report.md

@@ -35,3 +35,28 @@ updates:
       - 'ci'
     commit-message:
       prefix: 'chore(ci):'
+    # Group bumps so SHA pinning doesn't produce 30 PRs/week. Reviewers
+    # see one PR per family that pin-actions-sha.mjs --check then
+    # validates is still 40-char SHA-pinned.
+    groups:
+      actions-core:
+        patterns:
+          - 'actions/*'
+      aws-actions:
+        patterns:
+          - 'aws-actions/*'
+      docker:
+        patterns:
+          - 'docker/*'
+      security-scanners:
+        patterns:
+          - 'aquasecurity/*'
+          - 'github/codeql-action*'
+          - 'sigstore/*'
+          - 'slsa-framework/*'
+          - 'trufflesecurity/*'
+          - 'zaproxy/*'
+      terraform:
+        patterns:
+          - 'hashicorp/setup-terraform'
+          - 'terraform-linters/*'

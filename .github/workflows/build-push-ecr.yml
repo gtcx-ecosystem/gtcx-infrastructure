@@ -78,12 +78,12 @@ jobs:
 
     steps:
       - name: Checkout infrastructure repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
       # Checkout source repos into paths the Dockerfiles expect
       - name: Checkout gtcx-intelligence source
         if: contains(matrix.service.source_repos, 'gtcx-intelligence')
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
           repository: gtcx-ecosystem/gtcx-intelligence
           token: ${{ secrets.GTCX_REPO_TOKEN }}
@@ -91,7 +91,7 @@ jobs:
 
       - name: Checkout gtcx-protocols source
         if: contains(matrix.service.source_repos, 'gtcx-protocols')
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
           repository: gtcx-ecosystem/gtcx-protocols
           token: ${{ secrets.GTCX_REPO_TOKEN }}
@@ -99,21 +99,21 @@ jobs:
 
       - name: Checkout gtcx-platforms source
         if: contains(matrix.service.source_repos, 'gtcx-platforms')
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
           repository: gtcx-ecosystem/gtcx-platforms
           token: ${{ secrets.GTCX_REPO_TOKEN }}
           path: platforms
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@7474bc4690e29a8392af63c5b98e7449536d5c3a # v4
         with:
           role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Login to ECR
         id: ecr-login
-        uses: aws-actions/amazon-ecr-login@v2
+        uses: aws-actions/amazon-ecr-login@fa648b43de3d4d023bcb3f89ed6940096949c419 # v2
 
       - name: Build image
         run: |
@@ -157,7 +157,7 @@ jobs:
           echo "tag=${GITHUB_SHA::8}" >> "$GITHUB_OUTPUT"
 
       - name: Trivy security scan
-        uses: aquasecurity/trivy-action@master
+        uses: aquasecurity/trivy-action@314ff8b43182423b84c50b1670b0e10f858f2d98 # pin: master (branch — review on dependabot bumps)
         continue-on-error: true
         with:
           image-ref: '${{ steps.ecr-login.outputs.registry }}/${{ steps.primary_repo.outputs.name }}:${{ steps.primary_repo.outputs.tag }}'
@@ -167,20 +167,20 @@ jobs:
           exit-code: '0'
 
       - name: Upload Trivy results
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@03e4368ac7daa2bd82b3e85262f3bf87ee112f57 # v3
         if: always()
         with:
           sarif_file: trivy-${{ matrix.service.name }}.sarif
 
       - name: Generate container SBOM (CycloneDX)
-        uses: aquasecurity/trivy-action@master
+        uses: aquasecurity/trivy-action@314ff8b43182423b84c50b1670b0e10f858f2d98 # pin: master (branch — review on dependabot bumps)
         with:
           image-ref: '${{ steps.ecr-login.outputs.registry }}/${{ steps.primary_repo.outputs.name }}:${{ steps.primary_repo.outputs.tag }}'
           format: 'cyclonedx'
           output: 'sbom-${{ matrix.service.name }}.cdx.json'
 
       - name: Upload container SBOM
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: always()
         with:
           name: sbom-${{ matrix.service.name }}
@@ -199,7 +199,7 @@ jobs:
           done
 
       - name: Install Cosign
-        uses: sigstore/cosign-installer@v3
+        uses: sigstore/cosign-installer@398d4b0eeef1380460a10c8013a76f728fb906ac # v3
 
       - name: Sign container images (keyless via Fulcio/Rekor)
         run: |
@@ -232,17 +232,17 @@ jobs:
     if: github.ref == 'refs/heads/main'
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@7474bc4690e29a8392af63c5b98e7449536d5c3a # v4
         with:
           role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Login to ECR
         id: ecr-login
-        uses: aws-actions/amazon-ecr-login@v2
+        uses: aws-actions/amazon-ecr-login@fa648b43de3d4d023bcb3f89ed6940096949c419 # v2
 
       - name: Update kustomization image tags
         run: |
@@ -271,12 +271,12 @@ jobs:
     environment: production # Requires manual approval via GitHub environment protection rules
     steps:
       - name: Checkout (with updated manifests)
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
           ref: main # Pull the commit with updated image tags
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@7474bc4690e29a8392af63c5b98e7449536d5c3a # v4
         with:
           role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
