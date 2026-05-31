@@ -331,7 +331,7 @@ jobs:
 
       - name: Terraform validate — Multi-Region module
         run: |
-          cd infra/terraform/modules/multi-region
+          cd infra/terraform/modules/multi-region/ci-validate
           terraform init -backend=false
           terraform validate
 
