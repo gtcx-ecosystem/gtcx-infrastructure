@@ -228,12 +228,20 @@ function requirePermission(req, res, requiredPermission) {
     // throttle failures still sign so the regulator-facing trail
     // captures the early abuse signal.
     if (!update.throttled) {
+      // Tag auth failures with the synthetic `platform` tenant. The
+      // attacker's intended tenant is unknown — and even if known via
+      // a guessable header, leaking it to that tenant's `/v1/exceptions`
+      // feed would itself be an enumeration oracle. Routing all auth
+      // failures to a `platform` tenant means a security principal
+      // holding a `platform`-scoped token sees them; regular tenant
+      // tokens do not.
       signAuditEvent({
         actor: 'unknown',
         action: `auth:failure`,
         target,
         reason: `${requiredPermission}: ${auth.error}`,
-        payload: { tenantId: 'unknown', sourceIp, failuresInWindow: update.count },
+        tenantId: 'platform',
+        payload: { tenantId: 'platform', sourceIp, failuresInWindow: update.count },
       });
     }
     sendJson(res, auth.status, { error: auth.error }, req);
