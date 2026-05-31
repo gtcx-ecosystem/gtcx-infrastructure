@@ -8,6 +8,24 @@ focus: "Baseline initialization — discovery and enrichment"
 
 # Session: Baseline Initialization
 
+## 2026-05-31 — Agent-led closure: S2-11/S2-12 + S3-02–S3-09
+
+## What Was Done
+- Closed agent-executable Sprint 2/3 items under the agent-led ops model (humans = EXT-INF escalation only).
+- S2-11: `dependabot-policy-check.mjs` gate validates Q7 pin + tier grouping.
+- S2-12: SOC 2 agent ownership model + `soc2-agent-owners-check`; IRP v1 agent-prep section.
+- S3-02/S3-04 structural: DR drill evidence artifact + `runtime-evidence-check` dry-run (live RDS/WORM = operator).
+- S3-03: `soak-baseline.json` + `soak-baseline-check.mjs`.
+- S3-05–S3-07: shared `canonicalizeValue`, S3 stub fix, compliance-data publishable + audit-signer provenance.
+- S3-09: contract tests for gateway-tenancy, audit-signer-catalog, replay-protection.
+
+## Verification
+- `node tools/scripts/validate-all.mjs` — pass; 31/31 gates green.
+
+## Notes
+- EXT-INF track only: S2-13 pen-test SOW, S3-08 SLA/legal, S3-11 ZWCMP DPA, S3-07 npm publish.
+- Next agent candidates: S3-01 dependabot tier 3-5 merges, S3-10 Cloudflare tunnel, S3-12 terraform module publish.
+
 ## 2026-05-31 — Roadmap Execution: S2-07 KYC Handler Hardening
 
 ## What Was Done
