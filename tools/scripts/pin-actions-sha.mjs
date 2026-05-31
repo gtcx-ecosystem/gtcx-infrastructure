@@ -28,11 +28,13 @@ const checkOnly = process.argv.includes('--check');
 
 // `uses: owner/repo@ref` or `uses: owner/repo/path@ref` (reusable workflows).
 // Matches both block form (`      uses: ...`) and list-item form
-// (`      - uses: ...`). The earlier regex missed the latter, which
-// silently let docs-site-build.yml and friends through unpinned.
+// (`      - uses: ...`). Permissive on whitespace around the colon so
+// `uses :` (space before) and `uses:owner/repo@ref` (no space after) are
+// caught too — those YAML shapes either round-trip or are silently
+// non-pinned, both unacceptable. Output is normalized to `uses: ` form.
 // SHA is 40 lowercase hex; anything else is a tag/branch.
-const USES_RX = /^(\s*(?:-\s+)?uses:\s+)([^@\s]+)@([^\s#]+)(.*)$/;
-const SHA_RX = /^[0-9a-f]{40}$/;
+export const USES_RX = /^(\s*(?:-\s+)?)uses\s*:\s*([^@\s]+)@([^\s#]+)(.*)$/;
+export const SHA_RX = /^[0-9a-f]{40}$/;
 
 const cache = new Map();
 
@@ -107,7 +109,10 @@ function processFile(path) {
       ? `# pin: ${ref} (branch — review on dependabot bumps)`
       : `# ${ref}`;
     const cleanedSuffix = suffix.replace(/^\s*#.*$/, '').trimEnd();
-    const newLine = `${prefix}${actionPath}@${result.sha} ${annotation}${cleanedSuffix ? ` ${cleanedSuffix}` : ''}`;
+    // Normalize to canonical `uses: <action>@<sha>` regardless of the
+    // input shape (`uses :`, `uses:`, etc.) so the rewrite always emits
+    // valid + idiomatic YAML.
+    const newLine = `${prefix}uses: ${actionPath}@${result.sha} ${annotation}${cleanedSuffix ? ` ${cleanedSuffix}` : ''}`;
     changes.push({ from: line.trim(), to: newLine.trim() });
     return newLine;
   });
