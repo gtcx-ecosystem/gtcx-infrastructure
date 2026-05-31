@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Shell(git)",
+      "Shell(git **)",
+      "Shell(git push)",
+      "Shell(git push **)",
+      "Shell(git pull **)",
+      "Shell(git fetch **)",
+      "Shell(gh)",
+      "Shell(gh **)",
+      "Shell(pnpm **)",
+      "Shell(node **)",
+      "Shell(npx **)"
+    ],
+    "deny": [
+      "Shell(git push --force **)",
+      "Shell(git push ** -f)",
+      "Shell(git push ** --force)",
+      "Shell(git reset --hard **)",
+      "Shell(git clean -fd **)"
+    ]
+  }
+}
