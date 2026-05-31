@@ -41,6 +41,8 @@ Before making any code changes, architectural decisions, or recommendations, com
 8. Run `git status` — uncommitted changes, modified files
 9. Run `git log --oneline -10` — recent work, current branch
 10. Check `workstream/` or `.baseline/memory/session.md` for active tasks
+11. Read `docs/audit/execution-roadmap.md` — **canonical execution plan** (3 sprints, 35 stories, all open findings). Anything `pending` or `in_progress` there is fair game; anything `done` does NOT need re-doing.
+12. Read `docs/audit/latest.json` — machine-readable scores, gate state, open leadership decisions.
 
 ### Phase 4: Select Persona & Frame (30 sec)
 11. Map task to persona: developer (default), trade-analyst, compliance-officer, field-inspector, protocol-engineer, platform-architect, product-strategist, security-engineer

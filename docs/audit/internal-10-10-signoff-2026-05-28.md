@@ -20,9 +20,7 @@ head: '5b8d323e41cc8d9d54827b72d4f46839a8d61a53'
 > baseline at the time. The 2026-05-30 fresh independent audit explicitly
 > rejected the self-attestation (meta-finding: "I shouldn't ship
 > security-class fixes without external sign-off") and rescored to
-> 6.8/6.2. Current source of truth: [`post-roadmap-session-2026-05-30.md`](./post-roadmap-session-2026-05-30.md)
->
-> - [`execution-roadmap.md`](./execution-roadmap.md).
+> 6.8/6.2. Current source of truth: [`post-roadmap-session-2026-05-30.md`](./post-roadmap-session-2026-05-30.md) and [`execution-roadmap.md`](./execution-roadmap.md).
 
 # gtcx-infrastructure — Internal 10/10 Sign-off
 

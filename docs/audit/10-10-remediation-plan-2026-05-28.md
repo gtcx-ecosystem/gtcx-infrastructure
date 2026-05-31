@@ -1,6 +1,9 @@
 ---
-title: 'GTCX Infrastructure — 10/10 Remediation Plan'
-status: 'current'
+title: 'GTCX Infrastructure — 10/10 Remediation Plan (superseded)'
+status: 'superseded'
+superseded_by: 'docs/audit/execution-roadmap.md'
+superseded_on: '2026-05-31'
+superseded_reason: 'Replaced by the reconciled 3-sprint plan; 10.0/8.8 baseline rejected per execution-roadmap.md Q3 (authoritative: 6.8/6.2).'
 date: '2026-05-28'
 owner: 'gtcx-infrastructure'
 role: 'quality-evidence-lead'

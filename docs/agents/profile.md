@@ -166,5 +166,5 @@ When working on `gtcx-infrastructure`:
 ## Related
 
 - [Sprint Planning](../agile/sprint-planning.md)
-- [Roadmap](../agile/roadmap-2026-05-25.md)
+- [Execution Roadmap](../audit/execution-roadmap.md)
 - [AGENTS.md](../../AGENTS.md)

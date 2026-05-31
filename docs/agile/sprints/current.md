@@ -19,7 +19,7 @@ review_cycle: 'on-change'
 
 > **Team:** [Team Definition](../team.md)  
 > **Backlog:** [Backlog](../backlog.md)  
-> **Roadmap:** [Roadmap](../roadmap-2026-05-25.md)
+> **Execution plan (canonical):** [`docs/audit/execution-roadmap.md`](../../audit/execution-roadmap.md)
 
 ## Committed
 

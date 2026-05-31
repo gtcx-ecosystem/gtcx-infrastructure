@@ -29,7 +29,7 @@
   },
   "gates": {
     "testQuick": "pass",
-    "validateAll": "21-of-22-pass",
+    "validateAll": "22-of-23-pass",
     "governance": "pass",
     "typecheck": "pass",
     "format": "pass",
