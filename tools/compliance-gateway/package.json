@@ -16,7 +16,7 @@
     "node": ">=20.18.0"
   },
   "dependencies": {
-    "@ai-sdk/anthropic": "^1.0.0",
+    "@ai-sdk/anthropic": "^3.0.81",
     "@ai-sdk/google": "^1.0.0",
     "@ai-sdk/openai": "^1.0.0",
     "@gtcx/audit-signer": "workspace:*",
