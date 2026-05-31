@@ -15,7 +15,12 @@
 import assert from 'node:assert';
 import { afterEach, beforeEach, describe, it } from 'node:test';
 
-import { _resetForTests, _setSdkLoaderForTests, buildS3Client } from '../src/s3-uploader.mjs';
+import {
+  _resetForTests,
+  _setSdkLoaderForTests,
+  buildS3Client,
+  s3LastSuccessTimestamp,
+} from '../src/s3-uploader.mjs';
 
 describe('s3-uploader — fail-closed in production', () => {
   let priorNodeEnv;
@@ -58,6 +63,18 @@ describe('s3-uploader — fail-closed in production', () => {
       () => buildS3Client({ region: 'af-south-1' }),
       /@aws-sdk\/client-s3 could not be loaded \(missing-sdk\)/
     );
+  });
+
+  it('stub send does not advance lastSuccessMs', async () => {
+    process.env.NODE_ENV = 'test';
+    process.env.AUDIT_S3_ALLOW_STUB = '1';
+    _setSdkLoaderForTests(async () => {
+      throw new Error('missing-sdk');
+    });
+    const before = s3LastSuccessTimestamp();
+    const client = await buildS3Client({ region: 'af-south-1' });
+    await client.send({ constructor: { name: 'PutObjectCommand' } });
+    assert.equal(s3LastSuccessTimestamp(), before);
   });
 
   it('returns the no-op stub when AUDIT_S3_ALLOW_STUB=1 and SDK is missing', async () => {

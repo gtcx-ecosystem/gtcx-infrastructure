@@ -94,7 +94,7 @@ export async function buildS3Client({ region }) {
   );
   return {
     send: async (cmd) => {
-      lastSuccessMs = Date.now();
+      // Stub must not advance lastSuccessMs — readiness probes would lie.
       return { stub: true, command: cmd?.constructor?.name ?? 'unknown' };
     },
   };
