@@ -313,6 +313,18 @@ A board observer must attend at least one quarterly exercise per year.
 
 ## 14. Board Sign-Off
 
+### Agent preparation (S2-12)
+
+The operational IRP runbook at `docs/operations/runbooks/incident-response.md` is
+agent-maintained and validated in CI. Board signatures below remain a **human
+escalation** (EXT-INF). Agents must not fill signature fields autonomously.
+
+| Artifact               | Agent owner                | CI gate                |
+| ---------------------- | -------------------------- | ---------------------- |
+| IRP v1 (this document) | `agent:compliance-officer` | docs-standard          |
+| Operational runbook    | `agent:platform-architect` | runbook-commands-check |
+| Alert routing          | `agent:platform-architect` | alertmanager-env-check |
+
 This Incident Response Plan has been reviewed and approved by the GTCX Board of Directors.
 
 | Role            | Name                     | Signature                | Date         |
