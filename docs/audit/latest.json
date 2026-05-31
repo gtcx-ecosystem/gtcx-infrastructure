@@ -1,20 +1,20 @@
 {
   "repo": "gtcx-infrastructure",
   "auditDate": "2026-05-31",
-  "verifiedAt": "2026-05-31T17:51:30Z",
-  "head": "a9eaa4c",
-  "workingTree": "modified; S2-07 KYC handler hardening changes are uncommitted",
+  "verifiedAt": "2026-05-31T22:00:00Z",
+  "head": "afce75a",
+  "workingTree": "clean",
   "sourceAudit": "docs/audit/post-roadmap-session-2026-05-30.md",
-  "latestAudit": "docs/audit/post-roadmap-session-2026-05-30.md",
+  "latestAudit": "docs/audit/full-audit-2026-05-31.md",
   "previousAudit": "docs/audit/master-audit-2026-05-30.md",
   "remediationPlan": "docs/audit/execution-roadmap.md",
   "status": "sprint-2-in-progress",
   "scores": {
-    "internalReadiness": 6.8,
-    "composite": 6.2,
-    "codeQuality": 7.4,
-    "repoHygiene": 7.4,
-    "security": 6.6,
+    "internalReadiness": 7.3,
+    "composite": 6.6,
+    "codeQuality": 7.8,
+    "repoHygiene": 8.0,
+    "security": 7.2,
     "globalSouthResilience": 7.5,
     "ecosystemIntegration": 6.5,
     "agenticMaturity": 6.0,
@@ -63,11 +63,17 @@
     "S2-05 closed (2e2a80a, 2026-05-31): /v1/exceptions and /v1/audit/evidence-bundle now emit compliance_gateway_requests_total route/status/tenant series plus endpoint-specific exception-count and evidence-record metrics; route integration tests and compliance-gateway coverage gate pass; node tools/scripts/validate-all.mjs passes 23 of 23 gates.",
     "S2-08 closed (9829b8f, 2026-05-31): every workspace package manifest now requires node >=20.18.0; GitHub setup-node calls and shared action defaults pin exact 20.18.0; node-version-floor-check.mjs is wired into validate-all to prevent drift; node tools/scripts/validate-all.mjs passes 24 of 24 gates.",
     "S2-06 closed (a9eaa4c, 2026-05-31): HTML evidence responses now set a restrictive Content-Security-Policy header and archived HTML embeds matching CSP metadata; visible table/meta fields strip Unicode bidi control characters while raw NDJSON remains exact for offline signature verification; renderer and route integration tests pass; node tools/scripts/validate-all.mjs passes 24 of 24 gates.",
-    "S2-07 closed (working tree, 2026-05-31): KYC local screening now fails closed without an explicit SCREENING_LOCAL_SALT outside tests; handler checks for an existing screening result object before re-screening; decoded S3 keys with control characters are rejected before screening or writing results; node tools/scripts/validate-all.mjs passes 24 of 24 gates."
+    "S2-07 closed (afce75a, 2026-05-31): KYC local screening now fails closed without an explicit SCREENING_LOCAL_SALT outside tests; handler checks for an existing screening result object before re-screening; decoded S3 keys with control characters are rejected before screening or writing results; node tools/scripts/validate-all.mjs passes 24 of 24 gates.",
+    "Full-audit 2026-05-31 (afce75a): six-phase fresh audit; internal 7.3 / certified 6.6; S2-09 and S2-10 remain top code gaps; EXT-INF-013 and S2-13 remain top external gaps."
   ],
   "remainingGaps": [
+    "S2-09 — Alertmanager defaults fail-closed outside dev.",
+    "S2-10 — Frontmatter-merge guard: refuse tier downgrade.",
+    "S2-11 — Dependabot Tier 1+2 merges.",
+    "S2-12 — SOC 2 readiness owner mapping.",
     "S2-13 — Pen-test SOW signature.",
-    "External assurance remains pending; this is an internal audit only."
+    "S1-09 / EXT-INF-013 — ZWCMP owner assignment (human).",
+    "External assurance remains pending; full-audit-2026-05-31 is internal only."
   ],
   "evidence": {
     "executionRoadmap": "docs/audit/execution-roadmap.md",
