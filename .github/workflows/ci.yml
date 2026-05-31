@@ -62,7 +62,7 @@ jobs:
           echo "No Terraform artifacts in diff."
 
       - name: Build
-        run: pnpm build
+        run: turbo run build --filter='!@gtcx/docs-site'
 
       - name: Replay protection tests
         run: |

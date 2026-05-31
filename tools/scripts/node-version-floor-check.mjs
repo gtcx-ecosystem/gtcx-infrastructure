@@ -12,6 +12,11 @@ import { fileURLToPath } from 'node:url';
 
 const REQUIRED_PACKAGE_ENGINE = '>=20.18.0';
 const REQUIRED_CI_NODE_VERSION = '20.18.0';
+/** Astro 6 requires Node >=22.12; built in docs-site-build.yml, excluded from main CI turbo build. */
+const DOCS_SITE_PACKAGE = 'tools/docs-site/package.json';
+const DOCS_SITE_PACKAGE_ENGINE = '>=22.12.0';
+const DOCS_SITE_CI_NODE_VERSION = '22.12.0';
+const DOCS_SITE_CI_WORKFLOW = '.github/workflows/docs-site-build.yml';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 
@@ -44,13 +49,18 @@ function listYamlFiles(dir) {
   return out;
 }
 
+function expectedPackageEngine(file) {
+  return file === DOCS_SITE_PACKAGE ? DOCS_SITE_PACKAGE_ENGINE : REQUIRED_PACKAGE_ENGINE;
+}
+
 function checkPackageEngines() {
   const failures = [];
   for (const file of listWorkspacePackageFiles()) {
     const pkg = readJson(join(ROOT, file));
-    if (pkg.engines?.node !== REQUIRED_PACKAGE_ENGINE) {
+    const expected = expectedPackageEngine(file);
+    if (pkg.engines?.node !== expected) {
       failures.push(
-        `${file}: engines.node must be ${JSON.stringify(REQUIRED_PACKAGE_ENGINE)}, got ${JSON.stringify(pkg.engines?.node)}`
+        `${file}: engines.node must be ${JSON.stringify(expected)}, got ${JSON.stringify(pkg.engines?.node)}`
       );
     }
   }
@@ -66,9 +76,11 @@ function checkGithubNodeVersions() {
     lines.forEach((line, index) => {
       const nodeVersion = line.match(/node-version:\s*['"]?([^'"\s#]+)['"]?/u);
       if (nodeVersion && !nodeVersion[1].startsWith('${{')) {
-        if (nodeVersion[1] !== REQUIRED_CI_NODE_VERSION) {
+        const expectedCi =
+          rel === DOCS_SITE_CI_WORKFLOW ? DOCS_SITE_CI_NODE_VERSION : REQUIRED_CI_NODE_VERSION;
+        if (nodeVersion[1] !== expectedCi) {
           failures.push(
-            `${rel}:${index + 1}: node-version must be ${REQUIRED_CI_NODE_VERSION}, got ${nodeVersion[1]}`
+            `${rel}:${index + 1}: node-version must be ${expectedCi}, got ${nodeVersion[1]}`
           );
         }
       }
