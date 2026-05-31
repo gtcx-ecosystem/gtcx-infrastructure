@@ -49,10 +49,11 @@ module "compliance_db" {
 
 ### Phase 2 — Regional Blocs (covers 14 additional countries)
 
-| Jurisdiction | Region    | Countries                                                                     | Regulator | Notes                                    |
-| ------------ | --------- | ----------------------------------------------------------------------------- | --------- | ---------------------------------------- |
-| `waemu`      | eu-west-3 | Benin, Burkina Faso, Cote d'Ivoire, Guinea-Bissau, Mali, Niger, Senegal, Togo | BCEAO     | 10y audit (OHADA). CFA franc zone.       |
-| `cemac`      | eu-west-3 | Cameroon, CAR, Chad, Congo, Equatorial Guinea, Gabon                          | BEAC      | 10y audit (OHADA). CFA franc (XAF) zone. |
+| Jurisdiction | Region     | Countries                                                                     | Regulator | Notes                                    |
+| ------------ | ---------- | ----------------------------------------------------------------------------- | --------- | ---------------------------------------- |
+| `waemu`      | eu-west-3  | Benin, Burkina Faso, Cote d'Ivoire, Guinea-Bissau, Mali, Niger, Senegal, Togo | BCEAO     | 10y audit (OHADA). CFA franc zone.       |
+| `cemac`      | eu-west-3  | Cameroon, CAR, Chad, Congo, Equatorial Guinea, Gabon                          | BEAC      | 10y audit (OHADA). CFA franc (XAF) zone. |
+| `eac`        | af-south-1 | Kenya, Tanzania, Uganda, Rwanda, Burundi, South Sudan, DRC                    | EAC CBs   | EAC Financial Integration Framework.     |
 
 ### Generic
 

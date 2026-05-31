@@ -67,6 +67,19 @@ run "rwanda_jurisdiction_accepted" {
   }
 }
 
+run "eac_jurisdiction_accepted" {
+  command = plan
+
+  variables {
+    jurisdiction = "eac"
+  }
+
+  assert {
+    condition     = length(module.database) > 0
+    error_message = "EAC jurisdiction must be accepted"
+  }
+}
+
 # -----------------------------------------------------------------------------
 # Module composition
 # -----------------------------------------------------------------------------

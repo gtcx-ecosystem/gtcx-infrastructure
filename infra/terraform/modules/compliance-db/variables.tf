@@ -19,10 +19,10 @@ variable "jurisdiction" {
     condition = contains([
       "zimbabwe", "south_africa", "nigeria", "egypt",
       "kenya", "ghana", "tanzania", "rwanda",
-      "waemu", "cemac",
+      "waemu", "cemac", "eac",
       "generic"
     ], var.jurisdiction)
-    error_message = "jurisdiction must be one of: zimbabwe, south_africa, nigeria, egypt, kenya, ghana, tanzania, rwanda, waemu, cemac, generic"
+    error_message = "jurisdiction must be one of: zimbabwe, south_africa, nigeria, egypt, kenya, ghana, tanzania, rwanda, waemu, cemac, eac, generic"
   }
 }
 

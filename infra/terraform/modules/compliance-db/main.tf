@@ -152,6 +152,20 @@ locals {
       notes                     = "Single central bank for 8 countries. eu-west-3 (Paris) for cultural and regulatory alignment. CFA franc zone."
     }
 
+    # EAC: Kenya, Tanzania, Uganda, Rwanda, Burundi, South Sudan, DRC
+    eac = {
+      region                    = "af-south-1"
+      kyc_retention_days        = 1825 # 5 years — member state AML baselines
+      audit_retention_days      = 2555 # 7 years — regional integration framework
+      regulator                 = "EAC member central banks"
+      regulator_full            = "East African Community"
+      data_protection_law       = "EAC Cyber Laws Framework (2008)"
+      data_protection_authority = "Member state authorities"
+      cross_border_allowed      = true
+      cross_border_conditions   = "EAC Financial Integration Framework facilitates cross-border data flows."
+      notes                     = "Regional bloc preset. Individual member state laws take precedence."
+    }
+
     # CEMAC: Cameroon, CAR, Chad, Congo, Equatorial Guinea, Gabon
     cemac = {
       region                    = "eu-west-3"
