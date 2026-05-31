@@ -19,6 +19,22 @@ import { validateWithinBundleChain } from './chain-validator.mjs';
 import { verifyEnvelope, EnvelopeVerificationError } from './envelope-verifier.mjs';
 import { AuditBundleRequestSchema } from './schemas.mjs';
 
+const DEFAULT_TENANT_ID = 'default';
+
+/**
+ * Bind inbound mobile bundles to tenant scope from the signed DID, not
+ * caller-controlled headers. Current TradePass test DIDs use
+ * did:gtcx:tp_<tenant>_<id>; unknown DID shapes fall back to the
+ * legacy default tenant until the resolver exposes explicit metadata.
+ *
+ * @param {string} did
+ * @returns {string}
+ */
+export function tenantIdFromSignedDid(did) {
+  const match = /^did:gtcx:tp_([a-z0-9-]+)(?:[_:.-]|$)/.exec(did);
+  return match?.[1] ?? DEFAULT_TENANT_ID;
+}
+
 /**
  * @typedef {object} HandleArgs
  * @property {string} method
@@ -68,9 +84,10 @@ export async function processBundle(args) {
     };
   }
 
+  const tenantId = tenantIdFromSignedDid(envelope.did);
   const budgetCheck =
     typeof args.checkBudget === 'function'
-      ? args.checkBudget(envelope.did, args.headers['x-gtcx-tenant-id'] ?? 'default')
+      ? args.checkBudget(envelope.did, tenantId)
       : { ok: true };
   if (!budgetCheck.ok) {
     return {
@@ -127,9 +144,10 @@ export async function processBundle(args) {
         actor: envelope.did,
         action: 'audit-bundle.received',
         target: `/audit/bundles#${parsed.bundleId}`,
+        tenantId,
         payload: {
           bundleId: parsed.bundleId,
-          tenantId: args.headers['x-gtcx-tenant-id'] ?? null,
+          tenantId,
           eventsReceived: parsed.events.length,
           eventsAccepted: chain.acceptedIds.length,
           eventsRejected: chain.rejectedIds.length,
