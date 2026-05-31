@@ -4,6 +4,9 @@
   "private": true,
   "type": "module",
   "description": "Astro Starlight static-site config for the public docs at gtcx.io/compliance. Source markdown lives in docs/external/docs-site/; the sync script copies it into src/content/docs/ at build time.",
+  "engines": {
+    "node": ">=20.18.0"
+  },
   "scripts": {
     "sync": "node scripts/sync-content.mjs",
     "dev": "pnpm run sync && astro dev",

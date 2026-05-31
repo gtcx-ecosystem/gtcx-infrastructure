@@ -27,7 +27,7 @@
     "typecheck": "tsc --noEmit"
   },
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=20.18.0"
   },
   "dependencies": {
     "@gtcx/crypto": "^2.0.0",

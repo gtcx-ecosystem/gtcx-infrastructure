@@ -15,7 +15,7 @@ This doc defines minimum version standards for `gtcx-infrastructure` tooling to 
 
 ## Baseline versions (minimum)
 
-- Node.js: **>= 20**
+- Node.js: **>= 20.18.0**
 - pnpm: **>= 9.15**
 - Terraform: **>= 1.7**
 - kubectl: **compatible with EKS** (pin per environment runbook)

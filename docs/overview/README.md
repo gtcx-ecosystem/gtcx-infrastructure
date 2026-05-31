@@ -216,21 +216,21 @@ Technical specifications available for sales reference:
 
 ### 6.1 Technology Stack
 
-| Layer                   | Technology                          | Version   | Purpose                           |
-| ----------------------- | ----------------------------------- | --------- | --------------------------------- |
-| Language (Primary)      | TypeScript                          | 5.x       | Tooling, automation, services     |
-| Language (Secondary)    | Go                                  | 1.22+     | Terraform provider tests          |
-| Runtime                 | Node.js                             | >= 20.0.0 | TypeScript execution              |
-| Package Manager         | pnpm                                | 9.15.0    | Workspace monorepo                |
-| Build Tool              | Turbo                               | 2.x       | Task orchestration                |
-| Testing                 | Node.js native test runner + c8     | 20.x      | Unit + coverage                   |
-| IaC                     | Terraform                           | 1.7+      | AWS infrastructure                |
-| Container Orchestration | Kubernetes (EKS)                    | 1.31      | Service deployment                |
-| Policy Engine           | Kyverno                             | 1.11+     | Admission control                 |
-| Service Mesh            | Linkerd                             | 2.14+     | mTLS (pending ADR-007)            |
-| Observability           | Prometheus + Grafana + Tempo + Loki | Latest    | Metrics, dashboards, traces, logs |
-| Cryptography            | AWS KMS (ECC P-256)                 | —         | Signing, encryption               |
-| Secret Management       | AWS Secrets Manager + ESO           | —         | Secret rotation, K8s sync         |
+| Layer                   | Technology                          | Version    | Purpose                           |
+| ----------------------- | ----------------------------------- | ---------- | --------------------------------- |
+| Language (Primary)      | TypeScript                          | 5.x        | Tooling, automation, services     |
+| Language (Secondary)    | Go                                  | 1.22+      | Terraform provider tests          |
+| Runtime                 | Node.js                             | >= 20.18.0 | TypeScript execution              |
+| Package Manager         | pnpm                                | 9.15.0     | Workspace monorepo                |
+| Build Tool              | Turbo                               | 2.x        | Task orchestration                |
+| Testing                 | Node.js native test runner + c8     | 20.x       | Unit + coverage                   |
+| IaC                     | Terraform                           | 1.7+       | AWS infrastructure                |
+| Container Orchestration | Kubernetes (EKS)                    | 1.31       | Service deployment                |
+| Policy Engine           | Kyverno                             | 1.11+      | Admission control                 |
+| Service Mesh            | Linkerd                             | 2.14+      | mTLS (pending ADR-007)            |
+| Observability           | Prometheus + Grafana + Tempo + Loki | Latest     | Metrics, dashboards, traces, logs |
+| Cryptography            | AWS KMS (ECC P-256)                 | —          | Signing, encryption               |
+| Secret Management       | AWS Secrets Manager + ESO           | —          | Secret rotation, K8s sync         |
 
 ### 6.2 Architecture at a Glance
 
@@ -339,7 +339,7 @@ Key controls active in production:
 
 ### 8.1 For New Developers
 
-1. **Prerequisites:** Node.js >= 20.0.0, pnpm 9.15.0, Terraform >= 1.7, AWS CLI, kubectl
+1. **Prerequisites:** Node.js >= 20.18.0, pnpm 9.15.0, Terraform >= 1.7, AWS CLI, kubectl
 2. **Clone and install:** `git clone` → `pnpm install`
 3. **Build:** `pnpm build`
 4. **Run tests:** `pnpm test` (quick validation) → `pnpm test:full` (comprehensive)

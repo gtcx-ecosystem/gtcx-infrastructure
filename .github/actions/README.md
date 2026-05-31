@@ -11,7 +11,7 @@ Standard build pipeline: install → lint → typecheck → test → build.
 ```yaml
 - uses: gtcx-ecosystem/gtcx-infrastructure/.github/actions/build-and-test@main
   with:
-    node-version: '20' # optional, default: 20
+    node-version: '20.18.0' # optional, default: 20.18.0
     pnpm-version: '9.15.0' # optional, default: 9.15.0
     working-directory: '.' # optional, default: .
 ```

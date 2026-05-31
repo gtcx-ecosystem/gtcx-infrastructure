@@ -8,6 +8,26 @@ focus: "Baseline initialization — discovery and enrichment"
 
 # Session: Baseline Initialization
 
+## 2026-05-31 — Roadmap Execution: S2-08 Node 20.18.0 Enforcement
+
+## What Was Done
+- Executed roadmap item S2-08: pinned the Node runtime floor across workspace package manifests and GitHub Actions.
+- Updated the nine stale package manifests from `>=20.0.0` to `>=20.18.0` and added the same engine floor to workspace packages that were missing `engines.node`.
+- Updated seven workflow `actions/setup-node` calls and the shared composite action defaults to exact `20.18.0`.
+- Updated setup/version docs that still advertised `>=20.0.0`.
+- Added `tools/scripts/node-version-floor-check.mjs` and wired it into `node tools/scripts/validate-all.mjs` so future drift fails CI.
+- Updated `docs/audit/execution-roadmap.md` and `docs/audit/latest.json` to mark S2-08 done and reduce remaining P2 gaps.
+
+## Verification
+- `node tools/scripts/node-version-floor-check.mjs` — pass; 16 package manifests and GitHub Actions satisfy `>=20.18.0` / `20.18.0`.
+- `node tools/scripts/pin-actions-sha.mjs --check` — pass.
+- `node tools/scripts/docs-standard-validator.mjs` — pass.
+- `node tools/scripts/validate-all.mjs` — pass outside sandbox; 24/24 gates green.
+
+## Notes
+- Next roadmap candidate: S2-13 (pen-test SOW signature) unless human-signature gating makes S2-06/S2-07/S2-09 better local candidates.
+- Full validation should run outside the sandbox because HTTP listener tests can fail with `listen EPERM` inside the sandbox.
+
 ## 2026-05-31 — Roadmap Execution: S2-05 Route Metrics
 
 ## What Was Done

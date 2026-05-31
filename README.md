@@ -30,7 +30,7 @@ This repo now ships a real validation entrypoint for that Bash surface at `pnpm 
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) >= 20.0.0
+- [Node.js](https://nodejs.org/) >= 20.18.0
 - [pnpm](https://pnpm.io/) >= 9.15.0
 - [Terraform](https://www.terraform.io/) >= 1.7 (for IaC)
 - [kubectl](https://kubernetes.io/docs/tasks/tools/) (for K8s operations)

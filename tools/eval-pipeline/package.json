@@ -15,7 +15,7 @@
     "@gtcx/compliance-gateway": "workspace:*"
   },
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=20.18.0"
   },
   "keywords": [
     "gtcx",

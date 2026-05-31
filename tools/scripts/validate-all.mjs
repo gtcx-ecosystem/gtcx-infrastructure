@@ -95,6 +95,7 @@ run('Score Ledger', 'node tools/scripts/validate-score-ledger.mjs');
 run('Docs Standard', 'node tools/scripts/docs-standard-validator.mjs');
 run('Kyverno Policies', 'node tools/scripts/kyverno-policy-validator.mjs');
 run('SHA-pinned Actions', 'node tools/scripts/pin-actions-sha.mjs --check');
+run('Node Version Floor', 'node tools/scripts/node-version-floor-check.mjs');
 run('Empty Catch Blocks', 'node tools/scripts/empty-catch-check.mjs');
 run('Runbook Commands Exist', 'node tools/scripts/runbook-commands-check.mjs');
 run('Runbook Frontmatter', 'node tools/scripts/runbook-frontmatter-check.mjs --check');
@@ -107,7 +108,10 @@ run('Alert Runbook Anchors', 'node tools/scripts/alerts-add-runbook-url.mjs --ch
 section('Security Validators');
 
 run('Mesh Injection (prod)', 'node tools/scripts/verify-mesh-injection.mjs --namespace gtcx');
-run('Mesh Injection (staging)', 'node tools/scripts/verify-mesh-injection.mjs --namespace gtcx-staging');
+run(
+  'Mesh Injection (staging)',
+  'node tools/scripts/verify-mesh-injection.mjs --namespace gtcx-staging'
+);
 
 // =============================================================================
 // 4. Build Validators

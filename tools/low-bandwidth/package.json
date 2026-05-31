@@ -10,7 +10,7 @@
     "test:coverage:gate": "c8 --check-coverage --branches 90 --statements 90 --functions 90 --lines 90 --reporter=text --reporter=json --reporter=lcov --include='src/**' node --test tests/**/*.test.mjs"
   },
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=20.18.0"
   },
   "dependencies": {},
   "devDependencies": {

@@ -24,15 +24,15 @@ autonomy_level: 'permissioned'
 
 ## Prerequisites
 
-| Tool           | Version   | Install                                             |
-| -------------- | --------- | --------------------------------------------------- |
-| Node.js        | >= 20.0.0 | https://nodejs.org or `nvm install 20`              |
-| pnpm           | >= 9.15.0 | `npm install -g pnpm`                               |
-| Docker         | >= 24.0   | https://docs.docker.com/get-docker/                 |
-| Docker Compose | >= 2.20   | Bundled with Docker Desktop                         |
-| Terraform      | >= 1.6.0  | https://developer.hashicorp.com/terraform/downloads |
-| kubectl        | >= 1.28   | https://kubernetes.io/docs/tasks/tools/             |
-| AWS CLI        | >= 2.13   | `brew install awscli` or https://aws.amazon.com/cli |
+| Tool           | Version    | Install                                             |
+| -------------- | ---------- | --------------------------------------------------- |
+| Node.js        | >= 20.18.0 | https://nodejs.org or `nvm install 20.18.0`         |
+| pnpm           | >= 9.15.0  | `npm install -g pnpm`                               |
+| Docker         | >= 24.0    | https://docs.docker.com/get-docker/                 |
+| Docker Compose | >= 2.20    | Bundled with Docker Desktop                         |
+| Terraform      | >= 1.6.0   | https://developer.hashicorp.com/terraform/downloads |
+| kubectl        | >= 1.28    | https://kubernetes.io/docs/tasks/tools/             |
+| AWS CLI        | >= 2.13    | `brew install awscli` or https://aws.amazon.com/cli |
 
 ---
 
