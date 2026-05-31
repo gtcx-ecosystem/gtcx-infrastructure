@@ -1,7 +1,13 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { detectDuplicate, parseBlock } from './runbook-frontmatter-check.mjs';
+import {
+  detectDuplicate,
+  mergeBlocks,
+  parseBlock,
+  tierRank,
+  wouldDowngradeTierIfSecondWins,
+} from './runbook-frontmatter-check.mjs';
 
 describe('runbook-frontmatter-check detectDuplicate', () => {
   it('flags two `---` blocks separated by blank lines (the gitbook corruption shape)', () => {
@@ -59,3 +65,37 @@ describe('runbook-frontmatter-check parseBlock', () => {
     assert.equal(m.get('title'), 'X');
   });
 });
+
+describe('runbook-frontmatter-check tier guard', () => {
+  it('ranks critical above informational', () => {
+    assert.ok(tierRank('critical') > tierRank('informational'));
+    assert.ok(tierRank("'critical'") > tierRank('informational'));
+  });
+
+  it('detects legacy merge that would downgrade tier', () => {
+    const first = parseBlock(["title: 'Rollback'", "tier: 'critical'"].join('\n'));
+    const second = parseBlock(["title: 'Rollback'", "tier: 'informational'"].join('\n'));
+    assert.equal(wouldDowngradeTierIfSecondWins(first, second), true);
+  });
+
+  it('mergeBlocks keeps the higher tier when blocks disagree', () => {
+    const first = parseBlock(["title: 'Rollback'", "tier: 'critical'"].join('\n'));
+    const second = parseBlock(["title: 'Rollback'", "tier: 'informational'"].join('\n'));
+    const lines = mergeBlocks(first, second);
+    const merged = parseBlock(lines.join('\n'));
+    assert.equal(normalizeTierFromMap(merged), 'critical');
+  });
+
+  it('mergeBlocks does not downgrade when prepended block is informational', () => {
+    const prepended = parseBlock(["title: 'DR'", "tier: 'informational'"].join('\n'));
+    const original = parseBlock(["title: 'DR'", "tier: 'critical'"].join('\n'));
+    const lines = mergeBlocks(prepended, original);
+    const merged = parseBlock(lines.join('\n'));
+    assert.equal(normalizeTierFromMap(merged), 'critical');
+  });
+});
+
+function normalizeTierFromMap(map) {
+  const raw = map.get('tier') ?? '';
+  return raw.replace(/^['"]/, '').replace(/['"]$/, '').trim().toLowerCase();
+}

@@ -303,22 +303,22 @@ EXPECTED_PUBLIC_KEY=$WRONG_KEY node tools/compliance-data/scripts/verify-catalog
 that prove the primitive enforces, or it is deleted. Throttle and XFF holes
 closed. Regulator-readiness checklists have named owners.
 
-| Story | Title                                                                 | Status                                                                                                                                       |
-| ----- | --------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| S2-01 | Wire `failClosed` into 3+ production callers                          | **done** (`570ad49`) — wired audit-flush s3-uploader plus compliance-gateway schemas, system-prompt, evidence-renderer; full validation pass |
-| S2-02 | Wire Redis `budget-store` into checkBudget/recordSpend/getSpend       | **done** (`6bfa2ad`) — async budget API delegates to budget-store; server + audit handlers await shared store-backed gates                   |
-| S2-03 | Bound `auth-failure-throttle` ipState Map + atomic recordAndCheck     | **done** (`694c458`) — max tracked IP cap + LRU eviction; failure path uses atomic record-and-check helper                                   |
-| S2-04 | Trusted-XFF CIDR enforcement                                          | **done** (`c1dfadd`) — XFF is trusted only from configured proxy CIDRs; spoofed/malformed XFF falls back to socket IP                        |
-| S2-05 | Prometheus metrics for `/v1/exceptions` + `/v1/audit/evidence-bundle` | **done** (`2e2a80a`) — route/status counters plus exception-count and evidence-record metrics added                                          |
-| S2-06 | CSP + bidi/RTL stripping in HTML evidence renderer                    | **done** (`a9eaa4c`) — restrictive CSP header/meta added; visible HTML fields strip bidi control characters                                  |
-| S2-07 | KYC handler hardening — salt/key/idempotency                          | **done** (working tree, 2026-05-31) — local salt fails closed outside tests; existing result check + key control-char rejection added        |
-| S2-08 | Node 20.18.0 enforcement across packages + workflows                  | **done** (`9829b8f`) — package engines, CI setup-node, shared action defaults, docs, and validate-all gate enforce 20.18.0                   |
-| S2-09 | Alertmanager defaults fail-closed outside dev                         | pending                                                                                                                                      |
-| S2-10 | Frontmatter-merge guard: refuse `tier:` downgrade                     | pending                                                                                                                                      |
-| S2-11 | Dependabot Tier 1+2 merges + `.github/dependabot.yml` ignore rules    | pending (Q7)                                                                                                                                 |
-| S2-12 | SOC 2 readiness owner mapping + IRP v1 board sign-off prep            | pending                                                                                                                                      |
-| S2-13 | **Pen-test SOW signature** (Bet 1 external validation)                | pending — Q5 ANSWERED 2026-05-31 (**AFTER** Sprint 1; SOW targets post-Sprint-1 state, no +4w delay)                                         |
-| S2-14 | Replay-protection package coverage pump (close 90% branches gate)     | **done** (`570ad49`) — replay-protection branch coverage 90.45%; `node tools/scripts/validate-all.mjs` 23/23 pass                            |
+| Story | Title                                                                 | Status                                                                                                                                            |
+| ----- | --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| S2-01 | Wire `failClosed` into 3+ production callers                          | **done** (`570ad49`) — wired audit-flush s3-uploader plus compliance-gateway schemas, system-prompt, evidence-renderer; full validation pass      |
+| S2-02 | Wire Redis `budget-store` into checkBudget/recordSpend/getSpend       | **done** (`6bfa2ad`) — async budget API delegates to budget-store; server + audit handlers await shared store-backed gates                        |
+| S2-03 | Bound `auth-failure-throttle` ipState Map + atomic recordAndCheck     | **done** (`694c458`) — max tracked IP cap + LRU eviction; failure path uses atomic record-and-check helper                                        |
+| S2-04 | Trusted-XFF CIDR enforcement                                          | **done** (`c1dfadd`) — XFF is trusted only from configured proxy CIDRs; spoofed/malformed XFF falls back to socket IP                             |
+| S2-05 | Prometheus metrics for `/v1/exceptions` + `/v1/audit/evidence-bundle` | **done** (`2e2a80a`) — route/status counters plus exception-count and evidence-record metrics added                                               |
+| S2-06 | CSP + bidi/RTL stripping in HTML evidence renderer                    | **done** (`a9eaa4c`) — restrictive CSP header/meta added; visible HTML fields strip bidi control characters                                       |
+| S2-07 | KYC handler hardening — salt/key/idempotency                          | **done** (working tree, 2026-05-31) — local salt fails closed outside tests; existing result check + key control-char rejection added             |
+| S2-08 | Node 20.18.0 enforcement across packages + workflows                  | **done** (`9829b8f`) — package engines, CI setup-node, shared action defaults, docs, and validate-all gate enforce 20.18.0                        |
+| S2-09 | Alertmanager defaults fail-closed outside dev                         | **done** — init container rejects placeholder PagerDuty/Slack env unless `GTCX_ALERTS_DEV_MODE=1`; `alertmanager-env-check` wired in validate-all |
+| S2-10 | Frontmatter-merge guard: refuse `tier:` downgrade                     | **done** — `mergeBlocks` keeps highest `tier`; legacy downgrade detection in `--check`; `automated-rollback.md` restored to `critical`            |
+| S2-11 | Dependabot Tier 1+2 merges + `.github/dependabot.yml` ignore rules    | pending (Q7)                                                                                                                                      |
+| S2-12 | SOC 2 readiness owner mapping + IRP v1 board sign-off prep            | pending                                                                                                                                           |
+| S2-13 | **Pen-test SOW signature** (Bet 1 external validation)                | pending — Q5 ANSWERED 2026-05-31 (**AFTER** Sprint 1; SOW targets post-Sprint-1 state, no +4w delay)                                              |
+| S2-14 | Replay-protection package coverage pump (close 90% branches gate)     | **done** (`570ad49`) — replay-protection branch coverage 90.45%; `node tools/scripts/validate-all.mjs` 23/23 pass                                 |
 
 > Per-story acceptance commands will be filled in when Sprint 2 opens (sprint
 > start = 2026-06-08). All file paths and acceptance shapes are in

@@ -102,22 +102,75 @@ function stripQuotes(v) {
   return v.replace(/^['"]/, '').replace(/['"]$/, '');
 }
 
+/** @type {Record<string, number>} */
+export const TIER_RANK = {
+  critical: 4,
+  strategic: 3,
+  standard: 2,
+  informational: 1,
+};
+
+/**
+ * @param {string | undefined} raw
+ * @returns {string}
+ */
+export function normalizeTierValue(raw) {
+  if (raw == null) return '';
+  return stripQuotes(String(raw)).trim().toLowerCase();
+}
+
+/**
+ * @param {string | undefined} raw
+ * @returns {number}
+ */
+export function tierRank(raw) {
+  return TIER_RANK[normalizeTierValue(raw)] ?? 0;
+}
+
+/**
+ * Legacy merge: second block wins on `tier` conflicts. Used only to
+ * detect whether a duplicate pair would have downgraded tier metadata.
+ *
+ * @param {Map<string, string>} first
+ * @param {Map<string, string>} second
+ * @returns {boolean}
+ */
+export function wouldDowngradeTierIfSecondWins(first, second) {
+  const merged = new Map(second);
+  for (const [k, v] of first) {
+    if (!merged.has(k)) merged.set(k, v);
+  }
+  const mergedRank = tierRank(merged.get('tier'));
+  const maxRank = Math.max(tierRank(first.get('tier')), tierRank(second.get('tier')));
+  return maxRank > 0 && mergedRank < maxRank;
+}
+
 /**
  * Merge the two parsed blocks. The original (second) block wins on
  * conflicts — it carries hand-curated values (`tier: critical`, specific
  * tags, owner). Keys present only in the new (first) block are added:
  * those are typically the agent-baseline additions (`agent_id`,
  * `trust_score`, `autonomy_level`). `date` is set to the lexically
- * larger ISO-8601 value (newer wins).
+ * larger ISO-8601 value (newer wins). `tier` never downgrades — the
+ * higher-ranked value wins; ties prefer the second (original) block.
  *
  * @param {Map<string, string>} first
  * @param {Map<string, string>} second
  * @returns {string[]}
  */
-function mergeBlocks(first, second) {
+export function mergeBlocks(first, second) {
   const merged = new Map(second);
   for (const [k, v] of first) {
     if (!merged.has(k)) merged.set(k, v);
+  }
+  if (first.has('tier') || second.has('tier')) {
+    const r1 = tierRank(first.get('tier'));
+    const r2 = tierRank(second.get('tier'));
+    const best = Math.max(r1, r2);
+    if (best > 0) {
+      const pick = r1 > r2 ? first : r2 > r1 ? second : second;
+      merged.set('tier', pick.get('tier') ?? first.get('tier') ?? second.get('tier'));
+    }
   }
   if (first.has('date') && second.has('date')) {
     const a = stripQuotes(first.get('date'));
@@ -175,8 +228,18 @@ function main() {
   const offenders = [];
   let changedCount = 0;
 
+  const tierDowngrades = [];
+
   for (const file of files) {
     const original = readFileSync(file, 'utf8');
+    const det = detectDuplicate(original);
+    if (det.hasDuplicate) {
+      const first = parseBlock(det.firstBlock);
+      const second = parseBlock(det.secondBlock);
+      if (wouldDowngradeTierIfSecondWins(first, second)) {
+        tierDowngrades.push(file.replace(`${REPO_ROOT}/`, ''));
+      }
+    }
     const result = processFile(original);
     if (result.changed) {
       offenders.push(file.replace(`${REPO_ROOT}/`, ''));
@@ -188,6 +251,16 @@ function main() {
   }
 
   if (checkOnly) {
+    if (tierDowngrades.length > 0) {
+      console.error(
+        `[runbook-frontmatter-check] ${tierDowngrades.length} file(s) would downgrade tier on merge:`
+      );
+      for (const f of tierDowngrades) console.error(`  - ${f}`);
+      console.error(
+        '\nRe-run the merge tool after upgrading runbook-frontmatter-check (tier guard).'
+      );
+      process.exit(1);
+    }
     if (offenders.length > 0) {
       console.error(
         `[runbook-frontmatter-check] ${offenders.length} file(s) with duplicated frontmatter:`

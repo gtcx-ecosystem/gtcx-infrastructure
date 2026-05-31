@@ -4,7 +4,7 @@ status: 'current'
 date: '2026-05-27'
 owner: 'frontier-infra-engineer'
 role: 'frontier-infra-engineer'
-tier: 'informational'
+tier: 'critical'
 tags: ['security', 'architecture', 'infrastructure', 'devops', 'performance']
 review_cycle: 'monthly'
 agent_id: 'agent://gtcx-infrastructure/2026-05-27/session-backfill'
