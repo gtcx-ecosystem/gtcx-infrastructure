@@ -74,10 +74,26 @@
     "externalRegister": "docs/audit/external-dependencies-register-2026-05-31.md",
     "pilotCriteria": "docs/audit/pilot-success-criteria.md"
   },
-  "openLeadershipDecisions": [
-    "Q4 — failClosed/budget-store wire-or-delete",
-    "Q5 — pen-test ordering (ratify Sprint 1 vs commission external review first)",
-    "Q6 — product motion (product-led vs sales-led; drives EXT-INF-013 owner)",
-    "Q7 — @types/node dependabot pin"
-  ]
+  "leadershipDecisions": {
+    "answered": [
+      {
+        "id": "Q4",
+        "question": "failClosed/budget-store: wire or delete?",
+        "answer": "WIRE BOTH",
+        "answeredOn": "2026-05-31",
+        "rationale": "failClosed has 4 documented soft-import sites to wire (~1d); budget-store reuses existing K8s Redis (no net-new infra) and fixes a real HPA-scaled QPS multiplication bug (~2d)."
+      },
+      {
+        "id": "Q6",
+        "question": "Product motion: product-led vs sales-led?",
+        "answer": "SALES-LED with primitives as parallel tail",
+        "answeredOn": "2026-05-31",
+        "rationale": "GTM docs are regulator-led, not developer-led. Sprint 3 headline = S3-11 (ZWCMP signature); S1-09 owner profile = senior pilot-facing operator with prior African-central-bank pilot experience; S3-07 publish-primitives continues in parallel without gating Sprint 3."
+      }
+    ],
+    "open": [
+      "Q5 — pen-test ordering (ratify Sprint 1 vs commission external review first)",
+      "Q7 — @types/node dependabot pin"
+    ]
+  }
 }

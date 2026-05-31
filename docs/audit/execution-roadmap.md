@@ -59,18 +59,18 @@ external evidence — pilot signature, primitives publication, soak-test baselin
 has a named external dependency. ZWCMP pilot has a named GTCX owner and a
 scheduled cadence call.
 
-| Story | Title                                                                                   | Status                                                                                         |
-| ----- | --------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| S1-01 | Replay-guard traversal — verify closure + add fuzz fixtures                             | partial (`6f79a83`, `0f83c27`) — gate still red                                                |
-| S1-02 | `/audit/bundles` tenant binding — verify closure + add spoof test                       | done (`1b940d7`) — spoof test at `handler.test.mjs:135,267`                                    |
-| S1-03 | Auth-failure events visible in `/v1/exceptions` (platform tenant)                       | **done** (`efcc01e`) — platform-tenant routing + regression test                               |
-| S1-04 | Adversarial fixtures for each newly-wired gate                                          | **done** (`0da5ffa`) — production-overlay + runbook-frontmatter fixtures                       |
-| S1-05 | Roadmap rename + README — confirm `pnpm test` green from clean checkout                 | **done** (`8b04ac9`) — frontmatter fields added; `pnpm test` green                             |
-| S1-06 | `isExempt(path)` JSDoc + typecheck enforcement in CI                                    | **done** — JSDoc at `middleware.mjs:167-170`; `ci.yml:49` runs `pnpm typecheck`                |
-| S1-07 | Working-tree drift sweep — `pnpm agent:check` + `pnpm format:check` from clean checkout | **done** (`bf07780`) — gitbook included in merger; 12 pre-broken files repaired                |
-| S1-08 | Validate alert `runbook_url` anchors — fail CI on dead links                            | **done** (`7081223`) — anchor existence gate; 37 STUB sections backfilled                      |
-| S1-09 | **ZWCMP owner assignment + first cadence call**                                         | **scaffolded** (`879795b`) — register + criteria mark Q6 dependency; assignment requires human |
-| S1-10 | Trust-anchor pin in `verify-catalog.mjs` (20-line moat fix)                             | **done** (`3729a29`) — PINNED_PUBLIC_KEY + 8 test cases for every rejection code               |
+| Story | Title                                                                                   | Status                                                                                                                                                                                                                |
+| ----- | --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| S1-01 | Replay-guard traversal — verify closure + add fuzz fixtures                             | partial (`6f79a83`, `0f83c27`) — gate still red                                                                                                                                                                       |
+| S1-02 | `/audit/bundles` tenant binding — verify closure + add spoof test                       | done (`1b940d7`) — spoof test at `handler.test.mjs:135,267`                                                                                                                                                           |
+| S1-03 | Auth-failure events visible in `/v1/exceptions` (platform tenant)                       | **done** (`efcc01e`) — platform-tenant routing + regression test                                                                                                                                                      |
+| S1-04 | Adversarial fixtures for each newly-wired gate                                          | **done** (`0da5ffa`) — production-overlay + runbook-frontmatter fixtures                                                                                                                                              |
+| S1-05 | Roadmap rename + README — confirm `pnpm test` green from clean checkout                 | **done** (`8b04ac9`) — frontmatter fields added; `pnpm test` green                                                                                                                                                    |
+| S1-06 | `isExempt(path)` JSDoc + typecheck enforcement in CI                                    | **done** — JSDoc at `middleware.mjs:167-170`; `ci.yml:49` runs `pnpm typecheck`                                                                                                                                       |
+| S1-07 | Working-tree drift sweep — `pnpm agent:check` + `pnpm format:check` from clean checkout | **done** (`bf07780`) — gitbook included in merger; 12 pre-broken files repaired                                                                                                                                       |
+| S1-08 | Validate alert `runbook_url` anchors — fail CI on dead links                            | **done** (`7081223`) — anchor existence gate; 37 STUB sections backfilled                                                                                                                                             |
+| S1-09 | **ZWCMP owner assignment + first cadence call**                                         | **scaffolded** (`879795b`); Q6 ANSWERED 2026-05-31 (sales-led) — owner profile: senior pilot-facing operator with prior fintech-pilot-with-African-central-bank experience; assignment still requires human selection |
+| S1-10 | Trust-anchor pin in `verify-catalog.mjs` (20-line moat fix)                             | **done** (`3729a29`) — PINNED_PUBLIC_KEY + 8 test cases for every rejection code                                                                                                                                      |
 
 ### S1-01: Replay-guard traversal — verify closure + add fuzz fixtures
 
@@ -303,22 +303,22 @@ EXPECTED_PUBLIC_KEY=$WRONG_KEY node tools/compliance-data/scripts/verify-catalog
 that prove the primitive enforces, or it is deleted. Throttle and XFF holes
 closed. Regulator-readiness checklists have named owners.
 
-| Story | Title                                                                       | Status                        |
-| ----- | --------------------------------------------------------------------------- | ----------------------------- |
-| S2-01 | Wire `failClosed` into 3+ production callers (or delete)                    | pending (Q4)                  |
-| S2-02 | Wire Redis `budget-store` into checkBudget/recordSpend/getSpend (or delete) | pending (Q4)                  |
-| S2-03 | Bound `auth-failure-throttle` ipState Map + atomic recordAndCheck           | pending                       |
-| S2-04 | Trusted-XFF CIDR enforcement                                                | pending                       |
-| S2-05 | Prometheus metrics for `/v1/exceptions` + `/v1/audit/evidence-bundle`       | pending                       |
-| S2-06 | CSP + bidi/RTL stripping in HTML evidence renderer                          | pending                       |
-| S2-07 | KYC handler hardening — salt/key/idempotency                                | pending                       |
-| S2-08 | Node 20.18.0 enforcement across packages + workflows                        | pending                       |
-| S2-09 | Alertmanager defaults fail-closed outside dev                               | pending                       |
-| S2-10 | Frontmatter-merge guard: refuse `tier:` downgrade                           | pending                       |
-| S2-11 | Dependabot Tier 1+2 merges + `.github/dependabot.yml` ignore rules          | pending (Q7)                  |
-| S2-12 | SOC 2 readiness owner mapping + IRP v1 board sign-off prep                  | pending                       |
-| S2-13 | **Pen-test SOW signature** (Bet 1 external validation)                      | pending (Q5)                  |
-| S2-14 | Replay-protection package coverage pump (close 90% branches gate)           | pending — promoted from S1-01 |
+| Story | Title                                                                 | Status                                                                                                                                             |
+| ----- | --------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| S2-01 | Wire `failClosed` into 3+ production callers                          | pending — Q4 ANSWERED 2026-05-31 (**WIRE**); target sites: audit-flush s3-uploader, compliance-gateway schemas + system-prompt + evidence-renderer |
+| S2-02 | Wire Redis `budget-store` into checkBudget/recordSpend/getSpend       | pending — Q4 ANSWERED 2026-05-31 (**WIRE**); reuses existing k8s Redis at `infra/kubernetes/base/services/redis.yaml` (no net-new infra)           |
+| S2-03 | Bound `auth-failure-throttle` ipState Map + atomic recordAndCheck     | pending                                                                                                                                            |
+| S2-04 | Trusted-XFF CIDR enforcement                                          | pending                                                                                                                                            |
+| S2-05 | Prometheus metrics for `/v1/exceptions` + `/v1/audit/evidence-bundle` | pending                                                                                                                                            |
+| S2-06 | CSP + bidi/RTL stripping in HTML evidence renderer                    | pending                                                                                                                                            |
+| S2-07 | KYC handler hardening — salt/key/idempotency                          | pending                                                                                                                                            |
+| S2-08 | Node 20.18.0 enforcement across packages + workflows                  | pending                                                                                                                                            |
+| S2-09 | Alertmanager defaults fail-closed outside dev                         | pending                                                                                                                                            |
+| S2-10 | Frontmatter-merge guard: refuse `tier:` downgrade                     | pending                                                                                                                                            |
+| S2-11 | Dependabot Tier 1+2 merges + `.github/dependabot.yml` ignore rules    | pending (Q7)                                                                                                                                       |
+| S2-12 | SOC 2 readiness owner mapping + IRP v1 board sign-off prep            | pending                                                                                                                                            |
+| S2-13 | **Pen-test SOW signature** (Bet 1 external validation)                | pending (Q5)                                                                                                                                       |
+| S2-14 | Replay-protection package coverage pump (close 90% branches gate)     | pending — promoted from S1-01                                                                                                                      |
 
 > Per-story acceptance commands will be filled in when Sprint 2 opens (sprint
 > start = 2026-06-08). All file paths and acceptance shapes are in
@@ -344,7 +344,7 @@ artifacts on disk.
 | S3-08 | Indemnified-SLA legal review + insurance quote (publication checklist 1-3)               | pending      |
 | S3-09 | Contract tests — replay/audit-signer/catalog/gateway-tenancy                             | pending      |
 | S3-10 | Cloudflare Tunnel migration for `api.gtcx.trade`                                         | pending      |
-| S3-11 | **ZWCMP DPA + pilot agreement signature** (Bet 2 close)                                  | pending (Q5) |
+| S3-11 | **ZWCMP DPA + pilot agreement signature** (Bet 2 close — **Sprint 3 headline** per Q6)   | pending (Q5) |
 | S3-12 | Publish `terraform-aws-compliance-db` v1.0.0 + 5 new jurisdictions                       | pending      |
 
 > Per-story acceptance commands filled in at sprint start (2026-06-15).
@@ -379,7 +379,9 @@ session rather than across the planned 1-week window.
 
 **Carried into Sprint 2:** S2-14 (coverage pump, ~10 verifier-flow tests across server.mjs / hash.mjs / replay-metrics.mjs).
 
-**Decisions pending before Sprint 2:** Q4 (failClosed / budget-store wire-or-delete), Q5 (pen-test ordering), Q6 (product motion — drives EXT-INF-013 owner), Q7 (`@types/node` pin).
+**Decisions answered 2026-05-31:** Q4 (WIRE both), Q6 (sales-led; Sprint 3 headline = S3-11 ZWCMP signature).
+
+**Decisions still pending before Sprint 2:** Q5 (pen-test ordering), Q7 (`@types/node` pin).
 
 **Net commits this session:** 21 (8 audit-finding closes + reconciled roadmap + 4 docs updates + 7 misc fixes + 1 scaffolding). All landed on `docs/roadmap-update-2026-05-30`. `pnpm test` green; `pnpm validate-all.mjs` 21 of 22 gates pass (the failing one is the pre-existing coverage gate now tracked as S2-14).
 
@@ -397,11 +399,22 @@ or PR comment.
 
 **Q3 — Internal-readiness score baseline.** Three docs from 2026-05-30 disagree: post-roadmap = 6.8/6.2; master-audit = 6.5/6.1; 10-10 plan front-matter = 7.6/7.6. The 7.6 figure assumes Phase 0 gates are still green; working tree is currently dirty. I have used 6.8/6.2 as the Sprint 1 baseline. Confirm or override before publishing `latest.json` distribution snapshot for 2026-05-31.
 
-**Q4 — `failClosed.mjs` and `budget-store.mjs`: wire or delete?** Both audits flag them as "shipped but enforces nothing." Wiring is multi-day work (S2-01, S2-02); deletion is hours. Decision needed before Sprint 2 opens. Recommendation: **wire** failClosed (we have callers in mind) and **delete** budget-store unless Redis is committed for cross-replica budget enforcement before Sprint 2.
+**Q4 — `failClosed.mjs` and `budget-store.mjs`: wire or delete?**
+**ANSWERED 2026-05-31: WIRE BOTH.**
+
+- failClosed → wire into the 4 documented soft-import sites (audit-flush s3-uploader, compliance-gateway schemas + system-prompt + evidence-renderer). ~1 day. Removes the silent-failure pattern that hid the audit-flush S3 bug for weeks; keeping the helper unwired means the next contributor with the same pattern has no canonical pattern to reach for.
+- budget-store → wire into `checkBudget` / `recordSpend` / `getSpend`. Redis already provisioned at `infra/kubernetes/base/services/redis.yaml` (consumed by replay-guard) — no net-new infra. Under HPA 1→8 pods, per-pod Map state silently multiplies a tenant's per-principal QPS budget by replica count, which is a real correctness bug, not theoretical. ~2 days.
+- Net Sprint 2 impact: S2-01 and S2-02 become "in_progress" decisions with concrete acceptance commands rather than wire-or-delete decisions.
 
 **Q5 — Pen-test before or after Sprint 1 fixes?** Post-roadmap §"Decisions needed" item 5 asks: ratify Sprint 1 plan and execute, OR commission external review before Sprint 1 (safer, +4w latency). S2-13 assumes the former. Reverse the order if you want external sign-off on remediation design.
 
-**Q6 — Product motion (product-led vs sales-led).** Determines whether S3-07 (publish primitives) or S3-11 (close ZWCMP) is the Sprint 3 headline. Affects S1-09 owner choice (ZWCMP-facing seniority vs. dev-rel-facing seniority).
+**Q6 — Product motion (product-led vs sales-led).**
+**ANSWERED 2026-05-31: SALES-LED with primitives as parallel tail.**
+
+- Sprint 3 headline = **S3-11** (ZWCMP DPA + pilot agreement signature). Revenue + reference customer first.
+- S1-09 owner profile: senior pilot-facing operator with prior experience closing a fintech pilot with an African central bank. Regulator-comfort + Chamber-of-Mines political fluency outweigh dev-rel-charisma at this stage.
+- S3-07 (publish primitives) continues on a parallel track — `terraform-aws-compliance-db` + `@gtcx/audit-signer` in the registry reinforce the regulator moat by making the work cite-able — but Sprint 3 is not gated on it.
+- Reasoning: GTM docs (`global-south-10x-plan.md`, `pilot-success-criteria.md`, `moat-execution-plan.md`) are regulator-led, not developer-led; customer is mining-cooperative members, not developers; moat ranks Trust > Distribution. Product-led growth becomes viable AFTER a signed pilot creates the reference point that dev-rel can pull on.
 
 **Q7 — `@types/node` dependabot pin (post-roadmap Tier 5, PR #62).** Recommendation: reject + pin to `~22.x`. Needs explicit approval before S2-11 lands the `.github/dependabot.yml` ignore rule.
 
