@@ -1,9 +1,9 @@
 {
   "repo": "gtcx-infrastructure",
   "auditDate": "2026-05-31",
-  "verifiedAt": "2026-05-31T16:33:29Z",
-  "head": "694c458",
-  "workingTree": "modified; S2-04 trusted-XFF CIDR changes are uncommitted",
+  "verifiedAt": "2026-05-31T17:00:08Z",
+  "head": "c1dfadd",
+  "workingTree": "modified; S2-05 route metrics changes are uncommitted",
   "sourceAudit": "docs/audit/post-roadmap-session-2026-05-30.md",
   "latestAudit": "docs/audit/post-roadmap-session-2026-05-30.md",
   "previousAudit": "docs/audit/master-audit-2026-05-30.md",
@@ -25,7 +25,7 @@
     "p0Closed": ["F1", "F2", "F3", "F4", "F7", "F10", "F11", "F12", "F13", "F14"],
     "p0Open": 0,
     "p1": 3,
-    "p2": 8,
+    "p2": 7,
     "p3": 2
   },
   "gates": {
@@ -59,10 +59,10 @@
     "S2-01 closed (570ad49, 2026-05-31): failClosed wired into audit-flush S3 SDK loading and compliance-gateway soft-import/NDJSON parse sites; stale empty-catch allowlist entries removed; audit-flush and compliance-gateway targeted coverage gates pass; node tools/scripts/validate-all.mjs passes 23 of 23 gates.",
     "S2-02 closed (6bfa2ad, 2026-05-31): checkBudget, recordSpend, and getSpend are async and delegate to budget-store.mjs; /v1/query, /v1/budget, /v1/brief, /audit/bundles, and /audit/query await the store-backed budget gates; compliance-gateway coverage gate passes; node tools/scripts/validate-all.mjs passes 23 of 23 gates.",
     "S2-03 closed (694c458, 2026-05-31): auth-failure-throttle now bounds tracked source IPs with maxIps/LRU eviction and exposes recordAndCheckAuthFailure so the auth-failure path atomically decides whether to sign or suppress audit events; compliance-gateway coverage gate passes; node tools/scripts/validate-all.mjs passes 23 of 23 gates.",
-    "S2-04 closed (working tree, 2026-05-31): sourceIpFromRequest now trusts X-Forwarded-For only when the socket peer is inside GTCX_TRUSTED_PROXY_CIDRS; spoofed or malformed XFF falls back to the socket IP; IPv4, IPv6, and IPv4-mapped socket addresses have regression coverage; compliance-gateway coverage gate passes; node tools/scripts/validate-all.mjs passes 23 of 23 gates."
+    "S2-04 closed (c1dfadd, 2026-05-31): sourceIpFromRequest now trusts X-Forwarded-For only when the socket peer is inside GTCX_TRUSTED_PROXY_CIDRS; spoofed or malformed XFF falls back to the socket IP; IPv4, IPv6, and IPv4-mapped socket addresses have regression coverage; compliance-gateway coverage gate passes; node tools/scripts/validate-all.mjs passes 23 of 23 gates.",
+    "S2-05 closed (working tree, 2026-05-31): /v1/exceptions and /v1/audit/evidence-bundle now emit compliance_gateway_requests_total route/status/tenant series plus endpoint-specific exception-count and evidence-record metrics; route integration tests and compliance-gateway coverage gate pass; node tools/scripts/validate-all.mjs passes 23 of 23 gates."
   ],
   "remainingGaps": [
-    "S2-05 — /v1/exceptions and /v1/audit/evidence-bundle have no Prometheus metrics.",
     "S2-08 — Node 20.18.0 not pinned across 9 packages + 7 CI workflows.",
     "S2-13 — Pen-test SOW signature.",
     "External assurance remains pending; this is an internal audit only."

@@ -101,11 +101,37 @@ export function resetMetrics() {
 declareMetric('compliance_gateway_audit_records_total', 'Signed audit records produced, by action');
 declareMetric('compliance_gateway_audit_sign_failures_total', 'Audit signing failures');
 declareMetric('compliance_gateway_audit_chain_in_memory', 'In-memory audit chain depth');
-declareMetric('compliance_gateway_audit_chain_total', 'Total audit records signed (including checkpointed)');
-declareMetric('compliance_gateway_audit_signing', '1 if the gateway is producing signed audit records, 0 otherwise');
-declareMetric('compliance_gateway_audit_sink_connected', '1 if the audit sink is connected to its durable backend, 0 otherwise');
+declareMetric(
+  'compliance_gateway_audit_chain_total',
+  'Total audit records signed (including checkpointed)'
+);
+declareMetric(
+  'compliance_gateway_audit_signing',
+  '1 if the gateway is producing signed audit records, 0 otherwise'
+);
+declareMetric(
+  'compliance_gateway_audit_sink_connected',
+  '1 if the audit sink is connected to its durable backend, 0 otherwise'
+);
 declareMetric('compliance_gateway_requests_total', 'HTTP requests, by route + status');
+declareMetric(
+  'compliance_gateway_exceptions_served_total',
+  'Exception events returned by /v1/exceptions, by tenant and truncation state'
+);
+declareMetric(
+  'compliance_gateway_evidence_bundle_records_total',
+  'Audit records returned by /v1/audit/evidence-bundle, by tenant and format'
+);
 declareMetric('compliance_gateway_query_latency_ms', 'Per-provider /v1/query latency (ms)');
-declareMetric('compliance_gateway_cost_usd_total', 'Cumulative estimated LLM cost in USD, by provider + tier + principal');
-declareMetric('compliance_gateway_throttle_total', 'Requests throttled by per-principal budget, by reason');
-declareMetric('compliance_gateway_inflight_requests', 'In-flight /v1/query requests on this pod — HPA scaling target');
+declareMetric(
+  'compliance_gateway_cost_usd_total',
+  'Cumulative estimated LLM cost in USD, by provider + tier + principal'
+);
+declareMetric(
+  'compliance_gateway_throttle_total',
+  'Requests throttled by per-principal budget, by reason'
+);
+declareMetric(
+  'compliance_gateway_inflight_requests',
+  'In-flight /v1/query requests on this pod — HPA scaling target'
+);

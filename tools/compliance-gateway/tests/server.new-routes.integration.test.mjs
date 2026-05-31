@@ -58,7 +58,9 @@ function httpGet(path, headers = {}) {
   return new Promise((resolve, reject) => {
     const req = request(`${baseUrl}${path}`, { headers }, (res) => {
       let data = '';
-      res.on('data', (c) => { data += c; });
+      res.on('data', (c) => {
+        data += c;
+      });
       res.on('end', () => {
         try {
           resolve({ status: res.statusCode, headers: res.headers, body: JSON.parse(data) });
@@ -108,6 +110,47 @@ describe('Sprint 1-6 routes — integration', () => {
     it('returns 401 without a token', async () => {
       const res = await httpGet('/v1/audit/evidence-bundle');
       assert.strictEqual(res.status, 401);
+    });
+
+    it('emits request and record-count metrics', async () => {
+      await httpGet('/v1/audit/evidence-bundle', {
+        Authorization: 'Bearer new-routes-token',
+      });
+      const metrics = await httpGet('/metrics');
+      assert.match(
+        metrics.body,
+        /compliance_gateway_requests_total\{route="\/v1\/audit\/evidence-bundle",status="200",tenantId="pilot"\}/
+      );
+      assert.match(
+        metrics.body,
+        /compliance_gateway_evidence_bundle_records_total\{format="json",tenantId="pilot"\}/
+      );
+    });
+  });
+
+  describe('GET /v1/exceptions', () => {
+    it('returns exception feed for the caller tenant', async () => {
+      const res = await httpGet('/v1/exceptions', {
+        Authorization: 'Bearer new-routes-token',
+      });
+      assert.strictEqual(res.status, 200);
+      assert.strictEqual(res.body.tenantId, 'pilot');
+      assert.ok(Array.isArray(res.body.exceptions));
+    });
+
+    it('emits request and served-count metrics', async () => {
+      await httpGet('/v1/exceptions', {
+        Authorization: 'Bearer new-routes-token',
+      });
+      const metrics = await httpGet('/metrics');
+      assert.match(
+        metrics.body,
+        /compliance_gateway_requests_total\{route="\/v1\/exceptions",status="200",tenantId="pilot"\}/
+      );
+      assert.match(
+        metrics.body,
+        /compliance_gateway_exceptions_served_total\{tenantId="pilot",truncated="false"\}/
+      );
     });
   });
 

@@ -714,6 +714,14 @@ function sendJson(res, status, body, req) {
   res.end(data);
 }
 
+function recordRouteRequest(route, status, tenantId = 'unknown') {
+  incrementCounter('compliance_gateway_requests_total', {
+    route,
+    status: String(status),
+    tenantId,
+  });
+}
+
 const server = createServer(async (req, res) => {
   try {
     const url = new URL(req.url ?? '/', 'http://localhost').pathname;
@@ -783,6 +791,7 @@ const server = createServer(async (req, res) => {
     } else if (url === '/v1/audit/evidence-bundle') {
       const principal = requirePermission(req, res, 'audit:read');
       if (!principal) {
+        recordRouteRequest('/v1/audit/evidence-bundle', res.statusCode || 500);
         return;
       }
       const sinceParam =
@@ -799,6 +808,13 @@ const server = createServer(async (req, res) => {
       const wantsHtml =
         acceptsHtml ||
         new URL(req.url ?? '/', 'http://localhost').searchParams.get('format') === 'html';
+      const format = wantsHtml ? 'html' : 'json';
+      recordRouteRequest('/v1/audit/evidence-bundle', 200, principal.tenantId);
+      incrementCounter(
+        'compliance_gateway_evidence_bundle_records_total',
+        { format, tenantId: principal.tenantId },
+        bundle.recordCount
+      );
       if (wantsHtml) {
         const html = renderEvidenceHtml(bundle);
         res.writeHead(200, {
@@ -818,28 +834,31 @@ const server = createServer(async (req, res) => {
       // the regulator trail but never reach the operator's screen.
       const principal = requirePermission(req, res, 'audit:read');
       if (!principal) {
+        recordRouteRequest('/v1/exceptions', res.statusCode || 500);
         return;
       }
       const params = new URL(req.url ?? '/', 'http://localhost').searchParams;
       const sinceParam = params.get('since') ?? undefined;
       const kindsParam = params.get('kinds');
       const limitParam = params.get('limit');
-      sendJson(
-        res,
-        200,
-        getExceptions({
-          tenantId: principal.tenantId,
-          since: sinceParam,
-          kinds: kindsParam
-            ? kindsParam
-                .split(',')
-                .map((s) => s.trim())
-                .filter(Boolean)
-            : undefined,
-          limit: limitParam ? Math.min(1000, Math.max(1, Number(limitParam))) : 200,
-        }),
-        req
+      const exceptions = getExceptions({
+        tenantId: principal.tenantId,
+        since: sinceParam,
+        kinds: kindsParam
+          ? kindsParam
+              .split(',')
+              .map((s) => s.trim())
+              .filter(Boolean)
+          : undefined,
+        limit: limitParam ? Math.min(1000, Math.max(1, Number(limitParam))) : 200,
+      });
+      recordRouteRequest('/v1/exceptions', 200, principal.tenantId);
+      incrementCounter(
+        'compliance_gateway_exceptions_served_total',
+        { tenantId: principal.tenantId, truncated: String(exceptions.truncated) },
+        exceptions.exceptions.length
       );
+      sendJson(res, 200, exceptions, req);
     } else if (url === '/v1/brief') {
       const principal = requirePermission(req, res, 'query:read');
       if (!principal) {

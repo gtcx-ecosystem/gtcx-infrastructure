@@ -8,6 +8,26 @@ focus: "Baseline initialization — discovery and enrichment"
 
 # Session: Baseline Initialization
 
+## 2026-05-31 — Roadmap Execution: S2-05 Route Metrics
+
+## What Was Done
+- Executed roadmap item S2-05: added Prometheus metrics for `/v1/exceptions` and `/v1/audit/evidence-bundle`.
+- Added route/status/tenant observations to the existing `compliance_gateway_requests_total` series for both endpoints, including auth-gate failures.
+- Added `compliance_gateway_exceptions_served_total` for exception rows returned by tenant and truncation state.
+- Added `compliance_gateway_evidence_bundle_records_total` for evidence records returned by tenant and output format (`json` or `html`).
+- Added integration coverage proving both endpoints emit their request metrics and endpoint-specific counters.
+- Updated `docs/audit/execution-roadmap.md` and `docs/audit/latest.json` to mark S2-05 done and reduce remaining P2 gaps.
+
+## Verification
+- `node --test tools/compliance-gateway/tests/server.new-routes.integration.test.mjs` — pass outside sandbox; 16 tests.
+- `pnpm --dir tools/compliance-gateway run test:coverage:gate` — pass outside sandbox; 174 tests; branch coverage 91.87%.
+- `node tools/scripts/empty-catch-check.mjs` — pass; 13 allowed empty catches, 0 unallowed.
+- `node tools/scripts/validate-all.mjs` — pass outside sandbox; 23/23 gates green.
+
+## Notes
+- Next roadmap candidate: S2-08 (pin Node 20.18.0 across packages and CI workflows).
+- HTTP route tests should run outside the sandbox because local listener binding fails with `listen EPERM`.
+
 ## 2026-05-31 — Roadmap Execution: S2-04 Trusted-XFF CIDR Enforcement
 
 ## What Was Done
