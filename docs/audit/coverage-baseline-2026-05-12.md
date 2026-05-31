@@ -1,6 +1,9 @@
 ---
 title: 'Test Coverage Baseline'
-status: 'current'
+status: 'superseded'
+superseded_by: 'docs/audit/execution-roadmap.md'
+superseded_on: '2026-05-31'
+superseded_reason: 'Older coverage baseline; current state tracked in latest.json + S2-14 story.'
 date: '2026-05-27'
 owner: 'quality-evidence-lead'
 role: 'quality-evidence-lead'

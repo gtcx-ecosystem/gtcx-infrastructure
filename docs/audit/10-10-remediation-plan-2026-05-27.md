@@ -1,6 +1,9 @@
 ---
 title: 'GTCX Infrastructure — 10/10 Remediation Plan'
-status: 'current'
+status: 'superseded'
+superseded_by: 'docs/audit/execution-roadmap.md'
+superseded_on: '2026-05-31'
+superseded_reason: 'Older remediation plan; replaced by reconciled 3-sprint plan.'
 date: '2026-05-27'
 owner: 'frontier-infra-engineer'
 role: 'quality-evidence-lead'

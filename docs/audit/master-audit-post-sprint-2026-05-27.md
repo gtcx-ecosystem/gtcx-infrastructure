@@ -1,6 +1,9 @@
 ---
 title: 'Master Audit Post-Sprint Rerun'
-status: 'current'
+status: 'superseded'
+superseded_by: 'docs/audit/master-audit-2026-05-30.md'
+superseded_on: '2026-05-31'
+superseded_reason: 'Older post-sprint snapshot; superseded by 2026-05-30 cluster.'
 date: '2026-05-27'
 owner: 'frontier-infra-engineer'
 tier: 'strategic'

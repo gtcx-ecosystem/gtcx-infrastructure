@@ -18,5 +18,9 @@ Index of documents in `docs/agile/sprints`.
 
 ## Documents
 
-- [sprint 2026 05 phase2 9plus roadmap](./sprint-2026-05-phase2-9plus-roadmap.md)
+> **Looking for the current sprint?** See the canonical execution plan
+> at [`docs/audit/execution-roadmap.md`](../../audit/execution-roadmap.md).
+> The files below are sprint snapshots, not the active backlog.
+
+- [sprint 2026 05 phase2 9plus roadmap](./sprint-2026-05-phase2-9plus-roadmap.md) — superseded
 - [sprint 2026 05 production readiness](./sprint-2026-05-production-readiness.md)
