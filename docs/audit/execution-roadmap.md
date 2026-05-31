@@ -56,18 +56,18 @@ external evidence — pilot signature, primitives publication, soak-test baselin
 has a named external dependency. ZWCMP pilot has a named GTCX owner and a
 scheduled cadence call.
 
-| Story | Title                                                                                   | Status                         |
-| ----- | --------------------------------------------------------------------------------------- | ------------------------------ |
-| S1-01 | Replay-guard traversal — verify closure + add fuzz fixtures                             | pending (closure shipped — Q1) |
-| S1-02 | `/audit/bundles` tenant binding — verify closure + add spoof test                       | pending (closure shipped — Q2) |
-| S1-03 | Auth-failure events visible in `/v1/exceptions` (platform tenant)                       | pending                        |
-| S1-04 | Adversarial fixtures for each newly-wired gate                                          | pending                        |
-| S1-05 | Roadmap rename + README — confirm `pnpm test` green from clean checkout                 | pending (commits landed)       |
-| S1-06 | `isExempt(path)` JSDoc + typecheck enforcement in CI                                    | pending                        |
-| S1-07 | Working-tree drift sweep — `pnpm agent:check` + `pnpm format:check` from clean checkout | pending                        |
-| S1-08 | Validate alert `runbook_url` anchors — fail CI on dead links                            | pending                        |
-| S1-09 | **ZWCMP owner assignment + first cadence call**                                         | pending (Q5)                   |
-| S1-10 | Trust-anchor pin in `verify-catalog.mjs` (20-line moat fix)                             | pending                        |
+| Story | Title                                                                                   | Status                                          |
+| ----- | --------------------------------------------------------------------------------------- | ----------------------------------------------- |
+| S1-01 | Replay-guard traversal — verify closure + add fuzz fixtures                             | partial (`6f79a83`, `0f83c27`) — gate still red |
+| S1-02 | `/audit/bundles` tenant binding — verify closure + add spoof test                       | pending (closure shipped — Q2)                  |
+| S1-03 | Auth-failure events visible in `/v1/exceptions` (platform tenant)                       | pending                                         |
+| S1-04 | Adversarial fixtures for each newly-wired gate                                          | pending                                         |
+| S1-05 | Roadmap rename + README — confirm `pnpm test` green from clean checkout                 | pending (commits landed)                        |
+| S1-06 | `isExempt(path)` JSDoc + typecheck enforcement in CI                                    | pending                                         |
+| S1-07 | Working-tree drift sweep — `pnpm agent:check` + `pnpm format:check` from clean checkout | pending                                         |
+| S1-08 | Validate alert `runbook_url` anchors — fail CI on dead links                            | pending                                         |
+| S1-09 | **ZWCMP owner assignment + first cadence call**                                         | pending (Q5)                                    |
+| S1-10 | Trust-anchor pin in `verify-catalog.mjs` (20-line moat fix)                             | pending                                         |
 
 ### S1-01: Replay-guard traversal — verify closure + add fuzz fixtures
 
@@ -90,7 +90,7 @@ pnpm --filter @gtcx/replay-protection test:coverage:gate
 - [ ] Automated: `pnpm --filter @gtcx/replay-protection test:coverage:gate` exits 0 (currently red — 86.14% branches). This is a sprint blocker.
 - [ ] Manual: confirm with curl against staging gateway.
 
-**Blockers:** Coverage gate is pre-existing red. May need to backfill verifier-flow happy-path tests in the same story (~10 cases).
+**Blockers:** Coverage gate is pre-existing red. Verifier-flow happy-path tests added in `6f79a83` (middleware.mjs branches 63.46% → 81.25%); aggregate now 88.47%/90%. Remaining gap is spread across `server.mjs`, `hash.mjs`, `replay-metrics.mjs` and is **not a middleware bug** — promoted to a new story **S2-14: replay-protection package coverage pump**.
 
 ### S1-02: `/audit/bundles` tenant binding — verify closure + spoof test
 
@@ -300,21 +300,22 @@ EXPECTED_PUBLIC_KEY=$WRONG_KEY node tools/compliance-data/scripts/verify-catalog
 that prove the primitive enforces, or it is deleted. Throttle and XFF holes
 closed. Regulator-readiness checklists have named owners.
 
-| Story | Title                                                                       | Status       |
-| ----- | --------------------------------------------------------------------------- | ------------ |
-| S2-01 | Wire `failClosed` into 3+ production callers (or delete)                    | pending (Q4) |
-| S2-02 | Wire Redis `budget-store` into checkBudget/recordSpend/getSpend (or delete) | pending (Q4) |
-| S2-03 | Bound `auth-failure-throttle` ipState Map + atomic recordAndCheck           | pending      |
-| S2-04 | Trusted-XFF CIDR enforcement                                                | pending      |
-| S2-05 | Prometheus metrics for `/v1/exceptions` + `/v1/audit/evidence-bundle`       | pending      |
-| S2-06 | CSP + bidi/RTL stripping in HTML evidence renderer                          | pending      |
-| S2-07 | KYC handler hardening — salt/key/idempotency                                | pending      |
-| S2-08 | Node 20.18.0 enforcement across packages + workflows                        | pending      |
-| S2-09 | Alertmanager defaults fail-closed outside dev                               | pending      |
-| S2-10 | Frontmatter-merge guard: refuse `tier:` downgrade                           | pending      |
-| S2-11 | Dependabot Tier 1+2 merges + `.github/dependabot.yml` ignore rules          | pending (Q7) |
-| S2-12 | SOC 2 readiness owner mapping + IRP v1 board sign-off prep                  | pending      |
-| S2-13 | **Pen-test SOW signature** (Bet 1 external validation)                      | pending (Q5) |
+| Story | Title                                                                       | Status                        |
+| ----- | --------------------------------------------------------------------------- | ----------------------------- |
+| S2-01 | Wire `failClosed` into 3+ production callers (or delete)                    | pending (Q4)                  |
+| S2-02 | Wire Redis `budget-store` into checkBudget/recordSpend/getSpend (or delete) | pending (Q4)                  |
+| S2-03 | Bound `auth-failure-throttle` ipState Map + atomic recordAndCheck           | pending                       |
+| S2-04 | Trusted-XFF CIDR enforcement                                                | pending                       |
+| S2-05 | Prometheus metrics for `/v1/exceptions` + `/v1/audit/evidence-bundle`       | pending                       |
+| S2-06 | CSP + bidi/RTL stripping in HTML evidence renderer                          | pending                       |
+| S2-07 | KYC handler hardening — salt/key/idempotency                                | pending                       |
+| S2-08 | Node 20.18.0 enforcement across packages + workflows                        | pending                       |
+| S2-09 | Alertmanager defaults fail-closed outside dev                               | pending                       |
+| S2-10 | Frontmatter-merge guard: refuse `tier:` downgrade                           | pending                       |
+| S2-11 | Dependabot Tier 1+2 merges + `.github/dependabot.yml` ignore rules          | pending (Q7)                  |
+| S2-12 | SOC 2 readiness owner mapping + IRP v1 board sign-off prep                  | pending                       |
+| S2-13 | **Pen-test SOW signature** (Bet 1 external validation)                      | pending (Q5)                  |
+| S2-14 | Replay-protection package coverage pump (close 90% branches gate)           | pending — promoted from S1-01 |
 
 > Per-story acceptance commands will be filled in when Sprint 2 opens (sprint
 > start = 2026-06-08). All file paths and acceptance shapes are in
