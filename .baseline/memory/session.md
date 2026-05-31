@@ -8,6 +8,24 @@ focus: "Baseline initialization — discovery and enrichment"
 
 # Session: Baseline Initialization
 
+## 2026-05-31 — Roadmap Execution: S2-07 KYC Handler Hardening
+
+## What Was Done
+- Executed roadmap item S2-07: hardened `tools/kyc-screening` salt handling, idempotency, and S3 key validation.
+- Removed the predictable default local-screening salt outside tests; `SCREENING_LOCAL_SALT` must now be set to at least 16 characters unless `NODE_ENV=test`.
+- Added a `headObject` idempotency check so an existing sibling `.screening.json` result skips re-screening and avoids overwriting the prior result.
+- Added decoded S3 object-key validation that rejects missing, overlong, or control-character-containing keys before screening or writing output.
+- Added regression coverage for fail-closed salt behavior, existing-result skips, not-found continuation, and `%0A`/control-character key rejection.
+- Updated `docs/audit/execution-roadmap.md` and `docs/audit/latest.json` to mark S2-07 done and reduce remaining P2/P3 gaps.
+
+## Verification
+- `pnpm --dir tools/kyc-screening test` — pass; 14 tests.
+- `node tools/scripts/validate-all.mjs` — pass outside sandbox; 24/24 gates green.
+
+## Notes
+- Next local roadmap candidates: S2-09 (Alertmanager defaults fail-closed) or S2-10 (frontmatter tier downgrade guard).
+- S2-13 remains a human-signature item unless the user provides SOW/sign-off direction.
+
 ## 2026-05-31 — Roadmap Execution: S2-06 Evidence HTML Hardening
 
 ## What Was Done

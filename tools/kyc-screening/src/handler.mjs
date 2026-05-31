@@ -33,6 +33,55 @@ import { createHash } from 'node:crypto';
 
 const PROVIDER = process.env.SCREENING_PROVIDER || 'local';
 const RESULT_SUFFIX = '.screening.json';
+const TEST_ONLY_SALT = 'gtcx-test-only-local-screening-salt';
+const CONTROL_CHARS = /[\u0000-\u001f\u007f]/u;
+
+function localScreeningSalt(env = process.env) {
+  const salt = env.SCREENING_LOCAL_SALT;
+  if (typeof salt === 'string' && salt.length >= 16) return salt;
+  if (env.NODE_ENV === 'test') return TEST_ONLY_SALT;
+  throw new Error('SCREENING_LOCAL_SALT must be set to at least 16 characters');
+}
+
+function decodeS3ObjectKey(rawKey) {
+  const encoded = String(rawKey ?? '').replace(/\+/g, ' ');
+  try {
+    return decodeURIComponent(encoded);
+  } catch {
+    return '';
+  }
+}
+
+function validateDocumentKey(key) {
+  if (typeof key !== 'string' || key.length === 0) return 'missing-key';
+  if (key.length > 1024) return 'key-too-long';
+  if (CONTROL_CHARS.test(key)) return 'key-contains-control-character';
+  return null;
+}
+
+function resultKeyForDocument(key) {
+  return `${key}${RESULT_SUFFIX}`;
+}
+
+function isNotFoundError(error) {
+  return (
+    error?.name === 'NotFound' ||
+    error?.Code === 'NoSuchKey' ||
+    error?.code === 'NoSuchKey' ||
+    error?.$metadata?.httpStatusCode === 404
+  );
+}
+
+async function resultExists(s3Client, bucket, key) {
+  if (!s3Client?.headObject) return false;
+  try {
+    await s3Client.headObject({ Bucket: bucket, Key: key });
+    return true;
+  } catch (error) {
+    if (isNotFoundError(error)) return false;
+    throw error;
+  }
+}
 
 /**
  * Deterministic mock screening for local + staging. Hashes the
@@ -44,12 +93,14 @@ const RESULT_SUFFIX = '.screening.json';
  * @returns {{ verdict: 'clear' | 'review' | 'block', score: number, reasons: string[], providerRequestId: string }}
  */
 export function localScreen({ documentKey }) {
-  const salt = process.env.SCREENING_LOCAL_SALT || 'gtcx-default-salt';
+  const salt = localScreeningSalt();
   const h = createHash('sha256').update(`${documentKey}:${salt}`).digest();
   const byte = h[0];
   // 80% clear, 15% review, 5% block — matches the pattern an exception-
   // only operator view (S6.3) expects: most uploads need no human.
-  let verdict; let score; let reasons;
+  let verdict;
+  let score;
+  let reasons;
   if (byte < 204) {
     verdict = 'clear';
     score = (byte / 255) * 0.5;
@@ -98,9 +149,9 @@ export async function screen(input) {
 
 /**
  * S3 event handler. Each S3 ObjectCreated event triggers one
- * screening invocation. Idempotent: if the result key already exists,
- * we skip re-screening (the bucket has versioning, so re-uploads
- * appear as new versions and ARE re-screened).
+ * screening invocation. Idempotent: if the result key already exists
+ * and the injected/real S3 client supports headObject, we skip
+ * re-screening instead of overwriting the prior result.
  *
  * Lambda runtime expects either:
  *   - a real S3 event from EventBridge / S3 notification, OR
@@ -118,17 +169,29 @@ export async function handler(event, deps = {}) {
     return { handled: 0, message: 'no S3 records in event' };
   }
   const results = [];
+  const errors = [];
+  let skipped = 0;
   for (const record of records) {
     const bucket = record?.s3?.bucket?.name;
-    const key = decodeURIComponent((record?.s3?.object?.key ?? '').replace(/\+/g, ' '));
+    const key = decodeS3ObjectKey(record?.s3?.object?.key);
     if (!bucket || !key) continue;
     if (key.endsWith(RESULT_SUFFIX)) continue; // don't recursively screen our own outputs
+    const invalidKey = validateDocumentKey(key);
+    if (invalidKey) {
+      errors.push({ bucket, key, error: invalidKey });
+      continue;
+    }
+    const resultKey = resultKeyForDocument(key);
+    if (await resultExists(deps.s3Client, bucket, resultKey)) {
+      skipped += 1;
+      continue;
+    }
     const result = await screen({ documentKey: key });
     results.push({ bucket, key, ...result });
     if (deps.s3Client && deps.s3Client.putObject) {
       await deps.s3Client.putObject({
         Bucket: bucket,
-        Key: `${key}${RESULT_SUFFIX}`,
+        Key: resultKey,
         Body: JSON.stringify(result, null, 2),
         ContentType: 'application/json',
         Metadata: {
@@ -138,5 +201,5 @@ export async function handler(event, deps = {}) {
       });
     }
   }
-  return { handled: results.length, results };
+  return { handled: results.length, skipped, errors, results };
 }
