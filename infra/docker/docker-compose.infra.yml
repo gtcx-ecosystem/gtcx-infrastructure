@@ -141,6 +141,9 @@ services:
   # literal ${VAR} strings; alertmanager 0.26 does not expand them
   # natively, so PagerDuty integrations silently received the literal
   # placeholder and never paged anyone.
+  #
+  # Outside local dev, placeholder keys are rejected before render. Set
+  # GTCX_ALERTS_DEV_MODE=1 in .env to allow CHANGE_ME_DEV / no-op Slack URLs.
   alertmanager-config-init:
     image: alpine:3.20
     container_name: gtcx-alertmanager-config-init
@@ -148,11 +151,31 @@ services:
       - ./observability/alertmanager.yml.tpl:/tmp/alertmanager.yml.tpl:ro
       - alertmanager-config:/out
     environment:
+      GTCX_ALERTS_DEV_MODE: ${GTCX_ALERTS_DEV_MODE:-}
       PAGERDUTY_SERVICE_KEY: ${PAGERDUTY_SERVICE_KEY:-CHANGE_ME_DEV}
+      PAGERDUTY_INTELLIGENCE_ROUTING_KEY: ${PAGERDUTY_INTELLIGENCE_ROUTING_KEY:-CHANGE_ME_DEV}
       SLACK_WEBHOOK_URL: ${SLACK_WEBHOOK_URL:-http://localhost/no-op-slack}
       SLACK_INCIDENT_WEBHOOK: ${SLACK_INCIDENT_WEBHOOK:-http://localhost/no-op-slack}
     command: >
       sh -c "apk add --no-cache gettext >/dev/null &&
+             if [ \"$$GTCX_ALERTS_DEV_MODE\" != \"1\" ]; then
+               case \"$$PAGERDUTY_SERVICE_KEY\" in ''|CHANGE_ME_DEV)
+                 echo 'FATAL: PAGERDUTY_SERVICE_KEY is unset or placeholder. Set a real key or GTCX_ALERTS_DEV_MODE=1 for local dev.' >&2;
+                 exit 1;;
+               esac;
+               case \"$$PAGERDUTY_INTELLIGENCE_ROUTING_KEY\" in ''|CHANGE_ME_DEV)
+                 echo 'FATAL: PAGERDUTY_INTELLIGENCE_ROUTING_KEY is unset or placeholder. Set a real key or GTCX_ALERTS_DEV_MODE=1 for local dev.' >&2;
+                 exit 1;;
+               esac;
+               case \"$$SLACK_WEBHOOK_URL\" in ''|*no-op*|*localhost*)
+                 echo 'FATAL: SLACK_WEBHOOK_URL is unset or a no-op placeholder. Set a real webhook or GTCX_ALERTS_DEV_MODE=1 for local dev.' >&2;
+                 exit 1;;
+               esac;
+               case \"$$SLACK_INCIDENT_WEBHOOK\" in ''|*no-op*|*localhost*)
+                 echo 'FATAL: SLACK_INCIDENT_WEBHOOK is unset or a no-op placeholder. Set a real webhook or GTCX_ALERTS_DEV_MODE=1 for local dev.' >&2;
+                 exit 1;;
+               esac;
+             fi &&
              envsubst < /tmp/alertmanager.yml.tpl > /out/alertmanager.yml &&
              echo 'alertmanager.yml rendered'"
     restart: 'no'

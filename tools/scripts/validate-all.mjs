@@ -96,6 +96,7 @@ run('Docs Standard', 'node tools/scripts/docs-standard-validator.mjs');
 run('Kyverno Policies', 'node tools/scripts/kyverno-policy-validator.mjs');
 run('SHA-pinned Actions', 'node tools/scripts/pin-actions-sha.mjs --check');
 run('Node Version Floor', 'node tools/scripts/node-version-floor-check.mjs');
+run('Alertmanager Env Guard', 'node tools/scripts/alertmanager-env-check.mjs');
 run('Empty Catch Blocks', 'node tools/scripts/empty-catch-check.mjs');
 run('Runbook Commands Exist', 'node tools/scripts/runbook-commands-check.mjs');
 run('Runbook Frontmatter', 'node tools/scripts/runbook-frontmatter-check.mjs --check');
