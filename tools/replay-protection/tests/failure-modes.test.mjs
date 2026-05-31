@@ -327,6 +327,24 @@ describe('Middleware — fail-closed on missing nonce', () => {
     assert.strictEqual(JSON.parse(res.body).code, 'REPLAY_NONCE_REQUIRED');
   });
 
+  it('treats malformed URI-encoded paths as non-exempt (decode throws)', async () => {
+    // `%E0` is incomplete UTF-8 — decodeURIComponent throws URIError.
+    // The exemption matcher must fall through to verification rather
+    // than crash or silently exempt the request.
+    const mw = replayGuardMiddleware({
+      nonceStore: new MemoryNonceStore(),
+      verifySignature: async () => true,
+    });
+    const req = { url: '/%E0/foo', method: 'GET', headers: {} };
+    const res = makeRes();
+    let nextCalled = false;
+    await mw(req, res, () => {
+      nextCalled = true;
+    });
+    assert.strictEqual(nextCalled, false, 'malformed-encoding paths must not be exempt');
+    assert.strictEqual(res.statusCode, 401);
+  });
+
   it('honors legacy fail-open behavior when requireNonce: false', async () => {
     const mw = replayGuardMiddleware({
       nonceStore: new MemoryNonceStore(),
