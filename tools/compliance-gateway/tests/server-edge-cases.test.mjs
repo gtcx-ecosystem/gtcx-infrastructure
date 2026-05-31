@@ -517,8 +517,9 @@ describe('System prompt fallback', () => {
         if (existed) fs.renameSync(tempPath, jurPath);
       }
     `);
+    const gatewayRoot = join(__dirname, '..');
     const result = spawnSync('node', [tmpScript], {
-      cwd: '/Users/amanianai/Sites/gtcx-ecosystem/gtcx-infrastructure/tools/compliance-gateway',
+      cwd: gatewayRoot,
       encoding: 'utf8',
       env: { ...process.env, JURISDICTIONS_PATH: jurisdictionsPath },
     });
