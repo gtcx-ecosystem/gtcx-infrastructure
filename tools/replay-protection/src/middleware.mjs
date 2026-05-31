@@ -123,15 +123,12 @@ function hasParentTraversal(rawPath) {
 function pathForExemption(rawPath) {
   if (hasParentTraversal(rawPath)) return null;
 
+  // `new URL(...).pathname` preserves percent-encoding of the path portion.
+  // If decodeURIComponent(rawPath) succeeded above, the pathname (a subset
+  // of rawPath with query/fragment stripped) will decode too — the inner
+  // catch that used to live here was unreachable defensive code.
   const pathname = new URL(rawPath, 'http://localhost').pathname;
-  if (hasParentTraversal(pathname)) return null;
-
-  let decodedPathname;
-  try {
-    decodedPathname = decodeURIComponent(pathname);
-  } catch {
-    return null;
-  }
+  const decodedPathname = decodeURIComponent(pathname);
 
   const normalized = pathPosix.normalize(decodedPathname.replace(/\\/g, '/'));
   return normalized.startsWith('/') ? normalized : `/${normalized}`;
