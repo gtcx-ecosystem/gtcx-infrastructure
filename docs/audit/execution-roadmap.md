@@ -59,18 +59,18 @@ external evidence — pilot signature, primitives publication, soak-test baselin
 has a named external dependency. ZWCMP pilot has a named GTCX owner and a
 scheduled cadence call.
 
-| Story | Title                                                                                   | Status                                                      |
-| ----- | --------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
-| S1-01 | Replay-guard traversal — verify closure + add fuzz fixtures                             | partial (`6f79a83`, `0f83c27`) — gate still red             |
-| S1-02 | `/audit/bundles` tenant binding — verify closure + add spoof test                       | done (`1b940d7`) — spoof test at `handler.test.mjs:135,267` |
-| S1-03 | Auth-failure events visible in `/v1/exceptions` (platform tenant)                       | pending                                                     |
-| S1-04 | Adversarial fixtures for each newly-wired gate                                          | pending                                                     |
-| S1-05 | Roadmap rename + README — confirm `pnpm test` green from clean checkout                 | pending (commits landed)                                    |
-| S1-06 | `isExempt(path)` JSDoc + typecheck enforcement in CI                                    | pending                                                     |
-| S1-07 | Working-tree drift sweep — `pnpm agent:check` + `pnpm format:check` from clean checkout | pending                                                     |
-| S1-08 | Validate alert `runbook_url` anchors — fail CI on dead links                            | pending                                                     |
-| S1-09 | **ZWCMP owner assignment + first cadence call**                                         | pending (Q5)                                                |
-| S1-10 | Trust-anchor pin in `verify-catalog.mjs` (20-line moat fix)                             | pending                                                     |
+| Story | Title                                                                                   | Status                                                                                         |
+| ----- | --------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| S1-01 | Replay-guard traversal — verify closure + add fuzz fixtures                             | partial (`6f79a83`, `0f83c27`) — gate still red                                                |
+| S1-02 | `/audit/bundles` tenant binding — verify closure + add spoof test                       | done (`1b940d7`) — spoof test at `handler.test.mjs:135,267`                                    |
+| S1-03 | Auth-failure events visible in `/v1/exceptions` (platform tenant)                       | **done** (`efcc01e`) — platform-tenant routing + regression test                               |
+| S1-04 | Adversarial fixtures for each newly-wired gate                                          | **done** (`0da5ffa`) — production-overlay + runbook-frontmatter fixtures                       |
+| S1-05 | Roadmap rename + README — confirm `pnpm test` green from clean checkout                 | **done** (`8b04ac9`) — frontmatter fields added; `pnpm test` green                             |
+| S1-06 | `isExempt(path)` JSDoc + typecheck enforcement in CI                                    | **done** — JSDoc at `middleware.mjs:167-170`; `ci.yml:49` runs `pnpm typecheck`                |
+| S1-07 | Working-tree drift sweep — `pnpm agent:check` + `pnpm format:check` from clean checkout | **done** (`bf07780`) — gitbook included in merger; 12 pre-broken files repaired                |
+| S1-08 | Validate alert `runbook_url` anchors — fail CI on dead links                            | **done** (`7081223`) — anchor existence gate; 37 STUB sections backfilled                      |
+| S1-09 | **ZWCMP owner assignment + first cadence call**                                         | **scaffolded** (`879795b`) — register + criteria mark Q6 dependency; assignment requires human |
+| S1-10 | Trust-anchor pin in `verify-catalog.mjs` (20-line moat fix)                             | **done** (`3729a29`) — PINNED_PUBLIC_KEY + 8 test cases for every rejection code               |
 
 ### S1-01: Replay-guard traversal — verify closure + add fuzz fixtures
 
@@ -361,6 +361,27 @@ artifacts on disk.
 | Multi-region active-active (eu-west-1) — bank-grade §2.2.1     | Premature before single-region runtime evidence (S3-04) exists.                                                                                                 |
 | HSM / AWS KMS asymmetric signing migration — bank-grade §1.1.1 | High-cost; not a regulator-sandbox blocker per `global-south-10x-plan.md`.                                                                                      |
 | AI Compliance Gateway natural-language layer — moat §2         | Already partially shipped (compliance-gateway + MCP); incremental work belongs in product roadmap, not the close-the-gap window.                                |
+
+---
+
+## Sprint 1 close (2026-05-31)
+
+Closed early — Sprint 1 deliverables landed in a single multi-commit
+session rather than across the planned 1-week window.
+
+| Status                 | Count | Stories                                                 |
+| ---------------------- | ----: | ------------------------------------------------------- |
+| **done**               |     8 | S1-02, S1-03, S1-04, S1-05, S1-06, S1-07, S1-08, S1-10  |
+| **partial → promoted** |     1 | S1-01 → S2-14 (replay-protection package coverage pump) |
+| **scaffolded**         |     1 | S1-09 (ZWCMP owner — awaits Q6 leadership decision)     |
+
+**Closed P0s from the 2026-05-30 audit:** F1, F2, F3, F4, F11, F12, F13, F14 + 5 gates wired into validate-all.
+
+**Carried into Sprint 2:** S2-14 (coverage pump, ~10 verifier-flow tests across server.mjs / hash.mjs / replay-metrics.mjs).
+
+**Decisions pending before Sprint 2:** Q4 (failClosed / budget-store wire-or-delete), Q5 (pen-test ordering), Q6 (product motion — drives EXT-INF-013 owner), Q7 (`@types/node` pin).
+
+**Net commits this session:** 21 (8 audit-finding closes + reconciled roadmap + 4 docs updates + 7 misc fixes + 1 scaffolding). All landed on `docs/roadmap-update-2026-05-30`. `pnpm test` green; `pnpm validate-all.mjs` 21 of 22 gates pass (the failing one is the pre-existing coverage gate now tracked as S2-14).
 
 ---
 
