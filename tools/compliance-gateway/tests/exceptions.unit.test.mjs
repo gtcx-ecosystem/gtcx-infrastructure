@@ -115,6 +115,34 @@ describe('getExceptions — tenant + filter scoping', () => {
   });
   afterEach(() => resetAuditSigner());
 
+  it('auth-failure events routed to `platform` tenant are visible to platform-scoped principals only', () => {
+    // Mirrors the production code path at server.mjs:230-247 — auth
+    // failures now tag both signAuditEvent({ tenantId: 'platform' })
+    // AND payload.tenantId = 'platform'. The pre-fix shape used
+    // tenantId='unknown' which never matched any /v1/exceptions
+    // tenant filter — auth failures were invisible to operators.
+    silence(() => {
+      signAuditEvent({
+        actor: 'unknown',
+        action: 'auth:failure',
+        target: '/v1/query',
+        reason: 'audit:read: Invalid bearer token',
+        tenantId: 'platform',
+        payload: { tenantId: 'platform', sourceIp: '10.0.0.1', failuresInWindow: 1 },
+      });
+    });
+    // Platform-scoped principal sees it.
+    const platformView = getExceptions({ tenantId: 'platform' });
+    assert.strictEqual(platformView.totalExceptions, 1);
+    assert.strictEqual(platformView.exceptions[0].kind, 'auth-failure');
+    // A regular tenant principal cannot see platform-scoped auth
+    // failures (preserves tenant isolation; prevents an enumeration
+    // oracle where probing for an attacker's intended tenant would
+    // reveal that the attempt happened).
+    assert.strictEqual(getExceptions({ tenantId: 'zw' }).totalExceptions, 0);
+    assert.strictEqual(getExceptions({ tenantId: 'ke' }).totalExceptions, 0);
+  });
+
   it('does NOT cross tenants', () => {
     silence(() => {
       signAuditEvent({ actor: 'a', action: 'query:failure', target: 'x', tenantId: 'zw' });

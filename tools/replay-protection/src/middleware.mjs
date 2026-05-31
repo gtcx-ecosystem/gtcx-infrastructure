@@ -16,6 +16,8 @@
  * Principles: SECURE (P11), RESILIENT (P12)
  */
 
+import { posix as pathPosix } from 'node:path';
+
 import { defaultAuditCapture } from './audit/audit-capture.mjs';
 import { defaultMetrics } from './metrics/replay-metrics.mjs';
 import { ReplayVerifier } from './verifier.mjs';
@@ -74,13 +76,12 @@ import { ReplayVerifier } from './verifier.mjs';
  */
 function normalizeRequestHeaders(headers) {
   return Object.fromEntries(
-    Object.entries(headers)
-      .map(([key, value]) => {
-        if (Array.isArray(value)) {
-          return [key, value[0] ?? ''];
-        }
-        return [key, value ?? ''];
-      })
+    Object.entries(headers).map(([key, value]) => {
+      if (Array.isArray(value)) {
+        return [key, value[0] ?? ''];
+      }
+      return [key, value ?? ''];
+    })
   );
 }
 
@@ -95,6 +96,42 @@ function readHeader(headers, name) {
     return value[0] ?? '';
   }
   return value ?? '';
+}
+
+/**
+ * @param {string} rawPath
+ * @returns {boolean}
+ */
+function hasParentTraversal(rawPath) {
+  let decoded;
+  try {
+    decoded = decodeURIComponent(rawPath);
+  } catch {
+    return true;
+  }
+  return /(?:^|[\\/])\.\.(?:[\\/]|$)/.test(decoded);
+}
+
+/**
+ * Normalize a request path for exemption matching. Returns null when the
+ * caller supplied a traversal-shaped path; those requests must go through
+ * replay enforcement instead of exemption prefix matching.
+ *
+ * @param {string} rawPath
+ * @returns {string | null}
+ */
+function pathForExemption(rawPath) {
+  if (hasParentTraversal(rawPath)) return null;
+
+  // `new URL(...).pathname` preserves percent-encoding of the path portion.
+  // If decodeURIComponent(rawPath) succeeded above, the pathname (a subset
+  // of rawPath with query/fragment stripped) will decode too — the inner
+  // catch that used to live here was unreachable defensive code.
+  const pathname = new URL(rawPath, 'http://localhost').pathname;
+  const decodedPathname = decodeURIComponent(pathname);
+
+  const normalized = pathPosix.normalize(decodedPathname.replace(/\\/g, '/'));
+  return normalized.startsWith('/') ? normalized : `/${normalized}`;
 }
 
 /**
@@ -127,6 +164,10 @@ export function replayGuardMiddleware(opts) {
   // Path-match supports either exact equality OR prefix match for entries
   // ending in `/`. Set.has against the raw path was a bug — `/_next` did
   // not match `/_next/static/foo`.
+  /**
+   * @param {string} path
+   * @returns {boolean}
+   */
   function isExempt(path) {
     for (const entry of exemptList) {
       if (entry.endsWith('/')) {
@@ -139,8 +180,8 @@ export function replayGuardMiddleware(opts) {
   }
 
   return async (req, res, next) => {
-    const path = req.url ?? req.originalUrl ?? req.path ?? '/';
-    if (isExempt(path)) {
+    const path = pathForExemption(req.url ?? req.originalUrl ?? req.path ?? '/');
+    if (path !== null && isExempt(path)) {
       next();
       return;
     }
@@ -152,11 +193,13 @@ export function replayGuardMiddleware(opts) {
         // that let any non-exempt request skip every replay check.
         res.statusCode = 401;
         res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify({
-          error: 'Replay protection rejection',
-          code: 'REPLAY_NONCE_REQUIRED',
-          reason: 'X-GTCX-Nonce header is required on this path',
-        }));
+        res.end(
+          JSON.stringify({
+            error: 'Replay protection rejection',
+            code: 'REPLAY_NONCE_REQUIRED',
+            reason: 'X-GTCX-Nonce header is required on this path',
+          })
+        );
         return;
       }
       // Legacy fail-open path — kept for incremental rollouts; requires
@@ -199,12 +242,14 @@ export function replayGuardMiddleware(opts) {
     if (!result.allowed) {
       res.statusCode = 401;
       res.setHeader('Content-Type', 'application/json');
-      res.end(JSON.stringify({
-        error: 'Replay protection rejection',
-        code: result.code,
-        reason: result.reason,
-        auditEventId: result.auditEvent?.eventId,
-      }));
+      res.end(
+        JSON.stringify({
+          error: 'Replay protection rejection',
+          code: result.code,
+          reason: result.reason,
+          auditEventId: result.auditEvent?.eventId,
+        })
+      );
       return;
     }
 

@@ -1,6 +1,9 @@
 ---
 title: 'Production Readiness Evidence — 2026-05-08'
-status: 'current'
+status: 'superseded'
+superseded_by: 'docs/audit/execution-roadmap.md'
+superseded_on: '2026-05-31'
+superseded_reason: 'Older production-readiness snapshot; reconciled into execution-roadmap.md.'
 date: '2026-05-27'
 owner: 'frontier-infra-engineer'
 role: 'frontier-infra-engineer'

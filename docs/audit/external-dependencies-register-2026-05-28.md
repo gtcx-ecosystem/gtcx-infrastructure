@@ -1,15 +1,24 @@
 ---
 title: 'gtcx-infrastructure — External Dependencies Register'
-status: 'current'
+status: 'superseded'
 date: '2026-05-28'
+superseded_by: 'docs/audit/external-dependencies-register-2026-05-31.md'
+superseded_on: '2026-05-31'
+superseded_reason: 'Scoring baseline corrected from 10.0/8.8 → 6.8/6.2 (post-roadmap-session-2026-05-30.md); 3 net-new external deps added (EXT-INF-013 ZWCMP owner, EXT-INF-014 DPA, EXT-INF-015 SLA).'
 owner: 'gtcx-infrastructure'
 role: 'quality-evidence-lead'
 tier: 'critical'
-tags: ['audit', 'external', 'dependencies', '10-10']
+tags: ['audit', 'external', 'dependencies', '10-10', 'superseded']
 review_cycle: 'weekly'
 internal_readiness: 10.0
 certified_composite: 8.8
 ---
+
+> **SUPERSEDED 2026-05-31.** Historical snapshot. Current source of truth:
+> [`external-dependencies-register-2026-05-31.md`](./external-dependencies-register-2026-05-31.md).
+> The 10.0/8.8 scores below were the internal-attestation baseline at the time;
+> the 2026-05-30 audit cluster rescored to 6.8/6.2 with the 10.0 figure
+> rejected per Q3 of [`execution-roadmap.md`](./execution-roadmap.md).
 
 # gtcx-infrastructure — External Dependencies Register
 

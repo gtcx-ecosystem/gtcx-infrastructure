@@ -1,6 +1,9 @@
 ---
-title: 'GTCX Infrastructure — Master Audit'
-status: 'current'
+title: 'GTCX Infrastructure — Master Audit (superseded)'
+status: 'superseded'
+superseded_by: 'docs/audit/post-roadmap-session-2026-05-30.md'
+superseded_on: '2026-05-31'
+superseded_reason: 'Self-attested 10.0/8.8 scores rejected by the independent 2026-05-30 rescore (post-roadmap-session). Authoritative baseline: 6.8/6.2 per execution-roadmap.md Q3.'
 date: '2026-05-28'
 owner: 'gtcx-infrastructure'
 role: 'quality-evidence-lead'

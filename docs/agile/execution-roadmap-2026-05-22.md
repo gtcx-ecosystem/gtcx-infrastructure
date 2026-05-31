@@ -1,17 +1,22 @@
 ---
-title: 'GTCX Infrastructure — Execution Roadmap'
-status: 'current'
+title: 'GTCX Infrastructure — Execution Roadmap (superseded)'
+status: 'superseded'
+superseded_by: 'docs/audit/execution-roadmap.md'
+superseded_on: '2026-05-31'
+superseded_reason: 'Sprints 7–12 plan replaced by the reconciled 3-sprint plan (35 stories from the 2026-05-30 audit cluster + GTM).'
 date: '2026-05-27'
 last_updated: '2026-05-25'
 owner: 'platform-engineering'
 tier: 'critical'
-tags: ['agile', 'roadmap', 'sprint-plan', 'audit']
+tags: ['agile', 'roadmap', 'sprint-plan', 'audit', 'superseded']
 review_cycle: 'on-change'
 role: 'protocol-architect'
 agent_id: 'agent://gtcx-infrastructure/2026-05-27/session-backfill'
 trust_score: 60
 autonomy_level: 'permissioned'
 ---
+
+> **SUPERSEDED 2026-05-31** — Current source of truth: [`docs/audit/execution-roadmap.md`](../audit/execution-roadmap.md).
 
 # GTCX Infrastructure — Execution Roadmap
 

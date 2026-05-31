@@ -1,6 +1,7 @@
 ---
-title: '[Product Name] — Roadmap'
-status: 'current'
+title: '[Product Name] — Roadmap (template)'
+status: 'template'
+template_note: 'Scaffold file with placeholder text. Not a current roadmap. Canonical execution plan: docs/audit/execution-roadmap.md.'
 date: '2026-05-27'
 owner: 'frontier-infra-engineer'
 role: 'frontier-infra-engineer'

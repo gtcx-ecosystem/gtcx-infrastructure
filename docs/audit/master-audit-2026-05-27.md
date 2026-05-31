@@ -1,6 +1,9 @@
 ---
 title: 'GTCX Infrastructure — Master Audit Report'
-status: 'current'
+status: 'superseded'
+superseded_by: 'docs/audit/master-audit-2026-05-30.md'
+superseded_on: '2026-05-31'
+superseded_reason: 'Older snapshot; later master-audit + post-roadmap-session supersede.'
 date: '2026-05-27'
 owner: 'frontier-infra-engineer'
 role: 'chief-auditor'

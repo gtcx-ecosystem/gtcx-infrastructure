@@ -1,94 +1,110 @@
 {
   "repo": "gtcx-infrastructure",
-  "auditDate": "2026-05-28",
-  "head": "5b8d323e41cc8d9d54827b72d4f46839a8d61a53",
-  "sourceAudit": "docs/audit/master-audit-2026-05-28.md",
-  "latestAudit": "docs/audit/master-audit-2026-05-28.md",
-  "roadmap": "docs/audit/10-10-remediation-plan-2026-05-28.md",
-  "status": "internal-10-10-complete",
-  "internalSignoff": "docs/audit/internal-10-10-signoff-2026-05-28.md",
-  "externalRegister": "docs/audit/external-dependencies-register-2026-05-28.md",
+  "auditDate": "2026-05-31",
+  "verifiedAt": "2026-05-31T12:00:00Z",
+  "head": "3a3f50d",
+  "sourceAudit": "docs/audit/post-roadmap-session-2026-05-30.md",
+  "latestAudit": "docs/audit/post-roadmap-session-2026-05-30.md",
+  "previousAudit": "docs/audit/master-audit-2026-05-30.md",
+  "remediationPlan": "docs/audit/execution-roadmap.md",
+  "status": "sprint-1-closed",
   "scores": {
-    "internalReadiness": 10.0,
-    "composite": 8.8,
-    "compositeRaw": 8.85,
-    "investor": 8.7,
-    "enterprise": 8.4,
-    "sovereignDfi": 8.6,
-    "signal": 9.6
+    "internalReadiness": 6.8,
+    "composite": 6.2,
+    "codeQuality": 7.4,
+    "repoHygiene": 7.4,
+    "security": 6.6,
+    "globalSouthResilience": 7.5,
+    "ecosystemIntegration": 6.5,
+    "agenticMaturity": 6.0,
+    "enterpriseReadiness": 5.5
   },
-  "externalDependencies": {
-    "total": 12,
-    "open": 11,
-    "completeOrDescoped": 1
-  },
+  "scoreReconciliation": "Three docs from 2026-05-30 reported different scores (post-roadmap = 6.8/6.2, master-audit = 6.5/6.1, 10-10-remediation = 7.6/7.6). Per Q3 of execution-roadmap.md, the post-roadmap-session figure is authoritative — the 7.6 baseline assumed Phase 0 gates green at HEAD while the tree was dirty.",
   "findings": {
-    "p0": 0,
-    "p1": 0,
-    "p2": 2
+    "p0Closed": ["F1", "F2", "F3", "F4", "F7", "F10", "F11", "F12", "F13", "F14"],
+    "p0Open": 0,
+    "p1": 8,
+    "p2": 9,
+    "p3": 2
   },
   "gates": {
-    "testFull": "pass",
     "testQuick": "pass",
-    "lint": "pass",
-    "typecheck": "pass",
-    "build": "pass",
-    "format": "pass",
-    "audit": "pass",
-    "docsLinks": "pass",
+    "validateAll": "22-of-23-pass",
     "governance": "pass",
-    "terraformFmt": "pass",
-    "gitleaks": "pass",
-    "kustomizeOverlays": "pass",
-    "loadTests": "pass",
-    "natsIntegration": "pass",
-    "signal": "pass",
-    "protocolContracts": "pass"
+    "typecheck": "pass",
+    "format": "pass",
+    "agentCheck": "pass",
+    "lint": "pass",
+    "docsLinks": "pass",
+    "build": "pass",
+    "replayProtectionCoverage": "fail-tracked-as-S2-14"
   },
-  "evidence": {
-    "wormRuntime": "docs/audit/worm-runtime-evidence-2026-05-27.md",
-    "externalAssuranceKickoff": "docs/audit/external-assurance-kickoff-2026-05-27.md",
-    "postSprintAudit": "docs/audit/master-audit-post-sprint-2026-05-27.md",
-    "masterSummary": "docs/audit/master-audit-summary-2026-05-27.md",
-    "internalSprintPlan": "docs/audit/internal-10-10-sprint-plan-2026-05-27.md",
-    "runtimeSmokeRunbook": "docs/operations/runbooks/runtime-smoke-evidence.md",
-    "redisNonceStoreCoverage": "tools/compliance-gateway/coverage/coverage-final.json",
-    "externalFindingRegisterTemplate": "docs/audit/external-finding-register-template.md",
-    "externalFindingClosureChecklist": "docs/audit/external-finding-closure-checklist.md",
-    "wormReleaseUploadWrapper": "tools/control-plane/upload-release-evidence-to-worm.mjs",
-    "vendorEngagementReadinessPack": "docs/audit/vendor-engagement-readiness-pack.md",
-    "testnetPilotWormRunbook": "docs/operations/runbooks/testnet-pilot-worm-provision.md",
-    "stagingSmokeProbeManifest": "infra/kubernetes/overlays/staging/smoke-probe-cronjob.yaml",
-    "stagingSmokeProbeRunbook": "docs/operations/runbooks/staging-smoke-probe.md",
-    "drFireDrillRunbook": "docs/operations/runbooks/dr-fire-drill-exercise.md",
-    "kustomizeCiArtifact": "kustomize-rendered-ci",
-    "stagingWormObject": {
-      "bucket": "gtcx-worm-audit-staging-af-south-1",
-      "key": "remediation-evidence/2026-05-27/master-audit-remediation.ndjson",
-      "versionId": "uQu0ST2hh18Xe2s9QoDvRR1Z36bTRzQ4",
-      "sha256": "d5d71d57159d75f0656aa4616f3775e90da565ada0c49ded9a8e868e82e00149",
-      "objectLockMode": "COMPLIANCE",
-      "retainUntil": "2033-05-27T17:42:58.404000+00:00"
-    }
-  },
-  "remainingGaps": [
-    "Certified composite 8.8 pending 11 open external dependencies — see external-dependencies-register-2026-05-28.md.",
-    "INF-49 staging URL + TLS (EXT-INF-004) blocks gtcx-protocols DID resolution.",
-    "Recurring WORM release upload on main (EXT-INF-003) requires AWS/OIDC credentials.",
-    "Large uncommitted doc/baseline working tree pending commit (hygiene P2)."
+  "gateFailures": [
+    "tools/replay-protection branch coverage 88.47% vs 90% threshold (lifted from 86.14%; remaining gap promoted to S2-14)"
   ],
-  "freshVerification": {
-    "verifiedAt": "2026-05-28",
-    "commands": {
-      "pnpm test": "pass",
-      "pnpm test:full": "pass",
-      "pnpm lint": "pass",
-      "pnpm build": "pass"
-    },
-    "fixesSincePriorAudit": [
-      "docs-standard green (version-standards.md, vendor-outreach/README.md)",
-      "docker-compose.infra.yml schema fix (removed nats service from volumes block)",
-      "cross-repo markdown links removed from audit docs"
-    ]
+  "sprint1Closed": {
+    "done": ["S1-02", "S1-03", "S1-04", "S1-05", "S1-06", "S1-07", "S1-08", "S1-10"],
+    "partial": ["S1-01 → promoted to S2-14"],
+    "scaffolded": ["S1-09 — ZWCMP owner awaits Q6 leadership decision"]
+  },
+  "remediationProgress": [
+    "F1 closed: roadmap rename + README; pnpm test green from clean checkout.",
+    "F2 closed (a364439, 6f79a83): replay-guard exempt-path traversal — pathForExemption normalizes + rejects %2e%2e and backslash variants; middleware branch coverage 63.46% → 81.25%.",
+    "F3 closed (1b940d7): /audit/bundles tenant scope bound to signed DID, not x-gtcx-tenant-id header; spoof regression test at handler.test.mjs:135,267.",
+    "F4 closed (efcc01e): auth-failure events now tag tenantId='platform'; visible to platform-scoped principals via /v1/exceptions; tenant isolation regression test added.",
+    "F7 closed (7081223): alerts-add-runbook-url --check now asserts anchor existence; 37 dead anchors backfilled as STUB sections in alerts.md.",
+    "F10 closed (3729a29): verify-catalog pinned trust anchor PINNED_PUBLIC_KEY; 8 test cases for every rejection code.",
+    "F11-F14 closed (66e9eb0, d8262f0, 22b7f2e, 152d079): regex bypasses in pin-actions-sha, empty-catch-check, runbook-commands-check; missing-label fix in dependabot-triage workflow.",
+    "Meta-finding closed (fb26c9f): 5 previously-unwired gates now invoked from validate-all.mjs Static Validators section."
+  ],
+  "remainingGaps": [
+    "S2-01 — failClosed.mjs has zero production callers (wire-or-delete decision needed; Q4).",
+    "S2-02 — budget-store.mjs unwired (wire-or-delete; Q4).",
+    "S2-03 — auth-failure-throttle ipState Map unbounded.",
+    "S2-04 — XFF first-hop trust without CIDR validation.",
+    "S2-05 — /v1/exceptions and /v1/audit/evidence-bundle have no Prometheus metrics.",
+    "S2-08 — Node 20.18.0 not pinned across 9 packages + 7 CI workflows.",
+    "S2-13 — Pen-test SOW signature (decision pending Q5).",
+    "S2-14 — replay-protection package branch coverage 88.47% vs 90%.",
+    "External assurance remains pending; this is an internal audit only."
+  ],
+  "evidence": {
+    "executionRoadmap": "docs/audit/execution-roadmap.md",
+    "postRoadmapAudit": "docs/audit/post-roadmap-session-2026-05-30.md",
+    "externalRegister": "docs/audit/external-dependencies-register-2026-05-31.md",
+    "pilotCriteria": "docs/audit/pilot-success-criteria.md"
+  },
+  "leadershipDecisions": {
+    "answered": [
+      {
+        "id": "Q4",
+        "question": "failClosed/budget-store: wire or delete?",
+        "answer": "WIRE BOTH",
+        "answeredOn": "2026-05-31",
+        "rationale": "failClosed has 4 documented soft-import sites to wire (~1d); budget-store reuses existing K8s Redis (no net-new infra) and fixes a real HPA-scaled QPS multiplication bug (~2d)."
+      },
+      {
+        "id": "Q5",
+        "question": "Pen-test before or after Sprint 1 fixes?",
+        "answer": "AFTER",
+        "answeredOn": "2026-05-31",
+        "rationale": "Sprint 1 already closed; SOW (S2-13) signed in Sprint 2 targets the post-Sprint-1 state. External review against a stationary post-remediation target is more useful than review against a moving design. No +4w delay."
+      },
+      {
+        "id": "Q6",
+        "question": "Product motion: product-led vs sales-led?",
+        "answer": "SALES-LED with primitives as parallel tail",
+        "answeredOn": "2026-05-31",
+        "rationale": "GTM docs are regulator-led, not developer-led. Sprint 3 headline = S3-11 (ZWCMP signature); S1-09 owner profile = senior pilot-facing operator with prior African-central-bank pilot experience; S3-07 publish-primitives continues in parallel without gating Sprint 3."
+      },
+      {
+        "id": "Q7",
+        "question": "@types/node dependabot pin?",
+        "answer": "PIN",
+        "answeredOn": "2026-05-31",
+        "rationale": "Implemented same-day in .github/dependabot.yml — ignore rule on @types/node semver-major. Package.json was already ^22.10.0 (tied to Node 20.x runtime). Open PR #62 to close with rationale."
+      }
+    ],
+    "open": []
   }
 }

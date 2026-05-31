@@ -155,4 +155,163 @@ p99 latency breach on AGX. Compare against the recent deploy timeline; common ca
 3. Add a section here under the matching area, using the template above. Anchor matches the alertname lowercased.
 4. Commit both in one change.
 
-`pnpm test` will fail if any alert is missing the `runbook_url` annotation. Section presence is enforced by code review.
+`pnpm test` will fail if any alert is missing the `runbook_url` annotation. `pnpm test` also fails if any `runbook_url` points at an anchor that doesn't exist below — see `tools/scripts/alerts-add-runbook-url.mjs --check`.
+
+---
+
+## Stub sections — runbook content TBD
+
+> The following sections were anchor-backfilled on 2026-05-31 so the
+> `runbook_url` anchor-existence gate could be turned on. Each stub names
+> the alert and links to the corresponding rule file. The next on-call
+> rotation that pages on one of these alerts owns filling in the
+> "What it means / Triage / Mitigation" content using the template at the
+> top of this file. Remove the `STUB` marker after filling in.
+
+### anisaelevatedllmlatency
+
+STUB — see `infra/monitoring/alerts/anisa-error-budget.yml`.
+
+### anisahighllmlatency
+
+STUB — see `infra/monitoring/alerts/anisa-error-budget.yml`.
+
+### auditburstdetected
+
+STUB — see `infra/monitoring/alerts/audit-trust-alerts.yml`.
+
+### auditdbwritefailure
+
+STUB — see `infra/monitoring/alerts/audit-trust-alerts.yml`.
+
+### auditeventvolumedrop
+
+STUB — see `infra/monitoring/alerts/audit-trust-alerts.yml`.
+
+### auditeventvolumedropped
+
+STUB — see `infra/monitoring/alerts/audit-trust-alerts.yml`.
+
+### auditmerklerootmismatch
+
+STUB — see `infra/monitoring/alerts/audit-trust-alerts.yml`.
+
+### auditoffhoursactivity
+
+STUB — see `infra/monitoring/alerts/audit-trust-alerts.yml`.
+
+### auditunusualdidpattern
+
+STUB — see `infra/monitoring/alerts/audit-trust-alerts.yml`.
+
+### cortexbufferelevated
+
+STUB — see `infra/monitoring/alerts/intelligence-circuit-breakers.yml`.
+
+### cortexbuffernearfull
+
+STUB — see `infra/monitoring/alerts/intelligence-circuit-breakers.yml`.
+
+### intelligencecircuitbreakertripped
+
+STUB — see `infra/monitoring/alerts/intelligence-circuit-breakers.yml`.
+
+### intelligenceelevatederrorrate
+
+STUB — see `infra/monitoring/alerts/intelligence-error-rate.yml`.
+
+### intelligencehigherrorrate
+
+STUB — see `infra/monitoring/alerts/intelligence-error-rate.yml`.
+
+### intelligenceservicedegraded
+
+STUB — see `infra/monitoring/alerts/intelligence-error-rate.yml`.
+
+### panxconsensusaging
+
+STUB — see `infra/monitoring/alerts/panx-consensus.yml`.
+
+### panxconsensusstale
+
+STUB — see `infra/monitoring/alerts/panx-consensus.yml`.
+
+### replayenvelopemismatchspike
+
+STUB — see `infra/monitoring/alerts/replay-protection-alerts.yml`.
+
+### replayextendedwindowusage
+
+STUB — see `infra/monitoring/alerts/replay-protection-alerts.yml`.
+
+### replayfuturetimestampspike
+
+STUB — see `infra/monitoring/alerts/replay-protection-alerts.yml`.
+
+### replayguardclockskewhigh
+
+STUB — see `infra/monitoring/alerts/replay-protection-alerts.yml`.
+
+### replayguarddown
+
+STUB — see `infra/monitoring/alerts/replay-protection-alerts.yml`.
+
+### replayguardhighrejectionrate
+
+STUB — see `infra/monitoring/alerts/replay-protection-alerts.yml`.
+
+### replayguardredisunavailable
+
+STUB — see `infra/monitoring/alerts/replay-protection-alerts.yml`.
+
+### replayprotectionspike
+
+STUB — see `infra/monitoring/alerts/replay-protection-alerts.yml`.
+
+### replaysignaturefailurespike
+
+STUB — see `infra/monitoring/alerts/replay-protection-alerts.yml`.
+
+### replaystaletimestampspike
+
+STUB — see `infra/monitoring/alerts/replay-protection-alerts.yml`.
+
+### slofastburnagx
+
+STUB — see `infra/monitoring/alerts/slo-burn-rate-alerts.yml`.
+
+### slofastburnanisa
+
+STUB — see `infra/monitoring/alerts/slo-burn-rate-alerts.yml`.
+
+### slofastburnprotocols
+
+STUB — see `infra/monitoring/alerts/slo-burn-rate-alerts.yml`.
+
+### slolatencybreachanisa
+
+STUB — see `infra/monitoring/alerts/slo-burn-rate-alerts.yml`.
+
+### slolatencybreachprotocols
+
+STUB — see `infra/monitoring/alerts/slo-burn-rate-alerts.yml`.
+
+### sloslowburnagx
+
+STUB — see `infra/monitoring/alerts/slo-burn-rate-alerts.yml`.
+
+### sloslowburnanisa
+
+STUB — see `infra/monitoring/alerts/slo-burn-rate-alerts.yml`.
+
+### sloslowburnprotocols
+
+STUB — see `infra/monitoring/alerts/slo-burn-rate-alerts.yml`.
+
+### veritasanomalousmatchrate
+
+STUB — see `infra/monitoring/alerts/veritas-anomaly.yml`.
+
+### veritaselevatedmatchrate
+
+STUB — see `infra/monitoring/alerts/veritas-anomaly.yml`.

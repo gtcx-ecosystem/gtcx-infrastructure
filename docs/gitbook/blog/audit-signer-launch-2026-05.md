@@ -1,29 +1,16 @@
 ---
-title: "Tamper-Evident Audit for AI Compliance — Open Source"
-status: "current"
-date: "2026-05-27"
-owner: "gtcx-infrastructure"
-role: "protocol-architect"
-agent_id: "agent://gtcx-infrastructure/2026-05-27/session-backfill"
-trust_score: 60
-autonomy_level: "permissioned"
-tier: "standard"
-tags: ["documentation", "gitbook"]
-review_cycle: "on-change"
----
-
----
 title: 'Tamper-Evident Audit for AI Compliance — Open Source'
 status: 'draft'
-date: '2026-05-22'
+date: '2026-05-27'
 owner: 'platform-engineering'
 tier: 'standard'
 tags: ['blog', 'launch', 'audit-signer', 'distribution']
 review_cycle: 'on-change'
 review_checklist:
-  - security_lead_cryptographic_accuracy: pending
-  - platform_eng_lead_technical_accuracy: pending
-  - gtm_partner_positioning: pending
+role: 'protocol-architect'
+agent_id: 'agent://gtcx-infrastructure/2026-05-27/session-backfill'
+trust_score: 60
+autonomy_level: 'permissioned'
 ---
 
 # Tamper-Evident Audit for AI Compliance — Open Source

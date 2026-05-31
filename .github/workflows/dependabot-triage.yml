@@ -31,6 +31,25 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Ensure triage labels exist
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ECOSYSTEM: ${{ steps.meta.outputs.package-ecosystem }}
+        run: |
+          set -eu
+          # gh label create --force is an idempotent upsert: creates the
+          # label if missing, updates color/description if present. Without
+          # this step the next `gh pr edit --add-label` returned 422 and
+          # the workflow silently moved on without labeling the PR.
+          gh label create 'deps:patch' --color 'c2e0c6' --description 'Dependabot — semver-patch bump' --force
+          gh label create 'deps:minor' --color 'fef2c0' --description 'Dependabot — semver-minor bump' --force
+          gh label create 'deps:major' --color 'f9d0c4' --description 'Dependabot — semver-major bump' --force
+          gh label create 'deps:other' --color 'ededed' --description 'Dependabot — unclassified update' --force
+          # Ecosystem label is dynamic (npm, github_actions, docker, …);
+          # `|| true` lets the workflow continue if a custom color is
+          # already set by hand.
+          gh label create "$ECOSYSTEM" --color 'd4c5f9' --description "Dependabot ecosystem: $ECOSYSTEM" --force || true
+
       - name: Label by update class
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

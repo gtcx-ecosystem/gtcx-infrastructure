@@ -28,9 +28,20 @@ import { fileURLToPath } from 'node:url';
 const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const TARGET = join(REPO_ROOT, 'infra', 'kubernetes', 'overlays', 'production', 'kustomization.yaml');
 
-const SHA_RX = /^[0-9a-f]{40}$/;
-const PLACEHOLDER_RX = /^PLACEHOLDER-RUN-DEPLOY-SH$/;
-const TAG_LINE_RX = /^\s*newTag:\s*['"]?([^'"\s]+)['"]?/;
+export const SHA_RX = /^[0-9a-f]{40}$/;
+export const PLACEHOLDER_RX = /^PLACEHOLDER-RUN-DEPLOY-SH$/;
+export const TAG_LINE_RX = /^\s*newTag:\s*['"]?([^'"\s]+)['"]?/;
+
+/**
+ * Classify a kustomization image tag.
+ * @param {string} tag
+ * @returns {'sha'|'placeholder'|'disallowed'}
+ */
+export function classifyTag(tag) {
+  if (SHA_RX.test(tag)) return 'sha';
+  if (PLACEHOLDER_RX.test(tag)) return 'placeholder';
+  return 'disallowed';
+}
 
 function main() {
   let text;
@@ -48,8 +59,7 @@ function main() {
     const m = line.match(TAG_LINE_RX);
     if (!m) continue;
     const tag = m[1];
-    if (SHA_RX.test(tag)) continue;
-    if (PLACEHOLDER_RX.test(tag)) continue;
+    if (classifyTag(tag) !== 'disallowed') continue;
     offenders.push({ line: lineNo, tag, source: line.trim() });
   }
 
@@ -73,4 +83,4 @@ function main() {
   console.log('[production-overlay-guard] production overlay image tags clean');
 }
 
-main();
+if (import.meta.url === `file://${process.argv[1]}`) main();

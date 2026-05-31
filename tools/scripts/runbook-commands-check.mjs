@@ -71,6 +71,15 @@ function extractCodeBlocks(text) {
   return blocks;
 }
 
+// Strip leading env-var assignments (`FOO=1 BAR=baz pnpm ...`) so the
+// pnpm matcher catches the verb. Without this the regex anchored to
+// `^pnpm` silently skipped any command with an env prefix.
+const ENV_PREFIX_RX = /^(?:[A-Za-z_][A-Za-z0-9_]*=\S+\s+)+/;
+
+export function stripEnvPrefix(line) {
+  return line.replace(ENV_PREFIX_RX, '');
+}
+
 function extractCommands(blocks) {
   const refs = [];
   for (const block of blocks) {
@@ -82,8 +91,9 @@ function extractCommands(blocks) {
     }
     for (const rawLine of block.split('\n')) {
       // Strip leading `$ ` or `# ` prompts; ignore comment lines.
-      const line = rawLine.replace(/^\s*\$?\s*/, '').replace(/^#.*$/, '').trim();
+      let line = rawLine.replace(/^\s*\$?\s*/, '').replace(/^#.*$/, '').trim();
       if (!line) continue;
+      line = stripEnvPrefix(line);
       // pnpm ctl <area> [action] [flags...]
       const ctlMatch = line.match(/^pnpm\s+ctl\s+([a-z-]+)(?:\s+([a-z-]+))?/);
       if (ctlMatch) {
@@ -151,4 +161,4 @@ function main() {
   console.log(`[runbook-commands-check] all referenced pnpm + pnpm ctl commands exist`);
 }
 
-main();
+if (import.meta.url === `file://${process.argv[1]}`) main();

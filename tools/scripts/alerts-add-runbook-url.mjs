@@ -23,10 +23,64 @@ import { fileURLToPath } from 'node:url';
 
 const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const ALERTS_DIR = join(REPO_ROOT, 'infra', 'monitoring', 'alerts');
+const RUNBOOK_PATH = join(REPO_ROOT, 'docs', 'operations', 'runbooks', 'alerts.md');
 const RUNBOOK_BASE =
   'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/docs/operations/runbooks/alerts.md';
 
 const checkOnly = process.argv.includes('--check');
+
+/**
+ * Compute the GitHub-style markdown anchor for a heading text. Matches
+ * the algorithm GitHub uses: lowercase, drop everything that isn't
+ * a-z 0-9 space underscore or hyphen, trim, collapse runs of whitespace
+ * to single hyphens.
+ *
+ * @param {string} heading
+ * @returns {string}
+ */
+export function ghAnchor(heading) {
+  return heading
+    .toLowerCase()
+    .replace(/[^a-z0-9 _-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-');
+}
+
+/**
+ * Extract every markdown heading from a runbook text and return the set
+ * of anchor strings each heading would resolve to.
+ *
+ * @param {string} runbookText
+ * @returns {Set<string>}
+ */
+export function extractAnchors(runbookText) {
+  const anchors = new Set();
+  for (const line of runbookText.split('\n')) {
+    const m = line.match(/^#+\s+(.+?)\s*$/);
+    if (!m) continue;
+    const a = ghAnchor(m[1]);
+    if (a) anchors.add(a);
+  }
+  return anchors;
+}
+
+/**
+ * Extract every `runbook_url:` reference and return {alertFile, anchor}
+ * tuples for each one that points at the canonical alerts runbook.
+ *
+ * @param {Record<string, string>} alertFiles - filename → text
+ * @returns {Array<{ file: string, anchor: string }>}
+ */
+export function extractReferencedAnchors(alertFiles) {
+  const refs = [];
+  const rx = /runbook_url:\s*['"][^'"]*alerts\.md#([^'"]+)['"]/g;
+  for (const [file, text] of Object.entries(alertFiles)) {
+    for (const m of text.matchAll(rx)) {
+      refs.push({ file, anchor: m[1] });
+    }
+  }
+  return refs;
+}
 
 /**
  * Find every alert in a file and ensure its annotations: block contains
@@ -172,7 +226,39 @@ function main() {
       );
       process.exit(1);
     }
-    console.log(`[alerts-add-runbook-url] all ${totalAlerts} alerts carry runbook_url`);
+
+    // Second gate: every runbook_url anchor must resolve in alerts.md.
+    // The prior gate confirmed annotations exist; this one prevents the
+    // "44 of 44 annotated, 31 of 44 anchors dead" outcome the audit
+    // surfaced.
+    const runbookText = readFileSync(RUNBOOK_PATH, 'utf8');
+    const validAnchors = extractAnchors(runbookText);
+    const alertFiles = Object.fromEntries(
+      files.map((f) => [f.replace(`${REPO_ROOT}/`, ''), readFileSync(f, 'utf8')])
+    );
+    const refs = extractReferencedAnchors(alertFiles);
+    const deadRefs = refs.filter((r) => !validAnchors.has(r.anchor));
+    if (deadRefs.length > 0) {
+      const uniqueDead = [...new Set(deadRefs.map((r) => r.anchor))].sort();
+      console.error(
+        `[alerts-add-runbook-url] ${uniqueDead.length} runbook_url anchor(s) point at sections that do not exist in alerts.md:`
+      );
+      for (const anchor of uniqueDead) {
+        const ref = deadRefs.find((r) => r.anchor === anchor);
+        console.error(`  - #${anchor}  (referenced from ${ref.file})`);
+      }
+      console.error(
+        '\nAdd a `### ' +
+          uniqueDead[0] +
+          '` (etc.) section to docs/operations/runbooks/alerts.md so the\n' +
+          'on-call engineer paged at 02:00 lands on a real runbook section, not a 404.'
+      );
+      process.exit(1);
+    }
+
+    console.log(
+      `[alerts-add-runbook-url] ${totalAlerts} alerts carry runbook_url; all ${refs.length} anchors resolve`
+    );
     return;
   }
 
@@ -185,4 +271,4 @@ function main() {
   );
 }
 
-main();
+if (import.meta.url === `file://${process.argv[1]}`) main();

@@ -26,9 +26,32 @@ const ALLOWLIST = new Set([
   // Shutdown / drain paths — these run during process termination
   // and reraising would prevent clean teardown.
   'tools/compliance-gateway/src/audit-sink.mjs:109',       // await natsClient.drain() during sink.close()
+  'tools/compliance-gateway/src/adaptive-policy-store.mjs:151', // fall-through path with cleanup
   'tools/compliance-gateway/src/adaptive-policy-store.mjs:154', // client.disconnect() during shutdown
   'tools/compliance-gateway/src/adaptive-policy-store.mjs:244', // await client.quit() during dispose
   'tools/compliance-gateway/src/adaptive-policy-store.mjs:279', // await activeStore.close() during reset
+  // budget-store shutdown / already-closed paths
+  'tools/compliance-gateway/src/budget-store.mjs:128',     // client.disconnect() during dispose
+  'tools/compliance-gateway/src/budget-store.mjs:184',     // already closed during teardown
+  'tools/compliance-gateway/src/budget-store.mjs:229',     // best-effort reset during swap
+  'tools/compliance-gateway/src/budget-store.mjs:230',     // best-effort close during swap
+  // Optional import fallback — compliance-data unresolvable in sandbox;
+  // gateway uses a safe default value rather than crashing at startup.
+  'tools/compliance-gateway/src/schemas.mjs:19',
+  'tools/compliance-gateway/src/system-prompt.mjs:20',
+  // JSONL parse per-line — each line is independent; one malformed entry
+  // must not blank the whole evidence bundle.
+  'tools/compliance-gateway/src/evidence-renderer.mjs:44',
+  // Brotli compression best-effort fallback — gzip path runs next.
+  'tools/compliance-gateway/src/server.mjs:690',
+  // NATS stream already-exists (race-safe creation) + shutdown drain.
+  'tools/audit-flush/src/nats-consumer.mjs:75',
+  'tools/audit-flush/src/nats-consumer.mjs:187',
+  // Audit-capture sinks are best-effort by design — a slow / failing
+  // sink must not break replay verification on the hot path.
+  'tools/replay-protection/src/audit/audit-capture.mjs:88',
+  // OTLP metrics push is best-effort — must not crash the verifier.
+  'tools/replay-protection/src/server.mjs:189',
 ]);
 
 const SRC_GLOBS = [
@@ -40,10 +63,15 @@ const SRC_GLOBS = [
   'tools/compliance-gateway-mcp/src',
 ];
 
-// Matches `catch {`, `catch (err) {` followed immediately by `}` with
-// optional whitespace between. Captures both the variable form and the
-// bare form.
-const EMPTY_CATCH_RX = /catch\s*(?:\(\s*[A-Za-z_$][\w$]*\s*\))?\s*\{\s*\}/g;
+// Matches a `catch` whose body is empty, OR contains only whitespace +
+// block/line comments. Catch parameter is optional and may be a plain
+// identifier or a destructuring pattern (object/array).
+//
+// Why both shapes count as empty: `catch (e) { /* ignore */ }` and
+// `catch ({ code }) {}` both swallow the error without acting on it —
+// the silent-failure pattern fail-closed.mjs exists to replace.
+export const EMPTY_CATCH_RX =
+  /catch\s*(?:\(\s*(?:[A-Za-z_$][\w$]*|\{[^{}]*\}|\[[^[\]]*\])\s*\))?\s*\{(?:\s|\/\*[\s\S]*?\*\/|\/\/[^\n]*)*\}/g;
 
 function walk(dir, out = []) {
   for (const entry of readdirSync(dir)) {
@@ -127,4 +155,4 @@ function main() {
   );
 }
 
-main();
+if (import.meta.url === `file://${process.argv[1]}`) main();

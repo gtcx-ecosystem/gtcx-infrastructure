@@ -1,6 +1,9 @@
 ---
-title: 'Internal Completion Roadmap (Cycle 2.5)'
-status: 'current'
+title: 'Internal Completion Roadmap (Cycle 2.5) (superseded)'
+status: 'superseded'
+superseded_by: 'docs/audit/execution-roadmap.md'
+superseded_on: '2026-05-31'
+superseded_reason: 'Cycle 2.5 four-sprint plan replaced by the reconciled 3-sprint plan in docs/audit/execution-roadmap.md.'
 date: '2026-05-27'
 owner: 'platform-engineering'
 tier: 'critical'

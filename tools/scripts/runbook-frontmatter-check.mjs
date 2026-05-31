@@ -27,11 +27,14 @@ import { fileURLToPath } from 'node:url';
 const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 // Scan the whole docs/ tree — the session-backfill double-frontmatter
 // pattern touched runbooks, agent docs, and the top-level index.
-// Excluded paths carry intentional non-standard frontmatter (the
-// gitbook docs-site source ships frontmatter the Astro build pipeline
-// consumes).
+// gitbook was previously excluded under the assumption that Astro
+// frontmatter was structurally different, but inspection showed the
+// rogue session-backfill generator was producing the same double-
+// frontmatter shape there too. Including gitbook in the merge guard
+// catches that regression at commit time instead of leaving 12 files
+// to be manually discarded the next time the generator runs.
 const SCAN_DIRS = [join(REPO_ROOT, 'docs')];
-const EXCLUDE_SEGMENTS = new Set(['gitbook', 'node_modules', 'dist']);
+const EXCLUDE_SEGMENTS = new Set(['node_modules', 'dist']);
 const checkOnly = process.argv.includes('--check');
 
 const FRONTMATTER_RX = /^---\n([\s\S]*?)\n---/;
@@ -48,7 +51,7 @@ const FRONTMATTER_RX = /^---\n([\s\S]*?)\n---/;
  *   restAfterSecond?: string,
  * }}
  */
-function detectDuplicate(text) {
+export function detectDuplicate(text) {
   const m1 = text.match(FRONTMATTER_RX);
   if (!m1) return { hasDuplicate: false };
   const afterFirst = text.slice(m1[0].length);
@@ -75,7 +78,7 @@ function detectDuplicate(text) {
  * @param {string} block
  * @returns {Map<string, string>}
  */
-function parseBlock(block) {
+export function parseBlock(block) {
   const map = new Map();
   for (const rawLine of block.split('\n')) {
     const line = rawLine.replace(/\s+$/, '');
@@ -204,4 +207,4 @@ function main() {
   console.log(`[runbook-frontmatter-check] merged frontmatter in ${changedCount} file(s)`);
 }
 
-main();
+if (import.meta.url === `file://${process.argv[1]}`) main();

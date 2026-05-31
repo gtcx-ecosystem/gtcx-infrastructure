@@ -16,15 +16,15 @@ autonomy_level: 'permissioned'
 
 ## Overview
 
-| Field            | Value                                                   |
-| ---------------- | ------------------------------------------------------- |
-| Pilot name       | ZWCMP TradePass Pilot                                   |
-| Customer         | Zimbabwe Chamber of Mines / Women in Mining Cooperative |
-| Duration         | 30 calendar days from first live verification           |
-| Operators        | ~200 licensed female mine operators                     |
-| Region           | Zimbabwe (infrastructure in af-south-1, Cape Town)      |
-| Primary protocol | TradePass (trade verification)                          |
-| GTCX owner       | [Named person — assign before pilot start]              |
+| Field            | Value                                                                                                                                                                                                                                                                                                                                      |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Pilot name       | ZWCMP TradePass Pilot                                                                                                                                                                                                                                                                                                                      |
+| Customer         | Zimbabwe Chamber of Mines / Women in Mining Cooperative                                                                                                                                                                                                                                                                                    |
+| Duration         | 30 calendar days from first live verification                                                                                                                                                                                                                                                                                              |
+| Operators        | ~200 licensed female mine operators                                                                                                                                                                                                                                                                                                        |
+| Region           | Zimbabwe (infrastructure in af-south-1, Cape Town)                                                                                                                                                                                                                                                                                         |
+| Primary protocol | TradePass (trade verification)                                                                                                                                                                                                                                                                                                             |
+| GTCX owner       | **TBD — Q6 ANSWERED 2026-05-31 (sales-led). Profile: senior pilot-facing operator, regulator-comfort + Chamber-of-Mines political fluency, prior African-central-bank pilot experience. Owner name + first cadence call must be recorded in `external-dependencies-register-2026-05-31.md` (EXT-INF-013) by Sprint 1 close (2026-06-07).** |
 
 ---
 

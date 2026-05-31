@@ -65,12 +65,21 @@ Single source of truth for all infrastructure documentation.
 
 ## 2. Plans & Roadmaps
 
-- [Phased Roadmap](agile/phased-roadmap.md) — Multi-phase delivery plan
-- [Sprint Roadmap](agile/sprint-roadmap.md) — Current sprint sequence
+**Canonical execution plan:** [`audit/execution-roadmap.md`](audit/execution-roadmap.md) — reconciled 3-sprint plan with every open audit finding as a story.
+**Machine-readable status:** [`audit/latest.json`](audit/latest.json).
+**Strategic milestones:** [`roadmap/roadmap-2026-07-13.md`](roadmap/roadmap-2026-07-13.md).
+
+Other:
+
 - [Sprint: Production Readiness](agile/sprints/sprint-2026-05-production-readiness.md) — May 2026 production readiness sprint
-- [Sprint: Phase 2 9+ Roadmap](agile/sprints/sprint-2026-05-phase2-9plus-roadmap.md) — Phase 2 scoring targets
 - [Executive Summary](agile/executive-summary.md) — High-level project status
 - [Priority Framework](agile/priority-framework.md) — Task prioritization methodology
+
+> Files under `agile/` named `phased-roadmap.md`, `sprint-roadmap.md`,
+> `execution-roadmap-2026-05-22.md`, `roadmap-2026-05-25.md`,
+> `internal-completion-roadmap-2026-05-22.md`, and
+> `sprints/sprint-2026-05-phase2-9plus-roadmap.md` are superseded
+> or are templates. Do not consult them for current planning.
 
 ---
 

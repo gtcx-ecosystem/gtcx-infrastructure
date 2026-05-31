@@ -17,7 +17,7 @@
  *
  * Environment:
  *   PAGERDUTY_ROUTING_KEY — PagerDuty integration key (required for real send)
- *   ALERTMANAGER_CONFIG — Path to alertmanager.yml (default: infra/docker/observability/alertmanager.yml)
+ *   ALERTMANAGER_CONFIG — Path to alertmanager.yml.tpl (default: infra/docker/observability/alertmanager.yml.tpl)
  *
  * Exit codes:
  *   0 = simulation passed
@@ -29,7 +29,9 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { request as httpsRequest } from 'node:https';
 
-const ALERTMANAGER_CONFIG = process.env.ALERTMANAGER_CONFIG ?? path.join(process.cwd(), 'infra', 'docker', 'observability', 'alertmanager.yml');
+const ALERTMANAGER_CONFIG =
+  process.env.ALERTMANAGER_CONFIG ??
+  path.join(process.cwd(), 'infra', 'docker', 'observability', 'alertmanager.yml.tpl');
 const PAGERDUTY_ROUTING_KEY = process.env.PAGERDUTY_ROUTING_KEY ?? '';
 const DRY_RUN = process.argv.includes('--dry-run');
 
@@ -103,7 +105,9 @@ if (DRY_RUN || !PAGERDUTY_ROUTING_KEY) {
   console.log('');
   console.log('pagerduty-drill: === DRY RUN ===');
   console.log('pagerduty-drill: No real PagerDuty event sent.');
-  console.log('pagerduty-drill: To send a real event, set PAGERDUTY_ROUTING_KEY and omit --dry-run');
+  console.log(
+    'pagerduty-drill: To send a real event, set PAGERDUTY_ROUTING_KEY and omit --dry-run'
+  );
   console.log('pagerduty-drill: Payload structure validated against PagerDuty Events API v2');
   console.log('pagerduty-drill: DEDUP_KEY:', simulatedPayload.dedup_key);
 
@@ -151,7 +155,9 @@ const req = httpsRequest(
   },
   (res) => {
     let body = '';
-    res.on('data', (c) => { body += c; });
+    res.on('data', (c) => {
+      body += c;
+    });
     res.on('end', () => {
       console.log(`pagerduty-drill: PagerDuty response: ${res.statusCode}`);
 

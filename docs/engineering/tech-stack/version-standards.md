@@ -1,12 +1,12 @@
 ---
-title: "Version Standards"
-status: "current"
-date: "2026-05-28"
-owner: "gtcx-infrastructure"
-role: "platform-engineer"
-tier: "standard"
-tags: ["documentation", "engineering"]
-review_cycle: "on-change"
+title: 'Version Standards'
+status: 'current'
+date: '2026-05-28'
+owner: 'gtcx-infrastructure'
+role: 'platform-engineer'
+tier: 'standard'
+tags: ['documentation', 'engineering']
+review_cycle: 'on-change'
 ---
 
 # Version Standards
@@ -31,4 +31,3 @@ This doc defines minimum version standards for `gtcx-infrastructure` tooling to 
 
 - CI must show the actual versions used in logs (Node/pnpm/Terraform/kubectl).
 - `pnpm test` and `pnpm test:full` are the canonical local reproducibility gates.
-

@@ -1,6 +1,9 @@
 ---
 title: 'gtcx-infrastructure — Documentation Standard Compliance Audit (Cycle 2)'
-status: 'current'
+status: 'superseded'
+superseded_by: 'docs/audit/execution-roadmap.md'
+superseded_on: '2026-05-31'
+superseded_reason: 'Older cycle-2 compliance snapshot; reconciled into execution-roadmap.md.'
 date: '2026-05-27'
 owner: 'quality-evidence-lead'
 role: 'quality-evidence-lead'

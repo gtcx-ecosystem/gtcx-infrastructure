@@ -18,7 +18,8 @@ import { ReplayVerifier } from '../src/verifier.mjs';
 
 function makeIntegrityPayload(requestData, overrides = {}) {
   const now = new Date().toISOString();
-  const nonce = overrides.nonce ?? `${Date.now().toString(16)}${Math.random().toString(16).slice(2)}`;
+  const nonce =
+    overrides.nonce ?? `${Date.now().toString(16)}${Math.random().toString(16).slice(2)}`;
   const timestamp = overrides.timestamp ?? now;
   const bodyHash = computeBodyHash(requestData.body);
   const headersHash = computeHeadersHash(requestData.headers);
@@ -240,8 +241,12 @@ describe('Middleware — fail-closed on missing nonce', () => {
       statusCode: 200,
       headers: {},
       body: '',
-      setHeader(name, value) { this.headers[name] = value; },
-      end(body) { this.body = body ?? ''; },
+      setHeader(name, value) {
+        this.headers[name] = value;
+      },
+      end(body) {
+        this.body = body ?? '';
+      },
     };
   }
 
@@ -253,7 +258,9 @@ describe('Middleware — fail-closed on missing nonce', () => {
     const req = { url: '/api/v1/orders', method: 'POST', headers: {} };
     const res = makeRes();
     let nextCalled = false;
-    await mw(req, res, () => { nextCalled = true; });
+    await mw(req, res, () => {
+      nextCalled = true;
+    });
     assert.strictEqual(nextCalled, false, 'must NOT call next() on missing nonce');
     assert.strictEqual(res.statusCode, 401);
     const parsed = JSON.parse(res.body);
@@ -268,7 +275,9 @@ describe('Middleware — fail-closed on missing nonce', () => {
     const req = { url: '/health', method: 'GET', headers: {} };
     const res = makeRes();
     let nextCalled = false;
-    await mw(req, res, () => { nextCalled = true; });
+    await mw(req, res, () => {
+      nextCalled = true;
+    });
     assert.strictEqual(nextCalled, true);
   });
 
@@ -280,8 +289,60 @@ describe('Middleware — fail-closed on missing nonce', () => {
     const req = { url: '/_next/static/chunks/main.js', method: 'GET', headers: {} };
     const res = makeRes();
     let nextCalled = false;
-    await mw(req, res, () => { nextCalled = true; });
+    await mw(req, res, () => {
+      nextCalled = true;
+    });
     assert.strictEqual(nextCalled, true);
+  });
+
+  it('does not exempt raw parent-traversal paths under `/_next/`', async () => {
+    const mw = replayGuardMiddleware({
+      nonceStore: new MemoryNonceStore(),
+      verifySignature: async () => true,
+    });
+    const req = { url: '/_next/../v1/query', method: 'GET', headers: {} };
+    const res = makeRes();
+    let nextCalled = false;
+    await mw(req, res, () => {
+      nextCalled = true;
+    });
+    assert.strictEqual(nextCalled, false, 'traversal-shaped paths must not be exempt');
+    assert.strictEqual(res.statusCode, 401);
+    assert.strictEqual(JSON.parse(res.body).code, 'REPLAY_NONCE_REQUIRED');
+  });
+
+  it('does not exempt encoded parent-traversal paths under `/_next/`', async () => {
+    const mw = replayGuardMiddleware({
+      nonceStore: new MemoryNonceStore(),
+      verifySignature: async () => true,
+    });
+    const req = { url: '/%5fnext%2f..%2fv1%2fquery', method: 'GET', headers: {} };
+    const res = makeRes();
+    let nextCalled = false;
+    await mw(req, res, () => {
+      nextCalled = true;
+    });
+    assert.strictEqual(nextCalled, false, 'encoded traversal-shaped paths must not be exempt');
+    assert.strictEqual(res.statusCode, 401);
+    assert.strictEqual(JSON.parse(res.body).code, 'REPLAY_NONCE_REQUIRED');
+  });
+
+  it('treats malformed URI-encoded paths as non-exempt (decode throws)', async () => {
+    // `%E0` is incomplete UTF-8 — decodeURIComponent throws URIError.
+    // The exemption matcher must fall through to verification rather
+    // than crash or silently exempt the request.
+    const mw = replayGuardMiddleware({
+      nonceStore: new MemoryNonceStore(),
+      verifySignature: async () => true,
+    });
+    const req = { url: '/%E0/foo', method: 'GET', headers: {} };
+    const res = makeRes();
+    let nextCalled = false;
+    await mw(req, res, () => {
+      nextCalled = true;
+    });
+    assert.strictEqual(nextCalled, false, 'malformed-encoding paths must not be exempt');
+    assert.strictEqual(res.statusCode, 401);
   });
 
   it('honors legacy fail-open behavior when requireNonce: false', async () => {
@@ -293,8 +354,210 @@ describe('Middleware — fail-closed on missing nonce', () => {
     const req = { url: '/api/v1/orders', method: 'POST', headers: {} };
     const res = makeRes();
     let nextCalled = false;
-    await mw(req, res, () => { nextCalled = true; });
+    await mw(req, res, () => {
+      nextCalled = true;
+    });
     assert.strictEqual(nextCalled, true);
+  });
+});
+
+describe('Middleware — verifier-flow happy path + rejection', () => {
+  function makeRes() {
+    return {
+      statusCode: 200,
+      headers: {},
+      body: '',
+      setHeader(name, value) {
+        this.headers[name] = value;
+      },
+      end(body) {
+        this.body = body ?? '';
+      },
+    };
+  }
+
+  function buildIntegrityHeaders(integrity) {
+    return {
+      'x-gtcx-auth-scheme': integrity.scheme,
+      'x-gtcx-did': integrity.did,
+      'x-gtcx-key-id': integrity.keyId,
+      'x-gtcx-audience': integrity.audience,
+      'x-gtcx-body-sha256': integrity.bodyHash,
+      'x-gtcx-headers-hash': integrity.headersHash,
+      'x-gtcx-timestamp': integrity.timestamp,
+      'x-gtcx-nonce': integrity.nonce,
+      'x-gtcx-signature': integrity.signature,
+      'x-gtcx-envelope-hash': integrity.envelopeHash,
+    };
+  }
+
+  it('calls next() and attaches gtcxReplayAudit on a fully-signed valid request', async () => {
+    const requestData = {
+      body: '{"action":"create"}',
+      headers: { 'content-type': 'application/json' },
+      method: 'POST',
+      url: 'http://api.gtcx.local/v1/orders',
+    };
+    const integrity = makeIntegrityPayload(requestData);
+    const mw = replayGuardMiddleware({
+      nonceStore: new MemoryNonceStore(),
+      verifySignature: async () => true,
+      skipHashVerification: true,
+    });
+    const req = {
+      url: '/v1/orders',
+      method: 'POST',
+      protocol: 'http',
+      body: requestData.body,
+      headers: {
+        ...buildIntegrityHeaders(integrity),
+        ...requestData.headers,
+        host: 'api.gtcx.local',
+        'x-gtcx-region': 'af-south-1',
+        'x-request-id': 'req-test-1',
+        'x-gtcx-device-id': 'device-test',
+        'user-agent': 'gtcx-test/1.0',
+      },
+      ip: '10.0.0.1',
+    };
+    const res = makeRes();
+    let nextCalled = false;
+    await mw(req, res, () => {
+      nextCalled = true;
+    });
+    assert.strictEqual(nextCalled, true, 'happy path must call next()');
+    assert.ok(req.gtcxReplayAudit, 'must attach gtcxReplayAudit to req');
+  });
+
+  it('returns 401 with the verifier rejection code when signature verification fails', async () => {
+    const requestData = {
+      body: '{"action":"create"}',
+      headers: { 'content-type': 'application/json' },
+      method: 'POST',
+      url: 'http://api.gtcx.local/v1/orders',
+    };
+    const integrity = makeIntegrityPayload(requestData);
+    const mw = replayGuardMiddleware({
+      nonceStore: new MemoryNonceStore(),
+      verifySignature: async () => false,
+    });
+    const req = {
+      url: '/v1/orders',
+      method: 'POST',
+      protocol: 'http',
+      body: requestData.body,
+      headers: {
+        ...buildIntegrityHeaders(integrity),
+        ...requestData.headers,
+        host: 'api.gtcx.local',
+      },
+    };
+    const res = makeRes();
+    let nextCalled = false;
+    await mw(req, res, () => {
+      nextCalled = true;
+    });
+    assert.strictEqual(nextCalled, false, 'verifier rejection must not call next()');
+    assert.strictEqual(res.statusCode, 401);
+    const parsed = JSON.parse(res.body);
+    assert.strictEqual(parsed.error, 'Replay protection rejection');
+    assert.ok(parsed.code, 'rejection must carry a code from the verifier');
+  });
+
+  it('falls back to socket.remoteAddress when req.ip is absent', async () => {
+    const requestData = {
+      body: '{"action":"create"}',
+      headers: { 'content-type': 'application/json' },
+      method: 'POST',
+      url: 'http://api.gtcx.local/v1/orders',
+    };
+    const integrity = makeIntegrityPayload(requestData);
+    const mw = replayGuardMiddleware({
+      nonceStore: new MemoryNonceStore(),
+      verifySignature: async () => true,
+      skipHashVerification: true,
+    });
+    const req = {
+      url: '/v1/orders',
+      method: 'POST',
+      body: requestData.body,
+      headers: {
+        ...buildIntegrityHeaders(integrity),
+        ...requestData.headers,
+        host: 'api.gtcx.local',
+      },
+      socket: { remoteAddress: '192.168.1.42' },
+    };
+    const res = makeRes();
+    await mw(req, res, () => {});
+    assert.ok(req.gtcxReplayAudit);
+  });
+
+  it('reads the first value when an integrity header arrives as an array', async () => {
+    const requestData = {
+      body: '{"action":"create"}',
+      headers: { 'content-type': 'application/json' },
+      method: 'POST',
+      url: 'http://api.gtcx.local/v1/orders',
+    };
+    const integrity = makeIntegrityPayload(requestData);
+    const mw = replayGuardMiddleware({
+      nonceStore: new MemoryNonceStore(),
+      verifySignature: async () => true,
+      skipHashVerification: true,
+    });
+    const headers = buildIntegrityHeaders(integrity);
+    // Simulate a proxy that duplicates a header into an array (Node http
+    // exposes these as string[]); the middleware must take the first.
+    headers['x-gtcx-nonce'] = [integrity.nonce, 'second-value-should-be-ignored'];
+    headers['x-gtcx-did'] = [integrity.did];
+    const req = {
+      url: '/v1/orders',
+      method: 'POST',
+      body: requestData.body,
+      headers: {
+        ...headers,
+        ...requestData.headers,
+        host: 'api.gtcx.local',
+      },
+    };
+    const res = makeRes();
+    let nextCalled = false;
+    await mw(req, res, () => {
+      nextCalled = true;
+    });
+    assert.strictEqual(nextCalled, true, 'array-form headers must be normalized to first value');
+  });
+
+  it('rejects URL-encoded `%2e%2e` parent-traversal under an exempt prefix', async () => {
+    // `%2e%2e` decodes to `..` — must be detected by pathForExemption.
+    const mw = replayGuardMiddleware({
+      nonceStore: new MemoryNonceStore(),
+      verifySignature: async () => true,
+    });
+    const req = { url: '/_next/%2e%2e/v1/query', method: 'GET', headers: {} };
+    const res = makeRes();
+    let nextCalled = false;
+    await mw(req, res, () => {
+      nextCalled = true;
+    });
+    assert.strictEqual(nextCalled, false, '%2e%2e traversal must not be exempt');
+    assert.strictEqual(res.statusCode, 401);
+  });
+
+  it('rejects backslash-encoded parent-traversal under an exempt prefix', async () => {
+    const mw = replayGuardMiddleware({
+      nonceStore: new MemoryNonceStore(),
+      verifySignature: async () => true,
+    });
+    const req = { url: '/_next/%5C..%5Cv1/query', method: 'GET', headers: {} };
+    const res = makeRes();
+    let nextCalled = false;
+    await mw(req, res, () => {
+      nextCalled = true;
+    });
+    assert.strictEqual(nextCalled, false, 'backslash-encoded traversal must not be exempt');
+    assert.strictEqual(res.statusCode, 401);
   });
 });
 
@@ -302,7 +565,7 @@ describe('Middleware — refuses to construct without verifySignature', () => {
   it('throws TypeError when verifySignature is missing and requireSignature defaults true', () => {
     assert.throws(
       () => replayGuardMiddleware({ nonceStore: new MemoryNonceStore() }),
-      /verifySignature is required/,
+      /verifySignature is required/
     );
   });
 
@@ -329,22 +592,22 @@ describe('Acceptance Gate: REPLAY_ENVELOPE is real', () => {
     assert.strictEqual(valid.allowed, true);
 
     // Each tampered variant fails with REPLAY_ENVELOPE
-    const bodyTamper = await verifier.verify(
-      makeIntegrityPayload(req),
-      { ...req, body: '{"hacked":true}' }
-    );
+    const bodyTamper = await verifier.verify(makeIntegrityPayload(req), {
+      ...req,
+      body: '{"hacked":true}',
+    });
     assert.strictEqual(bodyTamper.code, 'REPLAY_ENVELOPE');
 
-    const headerTamper = await verifier.verify(
-      makeIntegrityPayload(req),
-      { ...req, headers: { ...req.headers, 'x-evil': 'true' } }
-    );
+    const headerTamper = await verifier.verify(makeIntegrityPayload(req), {
+      ...req,
+      headers: { ...req.headers, 'x-evil': 'true' },
+    });
     assert.strictEqual(headerTamper.code, 'REPLAY_ENVELOPE');
 
-    const urlTamper = await verifier.verify(
-      makeIntegrityPayload(req),
-      { ...req, url: 'http://evil.com/' }
-    );
+    const urlTamper = await verifier.verify(makeIntegrityPayload(req), {
+      ...req,
+      url: 'http://evil.com/',
+    });
     assert.strictEqual(urlTamper.code, 'REPLAY_ENVELOPE');
 
     // Metrics show real envelope rejections

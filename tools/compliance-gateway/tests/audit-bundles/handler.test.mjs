@@ -1,7 +1,7 @@
 import { describe, it, before } from 'node:test';
 import assert from 'node:assert';
 
-import { processBundle } from '../../src/audit-bundles/handler.mjs';
+import { processBundle, tenantIdFromSignedDid } from '../../src/audit-bundles/handler.mjs';
 import {
   canonicalizeUrl,
   computeEnvelopeHash,
@@ -131,6 +131,22 @@ describe('processBundle — budget gate', () => {
     assert.strictEqual(result.body.error, 'Rate limit exceeded for this device');
     assert.deepStrictEqual(result.body.acceptedIds, []);
   });
+
+  it('uses the signed DID tenant for budget scope instead of spoofable request headers', async () => {
+    const bundle = { bundleId: 'b-budget-tenant', events: [event('e1', 'h1', null)] };
+    const args = await buildSignedRequest({ bundle });
+    args.headers['x-gtcx-tenant-id'] = 'ke';
+    let checked;
+    args.checkBudget = (subject, tenantId) => {
+      checked = { subject, tenantId };
+      return { ok: true };
+    };
+
+    const result = await processBundle(args);
+
+    assert.strictEqual(result.status, 200);
+    assert.deepStrictEqual(checked, { subject: DID, tenantId: 'zw' });
+  });
 });
 
 describe('processBundle — 400 envelope failures', () => {
@@ -248,13 +264,13 @@ describe('processBundle — 400 bundle-malformed', () => {
 });
 
 describe('processBundle — audit-of-the-ingest', () => {
-  it('signs an audit-bundle.received event on 200', async () => {
+  it('signs an audit-bundle.received event on 200 with tenant bound to the signed DID', async () => {
     const bundle = {
       bundleId: 'b-aoi-1',
       events: [event('e1', 'h1', null), event('e2', 'h2', 'h1')],
     };
     const args = await buildSignedRequest({ bundle });
-    args.headers['x-gtcx-tenant-id'] = 'zw';
+    args.headers['x-gtcx-tenant-id'] = 'ke';
     const signed = [];
     args.signAuditEvent = (evt) => signed.push(evt);
     const result = await processBundle(args);
@@ -262,6 +278,7 @@ describe('processBundle — audit-of-the-ingest', () => {
     assert.strictEqual(signed.length, 1);
     assert.strictEqual(signed[0].action, 'audit-bundle.received');
     assert.strictEqual(signed[0].actor, DID);
+    assert.strictEqual(signed[0].tenantId, 'zw');
     assert.strictEqual(signed[0].payload.bundleId, 'b-aoi-1');
     assert.strictEqual(signed[0].payload.tenantId, 'zw');
     assert.strictEqual(signed[0].payload.eventsReceived, 2);
@@ -329,6 +346,17 @@ describe('processBundle — audit-of-the-ingest', () => {
     delete args.signAuditEvent;
     const result = await processBundle(args);
     assert.strictEqual(result.status, 200);
+  });
+});
+
+describe('tenantIdFromSignedDid', () => {
+  it('extracts the tenant segment from TradePass DIDs', () => {
+    assert.strictEqual(tenantIdFromSignedDid('did:gtcx:tp_zw_001'), 'zw');
+    assert.strictEqual(tenantIdFromSignedDid('did:gtcx:tp_ghana-ops_001'), 'ghana-ops');
+  });
+
+  it('falls back to default for unknown DID shapes', () => {
+    assert.strictEqual(tenantIdFromSignedDid('did:gtcx:device:abc'), 'default');
   });
 });
 

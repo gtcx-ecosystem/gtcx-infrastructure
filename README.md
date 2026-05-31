@@ -11,9 +11,10 @@ DevOps tooling, deployment automation, and security framework for the GTCX ecosy
 
 ## 🚀 Choose Your Path
 
+- **What's being worked on now** → [`docs/audit/execution-roadmap.md`](./docs/audit/execution-roadmap.md) (canonical execution plan) + [`docs/audit/latest.json`](./docs/audit/latest.json) (machine-readable scorecard).
 - **I am a DevOps/Platform Engineer** → Start with [Orientation](./docs/agents/onboarding/orientation.md) & [Deployment Runbook](./docs/operations/runbooks/deployment-runbook.md).
-- **I am a Security Auditor** → Review the [Trust Model](./docs/architecture/trust-model.md) & [Hardening Strategy](./docs/audit/qa-reviews/2026-05-05-gtcx-hardening-strategy.md).
-- **I am a Government/Institutional Stakeholder** → Read the [Sovereign Stack Whitepaper](./docs/audit/qa-reviews/2026-05-05-gtcx-sovereign-stack-whitepaper.md).
+- **I am a Security Auditor** → Review the [Trust Model](./docs/architecture/trust-model.md), the [latest independent audit](./docs/audit/post-roadmap-session-2026-05-30.md), and the [external dependencies register](./docs/audit/external-dependencies-register-2026-05-31.md).
+- **I am a Government/Institutional Stakeholder** → Read the [Sovereign Stack Whitepaper](./docs/audit/qa-reviews/2026-05-05-gtcx-sovereign-stack-whitepaper.md) and the [pilot success criteria](./docs/audit/pilot-success-criteria.md).
 
 ---
 
@@ -163,7 +164,7 @@ Running in AWS af-south-1 (Cape Town):
 | [Architecture Overview](./docs/architecture/system-overview.md)        | System design and trust zones  |
 | [Deployment Runbook](./docs/operations/runbooks/deployment-runbook.md) | Deploy and rollback procedures |
 | [DR Runbook](./docs/operations/runbooks/disaster-recovery.md)          | Backup and recovery            |
-| [ADR Index](./docs/architecture/decisions/README.md)                                | Architecture decisions         |
+| [ADR Index](./docs/architecture/decisions/README.md)                   | Architecture decisions         |
 | [Audit History](./docs/audit/qa-reviews/)                              | Session audits and hardening   |
 
 ## Published Substrate

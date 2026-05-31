@@ -1,16 +1,26 @@
 ---
 title: 'gtcx-infrastructure — Internal 10/10 Sign-off'
-status: 'current'
+status: 'superseded'
 date: '2026-05-28'
+superseded_by: 'docs/audit/post-roadmap-session-2026-05-30.md'
+superseded_on: '2026-05-31'
+superseded_reason: 'Independent rescore on 2026-05-30 explicitly rejected the 10.0/8.8 internal-attestation as self-vouching. Authoritative baseline is now 6.8/6.2 per execution-roadmap.md Q3.'
 owner: 'gtcx-infrastructure'
 role: 'quality-evidence-lead'
 tier: 'critical'
-tags: ['audit', 'signoff', '10-10', 'internal']
+tags: ['audit', 'signoff', '10-10', 'internal', 'superseded']
 review_cycle: 'on-change'
 internal_readiness: 10.0
 certified_composite: 8.8
 head: '5b8d323e41cc8d9d54827b72d4f46839a8d61a53'
 ---
+
+> **SUPERSEDED 2026-05-31.** Historical snapshot. The "All deterministic
+> repo gates green / internal 10.0" claim below was the self-attested
+> baseline at the time. The 2026-05-30 fresh independent audit explicitly
+> rejected the self-attestation (meta-finding: "I shouldn't ship
+> security-class fixes without external sign-off") and rescored to
+> 6.8/6.2. Current source of truth: [`post-roadmap-session-2026-05-30.md`](./post-roadmap-session-2026-05-30.md) and [`execution-roadmap.md`](./execution-roadmap.md).
 
 # gtcx-infrastructure — Internal 10/10 Sign-off
 

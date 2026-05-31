@@ -14,7 +14,7 @@
  *
  * Usage:
  *   node tools/scripts/incident-drill-validator.mjs
- *   node tools/scripts/incident-drill-validator.mjs --config=path/to/alertmanager.yml
+ *   node tools/scripts/incident-drill-validator.mjs --config=path/to/alertmanager.yml.tpl
  */
 
 import { readFileSync } from 'node:fs';
@@ -26,7 +26,7 @@ const args = process.argv.slice(2);
 const configArg = args.find((a) => a.startsWith('--config='));
 const configPath = configArg
   ? configArg.slice(9)
-  : path.join('infra', 'docker', 'observability', 'alertmanager.yml');
+  : path.join('infra', 'docker', 'observability', 'alertmanager.yml.tpl');
 
 // ---------------------------------------------------------------------------
 // Parse YAML into top-level sections (minimal, indentation-aware)
@@ -131,10 +131,10 @@ for (const r of referencedReceivers) {
 
 // 3. Critical and high severity route to PagerDuty
 const routeText = routeLines.join('\n');
-if (!routeText.includes("severity: critical") || !routeText.includes('pagerduty-critical')) {
+if (!routeText.includes('severity: critical') || !routeText.includes('pagerduty-critical')) {
   fail('PAGERDUTY-CRITICAL', 'No route maps severity=critical to pagerduty-critical');
 }
-if (!routeText.includes("severity: high") || !routeText.includes('pagerduty-high')) {
+if (!routeText.includes('severity: high') || !routeText.includes('pagerduty-high')) {
   fail('PAGERDUTY-HIGH', 'No route maps severity=high to pagerduty-high');
 }
 
@@ -188,7 +188,9 @@ if (!hasBusinessHours) {
 // ---------------------------------------------------------------------------
 
 if (violations.length === 0) {
-  console.log(`[PASS] Incident-drill validation: ${definedReceivers.size} receivers, ${referencedReceivers.size} route refs, ${inhibitCount} inhibition rules, business-hours interval defined, PagerDuty URL configured`);
+  console.log(
+    `[PASS] Incident-drill validation: ${definedReceivers.size} receivers, ${referencedReceivers.size} route refs, ${inhibitCount} inhibition rules, business-hours interval defined, PagerDuty URL configured`
+  );
   process.exit(0);
 } else {
   console.error(`[FAIL] Incident-drill validation: ${violations.length} violation(s)`);

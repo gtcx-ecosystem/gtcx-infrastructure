@@ -1,6 +1,9 @@
 ---
-title: 'Sprint Phase 2: 9+ Production-Readiness Roadmap'
-status: 'current'
+title: 'Sprint Phase 2: 9+ Production-Readiness Roadmap (superseded)'
+status: 'superseded'
+superseded_by: 'docs/audit/execution-roadmap.md'
+superseded_on: '2026-05-31'
+superseded_reason: '7.5 → 9+ baseline is stale; actual reconciled baseline is 6.8/6.2 per execution-roadmap.md Q3. Phase 2 stories absorbed into S2-* of the reconciled plan.'
 date: '2026-05-27'
 owner: 'frontier-infra-engineer'
 role: 'frontier-infra-engineer'

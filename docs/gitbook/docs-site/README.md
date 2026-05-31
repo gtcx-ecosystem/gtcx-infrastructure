@@ -1,25 +1,15 @@
 ---
-title: "Public Docs Site Source"
-status: "current"
-date: "2026-05-27"
-owner: "gtcx-infrastructure"
-role: "protocol-architect"
-agent_id: "agent://gtcx-infrastructure/2026-05-27/session-backfill"
-trust_score: 95
-autonomy_level: "sovereign"
-tier: "critical"
-tags: ["documentation", "gitbook"]
-review_cycle: "on-change"
----
-
----
 title: 'Public Docs Site Source'
 status: 'current'
-date: '2026-05-22'
+date: '2026-05-27'
 owner: 'platform-engineering'
 tier: 'standard'
 tags: ['external', 'docs-site', 'distribution']
 review_cycle: 'on-change'
+role: 'protocol-architect'
+agent_id: 'agent://gtcx-infrastructure/2026-05-27/session-backfill'
+trust_score: 95
+autonomy_level: 'sovereign'
 ---
 
 # Public Docs Site Source
