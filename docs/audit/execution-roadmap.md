@@ -1,4 +1,7 @@
 ---
+status: current
+date: 2026-05-31
+owner: gtcx-infrastructure
 last_reconciled: 2026-05-31
 sources:
   - docs/audit/post-roadmap-session-2026-05-30.md
@@ -56,18 +59,18 @@ external evidence — pilot signature, primitives publication, soak-test baselin
 has a named external dependency. ZWCMP pilot has a named GTCX owner and a
 scheduled cadence call.
 
-| Story | Title                                                                                   | Status                                          |
-| ----- | --------------------------------------------------------------------------------------- | ----------------------------------------------- |
-| S1-01 | Replay-guard traversal — verify closure + add fuzz fixtures                             | partial (`6f79a83`, `0f83c27`) — gate still red |
-| S1-02 | `/audit/bundles` tenant binding — verify closure + add spoof test                       | pending (closure shipped — Q2)                  |
-| S1-03 | Auth-failure events visible in `/v1/exceptions` (platform tenant)                       | pending                                         |
-| S1-04 | Adversarial fixtures for each newly-wired gate                                          | pending                                         |
-| S1-05 | Roadmap rename + README — confirm `pnpm test` green from clean checkout                 | pending (commits landed)                        |
-| S1-06 | `isExempt(path)` JSDoc + typecheck enforcement in CI                                    | pending                                         |
-| S1-07 | Working-tree drift sweep — `pnpm agent:check` + `pnpm format:check` from clean checkout | pending                                         |
-| S1-08 | Validate alert `runbook_url` anchors — fail CI on dead links                            | pending                                         |
-| S1-09 | **ZWCMP owner assignment + first cadence call**                                         | pending (Q5)                                    |
-| S1-10 | Trust-anchor pin in `verify-catalog.mjs` (20-line moat fix)                             | pending                                         |
+| Story | Title                                                                                   | Status                                                      |
+| ----- | --------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| S1-01 | Replay-guard traversal — verify closure + add fuzz fixtures                             | partial (`6f79a83`, `0f83c27`) — gate still red             |
+| S1-02 | `/audit/bundles` tenant binding — verify closure + add spoof test                       | done (`1b940d7`) — spoof test at `handler.test.mjs:135,267` |
+| S1-03 | Auth-failure events visible in `/v1/exceptions` (platform tenant)                       | pending                                                     |
+| S1-04 | Adversarial fixtures for each newly-wired gate                                          | pending                                                     |
+| S1-05 | Roadmap rename + README — confirm `pnpm test` green from clean checkout                 | pending (commits landed)                                    |
+| S1-06 | `isExempt(path)` JSDoc + typecheck enforcement in CI                                    | pending                                                     |
+| S1-07 | Working-tree drift sweep — `pnpm agent:check` + `pnpm format:check` from clean checkout | pending                                                     |
+| S1-08 | Validate alert `runbook_url` anchors — fail CI on dead links                            | pending                                                     |
+| S1-09 | **ZWCMP owner assignment + first cadence call**                                         | pending (Q5)                                                |
+| S1-10 | Trust-anchor pin in `verify-catalog.mjs` (20-line moat fix)                             | pending                                                     |
 
 ### S1-01: Replay-guard traversal — verify closure + add fuzz fixtures
 
