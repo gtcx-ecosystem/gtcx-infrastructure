@@ -379,9 +379,9 @@ session rather than across the planned 1-week window.
 
 **Carried into Sprint 2:** S2-14 (coverage pump, ~10 verifier-flow tests across server.mjs / hash.mjs / replay-metrics.mjs).
 
-**Decisions answered 2026-05-31:** Q4 (WIRE both), Q5 (pen-test AFTER Sprint 1), Q6 (sales-led; Sprint 3 headline = S3-11 ZWCMP signature).
+**Decisions answered 2026-05-31:** Q4 (WIRE both), Q5 (pen-test AFTER Sprint 1), Q6 (sales-led; Sprint 3 headline = S3-11 ZWCMP signature), Q7 (PIN `@types/node` major bumps in dependabot).
 
-**Decisions still pending before Sprint 2:** Q7 (`@types/node` pin).
+**Decisions still pending before Sprint 2:** _none_ — all four Q4–Q7 answered.
 
 **Net commits this session:** 21 (8 audit-finding closes + reconciled roadmap + 4 docs updates + 7 misc fixes + 1 scaffolding). All landed on `docs/roadmap-update-2026-05-30`. `pnpm test` green; `pnpm validate-all.mjs` 21 of 22 gates pass (the failing one is the pre-existing coverage gate now tracked as S2-14).
 
@@ -417,7 +417,8 @@ or PR comment.
 - S3-07 (publish primitives) continues on a parallel track — `terraform-aws-compliance-db` + `@gtcx/audit-signer` in the registry reinforce the regulator moat by making the work cite-able — but Sprint 3 is not gated on it.
 - Reasoning: GTM docs (`global-south-10x-plan.md`, `pilot-success-criteria.md`, `moat-execution-plan.md`) are regulator-led, not developer-led; customer is mining-cooperative members, not developers; moat ranks Trust > Distribution. Product-led growth becomes viable AFTER a signed pilot creates the reference point that dev-rel can pull on.
 
-**Q7 — `@types/node` dependabot pin (post-roadmap Tier 5, PR #62).** Recommendation: reject + pin to `~22.x`. Needs explicit approval before S2-11 lands the `.github/dependabot.yml` ignore rule.
+**Q7 — `@types/node` dependabot pin (post-roadmap Tier 5, PR #62).**
+**ANSWERED 2026-05-31: PIN.** Implemented same-day in `.github/dependabot.yml` — added an `ignore` rule on `@types/node` `version-update:semver-major`. Package.json constraint was already `^22.10.0` (tied to Node 20.x runtime). Effect: dependabot no longer opens 23.x/24.x/25.x major bumps. Existing open PR #62 should be closed with rationale "ignored by config — Node 20 runtime → @types/node 22.x." S2-11 (Tier 1+2 dependabot merges) inherits this config; no separate dependabot-config change needed in Sprint 2.
 
 ---
 

@@ -96,8 +96,15 @@
         "answer": "SALES-LED with primitives as parallel tail",
         "answeredOn": "2026-05-31",
         "rationale": "GTM docs are regulator-led, not developer-led. Sprint 3 headline = S3-11 (ZWCMP signature); S1-09 owner profile = senior pilot-facing operator with prior African-central-bank pilot experience; S3-07 publish-primitives continues in parallel without gating Sprint 3."
+      },
+      {
+        "id": "Q7",
+        "question": "@types/node dependabot pin?",
+        "answer": "PIN",
+        "answeredOn": "2026-05-31",
+        "rationale": "Implemented same-day in .github/dependabot.yml — ignore rule on @types/node semver-major. Package.json was already ^22.10.0 (tied to Node 20.x runtime). Open PR #62 to close with rationale."
       }
     ],
-    "open": ["Q7 — @types/node dependabot pin"]
+    "open": []
   }
 }

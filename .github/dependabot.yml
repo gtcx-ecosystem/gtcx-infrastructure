@@ -23,6 +23,15 @@ updates:
         patterns:
           - 'eslint*'
           - 'prettier'
+    # Ignore @types/node major bumps — the type version is tied to the
+    # Node runtime we deploy on (currently Node 20.x → @types/node 22.x).
+    # Each unsolicited 23.x/24.x/25.x bump opens a PR that sits, gets
+    # reviewed, and gets closed without merge. Pin to ~22.x via
+    # package.json; suppress the major-bump PR storm here.
+    # (Q7 ANSWERED 2026-05-31 — execution-roadmap.md.)
+    ignore:
+      - dependency-name: '@types/node'
+        update-types: ['version-update:semver-major']
 
   - package-ecosystem: 'github-actions'
     directory: '/'
