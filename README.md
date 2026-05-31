@@ -163,7 +163,7 @@ Running in AWS af-south-1 (Cape Town):
 | [Architecture Overview](./docs/architecture/system-overview.md)        | System design and trust zones  |
 | [Deployment Runbook](./docs/operations/runbooks/deployment-runbook.md) | Deploy and rollback procedures |
 | [DR Runbook](./docs/operations/runbooks/disaster-recovery.md)          | Backup and recovery            |
-| [ADR Index](./docs/architecture/decisions/README.md)                                | Architecture decisions         |
+| [ADR Index](./docs/architecture/decisions/README.md)                   | Architecture decisions         |
 | [Audit History](./docs/audit/qa-reviews/)                              | Session audits and hardening   |
 
 ## Published Substrate
