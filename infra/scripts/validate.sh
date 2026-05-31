@@ -91,7 +91,7 @@ run_compliance_gateway_tests() {
 
 run_deployment_guard_tests() {
     log_info "Running deployment-guard tests..."
-    (cd "${PROJECT_ROOT}/tools/deployment-guard" && node --test tests/**/*.test.mjs)
+    (cd "${PROJECT_ROOT}/tools/deployment-guard" && node --test tests/*.test.mjs)
     log_info "Running deployment-guard typecheck..."
     (cd "${PROJECT_ROOT}/tools/deployment-guard" && npx tsc --noEmit)
 }
