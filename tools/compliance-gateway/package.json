@@ -18,7 +18,7 @@
   "dependencies": {
     "@ai-sdk/anthropic": "^1.0.0",
     "@ai-sdk/google": "^1.0.0",
-    "@ai-sdk/openai": "^1.0.0",
+    "@ai-sdk/openai": "^3.0.67",
     "@gtcx/audit-signer": "workspace:*",
     "@gtcx/compliance-data": "workspace:*",
     "ai": "^5.0.52",
