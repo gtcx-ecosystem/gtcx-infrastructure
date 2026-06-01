@@ -8,8 +8,8 @@
     "eval": "node eval.mjs",
     "eval:all": "node eval.mjs --all",
     "eval:injection": "node injection-suite.mjs",
-    "test": "node --test tests/**/*.test.mjs",
-    "test:coverage:gate": "node --test tests/**/*.test.mjs"
+    "test": "node ../scripts/run-package-tests.mjs",
+    "test:coverage:gate": "node ../scripts/run-package-tests.mjs"
   },
   "dependencies": {
     "@gtcx/compliance-gateway": "workspace:*"

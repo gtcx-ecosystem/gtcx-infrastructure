@@ -10,10 +10,10 @@
     "./audit-verifier": "./src/audit-verifier.mjs"
   },
   "scripts": {
-    "test": "node --test tests/*.test.mjs",
+    "test": "node ../scripts/run-package-tests.mjs",
     "test:watch": "node --test --watch tests/*.test.mjs",
-    "test:coverage": "c8 --reporter=text --reporter=json --reporter=lcov --include='src/**' node --test tests/*.test.mjs",
-    "test:coverage:gate": "c8 --check-coverage --branches 90 --statements 90 --functions 90 --lines 90 --reporter=text --reporter=json --reporter=lcov --include='src/**' node --test tests/*.test.mjs",
+    "test:coverage": "c8 --reporter=text --reporter=json --reporter=lcov --include='src/**' node ../scripts/run-package-tests.mjs",
+    "test:coverage:gate": "c8 --check-coverage --branches 90 --statements 90 --functions 90 --lines 90 --reporter=text --reporter=json --reporter=lcov --include='src/**' node ../scripts/run-package-tests.mjs",
     "typecheck": "tsc --noEmit"
   },
   "engines": {

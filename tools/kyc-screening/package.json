@@ -5,7 +5,7 @@
   "type": "module",
   "main": "src/handler.mjs",
   "scripts": {
-    "test": "node --test tests/**/*.test.mjs",
+    "test": "node ../scripts/run-package-tests.mjs",
     "package": "bash ../scripts/package-lambda.sh"
   },
   "engines": {
