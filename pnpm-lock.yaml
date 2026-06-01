@@ -176,7 +176,11 @@ importers:
         specifier: ^5.7.0
         version: 5.9.3
 
-  tools/ussd-handler: {}
+  tools/ussd-handler:
+    optionalDependencies:
+      ioredis:
+        specifier: ^5.10.1
+        version: 5.10.1
 
 packages:
 

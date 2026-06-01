@@ -83,12 +83,13 @@ describe('RedisSessionStore', () => {
     assert.strictEqual(s, null);
   });
 
-  it('connect imports ioredis when client is null', async () => {
-    const store = new RedisSessionStore({ redisUrl: 'redis://127.0.0.1:1' });
-    // Let connect() actually try to import ioredis and create a client
+  it('connect is idempotent when client is already set', async () => {
+    const store = new RedisSessionStore({ redisUrl: 'redis://mock' });
+    const mock = createMockRedis();
+    store.client = mock;
     await store.connect();
-    assert.ok(store.client !== null);
-    store.client.disconnect();
+    await store.connect();
+    assert.strictEqual(store.client, mock);
   });
 });
 

@@ -23,5 +23,8 @@
     "mobile-money"
   ],
   "license": "MIT",
-  "private": true
+  "private": true,
+  "optionalDependencies": {
+    "ioredis": "^5.10.1"
+  }
 }
