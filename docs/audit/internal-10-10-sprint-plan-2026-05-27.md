@@ -1,9 +1,9 @@
 ---
 title: 'Internal 10/10 Sprint Plan'
 status: 'superseded'
-superseded_by: 'docs/audit/execution-roadmap.md'
-superseded_on: '2026-05-31'
-superseded_reason: 'Older internal sprint plan; replaced by reconciled 3-sprint plan.'
+superseded_by: 'docs/audit/ir-10-10-roadmap.md'
+superseded_on: '2026-06-01'
+superseded_reason: 'INT-1–5 repo work complete; IR 10/10 plan split from XC and supersedes v1 10-10 docs.'
 date: '2026-05-27'
 owner: 'frontier-infra-engineer'
 role: 'quality-evidence-lead'

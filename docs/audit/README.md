@@ -25,14 +25,15 @@ Audit reports, evidence, execution planning, and **canonical scoring** for `gtcx
 
 **IR and XC are independent.** External blockers affect **XC only** — they do **not** subtract from IR.
 
-| Resource                                                                                         | Purpose                                     |
-| ------------------------------------------------------------------------------------------------ | ------------------------------------------- |
-| [`SCORING.md`](./SCORING.md)                                                                     | Formulas, dimensions, retired v1 terms      |
-| [`scoring-rubric.json`](./scoring-rubric.json)                                                   | Machine rubric (`gtcx-infra-canonical-v2`)  |
-| [`latest.json`](./latest.json)                                                                   | Current IR / XC (from `pnpm score:compute`) |
-| [`AUDIT-RECONCILIATION.md`](./AUDIT-RECONCILIATION.md)                                           | Why old docs show 6.6 / 6.8 / 9.0           |
-| [`execution-roadmap.md`](./execution-roadmap.md)                                                 | Sprint plan (agent-executable work)         |
-| [`external-dependencies-register-2026-05-31.md`](./external-dependencies-register-2026-05-31.md) | Human/legal/operator blockers               |
+| Resource                                                                                         | Purpose                                           |
+| ------------------------------------------------------------------------------------------------ | ------------------------------------------------- |
+| [`SCORING.md`](./SCORING.md)                                                                     | Formulas, dimensions, retired v1 terms            |
+| [`scoring-rubric.json`](./scoring-rubric.json)                                                   | Machine rubric (`gtcx-infra-canonical-v2`)        |
+| [`latest.json`](./latest.json)                                                                   | Current IR / XC (from `pnpm score:compute`)       |
+| [`AUDIT-RECONCILIATION.md`](./AUDIT-RECONCILIATION.md)                                           | Why old docs show 6.6 / 6.8 / 9.0                 |
+| [`ir-10-10-roadmap.md`](./ir-10-10-roadmap.md)                                                   | **IR 7.6 → 10.0** — canonical internal 10/10 plan |
+| [`execution-roadmap.md`](./execution-roadmap.md)                                                 | Sprint story tracker (cross-ref IR phases)        |
+| [`external-dependencies-register-2026-05-31.md`](./external-dependencies-register-2026-05-31.md) | XC blockers (not IR)                              |
 
 **Retired (do not publish as headline scores):** `certifiedReadiness`, `certified composite`, `CR = IR − gap`.
 

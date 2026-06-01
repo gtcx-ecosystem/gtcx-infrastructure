@@ -362,7 +362,7 @@ Close S3-04 live gap and EXT-INF-003.
 
 ### Sprint Value Statement
 
-**Certified composite** can move toward 7.0+ with auditable ops proof.
+**IR** `enterpriseReadiness` can move toward 8.0+ with in-repo WORM workflow + fresh DR/soak artifacts (XC unchanged).
 
 ---
 

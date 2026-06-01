@@ -8,6 +8,7 @@
   "latestAudit": "docs/audit/full-audit-2026-05-31.md",
   "previousAudit": "docs/audit/master-audit-2026-05-30.md",
   "remediationPlan": "docs/audit/execution-roadmap.md",
+  "irRoadmap": "docs/audit/ir-10-10-roadmap.md",
   "status": "sprint-3-agent-closed",
   "scores": {
     "internalEngineeringReadiness": 7.6,
@@ -81,7 +82,8 @@
     "S3-08 — Indemnified SLA legal review (EXT-INF-015).",
     "S3-11 — ZWCMP DPA + pilot agreement (EXT-INF-014).",
     "Operator — npm publish, registry tag, live DR/WORM, dependabot PR merges on main.",
-    "Certified composite unchanged until external assurance closes."
+    "IR-1: main CI format + honest README (see ir-10-10-roadmap.md).",
+    "IR-2–IR-6: dimension lifts per ir-10-10-roadmap.md (XC track separate)."
   ],
   "evidence": {
     "executionRoadmap": "docs/audit/execution-roadmap.md",

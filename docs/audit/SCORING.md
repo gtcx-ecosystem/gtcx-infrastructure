@@ -78,3 +78,4 @@ When an item closes: set `status: "done"` in **both** the register and `scoring-
 | `ci-snapshot.json`                    | IR CI penalties                    |
 | `external-dependencies-register-*.md` | Human-facing EXT-INF detail        |
 | `latest.json`                         | Calculator output                  |
+| `ir-10-10-roadmap.md`                 | IR 7.6 → 10.0 execution plan       |

@@ -1,9 +1,11 @@
 ---
 status: current
-date: 2026-05-31
+date: 2026-06-01
 owner: gtcx-infrastructure
-last_reconciled: 2026-05-31
+last_reconciled: 2026-06-01
+ir_roadmap: docs/audit/ir-10-10-roadmap.md
 sources:
+  - docs/audit/ir-10-10-roadmap.md
   - docs/audit/post-roadmap-session-2026-05-30.md
   - docs/audit/master-audit-2026-05-30.md
   - docs/audit/10-10-remediation-plan-2026-05-30.md
@@ -31,10 +33,12 @@ reconciled_against_commits:
 
 # Execution roadmap — gtcx-infrastructure
 
-> Single source of truth for 3-week execution. Reconciles every open finding from
-> the 2026-05-30 audit cluster against the strategic roadmap and the GTM plan.
-> Newer audit evidence wins over older roadmap "done" claims. Every open issue
-> below is either a story or an explicit deferral with reason.
+> **Story tracker** for sprint-sized work (acceptance commands, commit refs).  
+> **IR 10/10 dimension plan:** [`ir-10-10-roadmap.md`](./ir-10-10-roadmap.md) (canonical IR 7.6 → 10.0).  
+> **XC / GTM blockers:** [`external-dependencies-register-2026-05-31.md`](./external-dependencies-register-2026-05-31.md).
+>
+> Reconciles every open finding from the 2026-05-30 audit cluster. Newer audit
+> evidence wins over older "done" claims.
 
 ## Active phase: Close-the-gap + ZWCMP unblock (2026-05-31 → 2026-06-21)
 
@@ -397,7 +401,8 @@ or PR comment.
 
 **Q2 — `/audit/bundles` tenant binding.** Same conflict for F3. Confirm test coverage of both spoof+signed paths before retiring S1-02. Decision: trust the closure (commit `1b940d7`) and add the spoof regression test, or block the close until external review.
 
-**Q3 — Internal-readiness score baseline.** Three docs from 2026-05-30 disagree: post-roadmap = 6.8/6.2; master-audit = 6.5/6.1; 10-10 plan front-matter = 7.6/7.6. The 7.6 figure assumes Phase 0 gates are still green; working tree is currently dirty. I have used 6.8/6.2 as the Sprint 1 baseline. Confirm or override before publishing `latest.json` distribution snapshot for 2026-05-31.
+**Q3 — Internal-readiness score baseline.**
+**ANSWERED 2026-06-01:** Rubric v2 — **IR 7.6** (engineering) + **XC 9.0** (external), reconciled in [`score-evidence-ledger.json`](./score-evidence-ledger.json) at `6834b47` and [`ir-10-10-roadmap.md`](./ir-10-10-roadmap.md). Retired `certified composite` / 6.8/6.2 paired headline.
 
 **Q4 — `failClosed.mjs` and `budget-store.mjs`: wire or delete?**
 **ANSWERED 2026-05-31: WIRE BOTH.**

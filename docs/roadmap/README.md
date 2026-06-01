@@ -7,11 +7,12 @@ owner: 'gtcx-infrastructure'
 
 # Roadmap
 
-## Canonical execution plan
+## Canonical plans
 
-**[`docs/audit/execution-roadmap.md`](../audit/execution-roadmap.md)** —
-the reconciled 3-sprint plan with every open audit finding as a story.
-This is the source of truth for "what are we doing now?".
+| Doc                                                                | Role                                                             |
+| ------------------------------------------------------------------ | ---------------------------------------------------------------- |
+| [`docs/audit/ir-10-10-roadmap.md`](../audit/ir-10-10-roadmap.md)   | **IR 7.6 → 10.0** — internal engineering dimensions              |
+| [`docs/audit/execution-roadmap.md`](../audit/execution-roadmap.md) | Sprint stories + acceptance commands (S1–S3 done; IR-1+ forward) |
 
 ## Strategic milestones (longer horizon)
 

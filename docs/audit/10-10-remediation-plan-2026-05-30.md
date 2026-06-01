@@ -17,8 +17,8 @@ internal_readiness: 7.6
 target_composite: 10.0
 ---
 
-> **SUPERSEDED 2026-05-31.** Current source of truth:
-> [`execution-roadmap.md`](./execution-roadmap.md). The 7.6/7.6 baseline
+> **SUPERSEDED 2026-06-01.** IR plan: [`ir-10-10-roadmap.md`](./ir-10-10-roadmap.md).
+> Story tracker: [`execution-roadmap.md`](./execution-roadmap.md). The 7.6/7.6 baseline
 > below was rejected during reconciliation (Q3) in favour of the
 > independently-rescored 6.8/6.2 from
 > [`post-roadmap-session-2026-05-30.md`](./post-roadmap-session-2026-05-30.md).
