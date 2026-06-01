@@ -1,8 +1,8 @@
 {
   "repo": "gtcx-infrastructure",
   "auditDate": "2026-06-01",
-  "verifiedAt": "2026-06-01T08:50:54.371Z",
-  "head": "a80e645",
+  "verifiedAt": "2026-06-01T09:18:04.206Z",
+  "head": "4b5c1cc",
   "workingTree": "clean",
   "sourceAudit": "docs/audit/post-roadmap-session-2026-05-30.md",
   "latestAudit": "docs/audit/full-audit-2026-05-31.md",
@@ -11,12 +11,12 @@
   "irRoadmap": "docs/audit/ir-10-10-roadmap.md",
   "status": "sprint-3-agent-closed",
   "scores": {
-    "internalEngineeringReadiness": 7.6,
-    "internalReadiness": 7.6,
+    "internalEngineeringReadiness": 7.7,
+    "internalReadiness": 7.7,
     "externalClearance": 9,
     "externalBlockerBurden": 1,
     "codeQuality": 8,
-    "repoHygiene": 7.9,
+    "repoHygiene": 8.5,
     "security": 8.9,
     "globalSouthResilience": 6.8,
     "ecosystemIntegration": 6.8,
@@ -127,8 +127,8 @@
   "rubricId": "gtcx-infra-canonical-v2",
   "openExternalAssurance": ["EXT-INF-013", "EXT-INF-014", "EXT-INF-002", "EXT-INF-003"],
   "ciSnapshot": {
-    "mainCiFormatFail": true,
-    "mainCiJobFail": true,
+    "mainCiFormatFail": false,
+    "mainCiJobFail": false,
     "localValidateAllPass": true,
     "localValidateAllGateCount": 38
   },

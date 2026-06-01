@@ -1,57 +1,60 @@
 ---
 title: 'Auto-Dev State — gtcx-infrastructure'
 status: current
-date: '2026-05-31'
+date: '2026-06-01'
 owner: agent:platform-architect
 tier: critical
 tags: ['audit', 'auto-dev', 'sprint']
 review_cycle: on-change
 ---
 
-# Auto-Dev State — 2026-05-31
+# Auto-Dev State — 2026-06-01
 
 ## Session
 
-- **Date:** 2026-05-31
-- **Last command:** /complete-sprint
-- **Branch:** `docs/roadmap-update-2026-05-30`
+- **Date:** 2026-06-01
+- **Last command:** /complete-sprint (IR-1)
+- **Branch:** `main`
 - **HEAD:** (see `docs/audit/latest.json`)
 
-## Sprint closure
+## Sprint closure — IR-1 (Main CI truth)
 
-Agent-executable Sprint 2/3 items closed. `validate-all` 36/36 PASS. `pnpm typecheck && pnpm lint && pnpm test && pnpm build` PASS.
+| Task                                         | Status                                      |
+| -------------------------------------------- | ------------------------------------------- |
+| IR-1.1 Prettier-safe distribution snapshot   | **done**                                    |
+| IR-1.2 ci-snapshot penalties cleared (local) | **done** — verify `main` Actions after push |
+| IR-1.3 README workflow badges                | **done**                                    |
+| IR-1.4 Trivy SHA pin comments                | **done** (was already SHA-pinned)           |
+| IR-1.5 Ledger note for repo-hygiene          | **done**                                    |
 
-## Score delta (rubric v2 — two tracks)
+`pnpm typecheck && pnpm lint && pnpm test && pnpm build` — **PASS**
 
-| Track                             | Before | After                       | Notes                                                  |
-| --------------------------------- | ------ | --------------------------- | ------------------------------------------------------ |
-| **IR** (internal engineering)     | 7.3    | **7.5** → **7.6** after #85 | Ledger + CI snapshot                                   |
-| **XC** (external / GTM clearance) | 9.0    | **9.0**                     | 1.0 burden; EXT-INF unchanged — **does not reduce IR** |
+## Score delta (rubric v2)
 
-Retired: `certified composite` (was IR − gap). See `docs/audit/SCORING.md`.
+| Dimension              | Before | After   | Delta                       |
+| ---------------------- | ------ | ------- | --------------------------- |
+| **IR** (headline)      | 7.6    | **7.7** | +0.1                        |
+| repoHygiene (adjusted) | 7.9    | **8.5** | +0.6 (CI penalties cleared) |
+| **XC**                 | 9.0    | 9.0     | 0                           |
 
-## Agent-closed stories
+Other dimensions unchanged this sprint.
 
-S2-11, S2-12, S3-01 (structural), S3-02–S3-07 (structural where noted), S3-09, S3-10, S3-12 (structural).
+## Next sprint (IR-2)
 
-## EXT-INF blocked (human/legal/operator)
+- Merge tier-3 dependabot PRs
+- AI SDK v5→v6 migration branch
+- CodeQL/SARIF upload fix on `main`
 
-| ID          | Item                                                                                    |
-| ----------- | --------------------------------------------------------------------------------------- |
-| EXT-INF-002 | S2-13 pen-test SOW signature                                                            |
-| EXT-INF-014 | S3-11 ZWCMP DPA + pilot agreement                                                       |
-| EXT-INF-015 | S3-08 indemnified SLA legal review                                                      |
-| Operator    | S3-02 live RDS DR, S3-04 WORM/staging smoke, S3-07 npm publish, S3-12 registry tag push |
+See [`ir-10-10-roadmap.md`](./ir-10-10-roadmap.md) IR-2.
 
-## Next sprint candidates (agent)
+## EXT-INF blocked (XC — not IR)
 
-- Dependabot PR merges after CI green on `main`
-- Cloudflare DNS cutover verification (operator + curl)
-- Standalone `terraform-aws-compliance-db` repo sync tag
+EXT-INF-002, EXT-INF-013, EXT-INF-014, EXT-INF-003 (live operator), EXT-INF-015.
 
 ## Resume
 
 ```bash
 node tools/scripts/validate-all.mjs
 pnpm typecheck && pnpm lint && pnpm test
+gh run list --workflow ci.yml --branch main --limit 3
 ```

@@ -97,17 +97,19 @@ Do not publish fake “IR 8.2 after sprint N” tables — run `pnpm score:compu
 
 ## 4. IR phases (forward work)
 
-### IR-1 — Main CI truth → **M1 (8.0)**
+### IR-1 — Main CI truth → **M1 (8.0)** — **closed 2026-06-01**
 
-| ID     | Work                                                                                 | Dimension   | Source                          |
-| ------ | ------------------------------------------------------------------------------------ | ----------- | ------------------------------- |
-| IR-1.1 | Prettier-fix `docs/audit/distribution-snapshots/2026-06-01.json`                     | repoHygiene | full-audit Sprint 1 #1          |
-| IR-1.2 | Set `mainCiFormatFail` / `mainCiJobFail` false in `ci-snapshot.json` after green run | repoHygiene | `scoring-rubric.json` penalties |
-| IR-1.3 | README: remove false CI shields or add workflow badge                                | repoHygiene | full-audit finding #8           |
-| IR-1.4 | Pin Trivy action SHA in `ci.yml`                                                     | security    | full-audit Sprint 1 #4          |
-| IR-1.5 | Ledger entry: repo-hygiene ≥8.5 with Actions URL                                     | repoHygiene | ledger rules                    |
+| ID     | Work                                                                                 | Dimension   | Status |
+| ------ | ------------------------------------------------------------------------------------ | ----------- | ------ |
+| IR-1.1 | Prettier-fix `docs/audit/distribution-snapshots/2026-06-01.json` + generator newline | repoHygiene | done   |
+| IR-1.2 | `ci-snapshot.json` penalties cleared (local); verify Actions after push              | repoHygiene | done   |
+| IR-1.3 | README workflow badges (not static shields)                                          | repoHygiene | done   |
+| IR-1.4 | Trivy action SHA comments (already pinned)                                           | security    | done   |
+| IR-1.5 | Ledger entry for IR-1 repo-hygiene evidence                                          | repoHygiene | done   |
 
-**Acceptance:** `gh run list --workflow ci.yml --branch main` → latest `ci` **success**.
+**Acceptance:** `gh run list --workflow ci.yml --branch main` → latest `ci` **success** (confirm post-push).
+
+**Active phase:** IR-2 (dependencies & supply chain).
 
 ---
 

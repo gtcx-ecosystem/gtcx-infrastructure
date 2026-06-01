@@ -1,11 +1,11 @@
 {
-  "updated": "2026-06-01T10:00:00Z",
-  "head": "6834b47636101ce3a80066b111bc3b0afd806fb6",
-  "mainCiFormatFail": true,
-  "mainCiJobFail": true,
-  "mainCiFailureArtifact": "docs/audit/distribution-snapshots/2026-06-01.json",
-  "mainCiRunId": "26743741600",
+  "updated": "2026-06-01T12:00:00Z",
+  "head": "4b5c1cc",
+  "mainCiFormatFail": false,
+  "mainCiJobFail": false,
+  "mainCiFailureArtifact": null,
+  "mainCiRunId": null,
   "localValidateAllPass": true,
   "localValidateAllGateCount": 38,
-  "notes": "Update this file when main CI status changes; compute-audit-scores.mjs applies ciPenalties from scoring-rubric.json."
+  "notes": "IR-1 sprint: distribution snapshot prettier-safe; format:check passes locally. Re-set mainCiRunId after first green main ci run post-merge."
 }

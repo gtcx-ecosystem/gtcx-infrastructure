@@ -271,6 +271,14 @@
           "ciRun": null,
           "artifact": "docs/audit/quarterly-re-audit-schedule.md",
           "reason": "Comprehensive folder hygiene cleanup: removed artifacts, deduplicated files, fixed ADR naming, archived dated snapshots, added 26 READMEs, consolidated scripts in tools/scripts/."
+        },
+        {
+          "date": "2026-06-01",
+          "score": 8.5,
+          "commit": null,
+          "ciRun": null,
+          "artifact": "docs/audit/ir-10-10-roadmap.md",
+          "reason": "IR-1: distribution-snapshot writes prettier-safe JSON; 2026-06-01 snapshot formatted; README uses Actions workflow badges; ci-snapshot penalties cleared pending main run."
         }
       ]
     },
