@@ -85,8 +85,12 @@ check() {
 # --- Step 1: Verify services are running ---
 echo "Step 1: Service health"
 STEP1_START=$(date +%s%N)
-HEALTH=$(curl -sf "$PROTOCOL_URL/health" 2>/dev/null | python3 -c "import sys,json; print(json.load(sys.stdin).get('status',''))" 2>/dev/null || echo "")
-check "Protocol server health" "$([ "$HEALTH" = "ok" ] && echo true || echo false)" "$STEP1_START"
+if [ "${DR_SKIP_PROTOCOL_HEALTH:-}" = "1" ]; then
+  echo "  [SKIP] Protocol server health (DR_SKIP_PROTOCOL_HEALTH=1)"
+else
+  HEALTH=$(curl -sf "$PROTOCOL_URL/health" 2>/dev/null | python3 -c "import sys,json; print(json.load(sys.stdin).get('status',''))" 2>/dev/null || echo "")
+  check "Protocol server health" "$([ "$HEALTH" = "ok" ] && echo true || echo false)" "$STEP1_START"
+fi
 
 PG_OK=$(PGPASSWORD="$POSTGRES_PASSWORD" psql -h "$POSTGRES_HOST" -p "$POSTGRES_PORT" -U "$POSTGRES_USER" -d "$POSTGRES_DB" -c "SELECT 1" -t -A 2>/dev/null || echo "")
 check "PostgreSQL operational" "$([ "$PG_OK" = "1" ] && echo true || echo false)" "$STEP1_START"

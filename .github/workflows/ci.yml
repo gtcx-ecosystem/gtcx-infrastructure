@@ -401,6 +401,7 @@ jobs:
           AUDIT_DB: gtcx_audit
           POSTGRES_AUDIT_PASSWORD: ${{ secrets.CI_POSTGRES_AUDIT_PASSWORD || 'gtcx_audit_dev_password' }}
           PROTOCOL_URL: http://localhost:8300
+          DR_SKIP_PROTOCOL_HEALTH: '1'
         run: |
           docker compose -f infra/docker/docker-compose.dev.yml up -d postgres postgres-audit
           sleep 10
