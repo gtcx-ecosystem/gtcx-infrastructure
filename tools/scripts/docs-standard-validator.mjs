@@ -72,6 +72,8 @@ const ALLOWED_UPPERCASE_NAMES = new Set([
   'LICENSE',
   'SECURITY.md',
   'CHANGELOG.md',
+  'SCORING.md',
+  'AUDIT-RECONCILIATION.md',
 ]);
 
 // ADR filenames are an approved exception per docs-standard-compliance audit.

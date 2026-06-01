@@ -1,3 +1,13 @@
+---
+title: 'Audit score reconciliation'
+status: current
+date: '2026-06-01'
+owner: quality-evidence-lead
+tier: critical
+tags: ['audit', 'scoring', 'reconciliation']
+review_cycle: on-change
+---
+
 # Audit score reconciliation (2026-06-01)
 
 ## Authoritative scores (v2 rubric)

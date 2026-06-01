@@ -1,3 +1,13 @@
+---
+title: 'Canonical audit scoring'
+status: current
+date: '2026-06-01'
+owner: quality-evidence-lead
+tier: critical
+tags: ['audit', 'scoring', 'IR', 'XC']
+review_cycle: on-change
+---
+
 # Canonical audit scoring — gtcx-infrastructure
 
 **Single source of truth:** `node tools/scripts/compute-audit-scores.mjs --write` → `docs/audit/latest.json`
