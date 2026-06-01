@@ -34,10 +34,10 @@ The ecosystem review of 2026-05-12 (`docs/audit/ecosystem-repo-review-2026-05-12
 
 **Deprecate both repos.** Archive them in GitHub and redirect all references.
 
-| Repo          | Superseded By                     | Rationale                                                                                                                                                 |
-| ------------- | --------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `gtcx-core12` | `gtcx-core` (TypeScript)          | `gtcx-core` is the actively maintained shared library. `gtcx-core12` (Python) has zero consumers, zero CI, and no active development since 2026-02-06.    |
-| `gtcx-amis`   | `gtcx-infrastructure` (templates) | AMANI/MABA specs now live in `gtcx-infrastructure/tools/templates/`. `gtcx-amis` has zero consumers, zero CI, and no active development since 2026-02-04. |
+| Repo          | Superseded By                                   | Rationale                                                                                         |
+| ------------- | ----------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `gtcx-core12` | `compliance-os` → `services/core12/`            | Standalone repo **deleted** 2026-06-01. Python Core12 service lives in the ComplianceOS monorepo. |
+| `gtcx-amis`   | `gtcx-infrastructure` (templates) + `sensei-ai` | AMANI/MABA templates in `tools/templates/projects/`. Repo archived; delete after doc recovery.    |
 
 ---
 
@@ -69,8 +69,9 @@ The ecosystem review of 2026-05-12 (`docs/audit/ecosystem-repo-review-2026-05-12
 - [x] Updated `tools/templates/PRINCIPLES.md`: remapped P21 → `gtcx-core`, P23 → `gtcx-protocols`
 - [x] Updated `docs/specs/cicd-pipeline.md`: removed `gtcx-amis` from documentation consumers
 - [x] Updated `docs/audit/ecosystem-repo-review-2026-05-12.md`: marked both as deprecated
-- [ ] Archive `gtcx-core12` in GitHub (requires org admin)
-- [ ] Archive `gtcx-amis` in GitHub (requires org admin)
+- [x] Deleted `gtcx-core12` from GitHub (2026-06-01; local backup on drive)
+- [x] Deleted empty demo repos `agx-demo1`, `sgx-demo` (2026-06-01)
+- [ ] Delete `gtcx-amis` from GitHub after doc recovery (archived; local backup exists)
 - [ ] Notify `#engineering` Slack channel
 
 ---
