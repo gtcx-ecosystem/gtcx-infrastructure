@@ -188,4 +188,7 @@ EOF
   echo "Evidence written to: $EVIDENCE_FILE"
 fi
 
-exit $([ "$FAIL" -eq 0 ] && echo 0 || echo 1)
+if [ "$FAIL" -eq 0 ]; then
+  exit 0
+fi
+exit 1
