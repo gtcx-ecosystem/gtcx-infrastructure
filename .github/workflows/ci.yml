@@ -129,6 +129,8 @@ jobs:
 
       - name: Master validation (all gates)
         run: node tools/scripts/validate-all.mjs
+        env:
+          GH_TOKEN: ${{ github.token }}
 
       - name: Chaos manifest validation
         run: node tools/scripts/chaos-manifest-validator.mjs

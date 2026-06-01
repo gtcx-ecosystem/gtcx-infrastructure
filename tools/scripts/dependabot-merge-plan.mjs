@@ -73,6 +73,15 @@ function fetchChecks(prNumber) {
 }
 
 function main() {
+  const token = process.env.GH_TOKEN || process.env.GITHUB_TOKEN;
+  if (!token) {
+    console.log(
+      '[dependabot-merge-plan] skip: GH_TOKEN not set (optional locally; required in CI for gh pr list)'
+    );
+    return;
+  }
+  process.env.GH_TOKEN = token;
+
   const checkOnly = process.argv.includes('--check');
   const prs = fetchOpenDependabotPrs();
   const checksByNumber = new Map();

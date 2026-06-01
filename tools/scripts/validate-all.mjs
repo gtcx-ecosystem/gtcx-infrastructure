@@ -46,9 +46,9 @@ function run(name, command, cwd) {
     return true;
   } catch (e) {
     console.log(`${RED}FAIL${RESET}`);
-    const stderr = e.stderr || e.message || '';
-    const lines = stderr.split('\n').filter((l) => l.trim());
-    for (const line of lines.slice(0, 5)) {
+    const combined = [e.stderr, e.stdout, e.message].filter(Boolean).join('\n');
+    const lines = combined.split('\n').filter((l) => l.trim());
+    for (const line of lines.slice(-8)) {
       console.log(`  ${RED}>${RESET} ${line}`);
     }
     totalFailed++;
