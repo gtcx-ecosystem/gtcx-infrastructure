@@ -69,6 +69,40 @@ INF-49 (DNS/TLS + /health 200)
 | 2026-06-01 | gtcx-protocols#61      | (see GitHub issue comment) |
 | 2026-06-01 | gtcx-infrastructure#49 | status comment             |
 
+## Inbound ack from protocols (2026-06-01)
+
+**Subject:** Re: #60 / INF-49 — ack; protocols owns DID handler next  
+**Logged on protocols side:** `gtcx-protocols/docs/gtm/inbound-tickets/from-gtcx-infrastructure-2026-06-01.md`
+
+### They acknowledged
+
+- Base URL `https://api.staging.gtcx.trade` (staging)
+- Contract: `GET /v1/dids/auth/{iso}/{slug}` → `country-support-packages/<iso>/v1.0.0/authorities/<slug>.json`
+- Placeholder `key_status` until #61 / infra **#86**
+- HSM tracker **#86**, not infra #50–#54
+
+### Protocols next (their side)
+
+1. Implement `GET /v1/dids/auth/{iso}/{slug}` (static serve from CSP authority artifacts)
+2. Route tests + staging smoke curl after `/health` is 200
+3. Will not close **#60** until sample authority DID resolves on staging (placeholders OK)
+4. Will not close **#61** / MA-2026-05-31-003 until ceremony evidence + key-rotation commit
+
+### ETA alignment (agreed)
+
+| Milestone                  | ETA                                                                     |
+| -------------------------- | ----------------------------------------------------------------------- |
+| Staging DID (placeholders) | ~1 week after infra **#49** close + handler on `main`                   |
+| Production HSM keys        | Infra 4–8 weeks post-approval; no country sequencing from protocols yet |
+
+**Their ask:** Ping when `/health` is 200; they run verification curls and update #60.
+
+## Infra next (our side)
+
+1. Fix ALB → `gtcx-protocols-staging:8300` so `/health` returns **200** (closes **#49**)
+2. Post SPKI on #49 for mobile `CERT_PINS.md`
+3. Comment on **gtcx-protocols#60** when step 1 is done
+
 ## References
 
 - [`country-support-packages/_tools/AUTHORITIES-README.md`](https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/country-support-packages/_tools/AUTHORITIES-README.md)

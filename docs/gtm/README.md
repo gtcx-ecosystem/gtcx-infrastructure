@@ -23,6 +23,7 @@ See [GTM Documentation Overview](overview.md) for scope boundaries and ownership
 | Document                                                                                                 | From                                            |
 | -------------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
 | [`inbound-tickets/from-gtcx-protocols-2026-06-01.md`](inbound-tickets/from-gtcx-protocols-2026-06-01.md) | gtcx-protocols P0 (#60 / #61) — INF-49, #86 HSM |
+| [`inbound-tickets/to-gtcx-protocols-2026-06-01.md`](inbound-tickets/to-gtcx-protocols-2026-06-01.md)     | Outbound ack + next steps to protocols          |
 
 ---
 
