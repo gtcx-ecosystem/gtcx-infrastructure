@@ -49,7 +49,8 @@ server: awselb/2.0
 
 - [ ] `curl https://api.staging.gtcx.trade/health` → **200** with `{"status":"ok","version":"<sha>"}`
 - [ ] SPKI fingerprint posted on #49 for mobile `CERT_PINS.md`
-- [ ] `gtcx-protocols` DID handler live for sample: `GET /v1/dids/auth/gh/bog` → 200 + JSON-LD
+- [ ] Staging deploy: `gtcx-protocols-staging` image ≥ `d54241c1`, `GTCX_CSP_ROOT` + CSP volume mounted
+- [ ] `GET /v1/dids/auth/gh/bog` → 200, `jq .id` = `"did:gtcx:auth:gh:bog"` (handler on `main` since `d54241c1`; protocols verifies after infra ping)
 
 ## Cross-repo
 

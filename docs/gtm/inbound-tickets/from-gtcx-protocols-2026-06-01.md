@@ -81,10 +81,32 @@ INF-49 (DNS/TLS + /health 200)
 - Placeholder `key_status` until #61 / infra **#86**
 - HSM tracker **#86**, not infra #50–#54
 
+### Protocols handler shipped (2026-06-01)
+
+**Commits on gtcx-protocols `main`:** `d54241c1` (feat), `402f3b58` (docs) — 19 commits ahead of `origin/main` at handoff.
+
+| Item   | Detail                                                                      |
+| ------ | --------------------------------------------------------------------------- |
+| Route  | `GET /v1/dids/auth/{iso}/{slug}` — public, `application/ld+json`, ETag      |
+| Source | `country-support-packages/<iso>/v1.0.0/authorities/<slug>.json`             |
+| Config | `GTCX_CSP_ROOT` (default: monorepo `country-support-packages/`)             |
+| Tests  | `authority-dids.test.ts`, `http-integration.test.ts`, e2e Step 1 HTTP fetch |
+
+**Staging verify (protocols, after infra ping):**
+
+```bash
+curl -sS https://api.staging.gtcx.trade/v1/dids/auth/gh/bog | jq .id
+# expect: "did:gtcx:auth:gh:bog"
+```
+
+**Deploy requirement (staging):** protocols image must mount CSP artifacts + set `GTCX_CSP_ROOT` (e.g. `/app/country-support-packages`). Infra: ensure `gtcx-protocols-staging` rollout uses image ≥ `d54241c1` and CSP volume/env (not yet in kustomize overlay — operator follow-up).
+
+**#60 closure:** protocols will not close until `/health` 200 **and** successful staging curl above.
+
 ### Protocols next (their side)
 
-1. Implement `GET /v1/dids/auth/{iso}/{slug}` (static serve from CSP authority artifacts)
-2. Route tests + staging smoke curl after `/health` is 200
+1. ~~Implement handler~~ **done** on `main`
+2. Staging smoke curl after infra `/health` 200 + CSP-mounted deploy
 3. Will not close **#60** until sample authority DID resolves on staging (placeholders OK)
 4. Will not close **#61** / MA-2026-05-31-003 until ceremony evidence + key-rotation commit
 
@@ -103,9 +125,17 @@ INF-49 (DNS/TLS + /health 200)
 
 ## Infra next (our side)
 
-1. Fix ALB → `gtcx-protocols-staging:8300` so `/health` returns **200** (closes **#49**)
-2. Post SPKI on #49 for mobile `CERT_PINS.md`
-3. Comment on **gtcx-protocols#60** when step 1 is done
+1. **kubectl:** `aws eks update-kubeconfig --region af-south-1 --name gtcx-staging --alias staging`
+2. Roll out **gtcx-protocols-staging** with image containing `d54241c1`+ and `GTCX_CSP_ROOT` + CSP volume
+3. Fix ALB target health so `/health` returns **200** (closes **#49**)
+4. Ping **gtcx-protocols#60** with:
+
+```bash
+curl -sS -o /dev/null -w "%{http_code}\n" https://api.staging.gtcx.trade/health
+curl -sS https://api.staging.gtcx.trade/v1/dids/auth/gh/bog | jq .id
+```
+
+5. Post SPKI on **#49** for mobile `CERT_PINS.md`
 
 ## References
 
