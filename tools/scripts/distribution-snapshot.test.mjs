@@ -6,12 +6,16 @@
  */
 
 import assert from 'node:assert';
+import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { describe, it } from 'node:test';
 
 import {
   fetchNpmDownloads,
   fetchGithubRepoStats,
   buildSnapshot,
+  writeSnapshot,
 } from './distribution-snapshot.mjs';
 
 function fetcherForResponses(responses) {
@@ -119,6 +123,27 @@ describe('buildSnapshot', () => {
     assert.ok(repoNames.length >= 2, 'should track ≥2 github repos');
     for (const repo of repoNames) {
       assert.strictEqual(snapshot.github[repo].stars, 8);
+    }
+  });
+});
+
+describe('writeSnapshot', () => {
+  it('writes JSON with trailing newline for prettier compatibility', async () => {
+    const dir = mkdtempSync(join(tmpdir(), 'dist-snap-'));
+    try {
+      const snapshot = {
+        schemaVersion: 1,
+        snapshotDate: '2026-06-01',
+        producedAt: '2026-06-01T00:00:00.000Z',
+        npm: { package: '@gtcx/audit-signer', 'last-week': { downloads: 1 } },
+        github: {},
+      };
+      const file = await writeSnapshot(snapshot, dir);
+      const raw = readFileSync(file, 'utf8');
+      assert.ok(raw.endsWith('\n'), 'snapshot file must end with newline');
+      assert.deepStrictEqual(JSON.parse(raw.trimEnd()), snapshot);
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
     }
   });
 });

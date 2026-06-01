@@ -103,7 +103,8 @@ export async function buildSnapshot({ fetcher = globalThis.fetch } = {}) {
 export async function writeSnapshot(snapshot, outputDir = OUTPUT_DIR) {
   mkdirSync(outputDir, { recursive: true });
   const file = resolve(outputDir, `${snapshot.snapshotDate}.json`);
-  writeFileSync(file, JSON.stringify(snapshot, null, 2));
+  // Trailing newline keeps generated JSON compatible with `pnpm format:check`.
+  writeFileSync(file, `${JSON.stringify(snapshot, null, 2)}\n`);
   return file;
 }
 
