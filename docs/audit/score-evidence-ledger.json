@@ -275,7 +275,7 @@
         {
           "date": "2026-06-01",
           "score": 8.5,
-          "commit": null,
+          "commit": "4b5c1cc",
           "ciRun": null,
           "artifact": "docs/audit/ir-10-10-roadmap.md",
           "reason": "IR-1: distribution-snapshot writes prettier-safe JSON; 2026-06-01 snapshot formatted; README uses Actions workflow badges; ci-snapshot penalties cleared pending main run."

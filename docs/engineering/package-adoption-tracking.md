@@ -44,10 +44,10 @@ autonomy_level: 'permissioned'
 
 ## Deprecated / Archived Repos (Excluded)
 
-| Repo          | Status      | Reason                  |
-| ------------- | ----------- | ----------------------- |
-| `gtcx-core12` | ❌ Archived | Superseded by gtcx-core |
-| `gtcx-amis`   | ❌ Archived | No active development   |
+| Repo          | Status                | Reason                                         |
+| ------------- | --------------------- | ---------------------------------------------- |
+| `gtcx-core12` | ❌ Deleted 2026-06-01 | Superseded by `compliance-os/services/core12/` |
+| `gtcx-amis`   | ❌ Deleted 2026-06-01 | Superseded by `sensei-ai` + infra templates    |
 
 ---
 
