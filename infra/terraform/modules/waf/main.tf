@@ -31,6 +31,12 @@ variable "aws_region" {
   default     = "af-south-1"
 }
 
+variable "allow_health_path" {
+  description = "Allow GET/HEAD /health without Bot Control blocking (uptime monitors, bare curl)"
+  type        = bool
+  default     = true
+}
+
 resource "aws_wafv2_web_acl" "main" {
   name        = "${var.name_prefix}-waf-${var.aws_region}"
   description = "OWASP CRS + BotControl + RateLimit for ${var.name_prefix}"
@@ -38,6 +44,39 @@ resource "aws_wafv2_web_acl" "main" {
 
   default_action {
     allow {}
+  }
+
+  # Uptime / kubelet-style probes: bare curl without browser User-Agent (INF-49).
+  dynamic "rule" {
+    for_each = var.allow_health_path ? [1] : []
+    content {
+      name     = "AllowHealthEndpoint"
+      priority = 0
+
+      action {
+        allow {}
+      }
+
+      statement {
+        byte_match_statement {
+          search_string         = "/health"
+          positional_constraint = "EXACTLY"
+          field_to_match {
+            uri_path {}
+          }
+          text_transformation {
+            priority = 0
+            type     = "LOWERCASE"
+          }
+        }
+      }
+
+      visibility_config {
+        cloudwatch_metrics_enabled = true
+        metric_name                = "AllowHealthEndpointMetric"
+        sampled_requests_enabled   = true
+      }
+    }
   }
 
   # AWS Managed Rule: OWASP Core Rule Set
