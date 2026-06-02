@@ -56,6 +56,8 @@ images:
     newTag: latest
   - name: 348389439381.dkr.ecr.af-south-1.amazonaws.com/compliance-gateway
     newTag: d5a311ef
+  - name: 348389439381.dkr.ecr.af-south-1.amazonaws.com/gtcx-sovereign
+    newTag: staging
 
 # Staging resource limits (moderate)
 patches:
@@ -130,6 +132,26 @@ patches:
     target:
       kind: HorizontalPodAutoscaler
       name: gtcx-protocols
+  # Sovereign — staging uses default SA (gtcx-platform SA does not exist in staging)
+  - patch: |-
+      - op: replace
+        path: /spec/template/spec/serviceAccountName
+        value: default
+      - op: replace
+        path: /spec/replicas
+        value: 1
+      - op: remove
+        path: /spec/template/spec/containers/0/envFrom
+    target:
+      kind: Deployment
+      name: sovereign
+  - patch: |-
+      - op: replace
+        path: /spec/minReplicas
+        value: 1
+    target:
+      kind: HorizontalPodAutoscaler
+      name: sovereign
   # NATS — emptyDir instead of PVC (EBS CSI driver not installed in cluster)
   - path: patches/nats-emptydir.yaml
     target:

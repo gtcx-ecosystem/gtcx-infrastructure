@@ -27,7 +27,7 @@ metadata:
     # external-dns annotations (no-op until external-dns is deployed; safe to
     # set in advance per INF-49 staging-dns runbook). When external-dns runs,
     # these are the only changes needed to auto-manage Route53 A records.
-    external-dns.alpha.kubernetes.io/hostname: api.staging.gtcx.trade,geotag.staging.gtcx.trade
+    external-dns.alpha.kubernetes.io/hostname: api.staging.gtcx.trade,geotag.staging.gtcx.trade,sovereign-staging.gtcx.trade
     external-dns.alpha.kubernetes.io/ttl: '60'
 spec:
   ingressClassName: alb
@@ -58,6 +58,16 @@ spec:
                 name: gtcx-protocols-staging
                 port:
                   number: 8300
+    - host: sovereign-staging.gtcx.trade
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: sovereign-staging
+                port:
+                  number: 3001
     - host: geotag.staging.gtcx.trade
       http:
         paths:

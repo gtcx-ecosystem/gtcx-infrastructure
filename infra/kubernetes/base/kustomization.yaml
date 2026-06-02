@@ -32,6 +32,7 @@ resources:
   - services/protocols.yaml
   - services/platform.yaml
   - services/anomaly-detector.yaml
+  - services/sovereign/deployment.yaml
 
 configMapGenerator:
   - name: gtcx-env
@@ -78,4 +79,6 @@ images:
   - name: gtcx/agx
     newTag: v0.1.0
   - name: gtcx/protocols
+    newTag: v0.1.0
+  - name: gtcx/sovereign
     newTag: v0.1.0
