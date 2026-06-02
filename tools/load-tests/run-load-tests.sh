@@ -55,7 +55,9 @@ REPLAY_PID=$!
 echo "[INFO] Starting compliance-gateway server on port $GATEWAY_PORT..."
 (
   cd "$PROJECT_ROOT/tools/compliance-gateway"
-  PORT=$GATEWAY_PORT NODE_ENV=development node src/server.mjs &>/dev/null
+  PORT=$GATEWAY_PORT NODE_ENV=development AUDIT_QUERY_ENABLED=1 \
+    COMPLIANCE_GATEWAY_AUTH_TOKENS_JSON='[{"token":"load-test-token","subject":"load-test","permissions":["audit:read"],"label":"load-test","tenantId":"zw"}]' \
+    node src/server.mjs &>/dev/null
 ) &
 GATEWAY_PID=$!
 
@@ -86,6 +88,7 @@ REPLAY_HEALTH_RESULT=0
 REPLAY_VERIFY_RESULT=0
 GATEWAY_HEALTH_RESULT=0
 GATEWAY_TOOLS_RESULT=0
+GATEWAY_RATE_LIMIT_RESULT=0
 
 k6 run --summary-trend-stats="avg,min,med,max,p(95),p(99)" \
   -e BASE_URL="http://localhost:$REPLAY_PORT" \
@@ -103,9 +106,15 @@ k6 run --summary-trend-stats="avg,min,med,max,p(95),p(99)" \
   -e BASE_URL="http://localhost:$GATEWAY_PORT" \
   "$SCRIPT_DIR/compliance-gateway-tools.js" || GATEWAY_TOOLS_RESULT=$?
 
+k6 run --summary-trend-stats="avg,min,med,max,p(95),p(99)" \
+  -e BASE_URL="http://localhost:$GATEWAY_PORT" \
+  -e AUDIT_TOKEN="load-test-token" \
+  "$SCRIPT_DIR/compliance-gateway-rate-limit.js" || GATEWAY_RATE_LIMIT_RESULT=$?
+
 OVERALL_RESULT=0
 if [[ $REPLAY_HEALTH_RESULT -ne 0 ]] || [[ $REPLAY_VERIFY_RESULT -ne 0 ]] || \
-   [[ $GATEWAY_HEALTH_RESULT -ne 0 ]] || [[ $GATEWAY_TOOLS_RESULT -ne 0 ]]; then
+   [[ $GATEWAY_HEALTH_RESULT -ne 0 ]] || [[ $GATEWAY_TOOLS_RESULT -ne 0 ]] || \
+   [[ $GATEWAY_RATE_LIMIT_RESULT -ne 0 ]]; then
   OVERALL_RESULT=1
 fi
 
@@ -121,7 +130,8 @@ if [[ -n "$OUTPUT_DIR" ]]; then
     { "name": "replay-protection-health", "port": $REPLAY_PORT, "status": "$([[ $REPLAY_HEALTH_RESULT -eq 0 ]] && echo 'PASS' || echo 'FAIL')" },
     { "name": "replay-protection-verify", "port": $REPLAY_PORT, "status": "$([[ $REPLAY_VERIFY_RESULT -eq 0 ]] && echo 'PASS' || echo 'FAIL')" },
     { "name": "compliance-gateway-health", "port": $GATEWAY_PORT, "status": "$([[ $GATEWAY_HEALTH_RESULT -eq 0 ]] && echo 'PASS' || echo 'FAIL')" },
-    { "name": "compliance-gateway-tools", "port": $GATEWAY_PORT, "status": "$([[ $GATEWAY_TOOLS_RESULT -eq 0 ]] && echo 'PASS' || echo 'FAIL')" }
+    { "name": "compliance-gateway-tools", "port": $GATEWAY_PORT, "status": "$([[ $GATEWAY_TOOLS_RESULT -eq 0 ]] && echo 'PASS' || echo 'FAIL')" },
+    { "name": "compliance-gateway-rate-limit", "port": $GATEWAY_PORT, "status": "$([[ $GATEWAY_RATE_LIMIT_RESULT -eq 0 ]] && echo 'PASS' || echo 'FAIL')" }
   ]
 }
 EOF
