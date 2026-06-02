@@ -33,7 +33,9 @@ terraform import \
 
 Skip if the secret does not exist yet — Terraform will create it.
 
-## 2. Apply secrets module (ESO + manifests)
+## 2. Apply secrets module (ESO + manifests + IAM)
+
+Creates `gtcx-staging-intelligence-secrets-role` and `intelligence-sa` IRSA. Required before the helm-only fallback script.
 
 ```bash
 terraform plan -var-file=terraform.tfvars -target=module.secrets
@@ -61,6 +63,16 @@ kubectl get sa intelligence-sa -n intelligence -o jsonpath='{.metadata.annotatio
 ```bash
 kubectl annotate externalsecret intelligence-secrets -n intelligence \
   force-sync=$(date +%s) --overwrite
+```
+
+## Alternative: Helm-only (if Terraform apply is blocked)
+
+Requires IAM role `gtcx-staging-intelligence-secrets-role` to already exist (step 2 must have run at least once).
+
+```bash
+cd gtcx-infrastructure
+chmod +x scripts/staging/install-intelligence-eso.sh
+./scripts/staging/install-intelligence-eso.sh
 ```
 
 ## 5. Wire orchestrator / SDK (follow-up)
