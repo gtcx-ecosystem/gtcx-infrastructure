@@ -132,7 +132,10 @@ patches:
     target:
       kind: HorizontalPodAutoscaler
       name: gtcx-protocols
-  # Sovereign — staging uses default SA (gtcx-platform SA does not exist in staging)
+  - path: patches/sovereign-staging-envfrom.yaml
+    target:
+      kind: Deployment
+      name: sovereign
   - patch: |-
       - op: replace
         path: /spec/template/spec/serviceAccountName

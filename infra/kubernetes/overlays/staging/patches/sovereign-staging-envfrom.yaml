@@ -1,0 +1,15 @@
+# Restore envFrom with staging-suffixed resource names (kustomize nameSuffix).
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sovereign
+spec:
+  template:
+    spec:
+      containers:
+        - name: sovereign
+          envFrom:
+            - configMapRef:
+                name: gtcx-base-config
+            - secretRef:
+                name: gtcx-secrets
