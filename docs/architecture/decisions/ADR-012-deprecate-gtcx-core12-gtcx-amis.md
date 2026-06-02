@@ -73,6 +73,7 @@ The ecosystem review of 2026-05-12 (`docs/audit/ecosystem-repo-review-2026-05-12
 - [x] Deleted empty demo repos `agx-demo1`, `sgx-demo` (2026-06-01)
 - [x] Deleted `gtcx-amis` from GitHub (2026-06-01; persona docs in `gtcx-docs` archive; bundle in `_local-backups/`)
 - [x] Deleted Sensei GitBook mirror repos `sensei-ai-docs-{developers,operations,enterprise}` (2026-06-01; no live content migrated — see `sensei-ai/docs/_historical/migration-review/`)
+- [x] `gtcx-complianceos` content migration complete (2026-06-02) — archive in `gtcx-docs/docs/archive/_historical/complianceos-legacy/`; GitHub delete pending explicit approval
 - [ ] Notify `#engineering` Slack channel
 
 ---
