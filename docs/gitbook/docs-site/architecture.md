@@ -85,7 +85,7 @@ A future regulator's auditor can pull any object from the bucket and run `verify
 
 ## Related
 
-- [ADR-014 — NATS JetStream Audit Transport](https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/docs/decisions/ADR-014-nats-jetstream-audit-transport.md)
-- [ADR-015 — Per-Tenant Subject Routing](https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/docs/decisions/ADR-015-per-tenant-jetstream-subject-routing.md)
-- [ADR-016 — Fail-Closed Audit Signing](https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/docs/decisions/ADR-016-fail-closed-audit-signing.md)
+- [ADR-014 — NATS JetStream Audit Transport](https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/docs/architecture/decisions/ADR-014-nats-jetstream-audit-transport.md)
+- [ADR-015 — Per-Tenant Subject Routing](https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/docs/architecture/decisions/ADR-015-per-tenant-jetstream-subject-routing.md)
+- [ADR-016 — Fail-Closed Audit Signing](https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/docs/architecture/decisions/ADR-016-fail-closed-audit-signing.md)
 - [SIGNAL Scorecard (v2, 9.60/10)](https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/docs/audit/signal-scorecard.json)
