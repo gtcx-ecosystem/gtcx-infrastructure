@@ -9,7 +9,7 @@
 #   kubectl apply -k infra/kubernetes/overlays/staging/intelligence/
 #
 # Verify:
-#   curl -s https://intelligence-staging.gtcx.io/health
+#   curl -s https://intelligence-staging.gtcx.trade/health
 # =============================================================================
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
