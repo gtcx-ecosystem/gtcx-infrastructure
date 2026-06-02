@@ -1,0 +1,52 @@
+# =============================================================================
+# Staging Intelligence Ingress — ALB + external-dns
+# =============================================================================
+# Routes traffic to the intelligence orchestrator in the staging cluster.
+# Prerequisites:
+#   - ACM certificate must cover intelligence-staging.gtcx.io
+#   - intelligence-orchestrator service must exist in the intelligence namespace
+#   - external-dns must be running to manage Route53 records
+#
+# Endpoints verified by gtcx-intelligence deployment smoke:
+#   /health  → 200 (ALB target health check)
+#   /ready   → 200 (orchestrator readiness)
+#   /live    → 200 (orchestrator liveness)
+#   /metrics → 200 (Prometheus metrics)
+# =============================================================================
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: intelligence-staging
+  namespace: intelligence
+  labels:
+    app.kubernetes.io/name: intelligence
+    app.kubernetes.io/part-of: gtcx
+    environment: staging
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
+    alb.ingress.kubernetes.io/ssl-policy: ELBSecurityPolicy-TLS13-1-2-2021-06
+    # NOTE: Verify this ACM certificate covers intelligence-staging.gtcx.io.
+    # If not, request a new certificate in AWS ACM and update this ARN.
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:af-south-1:348389439381:certificate/5fa25ba3-82ea-47de-80d8-fc68e0722d01
+    alb.ingress.kubernetes.io/healthcheck-path: /health
+    alb.ingress.kubernetes.io/healthcheck-interval-seconds: '15'
+    alb.ingress.kubernetes.io/healthcheck-timeout-seconds: '5'
+    alb.ingress.kubernetes.io/group.name: gtcx-intelligence-staging
+    # external-dns manages the Route53 A record when deployed.
+    external-dns.alpha.kubernetes.io/hostname: intelligence-staging.gtcx.io
+    external-dns.alpha.kubernetes.io/ttl: '60'
+spec:
+  ingressClassName: alb
+  rules:
+    - host: intelligence-staging.gtcx.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: intelligence-orchestrator
+                port:
+                  number: 8200

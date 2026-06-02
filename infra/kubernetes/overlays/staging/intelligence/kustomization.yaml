@@ -1,0 +1,21 @@
+# =============================================================================
+# Intelligence Staging Overlay
+# =============================================================================
+# Standalone overlay for the intelligence namespace in staging.
+# Applied separately from the main gtcx-staging overlay because
+# intelligence services live in their own namespace and lifecycle.
+#
+# Apply:
+#   kubectl apply -k infra/kubernetes/overlays/staging/intelligence/
+#
+# Verify:
+#   curl -s https://intelligence-staging.gtcx.io/health
+# =============================================================================
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: intelligence
+
+resources:
+  - namespace.yaml
+  - ingress.yaml
