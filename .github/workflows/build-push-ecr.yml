@@ -84,6 +84,13 @@ jobs:
             ecr_repos: baselineos
             source_repos: baseline-os
 
+          - name: compliance-gateway
+            dockerfile: tools/compliance-gateway/Dockerfile
+            context_dir: .
+            target: ''
+            ecr_repos: compliance-gateway
+            source_repos: ''
+
     steps:
       - name: Checkout infrastructure repo
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
@@ -260,7 +267,7 @@ jobs:
         id: ecr-login
         uses: aws-actions/amazon-ecr-login@fa648b43de3d4d023bcb3f89ed6940096949c419 # v2
 
-      - name: Update kustomization image tags
+      - name: Update production kustomization image tags
         run: |
           SHA_SHORT="${GITHUB_SHA::8}"
           REGISTRY="${{ steps.ecr-login.outputs.registry }}"
@@ -271,11 +278,22 @@ jobs:
             gtcx/agx="${REGISTRY}/gtcx-agx:${SHA_SHORT}" \
             gtcx/protocols="${REGISTRY}/gtcx-protocols:${SHA_SHORT}"
 
+      - name: Update staging kustomization image tags
+        run: |
+          SHA_SHORT="${GITHUB_SHA::8}"
+          REGISTRY="${{ steps.ecr-login.outputs.registry }}"
+          cd infra/kubernetes/overlays/staging
+
+          # Compliance-gateway uses the full ECR path in base manifests
+          kustomize edit set image \
+            "${REGISTRY}/compliance-gateway=${REGISTRY}/compliance-gateway:${SHA_SHORT}"
+
       - name: Commit manifest update
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add infra/kubernetes/overlays/production/kustomization.yaml
+          git add infra/kubernetes/overlays/staging/kustomization.yaml
           git diff --staged --quiet || git commit -m "chore(deploy): update image tags to ${GITHUB_SHA::8}"
           git push
 
