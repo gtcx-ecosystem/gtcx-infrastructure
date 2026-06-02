@@ -4,7 +4,11 @@
  * Mobile signs with a keypair whose public key is published in a DID
  * document at:
  *
- *   ${SERVICES.tradepass}/identity/${did}
+ *   ${baseUrl}${identityPathPrefix}/${did}
+ *
+ * Default prefix `/identity` matches mobile `api-config` resolve URLs.
+ * Staging protocols exposes operator docs at `/v1/tradepass/:did` — set
+ * `TRADEPASS_IDENTITY_PATH_PREFIX=/v1/tradepass` when wiring to gtcx-protocols.
  *
  * (per gtcx-mobile/apps/mobile/gtcx/lib/api-config.ts:192).
  *
@@ -40,6 +44,7 @@ const DEFAULT_TIMEOUT_MS = 5000;
  *
  * @typedef {object} ResolverConfig
  * @property {string} baseUrl
+ * @property {string} [identityPathPrefix] - e.g. `/identity` (default) or `/v1/tradepass`
  * @property {typeof fetch} [fetcher]
  * @property {number} [timeoutMs]
  *
@@ -96,6 +101,7 @@ export function createTradePassResolver(config) {
     throw new TypeError('createTradePassResolver requires a baseUrl');
   }
   const baseUrl = config.baseUrl.replace(/\/$/, '');
+  const identityPathPrefix = (config.identityPathPrefix ?? '/identity').replace(/\/$/, '');
   const fetcher = config.fetcher ?? globalThis.fetch;
   const timeoutMs = config.timeoutMs ?? DEFAULT_TIMEOUT_MS;
   if (typeof fetcher !== 'function') {
@@ -105,7 +111,7 @@ export function createTradePassResolver(config) {
     if (typeof did !== 'string' || !did.startsWith('did:')) {
       throw new DidResolverError('did-malformed');
     }
-    const url = `${baseUrl}/identity/${encodeURIComponent(did)}`;
+    const url = `${baseUrl}${identityPathPrefix}/${encodeURIComponent(did)}`;
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), timeoutMs);
     try {

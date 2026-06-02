@@ -75,6 +75,27 @@ describe('createTradePassResolver', () => {
     assert.strictEqual(capturedUrl, 'https://tradepass.example/identity/did%3Agtcx%3Atp_zw_001');
   });
 
+  it('supports TRADEPASS_IDENTITY_PATH_PREFIX for gtcx-protocols compat', async () => {
+    let capturedUrl;
+    const fetcher = async (url) => {
+      capturedUrl = url;
+      return {
+        ok: true,
+        json: async () => makeDidDoc([{ id: 'k-1', publicKeyJwk: SAMPLE_JWK }]),
+      };
+    };
+    const resolve = createTradePassResolver({
+      baseUrl: 'http://gtcx-protocols-staging:8300',
+      identityPathPrefix: '/v1/tradepass',
+      fetcher,
+    });
+    await resolve('did:gtcx:tp_zw_001', 'k-1');
+    assert.strictEqual(
+      capturedUrl,
+      'http://gtcx-protocols-staging:8300/v1/tradepass/did%3Agtcx%3Atp_zw_001',
+    );
+  });
+
   it('throws did-malformed for non-DID input', async () => {
     const resolve = createTradePassResolver({ baseUrl: 'https://x', fetcher: async () => ({}) });
     await assert.rejects(resolve('not-a-did', 'k-1'), (e) => e.reason === 'did-malformed');

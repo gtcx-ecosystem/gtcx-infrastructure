@@ -123,6 +123,8 @@ const auditBundlesEnabled = process.env.AUDIT_BUNDLES_ENABLED === '1';
 const auditBundlesExpectedAudience =
   process.env.AUDIT_BUNDLES_AUDIENCE || 'https://geotag.staging.gtcx.trade';
 const tradePassBaseUrl = process.env.TRADEPASS_BASE_URL;
+const tradePassIdentityPathPrefix =
+  process.env.TRADEPASS_IDENTITY_PATH_PREFIX || '/identity';
 
 // Until gtcx-protocols #60 lands a real TradePass deployment behind a
 // stable URL (tracked on #55), no real DID resolver is wired and any
@@ -130,7 +132,10 @@ const tradePassBaseUrl = process.env.TRADEPASS_BASE_URL;
 // mockable resolver directly into processBundle; production wiring
 // happens when TRADEPASS_BASE_URL is set in the staging environment.
 const auditBundlesResolver = tradePassBaseUrl
-  ? createTradePassResolver({ baseUrl: tradePassBaseUrl })
+  ? createTradePassResolver({
+      baseUrl: tradePassBaseUrl,
+      identityPathPrefix: tradePassIdentityPathPrefix,
+    })
   : null;
 
 const auditBundlesNonceGate = createNonceStore({ tenantId: 'audit-bundles' });
