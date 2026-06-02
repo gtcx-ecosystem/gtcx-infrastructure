@@ -55,7 +55,7 @@ images:
     newName: 348389439381.dkr.ecr.af-south-1.amazonaws.com/gtcx-anomaly-detector
     newTag: latest
   - name: 348389439381.dkr.ecr.af-south-1.amazonaws.com/compliance-gateway
-    newTag: audit-3437db4-amd64
+    newTag: d5a311ef
 
 # Staging resource limits (moderate)
 patches:
