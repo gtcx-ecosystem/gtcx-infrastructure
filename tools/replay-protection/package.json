@@ -30,7 +30,7 @@
     "node": ">=20.18.0"
   },
   "dependencies": {
-    "@gtcx/crypto": "^2.0.0",
+    "@gtcx/crypto": "^3.1.4",
     "pg": "^8.15.0"
   },
   "peerDependencies": {

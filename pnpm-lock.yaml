@@ -163,8 +163,8 @@ importers:
   tools/replay-protection:
     dependencies:
       '@gtcx/crypto':
-        specifier: ^2.0.0
-        version: 2.0.0
+        specifier: ^3.1.4
+        version: 3.1.4
       pg:
         specifier: ^8.15.0
         version: 8.20.0
@@ -675,13 +675,13 @@ packages:
   '@expressive-code/plugin-text-markers@0.42.0':
     resolution: {integrity: sha512-l59lUx8fq1v5g6SpmbDjiU0+7IdfbiWnAyRmtTVSpfhyq+nZMN4UcmYyu2b9Mynhzt7Gr+O+cXyEPDNb2AVWVQ==}
 
-  '@gtcx/crypto-native@0.2.0':
-    resolution: {integrity: sha512-RIu+luHW7tHfPSDxV8qxxGkIVWFaEyZJu3o6S7/wqgTh3st+GuyPmVNXbG6Tfqypykf8yGj+sprYL3AMWPXFZw==}
+  '@gtcx/crypto-native@0.4.4':
+    resolution: {integrity: sha512-s5ua6ogOBDpUvfwAZ/nhchHtANqy1hEx7m9w8juDkDKk7iGoTrrRBUborGJhtuSHbgI1R1NZgWzhH76YPSOvYQ==}
 
-  '@gtcx/crypto@2.0.0':
-    resolution: {integrity: sha512-U/BkHcqw+WVb9AoEereagHrmq4dew5WzVkg2Fk6KecLWvbvjWe53xYFQjjUERBzMZ8wuGbpcwStO7vOE0YLefA==}
+  '@gtcx/crypto@3.1.4':
+    resolution: {integrity: sha512-dYHCleD8M7I6jPM+HfDiBmxYQ19EgFYKhf7BKN5TldG9928V5FEBLKKzf5clsXbhKxV8dwCpN8/lS6DSWsGmLQ==}
     peerDependencies:
-      '@gtcx/ai': 0.2.2
+      '@gtcx/ai': 0.3.4
     peerDependenciesMeta:
       '@gtcx/ai':
         optional: true
@@ -4157,16 +4157,16 @@ snapshots:
     dependencies:
       '@expressive-code/core': 0.42.0
 
-  '@gtcx/crypto-native@0.2.0':
+  '@gtcx/crypto-native@0.4.4':
     optional: true
 
-  '@gtcx/crypto@2.0.0':
+  '@gtcx/crypto@3.1.4':
     dependencies:
       '@noble/curves': 1.9.0
       '@noble/hashes': 1.8.0
       zod: 3.25.76
     optionalDependencies:
-      '@gtcx/crypto-native': 0.2.0
+      '@gtcx/crypto-native': 0.4.4
 
   '@humanfs/core@0.19.2':
     dependencies:
