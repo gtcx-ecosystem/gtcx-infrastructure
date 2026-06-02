@@ -23,7 +23,7 @@
     "@ai-sdk/openai": "^1.0.0",
     "@gtcx/audit-signer": "workspace:*",
     "@gtcx/compliance-data": "workspace:*",
-    "ai": "^5.0.52",
+    "ai": "^6.0.194",
     "ioredis": "^5.10.1",
     "zod": "^3.23.0"
   },
