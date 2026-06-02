@@ -106,11 +106,9 @@ route53_a_records_created = true
 dig +short api.staging.gtcx.trade
 # → <ALB IPs>
 
-# WAF may block default curl; use a browser User-Agent (see trust-layers doc).
-curl -sS -o /dev/null -w "%{http_code}\n" \
-  -A "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36" \
-  https://api.staging.gtcx.trade/health
-# → 200
+# Until WAF module is applied (AllowHealthEndpoint rule), bare curl may 403 — use https:// or browser UA:
+curl -sS -o /dev/null -w "%{http_code}\n" https://api.staging.gtcx.trade/health
+# → 200 after: cd infra/terraform/environments/staging && terraform apply -target=module.waf
 
 curl -sS -A "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36" \
   "https://api.staging.gtcx.trade/v1/dids/auth/gh/bog" | jq .id
@@ -154,12 +152,12 @@ helm upgrade --install external-dns external-dns/external-dns \
 
 ## Open follow-ups (NOT in INF-49 scope)
 
-| Item                                                                  | Where                                                          | Owner           |
-| --------------------------------------------------------------------- | -------------------------------------------------------------- | --------------- |
-| Production HSM keys for authority DIDs (`key_status: production`)     | `gtcx-protocols#61`, infra **#86**                             | compliance-lead |
-| Production DNS (`gtcx.trade` apex, not staging)                       | `gtcx-infrastructure/infra/terraform/environments/production/` | platform-lead   |
-| `external-dns-irsa` Terraform module                                  | `gtcx-infrastructure/infra/terraform/modules/`                 | platform-lead   |
-| WAF allowlist / `/health` rate-limit exemption for synthetic monitors | staging WAF + protocols SEC-004                                | platform-lead   |
+| Item                                                                                             | Where                                                          | Owner           |
+| ------------------------------------------------------------------------------------------------ | -------------------------------------------------------------- | --------------- |
+| Production HSM keys for authority DIDs (`key_status: production`)                                | `gtcx-protocols#61`, infra **#86**                             | compliance-lead |
+| Production DNS (`gtcx.trade` apex, not staging)                                                  | `gtcx-infrastructure/infra/terraform/environments/production/` | platform-lead   |
+| `external-dns-irsa` Terraform module                                                             | `gtcx-infrastructure/infra/terraform/modules/`                 | platform-lead   |
+| WAF `/health` allow (bare curl / monitors) — **IaC in `modules/waf`**; `terraform apply` staging | `infra/terraform/modules/waf/main.tf` (`AllowHealthEndpoint`)  | platform-lead   |
 
 **Completed (staging, 2026-06-01):** HTTP handler `GET /v1/dids/auth/{iso}/{slug}`, image `gtcx-protocols:v0.4.5`, staging verify on `api.staging.gtcx.trade` — closes **#60** / INF-49 staging gate. See trust-layers architecture doc.
 
