@@ -31,7 +31,8 @@ log_error() { echo -e "${RED}[ERROR]${NC} $1"; }
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 INFRA_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
-ECOSYSTEM_ROOT="${GTCX_ECOSYSTEM_ROOT:-$(cd "${INFRA_ROOT}/../.." && pwd)}"
+REPO_ROOT="$(cd "${INFRA_ROOT}/.." && pwd)"
+ECOSYSTEM_ROOT="${GTCX_ECOSYSTEM_ROOT:-$(cd "${REPO_ROOT}/.." && pwd)}"
 
 require_ecosystem_repos() {
     if [[ ! -d "${ECOSYSTEM_ROOT}/gtcx-intelligence" ]] || [[ ! -d "${ECOSYSTEM_ROOT}/gtcx-protocols" ]]; then
@@ -55,7 +56,7 @@ TARGET_SERVICE=""
 
 service_exists() {
     case "$1" in
-        protocols|agx|intelligence-sdk|trainer|redteam) return 0 ;;
+        protocols|agx|intelligence-sdk|trainer|redteam|compliance-gateway) return 0 ;;
         *) return 1 ;;
     esac
 }
@@ -67,6 +68,7 @@ service_dockerfile() {
         intelligence-sdk) echo "infra/docker/Dockerfile.intelligence" ;;
         trainer) echo "${ECOSYSTEM_ROOT}/gtcx-intelligence/intelligence/trainer/Dockerfile" ;;
         redteam) echo "${ECOSYSTEM_ROOT}/gtcx-intelligence/intelligence/red-team/Dockerfile" ;;
+        compliance-gateway) echo "tools/compliance-gateway/Dockerfile" ;;
         *) return 1 ;;
     esac
 }
@@ -76,6 +78,7 @@ service_context() {
         protocols) echo "${ECOSYSTEM_ROOT}/gtcx-protocols" ;;
         agx) echo "${ECOSYSTEM_ROOT}/6-platforms" ;;
         intelligence-sdk|trainer|redteam) echo "${ECOSYSTEM_ROOT}/gtcx-intelligence" ;;
+        compliance-gateway) echo "${REPO_ROOT}" ;;
         *) return 1 ;;
     esac
 }
@@ -84,7 +87,7 @@ service_args() {
     case "$1" in
         protocols) echo "" ;;
         agx) echo "--build-arg PLATFORM=agx --build-arg APP_PORT=3000" ;;
-        intelligence-sdk|trainer|redteam) echo "" ;;
+        intelligence-sdk|trainer|redteam|compliance-gateway) echo "" ;;
         *) return 1 ;;
     esac
 }
@@ -96,11 +99,12 @@ service_ecr_repo() {
         intelligence-sdk) echo "gtcx-intelligence-sdk" ;;
         trainer) echo "gtcx-intelligence-trainer" ;;
         redteam) echo "gtcx-intelligence-redteam" ;;
+        compliance-gateway) echo "compliance-gateway" ;;
         *) return 1 ;;
     esac
 }
 
-ALL_SERVICES=(protocols agx intelligence-sdk trainer redteam)
+ALL_SERVICES=(protocols agx intelligence-sdk trainer redteam compliance-gateway)
 
 # =============================================================================
 # Parse arguments
@@ -160,7 +164,7 @@ ecr_login() {
     fi
 
     local registry="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
-    log_info "Logging into ECR: ${registry}"
+    log_info "Logging into ECR: ${registry}" >&2
     aws ecr get-login-password --region "${AWS_REGION}" \
         | docker login --username AWS --password-stdin "${registry}" 2>/dev/null
 
@@ -179,7 +183,11 @@ build_and_push() {
     dockerfile_ref="$(service_dockerfile "$svc")"
     local dockerfile="$dockerfile_ref"
     if [[ "${dockerfile_ref}" != /* ]]; then
-        dockerfile="${INFRA_ROOT}/${dockerfile_ref}"
+        if [[ "$svc" == "compliance-gateway" ]]; then
+            dockerfile="${REPO_ROOT}/${dockerfile_ref}"
+        else
+            dockerfile="${INFRA_ROOT}/${dockerfile_ref}"
+        fi
     fi
     local context
     context="$(service_context "$svc")"

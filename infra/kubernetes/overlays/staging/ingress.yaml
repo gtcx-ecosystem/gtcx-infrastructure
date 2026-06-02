@@ -35,6 +35,14 @@ spec:
     - host: api.staging.gtcx.trade
       http:
         paths:
+          # PRD-002 / #50–#52 — audit ingest + query on compliance-gateway
+          - path: /audit
+            pathType: Prefix
+            backend:
+              service:
+                name: compliance-gateway-staging
+                port:
+                  number: 8500
           - path: /
             pathType: Prefix
             backend:
@@ -45,6 +53,13 @@ spec:
     - host: geotag.staging.gtcx.trade
       http:
         paths:
+          - path: /audit
+            pathType: Prefix
+            backend:
+              service:
+                name: compliance-gateway-staging
+                port:
+                  number: 8500
           - path: /
             pathType: Prefix
             backend:

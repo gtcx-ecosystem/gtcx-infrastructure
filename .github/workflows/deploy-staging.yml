@@ -93,7 +93,7 @@ jobs:
         run: |
           # Port-forward to compliance-gateway and hit /health
           kubectl port-forward -n "${{ env.NAMESPACE }}" \
-            "deployment/compliance-gateway-staging" 8080:3000 &
+            "deployment/compliance-gateway-staging" 8080:8500 &
           PF_PID=$!
           sleep 5
 

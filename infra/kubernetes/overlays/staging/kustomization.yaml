@@ -54,6 +54,8 @@ images:
   - name: gtcx-anomaly-detector
     newName: 348389439381.dkr.ecr.af-south-1.amazonaws.com/gtcx-anomaly-detector
     newTag: latest
+  - name: 348389439381.dkr.ecr.af-south-1.amazonaws.com/compliance-gateway
+    newTag: audit-3437db4-amd64
 
 # Staging resource limits (moderate)
 patches:
@@ -62,6 +64,10 @@ patches:
       kind: Deployment
       name: compliance-gateway
     path: patches/compliance-gateway-redis.yaml
+  - target:
+      kind: Deployment
+      name: compliance-gateway
+    path: patches/compliance-gateway-audit-staging.yaml
   # NOTE: audit-flush removed from base — image is ARM64-only, nodes are AMD64.
   # Re-add when AMD64 image is available.
   # - path: audit-flush-patch.yaml

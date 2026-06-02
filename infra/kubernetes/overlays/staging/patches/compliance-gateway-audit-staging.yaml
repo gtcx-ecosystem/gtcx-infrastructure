@@ -1,0 +1,25 @@
+# =============================================================================
+# Compliance Gateway — audit API staging (#50–#52)
+# =============================================================================
+# Routes /audit/* via ingress → this service. Resolver calls in-cluster
+# gtcx-protocols until a dedicated TradePass /identity service is live.
+# =============================================================================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: compliance-gateway
+  namespace: gtcx
+spec:
+  template:
+    spec:
+      containers:
+        - name: compliance-gateway
+          env:
+            - name: TRADEPASS_BASE_URL
+              value: 'http://gtcx-protocols-staging.gtcx-staging.svc.cluster.local:8300'
+            - name: TRADEPASS_IDENTITY_PATH_PREFIX
+              value: '/v1/tradepass'
+            - name: AUDIT_BUNDLES_AUDIENCE
+              value: 'https://api.staging.gtcx.trade'
+            - name: AUDIT_QUERY_NDJSON_DIR
+              value: '/tmp/audit-query'
