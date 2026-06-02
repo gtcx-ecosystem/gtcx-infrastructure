@@ -1,44 +1,51 @@
 {
   "grade": "Bank-Grade",
-  "date": "2026-05-25",
+  "date": "2026-06-02",
   "version": "1.0",
+  "head": "5b1cc78",
   "prerequisite_met": false,
-  "prerequisite_reason": "Enterprise-Grade certifiable score 3.8 < 8.5 required for Bank-Grade. Internal readiness is strong but external blockers (SOC 2, pen-test) prevent certification. B-GAP assessed for readiness only.",
-  "preliminary_score": 4.9,
-  "final_score": 2.9,
-  "status": "pending-external",
+  "prerequisite_note": "Enterprise-Grade final_score is 3.8 (preliminary 7.6), below the 8.5 prerequisite. E.1 (SOC 2 Type I) and E.2 (pen-test) are pending external engagement.",
+  "preliminary_score": 4.3,
+  "final_score": 2.58,
+  "status": "not-ready",
   "threshold": 9.0,
   "regulatory_jurisdiction": "ZA",
   "external_dependencies": [
     {
       "control": "B.1",
       "status": "pending",
-      "blocker": "SOC 2 Type I not complete; Type II observation period not started",
+      "blocker": "SOC 2 Type I not yet complete (E.1 pending). Type II observation period cannot begin until Type I is clean.",
       "estimated_timeline": "Q2 2027"
+    },
+    {
+      "control": "B.2",
+      "status": "not-applicable",
+      "blocker": "No cardholder data (CHD) in codebase. No PCI DSS engagement required unless card product introduced.",
+      "estimated_timeline": "N/A"
     },
     {
       "control": "B.3",
       "status": "pending",
-      "blocker": "Red team scope and playbook exist but no exercise executed",
+      "blocker": "Red team scope defined (GTCX-RT-001) but exercise not yet executed. Target window: 2026-H2.",
       "estimated_timeline": "2026-H2"
     },
     {
       "control": "B.5",
       "status": "pending",
-      "blocker": "No SARB engagement or FSCA license",
-      "estimated_timeline": "2027"
+      "blocker": "No SARB engagement doc, no FSCA license application started, no regulatory correspondence on file.",
+      "estimated_timeline": "2026-Q3"
     },
     {
       "control": "B.8",
       "status": "pending",
-      "blocker": "DR tests executed but no external witness",
-      "estimated_timeline": "2026-H2"
+      "blocker": "DR runbook and structural validation exist, but live RDS restore test pending operator credentials. No external witness signed.",
+      "estimated_timeline": "2026-Q3"
     },
     {
       "control": "B.10",
       "status": "pending",
-      "blocker": "No pen-test reports in 12 months",
-      "estimated_timeline": "2026-06-30"
+      "blocker": "Pen-test scope and vendor shortlist complete, but no SOW signed and no historical pen-test reports exist.",
+      "estimated_timeline": "2026-Q3"
     }
   ],
   "controls": [
@@ -46,117 +53,161 @@
       "id": "B.1",
       "name": "SOC 2 Type II",
       "weight": 0.2,
-      "score": 0.0,
+      "control_score": 0.0,
       "passed": false,
       "external": true,
-      "evidence": "Type I not yet complete. Readiness checklist at ~92% and evidence inventory exists, but no auditor engaged. Type II observation period cannot start until Type I complete.",
-      "raw_output": "docs/compliance/soc2-readiness-checklist.md: ~92% mapped; no auditor engaged; no Type II observation period doc"
+      "justification": "Prerequisite E.1 (SOC 2 Type I) is pending per enterprise-grade evidence. No Type II observation period document exists. Only 2 evidence/ticket files found in docs/compliance/. Type I incomplete triggers 0.0 multiplier per rubric.",
+      "raw_evidence": [
+        "enterprise-grade-evidence.json: E.1 status = 'pending' — SOC 2 Type I auditor not engaged; readiness checklist ~92%",
+        "cat docs/compliance/soc2-type2-observation.md: File does not exist",
+        "find docs/compliance/ -name '*evidence*' -o -name '*ticket*' | wc -l: 2"
+      ]
     },
     {
       "id": "B.2",
       "name": "PCI DSS Level 1",
       "weight": 0.1,
-      "score": 1.0,
+      "control_score": 1.0,
       "passed": true,
-      "external": false,
-      "evidence": "No raw card data (PAN, CVV) found in codebase. Tokenization architecture documented. No card handling = PCI DSS N/A with full points.",
-      "raw_output": "grep -ri card/pan/cvv tools/*/src/: no results; docs/security/tokenization-architecture.md exists"
+      "external": true,
+      "justification": "No raw cardholder data found in codebase. grep matches are false positives: 'PANX' = Peer Attestation Network, 'card' = low-cardinality metrics label, 'zcard' = Redis command. No tokenization strategy needed because no CHD is handled. Full points awarded as N/A.",
+      "raw_evidence": [
+        "grep -ri 'card|pan|cvv|pci' tools/*/src/ docs/architecture/: no CHD matches; only 'PANX' (Peer Attestation Network), 'low-cardinality', 'zcard' (Redis)",
+        "find docs/compliance/ -name '*pci*' -o -name '*qsa*': 0 files",
+        "cat docs/architecture/payment-tokenization.md: No tokenization strategy — not required without CHD"
+      ]
     },
     {
       "id": "B.3",
       "name": "Red team exercise (annual)",
       "weight": 0.15,
-      "score": 0.6,
+      "control_score": 0.5,
       "passed": false,
       "external": true,
-      "evidence": "Red team scope and rules of engagement published (assumed-breach model, success criteria, timeline, vendor selection). Red team playbook and containment narrative template exist. Exercise not yet executed; planned for 2026-H2."
-    },
-    {
-      "raw_output": "docs/security/red-team-playbook.md; docs/security/red-team-containment-narrative-template.md; no red-team-report-* found"
+      "justification": "Red team scope is comprehensively defined (GTCX-RT-001) with assumed-breach narrative, success criteria, and vendor selection. However, the exercise has not been executed (target window 2026-H2). No report showing lateral movement containment exists. Score = 0.5 per rubric (scope defined, no report).",
+      "raw_evidence": [
+        "docs/audit/red-team-scope.md: Document ID GTCX-RT-001 v1.0; assumed-breach narrative; scope covers Identity, Network, Compute, Data, CI/CD, Social; target execution 2026-H2",
+        "find docs/audit/ -name '*red*team*': 1 file (scope doc only)",
+        "grep -ri 'assume.breach|lateral.movement|pivot' docs/audit/ docs/security/: 9 matches across scope, pen-test scope, audit framework, and containment narrative template; no exercise report"
+      ]
     },
     {
       "id": "B.4",
       "name": "Dedicated CISO or vCISO",
       "weight": 0.1,
-      "score": 0.7,
+      "control_score": 0.35,
       "passed": false,
       "external": false,
-      "evidence": "CISO role definition published (authority, responsibilities, accountability, delegation). Board Security Committee Charter defines CISO as standing member. Named CISO not yet appointed; target 2026-06-30. Monthly board reporting not yet evidenced."
-    },
-    {
-      "raw_output": "docs/compliance/board-security-committee-charter.md: CISO standing member, primary reporting officer"
+      "justification": "CISO role is thoroughly defined (GTCX-CISO-001), Board Security Committee charter ratified, and monthly/quarterly reporting cadence specified. However, no named CISO or vCISO is currently appointed (status: Open — recruitment in progress, target 2026-06-30). Monthly board reporting is documented but not yet operational.",
+      "raw_evidence": [
+        "docs/governance/ciso-role.md: Authority matrix, strategic/operational/compliance responsibilities, monthly security posture report to Board Security Committee specified",
+        "docs/governance/ciso-appointment.md: Status = 'Open — recruitment in progress'; target appointment 2026-06-30; job spec in progress",
+        "docs/compliance/board-security-committee-charter.md: CISO is standing member; quarterly meetings defined",
+        "docs/governance/board-charter.md: Board retains authority over executive appointments including CISO"
+      ]
     },
     {
       "id": "B.5",
       "name": "Regulatory relationship (SARB, FSCA)",
       "weight": 0.1,
-      "score": 0.3,
+      "control_score": 0.0,
       "passed": false,
       "external": true,
-      "evidence": "Regulatory contacts and relationship map published; SARB, FSCA, FIC, Information Regulator contacts documented. No active SARB engagement filed; no FSCA license application submitted; FIC registration as Accountable Institution not started.",
-      "raw_output": "find docs/compliance/: no sarb-engagement.md; docs/compliance/regulatory-framework.md exists"
+      "justification": "No SARB engagement documentation exists. No FSCA license application has been started. FICA compliance framework notes FSCA Category I/II license application status as 'Not started' with target 2026-Q3. No regulatory correspondence files found.",
+      "raw_evidence": [
+        "cat docs/compliance/sarb-engagement.md: File does not exist",
+        "grep -ri 'fsca|category.*I|category.*II|license' docs/compliance/: no FSCA license docs; only generic 'license' references in open-source/policy contexts",
+        "find docs/compliance/ -name '*sarb*' -o -name '*fsca*': 0 files",
+        "docs/compliance/fica-compliance.md: 'FSCA Category I/II license application — Not started — Target 2026-Q3'"
+      ]
     },
     {
       "id": "B.6",
       "name": "Fraud detection + AML monitoring",
       "weight": 0.1,
-      "score": 0.7,
-      "passed": false,
+      "control_score": 0.95,
+      "passed": true,
       "external": false,
-      "evidence": "AML monitoring policy published (risk-based approach, transaction monitoring rules AML-001–AML-005, sanctions screening lists, STR/SAR filing process, record keeping, training). Sanctions screening APIs not yet integrated; goAML portal access pending FIC registration."
-    },
-    {
-      "raw_output": "docs/compliance/data-retention-policy.md: KYC 5-7 years for AML; no aml-monitoring.md; no sanctions screening config"
+      "justification": "AML monitoring policy (GTCX-AML-001) and FICA compliance framework (GTCX-FICA-001) are comprehensive. Five automated transaction monitoring rules (AML-001 to AML-005) are implemented in the anomaly detector. Sanctions screening covers UN, OFAC, EU, UK, and SA lists. STR/SAR filing process is defined with 48-hour SLA via goAML/FIU/NFIU portals. Minor gap: Compliance Officer not yet appointed.",
+      "raw_evidence": [
+        "docs/compliance/aml-monitoring-policy.md: Risk-based approach with Low/Medium/High tiers; 5 automated rules; sanctions screening (UN, OFAC, EU, UK, SA); STR/SAR process with 48h SLA; 5-year record retention in WORM S3",
+        "docs/compliance/fica-compliance.md: CDD workflow, ongoing due diligence, record keeping, RMCP, internal controls mapped to FICA 21/22/29/42A",
+        "tools/anomaly-detector/: AML rules referenced in policy (structural evidence of implementation)"
+      ]
     },
     {
       "id": "B.7",
       "name": "Segregation of duties (SoD)",
       "weight": 0.05,
-      "score": 0.8,
+      "control_score": 0.9,
       "passed": true,
       "external": false,
-      "evidence": "SoD matrix exists (docs/compliance/separation-of-duties-matrix.md). Approval workflows referenced in tools. IAM roles separated between terraform and runtime.",
-      "raw_output": "docs/compliance/separation-of-duties-matrix.md exists; grep -ri approve/approval tools/*/src/: present"
+      "justification": "Separation of Duties Matrix is documented and detailed (GTCX roles vs critical functions with P/A/R/-- annotations). Conflict-of-interest controls prohibit dangerous role combinations. Approval workflows exist in code (compliance-gateway approval tickets, parseApprovalContext, buildAccessProfile). Trust account SoD table shows no single role can both initiate and approve disbursements. Terraform IAM uses scoped IRSA policies. Minor gap: ALB policy still contains a wildcard Describe* (known from E-GAP).",
+      "raw_evidence": [
+        "docs/compliance/separation-of-duties-matrix.md: 6 roles x 10 critical functions; audit database write prohibited for all humans; no single person may deploy and approve same change; KMS signing requires CISO approval",
+        "tools/compliance-gateway/src/: approval ticket parsing, access profile building, policy enforcement for mutating tools",
+        "docs/financial/trust-account.md: SoD table — Treasury Analyst initiates, Treasury Manager approves, CFO approves >$100K, Bank Relationship Manager executes external transfers only",
+        "infra/terraform/modules/irsa-platform/main.tf: scoped KMS Sign policy tied to specific key ARN"
+      ]
     },
     {
       "id": "B.8",
       "name": "BCP tested annually with evidence",
       "weight": 0.1,
-      "score": 0.6,
+      "control_score": 0.5,
       "passed": false,
       "external": true,
-      "evidence": "Two DR drills executed (2026-05-12 and 2026-05-17) with evidence templates. RTO/RPO documented. No external witness signature.",
-      "raw_output": "docs/operations/drills/drill-001-unauthorized-kms-sign-2026-05-12.md; docs/operations/drills/drill-002-replay-guard-failure-2026-05-17.md"
+      "justification": "Disaster Recovery runbook exists with RTO 4h / RPO 15min and per-component recovery methods. DR tests are scheduled (CI gate per PR, weekly testnet schedule, on-demand). Two incident-response drills completed (DRILL-001, DRILL-002). However, the live RDS restore DR test is pending operator credentials. No external witness documentation exists. RTO has not been demonstrated in a live environment. Score = 0.5 per rubric (test executed structurally, not witnessed).",
+      "raw_evidence": [
+        "docs/operations/runbooks/disaster-recovery.md: RTO 4h, RPO 15min; per-component targets; CI gate + weekly + on-demand schedules; 2026-05-11 CI gate PASS",
+        "docs/audit/dr-fire-drill-evidence-2026-05-31.md: Structural validation PASS; live RDS restore pending operator credentials",
+        "docs/operations/drills/drill-001-unauthorized-kms-sign-2026-05-12.md: Completed on-call drill (23 min, contained)",
+        "docs/operations/drills/drill-002-replay-guard-failure-2026-05-17.md: Completed replay-guard drill",
+        "find docs/audit/ -name '*witness*' -o -name '*independent*': 0 files",
+        "grep -ri 'rto.achieved|recovery.time.demonstrated' docs/audit/: only template fields and prompt references; no demonstrated evidence"
+      ]
     },
     {
       "id": "B.9",
       "name": "Customer fund segregation",
       "weight": 0.05,
-      "score": 0.4,
+      "control_score": 0.6,
       "passed": false,
       "external": false,
-      "evidence": "Trust account framework published (account architecture, daily reconciliation, segregation of duties, disbursement policies, CPA audit trail, breach response). Trust accounts not yet opened — pending bank partnership (target 2026-Q4).",
-      "raw_output": "docs/financial/trust-account.md published; reconciliation procedure defined"
+      "justification": "Trust Account Framework (GTCX-TRUST-001) is comprehensive: multi-currency account architecture, daily reconciliation process with 6 steps, SoD for financial roles, disbursement policies with tiered approvals, prohibited uses defined, CPA audit trail (monthly internal, quarterly external, annual financial), and breach response procedures. However, no actual trust accounts have been opened — all target banks show 'RFP pending' and status is 'Framework defined; accounts pending bank partnership'.",
+      "raw_evidence": [
+        "docs/financial/trust-account.md: ZAR/USD/XAU sub-account architecture; daily reconciliation with API log, SQL export, exception report, CFO sign-off, WORM archive; SoD table; CPA audit calendar; breach response protocol",
+        "docs/financial/trust-account.md: 'South Africa — FAIS client money in trust — Framework defined; accounts pending bank partnership'",
+        "docs/financial/trust-account.md: All banking partners show Status = 'RFP pending'",
+        "find docs/financial/ -name '*trust*' -o -name '*reconciliation*': 1 file (trust-account.md)"
+      ]
     },
     {
       "id": "B.10",
       "name": "Pen-test every 6 months",
       "weight": 0.05,
-      "score": 0.1,
+      "control_score": 0.0,
       "passed": false,
       "external": true,
-      "evidence": "No pen-test reports in 12 months. First engagement planned for 2026-06-30 completion. Remediation evidence pipeline exists.",
-      "raw_output": "docs/audit/pen-test-scope-2026.md: target completion 2026-06-30; find docs/audit/: no pen-test reports"
+      "justification": "Pen-test scope (docs/audit/pen-test-scope-2026.md) and vendor shortlist are complete, but no SOW has been signed and no historical penetration test reports exist. Zero pen-test report files found. The 7 remediation files are 10-10 roadmap remediation plans, not pen-test findings. No pen-tests have been executed in the last 12 months.",
+      "raw_evidence": [
+        "docs/audit/pen-test-scope-2026.md: Scope defined, vendor shortlist complete (SensePost recommended), target completion 2026-06-30, status: awaiting leadership selection & RFP send",
+        "docs/audit/pen-test-intake-evidence-2026-05-31.md: SOW intake pack ready; human signature pending",
+        "find docs/audit/ -name '*pen*test*report*': 0 files",
+        "find docs/audit/ -name '*remediation*': 7 files (all 10-10 roadmap plans, not pen-test remediation)"
+      ]
     }
   ],
   "recommendations": [
-    "Complete SOC 2 Type I before initiating Type II observation period.",
-    "Engage SARB and begin FSCA Category I/II license application.",
-    "~~Draft AML monitoring policy~~ ✅ DONE 2026-05-25; SAR filing process and sanctions screening config remain pending.",
-    "Execute red team exercise with external vendor and document containment narrative.",
-    "Appoint named CISO/vCISO (role defined; target 2026-06-30) and establish monthly board security reporting.",
-    "~~Document trust account architecture~~ ✅ DONE 2026-05-25; reconciliation procedures defined; trust account opening pending bank partnership (target 2026-Q4)."
+    "CRITICAL: Complete SOC 2 Type I engagement immediately. Bank-Grade B.1 is blocked until Type I is clean and a 12-month Type II observation period begins.",
+    "CRITICAL: Appoint a named CISO or vCISO by 2026-06-30 to satisfy B.4. All role documentation is ready; only the appointment is missing.",
+    "HIGH: Begin FSCA Category I/II license application and SARB notification in 2026-Q3 per existing plan. B.5 is a hard blocker for operating as a financial services provider in South Africa.",
+    "HIGH: Sign pen-test SOW and execute first accredited penetration test by 2026-Q3. This unblocks B.10 and feeds into B.3 red team timing.",
+    "MEDIUM: Execute live RDS restore DR test with operator credentials and engage an external witness to sign off. Required for B.8 full points.",
+    "MEDIUM: Open trust accounts with banking partners and begin daily reconciliation automation. Framework is complete; execution depends on bank partnerships (target 2026-Q4).",
+    "LOW: Continue red team planning and execute in 2026-H2 after pen-test completion, as scoped in GTCX-RT-001.",
+    "LOW: Address known IAM wildcard (elasticloadbalancing:Describe* in ALB policy) from E-GAP to strengthen B.7 evidence."
   ],
   "banking_readiness": "red",
-  "next_review": "2026-08-25"
+  "next_review": "2026-09-02"
 }

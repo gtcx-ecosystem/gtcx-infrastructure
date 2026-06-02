@@ -1,36 +1,38 @@
 {
   "grade": "Investment-Grade",
-  "date": "2026-05-25",
+  "date": "2026-06-02",
   "version": "1.0",
+  "head": "5b1cc78",
   "prerequisite_met": false,
-  "prerequisite_reason": "Enterprise-Grade preliminary score 7.6 ≥ 8.5 threshold for internal readiness, but certifiable final score 3.8 < 8.5 due to pending external validations (SOC 2 Type I, pen-test). I-GAP assessed for readiness only.",
-  "preliminary_score": 5.0,
-  "final_score": 3.0,
-  "status": "pending-external",
+  "prerequisite_reason": "Enterprise-Grade final score 3.8 < 8.5 threshold. Internal engineering is strong (38/38 validate-all gates pass, internalEngineeringReadiness 7.7, enterpriseReadiness 6.9), but formal E-GAP prerequisite is not satisfied due to pending external validations (SOC 2 Type I, pen-test SOW signature).",
+  "preliminary_score": 4.5,
+  "final_score": 2.7,
+  "status": "not-ready",
   "threshold": 8.5,
   "funding_round": "Series B",
   "external_dependencies": [
     {
       "control": "I.1",
       "status": "partial",
-      "blocker": "Enterprise-Grade external validations incomplete"
+      "blocker": "Enterprise-Grade external validations incomplete (SOC 2 Type I, pen-test SOW)",
+      "estimated_cost": "$15000-50000"
     },
     {
       "control": "I.2",
       "status": "pending",
-      "blocker": "No CPA engaged; no audited financials",
+      "blocker": "No CPA engaged; no audited financials; no engagement letter",
       "estimated_cost": "$20000-40000"
     },
     {
       "control": "I.4",
       "status": "pending",
-      "blocker": "No external code audit report",
+      "blocker": "No external code audit report (SAST/CodeQL/TruffleHog only)",
       "estimated_cost": "$15000-30000"
     },
     {
       "control": "I.6",
       "status": "pending",
-      "blocker": "No forensic accounting readiness review",
+      "blocker": "Accounting policies documented but no forensic accounting readiness review by CPA",
       "estimated_cost": "$10000-20000"
     }
   ],
@@ -39,111 +41,111 @@
       "id": "I.1",
       "name": "Enterprise-Grade prerequisite",
       "weight": 0.1,
-      "score": 0.6,
+      "score": 0.7,
       "passed": false,
       "external": false,
-      "evidence": "E-GAP preliminary 7.6 meets internal readiness threshold; final 3.8 blocked by external. All internal engineering controls (Vault TLS, container hardening, Kyverno, mTLS configs) are complete.",
-      "raw_output": "enterprise-grade-evidence.json: preliminary_score 7.6, final_score 3.8"
+      "evidence": "E-GAP evidence file exists with final_score 3.8 (< 8.5). However, in-repo engineering is strong: 38/38 validate-all gates pass, internalEngineeringReadiness 7.7, enterpriseReadiness 6.9 (latest.json). External gaps blocking E-GAP are SOC 2 Type I and pen-test SOW signature.",
+      "raw_output": "docs/audit/prompts/evidence/enterprise-grade-evidence.json: final_score 3.8; latest.json: internalEngineeringReadiness 7.7, enterpriseReadiness 6.9, validateAll 38/38 pass"
     },
     {
       "id": "I.2",
       "name": "Financial audit (GAAP/IFRS)",
       "weight": 0.2,
-      "score": 0.1,
+      "score": 0.0,
       "passed": false,
       "external": true,
-      "evidence": "No audited financial statements found; no CPA engagement letter; no bookkeeping system references.",
-      "raw_output": "find docs/financial/: no audited-financial-statements; no engagement letter"
+      "evidence": "No audited financial statements found. No CPA engagement letter. Bookkeeping system not identified (no QuickBooks/Xero/Sage/NetSuite references). Accounting policies, expense policy, and trust-account framework are documented but unaudited.",
+      "raw_output": "find docs/financial/: accounting-policies.md, expense-policy.md, trust-account.md, README.md; no *audited-financial-statements*; no *engagement* or *letter*cpa* files; grep quickbooks/xero/sage/netsuite: no results"
     },
     {
       "id": "I.3",
       "name": "Cap table security",
       "weight": 0.1,
-      "score": 0.2,
+      "score": 0.0,
       "passed": false,
       "external": false,
-      "evidence": "No Carta/Pulley/AngelList references; no shareholder agreement found; cap table platform not documented.",
-      "raw_output": "grep -ri carta/pulley/angelist docs/: no results; no docs/legal/shareholder-agreement.md"
+      "evidence": "No cap table platform documented (no Carta, Pulley, AngelList, or EquityZen references). No shareholder agreement found. No 2FA/MFA enforcement documentation for cap table access.",
+      "raw_output": "grep -ri carta/pulley/angelist/equityzen docs/financial/ docs/legal/: no results; grep -ri 2fa/mfa/two.factor docs/legal/: no results; docs/legal/shareholder-agreement.md: not found"
     },
     {
       "id": "I.4",
       "name": "Deep code audit (critical paths)",
       "weight": 0.15,
-      "score": 0.7,
-      "passed": true,
+      "score": 0.5,
+      "passed": false,
       "external": true,
-      "evidence": "SAST in CI (CodeQL, custom queries for crypto-misuse, jwt-misuse, sql-injection, insecure-deserialization); TruffleHog secret scanning; no secrets found in critical paths; critical paths identified (transfer, sign, private.key patterns).",
-      "raw_output": ".github/workflows/: CodeQL, TruffleHog; tools/gtcx-platforms/src/ and tools/gtcx-protocols/src/ searched for critical patterns"
+      "evidence": "SAST in CI: CodeQL (security-evidence.yml), TruffleHog secret scanning (secret-scan.yml), Trivy IaC scanning (ci.yml), OWASP ZAP DAST (dast-zap.yml). No hardcoded secrets found in tools/*/src/ — grep results show only legitimate crypto API usage (crypto.subtle.generateKey, idempotencyKey, canonicalizeValue). Critical paths in this repo center on audit-signing and compliance-gateway crypto operations. No external code audit report (pen-test scope/RFP exists but no completed report).",
+      "raw_output": "g tcx-platforms/src/ and gtcx-protocols/src/: directories do not exist in this repo; grep -ri password/secret/key.*=.*['\"] tools/*/src/: only legitimate API usage; .github/workflows/security-evidence.yml: CodeQL configured; .github/workflows/secret-scan.yml: TruffleHog; .github/workflows/ci.yml: Trivy config scan; .github/workflows/dast-zap.yml: OWASP ZAP; docs/audit/pen-test-scope-2026.md and pen-test-rfp-2026.md exist but no report"
     },
     {
       "id": "I.5",
       "name": "IP cleanliness review",
       "weight": 0.1,
-      "score": 0.9,
+      "score": 1.0,
       "passed": true,
       "external": false,
-      "evidence": "LICENSE (MIT) present; no GPL/AGPL found in dependency tree; no third-party proprietary code contamination; cosign CI integration for artifact signing.",
-      "raw_output": "LICENSE: MIT; grep -ri gpl/agpl package.json pnpm-lock.yaml: no results; docs/security/cosign-ci-integration.md"
+      "evidence": "LICENSE is MIT (permissive). pnpm licenses list shows all permissive licenses: MIT, Apache-2.0, BSD-3-Clause, 0BSD, AFL-2.1 OR BSD-3-Clause. No GPL/AGPL/copyleft found in package.json or pnpm-lock.yaml. No third-party proprietary code contamination in tools/*/src/.",
+      "raw_output": "LICENSE: MIT License (Copyright 2024-present GTCX Protocol); pnpm licenses list: MIT, Apache-2.0, BSD-3-Clause, 0BSD, (AFL-2.1 OR BSD-3-Clause); grep -ri gpl/copyleft/agpl package.json pnpm-lock.yaml: no results; grep -ri copyright/proprietary/confidential tools/*/src/ | grep -v gtcx: no results"
     },
     {
       "id": "I.6",
       "name": "Forensic accounting readiness",
       "weight": 0.1,
-      "score": 0.6,
-      "passed": true,
-      "external": false,
-      "evidence": "Accounting policies document published (IFRS basis, revenue recognition, fixed assets, foreign currency, taxation). Expense policy published (approval hierarchy, per-diems, documentation requirements). Related-party transaction policy referenced in accounting policies. No independent CPA review yet.",
-      "raw_output": "find docs/: no accounting-policies.md, no expense-policy.md"
+      "score": 0.5,
+      "passed": false,
+      "external": true,
+      "evidence": "Accounting policies documented (IFRS primary, SA GAAP supplementary, revenue recognition, related-party transactions, fixed assets, foreign currency, taxation). Expense policy exists with approval hierarchy. Trust-account framework exists. No independent CPA forensic accounting review.",
+      "raw_output": "docs/financial/accounting-policies.md: exists (IFRS/SA GAAP, related-party section present); docs/financial/expense-policy.md: exists; docs/financial/trust-account.md: exists; find docs/: no independent CPA review or forensic accounting report"
     },
     {
       "id": "I.7",
       "name": "Key-person risk mitigation",
       "weight": 0.05,
-      "score": 0.7,
+      "score": 1.0,
       "passed": true,
       "external": false,
-      "evidence": "Bus factor not explicitly documented, but 250+ docs, READMEs for all major tools, runbooks for critical operations, CISO role definition, and comprehensive Terraform/K8s documentation provide strong coverage.",
-      "raw_output": "find tools/ -name README.md: ~10+; find docs/operations/runbooks/: 10+ runbooks"
+      "evidence": "Bus factor > 2 documented in risk register (R-001) and business continuity policy (A17). 21 READMEs in tools/, 101 READMEs total. 39+ operational runbooks in docs/operations/runbooks/ covering DR, incident response, deployment, key rotation, rollback, and tenant onboarding.",
+      "raw_output": "docs/compliance/risk-register.md: R-001 bus-factor > 2 for all critical systems; docs/compliance/policies/a17-business-continuity.md: key-person dependencies documented; find tools/ -name README*: 21; find . -name README*: 101; ls docs/operations/runbooks/ | grep -v README | grep -v template: 39 runbooks"
     },
     {
       "id": "I.8",
       "name": "Regulatory relationship map",
       "weight": 0.05,
-      "score": 0.7,
+      "score": 0.5,
       "passed": false,
       "external": false,
-      "evidence": "FICA compliance framework published; POPIA registration doc published; PAIA manual published; regulatory contacts and relationship map published; regulatory framework doc exists. No active SARB/FSCA engagement yet."
-    },
-    {
-      "raw_output": "find docs/compliance/: no regulatory-contacts.md; docs/compliance/regulatory-framework.md exists"
+      "evidence": "Regulatory contacts documented for SARB, FSCA, FIC. No enforcement actions, fines, penalties, or cease-and-desist orders found. Licenses are NOT current: SARB (no engagement filed), FSCA (no license applied), FIC (not registered as Accountable Institution).",
+      "raw_output": "docs/compliance/regulatory-contacts.md: exists with SARB/FSCA/FIC contacts and status; grep -ri enforcement/fine/penalty/cease docs/compliance/ docs/legal/: only policy references, no actual actions; docs/compliance/regulatory-contacts.md: SARB=no engagement filed, FSCA=no license applied, FIC=not registered"
     },
     {
       "id": "I.9",
       "name": "Customer concentration risk",
       "weight": 0.05,
-      "score": 0.1,
+      "score": 0.0,
       "passed": false,
       "external": false,
-      "evidence": "No revenue analytics document; no customer concentration policy; S2 pilot stage with limited commercial traction.",
-      "raw_output": "find docs/: no revenue-analytics.md"
+      "evidence": "No revenue analytics document. No customer concentration or diversification policy. Pre-revenue / S2 pilot stage.",
+      "raw_output": "docs/financial/revenue-analytics.md: not found; grep -ri concentration/diversification/single.customer docs/financial/: no results"
     },
     {
       "id": "I.10",
       "name": "ESG baseline",
       "weight": 0.1,
-      "score": 0.65,
-      "passed": false,
+      "score": 0.8,
+      "passed": true,
       "external": false,
-      "evidence": "Board Security Committee Charter exists; Board Charter published; CISO role definition published; Ethics Policy published; King IV compliance mapping published; ESG policy published with carbon targets and diversity goals. No carbon footprint baseline measurement yet; no diversity metrics tracked.",
-      "raw_output": "docs/governance/board-charter.md, ethics-policy.md, king-iv-compliance.md, ciso-role.md published"
+      "evidence": "ESG policy exists (GTCX-ESG-001) with carbon baseline (~17 tCO₂e), 2026/2030 carbon targets, diversity & inclusion metrics and programs, and King IV/GRI/UN SDG alignment. Board charter exists (GTCX-BOARD-001). No standalone carbon-footprint.md — carbon data is embedded in ESG policy.",
+      "raw_output": "docs/esg/esg-policy.md: exists with carbon baseline, diversity metrics, inclusion programs; docs/governance/board-charter.md: exists; docs/esg/carbon-footprint.md: not found (data in esg-policy.md); grep -ri diversity/inclusion/gender/demographics docs/hr/ docs/esg/: found in esg-policy.md"
     }
   ],
   "recommendations": [
-    "Engage CPA for audited financials before Series B term sheet.",
-    "Implement cap table platform (Carta/Pulley) with 2FA enforcement.",
-    "~~Draft accounting policies~~ ✅ DONE 2026-05-25; ~~expense policy~~ ✅ DONE 2026-05-25; related-party transaction policy referenced in accounting policies.",
-    "Commission external code audit on critical paths (transfer/sign/withdraw).",
-    "Document bus factor and key-person succession plan."
+    "Complete Enterprise-Grade external validations (SOC 2 Type I, pen-test SOW signature) to satisfy I.1 prerequisite.",
+    "Engage CPA for audited financials and sign engagement letter before Series B term sheet (I.2).",
+    "Implement cap table platform (Carta/Pulley) with 2FA enforcement and draft shareholder agreement (I.3).",
+    "Commission external code audit on critical paths (audit-signing, compliance-gateway crypto) (I.4).",
+    "File SARB payment system notification, apply FSCA Category I/II license, and register with FIC (I.8).",
+    "Create revenue analytics document and customer concentration policy once commercial traction begins (I.9).",
+    "Extract carbon footprint into standalone doc or measurement artifact (I.10)."
   ],
   "dd_readiness": "red",
   "next_review": "per-funding-round"

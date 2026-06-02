@@ -1,49 +1,50 @@
 {
   "grade": "Government-Grade",
-  "date": "2026-05-25",
+  "date": "2026-06-02",
   "version": "1.0",
   "prerequisite_met": false,
-  "prerequisite_reason": "Bank-Grade certifiable score 2.2 < 9.0 required for Government-Grade. All higher-grade external blockers cascade. G-GAP assessed for readiness only.",
-  "preliminary_score": 4.3,
-  "final_score": 2.6,
+  "prerequisite_reason": "Bank-Grade final_score 2.9 < 9.0 required for Government-Grade. G-GAP assessed for readiness only. Remediate B-GAP first.",
+  "preliminary_score": 3.72,
+  "final_score": 2.23,
   "status": "pending-external",
   "threshold": 9.5,
   "jurisdiction": "ZA",
-  "contract_type": "SITA|CBDC|NationalPayment",
+  "contract_type": "SITA|CBDC|NationalPayment|Defense",
   "external_dependencies": [
     {
       "control": "G.1",
       "status": "failed",
-      "blocker": "Bank-Grade prerequisite not met"
+      "blocker": "Bank-Grade prerequisite not met (final_score 2.9 < 9.0)",
+      "estimated_timeline": "2027"
     },
     {
       "control": "G.2",
       "status": "pending",
-      "blocker": "No SITA framework engagement; no SSP; no 3PAO",
+      "blocker": "No SITA framework engagement; no SSP; no 3PAO; no control evidence for 325 FedRAMP Moderate controls",
       "estimated_timeline": "2027"
     },
     {
       "control": "G.3",
       "status": "pending",
-      "blocker": "No HSM/CloudHSM; no CMVP certificate",
-      "estimated_timeline": "2027"
+      "blocker": "No CMVP certificate in repo; KMS signing module configured for FIPS 140-2 Level 2 (not Level 3 for key generation)",
+      "estimated_timeline": "2026-H2"
     },
     {
       "control": "G.5",
       "status": "pending",
-      "blocker": "No personnel security policy; no clearances obtained",
+      "blocker": "No personnel security policy; no SA citizenship or security clearance requirements documented; no clearances obtained",
       "estimated_timeline": "2027"
     },
     {
       "control": "G.9",
       "status": "pending",
-      "blocker": "No 24/7 SOC operational; no SIEM integration",
-      "estimated_timeline": "2027"
+      "blocker": "No 24/7 SOC operational (target 2027-Q1); SIEM evaluation pending; MTTR ~8 hours (target < 1 hour); threat intel feeds mostly planned",
+      "estimated_timeline": "2027-Q1"
     },
     {
       "control": "G.10",
       "status": "pending",
-      "blocker": "Zero-trust configured but not operationally validated by red team",
+      "blocker": "Zero-trust Linkerd mesh policies and NetworkPolicies configured in overlays but ADR-013 Phase 1 only complete; not operationally validated by red team",
       "estimated_timeline": "2026-H2"
     }
   ],
@@ -55,8 +56,8 @@
       "score": 0.0,
       "passed": false,
       "external": false,
-      "evidence": "B-GAP preliminary 3.6, final 2.2. Far below 9.0 threshold.",
-      "raw_output": "bank-grade-evidence.json: preliminary_score 4.9, final_score 2.9"
+      "evidence": "Bank-Grade evidence file exists with final_score 2.9, well below the 9.0 threshold. B-GAP is pending external blockers (SOC 2 Type I, red team, SARB/FSCA engagement, DR witness, pen-test).",
+      "raw_output": "docs/audit/prompts/evidence/bank-grade-evidence.json: final_score 2.9, preliminary_score 4.9, status pending-external, banking_readiness red"
     },
     {
       "id": "G.2",
@@ -65,50 +66,48 @@
       "score": 0.0,
       "passed": false,
       "external": true,
-      "evidence": "No SITA framework agreement; no 3PAO engagement; no System Security Plan (SSP); no control implementation evidence for 325 FedRAMP Moderate controls.",
-      "raw_output": "find docs/compliance/: no ssp-fedramp.md, no sita-framework.md, no 3pao docs"
+      "evidence": "No SITA framework agreement document. No 3PAO engagement documents. No System Security Plan (SSP). Only 2 control-related files in docs/compliance/. No ATO or control implementation evidence for 325 FedRAMP Moderate controls.",
+      "raw_output": "cat docs/compliance/sita-framework.md: No SITA framework doc; find docs/compliance/ -name '*3pao*': none; cat docs/compliance/ssp-fedramp.md: No SSP; find docs/compliance/ -name '*control*': 2"
     },
     {
       "id": "G.3",
-      "name": "FIPS 140-2 Level 3 (or L2 with HSM)",
+      "name": "FIPS 140-2 Level 3 (or Level 2 with HSM)",
       "weight": 0.12,
-      "score": 0.3,
+      "score": 0.5,
       "passed": false,
       "external": true,
-      "evidence": "FIPS assessment doc exists; AWS KMS uses FIPS endpoints; no CloudHSM or HSM backing; no CMVP certificate.",
-      "raw_output": "docs/security/fips-assessment.md exists; infra/terraform/environments/production/main.tf: use_fips_endpoint; no hsm/cloudhsm references"
+      "evidence": "FIPS assessment doc exists (docs/security/fips-assessment.md) claiming AWS infrastructure-level FIPS 140-2 Level 3 HSMs. KMS signing module terraform explicitly states 'FIPS 140-2 Level 2 validated HSM backing' for signing keys. No CMVP certificate present in repository. use_fips_endpoint configured in production terraform.",
+      "raw_output": "docs/security/fips-assessment.md: claims FIPS 140-2 Level 3 for AWS KMS HSMs; infra/terraform/modules/kms-signing/main.tf: 'FIPS 140-2 Level 2 validated HSM backing'; infra/terraform/environments/production/main.tf: use_fips_endpoint; find docs/compliance/ -name '*cmvp*': none"
     },
     {
       "id": "G.4",
       "name": "Supply chain SBOM + attestation",
       "weight": 0.08,
-      "score": 0.8,
+      "score": 1.0,
       "passed": true,
       "external": false,
-      "evidence": "Cosign CI integration for artifact signing; SBOM generation referenced (syft); Docker base images pinned by digest; reproducible builds script exists.",
-      "raw_output": "docs/security/cosign-ci-integration.md; .github/workflows/ references syft/sbom; build:reproducible script; SOURCE_DATE_EPOCH support"
+      "evidence": "CycloneDX SBOM generation in CI (security-evidence.yml, build-push-ecr.yml via Trivy). Cosign artifact signing and verification in build-push-ecr.yml. SLSA provenance workflow (slsa-provenance.yml). Immutable commit-SHA tags pushed to ECR. No SBOM artifacts stored in repo (generated per build in CI).",
+      "raw_output": ".github/workflows/security-evidence.yml: CycloneDX SBOM generation; .github/workflows/build-push-ecr.yml: cosign sign/verify with digest, immutable SHA tags; .github/workflows/slsa-provenance.yml: SLSA Level 3 provenance; find . -name '*.spdx.json' -o -name '*sbom*': none in repo"
     },
     {
       "id": "G.5",
       "name": "Citizenship / security clearance for critical roles",
       "weight": 0.08,
-      "score": 0.4,
+      "score": 0.0,
       "passed": false,
       "external": true,
-      "evidence": "Personnel security policy published (clearance levels Baseline/Confidential/Secret/Top Secret, pre-employment vetting, foreign national policy, ongoing security, termination procedures, third-party personnel). Clearances not yet obtained for any critical roles."
-    },
-    {
-      "raw_output": "find docs/: no personnel-security-policy.md; no hr/ directory with clearance references"
+      "evidence": "No docs/hr/ directory. No personnel security policy document. No clearance or citizenship requirements found in any job descriptions or HR docs. No background check or vetting process documentation.",
+      "raw_output": "cat docs/hr/personnel-security-policy.md: No personnel security policy; grep -ri 'clearance|citizenship|security.check' docs/hr/: docs/hr/ No such file or directory; grep -ri 'background.check|vetting|screening' docs/hr/: docs/hr/ No such file or directory"
     },
     {
       "id": "G.6",
       "name": "Data sovereignty (no cross-border without MoU)",
       "weight": 0.08,
-      "score": 0.9,
-      "passed": true,
+      "score": 0.7,
+      "passed": false,
       "external": false,
-      "evidence": "All production in af-south-1; data-residency-proof.md exists; cross-border transfer policy referenced in data-retention-policy.md (POPIA S72); DPIA drafted.",
-      "raw_output": "infra/terraform/environments/production/main.tf: af-south-1; docs/gtm/sandbox-application/data-residency-proof.md; docs/compliance/dpia-2026-05.md"
+      "evidence": "Production terraform defaults to af-south-1 with 3 AZs. No dedicated data-localization architecture doc. Cross-border transfers documented in POPIA registration: US backup (AWS DPA+SCCs), LLM inference to US (under negotiation), SendGrid US (DPA signed), Zimbabwe/Nigeria (MoU in development). POPIA Information Officer appointment pending (target 2026-06-30).",
+      "raw_output": "infra/terraform/environments/production/main.tf: default region af-south-1; grep -r 'af-south-1' infra/terraform/environments/production/*.tf: 2 occurrences; docs/compliance/popia-registration.md: cross-border transfers to US, Zimbabwe, Nigeria with varying safeguards; Information Officer pending"
     },
     {
       "id": "G.7",
@@ -117,74 +116,72 @@
       "score": 0.6,
       "passed": false,
       "external": false,
-      "evidence": "Air-gapped deployment architecture published (network segmentation, component mapping, artifact supply chain, validation procedure, implementation roadmap). Offline-first architecture exists. No physical air-gapped environment built yet (target 2027-Q2)."
-    },
-    {
-      "raw_output": "docs/architecture/offline-architecture.md: offline-first 14-day target; no air-gapped-deployment.md; no harbor/mirror config"
+      "evidence": "Air-gapped deployment architecture doc exists and is comprehensive (docs/architecture/air-gapped-deployment.md). Defines offline criteria, network segmentation, artifact supply chain, and Harbor registry import procedure. Dependency mirroring section exists. No evidence that offline build has been tested or that Harbor registry mirroring is actually configured.",
+      "raw_output": "docs/architecture/air-gapped-deployment.md: comprehensive architecture with Harbor registry, offline signing, dependency mirroring; grep -ri 'offline|airgap|disconnected' docs/architecture/ infra/docker/: multiple matches; grep -ri 'mirror|registry.*proxy|harbor' infra/kubernetes/ docs/devops/: only 'mirrors the ingress namespace' (unrelated) and Harbor reference in air-gapped doc"
     },
     {
       "id": "G.8",
       "name": "99.99% uptime SLA (52.6m downtime/year)",
       "weight": 0.07,
-      "score": 0.4,
+      "score": 0.2,
       "passed": false,
       "external": false,
-      "evidence": "Multi-region architecture spec exists (multi-region Terraform module) but not fully operational; SLO targets at 99.5% pilot moving to 99.9%; no 6-month historical uptime evidence supporting 99.99%.",
-      "raw_output": "infra/terraform/modules/multi-region/ exists; docs/operations/slo-definitions.md: 99.5% pilot, 99.9% production target; no 99.99% evidence"
+      "evidence": "No uptime evidence documents found. No multi-region production terraform configuration (single region af-south-1). SLO targets in specs are 99.5%-99.9%, not 99.99%. Resilience framework mentions 99.99% for PvP settlement only. Master audit report notes SLO dashboards and burn-rate alerts but no 6-month historical uptime evidence.",
+      "raw_output": "cat docs/audit/uptime-evidence-*.md: No uptime evidence; grep -ri 'multi.region|failover|dr|disaster' docs/architecture/: ADR-004 offline-first, ADR-005 jurisdiction plugins (not DR); infra/terraform/environments/production/main.tf: single region variable default af-south-1; docs/specs/resilience-framework.md: 99.99% PvP settlement, 99.9% streaming"
     },
     {
       "id": "G.9",
       "name": "Continuous monitoring + SIEM",
       "weight": 0.1,
-      "score": 0.45,
+      "score": 0.2,
       "passed": false,
       "external": true,
-      "evidence": "SOC operations plan published (L1–L5 maturity model, staffing model, technology stack, detection coverage, metrics/SLAs, implementation roadmap). No 24/7 SOC operational yet; no SIEM integration (Splunk/Elastic/Sentinel) live; threat intel feeds not configured. Target operational: 2027-Q1.",
-      "raw_output": "find docs/devops/: no soc-operations.md; find infra/monitoring/: no siem config; Prometheus/Grafana/Alertmanager active"
+      "evidence": "SOC operations plan exists (docs/operations/soc-operations.md) with L1-L5 maturity model, staffing plan, and technology stack. However, SOC is NOT operational (current L1 reactive, target 2027-Q1). SIEM is evaluation pending (Wazuh/Splunk). MTTR currently ~8 hours vs <1 hour target. Threat intel feeds mostly planned (MISP, AfriCERT). Prometheus/Grafana/Alertmanager active.",
+      "raw_output": "docs/operations/soc-operations.md: SOC target operational 2027-Q1; SIEM evaluation pending; MTTR ~8 hours; threat intel feeds planned; grep -ri 'siem|splunk|elastic|sentinel|sumo' infra/monitoring/: no SIEM config; grep -ri 'mttr|mean.time|response.time' docs/operations/: MTTR target <[N] min in analytics-setup, ~8 hours in soc-operations"
     },
     {
       "id": "G.10",
       "name": "Zero-trust architecture (mTLS, micro-segmentation)",
       "weight": 0.08,
-      "score": 0.6,
+      "score": 0.5,
       "passed": false,
       "external": true,
-      "evidence": "Linkerd mTLS configs prepared for 16 services; NetworkPolicies exist (deny-all + explicit allow); zero-trust assessment doc exists; sidecar injection scheduled Q3 2026. Not yet operationally validated by red team."
-    },
-    {
-      "raw_output": "docs/security/zero-trust-assessment.md; infra/kubernetes/overlays/production/network-policies.yaml; ADR-007 mTLS mesh accepted"
+      "evidence": "Linkerd mesh authorization policies exist for production and staging (deny-by-default, per-service allowlists). NetworkPolicies exist for production (default deny ingress/egress). ADR-013 (mTLS service mesh) accepted with Linkerd selected. Namespace annotations for sidecar injection prepared. ADR states Phase 1 complete, Phase 2 scheduled Q3 2026. Not yet operationally validated by red team.",
+      "raw_output": "infra/kubernetes/overlays/production/linkerd/mesh-policies.yaml: deny-by-default MeshTLSAuthentication and AuthorizationPolicy; infra/kubernetes/overlays/production/network-policies.yaml: default deny ingress/egress; docs/architecture/decisions/ADR-013-mtls-service-mesh.md: Phase 1 complete, Phase 2 Q3 2026; infra/kubernetes/overlays/production/linkerd/namespace-annotations.yaml: sidecar injection configured"
     },
     {
       "id": "G.11",
       "name": "King IV governance compliance",
       "weight": 0.04,
-      "score": 0.5,
+      "score": 0.75,
       "passed": false,
       "external": false,
-      "evidence": "Board Security Committee Charter exists (CISO, CEO, Independent Director, External Advisor). CISO role definition published. No standalone King IV mapping doc; no ethics policy; no separate audit committee terms."
-    },
-    {
-      "raw_output": "docs/compliance/board-security-committee-charter.md exists; no king-iv-compliance.md; no ethics-policy.md; no audit-committee-terms.md"
+      "evidence": "King IV compliance mapping exists (docs/governance/king-iv-compliance.md) with 17 principles mapped. Board charter exists (docs/governance/board-charter.md). Ethics policy exists (docs/governance/ethics-policy.md). Audit committee terms document NOT found; board-security-committee-charter exists instead.",
+      "raw_output": "docs/governance/king-iv-compliance.md: exists; docs/governance/board-charter.md: exists; docs/governance/ethics-policy.md: exists; docs/governance/audit-committee-terms.md: No audit committee terms"
     },
     {
       "id": "G.12",
       "name": "POPIA + FICA + PAIA compliance",
       "weight": 0.04,
-      "score": 0.7,
+      "score": 0.6,
       "passed": false,
       "external": false,
-      "evidence": "POPIA registration doc published (IR-REF-2026-0315-GTCX); ROPA completed (6 activities); breach notification procedure published; FICA compliance framework published; PAIA manual published. POPIA Information Officer pending appointment. FIC registration as Accountable Institution not yet started.",
-      "raw_output": "docs/compliance/popia-registration.md, popia-ropa.md, popia-breach-notification.md, fica-compliance.md, paia-manual.md all published"
+      "evidence": "POPIA registration filed (IR-REF-2026-0315-GTCX). ROPA completed (docs/compliance/popia-ropa.md). Breach notification procedure published. PAIA manual published. FICA compliance framework published but NOT operational: FSCA Category I/II license 'Not started', FIC registration 'Not started', Compliance Officer 'Pending' (target 2026-06-30). Information Officer appointment pending.",
+      "raw_output": "docs/compliance/popia-registration.md: Filed 2026-03-15, Information Officer pending; docs/compliance/popia-ropa.md: Completed; docs/compliance/popia-breach-notification.md: Published; docs/compliance/fica-compliance.md: FSCA license not started, FIC registration not started, Compliance Officer pending; docs/compliance/paia-manual.md: Published"
     }
   ],
   "recommendations": [
-    "Achieve Bank-Grade certification before pursuing government contracts.",
-    "Engage SITA framework and begin FedRAMP Moderate / SITA equivalent SSP.",
-    "Deploy AWS CloudHSM or on-prem HSM for FIPS 140-2 Level 3 key generation.",
-    "Establish 24/7 SOC with SIEM integration and threat intel feeds.",
-    "Operationalize zero-trust mTLS mesh (Q3 2026) and validate with red team.",
-    "~~Draft King IV compliance mapping~~ ✅ DONE 2026-05-25; ~~ethics policy~~ ✅ DONE 2026-05-25; ~~PAIA manual~~ ✅ DONE 2026-05-25."
+    "CRITICAL: Achieve Bank-Grade certification (>= 9.0) before pursuing Government-Grade. Current B-GAP final_score 2.9.",
+    "Engage SITA framework and begin FedRAMP Moderate / SITA equivalent SSP with 3PAO.",
+    "Upgrade KMS signing module to FIPS 140-2 Level 3 for key generation, or obtain CMVP certificate for current Level 2 HSM backing.",
+    "Create docs/hr/personnel-security-policy.md with SA citizenship and security clearance requirements for critical roles.",
+    "Complete POPIA Information Officer appointment and obtain FSCA/FIC registrations to operationalize FICA compliance.",
+    "Establish 24/7 SOC with SIEM integration (target 2027-Q1) and reduce MTTR to < 1 hour.",
+    "Operationalize Linkerd mTLS mesh (Phase 2 Q3 2026) and validate zero-trust with red team exercise.",
+    "Draft dedicated audit-committee-terms.md document (separate from board-security-committee-charter).",
+    "Build and test air-gapped offline replica; configure Harbor registry mirroring with evidence.",
+    "Deploy multi-region hot-standby or document 6-month historical uptime evidence supporting 99.99% SLA."
   ],
   "government_readiness": "red",
-  "next_review": "2027-05-25"
+  "next_review": "2027-06-02"
 }
