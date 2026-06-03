@@ -75,6 +75,8 @@ spec:
               value: '100'
             - name: INTELLIGENCE_RATE_LIMIT_WINDOW
               value: '60000'
+            - name: ENABLE_COST_ROUTER
+              value: '1'
           livenessProbe:
             httpGet:
               path: /health
