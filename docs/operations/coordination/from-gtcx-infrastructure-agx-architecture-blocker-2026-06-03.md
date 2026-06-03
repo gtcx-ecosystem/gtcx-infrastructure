@@ -1,6 +1,6 @@
 ---
 title: 'From gtcx-infrastructure — AGX staging ARM64-only blocker'
-status: open
+status: resolved
 date: 2026-06-03
 owner: gtcx-infrastructure
 to: gtcx-platforms
@@ -12,15 +12,18 @@ blocking: XR-302 / P4-07
 
 ## Finding
 
-`gtcx-agx:staging` (pushed 2026-06-03T09:00Z) is **ARM64-only**. EKS staging runs **t3 instances (AMD64)**.
+**RESOLVED 2026-06-03.** Platforms rebuilt AGX with `linux/amd64`. Pods running.
 
-| Image          | Tag     | Platforms      | Works on EKS?                                |
-| -------------- | ------- | -------------- | -------------------------------------------- |
-| gtcx-sovereign | staging | amd64, unknown | ✅ Yes                                       |
-| gtcx-agx       | staging | arm64, unknown | ❌ No                                        |
-| gtcx-agx       | v0.4.0  | arm64, unknown | ❌ No (also missing `@gtcx/platform-shared`) |
+Historical:
 
-## Symptoms
+`gtcx-agx:staging` (pushed 2026-06-03T09:00Z) was **ARM64-only**. EKS staging runs **t3 instances (AMD64)**.
+
+| Image          | Tag     | Platforms | Works on EKS? |
+| -------------- | ------- | --------- | ------------- |
+| gtcx-sovereign | staging | amd64     | ✅ Yes        |
+| gtcx-agx       | staging | amd64     | ✅ Yes        |
+
+## Symptoms (historical)
 
 - Pod `gtcx-agx-staging-*` → `ErrImagePull` / `ImagePullBackOff`
 - Error: `no match for platform in manifest: not found`

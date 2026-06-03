@@ -27,8 +27,8 @@ to: baseline-os coordination hub + sibling repos
 | Exploration blockers (verifier + Supabase)  |    2 | No           | External actions (CF admin + ops)        |
 | INF-86 sovereign pilot                      |    2 | No           | **HOLD** — human-gated                   |
 | W2 licence intelligence                     |    1 | No           | Provide secrets if asked                 |
-| P22 agent ergonomics                        |    1 | No           | Add CI smoke when capacity               |
-| Coordination gaps (terra-os, hardware, ops) |    1 | No           | Flagged to baseline-os                   |
+| P22 agent ergonomics                        |    0 | No           | **DONE** — P22/P26/P27 checks in CI      |
+| Coordination gaps (terra-os, hardware, ops) |    0 | No           | **DONE** — flagged to baseline-os        |
 
 ---
 

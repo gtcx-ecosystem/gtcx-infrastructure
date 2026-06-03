@@ -32,9 +32,11 @@ INF-49 (DNS/TLS + /health 200)
         → gtcx-mobile (real issuer registration)
 ```
 
-## Infra status (2026-06-01)
+## Infra status (2026-06-03)
 
 ### #49 — Staging DNS + TLS
+
+**CLOSED 2026-06-03.** Both `/api/health` endpoints return 200. DID resolution live.
 
 | Item                                            | Status                                                                                                                                                |
 | ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -48,20 +50,22 @@ INF-49 (DNS/TLS + /health 200)
 
 **ETA to close #49:** 3–5 business days (target group / ingress path to compliance-gateway or protocols staging service returning 200 on `/health`).
 
-### #86 — Authority HSM ceremony
+### #86 — Authority HSM ceremony (INF-86)
 
-| Item                                     | Status                                                                            |
-| ---------------------------------------- | --------------------------------------------------------------------------------- |
-| KMS signing Terraform module             | Present — `infra/terraform/modules/kms-signing/`                                  |
-| Ceremony runbook                         | [`docs/security/key-ceremony-runbook.md`](../../security/key-ceremony-runbook.md) |
-| Scheduled ceremony for 43 authority DIDs | **Not started** — needs dual custodians + `GTCX-KEY-CEREMONY` approval            |
+| Item                           | Status                                                                            |
+| ------------------------------ | --------------------------------------------------------------------------------- |
+| KMS signing Terraform module   | Present — `infra/terraform/modules/kms-sovereign-signing/`                        |
+| Ceremony runbook               | [`docs/security/key-ceremony-runbook.md`](../../security/key-ceremony-runbook.md) |
+| H-02 pilot ceremony (`gh-bog`) | **DONE** 2026-06-03 — SPKI exported, evidence committed                           |
+| SPKI handoff to protocols #61  | **DONE** — comment posted with `spki_sha256`                                      |
+| XR-403 (`bog.json` production) | **Blocked** — waiting gtcx-protocols to consume SPKI → JWK → PR                   |
 
-**ETA:** 4–8 weeks after leadership sign-off (parallel to staging DID resolution with placeholders).
+**ETA:** XR-403 unblocks when protocols executes checklist.
 
 ### Protocols-owned (not infra)
 
-- HTTP handler: `GET /v1/dids/auth/<iso>/<slug>` → `country-support-packages/*/authorities/*.json`
-- CSP artifacts + `key_status: "placeholder"` (already emitted per protocols Sprint 11)
+- HTTP handler: `GET /v1/dids/auth/<iso>/<slug>` → `country-support-packages/*/authorities/*.json` — **live**
+- CSP artifacts + `key_status: "placeholder"` — waiting XR-403 to flip to `production`
 
 ## Outbound responses posted
 
@@ -127,17 +131,11 @@ curl -sS https://api.staging.gtcx.trade/v1/dids/auth/gh/bog | jq .id
 
 ## Infra next (our side)
 
-1. **kubectl:** `aws eks update-kubeconfig --region af-south-1 --name gtcx-staging --alias staging`
-2. Roll out **gtcx-protocols-staging** with image containing `d54241c1`+ and `GTCX_CSP_ROOT` + CSP volume
-3. Fix ALB target health so `/health` returns **200** (closes **#49**)
-4. Ping **gtcx-protocols#60** with:
-
-```bash
-curl -sS -o /dev/null -w "%{http_code}\n" https://api.staging.gtcx.trade/health
-curl -sS https://api.staging.gtcx.trade/v1/dids/auth/gh/bog | jq .id
-```
-
-5. Post SPKI on **#49** for mobile `CERT_PINS.md`
+1. ✅ ~~Roll out gtcx-protocols-staging with CSP volume~~ — done
+2. ✅ ~~Fix ALB target health~~ — done (CF 526 fixed, WAF rule applied)
+3. ✅ ~~Ping gtcx-protocols#60~~ — done (`/health` 200, DID resolves)
+4. ✅ ~~Post SPKI on #61~~ — done 2026-06-03
+5. **Monitor** XR-403 for protocols PR; then align platforms (XR-405)
 
 ## References
 

@@ -12,10 +12,10 @@ review_cycle: on-change
 
 ## Session
 
-- **Date:** 2026-06-01
-- **Last command:** /complete-sprint (IR-1)
+- **Date:** 2026-06-03
+- **Last command:** adopt Protocols 26 + 27 + 28; close cross-repo dependencies
 - **Branch:** `main`
-- **HEAD:** (see `docs/audit/latest.json`)
+- **HEAD:** `14310df` (Protocols 26+28 adoption)
 
 ## Sprint closure — IR-1 (Main CI truth)
 
@@ -42,14 +42,17 @@ Other dimensions unchanged this sprint.
 ## Next sprint (IR-2)
 
 - Merge tier-3 dependabot PRs
-- AI SDK v5→v6 migration branch
+- AI SDK v5→v6 migration branch (IR-2.2)
 - CodeQL/SARIF upload fix on `main`
+- IR-2.1 / IR-2.3 / IR-2.4 per `pnpm agent:next-work`
 
 See [`ir-10-10-roadmap.md`](./ir-10-10-roadmap.md) IR-2.
 
 ## EXT-INF blocked (XC — not IR)
 
 EXT-INF-002, EXT-INF-013, EXT-INF-014, EXT-INF-003 (live operator), EXT-INF-015.
+
+> All owned by gtcx-infrastructure + GTM. Agent role: evidence appendix into infra sandbox ZIP, not running those programs.
 
 ## Next work (computed)
 
@@ -65,5 +68,8 @@ Run `pnpm agent:next-work` to get the next story. Current computed next:
 pnpm agent:next-work
 node tools/scripts/validate-all.mjs
 pnpm typecheck && pnpm lint && pnpm test
+pnpm agent:work-selection:check
+pnpm agent:execution-obligation:check
+pnpm agent:proceed-confirmation:check
 gh run list --workflow ci.yml --branch main --limit 3
 ```

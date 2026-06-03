@@ -1,6 +1,6 @@
 ---
 title: 'From gtcx-protocols — INF-86 preceremony ready (XR-402)'
-status: current
+status: done
 date: 2026-06-03
 owner: gtcx-infrastructure
 from: gtcx-protocols
@@ -14,17 +14,16 @@ work_ids: [XR-402]
 
 ## Post this on issue #86
 
-Copy from:
-
-[gtcx-protocols/docs/coordination/messages/MESSAGE-gtcx-infrastructure-issue-86-2026-06-03.md](https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/docs/coordination/messages/MESSAGE-gtcx-infrastructure-issue-86-2026-06-03.md)
+✅ **Done** — ceremony executed 2026-06-03T13:50:17Z. Evidence committed.
 
 ## Your pickup
 
-[gtcx-protocols/docs/coordination/to-gtcx-infrastructure-pickup-xr402-agentic-2026-06-03.md](https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/docs/coordination/to-gtcx-infrastructure-pickup-xr402-agentic-2026-06-03.md)
+✅ **Picked up** — XR-402 complete. SPKI exported and posted to protocols #61.
 
 ## Verify (read-only)
 
 ```bash
 cd ../gtcx-protocols
 pnpm check:inf86-xr401-preceremony
+# ✅ Passed before ceremony
 ```

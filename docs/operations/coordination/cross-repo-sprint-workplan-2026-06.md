@@ -138,7 +138,7 @@ Three parallel numbering schemes exist across the ecosystem. This register adopt
 | XR-513  | P22 W2 CI — gtcx-intelligence                  | gtcx-intelligence   | S-XR-5      | **ready**    | R-low  | —                     | agent ergonomics                                                                     |
 | XR-514  | P22 W2 CI — terminal-os                        | terminal-os         | S-XR-5      | **ready**    | R-low  | —                     | P25 consumer                                                                         |
 | XR-515  | P22 W2 CI — gtcx-protocols                     | gtcx-protocols      | S-XR-5      | **done**     | R-low  | —                     | agent ergonomics                                                                     |
-| XR-516  | P22 W4 core — gtcx-infrastructure              | gtcx-infrastructure | S-XR-5      | **ready**    | R-med  | —                     | long-term agents                                                                     |
+| XR-516  | P22 W4 core — gtcx-infrastructure              | gtcx-infrastructure | S-XR-5      | **done**     | R-med  | —                     | long-term agents — P22/P26/P27 checks wired in CI                                    |
 | XR-517  | SPEC §17 co-author sign-off                    | human               | —           | **blocked**  | R-high | Eng+Security          | Wire #2 ratification                                                                 |
 | XR-518  | INF-86 expand 43 authorities                   | gtcx-infrastructure | post S-XR-3 | **deferred** | R-high | XR-402 pilot          | close #86                                                                            |
 
@@ -281,13 +281,13 @@ Move licence intelligence from staging fixtures toward production path.
 
 `agent:next-work` smoke in CI for P0 repos per gtcx-docs hub.
 
-| ID     | Repo                | Priority | Assessment              |
-| ------ | ------------------- | -------- | ----------------------- |
-| XR-511 | compliance-os       | P0       | ready                   |
-| XR-512 | exploration-os      | P0       | ready                   |
-| XR-513 | gtcx-intelligence   | P0       | ready                   |
-| XR-514 | terminal-os         | P0       | ready                   |
-| XR-516 | gtcx-infrastructure | P1       | ready (W4 manifest gap) |
+| ID     | Repo                | Priority | Assessment                                |
+| ------ | ------------------- | -------- | ----------------------------------------- |
+| XR-511 | compliance-os       | P0       | ready                                     |
+| XR-512 | exploration-os      | P0       | ready                                     |
+| XR-513 | gtcx-intelligence   | P0       | ready                                     |
+| XR-514 | terminal-os         | P0       | ready                                     |
+| XR-516 | gtcx-infrastructure | P1       | **done** — P22/P26/P27 checks wired in CI |
 
 **gtcx-protocols:** XR-515 P22 CI smoke **done** in workflow.
 
@@ -297,13 +297,13 @@ Move licence intelligence from staging fixtures toward production path.
 
 ### gtcx-infrastructure
 
-| Sprint | Work                       | Status  |
-| ------ | -------------------------- | ------- |
-| S-XR-1 | XR-201 intelligence auth   | done    |
-| S-XR-2 | XR-301/302 rollout support | ready   |
-| S-XR-3 | XR-402 ceremony            | hold    |
-| S-XR-4 | XR-507/508                 | blocked |
-| S-XR-5 | XR-516 P22 W4 core         | ready   |
+| Sprint | Work                       | Status                                    |
+| ------ | -------------------------- | ----------------------------------------- |
+| S-XR-1 | XR-201 intelligence auth   | done                                      |
+| S-XR-2 | XR-301/302 rollout support | ready                                     |
+| S-XR-3 | XR-402 ceremony            | hold                                      |
+| S-XR-4 | XR-507/508                 | blocked                                   |
+| S-XR-5 | XR-516 P22 W4 core         | **done** — P22/P26/P27 checks wired in CI |
 
 ### gtcx-protocols
 

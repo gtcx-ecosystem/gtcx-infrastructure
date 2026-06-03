@@ -1,6 +1,6 @@
 ---
 title: 'Inbound — gtcx-platforms HSM #86 production keys'
-status: 'current'
+status: 'acknowledged'
 date: '2026-06-02'
 owner: 'gtcx-infrastructure'
 tags: ['gtm', 'cross-repo', 'gtcx-platforms', 'hsm']
@@ -32,11 +32,13 @@ Progress **HSM / production key ceremony**:
 
 - Claim production sovereign authority in runbooks/demos/env until **#86** + first CSP countersignature per deal (sovereign program)
 
-## Infra agent actions
+## Infra agent actions — UPDATE 2026-06-03
 
-1. Update #86 with ceremony timeline or blockers.
-2. Link evidence doc when production keys are live.
-3. Ping protocols for #61 when `key_status` flips.
+1. ✅ **Update #86** — H-02 ceremony executed 2026-06-03T13:50:17Z
+2. ✅ **Link evidence doc** — `docs/audit/evidence/inf-86/gh-bog-2026-06-03/`
+3. ✅ **Ping protocols #61** — comment posted with `spki_sha256`
+
+**Current state:** H-02 complete → protocols owns XR-403 → platforms unblocks XR-405 after protocols merge.
 
 ## Cross-ref
 
