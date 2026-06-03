@@ -2,6 +2,7 @@
 title: 'Inbound — XR-302 P4-07 smoke blockers from gtcx-platforms'
 status: open
 date: 2026-06-03
+owner: gtcx-infrastructure
 from: gtcx-platforms
 to: gtcx-infrastructure
 priority: P0
