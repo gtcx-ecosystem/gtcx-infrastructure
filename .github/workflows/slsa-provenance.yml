@@ -10,9 +10,10 @@ permissions:
 
 jobs:
   # ──────────────────────────────────────────────
-  # 1. Build container image
+  # 1. Build container image (skipped if no root Dockerfile)
   # ──────────────────────────────────────────────
   build-image:
+    if: hashFiles('Dockerfile') != ''
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -60,6 +61,7 @@ jobs:
   # ──────────────────────────────────────────────
   provenance-image:
     needs: [build-image]
+    if: needs.build-image.result == 'success'
     permissions:
       actions: read
       id-token: write
@@ -100,12 +102,13 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build
-        run: pnpm build
+        run: pnpm --filter @gtcx/audit-signer build
 
       - name: Pack
         id: pack
         run: |
-          PACKAGE=$(pnpm pack --pack-destination ./dist 2>&1 | tail -1)
+          cd tools/audit-signer
+          PACKAGE=$(pnpm pack --pack-destination ../../dist 2>&1 | tail -1)
           echo "package-name=${PACKAGE}" >> "$GITHUB_OUTPUT"
 
       - name: Generate hash
@@ -138,10 +141,11 @@ jobs:
       provenance-name: npm-provenance.intoto.jsonl
 
   # ──────────────────────────────────────────────
-  # 5. Verify provenance before deployment
+  # 5. Verify image provenance
   # ──────────────────────────────────────────────
-  verify-provenance:
-    needs: [provenance-image, provenance-npm]
+  verify-image-provenance:
+    needs: [provenance-image, build-image]
+    if: needs.build-image.result == 'success'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -153,10 +157,34 @@ jobs:
       - name: Verify container provenance
         run: |
           slsa-verifier verify-image \
-            "ghcr.io/${{ github.repository }}@${{ needs.provenance-image.outputs.outcome == 'success' && 'verified' || 'failed' }}" \
+            "ghcr.io/${{ github.repository }}@${{ needs.build-image.outputs.image-digest }}" \
             --source-uri "github.com/${{ github.repository }}" \
             --source-branch "${{ github.ref_name }}"
         continue-on-error: false
+
+      - name: Image verification summary
+        if: always()
+        run: |
+          echo "## SLSA Provenance Verification" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Artifact | Status |" >> "$GITHUB_STEP_SUMMARY"
+          echo "|---|---|" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Container image | ${{ needs.provenance-image.result == 'success' && 'Verified' || 'Failed' }} |" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "SLSA Level: **3**" >> "$GITHUB_STEP_SUMMARY"
+          echo "Source: \`${{ github.repository }}@${{ github.sha }}\`" >> "$GITHUB_STEP_SUMMARY"
+
+  # ──────────────────────────────────────────────
+  # 6. Verify npm provenance
+  # ──────────────────────────────────────────────
+  verify-npm-provenance:
+    needs: [provenance-npm]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Install slsa-verifier
+        uses: slsa-framework/slsa-verifier/actions/installer@6657aada084353c65e5dde35394b1a010289fab0 # v2.7.0
 
       - name: Download npm artifact
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
@@ -177,24 +205,24 @@ jobs:
             --source-branch "${{ github.ref_name }}"
         continue-on-error: false
 
-      - name: Provenance verification summary
+      - name: npm verification summary
         if: always()
         run: |
           echo "## SLSA Provenance Verification" >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
           echo "| Artifact | Status |" >> "$GITHUB_STEP_SUMMARY"
           echo "|---|---|" >> "$GITHUB_STEP_SUMMARY"
-          echo "| Container image | ${{ needs.provenance-image.result == 'success' && 'Verified' || 'Failed' }} |" >> "$GITHUB_STEP_SUMMARY"
           echo "| npm package | ${{ needs.provenance-npm.result == 'success' && 'Verified' || 'Failed' }} |" >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
           echo "SLSA Level: **3**" >> "$GITHUB_STEP_SUMMARY"
           echo "Source: \`${{ github.repository }}@${{ github.sha }}\`" >> "$GITHUB_STEP_SUMMARY"
 
   # ──────────────────────────────────────────────
-  # 6. Publish attestation to Rekor transparency log
+  # 7. Publish attestation to Rekor transparency log
   # ──────────────────────────────────────────────
   publish-attestation:
-    needs: [verify-provenance, build-image]
+    needs: [verify-image-provenance, build-image]
+    if: needs.build-image.result == 'success'
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -227,10 +255,10 @@ jobs:
             "ghcr.io/${{ github.repository }}@${{ needs.build-image.outputs.image-digest }}"
 
   # ──────────────────────────────────────────────
-  # 7. Publish npm package with provenance (S3-06)
+  # 8. Publish npm package with provenance (S3-06)
   # ──────────────────────────────────────────────
   publish-npm:
-    needs: [verify-provenance]
+    needs: [verify-npm-provenance]
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     permissions:
