@@ -1,5 +1,5 @@
-import { describe, it } from 'node:test';
 import assert from 'node:assert';
+import { describe, it } from 'node:test';
 
 import { validateWithinBundleChain } from '../../src/audit-bundles/chain-validator.mjs';
 

@@ -1,5 +1,5 @@
-import { describe, it } from 'node:test';
 import assert from 'node:assert';
+import { describe, it } from 'node:test';
 
 import { AuditBundleRequestSchema, AgentOutputEventSchema } from '../../src/audit-bundles/schemas.mjs';
 

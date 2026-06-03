@@ -29,16 +29,16 @@ function freshKeyB64() {
 
 function withQuietConsole(fn) {
   const errOriginal = console.error;
-  const logOriginal = console.log;
+  const logOriginal = console.warn;
   const warnOriginal = console.warn;
   console.error = () => {};
-  console.log = () => {};
+  console.warn = () => {};
   console.warn = () => {};
   try {
     return fn();
   } finally {
     console.error = errOriginal;
-    console.log = logOriginal;
+    console.warn = logOriginal;
     console.warn = warnOriginal;
   }
 }

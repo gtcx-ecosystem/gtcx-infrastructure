@@ -1,5 +1,6 @@
-import { afterEach, describe, it } from 'node:test';
 import assert from 'node:assert';
+import { afterEach, describe, it } from 'node:test';
+
 import { createNonceStore, __resetNonceStoreForTests } from '../../src/nonce-store/redis.mjs';
 
 const originalRedisUrl = process.env.REDIS_URL;

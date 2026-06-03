@@ -21,14 +21,14 @@ import {
 import { EVIDENCE_HTML_CSP, renderEvidenceHtml } from '../src/evidence-renderer.mjs';
 
 function silence(fn) {
-  const out = console.log;
+  const out = console.warn;
   const err = console.error;
-  console.log = () => {};
+  console.warn = () => {};
   console.error = () => {};
   try {
     return fn();
   } finally {
-    console.log = out;
+    console.warn = out;
     console.error = err;
   }
 }

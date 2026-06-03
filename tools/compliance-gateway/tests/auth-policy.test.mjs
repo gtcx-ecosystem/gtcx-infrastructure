@@ -7,11 +7,11 @@
 
 import assert from 'node:assert';
 import { describe, it } from 'node:test';
+
 import {
   loadAuthState,
   getHeader,
   parseBearerToken,
-  buildAccessProfile,
   authenticateHeaders,
 } from '../src/auth.mjs';
 import { canAccessTool, buildRuntimePolicyPrompt } from '../src/policy.mjs';

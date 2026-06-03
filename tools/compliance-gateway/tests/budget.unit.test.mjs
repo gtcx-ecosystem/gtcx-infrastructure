@@ -5,8 +5,8 @@
 import assert from 'node:assert';
 import { afterEach, beforeEach, describe, it } from 'node:test';
 
-import { checkBudget, recordSpend, getSpend, resetBudget } from '../src/budget.mjs';
 import { _setStoreForTests } from '../src/budget-store.mjs';
+import { checkBudget, recordSpend, getSpend, resetBudget } from '../src/budget.mjs';
 
 describe('checkBudget — QPS', () => {
   beforeEach(async () => {

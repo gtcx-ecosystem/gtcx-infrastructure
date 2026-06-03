@@ -7,9 +7,8 @@
  * Set BASELINE_COST_ROUTER=0 to force legacy-only routing.
  */
 
-import { pathToFileURL } from 'node:url';
 import { dirname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { pathToFileURL, fileURLToPath  } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 

@@ -12,11 +12,10 @@
  */
 
 import assert from 'node:assert';
-import { createServer, request as httpRequest } from 'node:http';
-import { describe, it, before, after } from 'node:test';
-import { renameSync, existsSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
+import { createServer } from 'node:http';
 import { dirname, join } from 'node:path';
+import { describe, it, before, after } from 'node:test';
+import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const jurisdictionsPath = join(__dirname, '../../compliance-data/jurisdictions.json');
@@ -29,23 +28,6 @@ async function getEphemeralPort() {
   srv.close();
   await new Promise((r) => srv.once('close', r));
   return port;
-}
-
-async function fetchJson(baseUrl, path, opts = {}) {
-  const url = new URL(path, baseUrl);
-  return new Promise((resolve, reject) => {
-    const req = httpRequest(url, { method: opts.method ?? 'GET', headers: opts.headers }, (res) => {
-      let body = '';
-      res.on('data', (c) => { body += c; });
-      res.on('end', () => {
-        try { resolve({ status: res.statusCode, body: JSON.parse(body) }); }
-        catch { resolve({ status: res.statusCode, body }); }
-      });
-    });
-    req.on('error', reject);
-    if (opts.body) req.write(typeof opts.body === 'string' ? opts.body : JSON.stringify(opts.body));
-    req.end();
-  });
 }
 
 function createMockReq(body, headers = {}) {

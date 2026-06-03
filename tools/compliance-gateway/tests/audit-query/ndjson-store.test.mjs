@@ -1,8 +1,8 @@
-import { describe, it, before, after } from 'node:test';
 import assert from 'node:assert';
 import { mkdirSync, writeFileSync, rmSync, utimesSync } from 'node:fs';
-import { join } from 'node:path';
 import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { describe, it, before, after } from 'node:test';
 
 import { NdjsonQueryStore } from '../../src/audit-query/ndjson-store.mjs';
 

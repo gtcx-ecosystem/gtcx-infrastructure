@@ -7,7 +7,7 @@
 
 import assert from 'node:assert';
 import { createServer, request } from 'node:http';
-import { describe, it, before, after } from 'node:test';
+import { describe, it } from 'node:test';
 
 let testServer;
 let baseUrl;

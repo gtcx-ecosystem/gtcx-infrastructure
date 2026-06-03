@@ -1,5 +1,5 @@
-import { describe, it } from 'node:test';
 import assert from 'node:assert';
+import { describe, it } from 'node:test';
 
 import {
   extractPublicKey,
@@ -151,7 +151,7 @@ describe('createTradePassResolver', () => {
 
   it('requires a fetcher when global fetch missing', () => {
     const savedFetch = globalThis.fetch;
-    // @ts-ignore intentional removal
+    // @ts-expect-error intentional removal
     globalThis.fetch = undefined;
     try {
       assert.throws(() => createTradePassResolver({ baseUrl: 'https://x' }));

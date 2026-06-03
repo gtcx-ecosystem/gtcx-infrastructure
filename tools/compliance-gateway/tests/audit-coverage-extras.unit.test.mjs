@@ -31,13 +31,13 @@ import {
 } from '../src/audit.mjs';
 
 function captureStdout(fn) {
-  const original = console.log;
+  const original = console.warn;
   const errOriginal = console.error;
   const captured = [];
-  console.log = (line) => captured.push(line);
+  console.warn = (line) => captured.push(line);
   console.error = () => {};
   try { fn(); } finally {
-    console.log = original;
+    console.warn = original;
     console.error = errOriginal;
   }
   return captured;

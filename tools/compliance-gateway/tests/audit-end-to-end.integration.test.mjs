@@ -18,10 +18,11 @@
  */
 
 import assert from 'node:assert';
-import { afterEach, beforeEach, describe, it } from 'node:test';
 import { generateKeyPairSync } from 'node:crypto';
+import { afterEach, beforeEach, describe, it } from 'node:test';
 
 import { verifyChain, fromNdjson } from '@gtcx/audit-signer';
+
 import {
   initAuditSigner,
   signAuditEvent,
@@ -35,15 +36,15 @@ function freshKeyB64() {
 }
 
 function captureStdout(fn) {
-  const original = console.log;
+  const original = console.warn;
   const errOriginal = console.error;
   const captured = [];
-  console.log = (line) => captured.push(line);
+  console.warn = (line) => captured.push(line);
   console.error = () => {};
   try {
     fn();
   } finally {
-    console.log = original;
+    console.warn = original;
     console.error = errOriginal;
   }
   return captured;

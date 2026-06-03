@@ -17,11 +17,11 @@ import {
 } from '../src/audit.mjs';
 
 function silence(fn) {
-  const out = console.log;
+  const out = console.warn;
   const err = console.error;
-  console.log = () => {};
+  console.warn = () => {};
   console.error = () => {};
-  try { return fn(); } finally { console.log = out; console.error = err; }
+  try { return fn(); } finally { console.warn = out; console.error = err; }
 }
 
 describe('getExceptions — classification', () => {

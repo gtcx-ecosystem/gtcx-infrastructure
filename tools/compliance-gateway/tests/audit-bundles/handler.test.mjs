@@ -1,7 +1,6 @@
-import { describe, it, before } from 'node:test';
 import assert from 'node:assert';
+import { describe, it, before } from 'node:test';
 
-import { processBundle, tenantIdFromSignedDid } from '../../src/audit-bundles/handler.mjs';
 import {
   canonicalizeUrl,
   computeEnvelopeHash,
@@ -9,6 +8,7 @@ import {
 } from '../../src/audit-bundles/canonical.mjs';
 import { createMockResolver } from '../../src/audit-bundles/did-resolver.mjs';
 import { generateEd25519KeyPair, signEd25519 } from '../../src/audit-bundles/ed25519.mjs';
+import { processBundle, tenantIdFromSignedDid } from '../../src/audit-bundles/handler.mjs';
 import { NonceGate } from '../../src/audit-bundles/nonce-gate.mjs';
 
 const AUDIENCE = 'https://geotag.staging.gtcx.trade';

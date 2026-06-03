@@ -10,6 +10,7 @@
 import assert from 'node:assert';
 import { createServer, request } from 'node:http';
 import { describe, it, before, after } from 'node:test';
+
 import { resetAuditSigner } from '../src/audit.mjs';
 
 let testServer;

@@ -12,13 +12,13 @@ import { afterEach, beforeEach, describe, it } from 'node:test';
 import { getSink, getSinkInfo, resetSink } from '../src/audit-sink.mjs';
 
 function captureStdout(fn) {
-  const original = console.log;
+  const original = console.warn;
   const captured = [];
-  console.log = (line) => captured.push(line);
+  console.warn = (line) => captured.push(line);
   try {
     fn();
   } finally {
-    console.log = original;
+    console.warn = original;
   }
   return captured;
 }

@@ -12,7 +12,8 @@
     "_coverage_gate_note": "branches/functions thresholds at 85 (not 90) because audit-sink.mjs soft-loads nats and server.mjs has startup-listener/SIGTERM paths that genuinely require real broker/process integration to exercise. statements + lines remain at 90 since the only excluded branches are the ones above. See docs/audit/coverage-gate-rationale.md.",
     "test:coverage:gate": "c8 --check-coverage --branches 85 --statements 90 --functions 85 --lines 90 --reporter=text --reporter=json --reporter=lcov --include='src/**' node ../scripts/run-package-tests.mjs",
     "typecheck": "echo \"No TypeScript files — typecheck is a no-op for this JS-only package\"",
-    "build": "echo \"No build step required — this package runs directly with Node.js ESM\""
+    "build": "echo \"No build step required — this package runs directly with Node.js ESM\"",
+    "lint": "eslint src tests --ext .mjs,.js"
   },
   "engines": {
     "node": ">=20.18.0"

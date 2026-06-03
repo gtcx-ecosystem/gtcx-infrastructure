@@ -114,14 +114,14 @@ describe('tenant boundary — budget', () => {
 
 describe('tenant boundary — evidence bundle (regression for default leak)', () => {
   function silence(fn) {
-    const out = console.log;
+    const out = console.warn;
     const err = console.error;
-    console.log = () => {};
+    console.warn = () => {};
     console.error = () => {};
     try {
       return fn();
     } finally {
-      console.log = out;
+      console.warn = out;
       console.error = err;
     }
   }

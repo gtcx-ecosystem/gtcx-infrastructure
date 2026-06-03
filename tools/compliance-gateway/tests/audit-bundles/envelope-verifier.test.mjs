@@ -1,15 +1,15 @@
-import { describe, it, before } from 'node:test';
 import assert from 'node:assert';
+import { describe, it, before } from 'node:test';
 
+import { canonicalizeUrl, computeEnvelopeHash, sha256Hex } from '../../src/audit-bundles/canonical.mjs';
+import { createMockResolver } from '../../src/audit-bundles/did-resolver.mjs';
+import { generateEd25519KeyPair, signEd25519 } from '../../src/audit-bundles/ed25519.mjs';
 import {
   verifyEnvelope,
   EnvelopeVerificationError,
   REQUIRED_HEADERS,
   MAX_TIMESTAMP_AGE_MS,
 } from '../../src/audit-bundles/envelope-verifier.mjs';
-import { canonicalizeUrl, computeEnvelopeHash, sha256Hex } from '../../src/audit-bundles/canonical.mjs';
-import { createMockResolver } from '../../src/audit-bundles/did-resolver.mjs';
-import { generateEd25519KeyPair, signEd25519 } from '../../src/audit-bundles/ed25519.mjs';
 
 const AUDIENCE = 'https://geotag.staging.gtcx.trade';
 const URL = 'https://geotag.staging.gtcx.trade/audit/bundles';
