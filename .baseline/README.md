@@ -1,30 +1,21 @@
----
-title: 'BaselineOS Institutional Memory'
-status: current
-date: '2026-06-02'
-owner: platform-lead
-tags: ['baseline', 'institutional-memory', 'agent-protocol']
----
+# `.baseline/`
 
-# BaselineOS Institutional Memory
+Institutional memory and agent context for the GTCX Infrastructure repository.
 
-This directory contains the **institutional baseline** for `gtcx-infrastructure` per the BaselineOS agent protocol.
+## Files
 
-## Structure
-
-| Path | Purpose |
+| File | Purpose |
 |------|---------|
-| `definition.json` | Canonical repo configuration: terminology, authority model, scoring rubric |
-| `checkpoints/` | Audit checkpoint artifacts and signed state snapshots |
-| `govern/` | Governance rules: CODEOWNERS, branch protection, merge policy |
-| `index/` | Machine-readable registry of docs, APIs, and compliance artifacts |
-| `memory/` | Cross-session persistence: patterns, pitfalls, dependencies, session state |
+| `definition.json` | Repo identity, stack, and canonical terminology |
+| `memory/session.md` | Per-session activity log and next-steps |
+| `memory/patterns.md` | Confirmed architectural patterns |
+| `memory/pitfalls.md` | Known issues, anti-patterns, blockers |
+| `memory/dependencies.md` | Cross-repo dependency map |
+| `checkpoints/` | Audit evidence and gate state snapshots |
+| `govern/` | Policy and decision records |
+| `index/` | Registry of canonical documents |
 
-## Usage
+## Agent note
 
-Agents should read `definition.json` and `memory/session.md` at the start of every session to establish context. Humans should treat this directory as read-only — changes flow through the agent-sync pipeline (`pnpm agent:sync`).
-
-## Related
-
-- [`docs/governance/institutional/`](../docs/governance/institutional/) — ecosystem-wide baseline
-- [`AGENTS.md`](../AGENTS.md) — repo-specific agent protocol
+Read `.baseline/definition.json` and `memory/session.md` on every session start.
+Append session outcomes to `memory/session.md` before shutdown.

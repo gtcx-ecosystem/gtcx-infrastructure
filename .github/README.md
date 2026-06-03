@@ -1,37 +1,25 @@
----
-title: 'GitHub Automation & Workflows'
-status: current
-date: '2026-06-02'
-owner: devops
-tags: ['github', 'ci-cd', 'automation', 'actions']
----
+# `.github/`
 
-# GitHub Automation & Workflows
-
-This directory contains all GitHub-native automation for `gtcx-infrastructure`.
+GitHub automation, policies, and workflows for GTCX Infrastructure.
 
 ## Structure
 
-| Path                     | Purpose                                                                    |
-| ------------------------ | -------------------------------------------------------------------------- |
-| `workflows/`             | GitHub Actions workflows: CI, CD, security scanning, evidence collection   |
-| `actions/`               | Reusable composite actions for cross-workflow steps                        |
-| `CODEOWNERS`             | Required reviewers per path (security-critical paths need `platform-lead`) |
-| `dependabot.yml`         | Automated dependency update policy: tier grouping, Q7 pin rules            |
-| `PULL_REQUEST_TEMPLATE/` | Standardized PR description templates                                      |
-| `workflow-templates/`    | Org-level workflow templates                                               |
+| Directory                | Purpose                                             |
+| ------------------------ | --------------------------------------------------- |
+| `workflows/`             | CI/CD workflows: build, test, deploy, security scan |
+| `actions/`               | Reusable composite actions                          |
+| `codeql/`                | CodeQL security analysis configuration              |
+| `workflow-templates/`    | Starter workflows for new repos                     |
+| `PULL_REQUEST_TEMPLATE/` | PR templates with compliance checklist              |
+| `zap/`                   | OWASP ZAP DAST scan rules                           |
 
-## Key Workflows
+## Key workflows
 
-| Workflow                | Trigger                       | Purpose                                                   |
-| ----------------------- | ----------------------------- | --------------------------------------------------------- |
-| `ci.yml`                | PR / push to `main`           | Lint, typecheck, test, coverage gates, contract tests     |
-| `deploy-staging.yml`    | Push to `infra/kubernetes/**` | Kustomize apply, rollout health, audit API smoke test     |
-| `security-evidence.yml` | Schedule / manual             | SLSA provenance, sigstore attestation, vulnerability scan |
-| `dr-test.yml`           | Schedule / manual             | Disaster recovery validation against staging RDS          |
+- `build-push-ecr.yml` — Build and push service images to ECR
+- `deploy-staging.yml` — Deploy to EKS staging
+- `validate-all.yml` — Run all 39 validation gates
 
-## Security
+## Agent note
 
-- All Actions are SHA-pinned (no floating tags).
-- OIDC authentication to AWS (no long-lived secrets in repo).
-- See `docs/security/github-actions-hardening.md` for the full threat model.
+Modify workflows only through PRs; never commit directly to `main`.
+All workflows use SHA-pinned actions (verified by `tools/scripts/pin-actions-sha.mjs`).

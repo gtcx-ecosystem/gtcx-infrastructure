@@ -357,5 +357,37 @@ focus: "Baseline initialization — discovery and enrichment"
 
 ### Notes
 - AGX CrashLoopBackOff is platforms-owned (ARM64-only image). Waiting for platforms to push AMD64 build.
-- Next staging candidates: AGX rollout after platforms push, mobile E2E verification, intelligence re-smoke (XR-202).
+## 2026-06-02 — M1 Foundation Complete (10-10 Roadmap)
+
+### What Was Done
+- **Lint debt resolved:** Removed unused `truncateSync` import from `disk-queue.mjs`; `npx eslint src/ --max-warnings=0` now passes 0 errors, 0 warnings
+- **Typecheck/build verified:** `pnpm typecheck && pnpm build` covers all 15 packages (18 turbo tasks, all passing)
+- **6 missing READMEs written:** `.baseline/`, `.github/`, `infra/docker/`, `infra/kubernetes/`, `infra/monitoring/`, `infra/terraform/` — each with structure, usage, and agent notes
+- **Mutable audit default sink confirmed durable:** `audit-sink.mjs` `sinkMode()` defaults to `'nats'` in `production`/`staging`, stdout only in `development`/`test`; disk queue provides crash-recovery durability
+- **Dead cross-repo links verified:** `pnpm docs:check-links` passes 100% (1198 links across 484 markdown files)
+- **Execution roadmap updated:** S4-02 marked done
+- **10-10 roadmap updated:** All 5 M1 exit criteria marked complete
+
+### Verification
+- `npx eslint tools/compliance-gateway/src/ --max-warnings=0` — pass; 0 errors, 0 warnings
+- `pnpm typecheck && pnpm build` — pass; 18/18 tasks
+- `pnpm docs:check-links` — pass; 1198/1198 links
+- `node tools/scripts/validate-all.mjs` — pass; 39/39 gates green
+
+### Files Modified
+- `tools/compliance-gateway/src/disk-queue.mjs`
+- `.baseline/README.md` (new)
+- `.github/README.md` (new)
+- `infra/docker/README.md` (new)
+- `infra/kubernetes/README.md` (new)
+- `infra/monitoring/README.md` (new)
+- `infra/terraform/README.md` (new)
+- `docs/audit/10-10-roadmap-2026-06-02.md`
+- `docs/audit/execution-roadmap.md`
+- `docs/audit/latest.json`
+
+### Notes
+- M1 Foundation is complete. All agent-executable M1 items are done with no external dependencies.
+- Next: M2 Hardening items can begin in parallel (coverage honesty, FIPS flag, rate limiting, secret scanning, durable offline queue, SLSA L3).
+- Active external blockers unchanged: XR-302 AGX ARM64, XR-401 INF-86 algorithm, XR-507 SIR verifier DNS, XR-508 Supabase paused.
 - No further infra-owned P0 blockers.

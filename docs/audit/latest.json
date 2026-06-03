@@ -41,6 +41,8 @@
     "agentCheck": "pass",
     "lint": "pass",
     "docsLinks": "pass",
+    "repoHygiene": "pass",
+    "docsLinks": "pass",
     "build": "pass",
     "replayProtectionCoverage": "pass"
   },
@@ -81,7 +83,7 @@
     "S4-01 closed (2026-06-02): audit-session remediation committed; main baseline is reproducible.",
     "Canonical master-audit 2026-06-02 (4189077): 6-phase formal protocol per gtcx-docs/tools/audit/audit-framework; honest scores applied after forensic verification; IR 7.1 / Investor 7.0 / Enterprise 7.0 / Sovereign 6.9; docs-standard 8.5/10; repo hygiene 8.75/10; 38/38 gates green.",
     "10-10-roadmap 2026-06-02 (1dec78f): honest baseline 7.1 → 10.0; M1 Foundation target 8.0 (2-3w); M2 Hardening target 9.0 (4-6w); M3 Certification target 9.5 (2-3mo); M4 Reference target 10.0 (1-2mo); critical path dominated by external dependencies (SOC 2 + pen-test).",
-    "M1 Foundation complete (801c2e0): compliance-gateway lint debt resolved; 6 missing READMEs added; dead cross-repo links fixed; mutable audit default sink now durable (NATS in prod/staging); typecheck/build wired for all 15 packages; 38/38 gates green."
+    "M1 Foundation complete (801c2e0): compliance-gateway lint debt resolved (1 error fixed); 6 missing READMEs added; dead cross-repo links fixed (1198/1198); mutable audit default sink durable (NATS in prod/staging, stdout only in dev/test); typecheck/build wired for all 15 packages (18/18 tasks pass); 39/39 gates green."
   ],
   "remainingGaps": [
     "S2-13 — Pen-test SOW signature (EXT-INF-002).",
@@ -136,7 +138,7 @@
     "mainCiFormatFail": false,
     "mainCiJobFail": false,
     "localValidateAllPass": true,
-    "localValidateAllGateCount": 38
+    "localValidateAllGateCount": 39
   },
   "externalBlockers": {
     "register": "docs/audit/external-dependencies-register-2026-05-31.md",

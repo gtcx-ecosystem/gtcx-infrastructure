@@ -87,11 +87,11 @@ scheduled cadence call.
 
 > Added 2026-06-02 from `master-audit-2026-06-02.md`. These are planning entries only; use `execute-roadmap` to implement.
 
-| Story | Title                                                                                           | Status                                                                                                       |
-| ----- | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| S4-01 | Commit-or-revert audit-session remediation (keep main reproducible)                             | **done** (`5b1cc78`) — committed via fresh master-audit                                                      |
-| S4-02 | PRD-002 Tier A: staging `/audit/*` reachable (≠404) + evidence probe script in CI               | **in progress** — probe generates durable artifacts; wired into `deploy-staging.yml`; M1 Foundation complete |
-| S4-03 | PRD-002 Tier B: align TradePass DID doc resolver contract for `/audit/bundles` signature verify | blocked                                                                                                      |
+| Story | Title                                                                                           | Status                                                                                                                                                                                               |
+| ----- | ----------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| S4-01 | Commit-or-revert audit-session remediation (keep main reproducible)                             | **done** (`5b1cc78`) — committed via fresh master-audit                                                                                                                                              |
+| S4-02 | PRD-002 Tier A: staging `/audit/*` reachable (≠404) + evidence probe script in CI               | **done** — probe generates durable artifacts; wired into `deploy-staging.yml`; staging `/audit/bundles` → 400, `/audit/query` → 401, `/health` → 200; WAF allows audit paths; M1 Foundation complete |
+| S4-03 | PRD-002 Tier B: align TradePass DID doc resolver contract for `/audit/bundles` signature verify | blocked                                                                                                                                                                                              |
 
 ### S4-01: Commit-or-revert audit-session remediation (keep main reproducible)
 

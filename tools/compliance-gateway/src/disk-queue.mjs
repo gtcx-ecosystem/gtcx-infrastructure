@@ -21,7 +21,6 @@ import {
   readFileSync,
   renameSync,
   statSync,
-  truncateSync,
   unlinkSync,
   writeFileSync,
 } from 'node:fs';

@@ -1,38 +1,23 @@
----
-title: 'Observability Stack'
-status: current
-date: '2026-06-02'
-owner: devops
-tags: ['monitoring', 'alerts', 'dashboards', 'prometheus', 'grafana']
----
+# `infra/monitoring/`
 
-# Observability Stack
+Observability stack for GTCX Infrastructure.
 
-This directory contains alerts, dashboards, and recording rules for the GTCX platform.
+## Components
 
-## Structure
+| Component    | Purpose                         |
+| ------------ | ------------------------------- |
+| Prometheus   | Metrics collection and alerting |
+| Alertmanager | Alert routing and suppression   |
+| Grafana      | Dashboards and visualization    |
+| Loki         | Log aggregation (planned)       |
+| Jaeger       | Distributed tracing (planned)   |
 
-| Path          | Purpose                                                                                     |
-| ------------- | ------------------------------------------------------------------------------------------- |
-| `alerts/`     | Prometheus Alertmanager rule groups: SLO breaches, error-budget exhaustion, security events |
-| `dashboards/` | Grafana dashboard JSON models: compliance gateway, protocols, infrastructure health         |
-| `rules/`      | Prometheus recording rules: pre-aggregated latency percentiles, QPS by tenant               |
+## Alerts
 
-## Alert Tiers
+Alert rules live in `prometheus-rules/`. Every alert must have a `runbook_url`
+annotation linking to a runbook in `docs/operations/runbooks/`.
 
-| Severity   | Response                     | Example                                      |
-| ---------- | ---------------------------- | -------------------------------------------- |
-| `critical` | Page on-call immediately     | Audit sink down > 2 min, HSM signing failure |
-| `high`     | Slack + ticket within 15 min | Compliance gateway 5xx rate > 1%             |
-| `warning`  | Daily digest                 | Elevated replay-protection rejections        |
+## Agent note
 
-## Runbook Anchors
-
-Every alert includes a `runbook_url` annotation pointing to `docs/operations/runbooks/`. The `alert-runbook-anchors-check` gate in `validate-all.mjs` verifies that all anchors resolve.
-
-## Local Development
-
-```bash
-docker compose -f infra/docker/docker-compose.infra.yml up -d
-# Grafana available at http://localhost:3000 (admin/admin)
-```
+Alert runbook anchors are validated by `tools/scripts/alert-anchors-check.mjs`.
+Add new alerts via PR; validate with `node tools/scripts/validate-all.mjs`.
