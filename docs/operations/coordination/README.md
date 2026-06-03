@@ -1,17 +1,66 @@
 ---
-title: 'Cross-repo coordination — gtcx-infrastructure inbound tracker'
+title: 'Cross-repo coordination — gtcx-infrastructure inbound tracker + bridge'
 status: current
 date: 2026-06-03
 owner: gtcx-infrastructure
 role: platform-engineer
 tier: critical
 review_cycle: daily
-tags: ['coordination', 'cross-repo', 'inbound']
+tags: ['coordination', 'cross-repo', 'inbound', 'bridge']
 ---
 
-# Cross-repo coordination — gtcx-infrastructure inbound tracker
+# Cross-repo coordination — gtcx-infrastructure inbound tracker + bridge
 
-**Canonical source:** `gtcx-protocols/docs/operations/coordination/cross-repo-sprint-workplan-2026-06.md` (XR-### registry)
+**Canonical XR-### SoR:** [`gtcx-protocols/docs/operations/coordination/cross-repo-sprint-workplan-2026-06.md`](../../../../gtcx-protocols/docs/operations/coordination/cross-repo-sprint-workplan-2026-06.md)  
+**Ecosystem bridge (live):** [`gtcx-protocols/docs/operations/coordination/cross-repo-agent-bridge.md`](../../../../gtcx-protocols/docs/operations/coordination/cross-repo-agent-bridge.md)  
+**Agentic log (append-only):** [`gtcx-agentic/docs/operations/coordination/agent-coordination-log.md`](../../../../gtcx-agentic/docs/operations/coordination/agent-coordination-log.md)  
+**Blocker SoR:** `baseline-os/workstream/index/blockers.md`
+
+| Artifact                                             | Role                                        |
+| ---------------------------------------------------- | ------------------------------------------- |
+| **This file**                                        | Infra inbound tracker + bridge snapshot     |
+| [`cross-repo-agent-log.md`](cross-repo-agent-log.md) | Infra-specific append-only activity log     |
+| Protocols sprint workplan                            | Canonical XR-### registry (source of truth) |
+
+---
+
+## Latest updates (newest first)
+
+| When (UTC) | Agent / repo        | Update                                                                                                                                                                 |
+| ---------- | ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-06-03 | gtcx-platforms      | XR-301/302: ECR rollout outbound to infra; `main` 8 commits ahead of origin (push before CI ECR workflow). Sovereign external `/health` → 526 (edge).                  |
+| 2026-06-03 | gtcx-protocols      | **S-XR-1 begun:** `probe-staging-cross-repo.mjs` — api/authority/operator OK; intelligence `/health` still **200** (XR-201 **not met**). Operator GET requires Bearer. |
+| 2026-06-03 | gtcx-infrastructure | Track A complete per `from-gtcx-protocols-staging-operator-seed` (DONE). SM `gtcx/staging/mobile-audit-e2e-credentials` aligned.                                       |
+| 2026-06-03 | gtcx-protocols      | INF-86 pre-ceremony: `AuthorityVerificationMethodSchema` supports Ed25519 + P-256 (`577b79e5`). Post-ceremony tooling ready.                                           |
+
+> Full ecosystem log: [`gtcx-agentic/docs/operations/coordination/agent-coordination-log.md`](../../../../gtcx-agentic/docs/operations/coordination/agent-coordination-log.md)
+
+---
+
+## Current snapshot (2026-06-03)
+
+| Track                       | XR-ID  | Status                | Owner                  | Unblocks           | Risk   |
+| --------------------------- | ------ | --------------------- | ---------------------- | ------------------ | ------ |
+| Operator DID / mobile audit | XR-101 | **done**              | gtcx-infrastructure    | Mobile E2E         | —      |
+| Mobile staging audit E2E    | XR-102 | **ready**             | gtcx-mobile            | MOBILE-AUDIT-01/02 | R-high |
+| Intelligence auth gate      | XR-201 | **blocked**           | gtcx-infrastructure    | XR-202 / INT-S3-08 | R-high |
+| Intelligence re-smoke       | XR-202 | **blocked** on XR-201 | gtcx-intelligence      | Protocols mirror   | R-high |
+| Sovereign staging image     | XR-301 | **ready**             | gtcx-platforms → infra | P4-07 smoke        | R-med  |
+| AGX staging `/api/*`        | XR-302 | **in-progress**       | gtcx-platforms → infra | Mobile API path    | R-med  |
+| INF-86 algorithm            | XR-401 | **blocked** (human)   | CISO + platform-lead   | XR-402–405         | R-high |
+| INF-86 pilot ceremony       | XR-402 | **hold**              | gtcx-infrastructure    | XR-403             | R-high |
+| SIR verifier prod           | XR-507 | **blocked** (DNS)     | gtcx-infrastructure    | F-33 audit close   | R-med  |
+| Supabase migrations         | XR-508 | **blocked** (paused)  | gtcx-infrastructure    | Financing prod     | R-med  |
+
+**Critical path today:**
+
+```
+XR-201 (infra Track B) → XR-202 (intelligence re-smoke)
+      ‖ parallel
+XR-102 (mobile SM → E2E)
+      ‖ parallel
+XR-301/302 (platforms ECR → infra rollout)
+```
 
 ---
 
@@ -119,6 +168,53 @@ S-XR-4 (parallel):
 
 ---
 
+## Cross-repo XR-ID mapping
+
+Some sibling bridges use an early numbering scheme. Map to canonical protocols registry:
+
+| Agentic / Other | Canonical (protocols) | Title                                   |
+| --------------- | --------------------- | --------------------------------------- |
+| XR-001          | XR-101                | Staging operator DID + native protocols |
+| XR-002          | XR-201                | Intelligence auth gate                  |
+| XR-003          | XR-102                | Mobile audit E2E                        |
+| XR-004          | XR-301                | Sovereign signed-edge staging           |
+| XR-005          | XR-302                | AGX staging `/api/*`                    |
+| XR-006          | XR-507                | SIR verifier prod URL                   |
+| XR-007          | XR-202                | Intelligence full-stack re-smoke        |
+| XR-008          | —                     | exploration-os audit F-33/H-F           |
+| XR-009          | XR-402                | INF-86 authority key pilot              |
+| XR-010          | XR-502                | W2 compliance M2M intake                |
+| XR-011          | XR-515                | P22 CI rollout                          |
+| XR-012          | —                     | Audit v2 dual-output publish            |
+
+---
+
+## Communication rules
+
+| Do                                                                    | Don't                                                |
+| --------------------------------------------------------------------- | ---------------------------------------------------- |
+| Append to **agent log** when status changes                           | Edit another repo's coordination doc without PR      |
+| Update this file `XR-*` status when completing a slice                | Copy full bridge into Slack — link this file         |
+| Report P0 blockers to `baseline-os` `pnpm ecosystem:repo:report-work` | Claim Track A still blocked (marked done 2026-06-03) |
+| Use protocols sprint workplan for canonical XR registry               | Create duplicate XR-IDs                              |
+
+---
+
+## Per-repo coordination docs (reviewed 2026-06-03)
+
+| Repo                  | Coordination path               | Infra depends?                           |
+| --------------------- | ------------------------------- | ---------------------------------------- |
+| **gtcx-protocols**    | `docs/operations/coordination/` | **Yes** — DID schema, authority registry |
+| **gtcx-mobile**       | `docs/operations/coordination/` | Adjacent — SM consumer                   |
+| **gtcx-intelligence** | `docs/operations/coordination/` | **Yes** — Track B deploy target          |
+| **gtcx-platforms**    | `docs/operations/coordination/` | **Yes** — ECR rollout inbound            |
+| **exploration-os**    | `docs/operations/coordination/` | **Yes** — verifier + Supabase            |
+| **gtcx-agentic**      | `docs/operations/coordination/` | Adjacent — vault runners                 |
+| **compliance-os**     | `docs/operations/coordination/` | Adjacent — W2 secret                     |
+| **baseline-os**       | `workstream/coordination/`      | Hub blockers                             |
+
+---
+
 ## Reporting
 
 ```bash
@@ -132,5 +228,5 @@ pnpm ecosystem:repo:report-work \
 
 ---
 
-_Last updated: 2026-06-03_
+_Last updated: 2026-06-03_  
 _Refresh when XR status changes or new inbound lands._
