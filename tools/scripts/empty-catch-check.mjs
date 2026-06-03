@@ -25,7 +25,7 @@ const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const ALLOWLIST = new Set([
   // Shutdown / drain paths — these run during process termination
   // and reraising would prevent clean teardown.
-  'tools/compliance-gateway/src/audit-sink.mjs:123', // await natsClient.drain() during sink.close()
+  'tools/compliance-gateway/src/audit-sink.mjs:138', // await natsClient.drain() during sink.close()
   'tools/compliance-gateway/src/adaptive-policy-store.mjs:151', // fall-through path with cleanup
   'tools/compliance-gateway/src/adaptive-policy-store.mjs:154', // client.disconnect() during shutdown
   'tools/compliance-gateway/src/adaptive-policy-store.mjs:244', // await client.quit() during dispose
@@ -41,6 +41,11 @@ const ALLOWLIST = new Set([
   // Audit-capture sinks are best-effort by design — a slow / failing
   // sink must not break replay verification on the hot path.
   'tools/replay-protection/src/audit/audit-capture.mjs:88',
+  // baseline-os cost-router shim — graceful fallback when dist is not
+  // built or BASELINE_COST_ROUTER=0. Reraising would break the query
+  // path even when cost routing is disabled.
+  'tools/compliance-gateway/src/server.mjs:91',
+  'tools/compliance-gateway/src/cost-router-shim.mjs:34',
 ]);
 
 const SRC_GLOBS = [
