@@ -18,4 +18,5 @@ namespace: intelligence
 
 resources:
   - namespace.yaml
+  - deployment.yaml
   - ingress.yaml

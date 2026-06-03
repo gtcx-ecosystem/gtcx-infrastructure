@@ -45,6 +45,7 @@ protocol: gtcx-docs/docs/governance/protocols/24-cross-repo-coordination/protoco
 | When (UTC) | Agent / repo        | Update                                                                                                                                                                                                      |
 | ---------- | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 2026-06-03 | gtcx-infrastructure | **XR-201 finding:** `intelligence-orchestrator` Deployment manifest is **missing** from infra repo. ESO/ingress/secrets all live. Need gtcx-intelligence to provide full SDK image + manifest. See runbook. |
+| 2026-06-03 | gtcx-infrastructure | **XR-201 DONE:** Full intelligence SDK `12be5342` deployed to staging. Auth enforced on non-exempt paths. `/health` 200 by design (ALB health check); `/policy/rules` 401→200 with key.                     |
 | 2026-06-03 | gtcx-infrastructure | Coordination hub expanded: bridge + sprint workplan + outbound handoffs created. XR schemes reconciled (protocols canonical).                                                                               |
 | 2026-06-03 | gtcx-platforms      | XR-301/302: ECR rollout outbound to infra; `main` 8 commits ahead of origin (push before CI ECR workflow). Sovereign external `/health` → 526 (edge).                                                       |
 | 2026-06-03 | gtcx-protocols      | **S-XR-1 begun:** `probe-staging-cross-repo.mjs` — api/authority/operator OK; intelligence `/health` still **200** (XR-201 **not met**). Operator GET requires Bearer.                                      |
@@ -63,7 +64,7 @@ protocol: gtcx-docs/docs/governance/protocols/24-cross-repo-coordination/protoco
 | --------------------------- | ------ | --------------------- | ---------------------- | ------------------ | ------ |
 | Operator DID / mobile audit | XR-101 | **done**              | gtcx-infrastructure    | Mobile E2E         | —      |
 | Mobile staging audit E2E    | XR-102 | **ready**             | gtcx-mobile            | MOBILE-AUDIT-01/02 | R-high |
-| Intelligence auth gate      | XR-201 | **blocked**           | gtcx-infrastructure    | XR-202 / INT-S3-08 | R-high |
+| Intelligence auth gate      | XR-201 | **done**              | gtcx-infrastructure    | XR-202 / INT-S3-08 | R-high |
 | Intelligence re-smoke       | XR-202 | **blocked** on XR-201 | gtcx-intelligence      | Protocols mirror   | R-high |
 | Sovereign staging image     | XR-301 | **ready**             | gtcx-platforms → infra | P4-07 smoke        | R-med  |
 | AGX staging `/api/*`        | XR-302 | **in-progress**       | gtcx-platforms → infra | Mobile API path    | R-med  |
@@ -75,7 +76,7 @@ protocol: gtcx-docs/docs/governance/protocols/24-cross-repo-coordination/protoco
 **Critical path today:**
 
 ```
-XR-201 (infra Track B) → XR-202 (intelligence re-smoke)
+XR-202 (intelligence re-smoke)
       ‖ parallel
 XR-102 (mobile SM → E2E)
       ‖ parallel

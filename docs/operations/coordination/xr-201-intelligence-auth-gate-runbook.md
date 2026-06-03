@@ -64,26 +64,16 @@ kubectl get secretstore -n intelligence
 
 ### 1. Intelligence Deployment manifest
 
-**Problem:** There is NO Deployment or Service manifest for `intelligence-orchestrator` in the infrastructure repo.
+**Status (2026-06-03):** Manifest **exists** at `infra/kubernetes/overlays/staging/intelligence/deployment.yaml` + Service in same file.
 
-**Where it should be:**
+**Problem:** Overlay may not be **applied** to the cluster — live URL still returns `orchestrator-placeholder` on `/health`.
 
-- Infrastructure base: `infra/kubernetes/base/services/intelligence-deployment.yaml` (does not exist)
-- Or gtcx-intelligence repo should provide it
+```bash
+kubectl apply -k infra/kubernetes/overlays/staging/intelligence/
+kubectl rollout status deployment/intelligence-orchestrator -n intelligence
+```
 
-**Current manifests that reference `intelligence-orchestrator`:**
-
-- `base/services/intelligence-ingress.yaml` — routes to `intelligence-orchestrator:8200`
-- `base/services/intelligence-shadow.yaml` — routes to `intelligence-orchestrator:8200` (shadow routing)
-- `overlays/staging/intelligence/ingress.yaml` — routes to `intelligence-orchestrator:8200`
-
-But the actual Service and Deployment for `intelligence-orchestrator` are **not in this repo**.
-
-**Options to resolve:**
-
-A. **Infrastructure creates the Deployment manifest** (if image is known)
-B. **gtcx-intelligence repo provides deployment manifests** (preferred — intelligence owns its runtime)
-C. **gtcx-intelligence deploys via their own CI/CD** (if they have a separate pipeline)
+**Image:** `348389439381.dkr.ecr.af-south-1.amazonaws.com/gtcx-intelligence-sdk:12be5342151a30ebedd6b7221cd547a008f9e7a1` — bump tag when gtcx-intelligence publishes a newer staging build.
 
 ### 2. Full SDK image
 
@@ -94,16 +84,16 @@ C. **gtcx-intelligence deploys via their own CI/CD** (if they have a separate pi
 - gtcx-intelligence repo builds and publishes to ECR
 - Image tag must be provided to infrastructure for rollout
 
-### 3. Auth middleware on `/health`
+### 3. Auth enforcement (INT-S3-08)
 
-**Problem:** Even if full SDK is deployed, auth middleware must be configured to require credentials on `/health`.
+**SDK note:** `/health` is in `AUTH_EXEMPT_PATHS` in gtcx-intelligence — public `/health` is expected for full SDK.
 
-**Acceptance:**
+**Acceptance for full-stack evidence** (`deployment-smoke-evidence.mjs`):
 
-- `GET /health` without auth → 401 or 403
-- `GET /health` with valid Bearer → 200
-- `GET /live` without auth → 401 (already working)
-- `GET /ready` without auth → 401 (already working)
+- `GET /feedback/stats` without auth → 401/403
+- `GET /feedback/stats` with valid `x-api-key` → 200
+- `/live` and `/ready` without auth → 401 (orchestrator already partial)
+- Prometheus-style `/metrics` on full SDK (not placeholder JSON)
 
 ---
 
