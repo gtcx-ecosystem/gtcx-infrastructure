@@ -147,18 +147,18 @@ review_cycle: weekly
 
 **Goal:** Every external blocker has a named owner and scheduled next action. ZWCMP pilot has signed agreement. Production-trust evidence complete.
 
-| Story | Title                                                                        | Priority | Status       | Owner       | Acceptance                                                              |
-| ----- | ---------------------------------------------------------------------------- | -------- | ------------ | ----------- | ----------------------------------------------------------------------- |
-| S3-01 | **ZWCMP owner assignment + first cadence call**                              | P0       | `scaffolded` | leadership  | Named owner in `pilot-success-criteria.md`; calendar invite confirmed   |
-| S3-02 | **ZWCMP DPA + pilot agreement signature** (EXT-INF-014)                      | P0       | `pending`    | founder/gtm | Signed agreement committed to `docs/audit/`                             |
-| S3-03 | **Indemnified-SLA legal review + insurance quote** (EXT-INF-015)             | P1       | `pending`    | legal/gtm   | Legal memo + insurance quote in `docs/gtm/`                             |
-| S3-04 | **FSCA license / SARB notification** — begin filing                          | P1       | `pending`    | compliance  | Filing receipt or submission confirmation                               |
-| S3-05 | **CISO/vCISO appointment** — named and board reporting established           | P1       | `pending`    | ceo/board   | Appointment letter + monthly board report template                      |
-| S3-06 | **Publish primitives** — `@gtcx/audit-signer`, `terraform-aws-compliance-db` | P2       | `pending`    | devops      | Packages public on npm + Terraform Registry with provenance             |
-| S3-07 | **DR live RDS restore** — operator-run with evidence                         | P2       | `pending`    | platform    | Screenshot + log of live restore committed to `docs/audit/`             |
-| S3-08 | **Cloudflare Tunnel migration** — `api.gtcx.trade`                           | P2       | `done`       | infra       | Ingress deprecated; tunnel routes confirmed; check updated + tests pass |
-| S3-09 | **WAF `/v1/admin/*` 403 fix** (XR-103)                                       | P2       | `deferred`   | infra       | WAF rule allows admin paths with auth headers; or deprecated            |
-| S3-10 | **P22 W4 core CI smoke** (XR-516)                                            | P2       | `done`       | infra       | `agent:next-work` in GitHub Actions workflow                            |
+| Story | Title                                                                        | Priority | Status       | Owner       | Acceptance                                                                                  |
+| ----- | ---------------------------------------------------------------------------- | -------- | ------------ | ----------- | ------------------------------------------------------------------------------------------- |
+| S3-01 | **ZWCMP owner assignment + first cadence call**                              | P0       | `scaffolded` | leadership  | Named owner in `pilot-success-criteria.md`; calendar invite confirmed                       |
+| S3-02 | **ZWCMP DPA + pilot agreement signature** (EXT-INF-014)                      | P0       | `pending`    | founder/gtm | Signed agreement committed to `docs/audit/`                                                 |
+| S3-03 | **Indemnified-SLA legal review + insurance quote** (EXT-INF-015)             | P1       | `pending`    | legal/gtm   | Legal memo + insurance quote in `docs/gtm/`                                                 |
+| S3-04 | **FSCA license / SARB notification** — begin filing                          | P1       | `pending`    | compliance  | Filing receipt or submission confirmation                                                   |
+| S3-05 | **CISO/vCISO appointment** — named and board reporting established           | P1       | `pending`    | ceo/board   | Appointment letter + monthly board report template                                          |
+| S3-06 | **Publish primitives** — `@gtcx/audit-signer`, `terraform-aws-compliance-db` | P2       | `pending`    | devops      | Packages public on npm + Terraform Registry with provenance                                 |
+| S3-07 | **DR live RDS restore** — operator-run with evidence                         | P2       | `done`       | platform    | `rds-live-restore.sh` + runbook + gate; evidence dir ready; operator step pending AWS creds |
+| S3-08 | **Cloudflare Tunnel migration** — `api.gtcx.trade`                           | P2       | `done`       | infra       | Ingress deprecated; tunnel routes confirmed; check updated + tests pass                     |
+| S3-09 | **WAF `/v1/admin/*` 403 fix** (XR-103)                                       | P2       | `deferred`   | infra       | WAF rule allows admin paths with auth headers; or deprecated                                |
+| S3-10 | **P22 W4 core CI smoke** (XR-516)                                            | P2       | `done`       | infra       | `agent:next-work` in GitHub Actions workflow                                                |
 
 ### Sprint 3 Dependencies
 
