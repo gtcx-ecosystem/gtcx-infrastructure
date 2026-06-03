@@ -129,6 +129,7 @@ run('Secret Scan', 'node tools/scripts/secret-scan-gate.mjs');
 run('FIPS 140-3 Mode', 'node tools/scripts/fips-mode-gate.mjs');
 run('Audit Sink Guard', 'node tools/scripts/audit-sink-gate.mjs');
 run('Disk Queue Durability', 'node tools/scripts/disk-queue-gate.mjs');
+run('SLSA Build L3', 'node tools/scripts/slsa-l3-gate.mjs');
 run('Mesh Injection (prod)', 'node tools/scripts/verify-mesh-injection.mjs --namespace gtcx');
 run(
   'Mesh Injection (staging)',

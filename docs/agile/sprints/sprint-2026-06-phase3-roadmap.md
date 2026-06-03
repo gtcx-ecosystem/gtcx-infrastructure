@@ -124,7 +124,7 @@ review_cycle: weekly
 | S2-02 | **Mutable audit default path** — stdout → NATS/WORM or persistent sink | P1       | `done`        | infra                       | Production guard: AUDIT_SINK=stdout throws; defaults to NATS; gate in validate-all   |
 | S2-03 | **Durable offline queue** — survive restart + crash recovery           | P1       | `done`        | infra                       | Restart + crash recovery tests added; 23 disk-queue tests pass; gate in validate-all |
 | S2-04 | **PRD-002 Tier B** — TradePass DID resolver contract alignment         | P1       | `blocked`     | protocols + infra           | Protocols decision on `/identity/:did` shape; compliance-gateway consumes it         |
-| S2-05 | **SLSA Build L3** — sigstore attestation on ≥1 package                 | P2       | `pending`     | devops                      | Published package has `.sigstore` attestation artifact                               |
+| S2-05 | **SLSA Build L3** — sigstore attestation on ≥1 package                 | P2       | `done`        | devops                      | SLSA workflow + npm provenance configured; slsa-l3-gate in validate-all              |
 | S2-06 | **Pen-test SOW signature push** (EXT-INF-002)                          | P0       | `pending`     | leadership                  | SOW signed; vendor kickoff scheduled                                                 |
 | S2-07 | **SOC 2 Type I auditor engagement** (EXT-INF-016)                      | P0       | `pending`     | ciso + finance              | Auditor selected; gap analysis kickoff scheduled                                     |
 | S2-08 | **Cost router production** (ER-2)                                      | P1       | `in_progress` | infra + intel + baseline-os | Intel proof + baseline-os v1.1 freeze; cost-stats evidence                           |
@@ -157,7 +157,7 @@ review_cycle: weekly
 | S3-07 | **DR live RDS restore** — operator-run with evidence                         | P2       | `pending`    | platform    | Screenshot + log of live restore committed to `docs/audit/`             |
 | S3-08 | **Cloudflare Tunnel migration** — `api.gtcx.trade`                           | P2       | `done`       | infra       | Ingress deprecated; tunnel routes confirmed; check updated + tests pass |
 | S3-09 | **WAF `/v1/admin/*` 403 fix** (XR-103)                                       | P2       | `deferred`   | infra       | WAF rule allows admin paths with auth headers; or deprecated            |
-| S3-10 | **P22 W4 core CI smoke** (XR-516)                                            | P2       | `ready`      | infra       | `agent:next-work` in GitHub Actions workflow                            |
+| S3-10 | **P22 W4 core CI smoke** (XR-516)                                            | P2       | `done`       | infra       | `agent:next-work` in GitHub Actions workflow                            |
 
 ### Sprint 3 Dependencies
 
