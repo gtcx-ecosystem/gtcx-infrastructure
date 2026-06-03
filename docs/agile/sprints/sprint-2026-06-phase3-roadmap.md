@@ -105,7 +105,7 @@ review_cycle: weekly
 | S1-10 | **Coverage honesty** — branch coverage ≥90%                           | P1       | **`done`**    | infra  | `3962176` — 90.03% branches, 92.9% statements, 90.82% functions                                                             |
 | S1-11 | **Secret scanning CI** — gitleaks gate                                | P1       | `done`        | devops | `secret-scan-gate.mjs` added; gitleaks clean; falls back to trufflehog                                                      |
 | S1-12 | **Rate limiting** — `/audit/*` throttling with load-test              | P1       | `done`        | infra  | k6 burst test: 50% throttled (10/20), 0 errors; evidence at `docs/audit/evidence/load-tests/S1-12-rate-limit-evidence.json` |
-| S1-13 | **Runtime cross-repo integration tests** — health probes in CI        | P1       | `pending`     | infra  | CI job probes protocols/core/intelligence health; fails on ≥1 down                                                          |
+| S1-13 | **Runtime cross-repo integration tests** — health probes in CI        | P1       | `done`        | infra  | `cross-repo-health-probe.mjs` + `.github/workflows/cross-repo-health.yml`; all required services 200                        |
 
 ### Sprint 1 Dependencies
 

@@ -1,0 +1,53 @@
+# =============================================================================
+# Cross-Repo Health Probe — S1-13
+# =============================================================================
+# Probes the health endpoints of services deployed across the GTCX
+# ecosystem. Fails CI when ≥1 required service is down.
+#
+# Schedule: Every 15 minutes during business hours (UTC)
+# =============================================================================
+
+name: Cross-Repo Health Probe
+
+on:
+  schedule:
+    - cron: '*/15 6-20 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
+        with:
+          node-version: '20.18.0'
+
+      - name: Run cross-repo health probe
+        run: |
+          node tools/scripts/cross-repo-health-probe.mjs
+        env:
+          OUTPUT_DIR: docs/audit/evidence/cross-repo-health
+
+      - name: Upload health probe evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: cross-repo-health-probe-${{ github.run_id }}
+          path: docs/audit/evidence/cross-repo-health/
+          retention-days: 30
+
+      - name: Alert on failure
+        if: failure()
+        run: |
+          echo "::error::Cross-repo health probe failed. Check the uploaded artifact for details."
+          echo "### Cross-Repo Health Probe Failed" >> "$GITHUB_STEP_SUMMARY"
+          echo '```json' >> "$GITHUB_STEP_SUMMARY"
+          cat docs/audit/evidence/cross-repo-health/cross-repo-health-probe-latest.json >> "$GITHUB_STEP_SUMMARY" || true
+          echo '```' >> "$GITHUB_STEP_SUMMARY"

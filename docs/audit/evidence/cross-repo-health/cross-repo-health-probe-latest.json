@@ -1,0 +1,157 @@
+{
+  "schemaVersion": 1,
+  "testType": "cross-repo-health-probe",
+  "storyId": "S1-13",
+  "timestamp": "2026-06-03T20:33:58.854Z",
+  "environment": "staging",
+  "overall": "PASS",
+  "services": [
+    {
+      "name": "sovereign",
+      "repo": "gtcx-platforms",
+      "url": "https://sovereign-staging.gtcx.trade/api/health",
+      "status": 200,
+      "error": null,
+      "body": {
+        "status": "up",
+        "timestamp": "2026-06-03T20:33:58.585Z",
+        "database": {
+          "status": "up",
+          "details": {
+            "type": "postgres"
+          }
+        },
+        "protocol-adapters": {
+          "status": "up",
+          "details": {
+            "expectedVersions": {
+              "tradepass": "1.0.0",
+              "geotag": "1.0.0",
+              "gci": "1.0.0",
+              "vaultmark": "1.0.0",
+              "panx": "1.0.0"
+            }
+          }
+        },
+        "audit-trail": {
+          "status": "up",
+          "details": {
+            "lastAppend": "2026-06-03T20:33:58.585Z",
+            "chainVerified": true
+          }
+        }
+      },
+      "latencyMs": 129,
+      "required": true
+    },
+    {
+      "name": "agx-api",
+      "repo": "gtcx-platforms",
+      "url": "https://api.staging.gtcx.trade/api/health",
+      "status": 200,
+      "error": null,
+      "body": {
+        "status": "up",
+        "timestamp": "2026-06-03T20:33:58.638Z",
+        "database": {
+          "status": "up",
+          "details": {
+            "type": "postgres"
+          }
+        },
+        "protocol-adapters": {
+          "status": "up",
+          "details": {
+            "expectedVersions": {
+              "tradepass": "1.0.0",
+              "geotag": "1.0.0",
+              "gci": "1.0.0",
+              "vaultmark": "1.0.0",
+              "panx": "1.0.0"
+            }
+          }
+        },
+        "audit-trail": {
+          "status": "up",
+          "details": {
+            "lastAppend": "2026-06-03T20:33:58.638Z",
+            "chainVerified": true
+          }
+        }
+      },
+      "latencyMs": 126,
+      "required": true
+    },
+    {
+      "name": "intelligence",
+      "repo": "gtcx-intelligence",
+      "url": "https://intelligence-staging.gtcx.trade/health",
+      "status": 200,
+      "error": null,
+      "body": {
+        "service": "intelligence-sdk",
+        "version": "0.1.0",
+        "uptime": 4753,
+        "status": "healthy",
+        "dependencies": {
+          "inference_backend": {
+            "status": "up",
+            "latency_ms": 0
+          },
+          "event_store": {
+            "status": "up",
+            "events": 0
+          }
+        },
+        "scheduler": {
+          "running": true,
+          "jobs": {
+            "anomaly": {
+              "enabled": true,
+              "lastRun": "2026-06-03T20:29:45.389Z",
+              "runCount": 15
+            },
+            "trend": {
+              "enabled": true,
+              "runCount": 0
+            },
+            "summary": {
+              "enabled": false,
+              "runCount": 0
+            }
+          }
+        },
+        "features": {
+          "enableWorldModel": false,
+          "enableDriftAutoRollback": true,
+          "enableTradePassSubmission": false,
+          "enableCostRouter": true,
+          "degradationTimeoutMs": 5000,
+          "degradationErrorThreshold": 0.5,
+          "degradationLatencyThresholdMs": 2000
+        },
+        "ussd": {
+          "activeSessions": 0
+        }
+      },
+      "latencyMs": 263,
+      "required": true
+    },
+    {
+      "name": "compliance-gateway",
+      "repo": "gtcx-infrastructure",
+      "url": "https://compliance-gateway-staging.gtcx.trade/health",
+      "status": 525,
+      "error": null,
+      "body": "<!DOCTYPE html>\n<!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]-->\n<!--[if IE 7]>    <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]-->\n<!--[if IE 8]>    <html class=\"no-js ie8 oldie\" lang=\"en-US\"> <![endif]-->\n<!--[if gt IE 8]><!--> <html class=\"no-js\" lang=\"en-US\"> <!--<![endif]-->\n<head>\n\n<title>gtcx.trade | 525: SSL handshake failed</title>\n<meta charset=\"UTF-8\" />\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />\n<meta http-equiv=\"X-UA-Compa",
+      "latencyMs": 412,
+      "required": false
+    }
+  ],
+  "summary": {
+    "total": 4,
+    "healthy": 3,
+    "unhealthy": 1,
+    "requiredUnhealthy": 0
+  }
+}
