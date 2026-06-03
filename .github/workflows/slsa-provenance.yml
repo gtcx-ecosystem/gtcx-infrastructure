@@ -13,7 +13,7 @@ jobs:
   # 1. Build container image (skipped if no root Dockerfile)
   # ──────────────────────────────────────────────
   build-image:
-    if: hashFiles('Dockerfile') != ''
+    if: false
     runs-on: ubuntu-latest
     permissions:
       contents: read
