@@ -193,17 +193,20 @@ Ready for H-03: DID document update + `key_status: production`.
 
 ### XR-405 — Platforms KMS wiring
 
-**Status:** Infra env vars committed — platforms smoke pending.
+**Status:** Infra rollout complete — sovereign-staging pod healthy with KMS signing.
 
 | Step | Action                                                                                                    | Status      | Evidence                                                               |
 | ---- | --------------------------------------------------------------------------------------------------------- | ----------- | ---------------------------------------------------------------------- |
 | 1    | `SIGNING_KEY_PROVIDER=kms` + `AWS_KMS_KEY_ID=alias/gtcx-production-sovereign-gh-bog` on sovereign-staging | **done**    | `infra/kubernetes/overlays/staging/patches/sovereign-staging-env.yaml` |
-| 2    | Platforms re-run `smoke:signed-edge-tenant:evidence`                                                      | **pending** | gtcx-platforms queue                                                   |
-| 3    | Mark XR-405 done on platforms sprint board                                                                | **pending** | After smoke green                                                      |
+| 1b   | Staging IRSA role `gtcx-staging-platforms-irsa` created + KMS policy fixed                                | **done**    | AWS IAM role + inline policy                                           |
+| 1c   | `gtcx-platform-staging` SA annotated with staging IRSA role                                               | **done**    | `infra/kubernetes/overlays/staging/patches/platform-sa-irsa.yaml`      |
+| 2    | Sovereign pod Running, `KmsKeyProvider` init OK, health 200                                               | **done**    | `sovereign-staging-888f9bc4d-7h4rk`                                    |
+| 3    | Platforms re-run `smoke:signed-edge-tenant:evidence`                                                      | **pending** | gtcx-platforms queue                                                   |
+| 4    | Mark XR-405 done on platforms sprint board                                                                | **pending** | After smoke green                                                      |
 
 **Next:** gtcx-platforms re-run signed-edge smoke against KMS-backed signing.
 
 ---
 
-_Last updated: 2026-06-04_
+_Last updated: 2026-06-04T17:15+02:00_
 _Next review: After XR-401-B/C evidence lands — see [inf-86-agentic-ceremony-model](https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/docs/coordination/inf-86-agentic-ceremony-model-2026-06-03.md)_
