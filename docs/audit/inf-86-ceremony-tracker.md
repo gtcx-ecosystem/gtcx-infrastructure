@@ -126,5 +126,37 @@ Ready for H-03: DID document update + `key_status: production`.
 
 ---
 
+## Handoff: H-02 → H-01 (infra → governance)
+
+**Status:** H-02 is **ceremony-ready**. Awaiting H-01 completion.
+
+```markdown
+## Agent Context Attestation — INF-86 H-02 Readiness
+
+- [x] Terraform module validated (`kms-sovereign-signing`)
+- [x] Production configuration reviewed (gh-bog pilot, `main.tf:351-369`)
+- [x] Terraform plan pre-validated (8 resources, 0 destroys)
+- [x] Ceremony tracker created
+- [x] Operator runbook created
+- [x] Evidence archive initialized
+- [ ] H-01: CISO / platform-lead algorithm sign-off
+- [ ] H-01: Custodians + witness scheduled
+- [ ] H-01: GTCX-KEY-CEREMONY leadership approval
+```
+
+**When H-01 completes:**
+
+1. Notify infra (this tracker)
+2. Infra executes H-02 ceremony within 48 hours
+3. Infra posts SPKI + evidence to gtcx-protocols #61
+4. Protocols executes XR-403 (bog.json PR)
+
+**Ceremony ID (pre-assigned):** `INF-86-H02-GHBOG-2026`  
+**Authority:** `gh-bog` (Ghana Bogoso)  
+**Algorithm:** `ECC_NIST_P256` (pending CISO confirmation)  
+**Alias:** `alias/gtcx-production-sovereign-gh-bog`
+
+---
+
 _Last updated: 2026-06-03_
 _Next review: After H-01 algorithm sign-off_
