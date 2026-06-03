@@ -65,6 +65,10 @@ _delete/
 infra/security/reports/rollback-evidence/
 *.tfplan
 
+# INF-86 ceremony — SPKI DER stays on secure path only (hash may be committed)
+docs/audit/evidence/inf-86/**/*.pub.der
+/secure/
+
 
 # BaselineOS institutional memory (tracked)
 .baseline/checkpoints/
