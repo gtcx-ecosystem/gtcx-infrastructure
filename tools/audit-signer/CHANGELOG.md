@@ -22,4 +22,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - This is the first public release. The API has been stable inside GTCX for months as the substrate behind the SIGNAL S2 audit-trail and I2 audit-immutability claims.
 - Reports of any cryptographic concerns are welcome via GitHub Security Advisories on the parent repository.
 
+## [0.1.1] — 2026-06-02
+
+### Added
+
+- FIPS 140-3 mode — `GTCX_FIPS_MODE=1` switches signing from Ed25519 to ECDSA P-256 (`prime256v1`). Key generation, signing, and SPKI export all branch automatically. 48 tests pass in both modes.
+- SLSA Level 3 provenance — build pipeline generates and verifies SLSA provenance for both container image and npm package via `slsa-github-generator`.
+- npm provenance publish — `npm publish --provenance --access public` on tag push (`refs/tags/v*`). Package attestation is written to the Sigstore/Rekor transparency log and verifiable with `npm audit-signatures`.
+
+### Changed
+
+- `prepublishOnly` runs the full test suite before any publish.
+
+[0.1.1]: https://github.com/gtcx-ecosystem/gtcx-infrastructure/releases/tag/v0.1.1
 [0.1.0]: https://github.com/gtcx-ecosystem/gtcx-infrastructure/tree/main/tools/audit-signer
