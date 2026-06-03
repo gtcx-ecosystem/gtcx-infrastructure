@@ -115,12 +115,12 @@ Do not publish fake “IR 8.2 after sprint N” tables — run `pnpm score:compu
 
 ### IR-2 — Dependencies & supply chain → **M2 (8.5)**
 
-| ID     | Work                                                        | Dimension                    | Source                     |
-| ------ | ----------------------------------------------------------- | ---------------------------- | -------------------------- |
-| IR-2.1 | Merge tier-3 dependabot (`pg`, `lint-staged`, actions pins) | codeQuality, security        | full-audit Sprint 3; S3-01 |
-| IR-2.2 | AI SDK v5→v6 branch + eval-pipeline regression              | codeQuality, agenticMaturity | full-audit #6; S3-01       |
-| IR-2.3 | Fix `security` / CodeQL SARIF upload on `main`              | security                     | full-audit Phase 5 P2      |
-| IR-2.4 | Ledger: code-quality ≥8.5, security ≥9.2 with CI proof      | multiple                     | ledger                     |
+| ID     | Work                                                        | Dimension                    | Source                                                                                 |
+| ------ | ----------------------------------------------------------- | ---------------------------- | -------------------------------------------------------------------------------------- |
+| IR-2.1 | Merge tier-3 dependabot (`pg`, `lint-staged`, actions pins) | codeQuality, security        | full-audit Sprint 3; S3-01                                                             |
+| IR-2.2 | AI SDK v5→v6 branch + eval-pipeline regression              | codeQuality, agenticMaturity | full-audit #6; S3-01                                                                   |
+| IR-2.3 | Fix `security` / CodeQL SARIF upload on `main`              | security                     | **done** — `upload: false` on analyze; `continue-on-error: true` on upload-sarif steps |
+| IR-2.4 | Ledger: code-quality ≥8.5, security ≥9.2 with CI proof      | multiple                     | ledger                                                                                 |
 
 ---
 

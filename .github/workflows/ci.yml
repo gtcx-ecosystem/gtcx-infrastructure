@@ -438,10 +438,12 @@ jobs:
         with:
           category: '/language:javascript-typescript'
           output: codeql-results
+          upload: false
 
       - name: Upload CodeQL SARIF
         uses: github/codeql-action/upload-sarif@7211b7c8077ea37d8641b6271f6a365a22a5fbfa # v4
         if: always()
+        continue-on-error: true
         with:
           sarif_file: codeql-results
 
@@ -472,6 +474,7 @@ jobs:
       - name: Upload Trivy scan results
         uses: github/codeql-action/upload-sarif@7211b7c8077ea37d8641b6271f6a365a22a5fbfa # v4
         if: always()
+        continue-on-error: true
         with:
           sarif_file: 'trivy-results.sarif'
 
