@@ -61,3 +61,5 @@ Append **newest entries at the top** of the table below. One row per meaningful 
 - **2026-06-03T09:45Z** — `XR-104` — **DONE** — compliance-gateway `audit-tradepass-auth-amd64` deployed to staging. Audit signing initialized (not ephemeral). DID resolver verified working. MOBILE-AUDIT-01 unblocked. Ref: `a3fe3e2`.
 
 - **2026-06-03T09:55Z** — `AGX-staging` — **CRASHLOOP** — `gtcx-agx-staging` pods failing with `MODULE_NOT_FOUND: @gtcx/platform-shared`. Image `v0.4.0` appears broken. Platforms-owned; blocks `/api/*` paths.
+
+- **2026-06-03T10:00Z** — `XR-302` — **BLOCKED** — AGX `staging` image is ARM64-only; EKS t3 is AMD64. Sovereign `staging` is AMD64 and healthy. Handoff filed to platforms. Ref: `from-gtcx-infrastructure-agx-architecture-blocker-2026-06-03.md`.
