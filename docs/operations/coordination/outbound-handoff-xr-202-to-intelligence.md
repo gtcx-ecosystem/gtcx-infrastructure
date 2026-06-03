@@ -1,3 +1,9 @@
+---
+status: current
+date: 2026-06-03
+owner: gtcx-infrastructure
+---
+
 # Outbound Handoff: XR-202 → gtcx-intelligence
 
 **Date:** 2026-06-03T09:12Z  

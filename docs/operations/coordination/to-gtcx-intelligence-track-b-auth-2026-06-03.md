@@ -4,6 +4,7 @@ status: current
 date: 2026-06-03
 from: gtcx-infrastructure
 to: gtcx-intelligence
+owner: gtcx-infrastructure
 xr-id: XR-201
 ---
 

@@ -1,3 +1,9 @@
+---
+status: current
+date: 2026-06-02
+owner: gtcx-infrastructure
+---
+
 # Manual Cloudflare Steps — sovereign-staging.gtcx.trade
 
 ## Step 1: Add ACM Validation CNAME (gray cloud)

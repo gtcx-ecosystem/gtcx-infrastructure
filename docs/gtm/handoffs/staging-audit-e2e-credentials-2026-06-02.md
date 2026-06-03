@@ -1,3 +1,9 @@
+---
+status: current
+date: 2026-06-02
+owner: gtcx-infrastructure
+---
+
 # Staging Audit E2E Credentials Handoff
 
 > **Date:** 2026-06-02

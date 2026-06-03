@@ -1,3 +1,9 @@
+---
+status: current
+date: 2026-06-02
+owner: gtcx-infrastructure
+---
+
 # Outbound: EAP Auth-Keys Sync to Staging Secret
 
 > **From:** gtcx-infrastructure agent

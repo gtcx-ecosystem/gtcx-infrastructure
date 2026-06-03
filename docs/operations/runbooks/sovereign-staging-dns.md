@@ -1,3 +1,9 @@
+---
+status: current
+date: 2026-06-02
+owner: gtcx-infrastructure
+---
+
 # Runbook: Route `sovereign-staging.gtcx.trade` to Sovereign Staging Service
 
 ## Status

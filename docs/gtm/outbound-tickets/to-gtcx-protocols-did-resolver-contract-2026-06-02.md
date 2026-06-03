@@ -1,3 +1,9 @@
+---
+status: current
+date: 2026-06-02
+owner: gtcx-infrastructure
+---
+
 # Outbound: DID Resolver Contract Alignment for `/audit/bundles` Signature Verify
 
 > **From:** gtcx-infrastructure agent
