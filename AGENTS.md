@@ -54,6 +54,23 @@ Before making any code changes, architectural decisions, or recommendations, com
 15. If `backlogClear: true`, run witness (`node tools/scripts/validate-all.mjs`) and refresh evidence gates — do not idle.
 16. If a story is returned, execute it. Never ask the operator which story to pick when the manifest and roadmap exist.
 
+### Phase 5.6: Proceed Brief (Protocol 26)
+17. Before substantive work, state **what will happen next and why**.
+18. Use the Proceed Brief format. The human confirms, corrects, or stops — they do not choose among options.
+
+```markdown
+## Proceed Brief
+
+**Next:** <one recommended action>
+**Because:** <evidence-linked rationale>
+**Blocked until:** <none | specific inbound / artifact>
+**Override:** Reply **stop**, **correct:**, or name a story ID.
+```
+
+**Forbidden:** "What would you like me to do next?", "Do you want A or B?", "Should I commit, push, or wait?"
+
+**When blocked:** File a Blocker Report (what is missing, where, who owns it) — do not disguise uncertainty as a multiple-choice question.
+
 ### Phase 5.7: Execute Verification Ladder (Protocol 27)
 17. **Run** repo quality gates in-session. The human is not a remote shell.
 18. Before marking work "done", execute every applicable step in order. Skip only when the repo manifest documents the step as N/A.
@@ -83,16 +100,29 @@ Before making any code changes, architectural decisions, or recommendations, com
 Agent will re-run `<command>` in this session.
 ```
 
+### Phase 5.8: Authority Classification (Protocol 28)
+19. Tag every primary action with its authority class in the Proceed Brief:
+
+| Class | Meaning | Examples |
+|-------|---------|----------|
+| **S** — Sovereign human | Human decides; agent stops | Legal ratification, founder **stop**, user says **do not commit** |
+| **A** — Agent custody | Prior authorization exists; agent executes + evidence | `terraform apply` after XR-401-C, `gh issue comment`, SPKI export |
+| **R** — Routine autonomous | No per-step authorization; agent runs | `lint`, `test`, `build`, `agent:next-work` |
+
+**Do not** list "ceremony" or "terraform apply" as Class S by default — they are Class A when preceremony artifacts exist.
+
 ### Phase 5: Attest & Begin (30 sec)
-17. Summarize context in 3–5 sentences
-18. Add attestation block to commit/PR:
+20. Summarize context in 3–5 sentences
+21. Add attestation block to commit/PR:
 ```markdown
 ## Agent Context Attestation
 - [x] Phase 1: Baseline loaded
 - [x] Phase 2: Repo context established
 - [x] Phase 3: Current state discovered
 - [x] Phase 4: Persona & frame selected
+- [x] Phase 5.6: Proceed Brief delivered (Protocol 26) — recommendation-first, no menus
 - [x] Phase 5.7: Verification ladder executed (Protocol 27) — commands listed in commit/PR body
+- [x] Phase 5.8: Authority class tagged (Protocol 28) — S/A/R classification stated
 - [x] Phase 5: Context attested
 ```
 

@@ -147,6 +147,12 @@ jobs:
       - name: Protocol 22 adoption check
         run: pnpm agent:work-selection:check
 
+      - name: Protocol 26 adoption check
+        run: pnpm agent:proceed-confirmation:check
+
+      - name: Protocol 27 adoption check
+        run: pnpm agent:execution-obligation:check
+
       - name: Chaos manifest validation
         run: node tools/scripts/chaos-manifest-validator.mjs
 

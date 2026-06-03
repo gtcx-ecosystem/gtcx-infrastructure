@@ -1,0 +1,54 @@
+---
+description: Protocol 28 — Agent Authority Classification (AGENT-AUTH-CLASS)
+glob: "**/*"
+alwaysApply: true
+---
+
+# Protocol 28: Agent Authority Classification
+
+> **Normative spec:** `gtcx-docs/docs/governance/protocols/28-agent-authority-classification/protocol.md`
+> **Date:** 2026-06-03 | **Version:** 1.0.0 | **Tier:** Critical
+
+## Three authority classes
+
+| Class | Who decides | Who executes | Examples |
+|-------|-------------|--------------|----------|
+| **S** — Sovereign human | Human | Agent stops | Legal ratification, statutory countersign, user **stop** / **do not commit** |
+| **A** — Agent custody | Prior authorization exists | Agent runs + publishes evidence | `terraform apply` after XR-401-C, `gh issue comment`, SPKI export, evidence JSON |
+| **R** — Routine autonomous | Agent (no per-step auth) | Agent runs | `lint`, `test`, `build`, `agent:next-work`, hub gates |
+
+## Proceed Brief addition (required)
+
+Every Proceed Brief must tag the authority class:
+
+```markdown
+**Authority class:** <S | A | R>
+**Authorization artifact:** <path or — for Class R>
+```
+
+## Classification flow
+
+1. User stop / do not commit? → **Class S — halt**
+2. Legal/statutory human signature required? → **Class S**
+3. Prior authorization artifact (XR-401-C, ticket, tracker)? → **Class A — execute + evidence**
+4. Prod irreversible / new sovereign decision? → **Class S or get authorization first**
+5. Otherwise → **Class R — agent autonomous**
+
+## Anti-patterns
+
+| Anti-pattern | Fix |
+|--------------|-----|
+| "Please post on #61 when you have a moment" | Class A — agent runs `gh issue comment` or Permission Unblock Report |
+| "Schedule two humans in a room for H-01-C" | Use custodian `agent_id` attestations (Class A) |
+| Agent runs prod apply **without** XR-401-C | Blocker — complete preceremony first |
+
+## INF-86 reference map
+
+| Step | Class | Executor |
+|------|-------|----------|
+| XR-401-A/B/C attestations | A | gtcx-agentic |
+| XR-402 terraform apply + SPKI export | A | gtcx-infrastructure custodian agents |
+| Post protocols #61 | A | infra agent with `gh` |
+| XR-403 bog.json production | A (after SPKI ready) | gtcx-protocols |
+| H-03 legal CSP countersign | **S** | human |
+| Hub workplan row update | R | gtcx-docs |
