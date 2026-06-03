@@ -44,6 +44,7 @@ protocol: gtcx-docs/docs/governance/protocols/24-cross-repo-coordination/protoco
 
 | When (UTC) | Agent / repo        | Update                                                                                                                                                                                                      |
 | ---------- | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-06-04 | gtcx-infrastructure | **ER-1-08 DONE:** Infra acknowledges EAP Phase B closure. `normalizeStatus()` fix is agentic-only; no infra code changes. No blockers.                                                                      |
 | 2026-06-03 | gtcx-infrastructure | **XR-104 DONE:** compliance-gateway DID resolve fixed. SDK rebuilt (audit-tradepass-auth-amd64), signing secret fixed (valid PKCS#8 DER Ed25519), rollout verified. Mobile E2E unblocked.                   |
 | 2026-06-03 | gtcx-infrastructure | **XR-201 finding:** `intelligence-orchestrator` Deployment manifest is **missing** from infra repo. ESO/ingress/secrets all live. Need gtcx-intelligence to provide full SDK image + manifest. See runbook. |
 | 2026-06-03 | gtcx-infrastructure | **XR-104 DONE:** compliance-gateway audit-tradepass-auth-amd64 deployed; signing init OK; DID resolver verified. Unblocks MOBILE-AUDIT-01.                                                                  |

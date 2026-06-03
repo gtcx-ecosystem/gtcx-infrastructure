@@ -30,7 +30,7 @@ review_cycle: weekly
 | S1-05 | **Terraform drift** — staging IRSA role in state                      | P1       | `pending` | infra | `module.irsa_platform` in staging `main.tf`; `terraform plan` shows 0 changes |
 | S1-06 | **Production IRSA trust cleanup** — remove stale staging ref          | P2       | `pending` | infra | `gtcx-production-platforms-irsa` trust policy has no staging SA references    |
 | S1-07 | **Kustomize secret collision pattern** — base cleanup                 | P2       | `pending` | infra | Base `secretGenerator` `compliance-gateway-audit-key` removed or disabled     |
-| S1-08 | **ER-1-08 infra hub log row** — protocols ack                         | P2       | `pending` | infra | `docs/operations/coordination/` contains ER-1-08 infra ack doc                |
+| S1-08 | **ER-1-08 infra hub log row** — protocols ack                         | P2       | `done`    | infra | `docs/operations/coordination/cross-repo-agent-log.md` — infra ack logged     |
 | S1-09 | **Lint debt** — compliance-gateway ESLint + script                    | P1       | `pending` | infra | `pnpm lint` in compliance-gateway exits 0; 34 errors resolved                 |
 | S1-10 | **Coverage honesty** — file-level coverage, no smoothing              | P1       | `pending` | infra | Coverage report shows per-file branch %; no aggregate-only claims             |
 
@@ -91,22 +91,22 @@ review_cycle: weekly
 
 ## Cross-Repo Coordination Register
 
-| ID      | Title                          | Status   | Blocker                                                   | Sprint     |
-| ------- | ------------------------------ | -------- | --------------------------------------------------------- | ---------- |
-| XR-102  | Mobile audit E2E               | ready    | —                                                         | S2         |
-| XR-303  | Platforms consume `@gtcx/ui`   | blocked  | ledger-ui NPM_TOKEN                                       | S3         |
-| XR-401  | INF-86 algorithm decision      | blocked  | CISO sign-off                                             | S1 (input) |
-| XR-402  | INF-86 pilot ceremony          | hold     | XR-401 + custodians                                       | S2         |
-| XR-403  | `bog.json` production key      | blocked  | XR-402 SPKI handoff                                       | S2         |
-| XR-404  | exploration-os `contract:gtcx` | blocked  | XR-403                                                    | S3         |
-| XR-405  | Platforms KMS wire-up          | **done** | —                                                         | —          |
-| XR-507  | Verifier DNS                   | blocked  | CF OAuth `zone:write`                                     | S3         |
-| XR-508  | Supabase migrations            | blocked  | Paused project                                            | S3         |
-| XR-509  | Publish `@gtcx/mcp`            | blocked  | NPM credentials                                           | S3         |
-| XR-510  | ledger-ui `@gtcx/ui@0.4.1`     | blocked  | NPM_TOKEN                                                 | S3         |
-| XR-517  | SPEC §17 co-author sign-off    | blocked  | Human sign-off                                            | S2         |
-| ER-2    | Cost router production         | pending  | infra ENABLE_COST_ROUTER + intel proof + baseline-os v1.1 | S2         |
-| ER-1-08 | Hub acks                       | pending  | gtcx-core + gtcx-infra log rows                           | S1         |
+| ID      | Title                          | Status   | Blocker                                                                | Sprint     |
+| ------- | ------------------------------ | -------- | ---------------------------------------------------------------------- | ---------- |
+| XR-102  | Mobile audit E2E               | ready    | —                                                                      | S2         |
+| XR-303  | Platforms consume `@gtcx/ui`   | blocked  | ledger-ui NPM_TOKEN                                                    | S3         |
+| XR-401  | INF-86 algorithm decision      | blocked  | CISO sign-off                                                          | S1 (input) |
+| XR-402  | INF-86 pilot ceremony          | hold     | XR-401 + custodians                                                    | S2         |
+| XR-403  | `bog.json` production key      | blocked  | XR-402 SPKI handoff                                                    | S2         |
+| XR-404  | exploration-os `contract:gtcx` | blocked  | XR-403                                                                 | S3         |
+| XR-405  | Platforms KMS wire-up          | **done** | —                                                                      | —          |
+| XR-507  | Verifier DNS                   | blocked  | CF OAuth `zone:write`                                                  | S3         |
+| XR-508  | Supabase migrations            | blocked  | Paused project                                                         | S3         |
+| XR-509  | Publish `@gtcx/mcp`            | blocked  | NPM credentials                                                        | S3         |
+| XR-510  | ledger-ui `@gtcx/ui@0.4.1`     | blocked  | NPM_TOKEN                                                              | S3         |
+| XR-517  | SPEC §17 co-author sign-off    | blocked  | Human sign-off                                                         | S2         |
+| ER-2    | Cost router production         | pending  | infra ENABLE_COST_ROUTER + intel proof + baseline-os v1.1              | S2         |
+| ER-1-08 | Hub acks                       | done     | All repos ack'd: agentic handoff, protocols, intelligence, core, infra | S1         |
 
 ---
 
