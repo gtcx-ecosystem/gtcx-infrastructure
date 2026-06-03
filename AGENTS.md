@@ -293,6 +293,18 @@ The audit registry is provider-agnostic — the same prompts work for Claude, Co
 
 **Credentialed evidence packs:** run either via vault injection on a dev laptop or in infra-owned CI; write redacted JSON evidence only (no raw secrets).
 
+## LLM routing + token usage (BaselineOS SoR)
+
+| Concern | Owner | Operator entry |
+| --- | --- | --- |
+| Route decisions + pricing | `baseline-os` | `baseline cost-route --prompt "..." --json` |
+| Token usage aggregate | `baseline-os` | `baseline cost-stats --json` |
+| Agent vault (populate/verify) | `gtcx-agentic` | `pnpm agent:vault:verify` |
+| Staging vs production keys | `gtcx-agentic` | `docs/operators/vault-environments.md` |
+| Ecosystem coordination | `baseline-os` | `workstream/coordination/ECOSYSTEM-COST-ROUTER-2026-06-03.md` |
+
+**Do not** use `baseline-os/infra/docker/.env.staging` for production vault work.
+
 ## Execute roadmap (any LLM, any repo)
 
 Command: **`execute-roadmap`** (not `roadmap`).
