@@ -44,7 +44,9 @@ protocol: gtcx-docs/docs/governance/protocols/24-cross-repo-coordination/protoco
 
 | When (UTC) | Agent / repo        | Update                                                                                                                                                                                                      |
 | ---------- | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-06-03 | gtcx-infrastructure | **XR-104 DONE:** compliance-gateway DID resolve fixed. SDK rebuilt (audit-tradepass-auth-amd64), signing secret fixed (valid PKCS#8 DER Ed25519), rollout verified. Mobile E2E unblocked.                   |
 | 2026-06-03 | gtcx-infrastructure | **XR-201 finding:** `intelligence-orchestrator` Deployment manifest is **missing** from infra repo. ESO/ingress/secrets all live. Need gtcx-intelligence to provide full SDK image + manifest. See runbook. |
+| 2026-06-03 | gtcx-infrastructure | **XR-104 DONE:** compliance-gateway audit-tradepass-auth-amd64 deployed; signing init OK; DID resolver verified. Unblocks MOBILE-AUDIT-01.                                                                  |
 | 2026-06-03 | gtcx-infrastructure | **XR-202 READY:** Outbound handoff created for intelligence re-smoke. Full env spec + caveats in `outbound-handoff-xr-202-to-intelligence.md`.                                                              |
 | 2026-06-03 | gtcx-infrastructure | **XR-201 DONE:** Full intelligence SDK `12be5342` deployed to staging. Auth enforced on non-exempt paths. `/health` 200 by design (ALB health check); `/policy/rules` 401→200 with key.                     |
 | 2026-06-03 | gtcx-infrastructure | Coordination hub expanded: bridge + sprint workplan + outbound handoffs created. XR schemes reconciled (protocols canonical).                                                                               |
@@ -64,8 +66,8 @@ protocol: gtcx-docs/docs/governance/protocols/24-cross-repo-coordination/protoco
 | Track                       | XR-ID  | Status               | Owner                  | Unblocks           | Risk   |
 | --------------------------- | ------ | -------------------- | ---------------------- | ------------------ | ------ |
 | Operator DID / mobile audit | XR-101 | **done**             | gtcx-infrastructure    | Mobile E2E         | —      |
-| Mobile staging audit E2E    | XR-102 | **blocked**          | gtcx-mobile            | MOBILE-AUDIT-01/02 | R-high |
-| compliance-gateway Bearer   | XR-104 | **blocked**          | gtcx-infrastructure    | XR-102             | R-high |
+| Mobile staging audit E2E    | XR-102 | **ready**            | gtcx-mobile            | MOBILE-AUDIT-01/02 | R-high |
+| compliance-gateway Bearer   | XR-104 | **done**             | gtcx-infrastructure    | XR-102             | R-high |
 | Intelligence auth gate      | XR-201 | **done**             | gtcx-infrastructure    | XR-202 / INT-S3-08 | R-high |
 | Intelligence re-smoke       | XR-202 | **ready**            | gtcx-intelligence      | Protocols mirror   | R-high |
 | Sovereign staging image     | XR-301 | **ready**            | gtcx-platforms → infra | P4-07 smoke        | R-med  |
@@ -78,7 +80,7 @@ protocol: gtcx-docs/docs/governance/protocols/24-cross-repo-coordination/protoco
 **Critical path today:**
 
 ```
-XR-104 (infra gateway) → XR-102 (mobile E2E)
+XR-102 (mobile E2E) — ready
       ‖ parallel
 XR-202 (intelligence re-smoke)
       ‖ parallel
@@ -155,12 +157,12 @@ See [`cross-repo-sprint-workplan-2026-06.md`](cross-repo-sprint-workplan-2026-06
 ### gtcx-infrastructure
 
 - **XR-201 DONE** — full SDK deployed; auth enforced. XR-202 handoff sent to intelligence.
-- **XR-104 BLOCKED** — compliance-gateway DID resolve 401; needs TradePass Bearer + audit signing secret rollout. Blocks mobile signed ingest.
+- **XR-104 DONE** — compliance-gateway DID resolve fixed. SDK rebuilt (audit-tradepass-auth-amd64), signing secret fixed (valid PKCS#8 DER Ed25519), rollout verified. Mobile E2E unblocked.
 - **INF-86 pilot** — HOLD awaiting CISO algorithm sign-off.
 
 ### gtcx-mobile
 
-Track A done. **MOBILE-AUDIT-01 blocked on XR-104** (infra compliance-gateway). Load SM when XR-104 resolved.
+Track A done. **MOBILE-AUDIT-01 unblocked** — XR-104 resolved. Load SM and run E2E.
 
 ### gtcx-intelligence
 
