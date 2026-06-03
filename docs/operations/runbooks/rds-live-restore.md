@@ -89,14 +89,14 @@ Credentials are sourced from the vault (`gtcx-secrets-staging` or `gtcx-secrets-
 
 ### 5. Validate schema and data
 
-Run the schema validation and smoke test suite against the restored instance:
+Run the validation suite against the restored instance:
 
 ```bash
 POSTGRES_HOST=<restored-endpoint> \
 POSTGRES_USER=<user> \
 POSTGRES_DB=<db> \
 POSTGRES_PASSWORD=<password> \
-  pnpm db:validate
+  pnpm test
 ```
 
 ### 6. Capture evidence
