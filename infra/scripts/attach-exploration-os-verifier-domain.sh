@@ -68,11 +68,14 @@ else
 fi
 
 echo ""
-echo "=== Pages custom domain (optional) ==="
-ACCOUNTS=$(api GET "/accounts")
-ACCOUNT_ID=$(echo "$ACCOUNTS" | jq -r '.result[0].id // empty')
+echo "=== Pages custom domain (required for TLS on proxied CNAME) ==="
+ACCOUNT_ID=$(api GET "/zones/${ZONE_ID}" | jq -r '.result.account.id // empty')
 if [ -z "$ACCOUNT_ID" ] || [ "$ACCOUNT_ID" = "null" ]; then
-  echo "WARN: Could not list accounts — DNS-only path may still work after propagation"
+  ACCOUNTS=$(api GET "/accounts")
+  ACCOUNT_ID=$(echo "$ACCOUNTS" | jq -r '.result[0].id // empty')
+fi
+if [ -z "$ACCOUNT_ID" ] || [ "$ACCOUNT_ID" = "null" ]; then
+  echo "WARN: Could not resolve account id — register custom domain in Pages dashboard"
 else
   echo "Account ID: ${ACCOUNT_ID}"
   DOMAIN_BODY=$(jq -n --arg name "$FQDN" '{name:$name}')
