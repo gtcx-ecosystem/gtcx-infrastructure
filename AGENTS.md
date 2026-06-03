@@ -49,9 +49,14 @@ Before making any code changes, architectural decisions, or recommendations, com
 12. Verify trust score ≥ persona threshold
 13. Select frame: development (default), trading-floor, field-operations, regulatory-audit
 
+### Phase 5.4: Compute Next Work (Protocol 22)
+14. Run `pnpm agent:next-work` to compute the next story from the execution roadmap and work register.
+15. If `backlogClear: true`, run witness (`node tools/scripts/validate-all.mjs`) and refresh evidence gates — do not idle.
+16. If a story is returned, execute it. Never ask the operator which story to pick when the manifest and roadmap exist.
+
 ### Phase 5: Attest & Begin (30 sec)
-14. Summarize context in 3–5 sentences
-15. Add attestation block to commit/PR:
+17. Summarize context in 3–5 sentences
+18. Add attestation block to commit/PR:
 ```markdown
 ## Agent Context Attestation
 - [x] Phase 1: Baseline loaded
@@ -71,6 +76,33 @@ Before making any code changes, architectural decisions, or recommendations, com
 
 ---
 
+## 1.7 Agent Work Selection (Protocol 22)
+
+This repo implements [Protocol 22 — Agent Work Selection](https://github.com/gtcx-ecosystem/gtcx-docs/blob/main/docs/governance/protocols/22-agent-work-selection/protocol.md).
+
+**Non-negotiable:** Agents compute next work from the execution roadmap and work register. **Never ask the operator which story to pick.**
+
+```bash
+# Compute next work
+pnpm agent:next-work
+
+# Verify Protocol 22 adoption is complete
+pnpm agent:work-selection:check
+```
+
+| Artifact | Path |
+| -------- | ---- |
+| Manifest (work register) | `docs/operations/agent-work-selection.md` |
+| Execution roadmap | `docs/audit/execution-roadmap.md` |
+| Selection script | `scripts/agent-next-work.mjs` |
+| Adoption check | `scripts/check-agent-work-selection.mjs` |
+| Session pointer | `docs/audit/auto-dev-state.md` |
+
+**Implementation classes:**
+- `code` — scripts, tests, gates, CI, Terraform, K8s manifests → **select in development frame**
+- `ops-docs` — docs, manifests, roadmaps, runbooks → **select when no code remains**
+- `evidence-capture` — manual UAT, live staging probes → **skip**
+- `external` — human signatures, CISO decisions, vendor procurement → **skip, flag for handoff**
 
 ---
 

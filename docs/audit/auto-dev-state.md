@@ -51,9 +51,18 @@ See [`ir-10-10-roadmap.md`](./ir-10-10-roadmap.md) IR-2.
 
 EXT-INF-002, EXT-INF-013, EXT-INF-014, EXT-INF-003 (live operator), EXT-INF-015.
 
+## Next work (computed)
+
+Run `pnpm agent:next-work` to get the next story. Current computed next:
+
+| Story  | Tier          | Class | Command                                         |
+| ------ | ------------- | ----- | ----------------------------------------------- |
+| IR-2.2 | work-register | code  | AI SDK v5→v6 migration branch + eval regression |
+
 ## Resume
 
 ```bash
+pnpm agent:next-work
 node tools/scripts/validate-all.mjs
 pnpm typecheck && pnpm lint && pnpm test
 gh run list --workflow ci.yml --branch main --limit 3

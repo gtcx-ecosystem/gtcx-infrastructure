@@ -132,6 +132,21 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
 
+      - name: Protocol 22 agent:next-work smoke
+        run: |
+          pnpm agent:next-work > agent-next-work-output.json
+          cat agent-next-work-output.json
+          node -e "
+            const fs = require('fs');
+            const data = JSON.parse(fs.readFileSync('agent-next-work-output.json', 'utf8'));
+            if (!data.ok) { console.error('agent:next-work returned ok:false'); process.exit(1); }
+            if (data.protocol !== '22-agent-work-selection') { console.error('Wrong protocol:', data.protocol); process.exit(1); }
+            console.log('Protocol 22 smoke passed —', data.backlogClear ? 'backlog clear' : 'next story:', data.next?.storyId ?? 'N/A');
+          "
+
+      - name: Protocol 22 adoption check
+        run: pnpm agent:work-selection:check
+
       - name: Chaos manifest validation
         run: node tools/scripts/chaos-manifest-validator.mjs
 

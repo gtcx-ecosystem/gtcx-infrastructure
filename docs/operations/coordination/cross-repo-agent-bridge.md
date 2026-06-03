@@ -71,8 +71,8 @@ protocol: gtcx-docs/docs/governance/protocols/24-cross-repo-coordination/protoco
 | Intelligence auth gate      | XR-201 | **done**             | gtcx-infrastructure    | XR-202 / INT-S3-08 | R-high |
 | Intelligence re-smoke       | XR-202 | **done**             | gtcx-intelligence      | Protocols mirror   | —      |
 | Protocols smoke mirror      | XR-203 | **done**             | gtcx-protocols         | —                  | —      |
-| Sovereign staging image     | XR-301 | **ready**            | gtcx-platforms → infra | P4-07 smoke        | R-med  |
-| AGX staging `/api/*`        | XR-302 | **in-progress**      | gtcx-platforms → infra | Mobile API path    | R-med  |
+| Sovereign staging image     | XR-301 | **done**             | gtcx-platforms → infra | P4-07 smoke        | R-med  |
+| AGX staging `/api/*`        | XR-302 | **done**             | gtcx-platforms → infra | Mobile API path    | R-med  |
 | INF-86 algorithm            | XR-401 | **blocked** (human)  | CISO + platform-lead   | XR-402–405         | R-high |
 | INF-86 pilot ceremony       | XR-402 | **hold**             | gtcx-infrastructure    | XR-403             | R-high |
 | SIR verifier prod           | XR-507 | **blocked** (DNS)    | gtcx-infrastructure    | F-33 audit close   | R-med  |
@@ -107,8 +107,8 @@ XR-301/302 (platforms ECR → infra rollout)
 | Priority | ID     | Owner                         | Next action                                                        | Infra unblocks when                                   |
 | -------- | ------ | ----------------------------- | ------------------------------------------------------------------ | ----------------------------------------------------- |
 | **P0**   | XR-202 | gtcx-intelligence             | **done** 2026-06-03 — evidence committed                           | —                                                     |
-| **P1**   | XR-301 | gtcx-platforms → **infra**    | Rollout support when image pushed                                  | `sovereign-staging.gtcx.trade/health` not placeholder |
-| **P1**   | XR-302 | gtcx-platforms → **infra**    | Rollout support when image ready                                   | `api.staging.gtcx.trade/api/health` 200               |
+| **P1**   | XR-301 | gtcx-platforms → **infra**    | **done** 2026-06-03 — sovereign staging deployed + healthy         | `sovereign-staging.gtcx.trade/health` not placeholder |
+| **P1**   | XR-302 | gtcx-platforms → **infra**    | **done** 2026-06-03 — AGX staging deployed + all blockers closed   | `api.staging.gtcx.trade/api/health` 200               |
 | **P1**   | XR-507 | **gtcx-infrastructure**       | Cloudflare DNS `verify.explorationos.gtcx.trade` (need zone:write) | F-33 audit close                                      |
 | **P1**   | XR-508 | **gtcx-infrastructure** / ops | Unpause Supabase project `lolfkclpuvccntgtzwaj`                    | Migrations 006/007 applied                            |
 | **P2**   | XR-103 | **gtcx-infrastructure**       | WAF rule for `/v1/admin/tradepass/register-operator` if needed     | Admin POST returns JSON                               |

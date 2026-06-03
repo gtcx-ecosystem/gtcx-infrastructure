@@ -64,15 +64,32 @@ resource "aws_wafv2_web_acl" "main" {
       }
 
       statement {
-        byte_match_statement {
-          search_string         = "/health"
-          positional_constraint = "EXACTLY"
-          field_to_match {
-            uri_path {}
+        or_statement {
+          statement {
+            byte_match_statement {
+              search_string         = "/health"
+              positional_constraint = "EXACTLY"
+              field_to_match {
+                uri_path {}
+              }
+              text_transformation {
+                priority = 0
+                type     = "LOWERCASE"
+              }
+            }
           }
-          text_transformation {
-            priority = 0
-            type     = "LOWERCASE"
+          statement {
+            byte_match_statement {
+              search_string         = "/api/health"
+              positional_constraint = "EXACTLY"
+              field_to_match {
+                uri_path {}
+              }
+              text_transformation {
+                priority = 0
+                type     = "LOWERCASE"
+              }
+            }
           }
         }
       }

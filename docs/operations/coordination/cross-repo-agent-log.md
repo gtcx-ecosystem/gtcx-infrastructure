@@ -63,3 +63,7 @@ Append **newest entries at the top** of the table below. One row per meaningful 
 - **2026-06-03T09:55Z** — `AGX-staging` — **CRASHLOOP** — `gtcx-agx-staging` pods failing with `MODULE_NOT_FOUND: @gtcx/platform-shared`. Image `v0.4.0` appears broken. Platforms-owned; blocks `/api/*` paths.
 
 - **2026-06-03T10:00Z** — `XR-302` — **BLOCKED** — AGX `staging` image is ARM64-only; EKS t3 is AMD64. Sovereign `staging` is AMD64 and healthy. Handoff filed to platforms. Ref: `from-gtcx-infrastructure-agx-architecture-blocker-2026-06-03.md`.
+
+- **2026-06-03T09:20Z** — `CORE-001` — **DONE** — EAP auth-keys ESO sync completed.
+
+- **2026-06-03T10:30Z** — `XR-302` — **DONE** — All three blockers resolved: (1) Cloudflare 526 fixed via ALB health path + WAF `/api/*` rule; (2) JWT secrets (`SECRET_KEY_BASE`, `TRADEPASS_JWT_SECRET`) injected via AWS SM; (3) DB shared entities (`audit_records`, `outbox`, `idempotency_keys`) created via K8s Job. Both `sovereign-staging.gtcx.trade/api/health` and `api.staging.gtcx.trade/api/health` return 200. P4-07 smoke unblocked. Discovered region mismatch (core writes us-east-1; ESO reads af-south-1). Updated af-south-1 secret, force-refreshed ESO, restarted intelligence pods. Auth verified 401→200.

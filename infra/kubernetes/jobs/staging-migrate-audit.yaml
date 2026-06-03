@@ -1,0 +1,92 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: migrate-audit-records
+  namespace: gtcx-staging
+  labels:
+    app: migrate-audit-records
+    environment: staging
+spec:
+  ttlSecondsAfterFinished: 3600
+  template:
+    metadata:
+      labels:
+        app: migrate-audit-records
+        environment: staging
+    spec:
+      restartPolicy: OnFailure
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 999
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: pg-migrate
+          image: postgres:15-alpine
+          command:
+            - /bin/sh
+            - -c
+            - |
+              echo "Running audit_records migration..."
+              # Strip query params from DATABASE_URL (psql doesn't support sslmode=no-verify)
+              DB_URL="$(echo "$DATABASE_URL" | sed 's/?.*//')"
+              export PGSSLMODE=require
+              psql "$DB_URL" -c "
+                CREATE TABLE IF NOT EXISTS audit_records (
+                  id                  UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+                  created_at          TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+                  updated_at          TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+                  deleted_at          TIMESTAMPTZ,
+
+                  request_id          UUID NOT NULL,
+                  actor_did           VARCHAR(255) NOT NULL,
+                  action              VARCHAR(512) NOT NULL,
+                  resource_id         VARCHAR(255),
+                  timestamp           TIMESTAMPTZ NOT NULL,
+                  outcome             VARCHAR(20) NOT NULL,
+                  status_code         INT NOT NULL,
+                  entity_type         VARCHAR(50),
+                  jurisdiction_code   VARCHAR(10),
+                  processing_time_ms  INT,
+                  request_body_hash   VARCHAR(64),
+                  metadata            JSONB,
+
+                  CONSTRAINT audit_outcome_check CHECK (
+                    outcome IN ('SUCCESS', 'FAILURE', 'REJECTED')
+                  )
+                );
+
+                CREATE INDEX IF NOT EXISTS idx_audit_actor ON audit_records(actor_did);
+                CREATE INDEX IF NOT EXISTS idx_audit_action ON audit_records(action);
+                CREATE INDEX IF NOT EXISTS idx_audit_timestamp ON audit_records(timestamp);
+                CREATE INDEX IF NOT EXISTS idx_audit_outcome ON audit_records(outcome);
+                CREATE INDEX IF NOT EXISTS idx_audit_resource ON audit_records(resource_id);
+                CREATE INDEX IF NOT EXISTS idx_audit_jurisdiction ON audit_records(jurisdiction_code);
+                CREATE INDEX IF NOT EXISTS idx_audit_entity_type ON audit_records(entity_type);
+                CREATE INDEX IF NOT EXISTS idx_audit_request_id ON audit_records(request_id);
+                CREATE INDEX IF NOT EXISTS idx_audit_actor_time ON audit_records(actor_did, timestamp);
+                CREATE INDEX IF NOT EXISTS idx_audit_jurisdiction_time ON audit_records(jurisdiction_code, timestamp);
+
+                SELECT 'audit_records table and indexes created successfully' as result;
+              "
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: gtcx-secrets-staging-cdkk972mcc
+                  key: DATABASE_URL
+            - name: PGSSLMODE
+              value: 'require'
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            readOnlyRootFilesystem: true
+          resources:
+            requests:
+              memory: '64Mi'
+              cpu: '50m'
+            limits:
+              memory: '128Mi'
+              cpu: '100m'

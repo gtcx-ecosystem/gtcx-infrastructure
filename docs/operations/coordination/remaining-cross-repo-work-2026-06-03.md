@@ -18,16 +18,17 @@ to: baseline-os coordination hub + sibling repos
 
 ## Summary
 
-| Category                                    | Open | P0 this week | Infra action required             |
-| ------------------------------------------- | ---: | :----------- | --------------------------------- |
-| Staging Track A (operator DID + SM)         |    0 | No           | **DONE** — monitor only           |
-| Staging Track B (intelligence auth)         |    0 | No           | **DONE** — monitor only           |
-| Platforms staging (sovereign + AGX)         |    2 | No           | Rollout when image pushed         |
-| Exploration blockers (verifier + Supabase)  |    2 | No           | External actions (CF admin + ops) |
-| INF-86 sovereign pilot                      |    2 | No           | **HOLD** — human-gated            |
-| W2 licence intelligence                     |    1 | No           | Provide secrets if asked          |
-| P22 agent ergonomics                        |    1 | No           | Add CI smoke when capacity        |
-| Coordination gaps (terra-os, hardware, ops) |    1 | No           | Flagged to baseline-os            |
+| Category                                    | Open | P0 this week | Infra action required                    |
+| ------------------------------------------- | ---: | :----------- | ---------------------------------------- |
+| Staging Track A (operator DID + SM)         |    0 | No           | **DONE** — monitor only                  |
+| Staging Track B (intelligence auth)         |    0 | No           | **DONE** — monitor only                  |
+| EAP auth-keys ESO sync (CORE-001)           |    0 | No           | **DONE** — ESO refreshed, pods restarted |
+| Platforms staging (sovereign + AGX)         |    2 | No           | Rollout when image pushed                |
+| Exploration blockers (verifier + Supabase)  |    2 | No           | External actions (CF admin + ops)        |
+| INF-86 sovereign pilot                      |    2 | No           | **HOLD** — human-gated                   |
+| W2 licence intelligence                     |    1 | No           | Provide secrets if asked                 |
+| P22 agent ergonomics                        |    1 | No           | Add CI smoke when capacity               |
+| Coordination gaps (terra-os, hardware, ops) |    1 | No           | Flagged to baseline-os                   |
 
 ---
 
@@ -41,6 +42,8 @@ to: baseline-os coordination hub + sibling repos
 | **Owner**    | **gtcx-infrastructure**                            |
 | **Image**    | `gtcx-intelligence-sdk:12be5342`                   |
 | **Unblocks** | XR-202 (intelligence re-smoke); INT-S3-08 evidence |
+
+**Update 2026-06-03T09:20Z:** EAP auth-keys bundle synced by gtcx-core (VersionId `4d01fb8c-9770-409c-ad73-ddff9887bc45`). ESO force-refreshed; pods restarted. `AUTH_API_KEYS` and `AUTH_KEY_ROLES` now reflect EAP values. Auth verified: `/policy/rules` 401→200.
 
 **Deployment evidence:**
 
@@ -71,25 +74,19 @@ to: baseline-os coordination hub + sibling repos
 
 ### XR-301 / XR-302 — Platforms sovereign + AGX staging rollout
 
-| Field          | Value                                                          |
-| -------------- | -------------------------------------------------------------- |
-| **Status**     | **ready** (XR-301) / **in-progress** (XR-302, platforms-owned) |
-| **Owner**      | gtcx-platforms (push) → **gtcx-infrastructure** (rollout)      |
-| **Blocked by** | Platforms must push image digest to ECR                        |
-| **Unblocks**   | P4-07 smoke; api.staging `/api/*` health                       |
+| Field        | Value                                                                        |
+| ------------ | ---------------------------------------------------------------------------- |
+| **Status**   | **done** 2026-06-03                                                          |
+| **Owner**    | gtcx-platforms (push) → **gtcx-infrastructure** (rollout)                    |
+| **Evidence** | Both `/api/health` endpoints return 200; DB tables created; JWT secrets live |
+| **Unblocks** | P4-07 smoke; api.staging `/api/*` health                                     |
 
-**What infra needs from platforms:**
+**What was done:**
 
-1. ECR image digest for `gtcx-sovereign:staging`
-2. ECR image digest for `gtcx-agx:staging`
-3. Notification via log entry or bridge ping
-
-**What infra will do:**
-
-1. Update `overlays/staging/kustomization.yaml` with new digests
-2. `kubectl apply -k overlays/staging`
-3. Verify endpoints
-4. Post evidence in log
+1. **DNS/SSL (CF 526):** Fixed Cloudflare proxy → ALB path; ALB health check path set to `/api/health`; patched sovereign Service `targetPort` (`http` → `3001`); added `AllowApiHealthEndpoints` WAF rule.
+2. **Secrets:** Updated AWS SM `gtcx-secrets-staging-cdkk972mcc` with real `SECRET_KEY_BASE` and `TRADEPASS_JWT_SECRET`; rolling-restarted pods.
+3. **DB migrations:** Created K8s Job `migrate-shared-entities` that created `audit_records`, `outbox`, and `idempotency_keys` tables + indexes; restarted pods; no more `42P01` errors.
+4. **Verification:** `curl https://sovereign-staging.gtcx.trade/api/health` → 200; `curl https://api.staging.gtcx.trade/api/health` → 200.
 
 **Sibling docs:**
 
