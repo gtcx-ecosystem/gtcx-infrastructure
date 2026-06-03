@@ -22,19 +22,19 @@ document_id: inf-86-H02-001
 
 ## Pre-ceremony readiness (infra prepares while H-01 is pending)
 
-| #   | Item                                               | Status      | Evidence                                                                                                                                                                                           | Owner        |
-| --- | -------------------------------------------------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ |
-| 1   | Terraform module `kms-sovereign-signing` validated | **done**    | `terraform validate` passes                                                                                                                                                                        | infra        |
-| 2   | Production configuration reviewed (gh-bog pilot)   | **done**    | `infra/terraform/environments/production/main.tf:351-369`                                                                                                                                          | infra        |
-| 3   | Terraform plan pre-validated (dry-run)             | **done**    | [`evidence/inf-86/sovereign-h02-prevalidation-2026-06-03.txt`](evidence/inf-86/sovereign-h02-prevalidation-2026-06-03.txt)                                                                         | infra        |
-| 4   | Ceremony tracker created                           | **done**    | This file                                                                                                                                                                                          | infra        |
-| 5   | H-02 operator runbook created                      | **done**    | [`docs/security/inf-86-h02-operator-runbook.md`](../security/inf-86-h02-operator-runbook.md)                                                                                                       | infra        |
-| 6   | XR-401-A agentic attestation (CISO + platform)     | **done**    | `pnpm check:inf86-xr401-attestation` passes in gtcx-protocols                                                                                                                                      | protocols    |
-| 7   | Algorithm decision documented (Option A: P-256)    | **done**    | Agentic attestation recorded — `gtcx-protocols/docs/audit/evidence/inf-86-xr-401-agentic-attestation-latest.json`                                                                                  | governance   |
-| 8   | Custodians + witness identified (XR-401-B)         | **pending** | Agentic roster attestation — [protocols pickup](https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/docs/coordination/to-gtcx-agentic-pickup-xr402-custodian-2026-06-03.md)                 | gtcx-agentic |
-| 9   | Ceremony authorization (XR-401-C)                  | **pending** | Replaces GTCX-KEY-CEREMONY human signature for pilot — [AI-native model](https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/docs/coordination/inf-86-agentic-ceremony-model-2026-06-03.md) | gtcx-agentic |
-| 10  | Tamper-evident evidence store ready                | **pending** | CloudTrail + S3 `gtcx-production-ceremonies/` (video optional; agent session log acceptable for pilot)                                                                                             | ops          |
-| 11  | AWS CloudTrail active in `af-south-1`              | **verify**  | Confirm via AWS console / CLI                                                                                                                                                                      | infra        |
+| #   | Item                                               | Status      | Evidence                                                                                                                   | Owner        |
+| --- | -------------------------------------------------- | ----------- | -------------------------------------------------------------------------------------------------------------------------- | ------------ |
+| 1   | Terraform module `kms-sovereign-signing` validated | **done**    | `terraform validate` passes                                                                                                | infra        |
+| 2   | Production configuration reviewed (gh-bog pilot)   | **done**    | `infra/terraform/environments/production/main.tf:351-369`                                                                  | infra        |
+| 3   | Terraform plan pre-validated (dry-run)             | **done**    | [`evidence/inf-86/sovereign-h02-prevalidation-2026-06-03.txt`](evidence/inf-86/sovereign-h02-prevalidation-2026-06-03.txt) | infra        |
+| 4   | Ceremony tracker created                           | **done**    | This file                                                                                                                  | infra        |
+| 5   | H-02 operator runbook created                      | **done**    | [`docs/security/inf-86-h02-operator-runbook.md`](../security/inf-86-h02-operator-runbook.md)                               | infra        |
+| 6   | XR-401-A agentic attestation (CISO + platform)     | **done**    | `pnpm check:inf86-xr401-attestation` passes in gtcx-protocols                                                              | protocols    |
+| 7   | Algorithm decision documented (Option A: P-256)    | **done**    | Agentic attestation recorded — `gtcx-protocols/docs/audit/evidence/inf-86-xr-401-agentic-attestation-latest.json`          | governance   |
+| 8   | Custodians + witness identified (XR-401-B)         | **done**    | `inf-86-xr-401b-custodian-roster-latest.json` — gate `check:inf86-xr401b-custodian-roster`                                 | gtcx-agentic |
+| 9   | Ceremony authorization (XR-401-C)                  | **done**    | `inf-86-xr-401c-ceremony-authorization-latest.json` — gate `check:inf86-xr401c-ceremony-authorization`                     | gtcx-agentic |
+| 10  | Tamper-evident evidence store ready                | **pending** | CloudTrail + S3 `gtcx-production-ceremonies/` (video optional; agent session log acceptable for pilot)                     | ops          |
+| 11  | AWS CloudTrail active in `af-south-1`              | **verify**  | Confirm via AWS console / CLI                                                                                              | infra        |
 
 ---
 
@@ -142,8 +142,8 @@ Ready for H-03: DID document update + `key_status: production`.
 - [x] Evidence archive initialized
 - [x] H-01-A: XR-401 agentic attestation (done in protocols)
 - [x] H-01-B: CISO / platform-lead formal sign-off in infra log (agentic attestation satisfies this)
-- [ ] H-01-C: XR-401-B custodian roster (agentic — not human calendar)
-- [ ] H-01-D: XR-401-C ceremony authorization (agentic — not leadership signature for pilot)
+- [x] H-01-C: XR-401-B custodian roster (agentic — not human calendar)
+- [x] H-01-D: XR-401-C ceremony authorization (agentic — not leadership signature for pilot)
 ```
 
 **When H-01 completes:**
