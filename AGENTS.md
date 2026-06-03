@@ -54,6 +54,35 @@ Before making any code changes, architectural decisions, or recommendations, com
 15. If `backlogClear: true`, run witness (`node tools/scripts/validate-all.mjs`) and refresh evidence gates — do not idle.
 16. If a story is returned, execute it. Never ask the operator which story to pick when the manifest and roadmap exist.
 
+### Phase 5.7: Execute Verification Ladder (Protocol 27)
+17. **Run** repo quality gates in-session. The human is not a remote shell.
+18. Before marking work "done", execute every applicable step in order. Skip only when the repo manifest documents the step as N/A.
+
+| Step | Command | Required when |
+|------|---------|---------------|
+| V1 | `git status`, `git diff --stat` | Always |
+| V2 | `pnpm lint`, `pnpm typecheck`, `pnpm format:check` | Documented in `package.json` |
+| V3 | `pnpm test` (quick) or `pnpm test:full` | Tests exist for changed behavior |
+| V4 | `node tools/scripts/validate-all.mjs` | Story touches deploy, evidence, or cross-repo probe |
+| V5 | `pnpm run validate:hub-scope`, `pnpm run validate:hub-workplan` | Changes in `gtcx-docs` coordination |
+| V6 | Sibling-repo command in **owner checkout** | Cross-repo `XR-*` implementation (Protocol 24) |
+
+**Forbidden closing patterns:** "Verify locally," "run this in your terminal," "you should run `pnpm test`."
+
+**Permission Unblock Report:** When execution is blocked (sandbox, missing creds, MCP deny), emit a structured report with concrete enablement steps, then re-run the command after unblocking. Do not end with instructions to the user.
+
+```markdown
+## Permission Unblock Report
+**Blocked command:** `<exact command>`
+**Exit / error:** `<stderr or tool message — no secrets>`
+**Why blocked:** `<sandbox | network | aws | k8s | gh | file write | other>`
+**Impact:** `<what cannot be verified or shipped until unblocked>`
+### Enable (operator — one-time)
+1. `<concrete step>`
+### After enable
+Agent will re-run `<command>` in this session.
+```
+
 ### Phase 5: Attest & Begin (30 sec)
 17. Summarize context in 3–5 sentences
 18. Add attestation block to commit/PR:
@@ -63,6 +92,7 @@ Before making any code changes, architectural decisions, or recommendations, com
 - [x] Phase 2: Repo context established
 - [x] Phase 3: Current state discovered
 - [x] Phase 4: Persona & frame selected
+- [x] Phase 5.7: Verification ladder executed (Protocol 27) — commands listed in commit/PR body
 - [x] Phase 5: Context attested
 ```
 

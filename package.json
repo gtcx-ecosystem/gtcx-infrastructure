@@ -31,6 +31,7 @@
     "evidence:release-bundle": "node ./tools/control-plane/generate-release-evidence.mjs",
     "agent:next-work": "node scripts/agent-next-work.mjs",
     "agent:work-selection:check": "node scripts/check-agent-work-selection.mjs",
+    "agent:execution-obligation:check": "node scripts/check-agent-execution-obligation.mjs",
     "validate:environment": "node ./tools/control-plane/validate-environment.mjs",
     "docker:build": "docker compose build",
     "docker:up": "docker compose up -d",
