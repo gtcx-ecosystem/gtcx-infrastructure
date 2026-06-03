@@ -66,10 +66,11 @@ protocol: gtcx-docs/docs/governance/protocols/24-cross-repo-coordination/protoco
 | Track                       | XR-ID  | Status               | Owner                  | Unblocks           | Risk   |
 | --------------------------- | ------ | -------------------- | ---------------------- | ------------------ | ------ |
 | Operator DID / mobile audit | XR-101 | **done**             | gtcx-infrastructure    | Mobile E2E         | —      |
-| Mobile staging audit E2E    | XR-102 | **ready**            | gtcx-mobile            | MOBILE-AUDIT-01/02 | R-high |
+| Mobile staging audit E2E    | XR-102 | **done**             | gtcx-mobile            | MOBILE-AUDIT-01/02 | —      |
 | compliance-gateway Bearer   | XR-104 | **done**             | gtcx-infrastructure    | XR-102             | R-high |
 | Intelligence auth gate      | XR-201 | **done**             | gtcx-infrastructure    | XR-202 / INT-S3-08 | R-high |
-| Intelligence re-smoke       | XR-202 | **ready**            | gtcx-intelligence      | Protocols mirror   | R-high |
+| Intelligence re-smoke       | XR-202 | **done**             | gtcx-intelligence      | Protocols mirror   | —      |
+| Protocols smoke mirror      | XR-203 | **done**             | gtcx-protocols         | —                  | —      |
 | Sovereign staging image     | XR-301 | **ready**            | gtcx-platforms → infra | P4-07 smoke        | R-med  |
 | AGX staging `/api/*`        | XR-302 | **in-progress**      | gtcx-platforms → infra | Mobile API path    | R-med  |
 | INF-86 algorithm            | XR-401 | **blocked** (human)  | CISO + platform-lead   | XR-402–405         | R-high |
