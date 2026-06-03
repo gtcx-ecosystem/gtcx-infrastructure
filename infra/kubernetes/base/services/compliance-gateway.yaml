@@ -47,6 +47,44 @@ spec:
                 secretKeyRef:
                   name: compliance-gateway-secrets
                   key: ANTHROPIC_API_KEY
+            - name: OPENAI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: compliance-gateway-secrets
+                  key: OPENAI_API_KEY
+                  optional: true
+            - name: GOOGLE_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: compliance-gateway-secrets
+                  key: GOOGLE_API_KEY
+                  optional: true
+            - name: GEMINI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: compliance-gateway-secrets
+                  key: GEMINI_API_KEY
+                  optional: true
+            - name: DEEPSEEK_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: compliance-gateway-secrets
+                  key: DEEPSEEK_API_KEY
+                  optional: true
+            - name: GROQ_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: compliance-gateway-secrets
+                  key: GROQ_API_KEY
+                  optional: true
+            - name: OPENROUTER_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: compliance-gateway-secrets
+                  key: OPENROUTER_API_KEY
+                  optional: true
+            - name: BASELINE_COST_ROUTER
+              value: '1'
             # Runtime policy overrides from ConfigMap
             - name: GTCX_DEGRADATION_MODE
               valueFrom:

@@ -79,6 +79,26 @@ import { createToolRegistry, listToolsForAccess, toolCount } from './tools.mjs';
 let inflightQueries = 0;
 setGauge('compliance_gateway_inflight_requests', undefined, 0);
 
+/** Prefer baseline-os cost-router when built; legacy providers.mjs as fallback. */
+async function selectProviderWithBaseline(query) {
+  try {
+    const { selectProviderViaBaseline } = await import('./cost-router-shim.mjs');
+    const via = await selectProviderViaBaseline(query, {
+      getProviders,
+      selectProvider: defaultSelectProvider,
+    });
+    if (via) return via;
+  } catch {
+    // baseline-os dist not built or BASELINE_COST_ROUTER=0
+  }
+  return defaultSelectProvider(query);
+}
+
+const defaultRoutingDeps = {
+  selectProvider: selectProviderWithBaseline,
+  getFallbackChain: defaultGetFallbackChain,
+};
+
 const PORT = Number(process.env.PORT ?? 8500);
 const authState = loadAuthState(process.env);
 const auditInit = initAuditSigner(process.env);
@@ -282,8 +302,7 @@ async function handleQuery(
   res,
   deps = {
     generateText,
-    selectProvider: defaultSelectProvider,
-    getFallbackChain: defaultGetFallbackChain,
+    ...defaultRoutingDeps,
   }
 ) {
   if (req.method !== 'POST') {
@@ -369,7 +388,7 @@ async function handleQueryInner(req, res, deps) {
   const userMessage = buildUserMessage({ query, jurisdiction, context });
 
   const complexity = classifyComplexity(query);
-  const primary = deps.selectProvider(query);
+  const primary = await Promise.resolve(deps.selectProvider(query));
 
   if (!primary) {
     signAuditEvent({
