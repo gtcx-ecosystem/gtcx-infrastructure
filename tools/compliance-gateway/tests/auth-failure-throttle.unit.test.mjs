@@ -185,4 +185,25 @@ describe('auth-failure-throttle — CIDR matching', () => {
     assert.strictEqual(isIpInCidrs('10.0.0.1', ['10.0.0.0/8junk']), false);
     assert.strictEqual(isIpInCidrs('10.0.0.1', ['10.0.0.0/8/extra']), false);
   });
+
+  it('matches IPv4 CIDR with non-multiple-of-8 prefix', () => {
+    assert.strictEqual(isIpInCidrs('10.0.0.1', ['10.0.0.0/20']), true);
+    assert.strictEqual(isIpInCidrs('10.0.15.255', ['10.0.0.0/20']), true);
+    assert.strictEqual(isIpInCidrs('10.0.16.1', ['10.0.0.0/20']), false);
+  });
+
+  it('matches IPv6 with embedded IPv4 ending', () => {
+    assert.strictEqual(isIpInCidrs('2001:db8::192.168.1.1', ['2001:db8::/32']), true);
+    assert.strictEqual(isIpInCidrs('2001:db9::192.168.1.1', ['2001:db8::/32']), false);
+  });
+
+  it('prunes stale IP state after window expires', async () => {
+    recordAuthFailure('stale', { threshold: 100, windowMs: 50, throttleMs: 50 });
+    assert.strictEqual(_stateSizeForTests(), 1);
+    await new Promise((r) => setTimeout(r, 80));
+    // Recording a new failure should prune the stale entry
+    recordAuthFailure('fresh', { threshold: 100, windowMs: 50, throttleMs: 50 });
+    assert.strictEqual(_stateSizeForTests(), 1);
+    assert.strictEqual(isAuthThrottled('stale').throttled, false);
+  });
 });

@@ -11,7 +11,7 @@
 import assert from 'node:assert';
 import { afterEach, beforeEach, describe, it } from 'node:test';
 
-import { _resetForTests, getBudgetStore } from '../src/budget-store.mjs';
+import { _resetForTests, getBudgetStore, _setStoreForTests } from '../src/budget-store.mjs';
 
 describe('budget-store — memory backend (default)', () => {
   beforeEach(async () => {
@@ -69,6 +69,23 @@ describe('budget-store — memory backend (default)', () => {
     await store.reset();
     assert.strictEqual(await store.readDailySpend('a', '2026-05-30'), 0);
     assert.strictEqual(await store.readDailySpend('b', '2026-05-30'), 0);
+  });
+
+  it('addDailySpend creates a new entry when the day changes', async () => {
+    const store = await getBudgetStore();
+    await store.addDailySpend('dave', '2026-05-30', 1);
+    await store.addDailySpend('dave', '2026-05-31', 2);
+    assert.strictEqual(await store.readDailySpend('dave', '2026-05-31'), 2);
+    assert.strictEqual(await store.readDailySpend('dave', '2026-05-30'), 0);
+  });
+
+  it('_resetForTests swallows reset/close errors', async () => {
+    _setStoreForTests({
+      backend: 'mock',
+      async reset() { throw new Error('reset boom'); },
+      async close() { throw new Error('close boom'); },
+    });
+    await assert.doesNotReject(() => _resetForTests());
   });
 });
 

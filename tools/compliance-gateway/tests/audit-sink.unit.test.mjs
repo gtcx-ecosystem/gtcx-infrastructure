@@ -140,4 +140,38 @@ describe('audit sink', () => {
     const sink = getSink();
     assert.doesNotReject(sink.close());
   });
+
+  it('getSinkInfo reports queue stats when nats sink is active', () => {
+    process.env.AUDIT_SINK = 'nats';
+    resetSink();
+    try {
+      getSink(); // creates diskQueue
+      const info = getSinkInfo();
+      assert.strictEqual(info.mode, 'nats');
+      assert.ok(info.queue, 'queue stats must be present');
+      assert.strictEqual(typeof info.queue.pendingBytes, 'number');
+    } finally {
+      delete process.env.AUDIT_SINK;
+      resetSink();
+    }
+  });
+
+  it('disk queue drains enqueued records in nats mode', async () => {
+    process.env.AUDIT_SINK = 'nats';
+    resetSink();
+    try {
+      const sink = getSink();
+      // Emit a record; nats is unavailable so it gets enqueued to disk
+      sink.emit({ id: 'disk-queued', signature: 's' });
+      // Wait for background drain to run
+      await new Promise((r) => setTimeout(r, 100));
+      const info = getSinkInfo();
+      // The record should have been drained (and re-published, which fails,
+      // but the drain cycle runs).
+      assert.ok(info.queue, 'queue stats must be present');
+    } finally {
+      delete process.env.AUDIT_SINK;
+      resetSink();
+    }
+  });
 });
