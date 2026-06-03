@@ -8,7 +8,7 @@ metadata:
   name: gtcx-base
 
 labels:
-  - includeSelectors: true
+  - includeSelectors: false
     pairs:
       app.kubernetes.io/part-of: gtcx
       app.kubernetes.io/managed-by: kustomize
