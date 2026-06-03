@@ -17,7 +17,7 @@ Unblocks **gtcx-mobile** `MOBILE-AUDIT-01` signed ingest (`envelope-did-resolve-
 
 ## 1. Image tag
 
-ECR tag **`audit-tradepass-auth`** (commit `764fb83` bearer fix). If missing, run `.github/workflows/build-push-ecr.yml` for `compliance-gateway`.
+ECR tag **`79ee914`** (commit `764fb83` bearer fix, **linux/amd64**). Do not use `audit-tradepass-auth` (immutable tag, wrong arch on EKS). Build: `docker buildx build --platform linux/amd64 ... --push`.
 
 ## 2. Fix audit signing secret
 
