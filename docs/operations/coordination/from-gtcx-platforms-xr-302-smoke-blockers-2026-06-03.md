@@ -25,12 +25,14 @@ work_ids: [XR-302]
 2. **JWT placeholder** — `SECRET_KEY_BASE=PLACEHOLDER_OVERRIDE_IN_OVERLAY` on sovereign pod
 3. **DB schema** — `relation "audit_records" does not exist` in sovereign logs
 
-## Status
+## Status (2026-06-03T09:30Z)
 
-| Blocker      | Infra status |
-| ------------ | ------------ |
-| 1 Edge SSL   | open         |
-| 2 Secrets    | open         |
-| 3 Migrations | open         |
+**Platforms XR-301:** done — `gtcx-sovereign:staging` + `gtcx-agx:staging-amd64` Running. **Infra XR-302:** blocking CR-1/CR-2/P4-07 smoke.
+
+| Blocker                                                | Infra status |
+| ------------------------------------------------------ | ------------ |
+| 1 Edge SSL (CF 526)                                    | open         |
+| 2 Secrets (`SECRET_KEY_BASE` + `TRADEPASS_JWT_SECRET`) | open         |
+| 3 Migrations (`audit_records`)                         | open         |
 
 _Update this table and post `from-gtcx-infrastructure-xr-302-smoke-blockers-YYYY-MM-DD.md` when done._
