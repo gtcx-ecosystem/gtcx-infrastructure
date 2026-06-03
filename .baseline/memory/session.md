@@ -1,96 +1,64 @@
+# Session State
+
+> **Last updated:** 2026-06-03T14:00+02:00
+> **Agent:** platform-architect (development frame)
+> **Protocol compliance:** P22, P26, P27, P28 active
+
 ---
-session_id: '2026-06-03-cross-repo-handoff-infra-ir2'
-agent: 'gtcx-core-agent'
-start_time: '2026-06-03T07:00:00Z'
-focus: 'Cross-repo cleanup + gtcx-infrastructure IR-2.3 SARIF fix'
----
 
-# Session: Cross-repo handoff + Infrastructure IR-2
+## Closed this session
 
-## Cross-repo coordination (gtcx-core)
+| ID | What | Commit |
+|----|------|--------|
+| P27 adoption | Agent Execution Obligation — 12 checks pass | `6039dc4` |
+| P26 + P28 adoption | Proceed Brief + Authority Classification — 8 + manifest checks pass | `14310df` |
+| XR-402 / INF-86 H-02 | AI-native KMS ceremony, SPKI export, #61 handoff | `04e2baf` + evidence dir |
+| XR-302 residual | sovereign-staging 526 fixed, tradepass_identities table created | `83d3868` |
+| XR-516 | P22/P26/P27 CI smoke wired in GitHub Actions | `04e2baf` |
+| Cross-repo docs | Dependencies, inbound tickets, agent log, sprint workplan updated | `04e2baf` |
 
-| Item | Status |
-|------|--------|
-| D4 M4.1 backward compat | done |
-| D5 M5.1/M5.2 RNG audit | done |
-| D10 M10.2 FIPS enforcement | done |
-| CORE-010 agent:next-work CI | already done |
-| XR-ID collision fix | done (XR-517/518 → CORE-005/014) |
-| Coordination docs updated | done |
+## Active blockers (external)
 
-## gtcx-infrastructure
+| ID | Blocker | Owner |
+|----|---------|-------|
+| XR-403 | `bog.json` production key — SPKI → JWK PR | gtcx-protocols |
+| XR-507 | verifier DNS (`zone:write` token) | Cloudflare admin |
+| XR-508 | Supabase project paused | ops dashboard |
+| EXT-INF-002/013/014/015 | pen-test, SOC 2, live testnet, ZWCMP pilot, DPA | gtcx-infrastructure + GTM |
 
-### What Was Done
+## Next work (IR-2.2 — scouted, not started)
 
-| Item | Status | Evidence |
-|------|--------|----------|
-| M1 Foundation uncommitted work | committed | `0215a58` — README backfill, lint fix, roadmap update |
-| IR-2.3 CodeQL/Trivy SARIF upload | done | `73528e3` — `upload: false` + `continue-on-error: true` |
-| Format check | passing | prettier clean |
-| validate-all | 39/39 gates green | local verification |
-| docs-standard | passing | local verification |
+**Story:** AI SDK v5→v6 migration branch + eval regression
+**Class:** code
+**Status:** pending
+**Entry point:**
+```bash
+pnpm agent:next-work  # verify IR-2.2 is still computed next
+cd tools/compliance-gateway
+# bump ai ^5.0.52 → ^6.0.195, @ai-sdk/* ^1.0.0 → ^3.0.0
+# pnpm install, fix breaking changes, run eval regression
+```
 
-### CI Status (main)
+**Pre-read:**
+- `tools/compliance-gateway/src/server.mjs` — `generateText` usage
+- `tools/eval-pipeline/eval.mjs` — regression thresholds
+- Dependabot branches for `@ai-sdk/*` v3 bumps (reference only)
 
-**Before fix (2026-06-03):**
-- `codeql` job: FAIL — Code Security not enabled on repo
-- `security` job: FAIL — SARIF upload blocked
-- `ci` job: FAIL — type check (older commit)
-- `docs-standard` job: FAIL — older commit
-- `iac-validation` job: FAIL — disk space (DR test Docker pull)
+## Verification commands (before next commit)
 
-**After fix:**
-- `codeql` and `security` jobs will no longer fail due to missing Code Security
-- `ci` and `docs-standard` should pass on latest HEAD (verified locally)
-- `iac-validation` disk space issue remains — requires runner config or DR test optimization
+```bash
+pnpm typecheck
+pnpm lint
+pnpm test
+node tools/scripts/validate-all.mjs
+pnpm agent:work-selection:check
+pnpm agent:execution-obligation:check
+pnpm agent:proceed-confirmation:check
+```
 
-### Remaining IR Work
+## Context refresh checklist
 
-| Phase | Item | Agent-actionable? |
-|-------|------|-------------------|
-| IR-2.1 | Dependabot tier-3 merges | No (GitHub PR merges) |
-| IR-2.2 | AI SDK v5→v6 migration | Yes — large |
-| IR-3.1 | WORM upload workflow | Yes — medium |
-| IR-3.2 | runtime-evidence-check docs | Yes — small |
-| IR-3.5 | DR fire-drill artifact refresh | Yes — small |
-| IR-5.1 | cross-repo-contract token | Yes — small |
-
-## Next Recommended
-
-1. **IR-3.2** — Document operator live path for runtime-evidence-check (smallest, unblocks operator)
-2. **IR-3.5** — Refresh DR fire-drill dated artifact (quarterly cadence)
-3. **IR-2.2** — AI SDK v5→v6 branch + eval regression (largest, lifts codeQuality)
-
-## 2026-06-03 — Cross-repo unblock sweep: CORE-001 ESO sync + stale ticket cleanup
-
-### What Was Done
-- **CORE-001 resolved:** gtcx-core EAP auth-keys bundle sync was stuck because ESO SecretStore reads `af-south-1` but gtcx-core EAP sync writes to `us-east-1`
-  - Updated AWS SM `gtcx/intelligence/staging/auth-keys` in `af-south-1` to match `us-east-1` value
-  - Force-refreshed ESO ExternalSecret `intelligence-secrets`
-  - Rolling-restarted intelligence pods so env vars pick up new `AUTH_API_KEYS` + `AUTH_KEY_ROLES`
-  - Verified auth: `/policy/rules` 401→200 with valid key; `/health` 200 (exempt by design)
-- **Stale ticket marked:** `gtcx-agentic/to-gtcx-infrastructure-xr-002-int-s3-08-2026-06-03.md` updated to `status: stale` with reconciled probe criteria
-- **Coordination docs updated:** gtcx-infrastructure remaining work, gtcx-core remaining work, gtcx-core bridge, infra log all reflect CORE-001 done
-
-### Verification
-- `aws secretsmanager get-secret-value --secret-id gtcx/intelligence/staging/auth-keys --region af-south-1` — matches us-east-1
-- `kubectl get secret intelligence-secrets -n intelligence -o jsonpath='{.data.AUTH_API_KEYS}' | base64 -d` — `gtcx_fxT0AMptSONeWWRmAdBR2y5iU3xtdB35,gtcx_SR9w3S2jR3_12oAoqKwUV2zQEkDgXt0y`
-- `kubectl exec -n intelligence deployment/intelligence-orchestrator -- env | grep AUTH` — new keys in pod env
-- `curl https://intelligence-staging.gtcx.trade/policy/rules` — 401 no auth, 200 with valid Bearer
-
-### Key Finding
-**Region mismatch pattern:** gtcx-core EAP sync targets `us-east-1` (hardcoded in `packages/eap`); ESO SecretStore in infra targets `af-south-1` (EKS cluster region). Future EAP syncs must write to both regions OR ESO must read from `us-east-1`. Documented in coordination handoff.
-
-### Files Modified
-- `gtcx-infrastructure/docs/operations/coordination/remaining-cross-repo-work-2026-06-03.md`
-- `gtcx-infrastructure/docs/operations/coordination/cross-repo-agent-log.md`
-- `gtcx-core/docs/operations/coordination/remaining-cross-repo-work-2026-06-02.md`
-- `gtcx-core/docs/operations/coordination/to-gtcx-infrastructure-eap-eso-refresh-2026-06-03.md`
-- `gtcx-core/docs/operations/coordination/cross-repo-agent-bridge.md`
-- `gtcx-agentic/docs/operations/coordination/to-gtcx-infrastructure-xr-002-int-s3-08-2026-06-03.md`
-
-### Notes
-- M1 Foundation is complete. All agent-executable M1 items are done with no external dependencies.
-- Next: M2 Hardening items can begin in parallel (coverage honesty, FIPS flag, rate limiting, secret scanning, durable offline queue, SLSA L3).
-- Active external blockers: XR-401 INF-86 algorithm, XR-507 SIR verifier DNS, XR-508 Supabase paused. XR-302 resolved 2026-06-03.
-- No further infra-owned P0 blockers. All cross-repo coordination docs reviewed and updated.
+- [ ] Re-read this file
+- [ ] Re-check `git status`
+- [ ] Re-read `.baseline/memory/pitfalls.md`
+- [ ] Run `pnpm agent:next-work` to confirm next story
