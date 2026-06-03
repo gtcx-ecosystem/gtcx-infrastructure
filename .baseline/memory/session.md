@@ -20,21 +20,33 @@
 
 ---
 
-## Sprint 1 — In Progress
+## Sprint 1: Infra Hardening — In Progress (Week of 2026-06-05)
+
+**Roadmap:** `docs/agile/sprints/sprint-2026-06-phase3-roadmap.md` (revamped `bea57b7`)
+
+### Done
+
+| Story | Title | Commit |
+|-------|-------|--------|
+| S1-01 | Kustomize selector immutability | `b1615d0` |
+| S1-04 | AUDIT_SEAL_SECRET | — |
+| S1-08 | ER-1-08 infra hub log row | `f8e1425` |
+| S1-09 | Lint debt (compliance-gateway) | `d78cb7b` |
+| S1-09b | Lint scripts — all workspace packages | `a95d554` |
+| S1-10 | Coverage honesty | `3962176` |
+
+### In Progress / Pending
 
 | Story | Title | Status | Next Action |
 |-------|-------|--------|-------------|
-| S1-01 | Kustomize selector immutability | `done` (`b1615d0`) | — |
 | S1-02 | TypeORM entity/schema drift | `pending` | Schema reconciliation job or entity sync |
 | S1-03 | ioredis missing | `pending` | Add to sovereign image; verify Redis nonce store |
-| S1-04 | AUDIT_SEAL_SECRET missing | `done` | — |
 | S1-05 | Terraform IRSA drift | `pending` | Capture `gtcx-staging-platforms-irsa` in staging main.tf |
 | S1-06 | Production IRSA trust cleanup | `pending` | Remove stale staging SA from production role trust |
 | S1-07 | Kustomize secret collision pattern | `pending` | Document pattern; consider removing base secretGenerator |
-| S1-08 | ER-1-08 infra hub log row | `done` | — |
-| S1-09 | Lint debt (compliance-gateway) | `done` (`d78cb7b`) | 0 errors; ~21 no-console warnings remain in tests |
-| S1-09b | Lint scripts — all workspace packages | `done` (`a95d554`) | 14 packages, 0 errors, only no-console warnings |
-| S1-10 | Coverage honesty | `done` (`3962176`) | Branch coverage 90.03% (gate 85%, audit target 90%) |
+| S1-11 | Secret scanning CI (TruffleHog) | `pending` | Add gate to validate-all.mjs |
+| S1-12 | Rate limiting — `/audit/*` throttling | `pending` | Load-test evidence at configured RPS |
+| S1-13 | Runtime cross-repo integration tests | `pending` | CI job probes protocols/core/intelligence health |
 
 ---
 
