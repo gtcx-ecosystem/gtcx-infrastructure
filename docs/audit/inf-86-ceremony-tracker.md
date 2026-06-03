@@ -13,9 +13,9 @@ document_id: inf-86-H02-001
 # inf-86 H-02 Ceremony Tracker
 
 > **Phase:** H-02 — KMS / Terraform / Ceremony / SPKI Export
-> **Status:** H-02 complete — SPKI ready for gtcx-protocols #61
-> **Blocked by:** — None. Awaiting protocols XR-403 execution.
-> **Blocks:** H-03 — gtcx-protocols #61 (DID document update + `key_status: production`)
+> **Status:** H-02 complete — XR-403 done
+> **Blocked by:** — None.
+> **Blocks:** H-03 — gtcx-protocols #61 (DID document update + `key_status: production`) — DONE
 > **Canonical runbook:** [`docs/security/key-ceremony-runbook.md`](../security/key-ceremony-runbook.md)
 > **Execution plan:** [`docs/gtm/plans/inf-86-hsovereign-key-ceremony-execution-plan.md`](../gtm/plans/inf-86-hsovereign-key-ceremony-execution-plan.md)
 
@@ -167,14 +167,17 @@ Ready for H-03: DID document update + `key_status: production`.
 
 ### SPKI Handoff to Protocols
 
-**Status:** Blocked — DER file in infra evidence dir; awaiting secure delivery to protocols agent host (`/secure/gh-bog.pub.der`) before protocols can run hash verify + JWK conversion.
+**Status:** Done — XR-403 complete.
 
-| Prerequisite                                     | Status                         |
-| ------------------------------------------------ | ------------------------------ |
-| XR-402 ceremony + #61 `spki_sha256` recorded     | **done** (`86c66f12…dfcdf1a0`) |
-| `/secure/gh-bog.pub.der` on protocols agent host | **not done** — last witness    |
-| Hash verify + `bog.json` apply                   | **blocked** on DER delivery    |
-| XR-403 (`key_status: production`)                | **blocked**                    |
+| Prerequisite                                     | Status                                         |
+| ------------------------------------------------ | ---------------------------------------------- |
+| XR-402 ceremony + #61 `spki_sha256` recorded     | **done** (`86c66f12…dfcdf1a0`)                 |
+| `/secure/gh-bog.pub.der` on protocols agent host | **done**                                       |
+| Hash verify + `bog.json` apply                   | **done** — `key_status: production`, P-256 JWK |
+| XR-403 (`key_status: production`)                | **done**                                       |
+
+**Evidence:** `gtcx-protocols/docs/audit/evidence/authority-key-ceremony-latest.json`
+**Commit:** `11f1f7ac`
 
 ```markdown
 ## XR-402 complete — gh-bog (AI-native ceremony)
