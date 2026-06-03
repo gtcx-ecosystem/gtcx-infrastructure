@@ -43,14 +43,19 @@ to: baseline-os coordination hub + sibling repos
 | **Unblocks**     | XR-202 (intelligence re-smoke); INT-S3-08 evidence         |
 | **Probe result** | `/health` → 200 without auth (should be 401/403)           |
 
+**Investigation finding (2026-06-03):** The `intelligence-orchestrator` Deployment and Service manifests are **missing** from the infrastructure repo. ESO, ingress, namespace, and IAM are all in place. Infrastructure cannot complete XR-201 without obtaining the full SDK image + deployment manifest from gtcx-intelligence.
+
+**See detailed runbook:** [`xr-201-intelligence-auth-gate-runbook.md`](xr-201-intelligence-auth-gate-runbook.md)
+
 **What needs to happen:**
 
-1. Apply `module.secrets` in intelligence-staging namespace
-2. Deploy full intelligence SDK (not orchestrator placeholder)
-3. Wire auth middleware on `/health`, `/live`, `/ready`
-4. Verify EAP key route returns 200 with valid key
-5. Set real `INTELLIGENCE_FAILURE_URL`
-6. **Ping intelligence same day** — see [`to-gtcx-intelligence-track-b-auth-2026-06-03.md`](to-gtcx-intelligence-track-b-auth-2026-06-03.md)
+1. ✅ ESO secrets module applied (`module.secrets` in staging main.tf)
+2. **NEED:** Full intelligence SDK image URI + digest from gtcx-intelligence
+3. **NEED:** Deployment manifest (either from intelligence repo or created by infra)
+4. Wire auth middleware on `/health`, `/live`, `/ready`
+5. Verify EAP key route returns 200 with valid key
+6. Set real `INTELLIGENCE_FAILURE_URL`
+7. **Ping intelligence same day** — see [`to-gtcx-intelligence-track-b-auth-2026-06-03.md`](to-gtcx-intelligence-track-b-auth-2026-06-03.md)
 
 **Evidence to collect:**
 
