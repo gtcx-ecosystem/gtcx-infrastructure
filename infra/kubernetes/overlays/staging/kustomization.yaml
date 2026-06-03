@@ -156,10 +156,11 @@ patches:
     target:
       kind: Deployment
       name: sovereign
+  - path: patches/platform-sa-irsa.yaml
+    target:
+      kind: ServiceAccount
+      name: gtcx-platform
   - patch: |-
-      - op: replace
-        path: /spec/template/spec/serviceAccountName
-        value: default
       - op: replace
         path: /spec/replicas
         value: 1
