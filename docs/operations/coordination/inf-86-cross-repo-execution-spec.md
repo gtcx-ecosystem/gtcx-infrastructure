@@ -23,12 +23,12 @@ work_ids: [XR-401, XR-402, XR-403]
 H-01 (governance) → H-02 (infra ceremony) → H-03 (protocols XR-403) → H-04 (exploration + platforms)
 ```
 
-| Phase | Status   | What unblocks it                                  |
-| ----- | -------- | ------------------------------------------------- |
-| H-01  | 2/4 done | Custodians scheduled + GTCX-KEY-CEREMONY approval |
-| H-02  | Ready    | H-01 complete                                     |
-| H-03  | Blocked  | H-02 SPKI handoff                                 |
-| H-04  | Blocked  | H-03 protocols merge                              |
+| Phase | Status                       | What unblocks it                               |
+| ----- | ---------------------------- | ---------------------------------------------- |
+| H-01  | **4/4 done**                 | Agentic attestation A/B/C + algorithm sign-off |
+| H-02  | **Done** 2026-06-03T13:50:17 | Terraform applied, SPKI exported               |
+| H-03  | **Ready**                    | Protocols to execute XR-403                    |
+| H-04  | Blocked                      | H-03 protocols merge                           |
 
 ---
 
@@ -36,13 +36,14 @@ H-01 (governance) → H-02 (infra ceremony) → H-03 (protocols XR-403) → H-04
 
 ### gtcx-infrastructure (lead: H-02)
 
-| #   | Action                                 | Blocker              | ETA                   |
-| --- | -------------------------------------- | -------------------- | --------------------- |
-| 1   | Schedule custodians + witness          | Human scheduling     | TBD                   |
-| 2   | Obtain GTCX-KEY-CEREMONY approval      | Leadership signature | TBD                   |
-| 3   | Execute H-02 ceremony (8-step runbook) | #1 + #2              | Within 48h of unblock |
-| 4   | Export SPKI DER + handoff to protocols | #3                   | Same day as ceremony  |
-| 5   | Post ceremony evidence to tracker      | #3                   | Within 24h            |
+| #   | Action                                 | Blocker               | ETA                  | Status |
+| --- | -------------------------------------- | --------------------- | -------------------- | ------ |
+| 1   | Schedule custodians + witness          | Agentic roster        | Done                 | ✅     |
+| 2   | Obtain GTCX-KEY-CEREMONY approval      | Agentic authorization | Done                 | ✅     |
+| 3   | Execute H-02 ceremony (8-step runbook) | #1 + #2               | 2026-06-03T13:50:17Z | ✅     |
+| 4   | Export SPKI DER + handoff to protocols | #3                    | 2026-06-03T13:51Z    | ✅     |
+| 5   | Post ceremony evidence to tracker      | #3                    | 2026-06-03T13:51Z    | ✅     |
+| 6   | Baseline-os report-work                | #5                    | Done                 | ✅     |
 
 **Artifacts:** `docs/audit/inf-86-ceremony-tracker.md`, `docs/security/inf-86-h02-operator-runbook.md`
 
