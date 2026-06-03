@@ -4,6 +4,6 @@ kind: ServiceAccount
 metadata:
   name: gtcx-platform
   annotations:
-    eks.amazonaws.com/role-arn: arn:aws:iam::348389439381:role/gtcx-production-platforms-irsa
+    eks.amazonaws.com/role-arn: arn:aws:iam::348389439381:role/gtcx-staging-platforms-irsa
     eks.amazonaws.com/sts-regional-endpoints: 'true'
 automountServiceAccountToken: true
