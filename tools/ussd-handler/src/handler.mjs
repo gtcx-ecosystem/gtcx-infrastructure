@@ -5,9 +5,9 @@
  * verifies PINs, and returns formatted USSD responses.
  */
 
-import { config } from './config.mjs';
 import { checkLockout, recordFailedAttempt, resetAttempts, verifyPin } from './auth.mjs';
-import { routeMenu, resolveLanguage } from './menu.mjs';
+import { config } from './config.mjs';
+import { routeMenu, resolveLanguage, t  } from './menu.mjs';
 
 /**
  * @typedef {object} UssdRequest
@@ -130,4 +130,3 @@ export async function processUssdRequest(request, store) {
   return { text: result.text, end: result.end ?? false };
 }
 
-import { t } from './menu.mjs';

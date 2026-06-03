@@ -9,7 +9,7 @@
 import assert from 'node:assert';
 import { afterEach, beforeEach, describe, it } from 'node:test';
 
-import { handler, localScreen, screen } from '../src/handler.mjs';
+import { handler, localScreen } from '../src/handler.mjs';
 
 function s3Event(key, bucket = 'gtcx-test-kyc-documents') {
   return {

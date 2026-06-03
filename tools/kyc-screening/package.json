@@ -1,14 +1,15 @@
 {
   "name": "@gtcx/kyc-screening",
   "version": "0.1.0",
-  "description": "Ambient KYC screening Lambda — S3 ObjectCreated → background screening → result available on next operator session",
+  "description": "Ambient KYC screening Lambda \u2014 S3 ObjectCreated \u2192 background screening \u2192 result available on next operator session",
   "type": "module",
   "main": "src/handler.mjs",
   "scripts": {
+    "lint": "eslint src tests --ext .mjs,.js",
     "test": "node ../scripts/run-package-tests.mjs",
     "package": "bash ../scripts/package-lambda.sh",
-    "typecheck": "echo \"No TypeScript files — typecheck is a no-op for this JS-only package\"",
-    "build": "echo \"No build step required — this package runs directly with Node.js ESM\""
+    "typecheck": "echo \"No TypeScript files \u2014 typecheck is a no-op for this JS-only package\"",
+    "build": "echo \"No build step required \u2014 this package runs directly with Node.js ESM\""
   },
   "engines": {
     "node": ">=20.18.0"

@@ -6,8 +6,8 @@
  * typed, tested modules.
  */
 
-import { normalizeEnvironment } from '../gate.mjs';
 import { auditVerificationPolicy } from '../audit-verifier.mjs';
+import { normalizeEnvironment } from '../gate.mjs';
 
 /**
  * @returns {never}

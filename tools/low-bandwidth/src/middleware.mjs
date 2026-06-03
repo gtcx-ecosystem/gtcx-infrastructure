@@ -5,14 +5,14 @@
  * trim non-essential fields, and emit telemetry events.
  */
 
+import { encode } from './encoder.mjs';
 import {
   resolveLevel,
   encodingForLevel,
   replayWindowForLevel,
 } from './negotiator.mjs';
-import { encode } from './encoder.mjs';
-import { buildMinimalResponse, estimateReduction } from './trimmer.mjs';
 import { createDegradationEvent } from './telemetry.mjs';
+import { buildMinimalResponse, estimateReduction } from './trimmer.mjs';
 
 /**
  * @typedef {object} MiddlewareOptions
@@ -53,8 +53,6 @@ export function createTransform(requestLike, options = {}) {
   const replayWindow = replayWindowForLevel(level);
 
   const schemas = options.schemas ?? {};
-  const serviceName = options.serviceName ?? 'unknown';
-  const defaultRegion = options.defaultRegion ?? 'unknown';
 
   /**
    * Transform a response payload for the negotiated level.
@@ -75,8 +73,7 @@ export function createTransform(requestLike, options = {}) {
 
     const body = encode(payload, encoding);
     const fullJson = JSON.stringify(data);
-    const outputStr = typeof body === 'string' ? body : body.toString('base64');
-    const { originalBytes, trimmedBytes, reductionPercent } = estimateReduction({
+    const { originalBytes, reductionPercent } = estimateReduction({
       fullJson,
       trimmedJson:
         level === 'minimal' ? JSON.stringify(payload) : fullJson,

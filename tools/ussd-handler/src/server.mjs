@@ -13,9 +13,10 @@
  */
 
 import { createServer } from 'node:http';
+
 import { config } from './config.mjs';
-import { createSessionStore } from './session.mjs';
 import { processUssdRequest, buildSessionId, parseUssdString } from './handler.mjs';
+import { createSessionStore } from './session.mjs';
 
 const store = createSessionStore();
 

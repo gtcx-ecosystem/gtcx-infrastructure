@@ -1,5 +1,6 @@
-import { describe, it } from 'node:test';
 import assert from 'node:assert';
+import { describe, it } from 'node:test';
+
 import {
   createChain,
   append,
@@ -96,7 +97,9 @@ describe('verifyChain', () => {
     append(chain, createRecord({ actor: 'ai-1', action: 'verify', target: 'c1' }), privateKey, publicKey);
     // Tamper with prevHash AND re-sign so signature is still valid
     chain.records[1].prevHash = 'tampered';
-    const { signature: _, publicKey: __, ...rest } = chain.records[1];
+    const rest = { ...chain.records[1] };
+    delete rest.signature;
+    delete rest.publicKey;
     const reSigned = signRecord(rest, privateKey, publicKey);
     chain.records[1] = reSigned;
     const result = verifyChain(chain);

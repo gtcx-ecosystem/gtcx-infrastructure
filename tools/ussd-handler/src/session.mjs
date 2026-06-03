@@ -16,7 +16,7 @@ export class SessionStore {
    * @param {string} sessionId
    * @returns {Promise<Record<string, string> | null>}
    */
-  async getSession(sessionId) {
+  async getSession(_sessionId) {
     throw new Error('Not implemented');
   }
 
@@ -25,7 +25,7 @@ export class SessionStore {
    * @param {Record<string, string>} data
    * @returns {Promise<void>}
    */
-  async setSession(sessionId, data) {
+  async setSession(_sessionId, _data) {
     throw new Error('Not implemented');
   }
 
@@ -33,7 +33,7 @@ export class SessionStore {
    * @param {string} sessionId
    * @returns {Promise<void>}
    */
-  async deleteSession(sessionId) {
+  async deleteSession(_sessionId) {
     throw new Error('Not implemented');
   }
 }

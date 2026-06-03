@@ -5,8 +5,7 @@
  * any record breaks the chain, detectable during verification.
  */
 
-import { createHash } from 'node:crypto';
-import { signRecord, verifyRecord, createRecord, hashCanonical, canonicalize } from './signer.mjs';
+import { signRecord, verifyRecord, hashCanonical, canonicalize } from './signer.mjs';
 
 /**
  * @typedef {object} AuditChain
@@ -73,7 +72,9 @@ export function verifyChain(chain) {
     }
 
     // Compute this record's hash for next iteration
-    const { signature, publicKey, ...rest } = record;
+    const rest = { ...record };
+    delete rest.signature;
+    delete rest.publicKey;
     expectedPrevHash = hashCanonical(canonicalize(rest));
   }
 
@@ -102,7 +103,12 @@ export function fromNdjson(ndjson) {
   const lastHash = records.length > 0
     ? hashCanonical(
         canonicalize(
-          (({ signature, publicKey, ...rest }) => rest)(records[records.length - 1])
+          (() => {
+            const rest = { ...records[records.length - 1] };
+            delete rest.signature;
+            delete rest.publicKey;
+            return rest;
+          })()
         )
       )
     : '';

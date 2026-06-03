@@ -6,8 +6,8 @@
 // into `src/content/docs/` before Astro reads it; we deliberately avoid
 // symlinks because they break on Windows and inside Docker build layers.
 
-import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import { defineConfig } from 'astro/config';
 
 export default defineConfig({
   site: 'https://gtcx.trade',

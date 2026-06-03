@@ -21,12 +21,13 @@
     "registry": "https://registry.npmjs.org"
   },
   "scripts": {
+    "lint": "eslint src tests --ext .mjs,.js",
     "test": "node ../scripts/run-package-tests.mjs",
     "test:coverage": "c8 --check-coverage --branches 90 --statements 90 --functions 90 --lines 90 --reporter=text --reporter=json --reporter=lcov --include='src/**' node ../scripts/run-package-tests.mjs",
     "test:coverage:gate": "c8 --check-coverage --branches 90 --statements 90 --functions 90 --lines 90 --reporter=text --reporter=json --reporter=lcov --include='src/**' node ../scripts/run-package-tests.mjs",
     "prepublishOnly": "node ../scripts/run-package-tests.mjs",
-    "typecheck": "echo \"No TypeScript files — typecheck is a no-op for this JS-only package\"",
-    "build": "echo \"No build step required — this package runs directly with Node.js ESM\""
+    "typecheck": "echo \"No TypeScript files \u2014 typecheck is a no-op for this JS-only package\"",
+    "build": "echo \"No build step required \u2014 this package runs directly with Node.js ESM\""
   },
   "engines": {
     "node": ">=20.18.0"

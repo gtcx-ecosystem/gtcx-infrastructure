@@ -4,9 +4,10 @@
 
 import assert from 'node:assert';
 import { describe, it, afterEach } from 'node:test';
-import { MemorySessionStore } from '../src/session.mjs';
-import { processUssdRequest, parseUssdString, buildSessionId } from '../src/handler.mjs';
+
 import { hashPin } from '../src/auth.mjs';
+import { processUssdRequest, parseUssdString, buildSessionId } from '../src/handler.mjs';
+import { MemorySessionStore } from '../src/session.mjs';
 
 describe('parseUssdString', () => {
   it('parses full USSD string', () => {

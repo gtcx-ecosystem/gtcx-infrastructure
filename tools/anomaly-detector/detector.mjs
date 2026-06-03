@@ -10,9 +10,9 @@
  *   node detector.mjs --synthetic-data=tools/anomaly-detector/test-fixtures/synthetic-metrics.json
  */
 
+import { exec } from 'node:child_process';
 import { readFileSync, writeFileSync, existsSync, readFileSync as readFile } from 'node:fs';
 import { request } from 'node:http';
-import { exec } from 'node:child_process';
 import { promisify } from 'node:util';
 
 const PROMETHEUS_URL = process.env.PROMETHEUS_URL || 'http://localhost:9090';
@@ -211,7 +211,7 @@ function recordRollback() {
   }
 }
 
-async function triggerRollback(targetDeployment, reason) {
+async function triggerRollback(targetDeployment, _reason) {
   if (!targetDeployment) return { performed: false, reason: 'no target configured' };
   if (isRollbackOnCooldown()) return { performed: false, reason: 'cooldown active' };
   if (DRY_RUN) return { performed: false, reason: 'dry-run mode' };

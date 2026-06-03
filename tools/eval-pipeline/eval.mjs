@@ -16,7 +16,7 @@
  *   - Outputs JSON to stdout for GitHub Actions parsing
  */
 
-import { readFileSync, readdirSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -32,7 +32,6 @@ const THRESHOLDS = {
 // Minimum confidence threshold for production deployment
 const CONFIDENCE_THRESHOLD = 0.70;
 
-const MODELS_DIR = join(__dirname, 'models');
 const BENCHMARKS_DIR = join(__dirname, 'benchmarks');
 
 function loadBenchmark(name) {

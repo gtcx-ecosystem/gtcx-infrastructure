@@ -4,6 +4,7 @@
 
 import assert from 'node:assert';
 import { describe, it } from 'node:test';
+
 import { routeMenu, resolveLanguage, DICTIONARIES } from '../src/menu.mjs';
 
 describe('resolveLanguage', () => {

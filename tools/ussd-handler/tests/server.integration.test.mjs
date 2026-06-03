@@ -192,7 +192,7 @@ describe('USSD Handler Server', () => {
     let status;
     let body;
     const mockRes = {
-      writeHead(s, h) { status = s; },
+      writeHead(s, _h) { status = s; },
       end(d) { body = d; },
     };
     testServer.emit('request', mockReq, mockRes);

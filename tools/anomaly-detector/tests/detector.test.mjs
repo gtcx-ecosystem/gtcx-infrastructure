@@ -6,11 +6,11 @@
  * Runs with `node --test` (Node.js 20 native test runner).
  */
 
-import { describe, it } from 'node:test';
 import assert from 'node:assert';
 import { spawnSync } from 'node:child_process';
-import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
+import { describe, it } from 'node:test';
+import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DETECTOR = join(__dirname, '..', 'detector.mjs');

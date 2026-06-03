@@ -1,6 +1,7 @@
 import assert from 'node:assert';
 import { describe, it } from 'node:test';
-import { hashPin } from '../src/auth.mjs';
+
+
 
 describe('auth production branch', () => {
   it('covers production iteration branch', async () => {

@@ -257,7 +257,7 @@ function decodeValue(buf, offset, tag) {
     case 0x07:
       if (offset + 7 >= buf.length) throw new Error('Truncated float64');
       return { value: buf.readDoubleBE(offset), bytesRead: 8 };
-    case 0x08:
+    case 0x08: {
       if (offset + 1 >= buf.length) throw new Error('Truncated string length');
       const strLen = (buf[offset] << 8) | buf[offset + 1];
       if (offset + 2 + strLen > buf.length) throw new Error('Truncated string');
@@ -265,6 +265,7 @@ function decodeValue(buf, offset, tag) {
         value: buf.subarray(offset + 2, offset + 2 + strLen).toString('utf8'),
         bytesRead: 2 + strLen,
       };
+    }
     default:
       throw new Error(`Unknown type tag in minimal binary: ${tag}`);
   }

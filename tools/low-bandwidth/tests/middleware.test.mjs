@@ -1,7 +1,8 @@
-import { describe, it } from 'node:test';
 import assert from 'node:assert';
-import { createTransform, createEventFromRequest } from '../src/middleware.mjs';
+import { describe, it } from 'node:test';
+
 import { decode } from '../src/encoder.mjs';
+import { createTransform, createEventFromRequest } from '../src/middleware.mjs';
 
 describe('createTransform', () => {
   it('defaults to normal level', () => {

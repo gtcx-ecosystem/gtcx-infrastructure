@@ -4,6 +4,7 @@
 
 import assert from 'node:assert';
 import { describe, it } from 'node:test';
+
 import { hashPin, verifyPin, checkLockout, recordFailedAttempt, resetAttempts } from '../src/auth.mjs';
 import { config } from '../src/config.mjs';
 

@@ -34,6 +34,7 @@ import { createHash } from 'node:crypto';
 const PROVIDER = process.env.SCREENING_PROVIDER || 'local';
 const RESULT_SUFFIX = '.screening.json';
 const TEST_ONLY_SALT = 'gtcx-test-only-local-screening-salt';
+// eslint-disable-next-line no-control-regex
 const CONTROL_CHARS = /[\u0000-\u001f\u007f]/u;
 
 function localScreeningSalt(env = process.env) {

@@ -6,6 +6,7 @@
  */
 
 import { pbkdf2Sync, randomBytes, timingSafeEqual } from 'node:crypto';
+
 import { config } from './config.mjs';
 
 const SALT_LENGTH = 16;

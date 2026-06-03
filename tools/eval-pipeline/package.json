@@ -1,17 +1,18 @@
 {
   "name": "@gtcx/eval-pipeline",
   "version": "0.1.0",
-  "description": "GTCX AI output evaluation pipeline — benchmark runner and CI gate",
+  "description": "GTCX AI output evaluation pipeline \u2014 benchmark runner and CI gate",
   "type": "module",
   "private": true,
   "scripts": {
+    "lint": "eslint . --ext .mjs,.js",
     "eval": "node eval.mjs",
     "eval:all": "node eval.mjs --all",
     "eval:injection": "node injection-suite.mjs",
     "test": "node ../scripts/run-package-tests.mjs",
     "test:coverage:gate": "node ../scripts/run-package-tests.mjs",
-    "typecheck": "echo \"No TypeScript files — typecheck is a no-op for this JS-only package\"",
-    "build": "echo \"No build step required — this package runs directly with Node.js ESM\""
+    "typecheck": "echo \"No TypeScript files \u2014 typecheck is a no-op for this JS-only package\"",
+    "build": "echo \"No build step required \u2014 this package runs directly with Node.js ESM\""
   },
   "dependencies": {
     "@gtcx/compliance-gateway": "workspace:*"

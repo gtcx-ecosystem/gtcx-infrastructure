@@ -1,7 +1,7 @@
 {
   "name": "@gtcx/deployment-guard",
   "version": "0.1.0",
-  "description": "GTCX Deployment Guard — typed, testable safety gates for deployment and migration control paths",
+  "description": "GTCX Deployment Guard \u2014 typed, testable safety gates for deployment and migration control paths",
   "type": "module",
   "exports": {
     "./gate": "./src/gate.mjs",
@@ -10,12 +10,13 @@
     "./audit-verifier": "./src/audit-verifier.mjs"
   },
   "scripts": {
+    "lint": "eslint src tests --ext .mjs,.js",
     "test": "node ../scripts/run-package-tests.mjs",
     "test:watch": "node --test --watch tests/*.test.mjs",
     "test:coverage": "c8 --reporter=text --reporter=json --reporter=lcov --include='src/**' node ../scripts/run-package-tests.mjs",
     "test:coverage:gate": "c8 --check-coverage --branches 90 --statements 90 --functions 90 --lines 90 --reporter=text --reporter=json --reporter=lcov --include='src/**' node ../scripts/run-package-tests.mjs",
     "typecheck": "tsc --noEmit",
-    "build": "echo \"No build step required — this package runs directly with Node.js ESM\""
+    "build": "echo \"No build step required \u2014 this package runs directly with Node.js ESM\""
   },
   "engines": {
     "node": ">=20.18.0"
