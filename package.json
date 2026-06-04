@@ -30,6 +30,7 @@
     "ctl": "node ./tools/control-plane/gtcx-ctl.mjs",
     "evidence:release-bundle": "node ./tools/control-plane/generate-release-evidence.mjs",
     "agent:next-work": "node scripts/agent-next-work.mjs",
+    "agent:launch:check": "node ../gtcx-agentic/scripts/check-agent-launch-focus.mjs",
     "agent:work-selection:check": "node scripts/check-agent-work-selection.mjs",
     "agent:execution-obligation:check": "node scripts/check-agent-execution-obligation.mjs",
     "agent:proceed-confirmation:check": "node scripts/check-agent-proceed-confirmation.mjs",
@@ -45,7 +46,9 @@
     "agent:sync": "node scripts/agent-sync/sync.mjs",
     "agent:check": "node scripts/agent-sync/sync.mjs --check",
     "score:compute": "node tools/scripts/compute-audit-scores.mjs --write",
-    "agent:coordination:check": "node scripts/check-coordination-hygiene.mjs"
+    "agent:coordination:check": "node scripts/check-coordination-hygiene.mjs",
+    "agent:start": "node scripts/agent-start.mjs",
+    "agent:session-start": "pnpm run agent:start"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",

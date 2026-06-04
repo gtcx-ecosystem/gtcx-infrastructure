@@ -1,0 +1,60 @@
+{
+  "repo": "gtcx-infrastructure",
+  "normativeDoc": "docs/operations/agent-launch-focus.md",
+  "northStar": {
+    "outcome": "Live sovereign pilot substrate (Wire #2, staging/testnet, hub acks, pen-test path) so apps and GTM can close GR-T2 deals.",
+    "repoRole": "Deploy EKS/testnet, secrets, observability — unblock intelligence, markets, protocols.",
+    "notTheGoal": "Re-run IR audit cluster each session to discover priorities."
+  },
+  "activePhase": {
+    "id": "zwcmp-unblock",
+    "label": "ZWCMP pilot + Global South 10x deploy"
+  },
+  "paths": {
+    "executionRoadmap": "docs/audit/execution-roadmap.md",
+    "openItems": "docs/operations/agent-work-selection.md",
+    "latestJson": "docs/audit/latest.json"
+  },
+  "storyIdPattern": "(?:IR-\\d+\\.\\d+|S\\d+-\\d+|P22-[A-Z]+-\\d+)",
+  "implementStatuses": ["pending", "in_progress"],
+  "parseOpenIds": ["OI-X02", "EXT-INF-002"],
+  "staticImplement": [
+    {
+      "storyId": "OI-X02",
+      "title": "Append ER-1-08 hub ack row (gtcx-core outbound filed)",
+      "workClass": "ops-docs",
+      "lane": "coordination",
+      "because": "Launch blocker for ecosystem ER-1 evidence chain",
+      "requiresFile": "docs/operations/coordination/from-gtcx-core-er-1-08-hub-ack-2026-06-03.md"
+    }
+  ],
+  "staticHuman": [
+    {
+      "storyId": "EXT-INF-002",
+      "title": "Live-stack pen-test vendor SOW",
+      "authorityClass": "S",
+      "owner": "Human / Security"
+    }
+  ],
+  "planningQueue": [
+    {
+      "storyId": "LAUNCH-PLAN-01",
+      "title": "Reconcile execution-roadmap + work register",
+      "paths": ["docs/audit/execution-roadmap.md", "docs/operations/agent-work-selection.md"]
+    },
+    {
+      "storyId": "LAUNCH-PLAN-02",
+      "title": "Refresh auto-dev-state for launch/GTM",
+      "paths": ["docs/audit/auto-dev-state.md"]
+    },
+    {
+      "storyId": "LAUNCH-PLAN-03",
+      "title": "Global South 10x plan status row update",
+      "paths": ["docs/gtm/plans/global-south-10x-plan.md"]
+    }
+  ],
+  "forbidden": [
+    "Ask operator to run master-audit before starting work",
+    "Story menus when launch-focus.json is provisioned"
+  ]
+}

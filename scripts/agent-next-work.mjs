@@ -8,9 +8,12 @@
 import { readFileSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { enrichWithPersona } from '../../gtcx-agentic/scripts/lib/suggest-persona.mjs';
+import { attachLaunchFocus, writeLaunchFocusState } from './lib/attach-launch-focus.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = join(__dirname, '..');
+const THIS_REPO = 'gtcx-infrastructure';
 
 const PATHS = {
   manifest: join(REPO_ROOT, 'docs/operations/agent-work-selection.md'),
@@ -221,16 +224,19 @@ function main() {
   const selection = selectNext(allStories, { frame });
 
   if (!selection) {
+    const base = {
+      ok: true,
+      backlogClear: true,
+      frame,
+      protocol: '22-agent-work-selection',
+      repo: THIS_REPO,
+      message: 'No automatable pending or in_progress stories for current frame.',
+    };
+    const withLaunch = attachLaunchFocus(base, REPO_ROOT);
+    if (withLaunch.launchFocus) writeLaunchFocusState(REPO_ROOT, withLaunch.launchFocus);
     console.log(
       JSON.stringify(
-        {
-          ok: true,
-          backlogClear: true,
-          frame,
-          protocol: '22-agent-work-selection',
-          repo: 'gtcx-infrastructure',
-          message: 'No automatable pending or in_progress stories for current frame.',
-        },
+        enrichWithPersona(withLaunch, { repo: THIS_REPO, title: 'coordination witness' }),
         null,
         2,
       ),
@@ -291,7 +297,19 @@ function main() {
     ],
   };
 
-  console.log(JSON.stringify(payload, null, 2));
+  const withLaunch = attachLaunchFocus(payload, REPO_ROOT);
+  if (withLaunch.launchFocus) writeLaunchFocusState(REPO_ROOT, withLaunch.launchFocus);
+  console.log(
+    JSON.stringify(
+      enrichWithPersona(withLaunch, {
+        repo: THIS_REPO,
+        storyId: withLaunch.next?.storyId ?? story.id,
+        title: withLaunch.next?.title ?? story.title,
+      }),
+      null,
+      2,
+    ),
+  );
 }
 
 main();

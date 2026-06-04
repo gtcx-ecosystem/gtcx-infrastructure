@@ -1,0 +1,112 @@
+{
+  "schema": "gtcx.launchFocus.v1",
+  "normativeDoc": "docs/operations/agent-launch-focus.md",
+  "hubDoc": "https://github.com/gtcx-ecosystem/gtcx-core/blob/main/docs/operations/agent-launch-focus.md",
+  "statePath": ".baseline/launch-focus.json",
+  "provisionedAt": "2026-06-04T19:12:19.720Z",
+  "repo": "gtcx-infrastructure",
+  "northStar": {
+    "outcome": "Live sovereign pilot substrate (Wire #2, staging/testnet, hub acks, pen-test path) so apps and GTM can close GR-T2 deals.",
+    "repoRole": "Deploy EKS/testnet, secrets, observability — unblock intelligence, markets, protocols.",
+    "notTheGoal": "Re-run IR audit cluster each session to discover priorities.",
+    "gtmTier": {
+      "library": "GR-T1",
+      "integratorPilot": "GR-T2-partial",
+      "ecosystemSovereign": "below-GR-T2"
+    }
+  },
+  "sessionMode": "implement",
+  "activePhase": {
+    "id": "zwcmp-unblock",
+    "label": "ZWCMP pilot + Global South 10x deploy"
+  },
+  "workSet": {
+    "implement": [
+      {
+        "storyId": "IR-3.5",
+        "title": "Refresh DR fire-drill dated artifact",
+        "workClass": "ops-docs",
+        "authorityClass": "S",
+        "lane": "p22-head"
+      },
+      {
+        "storyId": "OI-X02",
+        "title": "Append ER-1-08 hub ack row (gtcx-core outbound filed)",
+        "workClass": "ops-docs",
+        "lane": "coordination",
+        "because": "Launch blocker for ecosystem ER-1 evidence chain",
+        "requiresFile": "docs/operations/coordination/from-gtcx-core-er-1-08-hub-ack-2026-06-03.md"
+      }
+    ],
+    "plan": [
+      {
+        "storyId": "LAUNCH-PLAN-01",
+        "title": "Reconcile execution-roadmap + work register",
+        "paths": [
+          "docs/audit/execution-roadmap.md",
+          "docs/operations/agent-work-selection.md"
+        ]
+      },
+      {
+        "storyId": "LAUNCH-PLAN-02",
+        "title": "Refresh auto-dev-state for launch/GTM",
+        "paths": [
+          "docs/audit/auto-dev-state.md"
+        ]
+      },
+      {
+        "storyId": "LAUNCH-PLAN-03",
+        "title": "Global South 10x plan status row update",
+        "paths": [
+          "docs/gtm/plans/global-south-10x-plan.md"
+        ]
+      }
+    ],
+    "witness": [],
+    "human": [
+      {
+        "storyId": "EXT-INF-002",
+        "title": "Live-stack pen-test vendor SOW",
+        "authorityClass": "S",
+        "owner": "Human / Security"
+      }
+    ]
+  },
+  "activeWorkSet": [
+    {
+      "storyId": "IR-3.5",
+      "title": "Refresh DR fire-drill dated artifact",
+      "workClass": "ops-docs",
+      "authorityClass": "S",
+      "lane": "p22-head"
+    },
+    {
+      "storyId": "OI-X02",
+      "title": "Append ER-1-08 hub ack row (gtcx-core outbound filed)",
+      "workClass": "ops-docs",
+      "lane": "coordination",
+      "because": "Launch blocker for ecosystem ER-1 evidence chain",
+      "requiresFile": "docs/operations/coordination/from-gtcx-core-er-1-08-hub-ack-2026-06-03.md"
+    }
+  ],
+  "workSetCounts": {
+    "implement": 2,
+    "plan": 3,
+    "witness": 0,
+    "human": 1
+  },
+  "sources": [
+    "docs/audit/execution-roadmap.md",
+    "docs/operations/agent-work-selection.md",
+    "docs/audit/latest.json"
+  ],
+  "forbidden": [
+    "Ask operator to run master-audit before starting work",
+    "Story menus when launch-focus.json is provisioned"
+  ],
+  "agentInstructions": [
+    "Launch focus (gtcx-infrastructure) — read .baseline/launch-focus.json before audits.",
+    "Live sovereign pilot substrate (Wire #2, staging/testnet, hub acks, pen-test path) so apps and GTM can close GR-T2 deals.",
+    "IMPLEMENT mode — drain 1 item(s) toward app launch / GTM."
+  ]
+}
