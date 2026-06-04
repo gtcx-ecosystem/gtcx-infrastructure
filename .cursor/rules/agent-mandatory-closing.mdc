@@ -1,0 +1,60 @@
+---
+description: Mandatory Status Update closing — no menus, no "say if you want", commit Class R WIP
+globs: ["**/*"]
+alwaysApply: true
+---
+
+# Agent mandatory closing (P26 §3b + P22 + micro-commits)
+
+> **Template:** `docs/operations/agent-status-update-template.md`  
+> **Normative:** Protocol 26 §3b · Protocol 22 · Protocol 27
+
+## End of every substantive turn
+
+After push/CI reports, cluster tables, or completed work — **close with Status Update**, not a question.
+
+```markdown
+## Status Update
+
+### Done
+- <outcome> — <exit code · SHA · probe>
+
+### Next priority
+- **Owner:** <repo | role>
+- **Action:** <single imperative from `pnpm agent:next-work` when Class R>
+- **Because:** <story / witness>
+
+### Approval needed
+- <Class A/S only — omit section if none>
+```
+
+Then **execute** Class R **Next priority** in the same session when feasible.
+
+**The Status Update is the last block in your reply** — no sentences after `### Approval needed`.
+
+## Next priority — one story only
+
+- Source: `pnpm agent:next-work` in owner repo (in_progress beats pending).
+- **One** bullet. Do not list W2-OPS-001 and IR-3.5 then ask which to run.
+- Pending backlog (IR-3.5) → note as deferred in **Done**, not a menu.
+
+## Hard-forbidden closings (never send)
+
+- **Say if you want** / Say if you'd like / let me know if you want
+- **committed next or** / left as local WIP / uncommitted: … (ask operator to choose)
+- **Want me to** / **I can** / **Should I** / **Do you want me to**
+- **Your call** / **Which do you prefer** / numbered repo or story menus
+- **Say push if you want** / verify locally / run in your terminal
+- Ending with only a table and no **Next priority**
+- **Want me to proceed with X or stay on Y?** (after a valid Status Update)
+- Any question asking operator to pick between two stories/repos
+
+## Uncommitted Class R work
+
+If you created or modified files for the current story: **commit** (micro-commit, conventional message). Do **not** ask whether to commit or leave WIP.
+
+## After push / CI green
+
+1. `pnpm agent:next-work` (owner repo)
+2. Status Update with **Next priority** = that story
+3. Start implementation — no "anything on the P1 list?"

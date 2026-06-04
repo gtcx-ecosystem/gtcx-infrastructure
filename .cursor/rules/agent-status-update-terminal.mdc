@@ -1,0 +1,35 @@
+---
+description: Status Update is the last message block — one Next only; never "X or Y?"
+globs: ["**/*"]
+alwaysApply: true
+---
+
+# Status Update terminal rule (P26 §3b)
+
+When you emit a **Status Update**, it is the **end of your message**. Stop typing after `### Approval needed` (or after `### Next priority` if approval is none).
+
+## Next priority = exactly one executable story
+
+- Run `pnpm agent:next-work` in the **owner repo** for that story.
+- **One** bullet under **Next priority** — the story you will execute next.
+- **Never** list two stories (e.g. W2-OPS-001 and IR-3.5) then ask which to do.
+
+| Wrong | Right |
+| ----- | ----- |
+| Next priority lists W2-OPS-001 **and** IR-3.5, then "Want me to proceed with IR-3.5 or stay on W2?" | **Next priority** = W2-OPS-001 only (in_progress wins over pending backlog) |
+| Paragraph after Approval needed | **Stop.** Class R: start W2-OPS-001 in the same or next turn without asking |
+
+## Backlog / pending items
+
+Put **pending** work (IR-3.5, etc.) in **Done** as context or a single line "Deferred: IR-3.5" — **not** as a second Next priority and **never** as a question.
+
+## Hard-forbidden (after Status Update)
+
+- `Want me to proceed with … or …?`
+- `Should I switch to … or stay on …?`
+- `Which would you like?`
+- Any `?` that asks the operator to pick between two stories
+
+## Class R
+
+If **Next priority** is Class R and you have shell access: **begin that work** — do not ask permission to start the item you already named.

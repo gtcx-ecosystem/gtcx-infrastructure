@@ -1,0 +1,34 @@
+---
+description: P27 — never paste "Your action needed" command blocks; run aws/kubectl/terraform in-session
+globs: ["**/*"]
+alwaysApply: true
+---
+
+# No operator command dumps (P27)
+
+Saying **"P22 directs; I do not poll"** while pasting `aws` / `kubectl` / `terraform` for the human is a **protocol violation**.
+
+## Required behavior
+
+1. **Execute** each step in the owner-repo shell (usually `gtcx-infrastructure` for W2).
+2. Prefer **repo scripts** over retyping runbook blocks:
+   - `./scripts/staging/populate-compliance-os-staging-sm.sh`
+   - `./scripts/staging/install-compliance-os-eso.sh`
+   - `cd infra/terraform/environments/staging && terraform apply …`
+3. Report: `command` → **exit code** (or stderr summary).
+4. If credentials/context missing: **Permission Unblock Report** — not "Your action needed:"
+
+## Forbidden message shapes
+
+```text
+Your action needed on W2-OPS-001:
+Run this sequence to light up terminal-os staging:
+# 1. Populate the AWS SM secret (operator — generate values)
+aws secretsmanager put-secret-value ...
+```
+
+Replace with Status Update **Done** (what you ran + exit codes) and **Next priority** (one story). **Stop** — no command dump.
+
+## One story at a time
+
+While **Next priority** = W2-OPS-001: do **not** say "proceeding with IR-3.5 in parallel" unless P22 `agent:next-work` switched stories after W2 blocked (record blocker first).
