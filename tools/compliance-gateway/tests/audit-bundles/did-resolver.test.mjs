@@ -33,7 +33,17 @@ describe('extractPublicKey', () => {
     );
   });
 
-  it('throws public-key-jwk-missing when method lacks JWK', () => {
+  it('extracts publicKey from publicKeyMultibase (Ed25519VerificationKey2020)', () => {
+    const doc = makeDidDoc([
+      { id: 'k-1', publicKeyMultibase: 'z6Mktp7jNeFWtpHw4qxgGk5E89LHbRo5DKUGvgPDReFgUoNW' },
+    ]);
+    const jwk = extractPublicKey(doc, 'k-1');
+    assert.strictEqual(jwk.kty, 'OKP');
+    assert.strictEqual(jwk.crv, 'Ed25519');
+    assert.strictEqual(typeof jwk.x, 'string');
+  });
+
+  it('throws public-key-jwk-missing when method lacks both JWK and multibase', () => {
     const doc = makeDidDoc([{ id: 'k-1' }]);
     assert.throws(
       () => extractPublicKey(doc, 'k-1'),

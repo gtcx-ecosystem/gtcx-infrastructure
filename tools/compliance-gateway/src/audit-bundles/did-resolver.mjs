@@ -69,6 +69,8 @@ export class DidResolverError extends Error {
  * @param {string} keyId
  * @returns {object}
  */
+import { ed25519MultibaseToJwk } from './multibase.mjs';
+
 export function extractPublicKey(didDocument, keyId) {
   if (!didDocument || typeof didDocument !== 'object') {
     throw new DidResolverError('did-document-malformed');
@@ -84,10 +86,21 @@ export function extractPublicKey(didDocument, keyId) {
   if (!match) {
     throw new DidResolverError('key-id-not-found');
   }
-  if (!match.publicKeyJwk || typeof match.publicKeyJwk !== 'object') {
-    throw new DidResolverError('public-key-jwk-missing');
+
+  // Ed25519VerificationKey2020 uses publicKeyMultibase (base58btc, z-prefix).
+  // Legacy/test fixtures may use publicKeyJwk. Support both.
+  if (match.publicKeyJwk && typeof match.publicKeyJwk === 'object') {
+    return match.publicKeyJwk;
   }
-  return match.publicKeyJwk;
+  if (typeof match.publicKeyMultibase === 'string') {
+    try {
+      return ed25519MultibaseToJwk(match.publicKeyMultibase);
+    } catch (err) {
+      throw new DidResolverError('public-key-multibase-invalid', err.message);
+    }
+  }
+
+  throw new DidResolverError('public-key-jwk-missing');
 }
 
 /**
