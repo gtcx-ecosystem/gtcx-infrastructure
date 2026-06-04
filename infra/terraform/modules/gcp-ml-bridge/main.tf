@@ -5,7 +5,7 @@
 # update DynamoDB registry. No customer PII — artifacts and metadata only.
 #
 # Canonical HCL: gtcx-intelligence/docs/roadmap/global-trade-phase-3-ml-pipeline.md
-# Ecosystem spec: compliance-os/docs/operations/cloud-placement-gtcx-ecosystem-2026-06-05.md
+# Ecosystem spec: gtcx-docs/docs/architecture/cloud-placement/gtcx-ecosystem-2026-06-05.md
 # =============================================================================
 
 locals {

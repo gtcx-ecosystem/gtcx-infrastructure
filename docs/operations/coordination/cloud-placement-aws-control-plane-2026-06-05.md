@@ -8,7 +8,7 @@ role: platform-engineer
 
 # AWS control plane — gtcx-infrastructure
 
-**Canonical ecosystem spec:** [`compliance-os/docs/operations/cloud-placement/README.md`](../../../../compliance-os/docs/operations/cloud-placement/README.md) → [`cloud-placement-gtcx-ecosystem-2026-06-05.md`](../../../../compliance-os/docs/operations/cloud-placement-gtcx-ecosystem-2026-06-05.md) · **Per-repo register:** [`repo-register-2026-06-05.md`](../../../../compliance-os/docs/operations/cloud-placement/repo-register-2026-06-05.md)
+**Canonical ecosystem spec (SoR: gtcx-docs):** [`gtcx-docs/docs/architecture/cloud-placement/README.md`](../../../../gtcx-docs/docs/architecture/cloud-placement/README.md) → [`gtcx-ecosystem-2026-06-05.md`](../../../../gtcx-docs/docs/architecture/cloud-placement/gtcx-ecosystem-2026-06-05.md) · **Per-repo register:** [`repo-register-2026-06-05.md`](../../../../gtcx-docs/docs/architecture/cloud-placement/repo-register-2026-06-05.md)
 
 ## Infra owns (optimize here)
 
