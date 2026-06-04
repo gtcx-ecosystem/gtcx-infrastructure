@@ -19,8 +19,8 @@ spec:
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxUnavailable: 0
-      maxSurge: 1
+      maxUnavailable: 1
+      maxSurge: 0
   selector:
     matchLabels:
       app: terminal-os
@@ -59,7 +59,7 @@ spec:
             - name: NODE_ENV
               value: production
             - name: NEXT_PUBLIC_APP_URL
-              value: https://terminal.gtcx.trade
+              value: https://terminal-staging.gtcx.trade
             - name: NEXT_TELEMETRY_DISABLED
               value: '1'
           envFrom:
@@ -68,8 +68,8 @@ spec:
                 optional: false
           resources:
             requests:
-              cpu: 250m
-              memory: 512Mi
+              cpu: 100m
+              memory: 256Mi
             limits:
               cpu: 1000m
               memory: 1Gi

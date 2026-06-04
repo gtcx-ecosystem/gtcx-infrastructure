@@ -22,6 +22,7 @@ resources:
   - external-secret.yaml
   - deployment.yaml
   - service.yaml
+  - ingress.yaml
 
 images:
   - name: 348389439381.dkr.ecr.af-south-1.amazonaws.com/gtcx-terminal-os

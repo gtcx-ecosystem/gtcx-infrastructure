@@ -10,6 +10,9 @@ metadata:
     app: terminal-os
     tier: frontend
     environment: staging
+  annotations:
+    alb.ingress.kubernetes.io/healthcheck-path: /api/health
+    alb.ingress.kubernetes.io/success-codes: '200'
 spec:
   type: ClusterIP
   selector:

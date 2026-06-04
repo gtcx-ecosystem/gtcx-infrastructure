@@ -81,6 +81,45 @@
 
 ---
 
+## W2-OPS-001 — terminal-os staging EKS deployment — DONE (2026-06-04)
+
+### Root cause
+- ECR image was ARM64 (built on Apple Silicon); EKS nodes are AMD64 t3.medium
+- App crashed on boot due to missing `DATABASE_URL` and `RATE_LIMIT_REDIS_REST_URL`/`TOKEN`
+
+### Fix
+1. **EC2 build instance** (`i-084647e802ef9834b`) — t3.xlarge, Amazon Linux 2, Docker
+   - Built `linux/amd64` image with `DOCKER_BUILD=1` standalone output
+   - Pushed `gtcx-terminal-os:latest` to ECR
+2. **Secrets** — updated `gtcx/terminal-os/staging/api-keys` in AWS SM:
+   - `DATABASE_URL` → `gtcx-staging-audit` Postgres (real connection)
+   - `RATE_LIMIT_REDIS_REST_URL`/`TOKEN` → dummy values (runtime falls back to in-memory; acceptable for single-replica staging)
+   - Existing keys preserved: `COMPLIANCE_OS_TERMINAL_API_KEY`, `AUTH_SECRET`
+3. **K8s manifests** — updated in `infra/kubernetes/overlays/staging/terminal-os/`:
+   - `deployment.yaml`: `NEXT_PUBLIC_APP_URL` → `https://terminal-staging.gtcx.trade`; strategy `maxUnavailable: 1, maxSurge: 0`; reduced requests to `cpu: 100m, memory: 256Mi` (cluster is oversubscribed)
+   - `service.yaml`: added ALB health check annotations (`/api/health`)
+   - `ingress.yaml`: new ALB ingress sharing `gtcx-staging-api` group; routes `terminal-staging.gtcx.trade` → service:3000
+   - `kustomization.yaml`: includes `ingress.yaml`
+4. **DNS + TLS**:
+   - Cloudflare CNAME `terminal-staging.gtcx.trade` → ALB hostname (non-proxied)
+   - ACM certificate requested + validated for `terminal-staging.gtcx.trade`
+   - Ingress certificate-arn updated with new cert
+
+### Verification
+```bash
+curl -sS https://terminal-staging.gtcx.trade/api/health
+# → {"status":"ok","service":"fifty-four","version":"dev",...}
+
+kubectl get pod -n terminal-os-staging
+# → terminal-os-856dd58b54-hrhq6   1/1   Running   0   61m
+```
+
+### Open / deferred
+- **GitHub Actions CI** (`docker-build.yml`): OIDC auth still broken; EC2 build is fallback
+- **Cluster capacity**: t3.medium nodes at 90-99% CPU request; terminal-os scaled to 100m/256Mi requests. Needs node upgrade or autoscaling review
+- **Redis REST**: Dummy values work for staging #17; real Upstash/Redis REST needed for production / multi-replica staging
+- **Ingress hostname**: `terminal-staging.gtcx.trade` is canonical per coordination doc; `/api/ready` returns 403 from WAF (expected — external_apis degraded in readiness probe)
+
 ## Active blockers (external)
 
 | ID | Blocker | Owner |
@@ -89,6 +128,35 @@
 | EXT-INF-013 | SOC 2 Type I auditor | CISO + Finance |
 | EXT-INF-014 | ZWCMP DPA + pilot agreement | Founder / GTM |
 | EXT-INF-015 | Indemnified-SLA legal review | Legal / GTM |
+
+---
+
+## XR-EO-006 / INF-86 IRSA + KMS Sovereign Signing — 2026-06-06
+
+### Finding
+Production KMS key policy for `alias/gtcx-production-sovereign-gh-bog` only allowed
+the production IRSA role (`gtcx-production-platforms-irsa`) in `signing_role_arns`.
+Staging sovereign pods use the same key alias but assume the staging IRSA role
+(`gtcx-staging-platforms-irsa`), which would be denied by KMS.
+
+### Fix
+- `data.aws_iam_role.staging_platforms` added to production main.tf
+- `module.kms_sovereign_signing.authorities.gh-bog.signing_role_arns` now includes
+  both production and staging role ARNs
+- HOLD comment updated to UNBLOCKED (algorithm confirmed ECC_NIST_P256)
+- Commit: `c36a5f6`
+
+### Verification
+- Terraform validate: production ✅, staging ✅
+- validate-all: 46/46 gates ✅
+
+### INF-86 status — UNBLOCKED (2026-06-06)
+- XR-401 A/B/C: DONE — algorithm sign-off, custodian roster, ceremony authorization
+- Pilot (gh-bog): Fully unblocked for engineering and agent custody
+- GitHub #61: Pilot thread closed; issue stays open for 5-issuer program scale
+- Post-pilot Class S items (not blockers): H-03 sovereign CSP countersign, XR-518 batch ceremonies
+- Witness: `from-gtcx-protocols-inf-86-governance-unblock-2026-06-06.md`
+- gtcx-protocols commit `6e3baea9` (governance unblock) already on origin/main
 
 ---
 
