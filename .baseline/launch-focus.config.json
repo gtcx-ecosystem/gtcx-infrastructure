@@ -17,17 +17,8 @@
   },
   "storyIdPattern": "(?:IR-\\d+\\.\\d+|S\\d+-\\d+|P22-[A-Z]+-\\d+)",
   "implementStatuses": ["pending", "in_progress"],
-  "parseOpenIds": ["OI-X02", "EXT-INF-002"],
-  "staticImplement": [
-    {
-      "storyId": "OI-X02",
-      "title": "Append ER-1-08 hub ack row (gtcx-core outbound filed)",
-      "workClass": "ops-docs",
-      "lane": "coordination",
-      "because": "Launch blocker for ecosystem ER-1 evidence chain",
-      "requiresFile": "docs/operations/coordination/from-gtcx-core-er-1-08-hub-ack-2026-06-03.md"
-    }
-  ],
+  "parseOpenIds": ["EXT-INF-002"],
+  "staticImplement": [],
   "staticHuman": [
     {
       "storyId": "EXT-INF-002",
