@@ -257,10 +257,30 @@ function main() {
       tier,
       reason,
     },
+    proceedBrief: {
+      next: `${story.id} — ${story.title}`,
+      because: reason,
+      blockedUntil: story.implementationClass === 'external' ? 'external gate' : 'none',
+      override: 'stop | correct: | story ID',
+    },
+    communicationPolicy: {
+      protocol: '26-agent-proceed-confirmation',
+      version: '1.1.0',
+      forbiddenReplyPatterns: [
+        'Your call',
+        'Two options',
+        'Which do you prefer',
+        'natural transition point',
+        'Switch to compliance-os',
+        'Either ',
+      ],
+    },
     agentInstructions: [
       `Mark ${story.id} in_progress in docs/operations/agent-work-selection.md before coding.`,
       'Update docs/audit/execution-roadmap.md and work register when complete.',
       'Refresh docs/audit/auto-dev-state.md after completion.',
+      'Emit one Proceed Brief (single Next from this JSON), then implement — Protocol 26.',
+      'FORBIDDEN: "Your call", "Two options", "1. … 2. …", "switch to &lt;other-repo&gt;?" after P22 selection.',
       'Do not ask the user which story to pick.',
     ],
   };

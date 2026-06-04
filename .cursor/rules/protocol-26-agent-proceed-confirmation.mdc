@@ -1,0 +1,42 @@
+---
+description: Protocol 26 — Proceed Brief only; never story or repo option menus
+globs: ["**/*"]
+alwaysApply: true
+---
+
+# Protocol 26: Agent Proceed Confirmation (AGENT-PROCEED-CONF)
+
+> **Normative:** `gtcx-docs/docs/governance/protocols/26-agent-proceed-confirmation/protocol.md` (v1.1.0)
+> **Phase:** 5.6 (after P22 selection)
+
+## Rule
+
+After `pnpm agent:next-work`, emit **one Proceed Brief**, then **implement**. Human may **stop**, **correct**, or name a story ID — never pick among agent-generated options.
+
+## Proceed Brief (required)
+
+```markdown
+## Proceed Brief
+
+**Next:** <single action from agent:next-work>
+**Because:** <P22 selection.reason>
+**Blocked until:** <none | artifact>
+**Override:** stop | correct: | story ID
+```
+
+## Hard-forbidden replies (never send)
+
+- Your call / Your call on …
+- Two options / 1. … 2. … (story, repo, or sprint menus)
+- Since blockers are done, natural transition point → menu
+- Either IR-X in infra or switch to compliance-os now
+- Which do you prefer? / What would you like me to do next?
+- Do you want me to work on A or B?
+
+## When P22 returns a story
+
+Execute **that story in this repo**. Do not offer a parallel repo unless P24 records a blocker and P22 selects handoff.
+
+## With P27
+
+Run commands yourself after the brief — no terminal delegation.

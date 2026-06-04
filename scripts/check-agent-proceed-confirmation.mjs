@@ -14,7 +14,7 @@ const paths = {
   agentsMd: join(REPO_ROOT, "AGENTS.md"),
   cursorRule: join(
     REPO_ROOT,
-    ".cursor/rules/protocol-26-proceed-confirmation.mdc"
+    ".cursor/rules/protocol-26-agent-proceed-confirmation.mdc"
   ),
   manifest: join(
     REPO_ROOT,
@@ -67,6 +67,24 @@ const checks = [
     test: () =>
       /agent:proceed-confirmation:check/.test(
         readFileSync(paths.ciWorkflow, "utf8")
+      ),
+  },
+  {
+    name: "Cursor rule forbids Your call / Two options menus",
+    test: () => {
+      const rule = readFileSync(paths.cursorRule, "utf8");
+      return (
+        rule.includes("Your call") &&
+        rule.includes("Two options") &&
+        rule.includes("alwaysApply: true")
+      );
+    },
+  },
+  {
+    name: "agent-next-work embeds communicationPolicy",
+    test: () =>
+      /communicationPolicy/.test(
+        readFileSync(join(REPO_ROOT, "scripts/agent-next-work.mjs"), "utf8")
       ),
   },
 ];
