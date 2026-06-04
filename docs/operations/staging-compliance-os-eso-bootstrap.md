@@ -34,7 +34,26 @@ terraform apply -var-file=terraform.tfvars \
 
 ## 2. Populate AWS SM values
 
-See [`to-compliance-os-hub-17-staging-blockers-witness-2026-06-05.md`](coordination/to-compliance-os-hub-17-staging-blockers-witness-2026-06-05.md).
+```bash
+./scripts/staging/populate-compliance-os-staging-sm.sh
+```
+
+Requires `gh auth` (read) for GHCR token. App bundles use staging placeholders until compliance-os supplies real values.
+
+See also [`to-compliance-os-hub-17-staging-blockers-witness-2026-06-05.md`](coordination/to-compliance-os-hub-17-staging-blockers-witness-2026-06-05.md).
+
+## 2b. Publish `compliance-web` image (amd64)
+
+Cluster nodes are **amd64**. Local `docker build` on Apple Silicon produces **arm64** — push requires `write:packages`:
+
+```bash
+gh auth refresh -h github.com -s write:packages
+docker buildx build --platform linux/amd64 -f apps/web/Dockerfile \
+  -t ghcr.io/gtcx-ecosystem/compliance-web:staging-$(git rev-parse --short HEAD) \
+  --push .
+```
+
+Or fix and re-run `CD / Staging` on `compliance-os` `main` (workflow_dispatch).
 
 ## 3. Apply K8s overlay
 
