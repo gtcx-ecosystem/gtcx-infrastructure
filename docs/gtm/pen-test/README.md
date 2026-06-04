@@ -1,0 +1,31 @@
+---
+title: 'Pen-test — gtcx-infrastructure slice'
+status: current
+date: 2026-06-06
+owner: gtcx-infrastructure
+tier: standard
+tags: ['gtm', 'pen-test', 'assurance']
+review_cycle: on-change
+---
+
+# Pen-test — gtcx-infrastructure
+
+**Process:** [gtcx-protocols pen-test process](https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/docs/gtm/pen-test/process.md)  
+**Active wave:** [pen-test-2026-08](https://github.com/gtcx-ecosystem/gtcx-protocols/tree/main/docs/audit/pen-test-2026-08/)
+
+## Repo scope
+
+| Component                    | Wave 1                                                                                | Notes                                            |
+| ---------------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------ |
+| Staging EKS / ingress / IRSA | In scope                                                                              | Prerequisites per protocols wave README          |
+| K8s pen-test overlay         | [`infra/kubernetes/overlays/pen-test/`](../../../infra/kubernetes/overlays/pen-test/) | Isolated targets when needed                     |
+| Legacy RFP scope             | [`regulatory/pentest-scope-rfp.md`](../regulatory/pentest-scope-rfp.md)               | Infra-specific scope; canonical RFP in protocols |
+
+## Evidence in this repo
+
+| Artifact                | Path                                                                               |
+| ----------------------- | ---------------------------------------------------------------------------------- |
+| Pen-test intake witness | `docs/operations/coordination/pen-test-intake-evidence-2026-05-31.md` (if present) |
+| Staging topology        | CI `pnpm check:staging-topology` (protocols index)                                 |
+
+Findings SoR: **gtcx-protocols** `docs/audit/pen-test-2026-08/findings/`.
