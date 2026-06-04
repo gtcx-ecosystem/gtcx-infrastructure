@@ -55,7 +55,7 @@ When `pnpm agent:next-work` returns a story ID, execute it. When `backlogClear: 
 | ID           | Title                                                          | P   | Status  | Class    |
 | ------------ | -------------------------------------------------------------- | --- | ------- | -------- |
 | IR-2.1       | Dependabot tier-3 merges                                       | P2  | blocked | external |
-| IR-2.2       | AI SDK v5→v6 migration branch + eval regression                | P1  | pending | code     |
+| IR-2.2       | AI SDK v5→v6 migration branch + eval regression                | P1  | done    | code     |
 | IR-2.3       | CodeQL/Trivy SARIF upload graceful when Code Security disabled | P0  | done    | code     |
 | IR-3.1       | WORM upload workflow                                           | P1  | pending | code     |
 | IR-3.2       | Document operator live path for runtime-evidence-check         | P1  | pending | ops-docs |

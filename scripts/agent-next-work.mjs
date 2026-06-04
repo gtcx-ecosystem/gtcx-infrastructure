@@ -24,7 +24,7 @@ const EVIDENCE_RE =
   /\b(manual UAT|staging probe with live creds|operator step|live RDS restore)\b/i;
 const OPS_DOCS_RE = /\b(Author `docs\/|manifest|Protocol \d+|roadmap reconcile|runbook|operator live path)\b/i;
 const EXTERNAL_RE =
-  /\b(human selection|human SOW|CISO decision|Supabase unpause|DNS zone:write|protocols contract|pen-test vendor|npm publish)\b/i;
+  /\b(human selection|human SOW|CISO decision|Supabase unpause|DNS zone:write|protocols contract|pen-test vendor|npm publish|EXT-INF|legal review|insurance quote|indemnified|DPA|pilot agreement|human signature)\b/i;
 
 function parsePriority(p) {
   const n = Number.parseInt(String(p).replace(/\D/g, ''), 10);
@@ -68,7 +68,7 @@ function storyOrdinal(id) {
 function parseWorkRegister(md) {
   const stories = new Map();
   const rowRe =
-    /^\| (S\d+-\d+|IR-\d+\.\d+|P22-[A-Z]+-\d+) \| ([^|]+) \| (P\d) \| (pending|in_progress|blocked|done|deferred) \| ([^|]+) \|/gm;
+    /^\|\s*(S\d+-\d+|IR-\d+\.\d+|P22-[A-Z]+-\d+)\s*\|\s*([^|]+?)\s*\|\s*(P\d)\s*\|\s*(pending|in_progress|blocked|done|deferred)\s*\|\s*([^|]+?)\s*\|/gm;
   let match;
   while ((match = rowRe.exec(md)) !== null) {
     const [, id, title, priority, status, classCol] = match;
