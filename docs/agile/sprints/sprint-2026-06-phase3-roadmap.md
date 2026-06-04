@@ -36,23 +36,23 @@ review_cycle: weekly
 
 ### P1 — Engineering + Compliance Gaps (15)
 
-| ID        | Title                                           | Owner             | Status        |
-| --------- | ----------------------------------------------- | ----------------- | ------------- |
-| S1-02     | TypeORM entity/schema drift                     | infra             | `in_progress` |
-| S1-03     | ioredis missing — sovereign image               | infra             | **`done`**    |
-| S1-05     | Terraform IRSA drift capture                    | infra             | **`done`**    |
-| S2-01     | Secret scanning CI (TruffleHog)                 | devops            | `pending`     |
-| S2-02     | Rate limiting — `/audit/*` throttling           | infra             | `pending`     |
-| S2-03     | FIPS 140-3 feature flag                         | security          | `pending`     |
-| S2-04     | PRD-002 Tier B — TradePass DID resolver         | protocols + infra | `blocked`     |
-| S2-05     | Mutable audit default path — stdout → NATS/WORM | infra             | `pending`     |
-| S2-09     | Durable offline queue — restart survival        | infra             | `pending`     |
-| S2-10     | Runtime cross-repo integration tests in CI      | infra             | `pending`     |
-| S3-05     | FSCA license / SARB notification                | compliance        | `pending`     |
-| S3-06     | CISO/vCISO appointment                          | CEO/Board         | `pending`     |
-| S1-10b    | Audit-sink branch coverage (72.09%)             | infra             | `pending`     |
-| IR-1      | main CI format + honest README                  | infra             | `open`        |
-| IR-2–IR-6 | IR 10/10 dimension lifts                        | infra             | `open`        |
+| ID        | Title                                           | Owner             | Status                                                                                                         |
+| --------- | ----------------------------------------------- | ----------------- | -------------------------------------------------------------------------------------------------------------- |
+| S1-02     | TypeORM entity/schema drift                     | infra             | `in_progress` — platforms **S2-07 phase 1** shipped (`from-gtcx-platforms-s2-07-typeorm-phase1-2026-06-05.md`) |
+| S1-03     | ioredis missing — sovereign image               | infra             | **`done`**                                                                                                     |
+| S1-05     | Terraform IRSA drift capture                    | infra             | **`done`**                                                                                                     |
+| S2-01     | Secret scanning CI (TruffleHog)                 | devops            | `pending`                                                                                                      |
+| S2-02     | Rate limiting — `/audit/*` throttling           | infra             | `pending`                                                                                                      |
+| S2-03     | FIPS 140-3 feature flag                         | security          | `pending`                                                                                                      |
+| S2-04     | PRD-002 Tier B — TradePass DID resolver         | protocols + infra | `blocked`                                                                                                      |
+| S2-05     | Mutable audit default path — stdout → NATS/WORM | infra             | `pending`                                                                                                      |
+| S2-09     | Durable offline queue — restart survival        | infra             | `pending`                                                                                                      |
+| S2-10     | Runtime cross-repo integration tests in CI      | infra             | `pending`                                                                                                      |
+| S3-05     | FSCA license / SARB notification                | compliance        | `pending`                                                                                                      |
+| S3-06     | CISO/vCISO appointment                          | CEO/Board         | `pending`                                                                                                      |
+| S1-10b    | Audit-sink branch coverage (72.09%)             | infra             | `pending`                                                                                                      |
+| IR-1      | main CI format + honest README                  | infra             | `open`                                                                                                         |
+| IR-2–IR-6 | IR 10/10 dimension lifts                        | infra             | `open`                                                                                                         |
 
 ### P2 — Deferred / Operator / Infrastructure (13)
 
@@ -92,21 +92,21 @@ review_cycle: weekly
 
 **Goal:** Close every remaining P1 engineering gap. Zero external blockers. All items are infra-owned or infra-actionable.
 
-| Story | Title                                                                 | Priority | Status        | Owner  | Acceptance                                                                                                                  |
-| ----- | --------------------------------------------------------------------- | -------- | ------------- | ------ | --------------------------------------------------------------------------------------------------------------------------- |
-| S1-01 | **Kustomize selector immutability** — sovereign deployment full apply | P1       | **`done`**    | infra  | `b1615d0` — `includeSelectors: false` in base kustomization                                                                 |
-| S1-02 | **TypeORM entity/schema drift** — reconcile with `01-schema.sql`      | P1       | `in_progress` | infra  | `724cea9` — 4 critical tables added; 21+ remaining; drift report catalogued                                                 |
-| S1-03 | **ioredis missing** — add to sovereign production image               | P1       | **`done`**    | infra  | `0292959` — ioredis ^5.10.1 added to platforms/shared; lockfile updated                                                     |
-| S1-04 | **AUDIT_SEAL_SECRET missing** — sovereign staging secret              | P1       | **`done`**    | infra  | Added to `gtcx-sovereign-secrets-staging`; sovereign restarted                                                              |
-| S1-05 | **Terraform IRSA drift** — staging IRSA role in state                 | P1       | **`done`**    | infra  | `0c72072` — role + policy imported; targeted plan shows 0 changes; KMS bug fixed                                            |
-| S1-06 | **Production IRSA trust cleanup** — remove stale staging ref          | P2       | **`done`**    | infra  | Staging SA removed from production role trust; 2 statements remain                                                          |
-| S1-07 | **Kustomize secret collision pattern** — base cleanup                 | P2       | **`done`**    | infra  | `ded6d9b` — base stub removed; pen-test prefixed; runbook created                                                           |
-| S1-08 | **ER-1-08 infra hub log row** — protocols ack                         | P2       | **`done`**    | infra  | `f8e1425` + `8c19a797` (protocols SoR) — all 5 repo acks complete                                                           |
-| S1-09 | **Lint debt** — compliance-gateway ESLint + scripts                   | P1       | **`done`**    | infra  | `d78cb7b` + `a95d554` — 0 errors across 14 packages                                                                         |
-| S1-10 | **Coverage honesty** — branch coverage ≥90%                           | P1       | **`done`**    | infra  | `3962176` — 90.03% branches, 92.9% statements, 90.82% functions                                                             |
-| S1-11 | **Secret scanning CI** — gitleaks gate                                | P1       | `done`        | devops | `secret-scan-gate.mjs` added; gitleaks clean; falls back to trufflehog                                                      |
-| S1-12 | **Rate limiting** — `/audit/*` throttling with load-test              | P1       | `done`        | infra  | k6 burst test: 50% throttled (10/20), 0 errors; evidence at `docs/audit/evidence/load-tests/S1-12-rate-limit-evidence.json` |
-| S1-13 | **Runtime cross-repo integration tests** — health probes in CI        | P1       | `done`        | infra  | `cross-repo-health-probe.mjs` + `.github/workflows/cross-repo-health.yml`; all required services 200                        |
+| Story | Title                                                                 | Priority | Status        | Owner  | Acceptance                                                                                                                                                                                                      |
+| ----- | --------------------------------------------------------------------- | -------- | ------------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| S1-01 | **Kustomize selector immutability** — sovereign deployment full apply | P1       | **`done`**    | infra  | `b1615d0` — `includeSelectors: false` in base kustomization                                                                                                                                                     |
+| S1-02 | **TypeORM entity/schema drift** — reconcile with `01-schema.sql`      | P1       | `in_progress` | infra  | Platforms migrations for 4 staging tables shipped; infra: refresh `01-schema.sql` + retire ad-hoc Jobs ([platforms inbound](../operations/coordination/from-gtcx-platforms-s2-07-typeorm-phase1-2026-06-05.md)) |
+| S1-03 | **ioredis missing** — add to sovereign production image               | P1       | **`done`**    | infra  | `0292959` — ioredis ^5.10.1 added to platforms/shared; lockfile updated                                                                                                                                         |
+| S1-04 | **AUDIT_SEAL_SECRET missing** — sovereign staging secret              | P1       | **`done`**    | infra  | Added to `gtcx-sovereign-secrets-staging`; sovereign restarted                                                                                                                                                  |
+| S1-05 | **Terraform IRSA drift** — staging IRSA role in state                 | P1       | **`done`**    | infra  | `0c72072` — role + policy imported; targeted plan shows 0 changes; KMS bug fixed                                                                                                                                |
+| S1-06 | **Production IRSA trust cleanup** — remove stale staging ref          | P2       | **`done`**    | infra  | Staging SA removed from production role trust; 2 statements remain                                                                                                                                              |
+| S1-07 | **Kustomize secret collision pattern** — base cleanup                 | P2       | **`done`**    | infra  | `ded6d9b` — base stub removed; pen-test prefixed; runbook created                                                                                                                                               |
+| S1-08 | **ER-1-08 infra hub log row** — protocols ack                         | P2       | **`done`**    | infra  | `f8e1425` + `8c19a797` (protocols SoR) — all 5 repo acks complete                                                                                                                                               |
+| S1-09 | **Lint debt** — compliance-gateway ESLint + scripts                   | P1       | **`done`**    | infra  | `d78cb7b` + `a95d554` — 0 errors across 14 packages                                                                                                                                                             |
+| S1-10 | **Coverage honesty** — branch coverage ≥90%                           | P1       | **`done`**    | infra  | `3962176` — 90.03% branches, 92.9% statements, 90.82% functions                                                                                                                                                 |
+| S1-11 | **Secret scanning CI** — gitleaks gate                                | P1       | `done`        | devops | `secret-scan-gate.mjs` added; gitleaks clean; falls back to trufflehog                                                                                                                                          |
+| S1-12 | **Rate limiting** — `/audit/*` throttling with load-test              | P1       | `done`        | infra  | k6 burst test: 50% throttled (10/20), 0 errors; evidence at `docs/audit/evidence/load-tests/S1-12-rate-limit-evidence.json`                                                                                     |
+| S1-13 | **Runtime cross-repo integration tests** — health probes in CI        | P1       | `done`        | infra  | `cross-repo-health-probe.mjs` + `.github/workflows/cross-repo-health.yml`; all required services 200                                                                                                            |
 
 ### Sprint 1 Dependencies
 
