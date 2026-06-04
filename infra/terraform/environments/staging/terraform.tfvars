@@ -18,10 +18,11 @@ vpc_cidr = "10.3.0.0/16"
 db_instance_class    = "db.t3.small"
 db_allocated_storage = 50
 
-# EKS — 2 nodes for HA during chaos experiments and pen-tests
+# EKS — 3 nodes for HA during chaos experiments and pen-tests
 # Bumped from t3.small (2Gi) to t3.medium (4Gi) to schedule nats + agx + protocols
+# Scaled to 3 on 2026-06-04 to resolve Unschedulable (terminal-os + Litmus capacity)
 eks_node_instance_types = ["t3.medium"]
-eks_node_desired_size   = 2
+eks_node_desired_size   = 3
 eks_node_min_size       = 2
 eks_node_max_size       = 4
 
