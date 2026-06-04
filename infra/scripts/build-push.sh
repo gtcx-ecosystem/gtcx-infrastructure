@@ -65,7 +65,7 @@ service_dockerfile() {
     case "$1" in
         protocols) echo "Dockerfile" ;;
         agx) echo "${ECOSYSTEM_ROOT}/gtcx-platforms/Dockerfile" ;;
-        intelligence-sdk) echo "infra/docker/Dockerfile.intelligence" ;;
+        intelligence-sdk) echo "${ECOSYSTEM_ROOT}/gtcx-intelligence/intelligence/sdk/Dockerfile" ;;
         trainer) echo "${ECOSYSTEM_ROOT}/gtcx-intelligence/intelligence/trainer/Dockerfile" ;;
         redteam) echo "${ECOSYSTEM_ROOT}/gtcx-intelligence/intelligence/red-team/Dockerfile" ;;
         compliance-gateway) echo "tools/compliance-gateway/Dockerfile" ;;

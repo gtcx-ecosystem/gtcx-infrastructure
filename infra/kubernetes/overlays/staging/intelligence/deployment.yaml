@@ -50,6 +50,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: orchestrator
+          # INT-S13-01: roll to b0488d2d955471f439b824309dd5e15264d4ce53 after ECR push (see from-gtcx-infrastructure-int-s13-01-staging-rollout-2026-06-06.md)
           image: 348389439381.dkr.ecr.af-south-1.amazonaws.com/gtcx-intelligence-sdk:12be5342151a30ebedd6b7221cd547a008f9e7a1
           imagePullPolicy: IfNotPresent
           ports:
