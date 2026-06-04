@@ -31,9 +31,14 @@ cd infra/terraform/environments/staging && terraform validate     # exit 0
 node tools/scripts/validate-all.mjs                               # 46/46 PASS
 ```
 
-## Apply note
+## Apply + live verify (2026-06-06)
 
-Terraform change must be **applied** in production before live staging `kms:Sign` succeeds. Post-apply: re-check sovereign-staging pod logs for `KmsKeyProvider` / signed-edge smoke.
+| Step       | Command                                                                           | Result                                                                |
+| ---------- | --------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| Apply      | `terraform apply -target=module.kms_sovereign_signing -auto-approve` (production) | exit **0** — 2 resources changed                                      |
+| KMS policy | `aws kms get-key-policy` on `d44106a0-…`                                          | `gtcx-staging-platforms-irsa` present in policy                       |
+| Health     | `curl sovereign-staging.gtcx.trade/api/health`                                    | **200**                                                               |
+| Smoke      | gtcx-platforms `pnpm smoke:signed-edge-tenant:evidence` @ staging                 | exit **0** — `signed-edge-tenant-smoke-2026-06-04T12-08-02-755Z.json` |
 
 ## Human remainder (not this ticket)
 
