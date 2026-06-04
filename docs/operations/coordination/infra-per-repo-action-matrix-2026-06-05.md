@@ -55,7 +55,7 @@ All infra P0 items verified. **Next:** owner-repo smoke (compliance hub #17 inta
 | **gtcx-intelligence** | EKS `intelligence` namespace: orchestrator Deployment, `ENABLE_COST_ROUTER` env, staging route for smoke. **Do not** stand up GKE. Phase 3: enable `gcp-ml-bridge` Terraform when GCP SA id provided. | Build/push SDK image; INT-S9-01 smoke; GCP ML in Phase 3 epic. | XR-201 done; bridge epic in `docs/operations/intelligence-phase-3-gcp-ml-bridge-epic-2026-06-05.md`                                               |
 | **gtcx-platforms**    | ECR rollout, sovereign/cloud ingress, JWT secrets in SM, WAF `/api/*`.                                                                                                                                | Image build, app config, migration run locally.                | XR-301/302 done                                                                                                                                   |
 | **gtcx-mobile**       | SM secret `gtcx/staging/mobile-audit-e2e-credentials` (XR-003 done).                                                                                                                                  | `pnpm staging:pilot-smoke`                                     | XR-102 ready                                                                                                                                      |
-| **terminal-os**       | **Planned:** `terminal-os-staging` on EKS + ExternalSecret for `COMPLIANCE_OS_TERMINAL_API_KEY` (D3).                                                                                                 | Stop relying on Vercel for prod path; webhook wiring.          | [`w2-hosting-decision`](https://github.com/gtcx-ecosystem/compliance-os/blob/main/docs/operations/coordination/w2-hosting-decision-2026-06-05.md) |
+| **terminal-os**       | **In progress:** `terminal-os-staging` on EKS + ExternalSecret for `COMPLIANCE_OS_TERMINAL_API_KEY` (D3). Manifests committed (`f0f18a1`). Pending: SM populate + apply + smoke.                      | Stop relying on Vercel for prod path; webhook wiring.          | [`w2-hosting-decision`](https://github.com/gtcx-ecosystem/compliance-os/blob/main/docs/operations/coordination/w2-hosting-decision-2026-06-05.md) |
 | **exploration-os**    | W2 M2M bearer in SM if compliance-os inbound asks (XR-502).                                                                                                                                           | Bearer wire, retest against compliance origin.                 | F3: Supabase stays exploration data plane                                                                                                         |
 | **gtcx-core**         | EAP bundle / ESO refresh when core inbound lands.                                                                                                                                                     | Packages, fuzz, ceremony prep — no cluster host.               | Adjacent                                                                                                                                          |
 | **gtcx-agentic**      | CI vault injection when runners need cluster creds.                                                                                                                                                   | Vault SoR, audit runners.                                      | Adjacent                                                                                                                                          |
@@ -119,11 +119,12 @@ Full list: register §7 in gtcx-docs.
 
 ## Post-P0 handoffs (owner repos)
 
-| Repo           | Action                                                                            |
-| -------------- | --------------------------------------------------------------------------------- |
-| compliance-os  | Run `pnpm w2:staging-prereq-check`; hub #17 steps 2–5 when web Ready              |
-| exploration-os | F-33 / `contract:gtcx` smoke against live verifier + Supabase                     |
-| gtcx-agentic   | ~~XR-008 verifier re-audit~~ **done** 2026-06-05 — F-33/H-F prod narrative closed |
+| Repo           | Action                                                               |
+| -------------- | -------------------------------------------------------------------- |
+| compliance-os  | Run `pnpm w2:staging-prereq-check`; hub #17 steps 2–5 when web Ready |
+| exploration-os | F-33 / `contract:gtcx` smoke against live verifier + Supabase        |
+| gtcx-agentic   | ~~XR-008 verifier re-audit~~ **done** 2026-06-05                     |
+| exploration-os | ~~XR-EO-003 lender webhook~~ **done** 2026-06-05 — hub #15 cleared   |
 
 Report infra platform work: `baseline-os` `pnpm ecosystem:repo:report-work --repo=gtcx-infrastructure --item="<slice>" --status=completed`.
 
