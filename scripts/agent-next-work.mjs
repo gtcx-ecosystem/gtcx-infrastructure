@@ -265,7 +265,8 @@ function main() {
     },
     communicationPolicy: {
       protocol: '26-agent-proceed-confirmation',
-      version: '1.1.0',
+      version: '1.2.0',
+      statusUpdateSections: ['Done', 'Next priority', 'Approval needed'],
       forbiddenReplyPatterns: [
         'Your call',
         'Two options',
@@ -273,15 +274,20 @@ function main() {
         'natural transition point',
         'Switch to compliance-os',
         'Either ',
+        'Want me to tackle',
+        'Want me to',
+        'anything on the P1 list',
+        'I can push',
+        'I can help',
       ],
     },
     agentInstructions: [
       `Mark ${story.id} in_progress in docs/operations/agent-work-selection.md before coding.`,
       'Update docs/audit/execution-roadmap.md and work register when complete.',
       'Refresh docs/audit/auto-dev-state.md after completion.',
-      'Emit one Proceed Brief (single Next from this JSON), then implement — Protocol 26.',
-      'FORBIDDEN: "Your call", "Two options", "1. … 2. …", "switch to &lt;other-repo&gt;?" after P22 selection.',
-      'Do not ask the user which story to pick.',
+      'After push/status reports: Status Update (Done → Next priority from this JSON → Approval needed if any), then implement.',
+      'FORBIDDEN: "Your call", "Two options", "Want me to tackle…", "anything on the P1 list?", repo pick menus.',
+      'Do not ask the user which story or repo to pick — P22 already selected.',
     ],
   };
 
