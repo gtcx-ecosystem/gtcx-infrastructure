@@ -4,6 +4,13 @@
 # =============================================================================
 # Deploys GTCX to Kubernetes environments with safety checks.
 #
+# DEPRECATION NOTICE (2026-06-05):
+#   This bash script is in maintenance mode. New deployment logic should be
+#   added to tools/deployment-guard/ (typed, tested Node.js modules).
+#   Target deprecation: 2026-Q3 — migrate to `gtcx-ctl deploy` or GitOps
+#   (ArgoCD/Flux) once staging parity is proven. See IR-6.4 in the
+#   execution roadmap for timeline.
+#
 # Principles Implemented:
 #   - SECURE (11): Signed artifacts, security scanning
 #   - AUDITABLE (3): Full deployment audit trail

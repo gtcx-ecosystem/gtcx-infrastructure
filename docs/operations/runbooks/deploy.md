@@ -16,6 +16,11 @@ autonomy_level: 'permissioned'
 
 Process for deploying GTCX services to any environment using `./infra/scripts/deploy.sh`.
 
+> **Deprecation notice (2026-06-05):** `deploy.sh` is in maintenance mode.
+> Critical safety decisions already delegate to `tools/deployment-guard/` (typed,
+> tested Node.js). Target full deprecation: 2026-Q3 — migrate to `gtcx-ctl deploy`
+> or GitOps (ArgoCD/Flux) once staging parity is proven. See IR-6.4.
+
 ---
 
 ## Prerequisites

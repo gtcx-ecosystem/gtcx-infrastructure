@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "snapshotDate": "2026-06-04",
-  "producedAt": "2026-06-04T07:57:46.383Z",
+  "producedAt": "2026-06-04T22:57:21.040Z",
   "npm": {
     "package": "@gtcx/audit-signer",
     "last-day": {
@@ -16,10 +16,10 @@
   },
   "github": {
     "gtcx-ecosystem/gtcx-infrastructure": {
-      "error": "HTTP 404",
-      "stars": null,
-      "forks": null,
-      "openIssues": null
+      "stars": 0,
+      "forks": 0,
+      "openIssues": 20,
+      "lastUpdated": "2026-06-04T22:04:06Z"
     },
     "amani-amina-anai/terraform-aws-compliance-db": {
       "stars": 0,

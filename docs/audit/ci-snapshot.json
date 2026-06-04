@@ -1,11 +1,11 @@
 {
-  "updated": "2026-06-01T12:00:00Z",
-  "head": "4b5c1cc",
+  "updated": "2026-06-05T22:30:00Z",
+  "head": "3a794fa",
   "mainCiFormatFail": false,
   "mainCiJobFail": false,
   "mainCiFailureArtifact": null,
   "mainCiRunId": null,
   "localValidateAllPass": true,
-  "localValidateAllGateCount": 38,
-  "notes": "IR-1 sprint: distribution snapshot prettier-safe; format:check passes locally. Re-set mainCiRunId after first green main ci run post-merge."
+  "localValidateAllGateCount": 46,
+  "notes": "Sprint 1 hardening complete. IR-6.4 deploy.sh deprecation notice added. W2-E2E unblocked. GTM audit done (GR-T3). All 46 gates green."
 }

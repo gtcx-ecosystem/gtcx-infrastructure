@@ -112,7 +112,7 @@ gtcx-infrastructure/
 │   │       ├── testnet-pilot/  # Live in af-south-1
 │   │       └── zimbabwe-pilot/ # ZWCMP deployment
 │   ├── monitoring/          # SLO recording rules, alert configs
-│   ├── scripts/             # deploy.sh, migrate.sh, build-push.sh
+│   ├── scripts/             # deploy.sh (deprecated 2026-Q3, see IR-6.4), migrate.sh, build-push.sh
 │   └── security/            # Access control, data protection policies
 ├── docs/                    # Architecture, ops, security, compliance, GTM (250+ docs)
 │   ├── decisions/           # 11 ADRs

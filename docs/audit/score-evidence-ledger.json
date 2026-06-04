@@ -206,7 +206,7 @@
           "commit": "1831713",
           "ciRun": null,
           "artifact": "tools/replay-protection/package.json",
-          "reason": "M3 Certification: Branch coverage CI gate enforced at \u226590% (c8 --check-coverage --branches=90). Replay-protection at 90.25% branch coverage."
+          "reason": "M3 Certification: Branch coverage CI gate enforced at ≥90% (c8 --check-coverage --branches=90). Replay-protection at 90.25% branch coverage."
         },
         {
           "date": "2026-05-17",
@@ -262,7 +262,7 @@
           "commit": null,
           "ciRun": null,
           "artifact": "docs/decisions/ADR-012-deprecate-gtcx-core12-gtcx-amis.md",
-          "reason": "Deprecated gtcx-core12 (superseded by gtcx-core) and gtcx-amis (superseded by gtcx-infrastructure templates). Reduced active repo count 25\u219223. Updated all internal references."
+          "reason": "Deprecated gtcx-core12 (superseded by gtcx-core) and gtcx-amis (superseded by gtcx-infrastructure templates). Reduced active repo count 25→23. Updated all internal references."
         },
         {
           "date": "2026-05-17",
@@ -279,6 +279,14 @@
           "ciRun": null,
           "artifact": "docs/audit/ir-10-10-roadmap.md",
           "reason": "IR-1: distribution-snapshot writes prettier-safe JSON; 2026-06-01 snapshot formatted; README uses Actions workflow badges; ci-snapshot penalties cleared pending main run."
+        },
+        {
+          "date": "2026-06-05",
+          "score": 8.5,
+          "commit": "9ae3b48",
+          "ciRun": null,
+          "artifact": "docs/audit/auto-dev-state.md",
+          "reason": "Execution roadmap reconciled; LAUNCH-PLAN-01/02/03 done; GTM audit committed; cross-repo workplan updated"
         }
       ]
     },
@@ -382,7 +390,7 @@
           "commit": "3469bf6",
           "ciRun": null,
           "artifact": "infra/terraform/modules/detective/main.tf",
-          "reason": "CIS CloudWatch monitoring: 14 metric filters + alarms for CloudTrail events. CloudTrail delivers to CloudWatch Logs. Alarms cover: unauthorized API, root usage, IAM policy, VPC, S3, security group, NACL, gateway, route table, CMK, console auth, MFA, CloudTrail config, AWS Config changes. All alarms \u2192 SNS security-alerts topic."
+          "reason": "CIS CloudWatch monitoring: 14 metric filters + alarms for CloudTrail events. CloudTrail delivers to CloudWatch Logs. Alarms cover: unauthorized API, root usage, IAM policy, VPC, S3, security group, NACL, gateway, route table, CMK, console auth, MFA, CloudTrail config, AWS Config changes. All alarms → SNS security-alerts topic."
         },
         {
           "date": "2026-05-17",
@@ -462,7 +470,7 @@
           "commit": null,
           "ciRun": null,
           "artifact": "docs/audit/ecosystem-repo-review-2026-05-12.md",
-          "reason": "Batch-onboarded 15 repos to shared platform (AWS_ROLE_ARN + ECR_REGISTRY). Shared CI adoption 4% \u2192 64%. Anomaly detector build-push workflow created."
+          "reason": "Batch-onboarded 15 repos to shared platform (AWS_ROLE_ARN + ECR_REGISTRY). Shared CI adoption 4% → 64%. Anomaly detector build-push workflow created."
         },
         {
           "date": "2026-05-12",
@@ -479,6 +487,14 @@
           "ciRun": null,
           "artifact": ".github/workflows/cross-repo-contract.yml",
           "reason": "Canonical reconciliation: contract-matrix jobs fail without GTCX_REPO_TOKEN; infra contract tests pass in validate-all only."
+        },
+        {
+          "date": "2026-06-05",
+          "score": 6.8,
+          "commit": "00a8bbf",
+          "ciRun": null,
+          "artifact": "docs/operations/coordination/cross-repo-sprint-workplan-2026-06.md",
+          "reason": "Cross-repo reconciliation: XR-401/405/507/508 done; XR-402 ready; agent-work-selection manifest refreshed"
         }
       ]
     },
@@ -502,7 +518,7 @@
           "commit": "a5a1697",
           "ciRun": null,
           "artifact": "tools/eval-pipeline/eval.mjs",
-          "reason": "Eval pipeline v1.1.0: structured confidence scoring (avg_confidence per model), confidence threshold gate (\u22650.70), migration guide for production model deployment. Quarterly re-audit schedule published."
+          "reason": "Eval pipeline v1.1.0: structured confidence scoring (avg_confidence per model), confidence threshold gate (≥0.70), migration guide for production model deployment. Quarterly re-audit schedule published."
         },
         {
           "date": "2026-05-17",
@@ -510,7 +526,7 @@
           "commit": "4adcfe8",
           "ciRun": null,
           "artifact": "tools/compliance-gateway/tests/",
-          "reason": "Compliance gateway coverage gates: auth boundary, tool segregation, approval gating, multi-provider routing, low-bandwidth mode all tested and CI-gated at \u226590%."
+          "reason": "Compliance gateway coverage gates: auth boundary, tool segregation, approval gating, multi-provider routing, low-bandwidth mode all tested and CI-gated at ≥90%."
         },
         {
           "date": "2026-05-22",
@@ -526,7 +542,7 @@
           "commit": "5e6e443",
           "ciRun": null,
           "artifact": "docs/audit/signal-scorecard.json",
-          "reason": "SIGNAL scorecard v2: substrate hardening complete. S2 (audit trail) 9\u219210 (fail-closed in production + NATS+WORM durability + restart-recovery proven). I4 (WORM audit storage) 9\u219210 (testnet wires both worm_audit + audit-flush-irsa modules). A2 (fail-closed) 10/10 (gateway exits EX_CONFIG 78 + adaptive policy quarantines). validate-signal.mjs CI gate confirms 9.60."
+          "reason": "SIGNAL scorecard v2: substrate hardening complete. S2 (audit trail) 9→10 (fail-closed in production + NATS+WORM durability + restart-recovery proven). I4 (WORM audit storage) 9→10 (testnet wires both worm_audit + audit-flush-irsa modules). A2 (fail-closed) 10/10 (gateway exits EX_CONFIG 78 + adaptive policy quarantines). validate-signal.mjs CI gate confirms 9.60."
         },
         {
           "date": "2026-06-01",
@@ -535,6 +551,14 @@
           "ciRun": null,
           "artifact": "docs/audit/scoring-rubric.json",
           "reason": "Canonical reconciliation: SIGNAL 9.6 remains supplementary metric; headline agenticMaturity uses gates + eval pipeline, not SIGNAL alone."
+        },
+        {
+          "date": "2026-06-05",
+          "score": 8.2,
+          "commit": "9ae3b48",
+          "ciRun": null,
+          "artifact": "docs/audit/auto-dev-state.md",
+          "reason": "Auto-dev-state refreshed with current session data; work register updated; next-work pointer current"
         }
       ]
     },
@@ -630,7 +654,7 @@
           "commit": null,
           "ciRun": null,
           "artifact": "infra/terraform/environments/production/main.tf",
-          "reason": "Production Terraform environment configured: VPC (10.4.0.0/16), EKS (3\u00d7 t3.medium), RDS (db.t3.medium, 100GB), WAF, Flow Logs, WORM, CI role. Validated. Awaiting backend bootstrap + cost approval."
+          "reason": "Production Terraform environment configured: VPC (10.4.0.0/16), EKS (3× t3.medium), RDS (db.t3.medium, 100GB), WAF, Flow Logs, WORM, CI role. Validated. Awaiting backend bootstrap + cost approval."
         },
         {
           "date": "2026-05-12",
@@ -654,7 +678,7 @@
           "commit": null,
           "ciRun": null,
           "artifact": "infra/terraform/environments/production/terraform.tfstate",
-          "reason": "Production environment LIVE: VPC, EKS (3\u00d7 t3.medium), RDS (db.t3.medium \u00d7 2), WAF, Flow Logs, WORM audit storage, shared CI deploy role. 86 resources. Verified via AWS CLI."
+          "reason": "Production environment LIVE: VPC, EKS (3× t3.medium), RDS (db.t3.medium × 2), WAF, Flow Logs, WORM audit storage, shared CI deploy role. 86 resources. Verified via AWS CLI."
         },
         {
           "date": "2026-05-17",
@@ -679,6 +703,14 @@
           "ciRun": null,
           "artifact": "docs/audit/scoring-rubric.json",
           "reason": "Canonical reconciliation: structural DR/WORM/runtime-evidence gates exist; live RDS restore, recurring WORM on merge, and staging smoke remain operator-owned (EXT-INF-003, S3-02 live)."
+        },
+        {
+          "date": "2026-06-05",
+          "score": 6.9,
+          "commit": "3a794fa",
+          "ciRun": null,
+          "artifact": "docs/audit/auto-dev-state.md",
+          "reason": "W2-E2E unblocked: terminal-os API key aligned with compliance-os; deploy.sh deprecation notice added (IR-6.4); ESO sync verified"
         }
       ]
     },
@@ -702,7 +734,7 @@
           "commit": null,
           "ciRun": null,
           "artifact": "docs/audit/signal-scorecard.json",
-          "reason": "M2 Hardening partial: I4 WORM audit storage (4\u21926), S3 real-time anomaly detection (5\u21926), chaos network partition resilience (4/4 pass), FIPS endpoints all environments"
+          "reason": "M2 Hardening partial: I4 WORM audit storage (4→6), S3 real-time anomaly detection (5→6), chaos network partition resilience (4/4 pass), FIPS endpoints all environments"
         },
         {
           "date": "2026-05-12",
@@ -710,7 +742,7 @@
           "commit": null,
           "ciRun": null,
           "artifact": "docs/audit/signal-scorecard.json",
-          "reason": "M2 Hardening continued: S3 anomaly detection (6\u21927, CI-validated), secret scanning (TruffleHog), dependency audit gate, SLO burn-rate alerts, on-call drill template"
+          "reason": "M2 Hardening continued: S3 anomaly detection (6→7, CI-validated), secret scanning (TruffleHog), dependency audit gate, SLO burn-rate alerts, on-call drill template"
         },
         {
           "date": "2026-05-13",
@@ -718,7 +750,7 @@
           "commit": "9396789",
           "ciRun": null,
           "artifact": "docs/audit/signal-scorecard.json",
-          "reason": "SIGNAL scorecard recalculated after anomaly detector deployment. S3 supervision 7\u21928 (deployed to EKS). All pillar scores updated: Supervision 9.0, Integrity 8.75, Governance 9.25, Non-proliferation 8.25, Alignment 9.67. Overall: 8.97/10."
+          "reason": "SIGNAL scorecard recalculated after anomaly detector deployment. S3 supervision 7→8 (deployed to EKS). All pillar scores updated: Supervision 9.0, Integrity 8.75, Governance 9.25, Non-proliferation 8.25, Alignment 9.67. Overall: 8.97/10."
         },
         {
           "date": "2026-05-13",
@@ -726,7 +758,7 @@
           "commit": "c837c98",
           "ciRun": null,
           "artifact": "docs/audit/signal-scorecard.json",
-          "reason": "SIGNAL scorecard recalculated after WORM audit storage deployed to production + AWS Config compliance rules active. I4 WORM 6\u21928 (production deployment verified). Integrity pillar 8.75\u21929.25. Overall: 9.10/10."
+          "reason": "SIGNAL scorecard recalculated after WORM audit storage deployed to production + AWS Config compliance rules active. I4 WORM 6→8 (production deployment verified). Integrity pillar 8.75→9.25. Overall: 9.10/10."
         }
       ]
     },
