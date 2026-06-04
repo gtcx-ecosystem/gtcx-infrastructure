@@ -12,7 +12,7 @@ review_cycle: on-change
 # inf-86 H-02 Operator Runbook
 
 > **Purpose:** Step-by-step operator commands for the H-02 sovereign key ceremony.
-> **Prerequisite:** H-01 complete (CISO algorithm sign-off, custodians scheduled, GTCX-KEY-CEREMONY approval).
+> **Prerequisite (pilot):** XR-401-A/B/C attestations committed and `pnpm check:inf86-xr401-preceremony` PASS — supersedes physical H-01 quorum ([`inf-86-agentic-ceremony-model`](https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/docs/coordination/inf-86-agentic-ceremony-model-2026-06-03.md)).
 > **Scope:** Pilot authority `gh-bog` only. Expand to 43 authorities after pilot success.
 
 ---
