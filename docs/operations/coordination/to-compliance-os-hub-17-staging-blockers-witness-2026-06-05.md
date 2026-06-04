@@ -2,6 +2,7 @@
 title: 'Witness — Hub #17 staging blockers (infra reply to compliance-os)'
 status: ready-for-operator
 date: 2026-06-05
+eso_fix: 2026-06-05
 owner: gtcx-infrastructure
 to: compliance-os
 from: gtcx-infrastructure
@@ -13,6 +14,21 @@ responds_to: compliance-os/docs/operations/coordination/to-gtcx-infrastructure-w
 ---
 
 # Infra witness — compliance-os staging blockers
+
+## ESO fix (2026-06-05)
+
+Operator run found **`ClusterSecretStore/gtcx-aws-secrets-manager` not found**. Overlay now matches **intelligence** pattern:
+
+| Component      | Name                                                            |
+| -------------- | --------------------------------------------------------------- |
+| ServiceAccount | `compliance-os-sa` (IRSA)                                       |
+| SecretStore    | `compliance-os-aws-secrets` (namespace `compliance-os-staging`) |
+| IAM role       | `gtcx-staging-compliance-os-secrets-role`                       |
+| Terraform      | `infra/terraform/modules/secrets/compliance-os.tf`              |
+| Bootstrap      | `docs/operations/staging-compliance-os-eso-bootstrap.md`        |
+| Script         | `scripts/staging/install-compliance-os-eso.sh`                  |
+
+**Order:** Terraform (IRSA + empty SM shells) → populate AWS SM → `kubectl apply -k …/compliance-os/` → verify ExternalSecrets Ready.
 
 ## What was delivered
 
@@ -87,9 +103,13 @@ kubectl get secrets -n compliance-os-staging
 | File                                                                                          | Action                        |
 | --------------------------------------------------------------------------------------------- | ----------------------------- |
 | `infra/kubernetes/overlays/staging/compliance-os/namespace.yaml`                              | Added (declarative namespace) |
-| `infra/kubernetes/overlays/staging/compliance-os/external-secrets.yaml`                       | Added (7 ExternalSecrets)     |
-| `infra/kubernetes/overlays/staging/compliance-os/kustomization.yaml`                          | Added (overlay entrypoint)    |
-| `docs/operations/coordination/to-compliance-os-hub-17-staging-blockers-witness-2026-06-05.md` | Added (this witness)          |
+| `infra/kubernetes/overlays/staging/compliance-os/secret-store.yaml`                           | Added (SA + SecretStore)      |
+| `infra/kubernetes/overlays/staging/compliance-os/external-secrets.yaml`                       | SecretStore ref (not Cluster) |
+| `infra/kubernetes/overlays/staging/compliance-os/kustomization.yaml`                          | Includes secret-store.yaml    |
+| `infra/terraform/modules/secrets/compliance-os.tf`                                            | IRSA + SM shells              |
+| `scripts/staging/install-compliance-os-eso.sh`                                                | Apply + verify                |
+| `docs/operations/staging-compliance-os-eso-bootstrap.md`                                      | Operator runbook              |
+| `docs/operations/coordination/to-compliance-os-hub-17-staging-blockers-witness-2026-06-05.md` | This witness                  |
 
 ## Acceptance
 

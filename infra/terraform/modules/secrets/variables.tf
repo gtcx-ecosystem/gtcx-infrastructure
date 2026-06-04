@@ -29,6 +29,18 @@ variable "intelligence_service_account" {
   default     = "intelligence-sa"
 }
 
+variable "compliance_os_namespace" {
+  description = "Kubernetes namespace for compliance-os ESO (Hub #17)"
+  type        = string
+  default     = "compliance-os-staging"
+}
+
+variable "compliance_os_service_account" {
+  description = "Service account for compliance-os ESO IRSA"
+  type        = string
+  default     = "compliance-os-sa"
+}
+
 variable "tags" {
   description = "Additional tags"
   type        = map(string)

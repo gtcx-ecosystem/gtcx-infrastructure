@@ -11,4 +11,5 @@ namespace: compliance-os-staging
 
 resources:
   - namespace.yaml
+  - secret-store.yaml
   - external-secrets.yaml

@@ -76,3 +76,21 @@ output "eap_admin_policy_arn" {
   description = "IAM policy ARN for EAP admin operations"
   value       = aws_iam_policy.eap_admin.arn
 }
+
+output "compliance_os_secrets_role_arn" {
+  description = "IRSA role ARN for compliance-os ESO (Hub #17)"
+  value       = aws_iam_role.compliance_os_secrets.arn
+}
+
+output "compliance_os_sm_secret_names" {
+  description = "AWS SM secret names (shells) for compliance-os staging"
+  value = [
+    aws_secretsmanager_secret.compliance_os_ghcr_pull.name,
+    aws_secretsmanager_secret.compliance_os_compliance_api.name,
+    aws_secretsmanager_secret.compliance_os_caas.name,
+    aws_secretsmanager_secret.compliance_os_core12.name,
+    aws_secretsmanager_secret.compliance_os_via.name,
+    aws_secretsmanager_secret.compliance_os_vxa.name,
+    aws_secretsmanager_secret.compliance_os_minio.name,
+  ]
+}
