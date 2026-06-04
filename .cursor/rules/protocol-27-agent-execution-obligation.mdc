@@ -1,56 +1,35 @@
 ---
-description: Protocol 27 — Agent Execution Obligation (AGENT-EXEC-OBL)
-glob: "**/*"
+description: Protocol 27 — Agent Execution Obligation (run commands; diagnose before delegating)
+globs: ["**/*"]
 alwaysApply: true
 ---
 
-# Protocol 27: Agent Execution Obligation
+# Protocol 27: Agent Execution Obligation (AGENT-EXEC-OBL)
 
-> **Normative spec:** `gtcx-docs/docs/governance/protocols/27-agent-execution-obligation/protocol.md`
-> **Date:** 2026-06-03 | **Version:** 1.0.0 | **Tier:** Critical
+> **Normative:** `gtcx-docs/docs/governance/protocols/27-agent-execution-obligation/protocol.md` (v1.1.0)
+> **Phase:** 5.7 (after Protocol 26 Proceed Brief)
 
 ## Rule
 
-If the agent **can** run a command in the session environment (lint, test, validate, build, smoke, `git status`, probes), it **must** run it before claiming work is complete. The human is not a remote shell.
+**You run commands; the human does not substitute for your shell.**
 
-## Forbidden closing patterns
+1. Run gates, smoke, **dev servers**, and device reload steps in-session.
+2. Report **command + exit code** — never end with “run locally” / “focus your terminal” without trying §9 first.
+3. Metro/Expo: start in **background**; probe with `curl`/`lsof`; Android via **`adb`** — not “press r/a” as the only step.
+4. Blocked: complete **diagnosis ladder D1–D6**, then **Permission Unblock Report** — re-run when unblocked.
 
-- "Verify locally: `cd repo && pnpm test`"
-- "You should run the validators before merge"
-- "If you want, I can push" (when push is allowed — see git rules)
-- "Run this in your terminal and share the output"
-- "Let me know when you've run the smoke test"
+## Diagnosis ladder (before asking human)
 
-## Verification ladder (V1–V6)
+D1 Shell → D2 background Shell → D3 node child_process → D4 owner-repo cwd → D5 ecosystem scripts → D6 Unblock Report → D7 human (rare)
 
-| Step | Command | When |
-|------|---------|------|
-| V1 | `git status`, `git diff --stat` | Always |
-| V2 | `pnpm lint`, `pnpm typecheck`, `pnpm format:check` | Documented in `package.json` |
-| V3 | `pnpm test` or `pnpm test:full` | Tests exist for changed behavior |
-| V4 | `node tools/scripts/validate-all.mjs` | Story touches deploy, evidence, or cross-repo probe |
-| V5 | Hub validators in `gtcx-docs` checkout | Changes in `gtcx-docs` coordination |
-| V6 | Sibling-repo command in owner checkout | Cross-repo `XR-*` implementation (Protocol 24) |
+## Forbidden
 
-## Permission Unblock Report
+- “Verify locally” / “run in your terminal” / “run these commands”
+- “Focus the Cursor terminal” / “press a/r in Metro” (without adb/API attempt)
+- “I can't send keystrokes” (without adb reload attempt)
+- “Let me know when you've run …”
 
-When blocked (sandbox, missing creds, MCP deny), emit:
+## Ecosystem helpers
 
-```markdown
-## Permission Unblock Report
-**Blocked command:** `<exact command>`
-**Exit / error:** `<stderr or tool message — no secrets>`
-**Why blocked:** `<sandbox | network | aws | k8s | gh | file write | other>`
-**Impact:** `<what cannot be verified or shipped until unblocked>`
-### Enable (operator — one-time)
-1. `<concrete step>`
-### After enable
-Agent will re-run `<command>` in this session.
-```
-
-## Class S vs Class A (Protocol 28)
-
-- **Class S** — agent stops: legal signatures, user stop/correct, in-person quorum required by law
-- **Class A** — agent runs after authorization: `terraform apply`, `shasum`, evidence JSON, cross-repo log append
-
-Do not list "ceremony" or "terraform apply" as Class S by default.
+- Git push (harness): `pnpm --dir ../gtcx-agentic ecosystem:push-all`
+- Normative spec: gtcx-docs Protocol 27 §8–§9
