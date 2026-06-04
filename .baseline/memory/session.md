@@ -61,8 +61,8 @@
 | S2-04 | PRD-002 Tier B — TradePass DID resolver | `in_progress` | Multibase support implemented (`edb0db9`). Protocols contract delivered 2026-06-02. Remaining: seed operator + verify resolution (needs staging API key) |
 | S2-08 | Cost router production (ER-2) | **`done`** (infra) | Cost router live on intelligence-staging (`dac128d`). Waiting on gtcx-intelligence credentialed inference smoke + cost-stats capture (intelligence/baseline-os owned) |
 | S2-09 | INF-86 pilot ceremony | `hold` | Waiting for XR-401 unblock |
-| S2-10 | Verifier DNS (XR-507 / S3-09) | `blocked` | Cloudflare admin (`zone:write` token) |
-| S2-11 | Supabase unpause (XR-508 / S3-10) | `blocked` | Ops dashboard |
+| S2-10 | Verifier DNS (XR-507 / S3-09) | **`done`** (2026-06-05) | CNAME + Pages custom domain; smoke 200 + pepper |
+| S2-11 | Supabase unpause (XR-508 / S3-10) | **`done`** (2026-06-05) | Project active; `financing_applications` REST 200 |
 | S2-13 | Pen-test SOW signature | `intake ready` | Human SOW signature pending (EXT-INF-002) |
 | S3-06 | Publish primitives | `done` | `publish-npm` job in slsa-provenance.yml; tag-triggered; gate in validate-all; needs NPM_TOKEN secret |
 | S3-07 | DR live RDS restore | `done` | Live PITR staging operational 2026-06-04 — `docs/audit/evidence/rds-restore/rds-restore-operational-staging-20260604-080937.json` (RTO ~20m, RPO 0); side instance deleted |
@@ -85,8 +85,6 @@
 
 | ID | Blocker | Owner |
 |----|---------|-------|
-| XR-507 | verifier DNS (`zone:write` token) | Cloudflare admin |
-| XR-508 | Supabase project paused | ops dashboard |
 | EXT-INF-002 | Pen-test SOW signature | Leadership |
 | EXT-INF-013 | SOC 2 Type I auditor | CISO + Finance |
 | EXT-INF-014 | ZWCMP DPA + pilot agreement | Founder / GTM |

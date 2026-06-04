@@ -56,21 +56,21 @@ review_cycle: weekly
 
 ### P2 — Deferred / Operator / Infrastructure (13)
 
-| ID             | Title                                                                | Owner            | Status     |
-| -------------- | -------------------------------------------------------------------- | ---------------- | ---------- |
-| S1-06          | Production IRSA trust cleanup                                        | infra            | **`done`** |
-| S1-07          | Kustomize secret collision pattern                                   | infra            | **`done`** |
-| S2-06          | SLSA Build L3 — sigstore attestation                                 | devops           | `pending`  |
-| S3-04          | Publish primitives (@gtcx/audit-signer, terraform-aws-compliance-db) | devops           | `pending`  |
-| S3-07          | DR live RDS restore — operator evidence                              | platform         | **`done`** |
-| S3-08          | Cloudflare Tunnel migration                                          | infra            | `pending`  |
-| S3-09 / XR-507 | Verifier DNS                                                         | Cloudflare admin | `blocked`  |
-| S3-10 / XR-508 | Supabase unpause + migrations                                        | ops              | `blocked`  |
-| EXT-INF-003    | Recurring WORM upload on main merge                                  | operator         | `open`     |
-| XR-103         | WAF `/v1/admin/*` 403 fix                                            | infra            | `deferred` |
-| XR-516         | P22 W4 core CI smoke                                                 | infra            | `ready`    |
-| Q1             | Replay-guard close status confirmation                               | leadership       | `open`     |
-| Q2             | `/audit/bundles` tenant binding confirmation                         | leadership       | `open`     |
+| ID             | Title                                                                | Owner               | Status                  |
+| -------------- | -------------------------------------------------------------------- | ------------------- | ----------------------- |
+| S1-06          | Production IRSA trust cleanup                                        | infra               | **`done`**              |
+| S1-07          | Kustomize secret collision pattern                                   | infra               | **`done`**              |
+| S2-06          | SLSA Build L3 — sigstore attestation                                 | devops              | `pending`               |
+| S3-04          | Publish primitives (@gtcx/audit-signer, terraform-aws-compliance-db) | devops              | `pending`               |
+| S3-07          | DR live RDS restore — operator evidence                              | platform            | **`done`**              |
+| S3-08          | Cloudflare Tunnel migration                                          | infra               | `pending`               |
+| S3-09 / XR-507 | Verifier DNS                                                         | gtcx-infrastructure | **`done`** (2026-06-05) |
+| S3-10 / XR-508 | Supabase unpause + migrations                                        | gtcx-infrastructure | **`done`** (2026-06-05) |
+| EXT-INF-003    | Recurring WORM upload on main merge                                  | operator            | `open`                  |
+| XR-103         | WAF `/v1/admin/*` 403 fix                                            | infra               | `deferred`              |
+| XR-516         | P22 W4 core CI smoke                                                 | infra               | `ready`                 |
+| Q1             | Replay-guard close status confirmation                               | leadership          | `open`                  |
+| Q2             | `/audit/bundles` tenant binding confirmation                         | leadership          | `open`                  |
 
 ### Blocked Cross-Repo (9)
 

@@ -48,7 +48,7 @@ When `pnpm agent:next-work` returns a story ID, execute it. When `backlogClear: 
 | Latest audit      | `docs/audit/master-audit-2026-06-02.md`                                |
 
 **Cross-repo:** S-XR-1 **closed** — XR-301/302 done, INT-S3-08 done. S-XR-2 in progress.
-**Blocked (external class — skip in development frame):** S1-09 (human selection), S4-03 (protocols contract), INF-86/XR-401–405 (CISO), XR-507 (DNS), XR-508 (Supabase).
+**Blocked (external class — skip in development frame):** S1-09 (human selection), S4-03 (protocols contract), INF-86/XR-401–405 (CISO).
 
 ## Work register (Protocol 22 — explicit backlog)
 

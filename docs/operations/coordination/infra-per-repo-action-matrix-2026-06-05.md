@@ -35,13 +35,15 @@ parent: cloud-placement-aws-control-plane-2026-06-05.md
 
 ---
 
-## P0 — Do now (blocks ecosystem)
+## P0 — Complete (2026-06-05)
 
-| Repo               | Infra action                                                                                                                                                                                                                                                                         | Owner repo does                                                                | Inbound / evidence                                                                                                                                                              |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **compliance-os**  | **Ask 1:** GHCR `imagePullSecret` for `ghcr.io/gtcx-ecosystem/compliance-web` in `compliance-os-staging`. **Ask 2:** Seal SM→K8s for `compliance-api-secrets`, `caas-secrets`, `core12-secrets`, `via-secrets`, `vxa-secrets`, `minio-secrets`. Optional: approve slim overlay only. | No more `kubectl apply` until infra clears; then intake smoke + hub #17 steps. | [compliance-os inbound](https://github.com/gtcx-ecosystem/compliance-os/blob/main/docs/operations/coordination/to-gtcx-infrastructure-w2-hub-17-staging-blockers-2026-06-05.md) |
-| **gtcx-platforms** | **S1-02:** Refresh `01-schema.sql` from platforms TypeORM migrations (S2-07 phase 1 landed).                                                                                                                                                                                         | Own schema/migrations in `platforms/shared`.                                   | platforms → infra coordination                                                                                                                                                  |
-| **exploration-os** | **DONE (2026-06-05):** XR-507 verifier DNS live (`verify.explorationos.gtcx.trade` → Pages). XR-508 Supabase project active (`financing_applications` table queryable).                                                                                                              | Run contract smoke + F-33 audit close.                                         | [`to-gtcx-infrastructure-verifier-dns-2026-06-03.md`](../../../../exploration-os/docs/operations/coordination/to-gtcx-infrastructure-verifier-dns-2026-06-03.md)                |
+All infra P0 items verified. **Next:** owner-repo smoke (compliance hub #17 intake, exploration F-33, platforms consumers).
+
+| Repo               | Infra delivered                                                                                                                               | Owner repo next                                                        | Evidence                                                                                                                                                                                                                                                          |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **compliance-os**  | **DONE:** GHCR pull + 6 non-W2 secrets — K8s manifests, Terraform, SM bootstrap (`populate-compliance-os-staging-sm.sh`), ESO path documented | `kubectl apply` / `pnpm w2:staging-prereq-check`; hub #17 intake smoke | [`staging-compliance-os-eso-bootstrap.md`](../staging-compliance-os-eso-bootstrap.md) · [hub #17 inbound](https://github.com/gtcx-ecosystem/compliance-os/blob/main/docs/operations/coordination/to-gtcx-infrastructure-w2-hub-17-staging-blockers-2026-06-05.md) |
+| **gtcx-platforms** | **DONE:** S1-02 schema refresh phase 2 (21 tables)                                                                                            | Consumers use refreshed `01-schema.sql`                                | platforms S2-07 coordination                                                                                                                                                                                                                                      |
+| **exploration-os** | **DONE:** XR-507 verifier DNS + Pages custom domain (smoke 200, pepper). XR-508 Supabase active (`financing_applications` queryable)          | Contract smoke + F-33 audit close                                      | [`remaining-cross-repo-work-2026-06-03.md`](./remaining-cross-repo-work-2026-06-03.md) § XR-507/508                                                                                                                                                               |
 
 ---
 
@@ -115,11 +117,15 @@ Full list: register §7 in gtcx-docs.
 
 ---
 
-## After P0 checklist
+## Post-P0 handoffs (owner repos)
 
-1. Run compliance-os witness path: `pnpm w2:staging-prereq-check` (from compliance-os repo, cluster creds).
-2. Report: `baseline-os` `pnpm ecosystem:repo:report-work --repo=gtcx-infrastructure --item="hub-17 Ask 1+2" --status=completed`.
-3. Append [`cross-repo-agent-log.md`](./cross-repo-agent-log.md).
+| Repo           | Action                                                               |
+| -------------- | -------------------------------------------------------------------- |
+| compliance-os  | Run `pnpm w2:staging-prereq-check`; hub #17 steps 2–5 when web Ready |
+| exploration-os | F-33 / `contract:gtcx` smoke against live verifier + Supabase        |
+| gtcx-agentic   | Re-run XR-008 verifier audit (was blocked on stale XR-507)           |
+
+Report infra platform work: `baseline-os` `pnpm ecosystem:repo:report-work --repo=gtcx-infrastructure --item="<slice>" --status=completed`.
 
 ---
 
