@@ -97,7 +97,17 @@
     "executionRoadmap": "docs/audit/execution-roadmap.md",
     "postRoadmapAudit": "docs/audit/post-roadmap-session-2026-05-30.md",
     "externalRegister": "docs/audit/external-dependencies-register-2026-05-31.md",
-    "pilotCriteria": "docs/audit/pilot-success-criteria.md"
+    "pilotCriteria": "docs/audit/pilot-success-criteria.md",
+    "gtmAudit": "docs/audit/gtm-audit-2026-06-05.md"
+  },
+  "gtmReadiness": {
+    "tier": "GR-T3",
+    "regulatorPath": "GR-T4-scaffolded",
+    "assetScore": 35,
+    "regulatoryScore": 85,
+    "commercialScore": 10,
+    "auditDate": "2026-06-05",
+    "auditor": "agent://gtcx-infrastructure/2026-06-05/gtm-audit"
   },
   "leadershipDecisions": {
     "answered": [

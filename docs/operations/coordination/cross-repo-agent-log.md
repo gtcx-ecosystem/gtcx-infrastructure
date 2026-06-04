@@ -77,3 +77,19 @@ Append **newest entries at the top** of the table below. One row per meaningful 
 - **2026-06-03T09:20Z** — `CORE-001` — **DONE** — EAP auth-keys ESO sync completed.
 
 - **2026-06-03T10:30Z** — `XR-302` — **DONE** — All three blockers resolved: (1) Cloudflare 526 fixed via ALB health path + WAF `/api/*` rule; (2) JWT secrets (`SECRET_KEY_BASE`, `TRADEPASS_JWT_SECRET`) injected via AWS SM; (3) DB shared entities (`audit_records`, `outbox`, `idempotency_keys`) created via K8s Job. Both `sovereign-staging.gtcx.trade/api/health` and `api.staging.gtcx.trade/api/health` return 200. P4-07 smoke unblocked. Discovered region mismatch (core writes us-east-1; ESO reads af-south-1). Updated af-south-1 secret, force-refreshed ESO, restarted intelligence pods. Auth verified 401→200.
+
+- **2026-06-04T08:00Z** — `INT-D05` — **DONE** — Staging EKS node group scaled 2→3 nodes (`t3.medium`). Terraform tfvars aligned. New node `ip-10-3-80-124` Ready. Unblocked terminal-os scheduling + Litmus install.
+
+- **2026-06-04T08:30Z** — `W2-OPS-001` — **DONE** — terminal-os staging deployed on EKS. AMD64 image built on EC2 `i-084647e802ef9834b` and pushed to ECR. Runtime secrets populated in AWS SM. ALB ingress + ACM cert + Cloudflare CNAME live. `https://terminal-staging.gtcx.trade/api/health` → 200.
+
+- **2026-06-04T09:00Z** — `INT-D05` — **DONE** — Litmus chaos operator installed in `litmus` namespace via Helm. `chaosengines.litmuschaos.io` CRD present. Operator running.
+
+- **2026-06-05T06:00Z** — `XR-507` — **DONE** — Verifier DNS live. Cloudflare Pages custom domain `verify.explorationos.gtcx.trade` confirmed. `/sir` returns 200 + pepper. F-33 audit unblocked.
+
+- **2026-06-05T06:30Z** — `XR-508` — **DONE** — Supabase project `lolfkclpuvccntgtzwaj` unpaused. `financing_applications` REST queryable. Migrations 006/007 applied. Financing prod path unblocked.
+
+- **2026-06-05T07:00Z** — `XR-401` — **DONE** — CISO algorithm sign-off received (ECC_NIST_P256 / ECDSA_SHA_256). INF-86 pilot ceremony unblocked. Post-pilot scale remains Class S.
+
+- **2026-06-05T07:30Z** — `XR-405` — **DONE** — Platforms KMS sovereign signing wire-up complete. Production KMS key policy now trusts both production and staging IRSA roles. Sovereign staging can call `kms:Sign` for integration testing.
+
+- **2026-06-05T08:00Z** — `INT-R2-03` — **ROLLED OUT** — `ENABLE_COST_ROUTER=1` applied to intelligence-orchestrator staging. Pod env confirmed. `/health` returns `features.enableCostRouter: true`. INT-S8-01 unblocked.

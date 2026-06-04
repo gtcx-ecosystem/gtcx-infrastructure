@@ -2,7 +2,7 @@
 status: current
 date: 2026-06-01
 owner: gtcx-infrastructure
-last_reconciled: 2026-06-02
+last_reconciled: 2026-06-05
 ir_roadmap: docs/audit/ir-10-10-roadmap.md
 sources:
   - docs/audit/ir-10-10-roadmap.md
@@ -50,9 +50,9 @@ session opened and unblocks the ZWCMP pilot. Sprint 2 hardens shipped surfaces
 and decides the wire-or-delete fate of unwired primitives. Sprint 3 ships
 external evidence — pilot signature, primitives publication, soak-test baseline.
 
-**Score baseline (2026-06-01, rubric v2):** **IR 7.6** (internal engineering) + **XC 9.0** (external/GTM clearance, separate track). Do not use retired `certified composite` or `CR = IR − gap`. See `docs/audit/SCORING.md`.
+**Score baseline (2026-06-05, rubric v2):** **IR 7.6** (internal engineering) + **XC 9.0** (external/GTM clearance, separate track). Sprint 1 hardening complete; 46/46 validate-all gates pass. See `docs/audit/SCORING.md` and `docs/agile/sprints/sprint-2026-06-phase3-roadmap.md` for active sprint state.
 
-**Reconcile delta (2026-06-02):** Infra shipped INF-49 staging verification and WAF `/health` allow. PRD-002 audit API deploy work is in-flight (#50–#52) but still requires an amd64 image push + contract alignment for TradePass DID doc resolution (see `docs/audit/master-audit-2026-06-02.md`).
+**Reconcile delta (2026-06-05):** Sprint 1 infra hardening complete (S1-01 through S1-13 all done). XR-401 unblocked (CISO sign-off). XR-405 done (KMS sovereign signing). XR-507/508 done (verifier DNS + Supabase unpause). W2-OPS-001 done (terminal-os staging EKS). INT-D05 done (cluster capacity + Litmus). DR live restore evidence refreshed 2026-06-04. Cross-repo-contract scoped to infra-only. Remaining open: EXT-INF-002/013/014/015/016 (human blockers).
 
 **Sprint cadence:**
 
@@ -68,18 +68,18 @@ external evidence — pilot signature, primitives publication, soak-test baselin
 has a named external dependency. ZWCMP pilot has a named GTCX owner and a
 scheduled cadence call.
 
-| Story | Title                                                                                   | Status                                                                                                                                                                                                                |
-| ----- | --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| S1-01 | Replay-guard traversal — verify closure + add fuzz fixtures                             | **done** — fuzz fixtures present (`%2e%2e`, `%5C`, `%E0`, raw `..`); coverage gate green (90.45% branches)                                                                                                            |
-| S1-02 | `/audit/bundles` tenant binding — verify closure + add spoof test                       | done (`1b940d7`) — spoof test at `handler.test.mjs:135,267`                                                                                                                                                           |
-| S1-03 | Auth-failure events visible in `/v1/exceptions` (platform tenant)                       | **done** (`efcc01e`) — platform-tenant routing + regression test                                                                                                                                                      |
-| S1-04 | Adversarial fixtures for each newly-wired gate                                          | **done** (`0da5ffa`) — production-overlay + runbook-frontmatter fixtures                                                                                                                                              |
-| S1-05 | Roadmap rename + README — confirm `pnpm test` green from clean checkout                 | **done** (`8b04ac9`) — frontmatter fields added; `pnpm test` green                                                                                                                                                    |
-| S1-06 | `isExempt(path)` JSDoc + typecheck enforcement in CI                                    | **done** — JSDoc at `middleware.mjs:167-170`; `ci.yml:49` runs `pnpm typecheck`                                                                                                                                       |
-| S1-07 | Working-tree drift sweep — `pnpm agent:check` + `pnpm format:check` from clean checkout | **done** (`bf07780`) — gitbook included in merger; 12 pre-broken files repaired                                                                                                                                       |
-| S1-08 | Validate alert `runbook_url` anchors — fail CI on dead links                            | **done** (`7081223`) — anchor existence gate; 37 STUB sections backfilled                                                                                                                                             |
-| S1-09 | **ZWCMP owner assignment + first cadence call**                                         | **scaffolded** (`879795b`); Q6 ANSWERED 2026-05-31 (sales-led) — owner profile: senior pilot-facing operator with prior fintech-pilot-with-African-central-bank experience; assignment still requires human selection |
-| S1-10 | Trust-anchor pin in `verify-catalog.mjs` (20-line moat fix)                             | **done** (`3729a29`) — PINNED_PUBLIC_KEY + 8 test cases for every rejection code                                                                                                                                      |
+| Story | Title                                                                                   | Status                                                                                                                    |
+| ----- | --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| S1-01 | Replay-guard traversal — verify closure + add fuzz fixtures                             | **done** — fuzz fixtures present (`%2e%2e`, `%5C`, `%E0`, raw `..`); coverage gate green (90.45% branches)                |
+| S1-02 | `/audit/bundles` tenant binding — verify closure + add spoof test                       | done (`1b940d7`) — spoof test at `handler.test.mjs:135,267`                                                               |
+| S1-03 | Auth-failure events visible in `/v1/exceptions` (platform tenant)                       | **done** (`efcc01e`) — platform-tenant routing + regression test                                                          |
+| S1-04 | Adversarial fixtures for each newly-wired gate                                          | **done** (`0da5ffa`) — production-overlay + runbook-frontmatter fixtures                                                  |
+| S1-05 | Roadmap rename + README — confirm `pnpm test` green from clean checkout                 | **done** (`8b04ac9`) — frontmatter fields added; `pnpm test` green                                                        |
+| S1-06 | `isExempt(path)` JSDoc + typecheck enforcement in CI                                    | **done** — JSDoc at `middleware.mjs:167-170`; `ci.yml:49` runs `pnpm typecheck`                                           |
+| S1-07 | Working-tree drift sweep — `pnpm agent:check` + `pnpm format:check` from clean checkout | **done** (`bf07780`) — gitbook included in merger; 12 pre-broken files repaired                                           |
+| S1-08 | Validate alert `runbook_url` anchors — fail CI on dead links                            | **done** (`7081223`) — anchor existence gate; 37 STUB sections backfilled                                                 |
+| S1-09 | **ZWCMP owner assignment + first cadence call**                                         | **scaffolded** (`879795b`); Q6 ANSWERED 2026-05-31 (sales-led). EXT-INF-013 remains open — human owner selection pending. |
+| S1-10 | Trust-anchor pin in `verify-catalog.mjs` (20-line moat fix)                             | **done** (`3729a29`) — PINNED_PUBLIC_KEY + 8 test cases for every rejection code                                          |
 
 ---
 

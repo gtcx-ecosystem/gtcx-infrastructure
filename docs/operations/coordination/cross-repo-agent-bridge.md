@@ -44,7 +44,13 @@ protocol: gtcx-docs/docs/governance/protocols/24-cross-repo-coordination/protoco
 
 | When (UTC) | Agent / repo        | Update                                                                                                                                                                                                      |
 | ---------- | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-06-05 | gtcx-infrastructure | **XR-507 DONE:** Verifier DNS live — `verify.explorationos.gtcx.trade/sir` 200 + pepper. Cloudflare Pages custom domain confirmed. F-33 audit unblocked.                                                    |
+| 2026-06-05 | gtcx-infrastructure | **XR-508 DONE:** Supabase project unpaused; `financing_applications` REST 200; migrations 006/007 applied. Financing prod path unblocked.                                                                   |
+| 2026-06-05 | gtcx-infrastructure | **XR-401 UNBLOCKED:** CISO algorithm sign-off received (ECC_NIST_P256 / ECDSA_SHA_256). XR-402 INF-86 pilot ceremony now ready for scheduling.                                                              |
+| 2026-06-05 | gtcx-infrastructure | **XR-405 DONE:** Platforms KMS sovereign signing wire-up complete. Staging IRSA role added to production KMS key policy. Sovereign staging can call `kms:Sign` for integration testing.                     |
 | 2026-06-05 | gtcx-infrastructure | **INT-R2-03 ROLLED OUT:** `kubectl apply` executed; deployment rolled out; pod env `ENABLE_COST_ROUTER=1` confirmed; `/health` probe returns `features.enableCostRouter: true`. INT-S8-01 unblocked.        |
+| 2026-06-04 | gtcx-infrastructure | **W2-OPS-001 DONE:** terminal-os staging deployed on EKS. AMD64 image built on EC2, pushed to ECR. ALB ingress + ACM cert + Cloudflare DNS live. `https://terminal-staging.gtcx.trade/api/health` → 200.    |
+| 2026-06-04 | gtcx-infrastructure | **INT-D05 DONE:** Staging EKS scaled 2→3 nodes (t3.medium). Litmus chaos operator installed in `litmus` namespace. Cluster capacity and chaos engineering readiness unblocked.                              |
 | 2026-06-04 | gtcx-infrastructure | **INT-R2-03 DONE:** `ENABLE_COST_ROUTER=1` added to intelligence-orchestrator staging Deployment. Unblocks INT-S8-01 for gtcx-intelligence. Precedent: compliance-gateway BASELINE_COST_ROUTER=1.           |
 | 2026-06-04 | gtcx-infrastructure | **ER-1-08 DONE:** Infra acknowledges EAP Phase B closure. `normalizeStatus()` fix is agentic-only; no infra code changes. No blockers.                                                                      |
 | 2026-06-03 | gtcx-infrastructure | **XR-104 DONE:** compliance-gateway DID resolve fixed. SDK rebuilt (audit-tradepass-auth-amd64), signing secret fixed (valid PKCS#8 DER Ed25519), rollout verified. Mobile E2E unblocked.                   |
@@ -66,20 +72,20 @@ protocol: gtcx-docs/docs/governance/protocols/24-cross-repo-coordination/protoco
 
 ## Current snapshot (2026-06-03)
 
-| Track                       | XR-ID  | Status               | Owner                  | Unblocks           | Risk   |
-| --------------------------- | ------ | -------------------- | ---------------------- | ------------------ | ------ |
-| Operator DID / mobile audit | XR-101 | **done**             | gtcx-infrastructure    | Mobile E2E         | —      |
-| Mobile staging audit E2E    | XR-102 | **done**             | gtcx-mobile            | MOBILE-AUDIT-01/02 | —      |
-| compliance-gateway Bearer   | XR-104 | **done**             | gtcx-infrastructure    | XR-102             | R-high |
-| Intelligence auth gate      | XR-201 | **done**             | gtcx-infrastructure    | XR-202 / INT-S3-08 | R-high |
-| Intelligence re-smoke       | XR-202 | **done**             | gtcx-intelligence      | Protocols mirror   | —      |
-| Protocols smoke mirror      | XR-203 | **done**             | gtcx-protocols         | —                  | —      |
-| Sovereign staging image     | XR-301 | **done**             | gtcx-platforms → infra | P4-07 smoke        | R-med  |
-| AGX staging `/api/*`        | XR-302 | **done**             | gtcx-platforms → infra | Mobile API path    | R-med  |
-| INF-86 algorithm            | XR-401 | **blocked** (human)  | CISO + platform-lead   | XR-402–405         | R-high |
-| INF-86 pilot ceremony       | XR-402 | **hold**             | gtcx-infrastructure    | XR-403             | R-high |
-| SIR verifier prod           | XR-507 | **blocked** (DNS)    | gtcx-infrastructure    | F-33 audit close   | R-med  |
-| Supabase migrations         | XR-508 | **blocked** (paused) | gtcx-infrastructure    | Financing prod     | R-med  |
+| Track                       | XR-ID  | Status                   | Owner                  | Unblocks           | Risk   |
+| --------------------------- | ------ | ------------------------ | ---------------------- | ------------------ | ------ |
+| Operator DID / mobile audit | XR-101 | **done**                 | gtcx-infrastructure    | Mobile E2E         | —      |
+| Mobile staging audit E2E    | XR-102 | **done**                 | gtcx-mobile            | MOBILE-AUDIT-01/02 | —      |
+| compliance-gateway Bearer   | XR-104 | **done**                 | gtcx-infrastructure    | XR-102             | R-high |
+| Intelligence auth gate      | XR-201 | **done**                 | gtcx-infrastructure    | XR-202 / INT-S3-08 | R-high |
+| Intelligence re-smoke       | XR-202 | **done**                 | gtcx-intelligence      | Protocols mirror   | —      |
+| Protocols smoke mirror      | XR-203 | **done**                 | gtcx-protocols         | —                  | —      |
+| Sovereign staging image     | XR-301 | **done**                 | gtcx-platforms → infra | P4-07 smoke        | R-med  |
+| AGX staging `/api/*`        | XR-302 | **done**                 | gtcx-platforms → infra | Mobile API path    | R-med  |
+| INF-86 algorithm            | XR-401 | **done** (CISO sign-off) | CISO + platform-lead   | XR-402–405         | R-high |
+| INF-86 pilot ceremony       | XR-402 | **ready**                | gtcx-infrastructure    | XR-403             | R-high |
+| SIR verifier prod           | XR-507 | **done** (2026-06-05)    | gtcx-infrastructure    | F-33 audit close   | R-med  |
+| Supabase migrations         | XR-508 | **done** (2026-06-05)    | gtcx-infrastructure    | Financing prod     | R-med  |
 
 **Critical path today:**
 
@@ -107,31 +113,31 @@ XR-301/302 (platforms ECR → infra rollout)
 [S-XR-3] XR-402: INF-86 pilot ceremony (human-gated)
 ```
 
-| Priority | ID     | Owner                         | Next action                                                        | Infra unblocks when                                   |
-| -------- | ------ | ----------------------------- | ------------------------------------------------------------------ | ----------------------------------------------------- |
-| **P0**   | XR-202 | gtcx-intelligence             | **done** 2026-06-03 — evidence committed                           | —                                                     |
-| **P1**   | XR-301 | gtcx-platforms → **infra**    | **done** 2026-06-03 — sovereign staging deployed + healthy         | `sovereign-staging.gtcx.trade/health` not placeholder |
-| **P1**   | XR-302 | gtcx-platforms → **infra**    | **done** 2026-06-03 — AGX staging deployed + all blockers closed   | `api.staging.gtcx.trade/api/health` 200               |
-| **P1**   | XR-507 | **gtcx-infrastructure**       | Cloudflare DNS `verify.explorationos.gtcx.trade` (need zone:write) | F-33 audit close                                      |
-| **P1**   | XR-508 | **gtcx-infrastructure** / ops | Unpause Supabase project `lolfkclpuvccntgtzwaj`                    | Migrations 006/007 applied                            |
-| **P2**   | XR-103 | **gtcx-infrastructure**       | WAF rule for `/v1/admin/tradepass/register-operator` if needed     | Admin POST returns JSON                               |
-| **HOLD** | XR-401 | CISO + platform-lead          | Algorithm decision (ECC_NIST_P256 vs Ed25519/CloudHSM)             | XR-402 unblocked                                      |
-| **HOLD** | XR-402 | **gtcx-infrastructure**       | Pilot KMS ceremony `gh-bog` (DO NOT APPLY yet)                     | Ceremony evidence + SPKI                              |
+| Priority  | ID     | Owner                         | Next action                                                      | Infra unblocks when                                   |
+| --------- | ------ | ----------------------------- | ---------------------------------------------------------------- | ----------------------------------------------------- |
+| **P0**    | XR-202 | gtcx-intelligence             | **done** 2026-06-03 — evidence committed                         | —                                                     |
+| **P1**    | XR-301 | gtcx-platforms → **infra**    | **done** 2026-06-03 — sovereign staging deployed + healthy       | `sovereign-staging.gtcx.trade/health` not placeholder |
+| **P1**    | XR-302 | gtcx-platforms → **infra**    | **done** 2026-06-03 — AGX staging deployed + all blockers closed | `api.staging.gtcx.trade/api/health` 200               |
+| **P1**    | XR-507 | **gtcx-infrastructure**       | **done** 2026-06-05 — DNS + Pages custom domain live             | F-33 audit close                                      |
+| **P1**    | XR-508 | **gtcx-infrastructure** / ops | **done** 2026-06-05 — Project unpaused; migrations applied       | Financing prod                                        |
+| **P2**    | XR-103 | **gtcx-infrastructure**       | WAF rule for `/v1/admin/tradepass/register-operator` if needed   | Admin POST returns JSON                               |
+| **DONE**  | XR-401 | CISO + platform-lead          | Algorithm decision — **ECC_NIST_P256 / ECDSA_SHA_256**           | XR-402 unblocked                                      |
+| **READY** | XR-402 | **gtcx-infrastructure**       | Pilot KMS ceremony `gh-bog` — UNBLOCKED for engineering          | Ceremony evidence + SPKI                              |
 
 ---
 
 ## Ecosystem snapshot (infra-relevant only)
 
-| Theme                               | Status                      | Infra action                                   |
-| ----------------------------------- | --------------------------- | ---------------------------------------------- |
-| Staging Track A (operator DID + SM) | **Done**                    | Monitor only                                   |
-| Staging Track B (intelligence auth) | **Done**                    | Monitor only; SDK `12be5342` deployed          |
-| Platforms sovereign + AGX           | **Open**                    | Rollout when image ready                       |
-| SIR verifier prod                   | **Blocked** (CF zone:write) | Escalate to CF admin or dashboard action       |
-| Supabase prod migrations            | **Blocked** (paused)        | Dashboard unpause required                     |
-| INF-86 / #61                        | **Hold**                    | Wait algorithm sign-off + custodian scheduling |
-| W2 licence intelligence             | **Parallel**                | Provide secrets if compliance-os asks          |
-| P22 agent ergonomics                | **Parallel**                | Add `agent:next-work` CI when capacity allows  |
+| Theme                               | Status                      | Infra action                                  |
+| ----------------------------------- | --------------------------- | --------------------------------------------- |
+| Staging Track A (operator DID + SM) | **Done**                    | Monitor only                                  |
+| Staging Track B (intelligence auth) | **Done**                    | Monitor only; SDK `12be5342` deployed         |
+| Platforms sovereign + AGX           | **Open**                    | Rollout when image ready                      |
+| SIR verifier prod                   | **Done** (2026-06-05)       | Monitor only                                  |
+| Supabase prod migrations            | **Done** (2026-06-05)       | Monitor only                                  |
+| INF-86 / #61                        | **Unblocked** (XR-401 done) | Ready for ceremony scheduling + SPKI export   |
+| W2 licence intelligence             | **Parallel**                | Provide secrets if compliance-os asks         |
+| P22 agent ergonomics                | **Parallel**                | Add `agent:next-work` CI when capacity allows |
 
 ---
 
@@ -162,7 +168,7 @@ See [`cross-repo-sprint-workplan-2026-06.md`](cross-repo-sprint-workplan-2026-06
 
 - **XR-201/202 DONE** — full SDK deployed; intelligence vault smoke evidence committed.
 - **XR-104 DONE** — compliance-gateway DID resolve fixed. SDK rebuilt (audit-tradepass-auth-amd64), signing secret fixed (valid PKCS#8 DER Ed25519), rollout verified. Mobile E2E unblocked.
-- **INF-86 pilot** — HOLD awaiting CISO algorithm sign-off.
+- **INF-86 pilot** — UNBLOCKED. XR-401 CISO sign-off received (ECC_NIST_P256). XR-402 ready for ceremony execution.
 
 ### gtcx-mobile
 
@@ -208,20 +214,21 @@ Witness only until XR-507 + XR-508 unblocked. Supabase paused; verifier needs DN
 
 ---
 
-_Last bridge review: 2026-06-03. Trigger: any P0 status change or sprint boundary._
+_Last bridge review: 2026-06-05. Trigger: any P0 status change or sprint boundary._
 
 ---
 
 ## Staging health snapshot (2026-06-03)
 
-| Deployment                 | Namespace    | Status | Note                                                   |
-| -------------------------- | ------------ | ------ | ------------------------------------------------------ |
-| compliance-gateway-staging | gtcx-staging | ✅ 1/1 | XR-104 resolved                                        |
-| did-resolver-staging       | gtcx-staging | ✅ 1/1 | DID docs serving                                       |
-| gtcx-protocols-staging     | gtcx-staging | ✅ 1/1 | v0.4.6                                                 |
-| redis-staging              | gtcx-staging | ✅ 1/1 | —                                                      |
-| sovereign-staging          | gtcx-staging | ✅ 1/1 | —                                                      |
-| gtcx-agx-staging           | gtcx-staging | ❌ 0/1 | **CrashLoopBackOff** — `@gtcx/platform-shared` missing |
-| intelligence-orchestrator  | intelligence | ✅ 2/2 | XR-201 done                                            |
+| Deployment                 | Namespace           | Status | Note                                                |
+| -------------------------- | ------------------- | ------ | --------------------------------------------------- |
+| compliance-gateway-staging | gtcx-staging        | ✅ 1/1 | XR-104 resolved                                     |
+| did-resolver-staging       | gtcx-staging        | ✅ 1/1 | DID docs serving                                    |
+| gtcx-protocols-staging     | gtcx-staging        | ✅ 1/1 | v0.4.6                                              |
+| redis-staging              | gtcx-staging        | ✅ 1/1 | —                                                   |
+| sovereign-staging          | gtcx-staging        | ✅ 1/1 | XR-405 KMS signing enabled                          |
+| gtcx-agx-staging           | gtcx-staging        | ✅ 1/1 | XR-302 resolved — platform-shared fixed             |
+| intelligence-orchestrator  | intelligence        | ✅ 2/2 | XR-201 done; cost router enabled                    |
+| terminal-os-staging        | terminal-os-staging | ✅ 1/1 | W2-OPS-001 done; `terminal-staging.gtcx.trade` live |
 
 **Platforms action needed:** AGX image `v0.4.0` is missing `@gtcx/platform-shared` dependency. Blocks XR-302 (`/api/*`).

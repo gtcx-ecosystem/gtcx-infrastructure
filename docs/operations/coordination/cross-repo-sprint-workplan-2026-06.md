@@ -1,7 +1,7 @@
 ---
 title: 'Cross-repo sprint workplan — gtcx-infrastructure unified register'
 status: current
-date: 2026-06-03
+date: 2026-06-05
 owner: gtcx-infrastructure
 role: platform-engineer
 document_id: INFRA-COORD-SPRINT-2026-06
@@ -129,8 +129,8 @@ Three parallel numbering schemes exist across the ecosystem. This register adopt
 | XR-504  | compliance-os diligence persist (W2-C03)       | compliance-os       | S-XR-4      | **ready**    | R-med  | —                     | prod restart                                                                         |
 | XR-505  | terminal-os workflow Postgres (W2-T01)         | terminal-os         | S-XR-4      | **ready**    | R-med  | —                     | XR-503                                                                               |
 | XR-506  | terra-os live permit adapters (W2-E01)         | terra-os            | S-XR-5      | **deferred** | R-high | P22 W4 core           | external diligence                                                                   |
-| XR-507  | exploration-os verifier prod deploy (F-33)     | gtcx-infrastructure | S-XR-4      | **blocked**  | R-med  | SSL/host              | H-F audit close                                                                      |
-| XR-508  | exploration-os Supabase prod migrations        | gtcx-infrastructure | S-XR-4      | **blocked**  | R-med  | ops                   | financing prod                                                                       |
+| XR-507  | exploration-os verifier prod deploy (F-33)     | gtcx-infrastructure | S-XR-4      | **done**     | R-med  | —                     | H-F audit close                                                                      |
+| XR-508  | exploration-os Supabase prod migrations        | gtcx-infrastructure | S-XR-4      | **done**     | R-med  | —                     | financing prod                                                                       |
 | XR-509  | S11-03 publish `@gtcx/mcp` npm                 | gtcx-protocols      | S-XR-5      | **blocked**  | R-med  | NPM credentials       | consumers                                                                            |
 | XR-510  | ledger-ui publish `@gtcx/ui@0.4.1`             | ledger-ui           | S-XR-2      | **blocked**  | R-med  | NPM_TOKEN             | XR-303                                                                               |
 | XR-511  | P22 W2 CI — compliance-os                      | compliance-os       | S-XR-5      | **ready**    | R-low  | —                     | agent ergonomics                                                                     |
@@ -376,17 +376,17 @@ Move licence intelligence from staging fixtures toward production path.
 
 ## Human / external tracker (baseline-os items without protocol equivalent)
 
-| ID     | Title                                   | Owner                     | Status            | Sprint | Unblocks                |
-| ------ | --------------------------------------- | ------------------------- | ----------------- | ------ | ----------------------- |
-| XR-008 | exploration-os re-audit F-33/H-F prod   | audit agent               | blocked on XR-507 | S-XR-1 | Audit narrative         |
-| XR-012 | Audit v2 dual-output publish + ingest   | gtcx-docs, agentic, agile | in_progress       | S-XR-4 | Forensic ingest         |
-| XR-016 | Lender webhook owner + Supabase secrets | TBD owner                 | blocked           | S-XR-2 | F-51 prod notify        |
-| XR-018 | Protocol 24 coordination check in CI    | Tier-2 repos              | in_progress       | S-XR-4 | Hygiene gate            |
-| XR-021 | First sovereign ratification ceremony   | sovereign program         | open              | S-XR-3 | ISO, date, signer DID   |
-| XR-022 | Pen-test vendor selection               | Security / gtcx-core      | open              | S-XR-3 | D9 completion           |
-| XR-023 | Mobile attestation credentials          | DevOps procurement        | open              | S-XR-3 | Confirm vs #86 path     |
-| XR-024 | Signed design-partner LOI               | Founder / GTM             | open              | S-XR-5 | External pilot proof    |
-| XR-025 | Coordination folder gaps                | repo maintainers          | open              | S-XR-4 | terra-os, hardware, ops |
+| ID     | Title                                   | Owner                     | Status                        | Sprint | Unblocks                |
+| ------ | --------------------------------------- | ------------------------- | ----------------------------- | ------ | ----------------------- |
+| XR-008 | exploration-os re-audit F-33/H-F prod   | audit agent               | blocked on XR-507             | S-XR-1 | Audit narrative         |
+| XR-012 | Audit v2 dual-output publish + ingest   | gtcx-docs, agentic, agile | in_progress                   | S-XR-4 | Forensic ingest         |
+| XR-016 | Lender webhook owner + Supabase secrets | TBD owner                 | blocked                       | S-XR-2 | F-51 prod notify        |
+| XR-018 | Protocol 24 coordination check in CI    | Tier-2 repos              | in_progress                   | S-XR-4 | Hygiene gate            |
+| XR-021 | First sovereign ratification ceremony   | sovereign program         | open                          | S-XR-3 | ISO, date, signer DID   |
+| XR-022 | Pen-test vendor selection               | Security / gtcx-core      | **done** (SensePost selected) | S-XR-3 | D9 completion           |
+| XR-023 | Mobile attestation credentials          | DevOps procurement        | open                          | S-XR-3 | Confirm vs #86 path     |
+| XR-024 | Signed design-partner LOI               | Founder / GTM             | open                          | S-XR-5 | External pilot proof    |
+| XR-025 | Coordination folder gaps                | repo maintainers          | open                          | S-XR-4 | terra-os, hardware, ops |
 
 ---
 
@@ -417,7 +417,8 @@ Move licence intelligence from staging fixtures toward production path.
 
 ## Changelog
 
-| Date       | Change                                                                                       |
-| ---------- | -------------------------------------------------------------------------------------------- |
-| 2026-06-03 | Initial workplan from ecosystem coordination folder review                                   |
-| 2026-06-03 | Reconciled three XR schemes; added baseline-only human/external tracker; added risk register |
+| Date       | Change                                                                                                                   |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------ |
+| 2026-06-05 | Reconciled post-session: XR-401 done, XR-402 ready, XR-405 done, XR-507 done, XR-508 done, W2-OPS-001 done, INT-D05 done |
+| 2026-06-03 | Initial workplan from ecosystem coordination folder review                                                               |
+| 2026-06-03 | Reconciled three XR schemes; added baseline-only human/external tracker; added risk register                             |
