@@ -140,11 +140,11 @@ Do not publish fake “IR 8.2 after sprint N” tables — run `pnpm score:compu
 
 ### IR-4 — Global South & distribution → **M4 partial**
 
-| ID     | Work                                                      | Dimension             | Source               |
-| ------ | --------------------------------------------------------- | --------------------- | -------------------- |
-| IR-4.1 | USSD path soak test in CI                                 | globalSouthResilience | full-audit Sprint 6  |
-| IR-4.2 | Offline verifier pack for ZWCMP (`verify-catalog` + docs) | globalSouthResilience | S1-10 moat; Sprint 6 |
-| IR-4.3 | Low-bandwidth middleware integration test in gateway CI   | globalSouthResilience | ledger history       |
+| ID     | Work                                                      | Dimension             | Source                                         |
+| ------ | --------------------------------------------------------- | --------------------- | ---------------------------------------------- |
+| IR-4.1 | USSD path soak test in CI                                 | globalSouthResilience | **done** 2026-06-07 — k6 soak + baseline in CI |
+| IR-4.2 | Offline verifier pack for ZWCMP (`verify-catalog` + docs) | globalSouthResilience | S1-10 moat; Sprint 6                           |
+| IR-4.3 | Low-bandwidth middleware integration test in gateway CI   | globalSouthResilience | ledger history                                 |
 
 ---
 

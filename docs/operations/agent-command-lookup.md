@@ -26,6 +26,6 @@ review_cycle: on-change
 
 **Full index:** [`baseline-os/docs/cli/agent-cheatsheet.md`](../../../baseline-os/docs/cli/agent-cheatsheet.md)
 
-**Normative git (gtcx-core):** [`agent-git-workflow.md`](./agent-git-workflow.md) when present.
+**Normative git (gtcx-core):** [`agent-git-workflow.md`](../../../gtcx-core/docs/operations/agent-git-workflow.md)
 
 Legacy (avoid teaching): `pnpm agent:next-work`, `pnpm agent:reconcile-auto-dev`.

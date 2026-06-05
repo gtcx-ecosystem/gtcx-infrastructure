@@ -52,7 +52,9 @@ external evidence — pilot signature, primitives publication, soak-test baselin
 
 **Score baseline (2026-06-05, rubric v2):** **IR 7.6** (internal engineering) + **XC 9.0** (external/GTM clearance, separate track). Sprint 1 hardening complete; 46/46 validate-all gates pass. See `docs/audit/SCORING.md` and `docs/agile/sprints/sprint-2026-06-phase3-roadmap.md` for active sprint state.
 
-**Reconcile delta (2026-06-05):** Sprint 1 infra hardening complete (S1-01 through S1-13 all done). XR-401 unblocked (CISO sign-off). XR-405 done (KMS sovereign signing). XR-507/508 done (verifier DNS + Supabase unpause). W2-OPS-001 done (terminal-os staging EKS). INT-D05 done (cluster capacity + Litmus). DR live restore evidence refreshed 2026-06-04. Cross-repo-contract scoped to infra-only. Remaining open: EXT-INF-002/013/014/015/016 (human blockers).
+**Reconcile delta (2026-06-07):** IR-3.4 done (`gtcx-ctl validate --ci` in CI + validate-all). IR-4.1 done — USSD path k6 soak (`tools/load-tests/ussd-handler-soak.js`) + baseline gate (`ussd-soak-baseline-check.mjs`) wired in CI. Sprint 1 infra hardening complete (S1-01 through S1-13 all done). Remaining IR lifts: IR-5.2. Human blockers: EXT-INF-002/013/014/015/016.
+
+**Reconcile delta (2026-06-05):** Sprint 1 infra hardening complete (S1-01 through S1-13 all done). XR-401 unblocked (CISO sign-off). XR-405 done (KMS sovereign signing). XR-507/508 done (verifier DNS + Supabase unpause). W2-OPS-001 done (terminal-os staging EKS). INT-D05 done (cluster capacity + Litmus). DR live restore evidence refreshed 2026-06-04. Cross-repo-contract scoped to infra-only.
 
 **Sprint cadence:**
 
