@@ -198,3 +198,16 @@ The repo is a pnpm workspace with 11 packages under `tools/`. The ones above are
 ## Standalone Modules
 
 - [terraform-aws-compliance-db](https://github.com/amani-amina-anai/terraform-aws-compliance-db) — Compliance-ready dual-database for regulated African fintech. MIT licensed, 11 jurisdictions, published on GitHub.
+
+## Agent & workspace index
+
+| Resource            | Path                                                  |
+| ------------------- | ----------------------------------------------------- |
+| **Any terminal**    | [`agents/README.md`](./agents/README.md)              |
+| **Cursor**          | [`AGENTS.md`](./AGENTS.md)                            |
+| **Operational SoR** | [`workspace/`](./workspace/) — `pnpm workspace:check` |
+| **Docs map**        | [`docs/README.md`](./docs/README.md)                  |
+
+Protocol [P29 workspace domains](https://github.com/gtcx-ecosystem/gtcx-docs/blob/main/docs/governance/protocols/29-agent-workspace-domains/protocol.md).
+
+<!-- gtcx-agents-index -->

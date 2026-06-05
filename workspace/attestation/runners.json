@@ -1,0 +1,7 @@
+{
+  "$schema": "gtcx://workspace/attestation-runners/v1",
+  "repo": "gtcx-infrastructure",
+  "updated": "2026-06-08",
+  "runners": [],
+  "note": "gtcx-agentic only: populate XR-401 / INF-86 runner commands; other repos leave empty array"
+}

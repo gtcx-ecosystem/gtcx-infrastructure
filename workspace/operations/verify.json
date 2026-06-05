@@ -1,0 +1,19 @@
+{
+  "$schema": "gtcx://workspace/operations-verify/v1",
+  "repo": "gtcx-infrastructure",
+  "updated": "2026-06-08",
+  "commands": [
+    {
+      "id": "workspace-check",
+      "command": "pnpm workspace:check",
+      "authorityClass": "R",
+      "when": "session-start-external-work"
+    },
+    {
+      "id": "pm-sync",
+      "command": "pnpm pm:sync",
+      "authorityClass": "R",
+      "when": "before-p22-proceed"
+    }
+  ]
+}

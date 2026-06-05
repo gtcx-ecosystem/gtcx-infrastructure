@@ -1,0 +1,14 @@
+{
+  "$schema": "gtcx://workspace/security-posture/v1",
+  "repo": "gtcx-infrastructure",
+  "updated": "2026-06-08",
+  "controls": [],
+  "vulnerabilities": {
+    "open": 0,
+    "tracking": []
+  },
+  "incidentHooks": {
+    "runbook": null,
+    "onCall": null
+  }
+}

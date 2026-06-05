@@ -1,0 +1,14 @@
+{
+  "$schema": "gtcx://workspace/assurance-programs/v1",
+  "repo": "gtcx-infrastructure",
+  "updated": "2026-06-08",
+  "paths": {
+    "programs": "workspace/assurance-programs/programs.json",
+    "narrativeDir": "docs/assurance/programs"
+  },
+  "sor": {
+    "penTest": "https://github.com/gtcx-ecosystem/gtcx-protocols/tree/main/docs/gtm/pen-test",
+    "soc2": "https://github.com/gtcx-ecosystem/gtcx-protocols/tree/main/docs/compliance/soc2-type2",
+    "legal": "https://github.com/gtcx-ecosystem/gtcx-docs/tree/main/docs/legal"
+  }
+}

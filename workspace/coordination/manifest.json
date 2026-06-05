@@ -1,0 +1,14 @@
+{
+  "$schema": "gtcx://workspace/coordination/v1",
+  "repo": "gtcx-infrastructure",
+  "protocol": "gtcx-docs/docs/governance/protocols/24-cross-repo-coordination/protocol.md",
+  "hubPlane": null,
+  "paths": {
+    "remainingWork": "workspace/coordination/remaining-work.json",
+    "outbound": "workspace/coordination/outbound",
+    "inbound": "workspace/coordination/inbound",
+    "legacyArchive": "docs/operations/coordination"
+  },
+  "ecosystemBridge": "https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/docs/operations/coordination/cross-repo-agent-bridge.md",
+  "ecosystemLog": "https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/docs/operations/coordination/cross-repo-agent-log.md"
+}

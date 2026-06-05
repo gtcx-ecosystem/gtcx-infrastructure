@@ -1,0 +1,7 @@
+{
+  "$schema": "gtcx://workspace/audit-evidence/v1",
+  "repo": "gtcx-infrastructure",
+  "updated": "2026-06-08",
+  "artifacts": [],
+  "witnessTypes": ["smoke-json", "screenshot", "deployment-proof", "credentialed-run"]
+}
