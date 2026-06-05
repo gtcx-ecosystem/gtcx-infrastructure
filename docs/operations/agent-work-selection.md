@@ -37,9 +37,9 @@ AGENT_FRAME=regulatory-audit pnpm agent:next-work
 
 ## Active phase
 
-**Sprint 1: Infra Hardening — DONE (2026-06-05). Launch-plan mode.**
+**IR dimension lifts (implement mode) — ACTIVE (2026-06-06).** Sprint 1 infra hardening **done**.
 
-When `pnpm agent:next-work` returns a story ID, execute it. When `backlogClear: true`, run **witness** (`node tools/scripts/validate-all.mjs`) + refresh evidence gates — do not idle.
+When `pnpm agent:next-work` returns a story ID, execute it. When `backlogClear: true`, run **witness** (`node tools/scripts/validate-all.mjs`) + refresh evidence gates — do not idle. **Human gates (XC)** run parallel — do not block IR implement queue.
 
 | Artifact          | Path                                                      |
 | ----------------- | --------------------------------------------------------- |
@@ -59,8 +59,11 @@ When `pnpm agent:next-work` returns a story ID, execute it. When `backlogClear: 
 | IR-2.3         | CodeQL/Trivy SARIF upload graceful when Code Security disabled | P0  | done    | code     |
 | IR-3.1         | WORM upload workflow                                           | P1  | done    | code     |
 | IR-3.2         | Document operator live path for runtime-evidence-check         | P1  | done    | ops-docs |
+| IR-3.4         | Expand `gtcx-ctl validate-environment` in CI                   | P1  | done    | code     |
 | IR-3.5         | Refresh DR fire-drill dated artifact                           | P1  | done    | ops-docs |
+| IR-4.1         | USSD path soak test in CI                                      | P1  | pending | code     |
 | IR-5.1         | Cross-repo-contract token                                      | P2  | done    | code     |
+| IR-5.2         | Re-run ecosystem-repo-review; ledger ≥9.0 matrix green         | P2  | pending | ops-docs |
 | LAUNCH-PLAN-01 | Reconcile execution-roadmap + work register                    | P1  | done    | plan     |
 | LAUNCH-PLAN-02 | Refresh auto-dev-state for launch/GTM                          | P1  | done    | plan     |
 | LAUNCH-PLAN-03 | Global South 10x plan status row update                        | P1  | done    | plan     |

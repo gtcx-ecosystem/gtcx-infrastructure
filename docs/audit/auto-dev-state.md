@@ -78,7 +78,9 @@ EXT-INF-002 (pen-test SOW), EXT-INF-013 (pilot owner), EXT-INF-014 (DPA), EXT-IN
 
 **Launch-plan mode:** DONE — LAUNCH-PLAN-01/02/03 complete, GTM-AUDIT complete.
 
-**Next computed:** IR dimension lifts (IR-3.4, IR-4.1, IR-4.2, IR-4.3, IR-5.2, IR-6.4) or external/human actions.
+**Implement mode:** IR-3.4 **done** (2026-06-06); `pnpm agent:next-work` selects **IR-4.1** next. IR-5.2 pending.
+
+**Human gates (XC — parallel):** [ext-inf-human-gates-unblock-2026-06-06.md](../operations/coordination/outbound/ext-inf-human-gates-unblock-2026-06-06.md)
 
 ## Work register (Protocol 22)
 
@@ -97,6 +99,9 @@ EXT-INF-002 (pen-test SOW), EXT-INF-013 (pilot owner), EXT-INF-014 (DPA), EXT-IN
 | IR-3.1         | WORM upload workflow                                           | P1  | **done** | code     |
 | IR-3.2         | Document operator live path for runtime-evidence-check         | P1  | **done** | ops-docs |
 | IR-3.5         | Refresh DR fire-drill dated artifact                           | P1  | **done** | ops-docs |
+| IR-3.4         | Expand `gtcx-ctl validate-environment` in CI                   | P1  | **done** | code     |
+| IR-4.1         | USSD path soak test in CI                                      | P1  | pending  | code     |
+| IR-5.2         | Re-run ecosystem-repo-review; ledger ≥9.0                      | P2  | pending  | ops-docs |
 | IR-5.1         | Cross-repo-contract token                                      | P2  | **done** | code     |
 | S2-13          | Pen-test SOW signature                                         | P0  | blocked  | external |
 | S4-03          | PRD-002 Tier B: align TradePass DID doc resolver contract      | P1  | blocked  | external |
@@ -106,11 +111,10 @@ EXT-INF-002 (pen-test SOW), EXT-INF-013 (pilot owner), EXT-INF-014 (DPA), EXT-IN
 
 Run `pnpm agent:next-work` to get the next story. Current computed next:
 
-| Story  | Tier    | Class | Command                                      |
-| ------ | ------- | ----- | -------------------------------------------- |
-| IR-3.4 | IR lift | code  | Expand `gtcx-ctl validate-environment` in CI |
-| IR-4.1 | IR lift | code  | USSD path soak test in CI                    |
-| IR-5.2 | IR lift | code  | Re-run ecosystem-repo-review; ledger ≥9.0    |
+| Story  | Tier    | Class | Command                                   |
+| ------ | ------- | ----- | ----------------------------------------- |
+| IR-4.1 | IR lift | code  | USSD path soak test in CI                 |
+| IR-5.2 | IR lift | code  | Re-run ecosystem-repo-review; ledger ≥9.0 |
 
 ## Resume
 
