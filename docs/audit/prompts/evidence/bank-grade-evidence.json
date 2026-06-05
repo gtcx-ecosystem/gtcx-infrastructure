@@ -1,8 +1,8 @@
 {
   "grade": "Bank-Grade",
-  "date": "2026-06-02",
-  "version": "1.0",
-  "head": "5b1cc78",
+  "date": "2026-06-07",
+  "version": "1.1",
+  "head": "9d7d763",
   "prerequisite_met": false,
   "prerequisite_note": "Enterprise-Grade final_score is 3.8 (preliminary 7.6), below the 8.5 prerequisite. E.1 (SOC 2 Type I) and E.2 (pen-test) are pending external engagement.",
   "preliminary_score": 4.3,
@@ -208,6 +208,8 @@
     "LOW: Continue red team planning and execute in 2026-H2 after pen-test completion, as scoped in GTCX-RT-001.",
     "LOW: Address known IAM wildcard (elasticloadbalancing:Describe* in ALB policy) from E-GAP to strengthen B.7 evidence."
   ],
-  "banking_readiness": "red",
-  "next_review": "2026-09-02"
+  "banking_readiness": "yellow",
+  "lane4_certified_composite": 8.3,
+  "next_review": "2026-09-07",
+  "audit_forensic": "docs/audit/bank-grade-audit-2026-06-07.md"
 }

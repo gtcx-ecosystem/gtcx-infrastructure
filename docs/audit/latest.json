@@ -1,12 +1,12 @@
 {
   "repo": "gtcx-infrastructure",
-  "auditDate": "2026-06-05",
-  "verifiedAt": "2026-06-07T12:30:00.000Z",
-  "head": "82afdc3",
-  "workingTree": "dirty-23",
-  "sourceAudit": "docs/audit/post-roadmap-session-2026-05-30.md",
-  "latestAudit": "docs/audit/master-audit-2026-06-02.md",
-  "previousAudit": "docs/audit/master-audit-2026-05-30.md",
+  "auditDate": "2026-06-07",
+  "verifiedAt": "2026-06-07T18:00:00.000Z",
+  "head": "9d7d763",
+  "workingTree": "audit-artifacts-pending-commit",
+  "sourceAudit": "docs/audit/bank-grade-audit-2026-06-07.md",
+  "latestAudit": "docs/audit/bank-grade-audit-2026-06-07.md",
+  "previousAudit": "docs/audit/master-audit-2026-06-02.md",
   "remediationPlan": "docs/audit/execution-roadmap.md",
   "latest10-10Roadmap": "docs/audit/10-10-roadmap-2026-06-02.md",
   "irRoadmap": "docs/audit/ir-10-10-roadmap.md",
@@ -16,13 +16,14 @@
     "internalReadiness": 7.9,
     "externalClearance": 9,
     "externalBlockerBurden": 1,
-    "codeQuality": 8,
+    "codeQuality": 8.2,
     "repoHygiene": 8.5,
-    "security": 8.9,
-    "globalSouthResilience": 6.8,
-    "ecosystemIntegration": 9,
-    "agenticMaturity": 8.2,
-    "enterpriseReadiness": 6.9
+    "security": 8.6,
+    "globalSouthResilience": 7.2,
+    "ecosystemIntegration": 8.7,
+    "agenticMaturity": 8.3,
+    "enterpriseReadiness": 7.6,
+    "bankGradeComposite": 8.3
   },
   "scoreReconciliation": "IR = in-repo engineering only. XC = external/GTM track (separate). See docs/audit/SCORING.md v2. certifiedReadiness/composite as IR−gap are retired.",
   "findings": {
@@ -33,19 +34,24 @@
     "p3": 1
   },
   "gates": {
-    "testQuick": "pass",
+    "testQuick": "fail",
     "validateAll": "pass",
     "governance": "pass",
-    "typecheck": "pass",
+    "typecheck": "partial",
     "format": "pass",
     "agentCheck": "pass",
-    "lint": "pass",
+    "lint": "partial",
     "docsLinks": "pass",
     "repoHygiene": "pass",
     "build": "pass",
-    "replayProtectionCoverage": "pass"
+    "replayProtectionCoverage": "pass",
+    "gtcxCtlValidateCi": "pass",
+    "validateSignal": "pass"
   },
-  "gateFailures": [],
+  "gateFailures": [
+    "pnpm test exit 2 — deployment-guard migration-safety.mjs typecheck",
+    "pnpm lint exit 1 — @gtcx/audit-signer ESLint (5 errors)"
+  ],
   "sprint1Closed": {
     "done": ["S1-02", "S1-03", "S1-04", "S1-05", "S1-06", "S1-07", "S1-08", "S1-10"],
     "partial": ["S1-01 → promoted to S2-14"],
@@ -82,7 +88,8 @@
     "S4-01 closed (2026-06-02): audit-session remediation committed; main baseline is reproducible.",
     "Canonical master-audit 2026-06-02 (4189077): 6-phase formal protocol per gtcx-docs/tools/audit/audit-framework; honest scores applied after forensic verification; IR 7.1 / Investor 7.0 / Enterprise 7.0 / Sovereign 6.9; docs-standard 8.5/10; repo hygiene 8.75/10; 38/38 gates green.",
     "10-10-roadmap 2026-06-02 (1dec78f): honest baseline 7.1 → 10.0; M1 Foundation target 8.0 (2-3w); M2 Hardening target 9.0 (4-6w); M3 Certification target 9.5 (2-3mo); M4 Reference target 10.0 (1-2mo); critical path dominated by external dependencies (SOC 2 + pen-test).",
-    "M1 Foundation complete (801c2e0): compliance-gateway lint debt resolved (1 error fixed); 6 missing READMEs added; dead cross-repo links fixed (1198/1198); mutable audit default sink durable (NATS in prod/staging, stdout only in dev/test); typecheck/build wired for all 15 packages (18/18 tasks pass); 39/39 gates green."
+    "M1 Foundation complete (801c2e0): compliance-gateway lint debt resolved (1 error fixed); 6 missing READMEs added; dead cross-repo links fixed (1198/1198); mutable audit default sink durable (NATS in prod/staging, stdout only in dev/test); typecheck/build wired for all 15 packages (18/18 tasks pass); 39/39 gates green.",
+    "Bank-grade audit 2026-06-07 (9d7d763): lane-4 certified composite 8.3 (+1.2 vs master-audit 2026-06-02); validate-all 50/50; IR-3.4 gtcx-ctl validate --ci + IR-4.1 USSD soak; external assurance unchanged (pen-test, SOC2, FSCA)."
   ],
   "remainingGaps": [
     "S2-13 — Pen-test SOW signature (EXT-INF-002).",
@@ -98,7 +105,32 @@
     "externalRegister": "docs/audit/external-dependencies-register-2026-05-31.md",
     "pilotCriteria": "docs/audit/pilot-success-criteria.md",
     "gtmAudit": "docs/audit/gtm-audit-2026-06-05.md",
-    "repoHygieneAudit": "docs/audit/repo-hygiene-2026-06-06.md"
+    "repoHygieneAudit": "docs/audit/repo-hygiene-2026-06-06.md",
+    "bankGradeAudit": "docs/audit/bank-grade-audit-2026-06-07.md",
+    "bankGradeIndex": "docs/audit/bank-grade-2026-06-07.md",
+    "signalAssessment": "docs/audit/signal-assessment-2026-06-07.md"
+  },
+  "lanes": {
+    "bankGrade": {
+      "auditQuality1to10": 8.4,
+      "readinessOutcome": {
+        "certifiedComposite": 8.3,
+        "investor": 7.9,
+        "enterprise": 7.6,
+        "sovereignDfi": 7.4
+      },
+      "index": "docs/audit/bank-grade-2026-06-07.md",
+      "forensic": "docs/audit/bank-grade-audit-2026-06-07.md",
+      "legacyForensic": "docs/audit/master-audit-2026-06-02.md"
+    },
+    "gtmReadiness": {
+      "auditQuality1to10": 8,
+      "readinessOutcome": {
+        "tier": "GR-T3",
+        "regulatorPath": "GR-T4-scaffolded"
+      },
+      "index": "docs/audit/gtm-audit-2026-06-05.md"
+    }
   },
   "gtmReadiness": {
     "tier": "GR-T3",
