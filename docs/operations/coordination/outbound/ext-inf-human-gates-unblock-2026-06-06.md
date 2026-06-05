@@ -29,8 +29,8 @@ owner: gtcx-infrastructure
 
 ## Agent boundary
 
-- `pnpm agent:next-work` → **IR-4.1** (implement mode restored 2026-06-06); EXT-INF human gates run **parallel** (Class S)
-- **IR lifts** IR-3.4 **done**; IR-4.1 / IR-5.2 **pending** — see [`ir-10-10-roadmap.md`](../../../audit/ir-10-10-roadmap.md)
+- `pnpm agent:next-work` → `backlogClear: true` (IR-3.4 / IR-4.1 / IR-5.2 **done** 2026-06-07); EXT-INF human gates **parallel** (Class S)
+- **IR lifts** complete for current register — witness until EXT-INF signatures or new IR rows added
 - **Forbidden:** mark S2-13 / EXT-INF rows `done` without human signature witness
 
 ## Register
