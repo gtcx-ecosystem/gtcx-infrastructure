@@ -1,0 +1,40 @@
+# =============================================================================
+# compliance-os-production — ALB Ingress (compliance.gtcx.trade)
+# =============================================================================
+# Routes public intake + diligence API to web-app (not compliance-gateway).
+# Shares production ALB group with other gtcx.trade services.
+# Operator: confirm ACM cert covers compliance.gtcx.trade before apply.
+# =============================================================================
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: compliance-os
+  namespace: compliance-os-production
+  labels:
+    app.kubernetes.io/part-of: gtcx
+    environment: production
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80},{"HTTPS":443}]'
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:af-south-1:348389439381:certificate/8929e5a0-a4ec-4acf-86f8-945993e1f0c3,arn:aws:acm:af-south-1:348389439381:certificate/9f7149a3-26db-4dee-bce5-b5a3cd29fe16
+    alb.ingress.kubernetes.io/ssl-policy: ELBSecurityPolicy-TLS13-1-2-2021-06
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
+    alb.ingress.kubernetes.io/healthcheck-path: /
+    alb.ingress.kubernetes.io/success-codes: '200,301,302,307,308'
+    alb.ingress.kubernetes.io/group.name: gtcx-production-api
+    external-dns.alpha.kubernetes.io/hostname: compliance.gtcx.trade
+    external-dns.alpha.kubernetes.io/ttl: '60'
+spec:
+  ingressClassName: alb
+  rules:
+    - host: compliance.gtcx.trade
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: web-app
+                port:
+                  number: 3001

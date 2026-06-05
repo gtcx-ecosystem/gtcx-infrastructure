@@ -1,0 +1,13 @@
+# =============================================================================
+# compliance-os-production — Namespace (Hub #17 prod close)
+# =============================================================================
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: compliance-os-production
+  labels:
+    app.kubernetes.io/part-of: gtcx
+    environment: production
+    compliance-tier: standard
+  annotations:
+    linkerd.io/inject: enabled

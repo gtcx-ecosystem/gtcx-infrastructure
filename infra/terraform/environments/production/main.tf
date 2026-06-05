@@ -403,6 +403,27 @@ module "irsa_platform" {
   })
 }
 
+# -----------------------------------------------------------------------------
+# Secrets — ESO IRSA + AWS SM shells (compliance-os Hub #17 prod)
+# -----------------------------------------------------------------------------
+
+module "secrets" {
+  source = "../../modules/secrets"
+
+  environment           = var.environment
+  eks_cluster_name      = module.eks.cluster_name
+  eks_oidc_provider_arn = module.eks.oidc_provider_arn
+
+  compliance_os_namespace        = "compliance-os-production"
+  compliance_os_service_account  = "compliance-os-sa"
+
+  tags = merge(var.tags, {
+    Environment = "production"
+  })
+
+  depends_on = [module.eks]
+}
+
 # Attach KMS signing policy to platforms IRSA role after key exists
 resource "aws_iam_role_policy" "platforms_kms" {
   name = "gtcx-production-platforms-kms-sign"
@@ -507,4 +528,14 @@ output "worm_audit_kms_key_arn" {
 output "audit_flush_role_arn" {
   description = "IAM role ARN to annotate the audit-flush ServiceAccount with"
   value       = module.audit_flush_irsa.role_arn
+}
+
+output "compliance_os_secrets_role_arn" {
+  description = "IRSA role ARN for compliance-os production ESO (Hub #17)"
+  value       = module.secrets.compliance_os_secrets_role_arn
+}
+
+output "compliance_os_sm_secret_names" {
+  description = "AWS SM secret names for compliance-os production ESO"
+  value       = module.secrets.compliance_os_sm_secret_names
 }

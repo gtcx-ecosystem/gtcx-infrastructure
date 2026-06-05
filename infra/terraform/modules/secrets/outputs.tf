@@ -83,9 +83,10 @@ output "compliance_os_secrets_role_arn" {
 }
 
 output "compliance_os_sm_secret_names" {
-  description = "AWS SM secret names (shells) for compliance-os staging"
+  description = "AWS SM secret names (shells) for compliance-os ESO"
   value = [
     aws_secretsmanager_secret.compliance_os_ghcr_pull.name,
+    aws_secretsmanager_secret.compliance_os_w2.name,
     aws_secretsmanager_secret.compliance_os_compliance_api.name,
     aws_secretsmanager_secret.compliance_os_caas.name,
     aws_secretsmanager_secret.compliance_os_core12.name,

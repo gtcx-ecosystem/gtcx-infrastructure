@@ -67,23 +67,34 @@ tags: ['coordination', 'outbound', 'hub-17', 'w2', 'prod', 'class-a']
 
 ## Infra execution checklist
 
+**Scaffold (2026-06-08):** Terraform W2 SM shell, production K8s overlay, operator scripts, and bootstrap runbook are in-repo. Operator apply + evidence post remains.
+
+| Artifact          | Path                                                                                           |
+| ----------------- | ---------------------------------------------------------------------------------------------- |
+| Bootstrap runbook | [`production-compliance-os-eso-bootstrap.md`](../../production-compliance-os-eso-bootstrap.md) |
+| K8s overlay       | `infra/kubernetes/overlays/production/compliance-os/`                                          |
+| Populate SM       | `scripts/production/populate-compliance-os-prod-sm.sh`                                         |
+| Install ESO       | `scripts/production/install-compliance-os-eso.sh`                                              |
+| Terraform         | `infra/terraform/environments/production/main.tf` → `module.secrets`                           |
+
 ### Terraform / AWS SM (prod shells)
 
-- [ ] Extend `infra/terraform/modules/secrets/compliance-os.tf` for `environment = production` (or dedicated prod module).
-- [ ] Create SM shells per spec §4: `gtcx/compliance-os/prod/intake`, `terminal-export`, `compliance-api-client`, `compliance-api/prod/internal`.
-- [ ] Populate values per spec §2 (`openssl rand -base64 32`; org id `org_prod_diligence`; terminal key from terminal-os prod).
-- [ ] IRSA + SecretStore for prod namespace (`compliance-os-production` or `gtcx-production`).
+- [x] Extend `compliance-os.tf` — `gtcx/compliance-os/production/w2` SM shell + IRSA
+- [x] Wire `module.secrets` in production `main.tf` (`compliance-os-production` namespace)
+- [ ] `terraform apply` (requires approval ticket + operator)
+- [ ] Populate W2 values per spec §2 (`populate-compliance-os-prod-sm.sh`)
 
 ### Kubernetes (prod overlay)
 
-- [ ] Create `infra/kubernetes/overlays/production/compliance-os/` (mirror staging: ESO, secret-store, web deployment envFrom).
-- [ ] Patch web Deployment `env.valueFrom.secretKeyRef` / `envFrom` — not sovereign; not gateway-only.
-- [ ] Rolling restart → pod env verify (presence only, no values in git).
+- [x] Overlay: namespace, SecretStore, ExternalSecrets, slim web-app, ingress
+- [ ] Pin prod `compliance-web` image tag (amd64 GHCR publish)
+- [ ] `kubectl apply -k` + rollout verify
 
 ### Ingress / DNS
 
-- [ ] ALB + ACM cert + Cloudflare CNAME for `compliance.gtcx.trade` → web service (mirror terminal-staging pattern).
-- [ ] Confirm route `POST /api/diligence/licence-intelligence` reaches web pod.
+- [x] ALB ingress manifest `compliance.gtcx.trade` → `web-app:3001` (group `gtcx-production-api`)
+- [ ] Cloudflare CNAME / external-dns live
+- [ ] Confirm `POST /api/diligence/licence-intelligence` → **201**
 
 ### Evidence reply (on completion)
 

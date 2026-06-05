@@ -17,6 +17,7 @@ locals {
 
   compliance_os_secret_names = [
     "${local.compliance_os_sm_prefix}/ghcr-pull-token",
+    "${local.compliance_os_sm_prefix}/w2",
     "${local.compliance_os_sm_prefix}/compliance-api",
     "${local.compliance_os_sm_prefix}/caas",
     "${local.compliance_os_sm_prefix}/core12",
@@ -39,9 +40,18 @@ resource "aws_secretsmanager_secret" "compliance_os_ghcr_pull" {
   })
 }
 
+resource "aws_secretsmanager_secret" "compliance_os_w2" {
+  name        = "${local.compliance_os_sm_prefix}/w2"
+  description = "Hub #17 W2 bundle — intake, terminal export, compliance-api client, session (web pod)"
+
+  tags = merge(local.compliance_os_tags, {
+    Name = "gtcx-${var.environment}-compliance-os-w2"
+  })
+}
+
 resource "aws_secretsmanager_secret" "compliance_os_compliance_api" {
   name        = "${local.compliance_os_sm_prefix}/compliance-api"
-  description = "compliance-api staging secrets bundle"
+  description = "compliance-api secrets bundle"
 
   tags = local.compliance_os_tags
 }
@@ -99,6 +109,7 @@ resource "aws_iam_policy" "compliance_os_secrets_reader" {
       ]
       Resource = [
         aws_secretsmanager_secret.compliance_os_ghcr_pull.arn,
+        aws_secretsmanager_secret.compliance_os_w2.arn,
         aws_secretsmanager_secret.compliance_os_compliance_api.arn,
         aws_secretsmanager_secret.compliance_os_caas.arn,
         aws_secretsmanager_secret.compliance_os_core12.arn,
