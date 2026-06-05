@@ -8,7 +8,9 @@
  */
 
 import { dirname, join } from 'node:path';
-import { pathToFileURL, fileURLToPath  } from 'node:url';
+import { pathToFileURL, fileURLToPath } from 'node:url';
+
+/** @typedef {{ 'gtcx.trace_id': string, 'gtcx.service': string, 'gtcx.operation': string, timestamp: string }} TraceSpanMarker */
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -45,7 +47,27 @@ async function loadBaselineRouter() {
  * @param {string} query
  * @param {import('./providers.mjs')} providersMod
  */
+/**
+ * Emit a correlation marker when GTCX_TRACE_ID is set (SIGNAL INF-007).
+ * @returns {TraceSpanMarker | null}
+ */
+export function emitCostRouterSpanMarker() {
+  const traceId = process.env.GTCX_TRACE_ID;
+  if (!traceId) return null;
+  return {
+    'gtcx.trace_id': traceId,
+    'gtcx.service': 'compliance-gateway',
+    'gtcx.operation': 'cost-router.selectProvider',
+    timestamp: new Date().toISOString(),
+  };
+}
+
 export async function selectProviderViaBaseline(query, providersMod) {
+  const spanMarker = emitCostRouterSpanMarker();
+  if (spanMarker && process.env.GTCX_TRACE_LOG === '1') {
+    console.info(JSON.stringify({ type: 'gtcx.trace.span', ...spanMarker }));
+  }
+
   const router = await loadBaselineRouter();
   if (!router) return null;
 

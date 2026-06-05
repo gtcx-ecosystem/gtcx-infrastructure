@@ -8,8 +8,9 @@
 import { readFileSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { enrichWithPersona } from '../../gtcx-agentic/scripts/lib/suggest-persona.mjs';
+import { enrichWithPersona } from './lib/suggest-persona.mjs';
 import { attachLaunchFocus, writeLaunchFocusState } from './lib/attach-launch-focus.mjs';
+import { resolveTraceId } from './lib/trace-context.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = join(__dirname, '..');
@@ -205,6 +206,15 @@ function selectNext(allStories, options) {
   return null;
 }
 
+function attachTrace(payload) {
+  const traceId = resolveTraceId(process.env.GTCX_TRACE_ID);
+  return {
+    traceId,
+    coordinationHint: `Append cross-repo-agent-log row with trace_id=${traceId}`,
+    ...payload,
+  };
+}
+
 function main() {
   const frame = process.env.AGENT_FRAME === 'regulatory-audit' ? 'regulatory-audit' : 'development';
   const allStories = new Map();
@@ -236,7 +246,10 @@ function main() {
     if (withLaunch.launchFocus) writeLaunchFocusState(REPO_ROOT, withLaunch.launchFocus);
     console.log(
       JSON.stringify(
-        enrichWithPersona(withLaunch, { repo: THIS_REPO, title: 'coordination witness' }),
+        enrichWithPersona(attachTrace(withLaunch), {
+          repo: THIS_REPO,
+          title: 'coordination witness',
+        }),
         null,
         2,
       ),
@@ -301,7 +314,7 @@ function main() {
   if (withLaunch.launchFocus) writeLaunchFocusState(REPO_ROOT, withLaunch.launchFocus);
   console.log(
     JSON.stringify(
-      enrichWithPersona(withLaunch, {
+      enrichWithPersona(attachTrace(withLaunch), {
         repo: THIS_REPO,
         storyId: withLaunch.next?.storyId ?? story.id,
         title: withLaunch.next?.title ?? story.title,
