@@ -5,14 +5,14 @@
 * @gtcx/platform-team
 
 # Infrastructure core
-infra/terraform/ @gtcx/platform-team
-infra/kubernetes/ @gtcx/platform-team
-infra/docker/ @gtcx/platform-team
-infra/migrations/ @gtcx/platform-team
+04-ship/terraform/ @gtcx/platform-team
+04-ship/kubernetes/ @gtcx/platform-team
+04-ship/docker/ @gtcx/platform-team
+04-ship/migrations/ @gtcx/platform-team
 
 # Security-critical paths
-infra/security/ @gtcx/security-team
+04-ship/security/ @gtcx/security-team
 SECURITY.md @gtcx/security-team
 
 # SOPs and governance
-docs/operations/ @gtcx/platform-team @gtcx/security-team
+01-docs/operations/ @gtcx/platform-team @gtcx/security-team

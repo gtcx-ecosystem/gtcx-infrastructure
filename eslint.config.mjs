@@ -60,7 +60,7 @@ export default tseslint.config(
 
   // Override for infrastructure scripts — allow console
   {
-    files: ['infra/**/scripts/**/*.js', 'infra/**/scripts/**/*.mjs', 'tools/scripts/**/*.js'],
+    files: ['04-ship/**/03-platform/scripts/**/*.js', '04-ship/**/03-platform/scripts/**/*.mjs', '03-platform/tools/03-platform/scripts/**/*.js'],
     rules: {
       'no-console': 'off',
     },
@@ -68,7 +68,7 @@ export default tseslint.config(
 
   // Override for compliance-gateway — structured JSON logging uses console.log intentionally
   {
-    files: ['tools/compliance-gateway/src/**/*.mjs'],
+    files: ['03-platform/tools/compliance-gateway/03-platform/src/**/*.mjs'],
     rules: {
       'no-console': ['warn', { allow: ['log', 'warn', 'error'] }],
     },
@@ -76,7 +76,7 @@ export default tseslint.config(
 
   // Override for k6 load tests — allow k6 globals
   {
-    files: ['tools/load-tests/**/*.js'],
+    files: ['03-platform/tools/load-tests/**/*.js'],
     languageOptions: {
       globals: {
         __ENV: 'readonly',

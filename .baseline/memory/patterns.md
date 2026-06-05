@@ -13,5 +13,5 @@
 
 ## Documentation
 **Discovered:** 2026-05-27
-- Uses docs/ for documentation
+- Uses 01-docs/ for documentation
 - Has root README.md

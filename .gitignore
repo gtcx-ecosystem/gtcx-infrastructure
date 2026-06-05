@@ -47,10 +47,10 @@ override.tf.json
 *_override.tf.json
 
 # Terraform lambda artifacts (built at deploy time)
-infra/terraform/modules/secrets/lambda/rotation.zip
+04-ship/terraform/modules/secrets/lambda/rotation.zip
 
 # Security reports (generated, not tracked)
-infra/security/reports/
+04-ship/security/reports/
 
 # Local archive (reference only, not tracked)
 _archive/
@@ -62,7 +62,7 @@ _delete/
 .claude/settings.local.json
 
 # Generated security reports
-infra/security/reports/rollback-evidence/
+04-ship/security/reports/rollback-evidence/
 *.tfplan
 **/tfplan.secrets
 supabase/.temp/

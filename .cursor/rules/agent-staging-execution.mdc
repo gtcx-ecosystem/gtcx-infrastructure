@@ -1,17 +1,17 @@
 ---
 description: W2 staging — agent runs aws/kubectl/terraform in gtcx-infrastructure; no operator paste blocks
-globs: ["infra/**", "scripts/staging/**", "docs/operations/**"]
+globs: ["04-ship/**", "03-platform/scripts/staging/**", "01-docs/04-ops/**"]
 alwaysApply: true
 ---
 
 # Agent staging execution (this repo)
 
-**Read:** `docs/operations/agent-staging-execution.md`
+**Read:** `01-docs/04-ops/agent-staging-execution.md`
 
 When **Next priority** is W2-OPS-001 or Hub #17 staging:
 
 1. Work in **`gtcx-infrastructure`** — not gtcx-docs-only.
-2. Run `./scripts/staging/*.sh` and terraform/kubectl **in-session**.
+2. Run `./03-platform/scripts/staging/*.sh` and terraform/kubectl **in-session**.
 3. Forbidden: **"Your action needed"** + pasted `aws`/`kubectl` sequence.
 4. Blocked creds → **Permission Unblock Report**, not operator runbook dump.
 5. Do not start IR-3.5 while W2 is the named Next priority.

@@ -1,0 +1,13 @@
+{
+  "$schema": "gtcx://02-ops/attestation/v1",
+  "repo": "gtcx-infrastructure",
+  "updated": "2026-06-08",
+  "framework": "https://github.com/gtcx-ecosystem/gtcx-agentic/blob/main/01-docs/04-ops/assurance-agent-framework.md",
+  "hubRegister": "https://github.com/gtcx-ecosystem/gtcx-agentic/blob/main/01-docs/04-ops/coordination/human-external-blocker-register-2026-06.md",
+  "paths": {
+    "gates": "02-ops/attestation/gates.local.json",
+    "evidence": "02-ops/attestation/evidence-index.json",
+    "runners": "02-ops/attestation/runners.json",
+    "narrative": "01-docs/07-assurance/README.md"
+  }
+}

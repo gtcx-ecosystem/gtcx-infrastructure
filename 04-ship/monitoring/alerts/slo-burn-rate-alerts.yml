@@ -1,0 +1,190 @@
+# =============================================================================
+# SLO Burn-Rate Alerts — GTCX
+# =============================================================================
+# Multi-window, multi-burn-rate alerting based on Google SRE principles.
+# https://sre.google/workbook/alerting-on-slos/
+#
+# Burn rates:
+#   14.4× = 2% budget in 1 hour  → page (fast burn)
+#   6×    = 5% budget in 6 hours → page (fast burn)
+#   2×    = 10% budget in 3 days → ticket (slow burn)
+#   1×    = 100% budget in 30d   → ticket (slow burn)
+#
+# Services:
+#   AGX:        99.5% availability, <500ms p95
+#   Protocols:  99.5% availability, <1000ms p95
+#   ANISA:      99.0% availability, <2000ms p95
+# =============================================================================
+
+groups:
+  # ---------------------------------------------------------------------------
+  # Fast burn — pages (2% budget in 1 hour)
+  # ---------------------------------------------------------------------------
+  - name: slo_fast_burn
+    rules:
+      - alert: SLOFastBurnAGX
+        expr: |
+          (
+            slo:agx:error_budget:burn_rate_1h > 14.4
+            and
+            slo:agx:error_budget:burn_rate_5m > 14.4
+          )
+        for: 2m
+        labels:
+          severity: critical
+          team: platform
+          slo: agx
+          burn: fast
+        annotations:
+          runbook_url: 'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/01-docs/04-ops/runbooks/alerts.md#slofastburnagx'
+          summary: 'AGX SLO fast burn — 2% error budget consumed in 1 hour'
+          description: |
+            AGX error budget burn rate is {{ $value | humanize }}×.
+            At this rate, 2% of the 30-day error budget will be consumed in 1 hour.
+            Composite SLO: {{ $labels.slo }}:composite:ratio_30d
+          runbook: '01-docs/04-ops/runbooks/slo-fast-burn.md'
+
+      - alert: SLOFastBurnProtocols
+        expr: |
+          (
+            slo:protocols:error_budget:burn_rate_1h > 14.4
+            and
+            slo:protocols:error_budget:burn_rate_5m > 14.4
+          )
+        for: 2m
+        labels:
+          severity: critical
+          team: platform
+          slo: protocols
+          burn: fast
+        annotations:
+          runbook_url: 'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/01-docs/04-ops/runbooks/alerts.md#slofastburnprotocols'
+          summary: 'Protocols SLO fast burn — 2% error budget consumed in 1 hour'
+          description: |
+            Protocols error budget burn rate is {{ $value | humanize }}×.
+            At this rate, 2% of the 30-day error budget will be consumed in 1 hour.
+          runbook: '01-docs/04-ops/runbooks/slo-fast-burn.md'
+
+      - alert: SLOFastBurnANISA
+        expr: |
+          (
+            slo:anisa:error_budget:burn_rate_1h > 14.4
+            and
+            slo:anisa:error_budget:burn_rate_5m > 14.4
+          )
+        for: 2m
+        labels:
+          severity: critical
+          team: intelligence
+          slo: anisa
+          burn: fast
+        annotations:
+          runbook_url: 'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/01-docs/04-ops/runbooks/alerts.md#slofastburnanisa'
+          summary: 'ANISA SLO fast burn — 2% error budget consumed in 1 hour'
+          description: |
+            ANISA error budget burn rate is {{ $value | humanize }}×.
+            At this rate, 2% of the 30-day error budget will be consumed in 1 hour.
+          runbook: '01-docs/04-ops/runbooks/slo-fast-burn.md'
+
+  # ---------------------------------------------------------------------------
+  # Slow burn — tickets (10% budget in 3 days)
+  # ---------------------------------------------------------------------------
+  - name: slo_slow_burn
+    rules:
+      - alert: SLOSlowBurnAGX
+        expr: |
+          slo:agx:error_budget:burn_rate_6h > 2
+        for: 1h
+        labels:
+          severity: warning
+          team: platform
+          slo: agx
+          burn: slow
+        annotations:
+          runbook_url: 'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/01-docs/04-ops/runbooks/alerts.md#sloslowburnagx'
+          summary: 'AGX SLO slow burn — 10% error budget consumed in 3 days'
+          description: |
+            AGX error budget burn rate is {{ $value | humanize }}×.
+            At this rate, 10% of the 30-day error budget will be consumed in 3 days.
+            Investigate before this becomes a page.
+          runbook: '01-docs/04-ops/runbooks/slo-slow-burn.md'
+
+      - alert: SLOSlowBurnProtocols
+        expr: |
+          slo:protocols:error_budget:burn_rate_6h > 2
+        for: 1h
+        labels:
+          severity: warning
+          team: platform
+          slo: protocols
+          burn: slow
+        annotations:
+          runbook_url: 'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/01-docs/04-ops/runbooks/alerts.md#sloslowburnprotocols'
+          summary: 'Protocols SLO slow burn — 10% error budget consumed in 3 days'
+          description: |
+            Protocols error budget burn rate is {{ $value | humanize }}×.
+            At this rate, 10% of the 30-day error budget will be consumed in 3 days.
+            Investigate before this becomes a page.
+          runbook: '01-docs/04-ops/runbooks/slo-slow-burn.md'
+
+      - alert: SLOSlowBurnANISA
+        expr: |
+          slo:anisa:error_budget:burn_rate_6h > 2
+        for: 1h
+        labels:
+          severity: warning
+          team: intelligence
+          slo: anisa
+          burn: slow
+        annotations:
+          runbook_url: 'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/01-docs/04-ops/runbooks/alerts.md#sloslowburnanisa'
+          summary: 'ANISA SLO slow burn — 10% error budget consumed in 3 days'
+          description: |
+            ANISA error budget burn rate is {{ $value | humanize }}×.
+            At this rate, 10% of the 30-day error budget will be consumed in 3 days.
+            Investigate before this becomes a page.
+          runbook: '01-docs/04-ops/runbooks/slo-slow-burn.md'
+
+  # ---------------------------------------------------------------------------
+  # Latency SLO breaches
+  # ---------------------------------------------------------------------------
+  - name: slo_latency_breach
+    rules:
+      - alert: SLOLatencyBreachAGX
+        expr: |
+          slo:agx:latency:p95_5m > 0.5
+        for: 5m
+        labels:
+          severity: warning
+          team: platform
+          slo: agx
+        annotations:
+          runbook_url: 'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/01-docs/04-ops/runbooks/alerts.md#slolatencybreachagx'
+          summary: 'AGX p95 latency >500ms for 5 minutes'
+          description: 'AGX p95 latency is {{ $value }}s, exceeding the 500ms SLO target.'
+
+      - alert: SLOLatencyBreachProtocols
+        expr: |
+          slo:protocols:latency:p95_5m > 1.0
+        for: 5m
+        labels:
+          severity: warning
+          team: platform
+          slo: protocols
+        annotations:
+          runbook_url: 'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/01-docs/04-ops/runbooks/alerts.md#slolatencybreachprotocols'
+          summary: 'Protocols p95 latency >1000ms for 5 minutes'
+          description: 'Protocols p95 latency is {{ $value }}s, exceeding the 1000ms SLO target.'
+
+      - alert: SLOLatencyBreachANISA
+        expr: |
+          slo:anisa:latency:p95_5m > 2.0
+        for: 5m
+        labels:
+          severity: warning
+          team: intelligence
+          slo: anisa
+        annotations:
+          runbook_url: 'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/01-docs/04-ops/runbooks/alerts.md#slolatencybreachanisa'
+          summary: 'ANISA p95 latency >2000ms for 5 minutes'
+          description: 'ANISA p95 latency is {{ $value }}s, exceeding the 2000ms SLO target.'

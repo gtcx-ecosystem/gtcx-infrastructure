@@ -1,0 +1,12 @@
+{
+  "version": "1.0.0",
+  "capturedAt": "2026-06-07T12:00:00Z",
+  "environment": "ci-smoke",
+  "source": "03-platform/tools/load-tests/ussd-handler-soak.js (60s / 10 VU profile)",
+  "metrics": {
+    "http_req_duration_p95_ms": 50,
+    "http_req_failed_rate": 0.01
+  },
+  "regressionThreshold": 0.25,
+  "minimumFlowCompletion": 0.95
+}

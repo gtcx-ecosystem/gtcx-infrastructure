@@ -1,0 +1,29 @@
+# =============================================================================
+# terminal-os-staging — Kustomize overlay
+# =============================================================================
+# W2-OPS-001: EKS deployment for terminal-os staging.
+#
+# Apply: kubectl apply -k 04-ship/kubernetes/overlays/staging/terminal-os/
+#
+# Prerequisites:
+#   1. Terraform apply module.secrets (terminal-os.tf) — IRSA role + empty SM shell.
+#   2. Populate AWS SM secret values (witness doc).
+#   3. ECR image `gtcx-terminal-os` built and pushed.
+# =============================================================================
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: terminal-os-staging
+
+resources:
+  - namespace.yaml
+  - service-account.yaml
+  - secret-store.yaml
+  - external-secret.yaml
+  - deployment.yaml
+  - service.yaml
+  - ingress.yaml
+
+images:
+  - name: 348389439381.dkr.ecr.af-south-1.amazonaws.com/gtcx-terminal-os
+    newTag: latest

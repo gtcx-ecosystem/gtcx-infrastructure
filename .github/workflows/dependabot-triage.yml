@@ -2,7 +2,7 @@ name: Dependabot triage
 
 # Labels dependabot PRs by risk class (patch / minor / major) and
 # posts a triage comment so reviewers can scan + act in O(seconds)
-# per PR. Does NOT auto-merge — see docs/agents/workflows/dependency-bumps.md
+# per PR. Does NOT auto-merge — see 01-docs/01-agents/workflows/dependency-bumps.md
 # for the per-class merge policy. Auto-merge is a human-flipped switch
 # per repo settings; this workflow surfaces the signal that switch
 # would consume.
@@ -101,7 +101,7 @@ jobs:
 
           $VERDICT
 
-          Merge policy: \`docs/agents/workflows/dependency-bumps.md\`.
+          Merge policy: \`01-docs/01-agents/workflows/dependency-bumps.md\`.
           EOF
           )
           gh pr comment "$PR_NUMBER" --body "$BODY"

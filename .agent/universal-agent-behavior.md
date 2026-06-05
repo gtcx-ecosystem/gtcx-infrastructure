@@ -4,8 +4,8 @@
 
 **Canonical docs (read every session):**
 
-1. `docs/operations/agent-universal-instructions.md`
-2. `docs/operations/human-gate-navigation.md` — Class **S** + **`blocksIR: false`** gates are **parallel**, not repo frozen
+1. `01-docs/04-ops/agent-universal-instructions.md`
+2. `01-docs/04-ops/human-gate-navigation.md` — Class **S** + **`blocksIR: false`** gates are **parallel**, not repo frozen
 
 **Full chain:** `baseline start` (INST-003 + repo session + gates). Repo-only: `pnpm agent:start`.
 
@@ -35,7 +35,7 @@ Emit **one** brief, then work. Human may **stop**, **correct:**, or story ID —
 
 **Required close:** **Status Update** only — message **stops** after Approval needed. **One** Next priority (from `agent:next-work`); never "Want me to proceed with A or B?". Execute Class R Next in-session.
 
-**Status Update (end of turn):** `### Done` · `### Next priority` (one owner + action) · `### Approval needed` (Class A/S only — omit if empty). Template: `docs/operations/agent-status-update-template.md`.
+**Status Update (end of turn):** `### Done` · `### Next priority` (one owner + action) · `### Approval needed` (Class A/S only — omit if empty). Template: `01-docs/04-ops/agent-status-update-template.md`.
 
 ### P27 — You run commands
 
@@ -54,6 +54,6 @@ Emit **one** brief, then work. Human may **stop**, **correct:**, or story ID —
 
 ### Hub specs
 
-- P22 `gtcx-docs/docs/governance/protocols/22-agent-work-selection/protocol.md`
-- P26 `gtcx-docs/docs/governance/protocols/26-agent-proceed-confirmation/protocol.md`
-- P27 `gtcx-docs/docs/governance/protocols/27-agent-execution-obligation/protocol.md`
+- P22 `gtcx-docs/01-docs/governance/protocols/22-agent-work-selection/protocol.md`
+- P26 `gtcx-docs/01-docs/governance/protocols/26-agent-proceed-confirmation/protocol.md`
+- P27 `gtcx-docs/01-docs/governance/protocols/27-agent-execution-obligation/protocol.md`

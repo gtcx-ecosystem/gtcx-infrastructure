@@ -1,18 +1,18 @@
 ## Ecosystem agent learning card (normative — read every session)
 
-**Canonical SoR:** [ecosystem-agent-learning-card-2026-06.md](https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/docs/operations/coordination/ecosystem-agent-learning-card-2026-06.md) (gtcx-protocols).
+**Canonical SoR:** [ecosystem-agent-learning-card-2026-06.md](https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/01-docs/04-ops/coordination/ecosystem-agent-learning-card-2026-06.md) (gtcx-protocols).
 
 ### Read order
 
-| Step | Link                                                                                                                                                                                     |
-| ---- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1    | [Unblock playbook F1–F10](https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/docs/operations/coordination/ecosystem-unblock-playbook-2026-06.md)                                 |
-| 2    | [P26 Status Update + post-pilot gating](https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/docs/operations/coordination/agent-status-update-and-post-pilot-gating-2026-06-06.md) |
-| 3    | [Human-external register](https://github.com/gtcx-ecosystem/gtcx-agentic/blob/main/docs/operations/coordination/human-external-blocker-register-2026-06.md)                              |
-| 4    | [Cross-repo bridge — Latest updates](https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/docs/operations/coordination/cross-repo-agent-bridge.md)                                 |
-| 5    | This repo `docs/operations/agent-work-selection.md` · `docs/audit/auto-dev-state.md`                                                                                                     |
+| Step | Link                                                                                                                                                                                    |
+| ---- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1    | [Unblock playbook F1–F10](https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/01-docs/04-ops/coordination/ecosystem-unblock-playbook-2026-06.md)                                 |
+| 2    | [P26 Status Update + post-pilot gating](https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/01-docs/04-ops/coordination/agent-status-update-and-post-pilot-gating-2026-06-06.md) |
+| 3    | [Human-external register](https://github.com/gtcx-ecosystem/gtcx-agentic/blob/main/01-docs/04-ops/coordination/human-external-blocker-register-2026-06.md)                              |
+| 4    | [Cross-repo bridge — Latest updates](https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/01-docs/04-ops/coordination/cross-repo-agent-bridge.md)                                 |
+| 5    | This repo `01-docs/04-ops/agent-work-selection.md` · `01-docs/05-audit/auto-dev-state.md`                                                                                               |
 
-**End of turn:** one P26 Status Update (not a menu) → append [cross-repo-agent-log](https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/docs/operations/coordination/cross-repo-agent-log.md) if state changed.
+**End of turn:** one P26 Status Update (not a menu) → append [cross-repo-agent-log](https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/01-docs/04-ops/coordination/cross-repo-agent-log.md) if state changed.
 
 ### Rules (all repos)
 

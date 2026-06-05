@@ -16,20 +16,20 @@ on:
   push:
     branches: [main]
     paths:
-      - 'tools/eval-pipeline/**'
-      - 'docs/ml/model-cards/**'
-      - 'tools/anomaly-detector/**'
-      - 'tools/compliance-gateway/**'
-      - 'tools/replay-protection/**'
+      - '03-platform/tools/eval-pipeline/**'
+      - '01-docs/ml/model-cards/**'
+      - '03-platform/tools/anomaly-detector/**'
+      - '03-platform/tools/compliance-gateway/**'
+      - '03-platform/tools/replay-protection/**'
       - '.github/workflows/eval-pipeline.yml'
   pull_request:
     branches: [main]
     paths:
-      - 'tools/eval-pipeline/**'
-      - 'docs/ml/model-cards/**'
-      - 'tools/anomaly-detector/**'
-      - 'tools/compliance-gateway/**'
-      - 'tools/replay-protection/**'
+      - '03-platform/tools/eval-pipeline/**'
+      - '01-docs/ml/model-cards/**'
+      - '03-platform/tools/anomaly-detector/**'
+      - '03-platform/tools/compliance-gateway/**'
+      - '03-platform/tools/replay-protection/**'
   workflow_dispatch:
 
 permissions:
@@ -50,7 +50,7 @@ jobs:
 
       - name: Run Eval Pipeline
         run: |
-          cd tools/eval-pipeline
+          cd 03-platform/tools/eval-pipeline
           node eval.mjs --all | tee eval-results.json
 
       - name: Upload eval results
@@ -58,14 +58,14 @@ jobs:
         if: always()
         with:
           name: eval-results-${{ github.run_id }}
-          path: tools/eval-pipeline/eval-results.json
+          path: 03-platform/tools/eval-pipeline/eval-results.json
           retention-days: 90
 
       - name: Parse results for PR comment
         if: github.event_name == 'pull_request'
         id: parse
         run: |
-          cd tools/eval-pipeline
+          cd 03-platform/tools/eval-pipeline
           PASSED=$(node eval.mjs --all 2>/dev/null | jq '.passed')
           FAILED=$(node eval.mjs --all 2>/dev/null | jq '.failed')
           echo "passed=$PASSED" >> "$GITHUB_OUTPUT"

@@ -41,7 +41,7 @@ Complete the checklist below. For each applicable threat, describe the mitigatio
 - [ ] New API endpoints have authentication and authorization checks
 - [ ] Logging does not include PII or sensitive data
 - [ ] If IaC: least-privilege IAM, no wildcard permissions
-- [ ] If crypto: uses approved algorithms (see `docs/security/security-architecture.md`)
+- [ ] If crypto: uses approved algorithms (see `01-docs/09-security/security-architecture.md`)
 
 ---
 

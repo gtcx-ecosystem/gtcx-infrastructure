@@ -1,0 +1,13 @@
+{
+  "$schema": "gtcx://02-ops/security/v1",
+  "repo": "gtcx-infrastructure",
+  "updated": "2026-06-08",
+  "paths": {
+    "posture": "02-ops/security/posture.json",
+    "narrative": "01-docs/09-security/README.md"
+  },
+  "sor": {
+    "process": "https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/01-docs/08-gtm/pen-test/README.md",
+    "infraEvidence": "https://github.com/gtcx-ecosystem/gtcx-infrastructure"
+  }
+}

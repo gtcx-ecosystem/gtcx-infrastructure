@@ -1,7 +1,7 @@
 {
   "startedAt": "2026-06-05T17:47:13.355Z",
   "repo": "gtcx-infrastructure",
-  "ssot": "baseline-os/scripts/ecosystem/repo-session-core.mjs",
+  "ssot": "baseline-os/03-platform/scripts/ecosystem/repo-session-core.mjs",
   "agentTrace": {
     "id": "gtcx-agent-e7a19bbf-1ccf-434d-8b58-529c18f3fe0d",
     "header": "x-gtcx-agent-trace-id",
@@ -16,8 +16,8 @@
       "institutional": "platform-architect",
       "mcp": "agile",
       "frame": "development",
-      "docUrl": "https://github.com/gtcx-ecosystem/gtcx-docs/blob/main/docs/governance/institutional/personas/platform-architect.md",
-      "bridgeUrl": "https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/docs/operations/coordination/ecosystem-persona-bridge-2026-06.md",
+      "docUrl": "https://github.com/gtcx-ecosystem/gtcx-docs/blob/main/01-docs/governance/institutional/personas/platform-architect.md",
+      "bridgeUrl": "https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/01-docs/04-ops/coordination/ecosystem-persona-bridge-2026-06.md",
       "instruction": "Read persona doc before work; re-select persona on task switch (Phase 4)."
     },
     "traceId": "d77687cb-6cdb-4bd6-8c2e-e9e7ca92b649",
@@ -27,8 +27,8 @@
     "message": "No automatable pending or in_progress stories for current frame.",
     "launchFocus": {
       "schema": "gtcx.launchFocus.v1",
-      "normativeDoc": "docs/operations/agent-launch-focus.md",
-      "hubDoc": "https://github.com/gtcx-ecosystem/gtcx-core/blob/main/docs/operations/agent-launch-focus.md",
+      "normativeDoc": "01-docs/04-ops/agent-launch-focus.md",
+      "hubDoc": "https://github.com/gtcx-ecosystem/gtcx-core/blob/main/01-docs/04-ops/agent-launch-focus.md",
       "statePath": ".baseline/launch-focus.json",
       "provisionedAt": "2026-06-05T17:47:13.350Z",
       "repo": "gtcx-infrastructure",
@@ -40,7 +40,7 @@
           "library": "GR-T1",
           "integratorPilot": "GR-T2-partial",
           "ecosystemSovereign": "below-GR-T2",
-          "index": "docs/audit/gtm-audit-2026-06-05.md"
+          "index": "01-docs/05-audit/gtm-audit-2026-06-05.md"
         }
       },
       "sessionMode": "witness",
@@ -69,9 +69,9 @@
         "human": 1
       },
       "sources": [
-        "docs/audit/execution-roadmap.md",
-        "docs/operations/agent-work-selection.md",
-        "docs/audit/latest.json"
+        "01-docs/05-audit/execution-roadmap.md",
+        "01-docs/04-ops/agent-work-selection.md",
+        "01-docs/05-audit/latest.json"
       ],
       "forbidden": [
         "Ask operator to run master-audit before starting work",
@@ -86,10 +86,10 @@
     "proceedBrief": {
       "activePersona": "platform-architect",
       "frame": "development",
-      "personaDocUrl": "https://github.com/gtcx-ecosystem/gtcx-docs/blob/main/docs/governance/institutional/personas/platform-architect.md"
+      "personaDocUrl": "https://github.com/gtcx-ecosystem/gtcx-docs/blob/main/01-docs/governance/institutional/personas/platform-architect.md"
     },
     "agentInstructions": [
-      "Phase 4: adopt persona **platform-architect** (development) — read https://github.com/gtcx-ecosystem/gtcx-docs/blob/main/docs/governance/institutional/personas/platform-architect.md",
+      "Phase 4: adopt persona **platform-architect** (development) — read https://github.com/gtcx-ecosystem/gtcx-docs/blob/main/01-docs/governance/institutional/personas/platform-architect.md",
       "Include **Active persona** + **Frame** in Proceed Brief and Status Update (P26)."
     ]
   },

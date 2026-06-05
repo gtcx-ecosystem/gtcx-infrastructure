@@ -1,13 +1,13 @@
 ---
 description: Ecosystem false blocks — EXT-INF is XC not IR; INT-S9-01 intelligence owner
 globs:
-  - docs/operations/coordination/**
-  - docs/audit/**
+  - 01-docs/04-ops/coordination/**
+  - 01-docs/05-audit/**
 alwaysApply: true
 ---
 
 # Ecosystem false blocks (normative)
 
-Read [ecosystem-unblock-playbook-2026-06.md](https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/docs/operations/coordination/ecosystem-unblock-playbook-2026-06.md).
+Read [ecosystem-unblock-playbook-2026-06.md](https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/01-docs/04-ops/coordination/ecosystem-unblock-playbook-2026-06.md).
 
 **gtcx-infrastructure:** Continue **IR-2.x** while EXT-INF awaits humans. **INT-S9-01** infra layer is **done** — do not re-implement WAF; owner for closure is **gtcx-intelligence**.

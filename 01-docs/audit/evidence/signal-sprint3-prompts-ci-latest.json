@@ -1,0 +1,30 @@
+{
+  "hub": "SIGNAL-Sprint-3",
+  "checkedAt": "2026-06-05T00:00:00.000Z",
+  "tasks": {
+    "INF-014": {
+      "status": "done",
+      "promptVersion": "1.0.0",
+      "manifest": "01-docs/05-audit/prompts/compliance-gateway@1.0.0/manifest.json",
+      "auditField": "prompt_version"
+    },
+    "INF-005": {
+      "status": "done",
+      "workflow": ".github/workflows/injection-suite-weekly.yml",
+      "witness": "03-platform/scripts/ops/run-injection-suite-witness.mjs"
+    },
+    "INF-009": {
+      "status": "done",
+      "test": "03-platform/tools/contract-tests/agent-integration.test.mjs",
+      "ciStep": "Agent integration smoke (SIGNAL INF-009)"
+    },
+    "INF-008": {
+      "status": "partial",
+      "runbook": "01-docs/04-ops/runbooks/staging-monitoring-apply.md",
+      "appliedAt": "2026-06-05",
+      "namespace": "gtcx-monitoring",
+      "rollout": "pending-scheduling-insufficient-cpu-memory"
+    }
+  },
+  "overallSignal": "L2-mid-high-in-repo"
+}

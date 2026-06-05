@@ -1,0 +1,18 @@
+# =============================================================================
+# compliance-os-production — Kustomize overlay (Hub #17 prod close)
+# =============================================================================
+# Apply: kubectl apply -k 04-ship/kubernetes/overlays/production/compliance-os/
+# Prerequisite: production-compliance-os-eso-bootstrap.md
+# =============================================================================
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: compliance-os-production
+
+resources:
+  - namespace.yaml
+  - secret-store.yaml
+  - external-secrets.yaml
+  - redis.yaml
+  - web-app.yaml
+  - ingress.yaml

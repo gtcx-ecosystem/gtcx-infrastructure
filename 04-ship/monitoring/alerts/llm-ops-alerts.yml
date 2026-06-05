@@ -1,0 +1,43 @@
+groups:
+  - name: llm-ops
+    rules:
+      - alert: ComplianceGatewayLlmHighLatency
+        expr: max(compliance_gateway_query_latency_ms) > 8000
+        for: 5m
+        labels:
+          severity: warning
+          team: platform
+          service: compliance-gateway
+        annotations:
+          runbook_url: 'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/01-docs/04-ops/runbooks/alerts.md#compliancegatewayllmhighlatency'
+          summary: 'compliance-gateway LLM p95 latency above 8s'
+          description: 'Provider {{ $labels.provider }} latency {{ $value }}ms exceeds SLO.'
+
+      - alert: ComplianceGatewayLlmHighErrorRate
+        expr: |
+          (
+            sum(rate(compliance_gateway_requests_total{route="/v1/query",status!="200"}[5m]))
+            /
+            sum(rate(compliance_gateway_requests_total{route="/v1/query"}[5m]))
+          ) > 0.02
+        for: 5m
+        labels:
+          severity: critical
+          team: platform
+          service: compliance-gateway
+        annotations:
+          runbook_url: 'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/01-docs/04-ops/runbooks/alerts.md#compliancegatewayllmhigherrorrate'
+          summary: 'compliance-gateway /v1/query error rate above 2%'
+          description: 'LLM path error rate {{ $value | humanizePercentage }} over 5m.'
+
+      - alert: ComplianceGatewayLlmDailyCostAnomaly
+        expr: sum(increase(compliance_gateway_cost_usd_total[1d])) > 50
+        for: 10m
+        labels:
+          severity: warning
+          team: platform
+          service: compliance-gateway
+        annotations:
+          runbook_url: 'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/01-docs/04-ops/runbooks/alerts.md#compliancegatewayllmdailycostanomaly'
+          summary: 'compliance-gateway daily LLM cost above $50'
+          description: 'Review baseline cost-stats and provider routing.'

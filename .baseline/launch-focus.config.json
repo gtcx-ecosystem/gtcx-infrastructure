@@ -1,6 +1,6 @@
 {
   "repo": "gtcx-infrastructure",
-  "normativeDoc": "docs/operations/agent-launch-focus.md",
+  "normativeDoc": "01-docs/04-ops/agent-launch-focus.md",
   "northStar": {
     "outcome": "Live sovereign pilot substrate (Wire #2, staging/testnet, hub acks, pen-test path) so apps and GTM can close GR-T2 deals.",
     "repoRole": "Deploy EKS/testnet, secrets, observability — unblock intelligence, markets, protocols.",
@@ -11,9 +11,9 @@
     "label": "ZWCMP pilot + Global South 10x deploy"
   },
   "paths": {
-    "executionRoadmap": "docs/audit/execution-roadmap.md",
-    "openItems": "docs/operations/agent-work-selection.md",
-    "latestJson": "docs/audit/latest.json"
+    "executionRoadmap": "01-docs/05-audit/execution-roadmap.md",
+    "openItems": "01-docs/04-ops/agent-work-selection.md",
+    "latestJson": "01-docs/05-audit/latest.json"
   },
   "storyIdPattern": "(?:IR-\\d+\\.\\d+|S\\d+-\\d+|P22-[A-Z]+-\\d+)",
   "implementStatuses": ["pending", "in_progress"],

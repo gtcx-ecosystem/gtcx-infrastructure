@@ -1,0 +1,89 @@
+# =============================================================================
+# Intelligence Services — Prometheus Alerting Rules
+# =============================================================================
+# Monitors ANISA + Intelligence SDK for error rates, latency, confidence,
+# circuit breakers, and degraded operation.
+# =============================================================================
+groups:
+  - name: intelligence.rules
+    rules:
+      - alert: IntelligenceHighErrorRate
+        expr: rate(intelligence_errors_total[5m]) / rate(intelligence_requests_total[5m]) > 0.05
+        for: 5m
+        labels:
+          severity: warning
+          service: intelligence
+        annotations:
+          runbook_url: 'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/01-docs/04-ops/runbooks/intelligence-error-rate.md'
+          summary: 'Intelligence error rate above 5%'
+          description: 'Error rate is {{ $value | humanizePercentage }} over the last 5 minutes'
+
+      - alert: IntelligenceLowConfidence
+        expr: histogram_quantile(0.5, rate(intelligence_confidence_bucket[5m])) < 0.5
+        for: 10m
+        labels:
+          severity: critical
+          service: intelligence
+        annotations:
+          summary: 'Median AI confidence below 0.50 — most results being rejected'
+          description: 'Median confidence is {{ $value }} — below the 0.50 threshold for reliable output'
+
+      - alert: IntelligenceCircuitBreakerTripped
+        expr: increase(intelligence_circuit_trips_total[5m]) > 0
+        for: 1m
+        labels:
+          severity: critical
+          service: intelligence
+        annotations:
+          summary: 'Circuit breaker tripped on {{ $labels.service }}'
+          description: 'External dependency circuit breaker opened — service is in fallback mode'
+
+      - alert: IntelligenceHighLatency
+        expr: histogram_quantile(0.95, rate(intelligence_request_duration_ms_bucket[5m])) > 5000
+        for: 5m
+        labels:
+          severity: warning
+          service: intelligence
+        annotations:
+          summary: 'P95 latency above 5 seconds'
+          description: 'P95 request duration is {{ $value }}ms — above 5s SLO target'
+
+      - alert: IntelligenceHighFallbackRate
+        expr: rate(intelligence_degraded_total[5m]) / rate(intelligence_requests_total[5m]) > 0.10
+        for: 5m
+        labels:
+          severity: warning
+          service: intelligence
+        annotations:
+          summary: 'Intelligence fallback/degraded rate above 10%'
+          description: 'Degraded rate is {{ $value | humanizePercentage }} — service quality reduced'
+
+      - alert: IntelligenceBufferFull
+        expr: intelligence_buffer_utilization > 0.90
+        for: 2m
+        labels:
+          severity: warning
+          service: intelligence
+        annotations:
+          summary: 'Intelligence buffer utilization above 90%'
+          description: 'Buffer at {{ $value | humanizePercentage }} — backpressure risk'
+
+      - alert: IntelligenceConsensusStaleness
+        expr: intelligence_consensus_staleness_seconds > 300
+        for: 5m
+        labels:
+          severity: warning
+          service: intelligence
+        annotations:
+          summary: 'Consensus data stale for over 5 minutes'
+          description: 'Staleness is {{ $value }}s — intelligence operating on outdated data'
+
+      - alert: IntelligenceServiceDown
+        expr: intelligence_health_status == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: intelligence
+        annotations:
+          summary: 'Intelligence service health check failing'
+          description: '{{ $labels.service }} reports unhealthy status'

@@ -20,12 +20,12 @@ jobs:
           node-version: '20.18.0'
 
       - name: Run injection-suite static witness
-        run: node scripts/ops/run-injection-suite-witness.mjs
+        run: node 03-platform/scripts/ops/run-injection-suite-witness.mjs
 
       - name: Upload evidence
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: always()
         with:
           name: injection-suite-latest
-          path: docs/audit/evidence/injection-suite-latest.json
+          path: 01-docs/05-audit/evidence/injection-suite-latest.json
           retention-days: 90

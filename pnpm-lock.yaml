@@ -58,15 +58,15 @@ importers:
         specifier: ^8.60.0
         version: 8.60.0(eslint@9.39.4)(typescript@5.9.3)
 
-  infra/migrations:
+  04-ship/migrations:
     devDependencies:
       prettier:
         specifier: ^3.4.0
         version: 3.8.1
 
-  tools/anomaly-detector: {}
+  03-platform/tools/anomaly-detector: {}
 
-  tools/audit-flush:
+  03-platform/tools/audit-flush:
     dependencies:
       '@aws-sdk/client-s3':
         specifier: ^3.685.0
@@ -78,19 +78,19 @@ importers:
         specifier: ^3.4.0
         version: 3.4.0
 
-  tools/audit-signer:
+  03-platform/tools/audit-signer:
     devDependencies:
       c8:
         specifier: ^11.0.0
         version: 11.0.0
 
-  tools/compliance-data:
+  03-platform/tools/compliance-data:
     dependencies:
       '@gtcx/audit-signer':
         specifier: workspace:*
         version: link:../audit-signer
 
-  tools/compliance-gateway:
+  03-platform/tools/compliance-gateway:
     dependencies:
       '@ai-sdk/anthropic':
         specifier: ^3.0.0
@@ -117,11 +117,11 @@ importers:
         specifier: ^3.23.0
         version: 3.25.76
 
-  tools/compliance-gateway-mcp: {}
+  03-platform/tools/compliance-gateway-mcp: {}
 
-  tools/control-plane: {}
+  03-platform/tools/control-plane: {}
 
-  tools/deployment-guard:
+  03-platform/tools/deployment-guard:
     devDependencies:
       '@types/node':
         specifier: ^22.10.0
@@ -130,7 +130,7 @@ importers:
         specifier: ^5.7.0
         version: 5.9.3
 
-  tools/docs-site:
+  03-platform/tools/docs-site:
     dependencies:
       '@astrojs/starlight':
         specifier: ^0.39.2
@@ -146,21 +146,21 @@ importers:
         specifier: ^0.9.9
         version: 0.9.9(prettier@3.8.3)(typescript@5.9.3)
 
-  tools/eval-pipeline:
+  03-platform/tools/eval-pipeline:
     dependencies:
       '@gtcx/compliance-gateway':
         specifier: workspace:*
         version: link:../compliance-gateway
 
-  tools/kyc-screening: {}
+  03-platform/tools/kyc-screening: {}
 
-  tools/low-bandwidth:
+  03-platform/tools/low-bandwidth:
     devDependencies:
       c8:
         specifier: ^11.0.0
         version: 11.0.0
 
-  tools/replay-protection:
+  03-platform/tools/replay-protection:
     dependencies:
       '@gtcx/crypto':
         specifier: ^3.1.4
@@ -176,7 +176,7 @@ importers:
         specifier: ^5.7.0
         version: 5.9.3
 
-  tools/ussd-handler:
+  03-platform/tools/ussd-handler:
     optionalDependencies:
       ioredis:
         specifier: ^5.10.1

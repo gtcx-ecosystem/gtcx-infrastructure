@@ -4,7 +4,7 @@
 [![IaC validation](https://github.com/gtcx-ecosystem/gtcx-infrastructure/actions/workflows/ci.yml/badge.svg?branch=main&label=IaC)](https://github.com/gtcx-ecosystem/gtcx-infrastructure/actions/workflows/ci.yml)
 [![Security](https://github.com/gtcx-ecosystem/gtcx-infrastructure/actions/workflows/ci.yml/badge.svg?branch=main&label=security)](https://github.com/gtcx-ecosystem/gtcx-infrastructure/actions/workflows/ci.yml)
 
-Engineering scores (IR / XC): [`docs/audit/latest.json`](./docs/audit/latest.json).
+Engineering scores (IR / XC): [`01-docs/05-audit/latest.json`](./01-docs/05-audit/latest.json).
 
 DevOps tooling, deployment automation, and security framework for the GTCX ecosystem. Manages container orchestration, infrastructure-as-code, compliance tooling, and zero-trust security across all environments.
 
@@ -12,16 +12,16 @@ DevOps tooling, deployment automation, and security framework for the GTCX ecosy
 
 ## 🚀 Choose Your Path
 
-- **What's being worked on now** → [`docs/audit/execution-roadmap.md`](./docs/audit/execution-roadmap.md) (canonical execution plan) + [`docs/audit/latest.json`](./docs/audit/latest.json) (**IR** engineering + **XC** external scores) + [`docs/audit/SCORING.md`](./docs/audit/SCORING.md) (two independent tracks).
-- **I am a DevOps/Platform Engineer** → Start with [Orientation](./docs/agents/onboarding/orientation.md) & [Deployment Runbook](./docs/operations/runbooks/deployment-runbook.md).
-- **I am a Security Auditor** → Review the [Trust Model](./docs/architecture/trust-model.md), the [latest independent audit](./docs/audit/post-roadmap-session-2026-05-30.md), and the [external dependencies register](./docs/audit/external-dependencies-register-2026-05-31.md).
-- **I am a Government/Institutional Stakeholder** → Read the [Sovereign Stack Whitepaper](./docs/audit/qa-reviews/2026-05-05-gtcx-sovereign-stack-whitepaper.md) and the [pilot success criteria](./docs/audit/pilot-success-criteria.md).
+- **What's being worked on now** → [`01-docs/05-audit/execution-roadmap.md`](./01-docs/05-audit/execution-roadmap.md) (canonical execution plan) + [`01-docs/05-audit/latest.json`](./01-docs/05-audit/latest.json) (**IR** engineering + **XC** external scores) + [`01-docs/05-audit/SCORING.md`](./01-docs/05-audit/SCORING.md) (two independent tracks).
+- **I am a DevOps/Platform Engineer** → Start with [Orientation](./01-docs/01-agents/onboarding/orientation.md) & [Deployment Runbook](./01-docs/04-ops/runbooks/deployment-runbook.md).
+- **I am a Security Auditor** → Review the [Trust Model](./01-docs/architecture/trust-model.md), the [latest independent audit](./01-docs/05-audit/post-roadmap-session-2026-05-30.md), and the [external dependencies register](./01-docs/05-audit/external-dependencies-register-2026-05-31.md).
+- **I am a Government/Institutional Stakeholder** → Read the [Sovereign Stack Whitepaper](./01-docs/05-audit/qa-reviews/2026-05-05-gtcx-sovereign-stack-whitepaper.md) and the [pilot success criteria](./01-docs/05-audit/pilot-success-criteria.md).
 
 ---
 
 ## ⚠️ Operational Constraints
 
-> **Note:** Current operational logic (deployments, canary, secrets) is handled via **Bash scripts**. Ensure your shell environment is secure and avoid logging sensitive `stdout` until the transition to the compiled **GTCX-CTL** is complete. See the [Hardening Strategy](./docs/audit/qa-reviews/2026-05-05-gtcx-hardening-strategy.md).
+> **Note:** Current operational logic (deployments, canary, secrets) is handled via **Bash scripts**. Ensure your shell environment is secure and avoid logging sensitive `stdout` until the transition to the compiled **GTCX-CTL** is complete. See the [Hardening Strategy](./01-docs/05-audit/qa-reviews/2026-05-05-gtcx-hardening-strategy.md).
 
 This repo now ships a real validation entrypoint for that Bash surface at `pnpm test` and `pnpm test:full`. Those checks are required until the control plane transition is complete.
 
@@ -34,7 +34,7 @@ This repo now ships a real validation entrypoint for that Bash surface at `pnpm 
 - [Node.js](https://nodejs.org/) >= 20.18.0
 - [pnpm](https://pnpm.io/) >= 9.15.0
 - [Terraform](https://www.terraform.io/) >= 1.7 (for IaC)
-- [kubectl](https://kubernetes.io/docs/tasks/tools/) (for K8s operations)
+- [kubectl](https://kubernetes.io/01-docs/tasks/03-platform/tools/) (for K8s operations)
 - [Docker](https://www.docker.com/) (for local development)
 - [AWS CLI](https://aws.amazon.com/cli/) v2 (for cloud deployments)
 - [ShellCheck](https://www.shellcheck.net/) (for operator-script validation)
@@ -59,7 +59,7 @@ pnpm test:full         # Add terraform validate/test, kustomize, compose, and de
 ### Local Development Stack
 
 ```bash
-docker compose -f infra/docker/docker-compose.dev.yml up -d
+docker compose -f 04-ship/docker/docker-compose.dev.yml up -d
 ```
 
 This starts: PostgreSQL (operational + audit), NATS with JetStream, Prometheus, Grafana, Loki, Jaeger.
@@ -67,7 +67,7 @@ This starts: PostgreSQL (operational + audit), NATS with JetStream, Prometheus, 
 ### Terraform (IaC)
 
 ```bash
-cd infra/terraform/environments/testnet-pilot
+cd 04-ship/terraform/environments/testnet-pilot
 terraform init
 terraform plan
 terraform apply   # requires explicit confirmation
@@ -76,15 +76,15 @@ terraform apply   # requires explicit confirmation
 ### Kubernetes
 
 ```bash
-kubectl kustomize infra/kubernetes/base/           # preview base manifests
-kubectl kustomize infra/kubernetes/overlays/testnet # preview testnet overlay
+kubectl kustomize 04-ship/kubernetes/base/           # preview base manifests
+kubectl kustomize 04-ship/kubernetes/overlays/testnet # preview testnet overlay
 ```
 
 ## Architecture
 
 ```
 gtcx-infrastructure/
-├── infra/
+├── 04-ship/
 │   ├── docker/              # Dockerfiles + Compose (dev, infra, test)
 │   ├── kubernetes/
 │   │   ├── base/            # K8s manifests (14 services + NATS + monitoring)
@@ -112,9 +112,9 @@ gtcx-infrastructure/
 │   │       ├── testnet-pilot/  # Live in af-south-1
 │   │       └── zimbabwe-pilot/ # ZWCMP deployment
 │   ├── monitoring/          # SLO recording rules, alert configs
-│   ├── scripts/             # deploy.sh (deprecated 2026-Q3, see IR-6.4), migrate.sh, build-push.sh
+│   ├── 03-platform/scripts/             # deploy.sh (deprecated 2026-Q3, see IR-6.4), migrate.sh, build-push.sh
 │   └── security/            # Access control, data protection policies
-├── docs/                    # Architecture, ops, security, compliance, GTM (250+ docs)
+├── 01-docs/                    # Architecture, ops, security, compliance, GTM (250+ docs)
 │   ├── decisions/           # 11 ADRs
 │   ├── operations/runbooks/ # 25 runbooks (deploy, rollback, DR, incident, release, chaos)
 │   └── audit/qa-reviews/    # Session audits, roadmap, hardening strategy
@@ -158,42 +158,42 @@ Running in AWS af-south-1 (Cape Town):
 
 ## Key Documents
 
-| Document                                                               | Description                    |
-| ---------------------------------------------------------------------- | ------------------------------ |
-| [Orientation](./docs/agents/onboarding/orientation.md)                 | Start here — codebase map      |
-| [Safety Rules](./docs/agents/workflows/agent-safety-rules.md)          | What requires human approval   |
-| [Architecture Overview](./docs/architecture/system-overview.md)        | System design and trust zones  |
-| [Deployment Runbook](./docs/operations/runbooks/deployment-runbook.md) | Deploy and rollback procedures |
-| [DR Runbook](./docs/operations/runbooks/disaster-recovery.md)          | Backup and recovery            |
-| [ADR Index](./docs/architecture/decisions/README.md)                   | Architecture decisions         |
-| [Audit History](./docs/audit/qa-reviews/)                              | Session audits and hardening   |
+| Document                                                              | Description                    |
+| --------------------------------------------------------------------- | ------------------------------ |
+| [Orientation](./01-docs/01-agents/onboarding/orientation.md)          | Start here — codebase map      |
+| [Safety Rules](./01-docs/01-agents/workflows/agent-safety-rules.md)   | What requires human approval   |
+| [Architecture Overview](./01-docs/architecture/system-overview.md)    | System design and trust zones  |
+| [Deployment Runbook](./01-docs/04-ops/runbooks/deployment-runbook.md) | Deploy and rollback procedures |
+| [DR Runbook](./01-docs/04-ops/runbooks/disaster-recovery.md)          | Backup and recovery            |
+| [ADR Index](./01-docs/architecture/decisions/README.md)               | Architecture decisions         |
+| [Audit History](./01-docs/05-audit/qa-reviews/)                       | Session audits and hardening   |
 
 ## Published Substrate
 
 GTCX's compliance substrate is published as three composable primitives. Each is independently useful; together they form the audit + storage + agent-discovery surface behind the testnet pilot. All MIT licensed.
 
-| Primitive                          | Where                                                                                                                                                            | Purpose                                                                                                                            |
-| ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| **`@gtcx/audit-signer`**           | [npm](https://www.npmjs.com/package/@gtcx/audit-signer) · [`tools/audit-signer/`](./tools/audit-signer/)                                                         | Ed25519-signed, hash-linked audit chain. Zero runtime dependencies. Third-party verifiable offline.                                |
-| **`terraform-aws-compliance-db`**  | [GitHub](https://github.com/amani-amina-anai/terraform-aws-compliance-db) · [`infra/terraform/modules/compliance-db/`](./infra/terraform/modules/compliance-db/) | Dual-database (operational + audit) module for regulated African fintech. 11 jurisdictions covered, FATF-aligned retention floors. |
-| **`@gtcx/compliance-gateway-mcp`** | [`tools/compliance-gateway-mcp/`](./tools/compliance-gateway-mcp/)                                                                                               | Model Context Protocol server exposing the gateway's read-only surface to AI agents. Mutating tools deliberately absent.           |
+| Primitive                          | Where                                                                                                                                                                | Purpose                                                                                                                            |
+| ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| **`@gtcx/audit-signer`**           | [npm](https://www.npmjs.com/package/@gtcx/audit-signer) · [`03-platform/tools/audit-signer/`](./03-platform/tools/audit-signer/)                                     | Ed25519-signed, hash-linked audit chain. Zero runtime dependencies. Third-party verifiable offline.                                |
+| **`terraform-aws-compliance-db`**  | [GitHub](https://github.com/amani-amina-anai/terraform-aws-compliance-db) · [`04-ship/terraform/modules/compliance-db/`](./04-ship/terraform/modules/compliance-db/) | Dual-database (operational + audit) module for regulated African fintech. 11 jurisdictions covered, FATF-aligned retention floors. |
+| **`@gtcx/compliance-gateway-mcp`** | [`03-platform/tools/compliance-gateway-mcp/`](./03-platform/tools/compliance-gateway-mcp/)                                                                           | Model Context Protocol server exposing the gateway's read-only surface to AI agents. Mutating tools deliberately absent.           |
 
-Detailed pages: [`docs/external/docs-site/`](./docs/gitbook/) (markdown source for `gtcx.trade/compliance`).
+Detailed pages: [`01-docs/external/docs-site/`](./01-docs/gitbook/) (markdown source for `gtcx.trade/compliance`).
 
 ## Internal Workspace Packages
 
-The repo is a pnpm workspace with 11 packages under `tools/`. The ones above are publication targets; the ones below run the testnet pilot.
+The repo is a pnpm workspace with 11 packages under `03-platform/tools/`. The ones above are publication targets; the ones below run the testnet pilot.
 
-| Package                                                   | Role                                                                   |
-| --------------------------------------------------------- | ---------------------------------------------------------------------- |
-| [`@gtcx/compliance-gateway`](./tools/compliance-gateway/) | AI-native HTTP gateway routing compliance queries to protocol tools    |
-| [`@gtcx/audit-flush`](./tools/audit-flush/)               | Sidecar that ships signed audit records from NATS JetStream to WORM S3 |
-| [`@gtcx/replay-protection`](./tools/replay-protection/)   | Nonce + timestamp + signature verification for offline-queued requests |
-| [`@gtcx/deployment-guard`](./tools/deployment-guard/)     | Canary deployment safety gates                                         |
-| [`@gtcx/ussd-handler`](./tools/ussd-handler/)             | USSD menu + SMS bridge for feature-phone access                        |
-| [`@gtcx/low-bandwidth`](./tools/low-bandwidth/)           | Adaptive low-bandwidth middleware                                      |
-| [`@gtcx/eval-pipeline`](./tools/eval-pipeline/)           | AI output evaluation + prompt-injection red-team                       |
-| [`@gtcx/compliance-data`](./tools/compliance-data/)       | Per-jurisdiction regulator + retention catalog                         |
+| Package                                                               | Role                                                                   |
+| --------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| [`@gtcx/compliance-gateway`](./03-platform/tools/compliance-gateway/) | AI-native HTTP gateway routing compliance queries to protocol tools    |
+| [`@gtcx/audit-flush`](./03-platform/tools/audit-flush/)               | Sidecar that ships signed audit records from NATS JetStream to WORM S3 |
+| [`@gtcx/replay-protection`](./03-platform/tools/replay-protection/)   | Nonce + timestamp + signature verification for offline-queued requests |
+| [`@gtcx/deployment-guard`](./03-platform/tools/deployment-guard/)     | Canary deployment safety gates                                         |
+| [`@gtcx/ussd-handler`](./03-platform/tools/ussd-handler/)             | USSD menu + SMS bridge for feature-phone access                        |
+| [`@gtcx/low-bandwidth`](./03-platform/tools/low-bandwidth/)           | Adaptive low-bandwidth middleware                                      |
+| [`@gtcx/eval-pipeline`](./03-platform/tools/eval-pipeline/)           | AI output evaluation + prompt-injection red-team                       |
+| [`@gtcx/compliance-data`](./03-platform/tools/compliance-data/)       | Per-jurisdiction regulator + retention catalog                         |
 
 ## Standalone Modules
 
@@ -206,8 +206,8 @@ The repo is a pnpm workspace with 11 packages under `tools/`. The ones above are
 | **Any terminal**    | [`agents/README.md`](./agents/README.md)              |
 | **Cursor**          | [`AGENTS.md`](./AGENTS.md)                            |
 | **Operational SoR** | [`workspace/`](./workspace/) — `pnpm workspace:check` |
-| **Docs map**        | [`docs/README.md`](./docs/README.md)                  |
+| **Docs map**        | [`01-docs/README.md`](./01-docs/README.md)            |
 
-Protocol [P29 workspace domains](https://github.com/gtcx-ecosystem/gtcx-docs/blob/main/docs/governance/protocols/29-agent-workspace-domains/protocol.md).
+Protocol [P29 workspace domains](https://github.com/gtcx-ecosystem/gtcx-docs/blob/main/01-docs/governance/protocols/29-agent-workspace-domains/protocol.md).
 
 <!-- gtcx-agents-index -->

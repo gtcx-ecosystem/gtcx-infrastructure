@@ -1,0 +1,931 @@
+openapi: 3.1.0
+info:
+  title: GTCX Compliance Gateway
+  description: |
+    HTTP API for the GTCX compliance substrate. Routes natural-language compliance
+    queries to LLM providers + protocol tools, signs every consequential decision into
+    the tamper-evident audit chain, and exposes audit-evidence endpoints for
+    independent verification.
+
+    See [`01-docs/api/README.md`](./README.md) for endpoint inventory, auth model,
+    error-response shapes, and versioning rules.
+  version: 0.1.0
+  license:
+    name: MIT
+    identifier: MIT
+  contact:
+    name: GTCX Platform Engineering
+    url: https://github.com/gtcx-ecosystem/gtcx-infrastructure
+
+servers:
+  - url: https://geotag.staging.gtcx.trade
+    description: Staging (Zimbabwe pilot)
+  - url: https://localhost:8500
+    description: Local development
+
+security:
+  - bearerAuth: []
+
+tags:
+  - name: health
+    description: Liveness and signing-posture checks
+  - name: query
+    description: Natural-language compliance query
+  - name: audit
+    description: Audit chain state + evidence export + offline verification
+  - name: budget
+    description: Per-principal cost + rate-limit state
+  - name: metrics
+    description: Prometheus exposition
+
+paths:
+  /health:
+    get:
+      tags: [health]
+      summary: Liveness + signing posture
+      description: |
+        No authentication. Returns 200 when the gateway pod is healthy and the audit
+        signing key is configured (in production). Returns 503 when in production
+        without a signing key (fail-closed per ADR-016).
+      security: []
+      responses:
+        '200':
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+        '503':
+          description: Unhealthy (audit signer not configured in production)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+
+  /v1/query:
+    post:
+      tags: [query]
+      summary: Natural-language compliance query
+      description: |
+        Validates the body with Zod, signs an `auth:success` audit record, routes the
+        query to an LLM provider based on complexity classification, signs a
+        `query:success` audit record on the response, and returns the natural-language
+        answer plus structured metadata.
+
+        Per-principal QPS and daily USD budget are enforced before the LLM call;
+        budget exhaustion returns 429 with a `Retry-After` header.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QueryRequest'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryResponse'
+        '400':
+          description: Validation failure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '405': { $ref: '#/components/responses/MethodNotAllowed' }
+        '429':
+          description: Rate-limit or budget exceeded
+          headers:
+            Retry-After:
+              schema: { type: integer }
+              description: Seconds to wait before retry
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BudgetExceededResponse'
+        '502':
+          description: All LLM providers failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProviderFailureResponse'
+
+  /v1/audit/chain:
+    get:
+      tags: [audit]
+      summary: Current audit-chain state
+      description: |
+        Returns the gateway's in-memory chain state: record count, last-hash, total
+        records since boot. Full chain is durable in WORM via NATS + audit-flush; this
+        endpoint is the fast-path for operators.
+      responses:
+        '200':
+          description: Chain state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChainState'
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+
+  /v1/audit/verify:
+    post:
+      tags: [audit]
+      summary: Verify a posted NDJSON chain
+      description: |
+        Accepts a body containing NDJSON-encoded signed audit records (one JSON object
+        per line) and returns the verification result. Same logic as
+        `npx @gtcx/audit-signer verify --file`; useful when the operator wants to
+        verify a batch in-process rather than downloading the WORM object.
+      requestBody:
+        required: true
+        content:
+          application/x-ndjson:
+            schema:
+              type: string
+              description: NDJSON — one signed audit record per line
+      responses:
+        '200':
+          description: Verification result (success or failure both 200)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifyResult'
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '405': { $ref: '#/components/responses/MethodNotAllowed' }
+
+  /v1/audit/evidence-bundle:
+    get:
+      tags: [audit]
+      summary: Tenant evidence bundle export
+      description: |
+        Returns the audit evidence bundle scoped to the caller's tenant. Optional
+        `since` query parameter bounds the bundle to events at or after the ISO 8601
+        timestamp. Useful for regulator-facing exports.
+      parameters:
+        - in: query
+          name: since
+          description: ISO 8601 timestamp; only events at or after this point are returned
+          required: false
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: Evidence bundle
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EvidenceBundle'
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+
+  /v1/budget:
+    get:
+      tags: [budget]
+      summary: Per-principal QPS + daily spend state
+      responses:
+        '200':
+          description: Budget state for the caller's principal
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BudgetState'
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+
+  /v1/brief:
+    get:
+      tags: [audit]
+      summary: Operator-facing brief (chain + spend + signing + narrative)
+      description: |
+        Composite operator-facing view that combines the chain state, the caller's
+        spend, the signer health, and a generated narrative paragraph. Designed for
+        a Grafana panel or a quick CLI check rather than programmatic consumption.
+      parameters:
+        - in: query
+          name: since
+          description: ISO 8601; bounds the narrative window
+          required: false
+          schema: { type: string, format: date-time }
+      responses:
+        '200':
+          description: Brief composite
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Brief'
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+
+  /v1/tools:
+    get:
+      tags: [query]
+      summary: List available protocol tools (access-filtered)
+      description: |
+        Returns the catalog of protocol tools the caller's access profile can invoke.
+        Mutating tools are gated behind an approval-ticket header; this endpoint
+        reflects whether the caller's current request would have access.
+      responses:
+        '200':
+          description: Tool catalog
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ToolsResponse'
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+
+  /v1/providers:
+    get:
+      tags: [query]
+      summary: List LLM providers + routing tier mapping
+      description: |
+        Returns the static catalog of LLM providers the gateway routes across, with
+        the tier each provider sits in (simple / medium / complex) and per-provider
+        cost metadata. Useful for partners to understand cost structure.
+      responses:
+        '200':
+          description: Provider catalog
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProvidersResponse'
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+
+  /audit/query:
+    post:
+      tags: [audit]
+      summary: Portal + regulator query against ingested audit events
+      description: |
+        Read endpoint for the web portal's audit-review page and the
+        future MCP `query_audit` tool. Returns events scoped to the
+        caller's tenant (per `X-GTCX-Tenant-Id` header), filtered by
+        optional agentId / actorDid / outcome / from / to.
+
+        Bearer-only auth for W1 (per the cross-team #52 contract Q8).
+        Signed-edge dual-auth is deferred to Sprint 22+ when the MCP
+        server in `03-platform/packages/agents-mcp` wires its transport.
+
+        `totalMatched` uses `min(matched, limit + 1)` semantics rather
+        than an exact count (per Q9) — the portal renders the number
+        for "X matched (showing first N)" framing, but uses the
+        `truncated` flag for "there's more — refine your filter".
+
+        Source schema: `gtcx-mobile/apps/web/portal/lib/audit-client.ts`
+        `QueryAuditRequest` / `QueryAuditResponse`.
+
+        **Feature-flagged behind `AUDIT_QUERY_ENABLED=1`** — returns 404
+        when off. Implementation: PR
+        [#58](https://github.com/gtcx-ecosystem/gtcx-infrastructure/pull/58).
+      parameters:
+        - $ref: '#/components/parameters/GtcxTenantId'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QueryAuditRequest'
+      responses:
+        '200':
+          description: Query result (always live-source; no `source` field)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryAuditResponse'
+        '400':
+          description: Tenant or body validation failure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryErrorResponse'
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404':
+          description: Endpoint disabled (`AUDIT_QUERY_ENABLED` not set)
+        '405': { $ref: '#/components/responses/MethodNotAllowed' }
+        '500':
+          description: Store backend error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryErrorResponse'
+
+  /audit/bundles:
+    post:
+      tags: [audit]
+      summary: Mobile bundle ingest (signed-edge)
+      description: |
+        Inbound endpoint for gtcx-mobile signed audit bundles. Verifies the
+        9-field signed-edge envelope, replay-rejects nonces within a 5-minute TTL,
+        Zod-parses the bundle body, validates the within-bundle previousHash chain,
+        and returns the IDs of accepted events.
+
+        Per the cross-team contract on
+        [gtcx-mobile/03-platform/packages/agents/src/transport-contract.ts](https://github.com/gtcx-ecosystem/gtcx-mobile/blob/main/03-platform/packages/agents/src/transport-contract.ts).
+
+        **Feature-flagged behind `AUDIT_BUNDLES_ENABLED=1`** — returns 404 when off.
+        Implementation lives on `feat/audit-bundles-verifier` (PR
+        [#56](https://github.com/gtcx-ecosystem/gtcx-infrastructure/pull/56)).
+      security:
+        - signedEdge: []
+      parameters:
+        - $ref: '#/components/parameters/GtcxDid'
+        - $ref: '#/components/parameters/GtcxKeyId'
+        - $ref: '#/components/parameters/GtcxTimestamp'
+        - $ref: '#/components/parameters/GtcxNonce'
+        - $ref: '#/components/parameters/GtcxAudience'
+        - $ref: '#/components/parameters/GtcxBodySha256'
+        - $ref: '#/components/parameters/GtcxSignature'
+        - $ref: '#/components/parameters/GtcxTenantId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuditBundleRequest'
+      responses:
+        '200':
+          description: Bundle accepted (possibly partially per `acceptedIds`)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuditBundleResponse'
+        '400':
+          description: Envelope or body validation failure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnvelopeErrorResponse'
+        '404':
+          description: Endpoint disabled (`AUDIT_BUNDLES_ENABLED` not set)
+        '409':
+          description: Nonce already seen within 5-minute TTL
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NonceReplayedResponse'
+        '503':
+          description: TradePass DID resolver not configured
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnvelopeErrorResponse'
+
+  /metrics:
+    get:
+      tags: [metrics]
+      summary: Prometheus metrics
+      description: |
+        Prometheus 0.0.4 exposition format. Includes audit signing posture, chain
+        depth, sink connectivity, in-flight requests (for HPA), per-tenant cost
+        totals, and provider-fallback counters.
+      security: []
+      responses:
+        '200':
+          description: Prometheus exposition
+          content:
+            text/plain:
+              schema:
+                type: string
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT-or-opaque
+      description: |
+        Token must carry permissions appropriate to the endpoint. Permissions:
+        `query:read`, `audit:read`, `tools:read`, `providers:read`. A token may carry
+        multiple permissions. Issuance and rotation: see
+        [`01-docs/09-security/credential-rotation-log.md`](../security/credential-rotation-log.md).
+
+    signedEdge:
+      type: apiKey
+      in: header
+      name: X-GTCX-Signature
+      description: |
+        9-field signed-edge envelope. The actual signature lives in
+        `X-GTCX-Signature` but the verification surface requires all of:
+        `X-GTCX-DID`, `X-GTCX-Key-Id`, `X-GTCX-Timestamp`, `X-GTCX-Nonce`,
+        `X-GTCX-Audience`, `X-GTCX-Body-SHA256`, `X-GTCX-Signature`, plus
+        `X-GTCX-Tenant-Id`. The Ed25519 signature covers SHA-256 of the
+        newline-joined 9-field canonical string. Reference signer:
+        `gtcx-mobile/apps/mobile/gtcx/lib/auth-token.ts:166-215`.
+
+  parameters:
+    GtcxDid:
+      name: X-GTCX-DID
+      in: header
+      required: true
+      schema: { type: string }
+      description: Signer DID (e.g. `did:gtcx:tp_zw_001`)
+    GtcxKeyId:
+      name: X-GTCX-Key-Id
+      in: header
+      required: true
+      schema: { type: string }
+      description: Key identifier inside the DID document
+    GtcxTimestamp:
+      name: X-GTCX-Timestamp
+      in: header
+      required: true
+      schema: { type: string, format: date-time }
+      description: ISO 8601; must be within 5-minute server window
+    GtcxNonce:
+      name: X-GTCX-Nonce
+      in: header
+      required: true
+      schema: { type: string }
+      description: Per-request unique nonce; replay-rejected within TTL
+    GtcxAudience:
+      name: X-GTCX-Audience
+      in: header
+      required: true
+      schema: { type: string, format: uri }
+      description: Must match the request's actual origin (e.g. `https://geotag.staging.gtcx.trade`)
+    GtcxBodySha256:
+      name: X-GTCX-Body-SHA256
+      in: header
+      required: true
+      schema: { type: string }
+      description: SHA-256 hex of the raw request body
+    GtcxSignature:
+      name: X-GTCX-Signature
+      in: header
+      required: true
+      schema: { type: string }
+      description: Base64url Ed25519 signature over the canonical envelope hash
+    GtcxTenantId:
+      name: X-GTCX-Tenant-Id
+      in: header
+      required: true
+      schema:
+        type: string
+        pattern: '^[a-z]{2}$'
+      description: Lowercase ISO-2 country code (e.g. `zw`, `gh`)
+
+  schemas:
+    HealthResponse:
+      type: object
+      required: [status, authConfigured, audit]
+      properties:
+        status:
+          type: string
+          enum: [healthy, unhealthy]
+        authConfigured: { type: boolean }
+        authMode:
+          type: string
+          enum: [dev-default-readonly, configured]
+        audit:
+          type: object
+          properties:
+            signing: { type: boolean }
+            ephemeral: { type: boolean }
+            maxInMemoryRecords: { type: integer }
+            lastHash: { type: string }
+            recordCount: { type: integer }
+            totalRecords: { type: integer }
+        tools: { type: integer }
+        providers: { type: integer }
+        availableProviders:
+          type: array
+          items: { type: string }
+        error:
+          type: string
+          description: Only present when status=unhealthy
+
+    QueryRequest:
+      type: object
+      required: [query]
+      properties:
+        query:
+          type: string
+          minLength: 1
+          maxLength: 4096
+          description: Natural-language compliance question
+        jurisdiction:
+          type: string
+          description: Jurisdiction code from `@gtcx/compliance-data/jurisdictions`, or `global`
+        context:
+          type: object
+          description: |
+            Shallow untrusted-context bag. Values must be string (≤2048), number,
+            boolean, or null. Field names ≤64 chars. Used for caller-supplied context
+            that the system prompt isolates behind a delimited block to limit prompt
+            injection.
+          additionalProperties:
+            oneOf:
+              - { type: string, maxLength: 2048 }
+              - { type: number }
+              - { type: boolean }
+              - { type: 'null' }
+
+    QueryResponse:
+      type: object
+      required: [answer]
+      properties:
+        answer: { type: string }
+        provider: { type: string }
+        complexity:
+          type: string
+          enum: [simple, medium, complex]
+        usage:
+          type: object
+          properties:
+            promptTokens: { type: integer }
+            completionTokens: { type: integer }
+        costUsd: { type: number }
+        toolResults:
+          type: array
+          items: { type: object }
+        auditRecordId: { type: string }
+
+    ValidationErrorResponse:
+      type: object
+      required: [error]
+      properties:
+        error: { type: string }
+        fieldErrors:
+          type: object
+          description: Field path → human-readable error
+          additionalProperties: { type: string }
+
+    BudgetExceededResponse:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
+          enum:
+            - Rate limit exceeded for this principal
+            - Daily LLM budget exceeded for this principal
+        retryAfterSeconds: { type: integer }
+        limits:
+          type: object
+          properties:
+            qpsLimit: { type: number }
+            dailyUsdLimit: { type: number }
+        spentUsd: { type: number }
+
+    ProviderFailureResponse:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
+          example: All LLM providers failed
+        providersAttempted:
+          type: array
+          items: { type: string }
+
+    ChainState:
+      type: object
+      required: [recordCount, totalRecords, lastHash]
+      properties:
+        recordCount:
+          type: integer
+          description: Records in the bounded in-memory chain
+        totalRecords:
+          type: integer
+          description: Total records since boot (in-memory + checkpointed)
+        lastHash:
+          type: string
+          description: Most recent record hash
+        checkpointHash:
+          type: string
+          description: Hash at the last in-memory checkpoint boundary
+
+    VerifyResult:
+      type: object
+      required: [valid]
+      properties:
+        valid: { type: boolean }
+        firstInvalidIndex:
+          type: integer
+          description: Only present when valid=false; index of first record that failed verification
+        recordsChecked: { type: integer }
+
+    EvidenceBundle:
+      type: object
+      required: [tenantId, producedAt, records]
+      properties:
+        tenantId: { type: string }
+        since:
+          type: string
+          format: date-time
+        producedAt:
+          type: string
+          format: date-time
+        recordCount: { type: integer }
+        records:
+          type: array
+          items:
+            $ref: '#/components/schemas/SignedAuditRecord'
+
+    SignedAuditRecord:
+      type: object
+      description: |
+        One node in the audit chain. Hash-linked to its predecessor via `prevHash`;
+        signed by the gateway's Ed25519 key over the canonicalized record bytes.
+      properties:
+        index: { type: integer }
+        timestamp: { type: string, format: date-time }
+        actor: { type: string }
+        action: { type: string }
+        target: { type: string }
+        reason: { type: string }
+        payload: { type: object }
+        prevHash: { type: string }
+        hash: { type: string }
+        signature: { type: string }
+        publicKey: { type: string }
+
+    BudgetState:
+      type: object
+      properties:
+        principal: { type: string }
+        tenantId: { type: string }
+        qpsLimit: { type: number }
+        qpsRemaining: { type: number }
+        dailyUsdLimit: { type: number }
+        spentUsd: { type: number }
+        windowResetsAt: { type: string, format: date-time }
+
+    Brief:
+      type: object
+      properties:
+        tenantId: { type: string }
+        since: { type: string, format: date-time }
+        producedAt: { type: string, format: date-time }
+        chainHead: { type: string }
+        recordCount: { type: integer }
+        totalRecords: { type: integer }
+        spend:
+          $ref: '#/components/schemas/BudgetState'
+        signing: { type: boolean }
+        narrative:
+          type: string
+          description: Human-readable summary paragraph
+
+    ToolsResponse:
+      type: object
+      properties:
+        availableCount: { type: integer }
+        count: { type: integer }
+        mutatingToolsEnabled: { type: boolean }
+        tools:
+          type: array
+          items:
+            $ref: '#/components/schemas/ToolDefinition'
+
+    ToolDefinition:
+      type: object
+      properties:
+        name: { type: string }
+        description: { type: string }
+        mutating: { type: boolean }
+        requiresApproval: { type: boolean }
+        protocol:
+          type: string
+          enum: [tradepass, geotag, gci, vaultmark, pvp, panx, other]
+        inputSchema: { type: object }
+
+    ProvidersResponse:
+      type: object
+      properties:
+        count: { type: integer }
+        routing:
+          type: object
+          properties:
+            simple: { type: string }
+            medium: { type: string }
+            complex: { type: string }
+        providers:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProviderDefinition'
+
+    ProviderDefinition:
+      type: object
+      properties:
+        name: { type: string }
+        model: { type: string }
+        tier:
+          type: string
+          enum: [simple, medium, complex]
+        inputCostPer1M: { type: number }
+        outputCostPer1M: { type: number }
+        maxTools: { type: integer }
+
+    AuditBundleRequest:
+      type: object
+      required: [bundleId, events]
+      properties:
+        bundleId:
+          type: string
+          minLength: 1
+          maxLength: 128
+        events:
+          type: array
+          minItems: 1
+          maxItems: 1000
+          items:
+            $ref: '#/components/schemas/AgentOutputEvent'
+      description: |
+        Mirrors `gtcx-mobile/03-platform/packages/agents/src/transport-contract.ts`
+        AuditBundleRequestSchema. If the two diverge, mobile is canonical.
+
+    AuditBundleResponse:
+      type: object
+      required: [acceptedIds]
+      properties:
+        acceptedIds:
+          type: array
+          items: { type: string }
+        serverRootHash:
+          type: string
+          description: Optional; substrate-computed root hash after ingest
+
+    AgentOutputEvent:
+      type: object
+      required:
+        - id
+        - timestamp
+        - workflowId
+        - iterationNumber
+        - agentId
+        - promptVersionId
+        - inputHash
+        - outputHash
+        - tokensUsed
+        - costUsd
+        - durationMs
+        - outcome
+        - eventHash
+        - synced
+      properties:
+        id: { type: string, minLength: 1 }
+        timestamp: { type: string, minLength: 1 }
+        workflowId: { type: string, minLength: 1 }
+        iterationNumber: { type: integer, minimum: 0 }
+        agentId: { type: string, minLength: 1 }
+        promptVersionId: { type: string, minLength: 1 }
+        inputHash: { type: string, minLength: 1 }
+        outputHash: { type: string, minLength: 1 }
+        qualityScore:
+          oneOf:
+            - { type: number }
+            - { type: 'null' }
+        tokensUsed: { type: integer, minimum: 0 }
+        costUsd: { type: number, minimum: 0 }
+        durationMs: { type: number, minimum: 0 }
+        outcome:
+          type: string
+          enum: [continue, complete, escalate, failure]
+        schemaValid:
+          oneOf:
+            - { type: boolean }
+            - { type: 'null' }
+        previousHash:
+          oneOf:
+            - { type: string }
+            - { type: 'null' }
+        eventHash: { type: string, minLength: 1 }
+        synced: { type: boolean }
+        metadata:
+          type: object
+          additionalProperties: true
+
+    EnvelopeErrorResponse:
+      type: object
+      required: [error, acceptedIds]
+      properties:
+        error:
+          type: string
+          description: Typed reason — `envelope-<sub-reason>` (header-missing, audience-mismatch, body-hash-mismatch, timestamp-stale, timestamp-future, did-resolve-*, signature-invalid, signature-malformed) or `bundle-malformed` or `tradepass-resolver-unconfigured`
+        acceptedIds:
+          type: array
+          items: { type: string }
+          maxItems: 0
+        detail:
+          oneOf:
+            - { type: object }
+            - { type: string }
+
+    NonceReplayedResponse:
+      type: object
+      required: [error, acceptedIds]
+      properties:
+        error:
+          type: string
+          enum: [nonce-replayed]
+        acceptedIds:
+          type: array
+          items: { type: string }
+          maxItems: 0
+
+    QueryAuditRequest:
+      type: object
+      description: |
+        Mirrors `gtcx-mobile/apps/web/portal/lib/audit-client.ts`
+        `QueryAuditRequest`. All filters optional; empty body = no
+        filters. Mobile is canonical if the two declarations diverge.
+      properties:
+        agentId:
+          type: string
+          minLength: 1
+          maxLength: 256
+        actorDid:
+          type: string
+          minLength: 1
+          maxLength: 256
+          description: Matched against `event.metadata.actorDid`
+        outcome:
+          type: string
+          enum: [continue, complete, escalate, failure]
+        from:
+          type: string
+          format: date-time
+          description: ISO 8601 inclusive lower bound on `event.timestamp`
+        to:
+          type: string
+          format: date-time
+          description: ISO 8601 inclusive upper bound on `event.timestamp`
+        limit:
+          type: integer
+          minimum: 1
+          maximum: 1000
+          default: 100
+
+    QueryAuditResponse:
+      type: object
+      required: [events, totalMatched, truncated]
+      properties:
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/AgentOutputEvent'
+        totalMatched:
+          type: integer
+          minimum: 0
+          description: |
+            `min(actualMatched, limit + 1)` per the mobile Q9 wire-shape
+            answer. Exact count is deliberately not computed — would not
+            scale over a WORM-backed event store. Use `truncated` to
+            detect that more events exist beyond the limit.
+        truncated:
+          type: boolean
+          description: |
+            `true` when more events exist beyond the returned `limit`.
+            Client should refine the filter to see more.
+
+    QueryErrorResponse:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
+          description: |
+            Typed reason — `tenant-required`, `tenant-malformed`,
+            `invalid-json`, `query-malformed`, `store-failed`
+        detail:
+          oneOf:
+            - { type: object }
+            - { type: string }
+
+  responses:
+    Unauthorized:
+      description: Missing or invalid bearer token
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [error]
+            properties:
+              error: { type: string, example: Unauthorized }
+
+    Forbidden:
+      description: Token valid but lacks required permission
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [error]
+            properties:
+              error: { type: string, example: Insufficient permissions }
+
+    MethodNotAllowed:
+      description: Wrong HTTP method
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [error]
+            properties:
+              error: { type: string, example: Method not allowed }

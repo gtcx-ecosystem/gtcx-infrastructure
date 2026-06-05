@@ -1,0 +1,51 @@
+# =============================================================================
+# Audit-Flush — Staging overlay patch
+# =============================================================================
+# Substitutes the base manifest's PLACEHOLDER_OVERRIDE_IN_OVERLAY values with
+# staging-specific image + IRSA role + WORM bucket.
+#
+# The role ARN and bucket name come from `terraform output`:
+#   terraform -chdir=04-ship/terraform/environments/staging output audit_flush_role_arn
+#   terraform -chdir=04-ship/terraform/environments/staging output worm_audit_bucket_name
+# These are committed here per the GitOps convention; rotating them is a
+# terraform apply + kustomize patch update.
+# =============================================================================
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: audit-flush
+  namespace: gtcx
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::348389439381:role/gtcx-staging-audit-flush-irsa
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: audit-flush
+  namespace: gtcx
+spec:
+  template:
+    spec:
+      containers:
+        - name: flusher
+          image: 348389439381.dkr.ecr.af-south-1.amazonaws.com/gtcx-audit-flush:v0.1.0
+          env:
+            - name: NATS_URL
+              value: nats://nats.gtcx-staging.svc.cluster.local:4222
+            - name: AUDIT_NATS_SUBJECT
+              value: gtcx.audit.>
+            - name: AUDIT_S3_BUCKET
+              value: gtcx-worm-audit-staging-af-south-1
+            - name: AUDIT_S3_REGION
+              value: af-south-1
+            - name: AUDIT_FLUSH_BATCH_SIZE
+              value: '500'
+            - name: AUDIT_FLUSH_INTERVAL_MS
+              value: '10000'
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi

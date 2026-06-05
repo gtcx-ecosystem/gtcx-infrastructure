@@ -6,7 +6,7 @@ alwaysApply: true
 
 # Agent mandatory closing (P26 §3b + P22 + micro-commits)
 
-> **Template:** `docs/04-operations/agent-status-update-template.md`  
+> **Template:** `01-docs/04-operations/agent-status-update-template.md`  
 > **Normative:** Protocol 26 §3b · Protocol 22 · Protocol 27
 
 ## End of every substantive turn

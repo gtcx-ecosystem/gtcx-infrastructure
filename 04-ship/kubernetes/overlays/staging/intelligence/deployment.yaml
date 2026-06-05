@@ -1,0 +1,129 @@
+# =============================================================================
+# Intelligence SDK Deployment — Staging
+# =============================================================================
+# Replaces the orchestrator placeholder with the full intelligence SDK.
+# Image: gtcx-intelligence-sdk (built by gtcx-intelligence CI)
+#
+# Prerequisites:
+#   - SecretStore + ExternalSecret applied (module.secrets)
+#   - ServiceAccount intelligence-sa with IRSA annotation
+#   - AWS SM gtcx/intelligence/staging/auth-keys populated
+#
+# Apply:
+#   kubectl apply -k 04-ship/kubernetes/overlays/staging/intelligence/
+# =============================================================================
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: intelligence-orchestrator
+  namespace: intelligence
+  labels:
+    app.kubernetes.io/name: intelligence-orchestrator
+    app.kubernetes.io/part-of: gtcx-intelligence
+    environment: staging
+spec:
+  replicas: 2
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: intelligence-orchestrator
+      environment: staging
+  template:
+    metadata:
+      labels:
+        app: intelligence-orchestrator
+        app.kubernetes.io/managed-by: kustomize
+        app.kubernetes.io/part-of: gtcx
+        environment: staging
+    spec:
+      serviceAccountName: intelligence-sa
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: orchestrator
+          # INT-S13-01: roll to b0488d2d955471f439b824309dd5e15264d4ce53 after ECR push (see from-gtcx-infrastructure-int-s13-01-staging-rollout-2026-06-06.md)
+          image: 348389439381.dkr.ecr.af-south-1.amazonaws.com/gtcx-intelligence-sdk:12be5342151a30ebedd6b7221cd547a008f9e7a1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8200
+              protocol: TCP
+          envFrom:
+            - secretRef:
+                name: intelligence-secrets
+                optional: false
+          env:
+            - name: PORT
+              value: '8200'
+            - name: NODE_ENV
+              value: staging
+            - name: NODE_OPTIONS
+              value: ''
+            - name: GTCX_FIPS_REQUIRED
+              value: 'false'
+            - name: INTELLIGENCE_REQUEST_TIMEOUT
+              value: '30000'
+            - name: INTELLIGENCE_RATE_LIMIT
+              value: '100'
+            - name: INTELLIGENCE_RATE_LIMIT_WINDOW
+              value: '60000'
+            - name: ENABLE_COST_ROUTER
+              value: '1'
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: 500m
+              memory: 512Mi
+            limits:
+              cpu: 2000m
+              memory: 2Gi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: intelligence-orchestrator
+  namespace: intelligence
+  labels:
+    app.kubernetes.io/name: intelligence-orchestrator
+    app.kubernetes.io/part-of: gtcx-intelligence
+    environment: staging
+spec:
+  type: ClusterIP
+  selector:
+    app: intelligence-orchestrator
+    environment: staging
+  ports:
+    - name: http
+      port: 8200
+      targetPort: http
+      protocol: TCP

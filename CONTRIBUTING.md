@@ -43,15 +43,15 @@ docs(ops): update deployment runbook with canary steps
 
 ### Terraform
 
-- One module per directory under `infra/terraform/modules/`
+- One module per directory under `04-ship/terraform/modules/`
 - Variables in `variables.tf`, outputs in `outputs.tf` (or inline in `main.tf` for small modules)
 - Native tests in `*.tftest.hcl` using plan-mode validation
 - Tag all resources with `Environment`, `ManagedBy`, `Project`
 
 ### Kubernetes
 
-- Base manifests in `infra/kubernetes/base/`
-- Environment-specific patches in `infra/kubernetes/overlays/`
+- Base manifests in `04-ship/kubernetes/base/`
+- Environment-specific patches in `04-ship/kubernetes/overlays/`
 - All pods: `runAsNonRoot`, `readOnlyRootFilesystem`, `allowPrivilegeEscalation: false`, `seccompProfile: RuntimeDefault`
 - All deployments: resource requests/limits, liveness/readiness/startup probes, rolling update strategy
 
@@ -74,4 +74,4 @@ docs(ops): update deployment runbook with canary steps
 - Never push to `main` without PR review
 - Never use `--no-verify` or skip hooks
 - Two separate databases: `gtcx_development` (operational) and `gtcx_audit` (append-only) — never merge, never cross-write
-- See `docs/agents/workflows/agent-safety-rules.md` for the full authority matrix
+- See `01-docs/01-agents/workflows/agent-safety-rules.md` for the full authority matrix

@@ -223,10 +223,10 @@
     }
   },
   "cloud_placement": {
-    "canonical_spec": "compliance-os/docs/operations/cloud-placement-gtcx-ecosystem-2026-06-05.md",
+    "canonical_spec": "compliance-os/01-docs/04-ops/cloud-placement-gtcx-ecosystem-2026-06-05.md",
     "document_id": "OPS-CLOUD-PLACE-001",
-    "register": "compliance-os/docs/operations/cloud-placement/repo-register-2026-06-05.md",
-    "infra_annex": "docs/operations/coordination/cloud-placement-aws-control-plane-2026-06-05.md",
+    "register": "compliance-os/01-docs/04-ops/cloud-placement/repo-register-2026-06-05.md",
+    "infra_annex": "01-docs/04-ops/coordination/cloud-placement-aws-control-plane-2026-06-05.md",
     "default_cloud": "AWS",
     "gcp_scope": "gcp-ml-bridge module only (Phase 3+)"
   },

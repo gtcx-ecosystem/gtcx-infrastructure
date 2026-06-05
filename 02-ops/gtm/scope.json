@@ -1,0 +1,15 @@
+{
+  "$schema": "gtcx://workspace/gtm-scope/v1",
+  "repo": "gtcx-infrastructure",
+  "updated": "2026-06-08",
+  "penTest": {
+    "inScope": [],
+    "outOfScope": []
+  },
+  "soc": {
+    "controlsOwned": []
+  },
+  "procurement": {
+    "sor": "https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/01-docs/08-gtm/procurement-packet-index.md"
+  }
+}

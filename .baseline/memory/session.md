@@ -4,7 +4,7 @@
 > **Agent:** platform-architect (development frame)
 > **Protocol compliance:** P22, P26, P27, P28 active
 > **Current sprint:** Sprint 1 + Sprint 2 + Sprint 3 infra items — effectively complete
-> **Sprint roadmap:** `docs/agile/sprints/sprint-2026-06-phase3-roadmap.md`
+> **Sprint roadmap:** `01-docs/05-audit/agile/sprints/sprint-2026-06-phase3-roadmap.md`
 
 ---
 
@@ -33,7 +33,7 @@
 
 ## Sprint 1: Infra Hardening — In Progress (Week of 2026-06-05)
 
-**Roadmap:** `docs/agile/sprints/sprint-2026-06-phase3-roadmap.md` (revamped `bea57b7`)
+**Roadmap:** `01-docs/05-audit/agile/sprints/sprint-2026-06-phase3-roadmap.md` (revamped `bea57b7`)
 
 ### Done
 
@@ -65,8 +65,8 @@
 | S2-11 | Supabase unpause (XR-508 / S3-10) | **`done`** (2026-06-05) | Project active; `financing_applications` REST 200 |
 | S2-13 | Pen-test SOW signature | `intake ready` | Human SOW signature pending (EXT-INF-002) |
 | S3-06 | Publish primitives | `done` | `publish-npm` job in slsa-provenance.yml; tag-triggered; gate in validate-all; needs NPM_TOKEN secret |
-| S3-07 | DR live RDS restore | `done` | Live PITR staging operational 2026-06-04 — `docs/audit/evidence/rds-restore/rds-restore-operational-staging-20260604-080937.json` (RTO ~20m, RPO 0); side instance deleted |
-| IR-3.5 | Refresh DR fire-drill dated artifact | `done` | Updated from 2026-05-31 structural placeholder to 2026-06-04 live evidence; `docs/audit/dr-fire-drill-evidence-2026-06-04.md` |
+| S3-07 | DR live RDS restore | `done` | Live PITR staging operational 2026-06-04 — `01-docs/05-audit/evidence/rds-restore/rds-restore-operational-staging-20260604-080937.json` (RTO ~20m, RPO 0); side instance deleted |
+| IR-3.5 | Refresh DR fire-drill dated artifact | `done` | Updated from 2026-05-31 structural placeholder to 2026-06-04 live evidence; `01-docs/05-audit/dr-fire-drill-evidence-2026-06-04.md` |
 | IR-5.1 | Cross-repo-contract token | `done` | Scoped `cross-repo-contract.yml` to infra-only matrix; external repos commented out pending `GTCX_REPO_TOKEN` secret provisioning |
 | INT-S9-01 | Wire #2 POST /v1/evidence/submit | `infra unblocked` | Routing verified + TRADEPASS_AUTH_TOKEN wired (optional); protocols endpoint + secret population remaining |
 
@@ -97,7 +97,7 @@
    - `DATABASE_URL` → `gtcx-staging-audit` Postgres (real connection)
    - `RATE_LIMIT_REDIS_REST_URL`/`TOKEN` → dummy values (runtime falls back to in-memory; acceptable for single-replica staging)
    - Existing keys preserved: `COMPLIANCE_OS_TERMINAL_API_KEY`, `AUTH_SECRET`
-3. **K8s manifests** — updated in `infra/kubernetes/overlays/staging/terminal-os/`:
+3. **K8s manifests** — updated in `04-ship/kubernetes/overlays/staging/terminal-os/`:
    - `deployment.yaml`: `NEXT_PUBLIC_APP_URL` → `https://terminal-staging.gtcx.trade`; strategy `maxUnavailable: 1, maxSurge: 0`; reduced requests to `cpu: 100m, memory: 256Mi` (cluster is oversubscribed)
    - `service.yaml`: added ALB health check annotations (`/api/health`)
    - `ingress.yaml`: new ALB ingress sharing `gtcx-staging-api` group; routes `terminal-staging.gtcx.trade` → service:3000
@@ -164,7 +164,7 @@ Staging sovereign pods use the same key alias but assume the staging IRSA role
 
 ## Context refresh checklist
 
-- [ ] Re-read `docs/agile/sprints/sprint-2026-06-phase3-roadmap.md`
+- [ ] Re-read `01-docs/05-audit/agile/sprints/sprint-2026-06-phase3-roadmap.md`
 - [ ] Re-check `git status`
 - [ ] Re-read `.baseline/memory/pitfalls.md`
 - [ ] Run `pnpm agent:next-work` to confirm next story
@@ -229,13 +229,13 @@ Staging sovereign pods use the same key alias but assume the staging IRSA role
 
 ### Witness fixes (this session)
 
-- `docs/operations/runbooks/terminal-os-prod-cloudflare-dns.md` — frontmatter
-- `docs/operations/human-gate-navigation.md` — sibling-repo link targets
-- `docs/agile/roadmap.md` — frontmatter
+- `01-docs/04-ops/runbooks/terminal-os-prod-cloudflare-dns.md` — frontmatter
+- `01-docs/04-ops/human-gate-navigation.md` — sibling-repo link targets
+- `01-docs/05-audit/agile/roadmap.md` — frontmatter
 
 ### Next (Class R)
 
-- Docs Standard drift: 27 violations (mostly `docs/agents/*` + cross-repo `gtcx-agentic` links) — baseline or fix in dedicated hygiene pass
+- Docs Standard drift: 27 violations (mostly `01-docs/01-agents/*` + cross-repo `gtcx-agentic` links) — baseline or fix in dedicated hygiene pass
 - EXT-INF-002 pen-test SOW — Class S parallel (not repo-blocked)
 
 ---
@@ -258,8 +258,8 @@ Staging sovereign pods use the same key alias but assume the staging IRSA role
 
 ### Uncommitted / untracked (not in HEAD)
 
-- Modified: agent-sync files (`.agent/`, `CLAUDE.md`, cursor rules, `docs/agents/README.md`)
-- Untracked: `workspace/`, `agents/`, `docs/agents/{claude,codex,...}/` — likely agent-sync drift; fold into S4-08
+- Modified: agent-sync files (`.agent/`, `CLAUDE.md`, cursor rules, `01-docs/01-agents/README.md`)
+- Untracked: `workspace/`, `agents/`, `01-docs/01-agents/{claude,codex,...}/` — likely agent-sync drift; fold into S4-08
 
 ### Proceed Brief (P26)
 
@@ -275,7 +275,7 @@ Staging sovereign pods use the same key alias but assume the staging IRSA role
 | Story | Status | UAT |
 |-------|--------|-----|
 | S4-08 docs-standard | **done** | `docs-standard-validator` exit 0 |
-| S4-07 validate.sh quick | **done** | `bash infra/scripts/validate.sh quick` exit 0 |
+| S4-07 validate.sh quick | **done** | `bash 04-ship/03-platform/scripts/validate.sh quick` exit 0 |
 | validate-all | **55/55** | all gates pass |
 
 **Next (P22):** witness mode — `backlogClear: true` pending recompute

@@ -8,8 +8,8 @@ queries:
   - uses: ./.github/codeql/insecure-deserialization.ql
 
 paths:
-  - tools/
-  - src/
+  - 03-platform/tools/
+  - 03-platform/src/
 
 paths-ignore:
   - node_modules/

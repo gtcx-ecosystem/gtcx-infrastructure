@@ -1,14 +1,14 @@
 name: docs-site-build
 
 # Build-only verification for the Astro Starlight static-site at
-# tools/docs-site/. Runs on PRs that touch the docs-site markdown
+# 03-platform/tools/docs-site/. Runs on PRs that touch the docs-site markdown
 # source or the build config. Does NOT deploy.
 
 on:
   pull_request:
     paths:
-      - 'docs/gitbook/docs-site/**'
-      - 'tools/docs-site/**'
+      - '01-docs/gitbook/docs-site/**'
+      - '03-platform/tools/docs-site/**'
       - '.github/workflows/docs-site-build.yml'
   workflow_dispatch:
 

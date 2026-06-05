@@ -6,7 +6,7 @@ alwaysApply: true
 
 # Protocol 28: Agent Authority Classification
 
-> **Normative spec:** `gtcx-docs/docs/governance/protocols/28-agent-authority-classification/protocol.md`
+> **Normative spec:** `gtcx-docs/01-docs/governance/protocols/28-agent-authority-classification/protocol.md`
 > **Date:** 2026-06-03 | **Version:** 1.0.0 | **Tier:** Critical
 
 ## Three authority classes

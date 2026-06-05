@@ -28,7 +28,7 @@ jobs:
           #     test-command: pnpm test
           - name: gtcx-infrastructure
             path: infrastructure
-            test-command: bash infra/scripts/validate.sh quick
+            test-command: bash 04-ship/03-platform/scripts/validate.sh quick
     steps:
       - name: Checkout infrastructure (this repo)
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
@@ -55,13 +55,13 @@ jobs:
         if: matrix.repo.name == 'gtcx-infrastructure'
         run: |
           cd infrastructure
-          node --test tools/contract-tests/*.test.mjs
+          node --test 03-platform/tools/contract-tests/*.test.mjs
 
       - name: Run contract tests — protocol API schema
         if: matrix.repo.name == 'gtcx-protocols'
         run: |
           cd infrastructure
-          node --test tools/contract-tests/protocol-schema.test.mjs
+          node --test 03-platform/tools/contract-tests/protocol-schema.test.mjs
 
       - name: Run ${{ matrix.repo.name }} tests
         if: matrix.repo.name != 'gtcx-infrastructure'
@@ -75,6 +75,6 @@ jobs:
         with:
           name: contract-evidence-${{ matrix.repo.name }}-${{ github.run_id }}
           path: |
-            infrastructure/tools/contract-tests/
+            infrastructure/03-platform/tools/contract-tests/
             ${{ matrix.repo.path }}/test-results/
           retention-days: 90

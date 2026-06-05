@@ -1,0 +1,11 @@
+{
+  "$schema": "gtcx://02-ops/compliance/v1",
+  "repo": "gtcx-infrastructure",
+  "updated": "2026-06-08",
+  "sor": {
+    "standards": "https://github.com/gtcx-ecosystem/gtcx-docs/tree/main/01-docs/10-compliance/",
+    "soc2TypeII": "https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/01-docs/10-compliance/soc2-type2/evidence-index.md"
+  },
+  "evidenceIndex": "02-ops/compliance/evidence-index.json",
+  "assuranceProcedure": "workspace/assurance"
+}

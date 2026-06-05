@@ -1,0 +1,227 @@
+{
+  "$schema": "gtcx://coordination/human-gates-manifest/v1",
+  "schema": "gtcx.humanGates.manifest.v1",
+  "updated": "2026-06-06",
+  "normativeDoc": "01-docs/04-ops/human-gates-system.md",
+  "operatingModel": "https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/01-docs/04-ops/coordination/human-assurance-gates-operating-model-2026-06-06.md",
+  "gates": [
+    {
+      "id": "H-03",
+      "title": "Sovereign CSP countersign (Ghana)",
+      "authorityClass": "S",
+      "owner": "Sovereign program / Legal",
+      "ownerRepo": ["gtcx-protocols"],
+      "blocksClaims": ["ratified CSP", "governmental attestor"],
+      "blocksIR": false,
+      "status": "awaiting-human",
+      "oneLineAsk": "Authorize first sovereign countersignature of gh/v1.0.0 with did:gtcx:auth:gh:bog; record chain export before ratified_at.",
+      "checklist": "https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/01-docs/04-ops/coordination/H-03-sovereign-countersign-prep-2026-06-06.md",
+      "packet": "https://github.com/gtcx-ecosystem/gtcx-agentic/blob/main/01-docs/04-ops/coordination/h03-sovereign-countersign-packet-2026-06-04.md"
+    },
+    {
+      "id": "H-05",
+      "title": "Pen-test vendor selection",
+      "authorityClass": "S",
+      "owner": "Security / founder",
+      "ownerRepo": ["gtcx-protocols", "gtcx-intelligence"],
+      "blocksClaims": ["pen-test complete"],
+      "blocksIR": false,
+      "status": "awaiting-human",
+      "aliases": ["EXT-INF-002", "INT-S12-01"],
+      "oneLineAsk": "Select pen-test vendor from score matrix; authorize SOW kickoff per pen-test-rfp.md.",
+      "checklist": "https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/01-docs/10-compliance/pen-test-rfp.md",
+      "packet": "https://github.com/gtcx-ecosystem/gtcx-agentic/blob/main/01-docs/04-ops/coordination/ext-inf-002-pen-test-h05-packet-2026-06-05.md"
+    },
+    {
+      "id": "INT-S12-03",
+      "title": "SOC 2 Type I letter",
+      "authorityClass": "S",
+      "owner": "Auditor / Compliance",
+      "ownerRepo": ["gtcx-intelligence"],
+      "blocksClaims": ["SOC 2 attested"],
+      "blocksIR": false,
+      "status": "awaiting-human",
+      "oneLineAsk": "Auditor engagement + Type I opinion letter; quarterly access review sign-off.",
+      "checklist": "https://github.com/gtcx-ecosystem/gtcx-intelligence/blob/main/01-docs/10-compliance/soc2-type1-gap-assessment-2026-06.md"
+    },
+    {
+      "id": "DTF-5.5.4",
+      "title": "Design-partner LOI / regulator letter",
+      "authorityClass": "S",
+      "owner": "GTM / founder",
+      "ownerRepo": ["gtcx-core"],
+      "blocksClaims": ["Tier 5 commercial close"],
+      "blocksIR": false,
+      "status": "awaiting-human",
+      "checklist": "https://github.com/gtcx-ecosystem/gtcx-core/blob/main/01-docs/04-ops/coordination/from-gtcx-core-tier5-commercial-unblock-2026-06-06.md"
+    },
+    {
+      "id": "MOBILE-MAESTRO-01",
+      "title": "Maestro JTBD field-lab (device cohort)",
+      "authorityClass": "S",
+      "owner": "Ops / device lab",
+      "ownerRepo": ["gtcx-mobile"],
+      "blocksClaims": ["device-proven pilot", "Maestro evidence pack"],
+      "blocksIR": false,
+      "status": "awaiting-human",
+      "oneLineAsk": "Run pnpm maestro:jtbd on each pilot device; file evidence per maestro-field-lab-checklist.",
+      "checklist": "https://github.com/gtcx-ecosystem/gtcx-mobile/blob/main/01-docs/04-ops/maestro-field-lab-checklist.md",
+      "command": "pnpm maestro:jtbd",
+      "workRegister": {
+        "repo": "gtcx-mobile",
+        "path": "01-docs/04-ops/agent-work-selection.md",
+        "storyId": "MOBILE-MAESTRO-01"
+      }
+    },
+    {
+      "id": "MOBILE-I18N-01",
+      "title": "Translator native QA",
+      "authorityClass": "S",
+      "owner": "Translators",
+      "ownerRepo": ["gtcx-mobile"],
+      "blocksClaims": ["locale sign-off"],
+      "blocksIR": false,
+      "status": "awaiting-human",
+      "checklist": "https://github.com/gtcx-ecosystem/gtcx-mobile/blob/main/01-docs/04-ops/translator-qa-checklist.md",
+      "workRegister": {
+        "repo": "gtcx-mobile",
+        "path": "01-docs/04-ops/agent-work-selection.md",
+        "storyId": "MOBILE-I18N-01"
+      }
+    },
+    {
+      "id": "LEGAL-PACK",
+      "title": "Pilot legal pack execution",
+      "authorityClass": "S",
+      "owner": "CS/Legal",
+      "ownerRepo": ["gtcx-mobile"],
+      "blocksClaims": ["pilot legal complete"],
+      "blocksIR": false,
+      "status": "awaiting-human",
+      "checklist": "https://github.com/gtcx-ecosystem/gtcx-mobile/blob/main/01-docs/08-gtm/legal-pack-execution-checklist.md"
+    },
+    {
+      "id": "PRD-003",
+      "title": "ZW coordinator field captures",
+      "authorityClass": "S",
+      "owner": "Coordinator",
+      "ownerRepo": ["gtcx-mobile"],
+      "blocksClaims": ["ZW calibration captures"],
+      "blocksIR": false,
+      "status": "awaiting-human",
+      "checklist": "https://github.com/gtcx-ecosystem/gtcx-mobile/blob/main/01-docs/04-ops/prd-003-coordinator-capture-brief.md"
+    },
+    {
+      "id": "EOS-SEF-EVIDENCE",
+      "title": "S4 UAT + VIS + release SIGNOFF",
+      "authorityClass": "S",
+      "owner": "QA / release ops",
+      "ownerRepo": ["exploration-os"],
+      "blocksClaims": ["production release device-proven"],
+      "blocksIR": false,
+      "status": "awaiting-human",
+      "checklist": "https://github.com/gtcx-ecosystem/exploration-os/blob/main/01-docs/enterprise-roadmap/evidence-capture-runbook.md"
+    },
+    {
+      "id": "MA-003",
+      "title": "Five TradePass issuer instances (#61)",
+      "authorityClass": "A",
+      "owner": "Infra + platforms",
+      "ownerRepo": ["gtcx-infrastructure", "gtcx-platforms", "gtcx-protocols"],
+      "blocksClaims": ["five issuers live"],
+      "blocksIR": false,
+      "status": "prep-ready",
+      "dependsOn": ["H-03"],
+      "checklist": "https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/01-docs/04-ops/coordination/to-gtcx-infrastructure-issue-61-issuer-scale-2026-06-06.md"
+    },
+    {
+      "id": "XR-518",
+      "title": "Authority scale batch 1",
+      "authorityClass": "A",
+      "owner": "Infra + protocols",
+      "ownerRepo": ["gtcx-infrastructure", "gtcx-protocols"],
+      "blocksClaims": ["mass authority production apply"],
+      "blocksIR": false,
+      "status": "prep-ready",
+      "dependsOn": ["H-03"]
+    },
+    {
+      "id": "BL-O-01",
+      "title": "Pilot LOI / S5-04 baseline publishing",
+      "authorityClass": "S",
+      "owner": "Founder / GTM",
+      "ownerRepo": ["baseline-os"],
+      "blocksClaims": ["ghana-cocoa-v1", "nga-financial-v1", "partner baseline publish"],
+      "blocksIR": false,
+      "status": "awaiting-human",
+      "aliases": ["O-01", "S2-PILOT-01", "S5-04"],
+      "oneLineAsk": "Sign one design-partner pilot LOI or nominate a named operator for S5-04 baseline publishing.",
+      "checklist": "https://github.com/gtcx-ecosystem/baseline-os/blob/main/01-docs/specs/_project/pilots/reference-deployment-workflow.md",
+      "packet": "https://github.com/gtcx-ecosystem/baseline-os/blob/main/workstream/coordination/outbound/to-gtcx-agentic-human-gates-2026-06-05.md",
+      "workRegister": {
+        "repo": "baseline-os",
+        "path": "01-docs/04-ops/agent-work-selection.md",
+        "storyId": "S5-04"
+      }
+    },
+    {
+      "id": "BL-RELEASE-162",
+      "title": "GitHub release v1.6.2 channel parity",
+      "authorityClass": "S",
+      "owner": "Release ops / founder",
+      "ownerRepo": ["baseline-os"],
+      "blocksClaims": ["npm/GitHub release channel parity"],
+      "blocksIR": false,
+      "status": "awaiting-human",
+      "aliases": ["S2-FEAT-007-RELEASE"],
+      "oneLineAsk": "Create and push GitHub release tag v1.6.2 to match npm latest baselineos@1.6.2.",
+      "checklist": "https://github.com/gtcx-ecosystem/baseline-os/blob/main/01-docs/05-audit/public-trust-links-2026-06-03.md"
+    },
+    {
+      "id": "BL-SOC2-01",
+      "title": "SOC 2 Type I program start (baseline-os)",
+      "authorityClass": "S",
+      "owner": "Auditor / Compliance",
+      "ownerRepo": ["baseline-os", "gtcx-intelligence"],
+      "blocksClaims": ["SOC 2 Type I attested"],
+      "blocksIR": false,
+      "status": "awaiting-human",
+      "aliases": ["S3-SOC2-01"],
+      "oneLineAsk": "Start SOC 2 Type I with named vendor and scope (baseline-os roadmap action 10).",
+      "checklist": "https://github.com/gtcx-ecosystem/baseline-os/blob/main/01-docs/04-ops/compliance/soc2-type1-gap-analysis.md"
+    },
+    {
+      "id": "BL-OPERATOR-01",
+      "title": "Non-core operator guided baseline proof",
+      "authorityClass": "S",
+      "owner": "GTM / solution engineering",
+      "ownerRepo": ["baseline-os"],
+      "blocksClaims": ["non-core engineer baseline proof"],
+      "blocksIR": false,
+      "status": "awaiting-human",
+      "aliases": ["R2-01", "S2-FEAT-002-OPERATOR"],
+      "oneLineAsk": "Nominate a non-core operator and capture CLI/Desktop baseline setup evidence.",
+      "checklist": "https://github.com/gtcx-ecosystem/baseline-os/blob/main/01-docs/05-audit/non-core-operator-proof-blocker-2026-06-04.md"
+    },
+    {
+      "id": "SIGNAL-INT-001",
+      "title": "gtcx-intelligence Human Lead + AI Reliability owner",
+      "authorityClass": "S",
+      "owner": "Founder",
+      "ownerRepo": ["gtcx-intelligence"],
+      "blocksClaims": ["SIGNAL L2 mid team dimension", "named coordination Human Lead"],
+      "blocksIR": false,
+      "status": "awaiting-human",
+      "aliases": ["INT-HUMAN-LEAD"],
+      "oneLineAsk": "Name Human Lead and AI Reliability owner in gtcx-intelligence AGENTS.md coordination table.",
+      "checklist": "https://github.com/gtcx-ecosystem/gtcx-intelligence/blob/main/01-docs/05-audit/signal-assessment-2026-06-06.md",
+      "packet": "https://github.com/gtcx-ecosystem/gtcx-intelligence/blob/main/01-docs/04-ops/coordination/outbound/to-gtcx-agentic-blockers-pass21-2026-06-06.md"
+    }
+  ],
+  "reconciliationRules": [
+    "workRegister status done => never list in statusUpdate.deferred",
+    "blocksIR false => hub status awaiting-human not blocked",
+    "Class S gates => statusUpdate.approvalNeeded only; agents do not execute",
+    "Sibling witness (code done, owner E2E pending) => statusUpdate.siblingWitness not deferred"
+  ]
+}

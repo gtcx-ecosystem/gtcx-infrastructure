@@ -1,0 +1,47 @@
+{
+  "$schema": "https://gtcx.org/schemas/hygiene-config/v1.json",
+  "extends": "@gtcx/hygiene/monorepo",
+  "workspace_type": "monorepo",
+  "root": {
+    "max_entries": 48,
+    "max_files": 16,
+    "required_dirs": ["01-docs"],
+    "case_rules": {
+      "uppercase_allowlist": ["README.md", "LICENSE", "Dockerfile", "AGENTS.md"],
+      "forbid_uppercase_outside_allowlist": true
+    },
+    "allowed_dirs": [
+      "00-archive",
+      "01-docs",
+      "02-ops",
+      "03-platform",
+      "04-ship",
+      "05-audit",
+      "config",
+      "node_modules"
+    ],
+    "allowed_files": [
+      "hygiene.config.json",
+      "package.json",
+      "pnpm-lock.yaml",
+      "pnpm-workspace.yaml",
+      "tsconfig.json",
+      "eslint.config.js",
+      "turbo.json",
+      "baseline.config.json",
+      ".editorconfig",
+      ".nvmrc",
+      ".gitignore"
+    ]
+  },
+  "naming": {
+    "docs_case": "kebab",
+    "exceptions": [
+      "01-docs/README.md",
+      "01-docs/**/README.md",
+      "01-docs/AGENTS.md",
+      "01-docs/roadmap/ROADMAP-*.md",
+      "00-archive/**/README.md"
+    ]
+  }
+}

@@ -1,0 +1,99 @@
+# =============================================================================
+# compliance-os-production — web-app slim (Hub #17 intake + terminal export)
+# =============================================================================
+# Full stack: compliance-os 04-ship/compliance-os/k8s/overlays/production
+# This slim slice unblocks exploration w2:prod:retest at compliance.gtcx.trade.
+# =============================================================================
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-app
+  labels:
+    app: web-app
+    app.kubernetes.io/part-of: gtcx
+    environment: production
+spec:
+  ports:
+    - name: http
+      port: 3001
+      targetPort: 3001
+  selector:
+    app: web-app
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-app
+  labels:
+    app: web-app
+    app.kubernetes.io/part-of: gtcx
+    environment: production
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: web-app
+  template:
+    metadata:
+      labels:
+        app: web-app
+    spec:
+      serviceAccountName: compliance-os-sa
+      imagePullSecrets:
+        - name: compliance-os-ghcr-pull
+      containers:
+        - name: web-app
+          image: ghcr.io/gtcx-ecosystem/compliance-web:staging-b3d19e0
+          ports:
+            - containerPort: 3001
+          env:
+            - name: NODE_ENV
+              value: production
+            - name: PORT
+              value: '3001'
+            - name: HOSTNAME
+              value: '0.0.0.0'
+            # Hub #17 slim prod — image lacks ioredis; use staging in-proc rate limit until prod image publish
+            - name: COMPLIANCE_OS_DEPLOY_ENV
+              value: staging
+            - name: COMPLIANCE_OS_STAGING_INPROC_RATE_LIMIT
+              value: '1'
+            - name: COMPLIANCE_OS_LICENCE_DILIGENCE_MEMORY_ONLY
+              value: '1'
+            - name: REDIS_URL
+              value: redis://compliance-os-redis:6379
+          envFrom:
+            - secretRef:
+                name: compliance-os-w2-secrets
+                optional: false
+          resources:
+            requests:
+              cpu: 200m
+              memory: 512Mi
+            limits:
+              cpu: 1000m
+              memory: 1Gi
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1001
+            runAsGroup: 1001
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            seccompProfile:
+              type: RuntimeDefault
+          livenessProbe:
+            tcpSocket:
+              port: 3001
+            initialDelaySeconds: 20
+            periodSeconds: 20
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            tcpSocket:
+              port: 3001
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3

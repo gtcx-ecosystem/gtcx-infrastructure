@@ -4,7 +4,7 @@ name: distribution-snapshot
 # for the two distribution-strategy bets: @gtcx/audit-signer (npm) and
 # terraform-aws-compliance-db (GitHub + future Terraform Registry).
 #
-# Output: docs/audit/distribution-snapshots/<YYYY-MM-DD>.json, committed
+# Output: 01-docs/05-audit/distribution-snapshots/<YYYY-MM-DD>.json, committed
 # to main so progression is visible in git history without a separate
 # metrics service.
 
@@ -34,14 +34,14 @@ jobs:
           node-version: '20.18.0'
 
       - name: Run snapshot
-        run: node tools/scripts/distribution-snapshot.mjs
+        run: node 03-platform/tools/03-platform/scripts/distribution-snapshot.mjs
 
       - name: Commit if changed
         run: |
-          if [[ -n "$(git status --porcelain docs/audit/distribution-snapshots/)" ]]; then
+          if [[ -n "$(git status --porcelain 01-docs/05-audit/distribution-snapshots/)" ]]; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add docs/audit/distribution-snapshots/
+            git add 01-docs/05-audit/distribution-snapshots/
             git commit -m "chore(metrics): distribution snapshot $(date -u +%Y-%m-%d)"
             git push
           else

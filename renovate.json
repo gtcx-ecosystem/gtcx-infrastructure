@@ -17,7 +17,7 @@
   "packageRules": [
     {
       "matchManagers": ["npm"],
-      "matchPaths": ["tools/**"],
+      "matchPaths": ["03-platform/tools/**"],
       "groupName": "tools-npm",
       "groupSlug": "tools-npm",
       "semanticCommitType": "chore",

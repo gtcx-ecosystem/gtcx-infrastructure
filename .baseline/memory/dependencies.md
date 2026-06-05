@@ -14,7 +14,7 @@
 | H-03 sovereign countersign | Human CSP (**gtcx-agentic** ceremony) | **awaiting-human** | TBD | XR-518, MA-003 / #61 scale |
 | S4-03 PRD-002 Tier B contract | **gtcx-protocols** | **blocked-sibling** | TBD | Audit route Tier B |
 
-**Agentic pickup:** [`to-gtcx-agentic-blockers-raise-2026-06-08.md`](../docs/operations/coordination/outbound/to-gtcx-agentic-blockers-raise-2026-06-08.md)
+**Agentic pickup:** [`to-gtcx-agentic-blockers-raise-2026-06-08.md`](../01-docs/04-ops/coordination/outbound/to-gtcx-agentic-blockers-raise-2026-06-08.md)
 
 ## Operator / Class A (not agentic code)
 

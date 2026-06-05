@@ -1,0 +1,26 @@
+{
+  "$schema": "gtcx://workspace/manifest/v3",
+  "schema": "gtcx.workspace.manifest.v3",
+  "repo": "gtcx-infrastructure",
+  "updated": "2026-06-05",
+  "domains": {
+    "coordination": "02-ops/coordination",
+    "productManagement": "02-ops/pm",
+    "gtm": "02-ops/gtm",
+    "compliance": "02-ops/compliance",
+    "attestation": "02-ops/attestation",
+    "security": "02-ops/security",
+    "assurance": "02-ops/assurance",
+    "audit": "02-ops/attestation/witness",
+    "operations": "02-ops"
+  },
+  "commands": {
+    "check": "pnpm workspace:check",
+    "pmSync": "pnpm pm:sync",
+    "pmStatus": "pnpm pm:status"
+  },
+  "docs": {
+    "map": "01-docs/README.md"
+  },
+  "layout": "01-docs/04-ops/workspace/ecosystem-repo-layout-v2.md"
+}

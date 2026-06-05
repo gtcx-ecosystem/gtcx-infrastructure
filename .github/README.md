@@ -22,4 +22,4 @@ GitHub automation, policies, and workflows for GTCX Infrastructure.
 ## Agent note
 
 Modify workflows only through PRs; never commit directly to `main`.
-All workflows use SHA-pinned actions (verified by `tools/scripts/pin-actions-sha.mjs`).
+All workflows use SHA-pinned actions (verified by `03-platform/tools/03-platform/scripts/pin-actions-sha.mjs`).

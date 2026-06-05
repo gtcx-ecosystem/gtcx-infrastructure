@@ -1,0 +1,88 @@
+# =============================================================================
+# GTCX Kubernetes Base Kustomization
+# =============================================================================
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+metadata:
+  name: gtcx-base
+
+labels:
+  - includeSelectors: false
+    pairs:
+      app.kubernetes.io/part-of: gtcx
+      app.kubernetes.io/managed-by: kustomize
+
+resources:
+  - namespace.yaml
+  # NOTE: cert-manager.yaml and services/vault-tls.yaml removed because
+  # cert-manager is not installed in the cluster. Re-add when cert-manager
+  # CRDs are available (via Helm or direct install).
+  - configmaps/base-config.yaml
+  - configmaps/runtime-policies.yaml
+  - rbac/anomaly-detector-rollback.yaml
+  # NOTE: audit-flush removed — image is ARM64-only, cluster nodes are AMD64.
+  # Re-add when AMD64 image is built and pushed to ECR.
+  # - services/audit-flush.yaml
+  - services/compliance-gateway.yaml
+  - services/compliance-gateway-hpa.yaml
+  - services/nats.yaml
+  - services/redis.yaml
+  - services/api.yaml
+  - services/protocols.yaml
+  - services/platform.yaml
+  - services/anomaly-detector.yaml
+  - services/sovereign/deployment.yaml
+  - services/did-resolver/configmap.yaml
+  - services/did-resolver/deployment.yaml
+  - services/did-resolver/service.yaml
+
+configMapGenerator:
+  - name: gtcx-env
+    literals:
+      - GTCX_VERSION=1.0.0
+      - GTCX_LOG_LEVEL=info
+      - GTCX_LOG_FORMAT=json
+
+# ============================================================
+# STUB SECRETS — kustomize build requires this to succeed.
+# These values are intentionally non-functional.
+#
+# Production secrets flow through External Secrets Operator:
+#   AWS Secrets Manager → ESO SecretStore → K8s Secret
+# See: 01-docs/09-security/secrets-management.md
+# See: 04-ship/terraform/modules/secrets/intelligence.tf
+#
+# Environment overlays MUST NOT use these literals.
+# ============================================================
+secretGenerator:
+  - name: gtcx-secrets
+    type: Opaque
+    literals:
+      - DATABASE_URL=PLACEHOLDER_OVERRIDE_IN_OVERLAY
+      - SECRET_KEY_BASE=PLACEHOLDER_OVERRIDE_IN_OVERLAY
+  - name: compliance-gateway-secrets
+    type: Opaque
+    literals:
+      - DATABASE_URL=PLACEHOLDER_OVERRIDE_IN_OVERLAY
+      - SECRET_KEY_BASE=PLACEHOLDER_OVERRIDE_IN_OVERLAY
+      - COMPLIANCE_GATEWAY_AUTH_TOKENS_JSON=[]
+      - ANTHROPIC_API_KEY=PLACEHOLDER_OVERRIDE_IN_OVERLAY
+  # REMOVED: compliance-gateway-audit-key stub secret.
+  # Overlays MUST provide their own audit-key secret with a `gtcx-` prefix
+  # to avoid kustomize secretGenerator hash-suffix collision.
+  # Pattern: gtcx-compliance-gateway-audit-key-<environment>
+  # See: 01-docs/04-ops/runbooks/kustomize-secret-collision-pattern.md
+
+# =============================================================
+# Image tags — base uses v0.1.0 as floor version.
+# Environment overlays MUST override with build-specific tags
+# (e.g., sha-a92b7fc from CI). Never deploy :latest.
+# =============================================================
+images:
+  - name: gtcx/agx
+    newTag: v0.1.0
+  - name: gtcx/protocols
+    newTag: v0.1.0
+  - name: gtcx/sovereign
+    newTag: v0.1.0

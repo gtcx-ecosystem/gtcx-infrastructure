@@ -1,0 +1,10 @@
+# =============================================================================
+# Patch: AGX NetworkPolicy — Database subnet CIDR (Production)
+# =============================================================================
+# Production database subnets: 10.4.128.0/20, 10.4.144.0/20, 10.4.160.0/20
+# Summarized as 10.4.128.0/18 for NetworkPolicy ipBlock.
+# Verified against: 04-ship/terraform/modules/vpc/main.tf database_subnet_cidrs
+# =============================================================================
+- op: replace
+  path: /spec/egress/1/to/0/ipBlock/cidr
+  value: 10.4.128.0/18

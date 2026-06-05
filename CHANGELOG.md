@@ -15,58 +15,58 @@ The May-2026 cycle. Six original sprints (audit signer, defense in depth, operat
 
 ### Added — Audit Substrate
 
-- **Fail-closed audit signing in production** (`tools/compliance-gateway/src/audit.mjs`, `server.mjs`) — gateway exits EX_CONFIG 78 if `AUDIT_SIGNING_KEY_B64` is missing or invalid in production; `/health` reports 503 when signing is disabled.
+- **Fail-closed audit signing in production** (`03-platform/tools/compliance-gateway/03-platform/src/audit.mjs`, `server.mjs`) — gateway exits EX_CONFIG 78 if `AUDIT_SIGNING_KEY_B64` is missing or invalid in production; `/health` reports 503 when signing is disabled.
 - **NATS JetStream audit transport** with per-tenant subject routing (`gtcx.audit.<service>.<tenantId>`). See ADR-014 and ADR-015.
-- **Audit-flush sidecar** (`tools/audit-flush/`) — consumes JetStream subjects, verifies chain integrity, writes batched NDJSON to WORM S3. Quarantines tampered batches under `_quarantine/` prefix. Includes Dockerfile, IRSA module, deployment runbook, integration test against dockerized NATS broker.
+- **Audit-flush sidecar** (`03-platform/tools/audit-flush/`) — consumes JetStream subjects, verifies chain integrity, writes batched NDJSON to WORM S3. Quarantines tampered batches under `_quarantine/` prefix. Includes Dockerfile, IRSA module, deployment runbook, integration test against dockerized NATS broker.
 - **Bounded in-memory chain** with checkpoint hash (`AUDIT_CHAIN_MAX_RECORDS` default 10K).
 - **Audit chain verification endpoints** — `GET /v1/audit/chain`, `POST /v1/audit/verify`, `GET /v1/audit/evidence-bundle` (signed bundle export for external auditors).
-- **Audit-flush IRSA Terraform module** (`infra/terraform/modules/audit-flush-irsa/`) wired into testnet-pilot, staging, production environments.
+- **Audit-flush IRSA Terraform module** (`04-ship/terraform/modules/audit-flush-irsa/`) wired into testnet-pilot, staging, production environments.
 - **Kustomize overlay patches** for audit-flush in staging + production with per-env image, role ARN, bucket name.
-- **Trust telemetry dashboards** (`infra/monitoring/dashboards/audit-trust.json`, `audit-trust-tenant.json`).
+- **Trust telemetry dashboards** (`04-ship/monitoring/dashboards/audit-trust.json`, `audit-trust-tenant.json`).
 
 ### Added — Multi-Tenancy + Capacity
 
-- **Tenant-scoped principal + audit events** (`tools/compliance-gateway/src/auth.mjs`) with per-tenant budget overrides.
+- **Tenant-scoped principal + audit events** (`03-platform/tools/compliance-gateway/03-platform/src/auth.mjs`) with per-tenant budget overrides.
 - **HorizontalPodAutoscaler** for compliance-gateway (1→8 pods) scaling on `compliance_gateway_inflight_requests` custom metric.
-- **k6 soak test scaffold** (`tools/load-tests/compliance-gateway-soak.js`) — 4-hour two-tenant scenarios; mandatory `validate.sh --full` gate.
-- **Tenant onboarding runbook** (`docs/operations/runbooks/tenant-onboarding.md`) with 2-hour SLA.
-- **Per-tenant trust dashboard** (`infra/monitoring/dashboards/audit-trust-tenant.json`).
-- **Pen-test contained-blast-radius overlay** (`infra/kubernetes/overlays/pen-test/`).
+- **k6 soak test scaffold** (`03-platform/tools/load-tests/compliance-gateway-soak.js`) — 4-hour two-tenant scenarios; mandatory `validate.sh --full` gate.
+- **Tenant onboarding runbook** (`01-docs/04-ops/runbooks/tenant-onboarding.md`) with 2-hour SLA.
+- **Per-tenant trust dashboard** (`04-ship/monitoring/dashboards/audit-trust-tenant.json`).
+- **Pen-test contained-blast-radius overlay** (`04-ship/kubernetes/overlays/pen-test/`).
 
 ### Added — Defense in Depth
 
-- **Zod schema for `/v1/query`** (`tools/compliance-gateway/src/schemas.mjs`) — 4096-char query cap, jurisdiction enum from canonical catalog, 16KB context envelope.
+- **Zod schema for `/v1/query`** (`03-platform/tools/compliance-gateway/03-platform/src/schemas.mjs`) — 4096-char query cap, jurisdiction enum from canonical catalog, 16KB context envelope.
 - **Delimited untrusted-context block** in user message + system-prompt instruction to treat the block as data.
-- **Per-principal token budget + QPS limiter** (`tools/compliance-gateway/src/budget.mjs`).
-- **Prompt-injection red-team suite** (`tools/eval-pipeline/injection-suite.mjs`) — 10 payloads.
-- **`sanitizeAuditTarget`** (`tools/compliance-gateway/src/audit-target.mjs`) — strips query strings + fragments + caps at 200 chars before signing.
-- **Audit signing key required via fail-fast** in `infra/scripts/dr-test.sh` and CI workflow.
+- **Per-principal token budget + QPS limiter** (`03-platform/tools/compliance-gateway/03-platform/src/budget.mjs`).
+- **Prompt-injection red-team suite** (`03-platform/tools/eval-pipeline/injection-suite.mjs`) — 10 payloads.
+- **`sanitizeAuditTarget`** (`03-platform/tools/compliance-gateway/03-platform/src/audit-target.mjs`) — strips query strings + fragments + caps at 200 chars before signing.
+- **Audit signing key required via fail-fast** in `04-ship/03-platform/scripts/dr-test.sh` and CI workflow.
 
 ### Added — Adaptive Resilience
 
-- **Adaptive policy tuner** (`tools/compliance-gateway/src/adaptive-policy.mjs`) — feedback-driven degradation mode based on observed latency + error rate. Emits signed `resilience.policy.adaptation` audit on every transition.
-- **Pluggable adaptive policy store** (`tools/compliance-gateway/src/adaptive-policy-store.mjs`) — memory backend (default) + Redis backend (feature-flagged via `GTCX_ADAPTIVE_STORE_BACKEND=redis`) with race-safe transitions via WATCH/MULTI/EXEC.
+- **Adaptive policy tuner** (`03-platform/tools/compliance-gateway/03-platform/src/adaptive-policy.mjs`) — feedback-driven degradation mode based on observed latency + error rate. Emits signed `resilience.policy.adaptation` audit on every transition.
+- **Pluggable adaptive policy store** (`03-platform/tools/compliance-gateway/03-platform/src/adaptive-policy-store.mjs`) — memory backend (default) + Redis backend (feature-flagged via `GTCX_ADAPTIVE_STORE_BACKEND=redis`) with race-safe transitions via WATCH/MULTI/EXEC.
 
 ### Added — Distribution
 
-- **Public docs site source** (`docs/external/docs-site/`) — markdown source for `gtcx.trade/compliance` covering all three primitives.
-- **Launch announcement blog post draft** (`docs/external/blog/audit-signer-launch-2026-05.md`).
-- **Terraform Registry submission package** (`docs/external/terraform-registry-submission-2026.md`) for `terraform-aws-compliance-db`.
-- **Distribution metrics scaffold** (`tools/scripts/distribution-snapshot.mjs`) with daily GitHub Actions cron.
-- **`@gtcx/compliance-gateway-mcp`** — Model Context Protocol server for agent-discoverable read-only access (`tools/compliance-gateway-mcp/`).
+- **Public docs site source** (`01-docs/external/docs-site/`) — markdown source for `gtcx.trade/compliance` covering all three primitives.
+- **Launch announcement blog post draft** (`01-docs/external/blog/audit-signer-launch-2026-05.md`).
+- **Terraform Registry submission package** (`01-docs/external/terraform-registry-submission-2026.md`) for `terraform-aws-compliance-db`.
+- **Distribution metrics scaffold** (`03-platform/tools/03-platform/scripts/distribution-snapshot.mjs`) with daily GitHub Actions cron.
+- **`@gtcx/compliance-gateway-mcp`** — Model Context Protocol server for agent-discoverable read-only access (`03-platform/tools/compliance-gateway-mcp/`).
 
 ### Added — Compliance Documentation
 
-- **GDPR Art. 35 / CCPA DPIA** (`docs/compliance/dpia-2026-05.md`).
-- **SOC 2 Type 1 evidence inventory** (`docs/compliance/soc2-evidence-inventory-2026-05.md`) — per-control file:line mapping.
-- **Pen-test RFP** (`docs/audit/pen-test-rfp-2026.md`) and SOC 2 engagement plan (`docs/audit/soc2-engagement-2026.md`) — engagement-ready.
+- **GDPR Art. 35 / CCPA DPIA** (`01-docs/10-compliance/dpia-2026-05.md`).
+- **SOC 2 Type 1 evidence inventory** (`01-docs/10-compliance/soc2-evidence-inventory-2026-05.md`) — per-control file:line mapping.
+- **Pen-test RFP** (`01-docs/05-audit/pen-test-rfp-2026.md`) and SOC 2 engagement plan (`01-docs/05-audit/soc2-engagement-2026.md`) — engagement-ready.
 
 ### Added — Audit Methodology
 
-- **Repo audit overlay** (`docs/audit/repo-overlay.md`) per `gtcx-agentic/audit/REPO_OVERLAY_TEMPLATE.md` codifying repo-specific stricter caps.
-- **Full audit doc** (`docs/audit/full-audit-2026-05-22.md`) — Round-4 forensic re-audit.
-- **SIGNAL scorecard v2** at 9.60/10 (`docs/audit/signal-scorecard.json`).
-- **Coverage gate rationale** (`docs/audit/coverage-gate-rationale.md`).
+- **Repo audit overlay** (`01-docs/05-audit/repo-overlay.md`) per `gtcx-agentic/audit/REPO_OVERLAY_TEMPLATE.md` codifying repo-specific stricter caps.
+- **Full audit doc** (`01-docs/05-audit/full-audit-2026-05-22.md`) — Round-4 forensic re-audit.
+- **SIGNAL scorecard v2** at 9.60/10 (`01-docs/05-audit/signal-scorecard.json`).
+- **Coverage gate rationale** (`01-docs/05-audit/coverage-gate-rationale.md`).
 
 ### Added — ADRs
 
@@ -77,11 +77,11 @@ The May-2026 cycle. Six original sprints (audit signer, defense in depth, operat
 
 ### Changed
 
-- **Validators are cwd-independent.** `tools/scripts/docs-standard-validator.mjs` + `tools/scripts/docs-link-checker.mjs` + `tools/scripts/validate-all.mjs` resolve REPO_ROOT from script location instead of `process.cwd()`.
+- **Validators are cwd-independent.** `03-platform/tools/03-platform/scripts/docs-standard-validator.mjs` + `03-platform/tools/03-platform/scripts/docs-link-checker.mjs` + `03-platform/tools/03-platform/scripts/validate-all.mjs` resolve REPO_ROOT from script location instead of `process.cwd()`.
 - **`validate-all.mjs` covers 10 packages** (up from 5); bumped execSync `maxBuffer` to 32MB to avoid ENOBUFS on large test output.
-- **Coverage gate documented per-package.** `@gtcx/compliance-gateway` gates at branches=85/functions=85 (statements + lines remain 90) per `docs/audit/coverage-gate-rationale.md`; all other packages remain at 90 across all four metrics.
+- **Coverage gate documented per-package.** `@gtcx/compliance-gateway` gates at branches=85/functions=85 (statements + lines remain 90) per `01-docs/05-audit/coverage-gate-rationale.md`; all other packages remain at 90 across all four metrics.
 - **Workspace consumes `@gtcx/compliance-data` by package name** (replaces deep relative imports in `system-prompt.mjs` and `schemas.mjs`).
-- **Pre-existing roadmap consolidated** into `docs/agile/execution-roadmap-2026-05-22.md` with full Cycle 1 retro + Cycle 2 forward sprints + Cycle 2.5 internal completion.
+- **Pre-existing roadmap consolidated** into `01-docs/05-audit/agile/execution-roadmap-2026-05-22.md` with full Cycle 1 retro + Cycle 2 forward sprints + Cycle 2.5 internal completion.
 
 ### Fixed
 
@@ -90,7 +90,7 @@ The May-2026 cycle. Six original sprints (audit signer, defense in depth, operat
 
 ### Removed
 
-- Stale `/adr/` directory (its README contradicted `docs/decisions/`).
+- Stale `/adr/` directory (its README contradicted `01-docs/decisions/`).
 - Dev-credential default-fallback values in `dr-test.sh` (`POSTGRES_PASSWORD:-gtcx_dev_password` and audit equivalent).
 
 ### Test totals
@@ -139,7 +139,7 @@ The May-2026 cycle. Six original sprints (audit signer, defense in depth, operat
 ### Removed
 
 - edge-proxy placeholder module (empty, no implementation)
-- Stale \_sop/ path references (27+ files updated to docs/)
+- Stale \_sop/ path references (27+ files updated to 01-docs/)
 
 ## [0.1.0] - 2026-03-20
 

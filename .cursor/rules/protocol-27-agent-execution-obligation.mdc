@@ -35,14 +35,14 @@ D1 Shell → D2 background Shell → D3 node child_process → D4 owner-repo cwd
 ## Runbook execution order
 
 1. `cd` **owner repo** (e.g. `gtcx-infrastructure` for W2/k8s/terraform).
-2. Run **repo scripts first** (`13-scripts/staging/*.sh`, `pnpm` targets in `package.json`).
+2. Run **repo scripts first** (`13-03-platform/scripts/staging/*.sh`, `pnpm` targets in `package.json`).
 3. Run raw commands from docs **yourself**; report **each exit code**.
 4. If `aws`/`kubectl` denied → **Permission Unblock Report** (D6) — not a copy-paste block for the operator.
 5. **Class A only** (human): net-new production secrets, `gh auth` scope upgrades, legal sign-off.
 
 ## W2 / staging (gtcx-infrastructure)
 
-See `docs/04-operations/agent-staging-execution.md` when present. **Do not** parallelize a different story (IR-3.5) while W2-OPS-001 is **Next priority**.
+See `01-docs/04-operations/agent-staging-execution.md` when present. **Do not** parallelize a different story (IR-3.5) while W2-OPS-001 is **Next priority**.
 
 ## Ecosystem helpers
 

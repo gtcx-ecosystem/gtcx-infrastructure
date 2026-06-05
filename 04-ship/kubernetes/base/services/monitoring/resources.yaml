@@ -1,0 +1,923 @@
+# =============================================================================
+# GTCX Production Observability Stack
+# =============================================================================
+# Per OBSERVABLE principle (15): Full metrics, logs, traces
+# Per AUDITABLE principle (3): Retention for compliance
+#
+# Components: Prometheus, Grafana, Loki, Jaeger
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Namespace
+# -----------------------------------------------------------------------------
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: gtcx-monitoring
+  labels:
+    app.kubernetes.io/part-of: gtcx
+    app.kubernetes.io/component: observability
+---
+# -----------------------------------------------------------------------------
+# Prometheus ConfigMap
+# -----------------------------------------------------------------------------
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+  namespace: gtcx-monitoring
+  labels:
+    app.kubernetes.io/name: prometheus
+    app.kubernetes.io/part-of: gtcx
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 15s
+      evaluation_interval: 15s
+      external_labels:
+        monitor: 'gtcx-monitor'
+        environment: 'production'
+
+    alerting:
+      alertmanagers:
+        - static_configs:
+            - targets: []
+
+    rule_files:
+      - /etc/prometheus/rules/*.yml
+
+    scrape_configs:
+      # Prometheus self-monitoring
+      - job_name: 'prometheus'
+        static_configs:
+          - targets: ['localhost:9090']
+
+      # Kubernetes pod auto-discovery
+      - job_name: 'kubernetes-pods'
+        kubernetes_sd_configs:
+          - role: pod
+        relabel_configs:
+          # Only scrape pods with prometheus.io/scrape annotation
+          - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+            action: keep
+            regex: true
+          # Use custom metrics path if specified
+          - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+            action: replace
+            target_label: __metrics_path__
+            regex: (.+)
+          # Use custom port if specified
+          - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
+            action: replace
+            regex: ([^:]+)(?::\d+)?;(\d+)
+            replacement: $1:$2
+            target_label: __address__
+          # Map pod labels to prometheus labels
+          - action: labelmap
+            regex: __meta_kubernetes_pod_label_(.+)
+          # Set namespace label
+          - source_labels: [__meta_kubernetes_namespace]
+            action: replace
+            target_label: kubernetes_namespace
+          # Set pod name label
+          - source_labels: [__meta_kubernetes_pod_name]
+            action: replace
+            target_label: kubernetes_pod_name
+          # Set service name from pod label
+          - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_name]
+            action: replace
+            target_label: service
+
+      # Kubernetes service endpoints
+      - job_name: 'kubernetes-service-endpoints'
+        kubernetes_sd_configs:
+          - role: endpoints
+        relabel_configs:
+          - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scrape]
+            action: keep
+            regex: true
+          - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_path]
+            action: replace
+            target_label: __metrics_path__
+            regex: (.+)
+          - source_labels: [__address__, __meta_kubernetes_service_annotation_prometheus_io_port]
+            action: replace
+            regex: ([^:]+)(?::\d+)?;(\d+)
+            replacement: $1:$2
+            target_label: __address__
+          - action: labelmap
+            regex: __meta_kubernetes_service_label_(.+)
+          - source_labels: [__meta_kubernetes_namespace]
+            action: replace
+            target_label: kubernetes_namespace
+          - source_labels: [__meta_kubernetes_service_name]
+            action: replace
+            target_label: kubernetes_service_name
+
+      # Intelligence namespace — explicit targeting for AI services
+      - job_name: 'intelligence-sdk'
+        kubernetes_sd_configs:
+          - role: endpoints
+            namespaces:
+              names: ['gtcx']
+        relabel_configs:
+          - source_labels: [__meta_kubernetes_service_name]
+            regex: gtcx-intelligence-sdk
+            action: keep
+        metrics_path: /metrics
+        scrape_interval: 15s
+
+      - job_name: 'anisa'
+        kubernetes_sd_configs:
+          - role: endpoints
+            namespaces:
+              names: ['gtcx']
+        relabel_configs:
+          - source_labels: [__meta_kubernetes_service_name]
+            regex: gtcx-anisa
+            action: keep
+        metrics_path: /metrics
+        scrape_interval: 15s
+
+      # Node exporter (if deployed as DaemonSet)
+      - job_name: 'kubernetes-nodes'
+        kubernetes_sd_configs:
+          - role: node
+        relabel_configs:
+          - action: labelmap
+            regex: __meta_kubernetes_node_label_(.+)
+---
+# -----------------------------------------------------------------------------
+# Prometheus Deployment
+# -----------------------------------------------------------------------------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus
+  namespace: gtcx-monitoring
+  labels:
+    app.kubernetes.io/name: prometheus
+    app.kubernetes.io/part-of: gtcx
+    app.kubernetes.io/component: metrics
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: prometheus
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: prometheus
+        app.kubernetes.io/part-of: gtcx
+        app.kubernetes.io/component: metrics
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        fsGroup: 65534
+      containers:
+        - name: prometheus
+          image: prom/prometheus:v2.48.0
+          ports:
+            - name: http
+              containerPort: 9090
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              cpu: 500m
+              memory: 1Gi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          volumeMounts:
+            - name: config
+              mountPath: /etc/prometheus/
+            - name: rules
+              mountPath: /etc/prometheus/rules/
+            - name: data
+              mountPath: /prometheus
+          livenessProbe:
+            httpGet:
+              path: /-/healthy
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 15
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /-/ready
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+          startupProbe:
+            httpGet:
+              path: /-/ready
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 5
+            failureThreshold: 12
+      volumes:
+        - name: config
+          configMap:
+            name: prometheus-config
+        - name: rules
+          configMap:
+            name: prometheus-rules
+        - name: data
+          emptyDir: {}
+---
+# -----------------------------------------------------------------------------
+# Prometheus Rules ConfigMap
+# -----------------------------------------------------------------------------
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-rules
+  namespace: gtcx-monitoring
+  labels:
+    app.kubernetes.io/name: prometheus
+    app.kubernetes.io/part-of: gtcx
+data:
+  intelligence-alerts.yml: |
+    groups:
+      - name: intelligence.rules
+        rules:
+          - alert: IntelligenceHighErrorRate
+            expr: rate(intelligence_errors_total[5m]) / rate(intelligence_requests_total[5m]) > 0.05
+            for: 5m
+            labels:
+              severity: warning
+              service: intelligence
+            annotations:
+              summary: "Intelligence error rate above 5%"
+          - alert: IntelligenceLowConfidence
+            expr: histogram_quantile(0.5, rate(intelligence_confidence_bucket[5m])) < 0.5
+            for: 10m
+            labels:
+              severity: critical
+              service: intelligence
+            annotations:
+              summary: "Median AI confidence below 0.50"
+          - alert: IntelligenceCircuitBreakerTripped
+            expr: increase(intelligence_circuit_trips_total[5m]) > 0
+            for: 1m
+            labels:
+              severity: critical
+              service: intelligence
+            annotations:
+              summary: "Circuit breaker tripped on {{ $labels.service }}"
+          - alert: IntelligenceHighLatency
+            expr: histogram_quantile(0.95, rate(intelligence_request_duration_ms_bucket[5m])) > 5000
+            for: 5m
+            labels:
+              severity: warning
+              service: intelligence
+            annotations:
+              summary: "P95 latency above 5 seconds"
+          - alert: IntelligenceHighFallbackRate
+            expr: rate(intelligence_degraded_total[5m]) / rate(intelligence_requests_total[5m]) > 0.10
+            for: 5m
+            labels:
+              severity: warning
+              service: intelligence
+            annotations:
+              summary: "Intelligence fallback/degraded rate above 10%"
+          - alert: IntelligenceBufferFull
+            expr: intelligence_buffer_utilization > 0.90
+            for: 2m
+            labels:
+              severity: warning
+              service: intelligence
+            annotations:
+              summary: "Buffer utilization above 90%"
+          - alert: IntelligenceConsensusStaleness
+            expr: intelligence_consensus_staleness_seconds > 300
+            for: 5m
+            labels:
+              severity: warning
+              service: intelligence
+            annotations:
+              summary: "Consensus data stale for over 5 minutes"
+          - alert: IntelligenceServiceDown
+            expr: intelligence_health_status == 0
+            for: 1m
+            labels:
+              severity: critical
+              service: intelligence
+            annotations:
+              summary: "Intelligence service health check failing"
+---
+# -----------------------------------------------------------------------------
+# Prometheus Service
+# -----------------------------------------------------------------------------
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus
+  namespace: gtcx-monitoring
+  labels:
+    app.kubernetes.io/name: prometheus
+    app.kubernetes.io/part-of: gtcx
+spec:
+  type: ClusterIP
+  ports:
+    - port: 9090
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: prometheus
+---
+# -----------------------------------------------------------------------------
+# Grafana Deployment
+# -----------------------------------------------------------------------------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana
+  namespace: gtcx-monitoring
+  labels:
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/part-of: gtcx
+    app.kubernetes.io/component: dashboards
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: grafana
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: grafana
+        app.kubernetes.io/part-of: gtcx
+        app.kubernetes.io/component: dashboards
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 472
+        fsGroup: 472
+      containers:
+        - name: grafana
+          image: grafana/grafana:10.2.2
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          env:
+            - name: GF_SECURITY_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: grafana-admin
+                  key: password
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/grafana
+            - name: dashboards
+              mountPath: /var/lib/grafana/dashboards
+            - name: dashboard-provisioning
+              mountPath: /etc/grafana/provisioning/dashboards
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 15
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          startupProbe:
+            httpGet:
+              path: /api/health
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 5
+            failureThreshold: 12
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: grafana-data
+        - name: dashboards
+          configMap:
+            name: grafana-dashboards
+        - name: dashboard-provisioning
+          configMap:
+            name: grafana-dashboard-provisioning
+---
+# -----------------------------------------------------------------------------
+# Grafana PVC
+# -----------------------------------------------------------------------------
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: grafana-data
+  namespace: gtcx-monitoring
+  labels:
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/part-of: gtcx
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+# -----------------------------------------------------------------------------
+# Grafana Dashboard Provisioning
+# -----------------------------------------------------------------------------
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-provisioning
+  namespace: gtcx-monitoring
+  labels:
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/part-of: gtcx
+data:
+  dashboards.yaml: |
+    apiVersion: 1
+    providers:
+      - name: GTCX
+        orgId: 1
+        folder: GTCX
+        type: file
+        disableDeletion: false
+        updateIntervalSeconds: 30
+        options:
+          path: /var/lib/grafana/dashboards
+---
+# -----------------------------------------------------------------------------
+# Grafana Dashboards (intelligence — SIGNAL L3 gate)
+# Dashboard JSON stored as ConfigMap for K8s provisioning.
+# Source: 04-ship/docker/observability/grafana/dashboards/intelligence.json
+# -----------------------------------------------------------------------------
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboards
+  namespace: gtcx-monitoring
+  labels:
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/part-of: gtcx
+data:
+  intelligence.json: |
+    {"annotations":{"list":[]},"editable":true,"panels":[{"title":"Request Rate","type":"timeseries","datasource":{"type":"prometheus","uid":"prometheus"},"gridPos":{"h":8,"w":8,"x":0,"y":0},"targets":[{"expr":"sum(rate(intelligence_requests_total[5m])) by (service)","legendFormat":"{{ service }}"}],"fieldConfig":{"defaults":{"unit":"reqps"}}},{"title":"Error Rate (%)","type":"timeseries","datasource":{"type":"prometheus","uid":"prometheus"},"gridPos":{"h":8,"w":8,"x":8,"y":0},"targets":[{"expr":"sum(rate(intelligence_errors_total[5m])) by (service) / sum(rate(intelligence_requests_total[5m])) by (service) * 100","legendFormat":"{{ service }}"}],"fieldConfig":{"defaults":{"unit":"percent","thresholds":{"steps":[{"color":"green","value":null},{"color":"yellow","value":2},{"color":"red","value":5}]}}}},{"title":"Degraded Rate (%)","type":"timeseries","datasource":{"type":"prometheus","uid":"prometheus"},"gridPos":{"h":8,"w":8,"x":16,"y":0},"targets":[{"expr":"sum(rate(intelligence_degraded_total[5m])) by (service) / sum(rate(intelligence_requests_total[5m])) by (service) * 100","legendFormat":"{{ service }}"}],"fieldConfig":{"defaults":{"unit":"percent"}}},{"title":"Confidence (p50)","type":"stat","datasource":{"type":"prometheus","uid":"prometheus"},"gridPos":{"h":4,"w":6,"x":0,"y":8},"targets":[{"expr":"histogram_quantile(0.5, sum(rate(intelligence_confidence_bucket[5m])) by (le))"}],"fieldConfig":{"defaults":{"unit":"percentunit","thresholds":{"steps":[{"color":"red","value":null},{"color":"yellow","value":0.5},{"color":"green","value":0.7}]}}}},{"title":"Confidence Trend (7d)","type":"timeseries","datasource":{"type":"prometheus","uid":"prometheus"},"gridPos":{"h":8,"w":12,"x":6,"y":8},"targets":[{"expr":"histogram_quantile(0.5, sum(rate(intelligence_confidence_bucket[1h])) by (le))","legendFormat":"p50"},{"expr":"histogram_quantile(0.25, sum(rate(intelligence_confidence_bucket[1h])) by (le))","legendFormat":"p25"},{"expr":"histogram_quantile(0.75, sum(rate(intelligence_confidence_bucket[1h])) by (le))","legendFormat":"p75"}],"fieldConfig":{"defaults":{"unit":"percentunit"}}},{"title":"Circuit Trips","type":"timeseries","datasource":{"type":"prometheus","uid":"prometheus"},"gridPos":{"h":8,"w":6,"x":18,"y":8},"targets":[{"expr":"increase(intelligence_circuit_trips_total[5m])","legendFormat":"{{ service }}"}],"fieldConfig":{"defaults":{"unit":"short"}}},{"title":"P95 Latency","type":"timeseries","datasource":{"type":"prometheus","uid":"prometheus"},"gridPos":{"h":8,"w":8,"x":0,"y":16},"targets":[{"expr":"histogram_quantile(0.95, sum(rate(intelligence_request_duration_ms_bucket[5m])) by (le, route))","legendFormat":"{{ route }}"}],"fieldConfig":{"defaults":{"unit":"ms","thresholds":{"steps":[{"color":"green","value":null},{"color":"yellow","value":2000},{"color":"red","value":5000}]}}}},{"title":"Buffer Utilization","type":"gauge","datasource":{"type":"prometheus","uid":"prometheus"},"gridPos":{"h":6,"w":4,"x":8,"y":16},"targets":[{"expr":"intelligence_buffer_utilization"}],"fieldConfig":{"defaults":{"unit":"percentunit","min":0,"max":1,"thresholds":{"steps":[{"color":"green","value":null},{"color":"yellow","value":0.7},{"color":"red","value":0.9}]}}}},{"title":"Staleness","type":"stat","datasource":{"type":"prometheus","uid":"prometheus"},"gridPos":{"h":6,"w":4,"x":12,"y":16},"targets":[{"expr":"intelligence_consensus_staleness_seconds"}],"fieldConfig":{"defaults":{"unit":"s","thresholds":{"steps":[{"color":"green","value":null},{"color":"yellow","value":60},{"color":"red","value":300}]}}}},{"title":"Health","type":"stat","datasource":{"type":"prometheus","uid":"prometheus"},"gridPos":{"h":6,"w":4,"x":16,"y":16},"targets":[{"expr":"intelligence_health_status","legendFormat":"{{ service }}"}],"fieldConfig":{"defaults":{"mappings":[{"type":"value","options":{"0":{"text":"DOWN","color":"red"},"1":{"text":"UP","color":"green"}}}]}}},{"title":"Error Budget Burn","type":"gauge","datasource":{"type":"prometheus","uid":"prometheus"},"gridPos":{"h":6,"w":4,"x":20,"y":16},"targets":[{"expr":"slo:agx:error_budget:burn_rate_1h"}],"fieldConfig":{"defaults":{"unit":"x","min":0,"max":20,"thresholds":{"steps":[{"color":"green","value":null},{"color":"yellow","value":6},{"color":"red","value":14.4}]}}}}],"refresh":"30s","schemaVersion":39,"tags":["intelligence","signal","slo"],"time":{"from":"now-7d","to":"now"},"timezone":"utc","title":"Intelligence — SIGNAL L3 Gate","uid":"gtcx-intelligence-signal","version":1}
+---
+# -----------------------------------------------------------------------------
+# Grafana Service
+# -----------------------------------------------------------------------------
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana
+  namespace: gtcx-monitoring
+  labels:
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/part-of: gtcx
+spec:
+  type: ClusterIP
+  ports:
+    - port: 3000
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: grafana
+---
+# -----------------------------------------------------------------------------
+# Loki ConfigMap
+# -----------------------------------------------------------------------------
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: loki-config
+  namespace: gtcx-monitoring
+  labels:
+    app.kubernetes.io/name: loki
+    app.kubernetes.io/part-of: gtcx
+data:
+  loki.yaml: |
+    auth_enabled: false
+
+    server:
+      http_listen_port: 3100
+      grpc_listen_port: 9096
+
+    common:
+      instance_addr: 127.0.0.1
+      path_prefix: /loki
+      storage:
+        filesystem:
+          chunks_directory: /loki/chunks
+          rules_directory: /loki/rules
+      replication_factor: 1
+      ring:
+        kvstore:
+          store: inmemory
+
+    query_range:
+      results_cache:
+        cache:
+          embedded_cache:
+            enabled: true
+            max_size_mb: 100
+
+    schema_config:
+      configs:
+        - from: 2020-10-24
+          store: boltdb-shipper
+          object_store: filesystem
+          schema: v11
+          index:
+            prefix: index_
+            period: 24h
+
+    ruler:
+      alertmanager_url: http://localhost:9093
+
+    storage_config:
+      boltdb_shipper:
+        active_index_directory: /loki/boltdb-shipper-active
+        cache_location: /loki/boltdb-shipper-cache
+        cache_ttl: 24h
+        shared_store: filesystem
+      filesystem:
+        directory: /loki/chunks
+
+    compactor:
+      working_directory: /loki/boltdb-shipper-compactor
+      shared_store: filesystem
+      compaction_interval: 10m
+      retention_enabled: true
+      retention_delete_delay: 2h
+      retention_delete_worker_count: 150
+
+    limits_config:
+      enforce_metric_name: false
+      reject_old_samples: true
+      reject_old_samples_max_age: 168h
+      retention_period: 744h
+      ingestion_rate_mb: 4
+      ingestion_burst_size_mb: 6
+      max_streams_per_user: 10000
+      max_line_size: 256kb
+
+    chunk_store_config:
+      max_look_back_period: 0s
+
+    table_manager:
+      retention_deletes_enabled: false
+      retention_period: 0s
+---
+# -----------------------------------------------------------------------------
+# Loki Deployment
+# -----------------------------------------------------------------------------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: loki
+  namespace: gtcx-monitoring
+  labels:
+    app.kubernetes.io/name: loki
+    app.kubernetes.io/part-of: gtcx
+    app.kubernetes.io/component: logs
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: loki
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: loki
+        app.kubernetes.io/part-of: gtcx
+        app.kubernetes.io/component: logs
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        fsGroup: 10001
+      containers:
+        - name: loki
+          image: grafana/loki:2.9.2
+          args:
+            - -config.file=/etc/loki/loki.yaml
+          ports:
+            - name: http
+              containerPort: 3100
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          volumeMounts:
+            - name: config
+              mountPath: /etc/loki/
+            - name: data
+              mountPath: /loki
+          livenessProbe:
+            httpGet:
+              path: /ready
+              port: http
+            initialDelaySeconds: 45
+            periodSeconds: 15
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 5
+          startupProbe:
+            httpGet:
+              path: /ready
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 5
+            failureThreshold: 12
+      volumes:
+        - name: config
+          configMap:
+            name: loki-config
+        - name: data
+          persistentVolumeClaim:
+            claimName: loki-data
+---
+# -----------------------------------------------------------------------------
+# Loki PVC
+# -----------------------------------------------------------------------------
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: loki-data
+  namespace: gtcx-monitoring
+  labels:
+    app.kubernetes.io/name: loki
+    app.kubernetes.io/part-of: gtcx
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+---
+# -----------------------------------------------------------------------------
+# Loki Service
+# -----------------------------------------------------------------------------
+apiVersion: v1
+kind: Service
+metadata:
+  name: loki
+  namespace: gtcx-monitoring
+  labels:
+    app.kubernetes.io/name: loki
+    app.kubernetes.io/part-of: gtcx
+spec:
+  type: ClusterIP
+  ports:
+    - port: 3100
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: loki
+---
+# -----------------------------------------------------------------------------
+# Jaeger Deployment
+# -----------------------------------------------------------------------------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jaeger
+  namespace: gtcx-monitoring
+  labels:
+    app.kubernetes.io/name: jaeger
+    app.kubernetes.io/part-of: gtcx
+    app.kubernetes.io/component: tracing
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: jaeger
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: jaeger
+        app.kubernetes.io/part-of: gtcx
+        app.kubernetes.io/component: tracing
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        fsGroup: 10001
+      containers:
+        - name: jaeger
+          image: jaegertracing/all-in-one:1.52
+          ports:
+            - name: ui
+              containerPort: 16686
+              protocol: TCP
+            - name: otlp-grpc
+              containerPort: 4317
+              protocol: TCP
+            - name: otlp-http
+              containerPort: 4318
+              protocol: TCP
+          env:
+            # Persistent storage via Badger (survives pod restarts)
+            - name: SPAN_STORAGE_TYPE
+              value: badger
+            - name: BADGER_EPHEMERAL
+              value: 'false'
+            - name: BADGER_DIRECTORY_VALUE
+              value: /badger/data
+            - name: BADGER_DIRECTORY_KEY
+              value: /badger/key
+            # Sampling: 10% default, 100% for errors
+            - name: SAMPLING_STRATEGIES_FILE
+              value: /etc/jaeger/sampling.json
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          volumeMounts:
+            - name: badger-data
+              mountPath: /badger
+            - name: sampling-config
+              mountPath: /etc/jaeger
+          livenessProbe:
+            httpGet:
+              path: /
+              port: ui
+            initialDelaySeconds: 30
+            periodSeconds: 15
+          readinessProbe:
+            httpGet:
+              path: /
+              port: ui
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          startupProbe:
+            httpGet:
+              path: /
+              port: ui
+            initialDelaySeconds: 15
+            periodSeconds: 5
+            failureThreshold: 12
+      volumes:
+        - name: badger-data
+          persistentVolumeClaim:
+            claimName: jaeger-badger-data
+        - name: sampling-config
+          configMap:
+            name: jaeger-sampling
+---
+# -----------------------------------------------------------------------------
+# Jaeger Sampling Config
+# -----------------------------------------------------------------------------
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: jaeger-sampling
+  namespace: gtcx-monitoring
+  labels:
+    app.kubernetes.io/name: jaeger
+    app.kubernetes.io/part-of: gtcx
+data:
+  sampling.json: |
+    {
+      "default_strategy": {
+        "type": "probabilistic",
+        "param": 0.1
+      },
+      "service_strategies": [
+        {
+          "service": "gtcx-protocols",
+          "type": "probabilistic",
+          "param": 0.1
+        },
+        {
+          "service": "gtcx-agx",
+          "type": "probabilistic",
+          "param": 0.1
+        },
+        {
+          "service": "anisa",
+          "type": "probabilistic",
+          "param": 0.1
+        }
+      ]
+    }
+---
+# -----------------------------------------------------------------------------
+# Jaeger PVC (Badger persistent storage — 14-day retention)
+# -----------------------------------------------------------------------------
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jaeger-badger-data
+  namespace: gtcx-monitoring
+  labels:
+    app.kubernetes.io/name: jaeger
+    app.kubernetes.io/part-of: gtcx
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+# -----------------------------------------------------------------------------
+# Jaeger Service
+# -----------------------------------------------------------------------------
+apiVersion: v1
+kind: Service
+metadata:
+  name: jaeger
+  namespace: gtcx-monitoring
+  labels:
+    app.kubernetes.io/name: jaeger
+    app.kubernetes.io/part-of: gtcx
+spec:
+  type: ClusterIP
+  ports:
+    - port: 16686
+      targetPort: ui
+      protocol: TCP
+      name: ui
+    - port: 4317
+      targetPort: otlp-grpc
+      protocol: TCP
+      name: otlp-grpc
+    - port: 4318
+      targetPort: otlp-http
+      protocol: TCP
+      name: otlp-http
+  selector:
+    app.kubernetes.io/name: jaeger
+
+# =============================================================================
+# Network Policies
+# =============================================================================
+# Moved to environment-specific overlays:
+#   - overlays/production/network-policies.yaml
+#   - overlays/staging/network-policies.yaml
+# Each overlay targets its own namespace (gtcx-production, gtcx-staging, etc.)
+# =============================================================================

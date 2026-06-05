@@ -24,7 +24,7 @@
       ]
     },
     {
-      "path": "CLAUDE.md",
+      "path": ".claude/CLAUDE.md",
       "partials": [
         "base.md",
         "audit-pointer.md",
@@ -39,10 +39,30 @@
         "agent-status-update-pointer.md",
         "persona-pointer.md",
         "ecosystem-learning-pointer.md"
-      ]
+      ],
+      "createIfMissing": true
     },
     {
-      "path": "GEMINI.md",
+      "path": ".gemini/GEMINI.md",
+      "partials": [
+        "base.md",
+        "audit-pointer.md",
+        "credentials-pointer.md",
+        "execute-roadmap-pointer.md",
+        "coordination-pointer.md",
+        "claude.partial.md",
+        "universal-agent-behavior.md",
+        "session-start-pointer.md",
+        "protocol-26-proceed-pointer.md",
+        "protocol-27-execution-pointer.md",
+        "agent-status-update-pointer.md",
+        "persona-pointer.md",
+        "ecosystem-learning-pointer.md"
+      ],
+      "createIfMissing": true
+    },
+    {
+      "path": ".kimi/AGENTS.md",
       "partials": [
         "base.md",
         "audit-pointer.md",
@@ -80,7 +100,7 @@
       "createIfMissing": true
     },
     {
-      "path": "CONVENTIONS.md",
+      "path": "01-docs/conventions.md",
       "partials": [
         "base.md",
         "audit-pointer.md",

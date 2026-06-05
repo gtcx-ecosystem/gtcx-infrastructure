@@ -22,4 +22,4 @@ Use **after work in the turn** or when reporting cluster/repo state — not inst
 
 **Rules:** One next priority (not a menu). **Approval needed** only for real gates — never "I can push / I can help / if you want." Class **R**: execute, then show Done + Next.
 
-Template: `docs/operations/agent-status-update-template.md` · Spec: P26 §3b (gtcx-docs).
+Template: `01-docs/04-ops/agent-status-update-template.md` · Spec: P26 §3b (gtcx-docs).

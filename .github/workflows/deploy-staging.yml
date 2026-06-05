@@ -19,7 +19,7 @@ on:
   push:
     branches: [main]
     paths:
-      - 'infra/kubernetes/**'
+      - '04-ship/kubernetes/**'
       - '.github/workflows/deploy-staging.yml'
   workflow_dispatch: # Allow manual trigger
 
@@ -57,14 +57,14 @@ jobs:
 
       - name: Deploy to staging
         run: |
-          kubectl apply -k infra/kubernetes/overlays/staging/
+          kubectl apply -k 04-ship/kubernetes/overlays/staging/
           echo "### Deployed to staging" >> "$GITHUB_STEP_SUMMARY"
           echo "- Commit: \`${GITHUB_SHA::8}\`" >> "$GITHUB_STEP_SUMMARY"
           echo "- Cluster: ${{ env.CLUSTER_NAME }}" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Deploy intelligence staging overlay
         run: |
-          kubectl apply -k infra/kubernetes/overlays/staging/intelligence/
+          kubectl apply -k 04-ship/kubernetes/overlays/staging/intelligence/
           echo "- Intelligence staging ingress: **applied**" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Wait for rollouts
@@ -134,8 +134,8 @@ jobs:
       - name: Smoke test — audit API reachability (durable evidence)
         id: audit-smoke
         run: |
-          OUTPUT_DIR=infra/security/reports/staging-smoke/${{ github.run_id }} \
-            node scripts/staging-audit-probe.mjs
+          OUTPUT_DIR=04-ship/security/reports/staging-smoke/${{ github.run_id }} \
+            node 03-platform/scripts/staging-audit-probe.mjs
           echo "- Audit API smoke test: **completed**" >> "$GITHUB_STEP_SUMMARY"
         env:
           GITHUB_SHA: ${{ github.sha }}
@@ -146,7 +146,7 @@ jobs:
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: staging-smoke-evidence-${{ github.run_id }}
-          path: infra/security/reports/staging-smoke/${{ github.run_id }}/
+          path: 04-ship/security/reports/staging-smoke/${{ github.run_id }}/
           retention-days: 365
 
       - name: Collect rollout evidence on failure

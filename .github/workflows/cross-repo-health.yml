@@ -31,16 +31,16 @@ jobs:
 
       - name: Run cross-repo health probe
         run: |
-          node tools/scripts/cross-repo-health-probe.mjs
+          node 03-platform/tools/03-platform/scripts/cross-repo-health-probe.mjs
         env:
-          OUTPUT_DIR: docs/audit/evidence/cross-repo-health
+          OUTPUT_DIR: 01-docs/05-audit/evidence/cross-repo-health
 
       - name: Upload health probe evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: cross-repo-health-probe-${{ github.run_id }}
-          path: docs/audit/evidence/cross-repo-health/
+          path: 01-docs/05-audit/evidence/cross-repo-health/
           retention-days: 30
 
       - name: Alert on failure
@@ -49,5 +49,5 @@ jobs:
           echo "::error::Cross-repo health probe failed. Check the uploaded artifact for details."
           echo "### Cross-Repo Health Probe Failed" >> "$GITHUB_STEP_SUMMARY"
           echo '```json' >> "$GITHUB_STEP_SUMMARY"
-          cat docs/audit/evidence/cross-repo-health/cross-repo-health-probe-latest.json >> "$GITHUB_STEP_SUMMARY" || true
+          cat 01-docs/05-audit/evidence/cross-repo-health/cross-repo-health-probe-latest.json >> "$GITHUB_STEP_SUMMARY" || true
           echo '```' >> "$GITHUB_STEP_SUMMARY"

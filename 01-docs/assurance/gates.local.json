@@ -1,0 +1,11 @@
+{
+  "$schema": "gtcx://coordination/human-gates-local/v1",
+  "repo": "gtcx-infrastructure",
+  "updated": "2026-06-08",
+  "ecosystemManifest": "https://github.com/gtcx-ecosystem/gtcx-agentic/blob/main/01-docs/06-coordination/human-gates.manifest.json",
+  "ecosystemRegister": "https://github.com/gtcx-ecosystem/gtcx-agentic/blob/main/01-docs/04-ops/coordination/human-external-blocker-register-2026-06.md",
+  "framework": "https://github.com/gtcx-ecosystem/gtcx-agentic/blob/main/01-docs/04-ops/assurance-agent-framework.md",
+  "gates": [],
+  "siblingWitness": [],
+  "_instructions": "Populate gates that apply to this repo. Empty arrays are valid. Migrate from 01-docs/04-ops/human-gates.local.json if present."
+}

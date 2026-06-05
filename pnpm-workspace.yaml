@@ -1,24 +1,24 @@
 packages:
   # Infrastructure
-  - 'infra/migrations'
+  - '04-ship/migrations'
   # Tools — Node ESM workspace packages with their own package.json,
   # tests, and (where applicable) Dockerfile + npm publication target.
-  - 'tools/anomaly-detector'
-  - 'tools/audit-flush'
-  - 'tools/audit-signer'
-  - 'tools/compliance-data'
-  - 'tools/compliance-gateway'
-  - 'tools/compliance-gateway-mcp'
-  - 'tools/control-plane'
-  - 'tools/deployment-guard'
-  - 'tools/docs-site'
-  - 'tools/eval-pipeline'
-  - 'tools/kyc-screening'
-  - 'tools/low-bandwidth'
-  - 'tools/replay-protection'
-  - 'tools/ussd-handler'
+  - '03-platform/tools/anomaly-detector'
+  - '03-platform/tools/audit-flush'
+  - '03-platform/tools/audit-signer'
+  - '03-platform/tools/compliance-data'
+  - '03-platform/tools/compliance-gateway'
+  - '03-platform/tools/compliance-gateway-mcp'
+  - '03-platform/tools/control-plane'
+  - '03-platform/tools/deployment-guard'
+  - '03-platform/tools/docs-site'
+  - '03-platform/tools/eval-pipeline'
+  - '03-platform/tools/kyc-screening'
+  - '03-platform/tools/low-bandwidth'
+  - '03-platform/tools/replay-protection'
+  - '03-platform/tools/ussd-handler'
 
-# ADR-019 exemptions — directories under `tools/` that are NOT
+# ADR-019 exemptions — directories under `03-platform/tools/` that are NOT
 # workspace packages by design. Each has a single-purpose surface
 # (a validator script, a k6 load test, a markdown template) where
 # pulling in a full package.json + dependency graph would be cargo-
@@ -26,10 +26,10 @@ packages:
 # discipline is explicit and the boundary check has something to
 # point at when a new dir lands without a justification.
 #
-#   tools/chaos              — single .test.mjs invoked from validate.sh
-#   tools/contract-tests     — single .test.mjs cross-repo schema fixture
-#   tools/policy             — root pnpm check:* delegates (4 .mjs files)
-#   tools/scripts            — root pnpm script delegates + validators
-#   tools/kubectl-access     — bash script + audit log only
-#   tools/load-tests         — k6 .js files (separate runtime, not Node)
-#   tools/templates          — markdown templates only
+#   03-platform/tools/chaos              — single .test.mjs invoked from validate.sh
+#   03-platform/tools/contract-tests     — single .test.mjs cross-repo schema fixture
+#   03-platform/tools/policy             — root pnpm check:* delegates (4 .mjs files)
+#   03-platform/tools/scripts            — root pnpm script delegates + validators
+#   03-platform/tools/kubectl-access     — bash script + audit log only
+#   03-platform/tools/load-tests         — k6 .js files (separate runtime, not Node)
+#   03-platform/tools/templates          — markdown templates only

@@ -241,7 +241,7 @@ jobs:
 
       - name: Run pnpm audit with acceptance filter
         run: |
-          node tools/scripts/audit-with-acceptance.mjs --output-file=npm-audit-filtered.json
+          node 03-platform/tools/03-platform/scripts/audit-with-acceptance.mjs --output-file=npm-audit-filtered.json
           echo "Audit completed at $(date -u +%Y%m%dT%H%M%SZ)"
 
       - name: Summarise audit findings
@@ -288,8 +288,8 @@ jobs:
 
       - name: Run evidence assembler
         run: |
-          chmod +x infra/scripts/assemble-sandbox-evidence.sh
-          bash infra/scripts/assemble-sandbox-evidence.sh \
+          chmod +x 04-ship/03-platform/scripts/assemble-sandbox-evidence.sh
+          bash 04-ship/03-platform/scripts/assemble-sandbox-evidence.sh \
             --input-dir=evidence-raw \
             --output-dir=evidence-package \
             --environment="${ENVIRONMENT}" \

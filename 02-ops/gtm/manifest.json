@@ -1,0 +1,14 @@
+{
+  "$schema": "gtcx://02-ops/gtm/v1",
+  "repo": "gtcx-infrastructure",
+  "updated": "2026-06-08",
+  "sor": "https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/01-docs/08-gtm/ecosystem-layout.md",
+  "slices": {
+    "hub": "01-docs/08-gtm/README.md",
+    "penTest": "01-docs/08-gtm/pen-test/README.md",
+    "soc": "01-docs/08-gtm/soc/README.md",
+    "legal": "01-docs/11-legal/README.md",
+    "inboundTickets": "01-docs/08-gtm/inbound-tickets/"
+  },
+  "scope": []
+}

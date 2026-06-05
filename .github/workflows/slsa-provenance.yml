@@ -108,7 +108,7 @@ jobs:
       - name: Pack
         id: pack
         run: |
-          cd tools/audit-signer
+          cd 03-platform/tools/audit-signer
           PACKAGE=$(pnpm pack --pack-destination ../../dist 2>&1 | tail -1)
           echo "package-name=${PACKAGE}" >> "$GITHUB_OUTPUT"
 
@@ -286,7 +286,7 @@ jobs:
 
       - name: Publish @gtcx/audit-signer with provenance
         run: |
-          cd tools/audit-signer
+          cd 03-platform/tools/audit-signer
           npm publish --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

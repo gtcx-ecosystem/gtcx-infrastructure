@@ -1,0 +1,8 @@
+{
+  "$schema": "gtcx://workspace/assurance-evidence/v1",
+  "repo": "gtcx-infrastructure",
+  "updated": "2026-06-08",
+  "artifacts": [],
+  "writePaths": ["01-docs/04-ops/evidence/", "01-docs/05-audit/evidence/"],
+  "forbidden": ["secrets", "unsigned-legal-pdf", "pii-field-captures"]
+}

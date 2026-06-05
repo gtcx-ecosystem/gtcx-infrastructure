@@ -12,9 +12,9 @@ Saying **"P22 directs; I do not poll"** while pasting `aws` / `kubectl` / `terra
 
 1. **Execute** each step in the owner-repo shell (usually `gtcx-infrastructure` for W2).
 2. Prefer **repo scripts** over retyping runbook blocks:
-   - `./13-scripts/staging/populate-compliance-os-staging-sm.sh`
-   - `./13-scripts/staging/install-compliance-os-eso.sh`
-   - `cd 15-infra/terraform/environments/staging && terraform apply …`
+   - `./13-03-platform/scripts/staging/populate-compliance-os-staging-sm.sh`
+   - `./13-03-platform/scripts/staging/install-compliance-os-eso.sh`
+   - `cd 15-04-ship/terraform/environments/staging && terraform apply …`
 3. **Node/pnpm:** run `corepack enable` / `pnpm install` / `pnpm <script>` in the owner repo yourself. If `pnpm` missing, install via `corepack prepare pnpm@9.15.0 --activate` in-session — do not tell the operator to install pnpm.
 4. Report: `command` → **exit code** (or stderr summary).
 5. If credentials/context missing: **Permission Unblock Report** — not "Your action needed:"

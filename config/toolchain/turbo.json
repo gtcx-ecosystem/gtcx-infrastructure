@@ -1,0 +1,24 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": [".env*"],
+  "globalEnv": ["NODE_ENV", "SOURCE_DATE_EPOCH"],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**"],
+      "env": ["NODE_ENV", "SOURCE_DATE_EPOCH"],
+      "passThroughEnv": ["SOURCE_DATE_EPOCH"]
+    },
+    "lint": {
+      "dependsOn": ["^build"],
+      "outputs": []
+    },
+    "typecheck": {
+      "dependsOn": ["^build"],
+      "outputs": []
+    },
+    "clean": {
+      "cache": false
+    }
+  }
+}

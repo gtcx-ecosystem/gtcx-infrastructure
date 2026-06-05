@@ -3,7 +3,7 @@
 # This file configures ZAP's scanning context for the GTCX staging environment.
 # Update the authentication section when the API auth mechanism is finalized.
 #
-# Reference: https://www.zaproxy.org/docs/desktop/ui/dialogs/session/context-auth/
+# Reference: https://www.zaproxy.org/01-docs/desktop/ui/dialogs/session/context-auth/
 
 env:
   contexts:

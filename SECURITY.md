@@ -17,7 +17,7 @@ Do not open a public issue for security vulnerabilities.
 ## Scope
 
 - Infrastructure configurations (Terraform, Kubernetes, Docker)
-- Security policies and scripts under `infra/security/`
+- Security policies and scripts under `04-ship/security/`
 - Secrets management and access control configurations
 - CI/CD pipeline security (GitHub Actions workflows)
 

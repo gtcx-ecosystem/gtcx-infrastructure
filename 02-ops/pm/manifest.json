@@ -1,0 +1,23 @@
+{
+  "$schema": "gtcx://02-ops/pm/v1",
+  "repo": "gtcx-infrastructure",
+  "updated": "2026-06-08",
+  "agileHub": {
+    "repo": "gtcx-agile",
+    "crossRepoWorkplan": "https://github.com/gtcx-ecosystem/gtcx-agile/blob/main/01-docs/06-coordination/cross-repo-sprint-workplan-2026-06.md",
+    "ecosystemReconcile": "https://github.com/gtcx-ecosystem/gtcx-agile/blob/main/01-docs/sprints/ecosystem-reconcile-program-2026-06.md",
+    "v1Tracker": "https://github.com/gtcx-ecosystem/gtcx-agile/blob/main/01-docs/v1-shipping/execution-tracker.json",
+    "agentBridge": "https://github.com/gtcx-ecosystem/gtcx-agile/blob/main/01-docs/06-coordination/agent-bridge.md"
+  },
+  "local": {
+    "agileDocs": "01-docs/agile",
+    "executionRoadmap": null,
+    "workSelection": "01-docs/04-ops/agent-work-selection.md",
+    "autoDevState": "01-docs/05-audit/auto-dev-state.md",
+    "nextWorkScript": "03-platform/scripts/agent-next-work.mjs"
+  },
+  "sync": {
+    "command": "pnpm pm:sync",
+    "output": "02-ops/pm/backlog.json"
+  }
+}

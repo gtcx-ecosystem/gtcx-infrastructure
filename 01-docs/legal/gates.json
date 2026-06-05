@@ -1,0 +1,11 @@
+{
+  "$schema": "gtcx://legal/gates-lens/v1",
+  "repo": "gtcx-infrastructure",
+  "updated": "2026-06-08",
+  "attestationGates": "02-ops/attestation/gates.local.json",
+  "assuranceProgram": "01-docs/07-assurance/programs/legal-dpa.md",
+  "programsIndex": "02-ops/assurance/programs.json",
+  "hubLegalSor": "https://github.com/gtcx-ecosystem/gtcx-docs/tree/main/01-docs/11-legal/",
+  "authorityClass": "S",
+  "note": "Legal sign-off is Class S — update attestation gates; do not self-approve DPAs"
+}

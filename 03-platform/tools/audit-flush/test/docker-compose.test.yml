@@ -1,0 +1,35 @@
+# =============================================================================
+# NATS JetStream — integration test harness for audit-flush
+# =============================================================================
+# Brings up a single-node nats:2-alpine with JetStream enabled. Bound to a
+# host port so the integration test can connect from outside the container.
+#
+# Usage (called by 03-platform/tools/audit-flush/test/run-integration.mjs):
+#   docker compose -f 03-platform/tools/audit-flush/test/docker-compose.test.yml up -d
+#   <run test>
+#   docker compose -f 03-platform/tools/audit-flush/test/docker-compose.test.yml down --volumes
+# =============================================================================
+
+services:
+  nats:
+    image: nats:2-alpine
+    command:
+      - '-js'
+      - '-sd'
+      - '/data'
+      - '-m'
+      - '8222'
+    ports:
+      - '127.0.0.1:14222:4222' # client port — 14222 to avoid conflict with dev NATS
+      - '127.0.0.1:18222:8222' # http monitoring
+    volumes:
+      - jetstream-data:/data
+    healthcheck:
+      test: ['CMD-SHELL', 'wget -qO- http://localhost:8222/healthz | grep -q ok || exit 1']
+      interval: 2s
+      timeout: 3s
+      retries: 15
+      start_period: 5s
+
+volumes:
+  jetstream-data:

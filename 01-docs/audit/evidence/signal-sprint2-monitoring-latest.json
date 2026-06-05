@@ -1,0 +1,20 @@
+{
+  "ok": true,
+  "sprint": 2,
+  "hub": "SIGNAL-INF-002/008/004",
+  "checkedAt": "2026-06-05T15:00:00.000Z",
+  "artifacts": {
+    "dashboard": "04-ship/monitoring/dashboards/llm-ops.json",
+    "alerts": "04-ship/monitoring/alerts/llm-ops-alerts.yml",
+    "stagingMonitoring": "04-ship/kubernetes/overlays/staging/monitoring/kustomization.yaml",
+    "gatewayMetricsPatch": "04-ship/kubernetes/overlays/staging/patches/compliance-gateway-metrics.yaml",
+    "llmTrace": "03-platform/tools/compliance-gateway/03-platform/src/llm-trace.mjs",
+    "runbook": "01-docs/04-ops/runbooks/staging-monitoring-apply.md"
+  },
+  "gates": {
+    "validateLlmOps": "node 03-platform/tools/03-platform/scripts/validate-llm-ops.mjs",
+    "validateTraceCorrelation": "node 03-platform/tools/03-platform/scripts/validate-trace-correlation.mjs"
+  },
+  "clusterApply": "pending-operator — run staging-monitoring-apply.md",
+  "notes": "In-repo artifacts complete; live Grafana target verification requires kubectl apply on staging."
+}

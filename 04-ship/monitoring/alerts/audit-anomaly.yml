@@ -1,0 +1,84 @@
+# =============================================================================
+# Audit Anomaly Detection Alerts
+# =============================================================================
+# Detects anomalous patterns in the audit event stream that may indicate
+# tampering, compromise, or operational failure.
+#
+# Principles: AUDITABLE (P3), OBSERVABLE (P15)
+# =============================================================================
+
+groups:
+  - name: audit-anomaly
+    rules:
+      - alert: AuditEventVolumeDropped
+        expr: |
+          (
+            rate(audit_events_total[5m])
+            /
+            rate(audit_events_total[1h] offset 5m)
+          ) < 0.5
+          and
+          rate(audit_events_total[1h] offset 5m) > 0
+        for: 5m
+        labels:
+          severity: warning
+          team: platform
+        annotations:
+          runbook_url: 'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/01-docs/04-ops/runbooks/alerts.md#auditeventvolumedropped'
+          summary: 'Audit event rate dropped >50% in 5 minutes'
+          description: 'The audit event ingestion rate has fallen to less than half of the trailing 1-hour baseline. Possible pipeline failure, network partition, or silenced upstream service.'
+
+      - alert: AuditUnusualDIDPattern
+        expr: |
+          audit_did_first_seen_total
+          -
+          audit_did_first_seen_total offset 5m
+          > 0
+        for: 0m
+        labels:
+          severity: info
+          team: security
+        annotations:
+          runbook_url: 'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/01-docs/04-ops/runbooks/alerts.md#auditunusualdidpattern'
+          summary: 'New DID observed in production audit stream'
+          description: 'A DID was seen for the first time in the production audit stream. Review whether this is an expected onboarding or a potential unauthorized actor. DID: {{ $labels.did }}'
+
+      - alert: AuditOffHoursActivity
+        expr: |
+          (
+            hour() >= 0 and hour() < 5
+          )
+          and
+          rate(audit_events_total[5m]) > 0.5
+        for: 10m
+        labels:
+          severity: warning
+          team: security
+        annotations:
+          runbook_url: 'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/01-docs/04-ops/runbooks/alerts.md#auditoffhoursactivity'
+          summary: 'Audit events detected during off-hours (00:00-05:00 UTC)'
+          description: 'Sustained audit event activity during the 00:00-05:00 UTC window exceeds the expected threshold. This may indicate unauthorized access or a misconfigured batch job.'
+
+      - alert: AuditBurstDetected
+        expr: |
+          sum by (did) (rate(audit_events_total[1m])) > 100
+        for: 1m
+        labels:
+          severity: warning
+          team: security
+        annotations:
+          runbook_url: 'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/01-docs/04-ops/runbooks/alerts.md#auditburstdetected'
+          summary: 'Audit event burst from single DID'
+          description: '>100 events/second from DID {{ $labels.did }}. Possible automated attack, credential compromise, or runaway integration. Investigate immediately.'
+
+      - alert: AuditMerkleRootMismatch
+        expr: |
+          audit_merkle_root_match{result="mismatch"} > 0
+        for: 0m
+        labels:
+          severity: critical
+          team: platform
+        annotations:
+          runbook_url: 'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/01-docs/04-ops/runbooks/alerts.md#auditmerklerootmismatch'
+          summary: 'Merkle root mismatch — possible audit tampering'
+          description: 'The computed Merkle root for an audit window does not match the root anchored in WORM storage. This indicates either database tampering or an anchoring pipeline bug. Follow break-glass procedure immediately.'

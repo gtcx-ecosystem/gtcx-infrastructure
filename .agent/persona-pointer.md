@@ -1,7 +1,7 @@
 ## Persona selection (Phase 4 — mandatory)
 
-**Bridge:** [ecosystem-persona-bridge-2026-06.md](https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/docs/operations/coordination/ecosystem-persona-bridge-2026-06.md)  
-**Registry:** [gtcx-docs institutional personas](https://github.com/gtcx-ecosystem/gtcx-docs/tree/main/docs/governance/institutional/personas)
+**Bridge:** [ecosystem-persona-bridge-2026-06.md](https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/01-docs/04-ops/coordination/ecosystem-persona-bridge-2026-06.md)  
+**Registry:** [gtcx-docs institutional personas](https://github.com/gtcx-ecosystem/gtcx-docs/tree/main/01-docs/governance/institutional/personas)
 
 | Step | Action                                                                                        |
 | ---- | --------------------------------------------------------------------------------------------- |

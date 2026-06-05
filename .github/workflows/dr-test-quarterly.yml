@@ -73,9 +73,9 @@ jobs:
           AUDIT_PASSWORD: ${{ secrets.AUDIT_PASSWORD }}
           AUDIT_DB: gtcx_audit
           PROTOCOL_URL: http://localhost:8300
-          OUTPUT_DIR: infra/security/reports/dr-evidence/quarterly/${{ github.event.inputs.environment || 'testnet' }}/${{ github.run_id }}
+          OUTPUT_DIR: 04-ship/security/reports/dr-evidence/quarterly/${{ github.event.inputs.environment || 'testnet' }}/${{ github.run_id }}
         run: |
-          bash ./infra/scripts/dr-test.sh ${{ github.event.inputs.environment || 'testnet' }}
+          bash ./04-ship/03-platform/scripts/dr-test.sh ${{ github.event.inputs.environment || 'testnet' }}
 
       - name: Upload DR evidence
         if: always()
@@ -84,7 +84,7 @@ jobs:
           name: dr-evidence-quarterly-${{ github.run_id }}
           path: |
             /tmp/gtcx_dr_test_*.sql
-            infra/security/reports/dr-evidence/quarterly/${{ github.event.inputs.environment || 'testnet' }}/${{ github.run_id }}/
+            04-ship/security/reports/dr-evidence/quarterly/${{ github.event.inputs.environment || 'testnet' }}/${{ github.run_id }}/
           retention-days: 365
 
       - name: Notify on failure
@@ -95,7 +95,7 @@ jobs:
       - name: Generate quarterly DR report
         if: always()
         run: |
-          REPORT_FILE="infra/security/reports/dr-evidence/quarterly/${{ github.event.inputs.environment || 'testnet' }}/${{ github.run_id }}/quarterly-report.md"
+          REPORT_FILE="04-ship/security/reports/dr-evidence/quarterly/${{ github.event.inputs.environment || 'testnet' }}/${{ github.run_id }}/quarterly-report.md"
           mkdir -p "$(dirname "$REPORT_FILE")"
           cat > "$REPORT_FILE" <<EOF
           # Quarterly DR Test Report
@@ -120,5 +120,5 @@ jobs:
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: dr-quarterly-report-${{ github.run_id }}
-          path: infra/security/reports/dr-evidence/quarterly/${{ github.event.inputs.environment || 'testnet' }}/${{ github.run_id }}/quarterly-report.md
+          path: 04-ship/security/reports/dr-evidence/quarterly/${{ github.event.inputs.environment || 'testnet' }}/${{ github.run_id }}/quarterly-report.md
           retention-days: 365

@@ -1,7 +1,7 @@
 # =============================================================================
 # Build & Push Anomaly Detector to ECR
 # =============================================================================
-# Triggered on changes to tools/anomaly-detector/.
+# Triggered on changes to 03-platform/tools/anomaly-detector/.
 # Uses shared CI deploy role (AWS_ROLE_ARN) and ECR_REGISTRY variables.
 # =============================================================================
 
@@ -11,7 +11,7 @@ on:
   push:
     branches: [main]
     paths:
-      - 'tools/anomaly-detector/**'
+      - '03-platform/tools/anomaly-detector/**'
       - '.github/workflows/build-push-anomaly-detector.yml'
   workflow_dispatch:
 
@@ -41,7 +41,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6
         with:
-          context: tools/anomaly-detector
+          context: 03-platform/tools/anomaly-detector
           push: true
           tags: |
             ${{ vars.ECR_REGISTRY }}/gtcx-anomaly-detector:${{ github.sha }}

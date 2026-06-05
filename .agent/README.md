@@ -2,7 +2,7 @@
 
 This directory is the **source of truth** for the synced sections of every agent-config file in this repo (`AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.cursor/rules/main.mdc`, `CONVENTIONS.md`).
 
-The generator at `scripts/agent-sync/sync.mjs` injects content from the partials below into target files, between `<!-- AGENT-SYNC:START -->` and `<!-- AGENT-SYNC:END -->` markers. Anything outside those markers is human-managed.
+The generator at `03-platform/scripts/agent-sync/sync.mjs` injects content from the partials below into target files, between `<!-- AGENT-SYNC:START -->` and `<!-- AGENT-SYNC:END -->` markers. Anything outside those markers is human-managed.
 
 ## Files
 
@@ -22,7 +22,7 @@ pnpm agent:check     # CI gate: exit non-zero on drift
 
 ## Generator updates
 
-The generator `scripts/agent-sync/sync.mjs` is vendored from `gtcx-agentic/agent-sync/sync.mjs`. To pull the latest version across the ecosystem, run from gtcx-agentic:
+The generator `03-platform/scripts/agent-sync/sync.mjs` is vendored from `gtcx-agentic/agent-sync/sync.mjs`. To pull the latest version across the ecosystem, run from gtcx-agentic:
 
 ```bash
 node agent-sync/rollout.mjs --update-generator

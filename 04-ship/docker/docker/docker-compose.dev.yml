@@ -1,0 +1,457 @@
+# =============================================================================
+# GTCX Development Docker Compose
+# =============================================================================
+#
+# Local development environment with all services.
+#
+# Principles Implemented:
+#   - DEPLOYABLE (14): Mirrors production architecture locally
+#   - OBSERVABLE (15): Full observability stack included
+#   - DOCUMENTED (27): Clear service definitions
+#
+# Usage:
+#   docker compose -f docker/docker-compose.dev.yml up
+#   docker compose -f docker/docker-compose.dev.yml up -d  # Detached
+#   docker compose -f docker/docker-compose.dev.yml logs -f agx
+#
+# =============================================================================
+
+name: gtcx-dev
+
+services:
+  # ===========================================================================
+  # DATABASES
+  # ===========================================================================
+
+  # Primary PostgreSQL (operational data)
+  postgres:
+    image: postgres:16.4-alpine
+    container_name: gtcx-postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-gtcx}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-gtcx_dev_password}
+      POSTGRES_DB: ${POSTGRES_DB:-gtcx_development}
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-03-platform/scripts/postgres:/docker-entrypoint-initdb.d
+    healthcheck:
+      test:
+        ['CMD-SHELL', 'pg_isready -U $${POSTGRES_USER:-gtcx} -d $${POSTGRES_DB:-gtcx_development}']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - gtcx-network
+
+  # Audit PostgreSQL (append-only, separate instance per AUDITABLE principle)
+  postgres-audit:
+    image: postgres:16.4-alpine
+    container_name: gtcx-postgres-audit
+    environment:
+      POSTGRES_USER: ${POSTGRES_AUDIT_USER:-gtcx_audit}
+      POSTGRES_PASSWORD: ${POSTGRES_AUDIT_PASSWORD:-gtcx_audit_dev_password}
+      POSTGRES_DB: ${POSTGRES_AUDIT_DB:-gtcx_audit}
+    ports:
+      - '5433:5432'
+    volumes:
+      - postgres_audit_data:/var/lib/postgresql/data
+      - ./init-03-platform/scripts/postgres-audit:/docker-entrypoint-initdb.d
+    healthcheck:
+      test:
+        [
+          'CMD-SHELL',
+          'pg_isready -U $${POSTGRES_AUDIT_USER:-gtcx_audit} -d $${POSTGRES_AUDIT_DB:-gtcx_audit}',
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - gtcx-network
+
+  # Redis (cache, never in critical path per RESILIENT principle)
+  redis:
+    image: redis:7.2.4-alpine
+    container_name: gtcx-redis
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - gtcx-network
+
+  # Replay Guard — nonce / timestamp / signature verification for mobile offline queue
+  replay-guard:
+    build:
+      context: ../../03-platform/tools/replay-protection
+      dockerfile: Dockerfile
+    container_name: gtcx-replay-guard
+    ports:
+      - '8400:8400'
+    environment:
+      NODE_ENV: development
+      PORT: '8400'
+      REDIS_URL: 'redis://gtcx-redis:6379'
+      NONCE_TTL_MS: '900000'
+      CLOCK_SKEW_WINDOW_MS: '300000'
+      LOW_CONN_BUFFER_MS: '600000'
+      MAX_FUTURE_MS: '120000'
+      OTLP_ENDPOINT: 'http://gtcx-otel-collector:4318/v1/metrics'
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - gtcx-network
+
+  # ===========================================================================
+  # EVENT BUS (per RESILIENT principle)
+  # ===========================================================================
+
+  # NATS with JetStream — cross-service domain event pub/sub
+  nats:
+    image: nats:2.10.11-alpine
+    container_name: gtcx-nats
+    command:
+      - '--config'
+      - '/etc/nats/nats.conf'
+    ports:
+      - '4222:4222' # Client
+      - '6222:6222' # Cluster routing
+      - '8222:8222' # Monitoring / health
+    volumes:
+      - nats_data:/data/jetstream
+      - ./nats/nats.conf:/etc/nats/nats.conf:ro
+    healthcheck:
+      test: ['CMD', 'wget', '-q', '--spider', 'http://localhost:8222/healthz']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - gtcx-network
+
+  # ===========================================================================
+  # CORE SERVICES
+  # ===========================================================================
+
+  # ===========================================================================
+  # PROTOCOL SERVICES (Node.js — unified server for all 6 protocols)
+  # ===========================================================================
+
+  protocols:
+    build:
+      context: ../../../gtcx-protocols
+      dockerfile: ../gtcx-infrastructure/04-ship/docker/Dockerfile.protocols
+    container_name: gtcx-protocols
+    environment:
+      NODE_ENV: development
+      PORT: 8300
+      HOST: 0.0.0.0
+      GTCX_ALLOW_STUBS: '1'
+      DATABASE_URL: postgres://${POSTGRES_USER:-gtcx}:${POSTGRES_PASSWORD:-gtcx_dev_password}@postgres:5432/${POSTGRES_DB:-gtcx_development}
+      AUDIT_DATABASE_URL: postgres://${POSTGRES_AUDIT_USER:-gtcx_audit}:${POSTGRES_AUDIT_PASSWORD:-gtcx_audit_dev_password}@postgres-audit:5432/${POSTGRES_AUDIT_DB:-gtcx_audit}
+      REDIS_URL: redis://redis:6379/0
+      NATS_URL: nats://protocols:${NATS_PROTOCOLS_PASS:-protocols-dev-secret}@nats:4222
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4318
+      OTEL_SERVICE_NAME: gtcx-protocols
+    ports:
+      - '8300:8300'
+    depends_on:
+      postgres:
+        condition: service_healthy
+      postgres-audit:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ['CMD', 'wget', '-q', '--spider', 'http://localhost:8300/health']
+      interval: 30s
+      timeout: 5s
+      start_period: 15s
+      retries: 3
+    networks:
+      - gtcx-network
+
+  # ===========================================================================
+  # PLATFORM SERVICES (NestJS)
+  # ===========================================================================
+
+  # AGX - Authenticated Global Exchange
+  agx:
+    build:
+      context: ../../../6-platforms
+      dockerfile: ../gtcx-infrastructure/04-ship/docker/Dockerfile.platforms
+      args:
+        PLATFORM: agx
+        APP_PORT: 3000
+    container_name: gtcx-agx
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      DATABASE_URL: postgres://${POSTGRES_USER:-gtcx}:${POSTGRES_PASSWORD:-gtcx_dev_password}@postgres:5432/${POSTGRES_DB:-gtcx_development}
+      AUDIT_DATABASE_URL: postgres://${POSTGRES_AUDIT_USER:-gtcx_audit}:${POSTGRES_AUDIT_PASSWORD:-gtcx_audit_dev_password}@postgres-audit:5432/${POSTGRES_AUDIT_DB:-gtcx_audit}
+      REDIS_URL: redis://redis:6379/0
+      NATS_URL: nats://platform:${NATS_PLATFORM_PASS:-platform-dev-secret}@nats:4222
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4318
+      OTEL_SERVICE_NAME: gtcx-agx
+    ports:
+      - '3000:3000'
+    depends_on:
+      postgres:
+        condition: service_healthy
+      postgres-audit:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ['CMD', 'wget', '-q', '--spider', 'http://localhost:3000/api/health']
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    networks:
+      - gtcx-network
+
+  # CRX - Commodity Regulatory Exchange
+  crx:
+    build:
+      context: ../../../6-platforms
+      dockerfile: ../gtcx-infrastructure/04-ship/docker/Dockerfile.platforms
+      args:
+        PLATFORM: crx
+        APP_PORT: 3001
+    container_name: gtcx-crx
+    environment:
+      NODE_ENV: development
+      PORT: 3001
+      DATABASE_URL: postgres://${POSTGRES_USER:-gtcx}:${POSTGRES_PASSWORD:-gtcx_dev_password}@postgres:5432/${POSTGRES_DB:-gtcx_development}
+      AUDIT_DATABASE_URL: postgres://${POSTGRES_AUDIT_USER:-gtcx_audit}:${POSTGRES_AUDIT_PASSWORD:-gtcx_audit_dev_password}@postgres-audit:5432/${POSTGRES_AUDIT_DB:-gtcx_audit}
+      REDIS_URL: redis://redis:6379/0
+      NATS_URL: nats://platform:${NATS_PLATFORM_PASS:-platform-dev-secret}@nats:4222
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4318
+      OTEL_SERVICE_NAME: gtcx-crx
+    ports:
+      - '3001:3001'
+    depends_on:
+      postgres:
+        condition: service_healthy
+      postgres-audit:
+        condition: service_healthy
+    healthcheck:
+      test: ['CMD', 'wget', '-q', '--spider', 'http://localhost:3001/api/health']
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    networks:
+      - gtcx-network
+
+  # SGX - Sovereign Governance Exchange
+  sgx:
+    build:
+      context: ../../../6-platforms
+      dockerfile: ../gtcx-infrastructure/04-ship/docker/Dockerfile.platforms
+      args:
+        PLATFORM: sgx
+        APP_PORT: 3002
+    container_name: gtcx-sgx
+    environment:
+      NODE_ENV: development
+      PORT: 3002
+      DATABASE_URL: postgres://${POSTGRES_USER:-gtcx}:${POSTGRES_PASSWORD:-gtcx_dev_password}@postgres:5432/${POSTGRES_DB:-gtcx_development}
+      AUDIT_DATABASE_URL: postgres://${POSTGRES_AUDIT_USER:-gtcx_audit}:${POSTGRES_AUDIT_PASSWORD:-gtcx_audit_dev_password}@postgres-audit:5432/${POSTGRES_AUDIT_DB:-gtcx_audit}
+      REDIS_URL: redis://redis:6379/0
+      NATS_URL: nats://platform:${NATS_PLATFORM_PASS:-platform-dev-secret}@nats:4222
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4318
+      OTEL_SERVICE_NAME: gtcx-sgx
+    ports:
+      - '3002:3002'
+    depends_on:
+      postgres:
+        condition: service_healthy
+      postgres-audit:
+        condition: service_healthy
+    healthcheck:
+      test: ['CMD', 'wget', '-q', '--spider', 'http://localhost:3002/api/health']
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    networks:
+      - gtcx-network
+
+  # ===========================================================================
+  # INTELLIGENCE SERVICES
+  # ===========================================================================
+
+  # ANISA — Cultural Intelligence (FastAPI + gRPC)
+  anisa:
+    build:
+      context: ../../../gtcx-intelligence
+      dockerfile: intelligence/anisa/Dockerfile
+    container_name: gtcx-anisa
+    environment:
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      DATABASE_URL: postgres://${POSTGRES_USER:-gtcx}:${POSTGRES_PASSWORD:-gtcx_dev_password}@postgres:5432/${POSTGRES_DB:-gtcx_development}
+      ANISA_GRPC_PORT: 8101
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4318
+      OTEL_SERVICE_NAME: anisa
+    ports:
+      - '8100:8100' # HTTP (FastAPI)
+      - '8101:8101' # gRPC
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'python',
+          '-c',
+          "import urllib.request; urllib.request.urlopen('http://localhost:8100/health')",
+        ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    networks:
+      - gtcx-network
+
+  # Intelligence SDK Server (Cortex, Veritas, PANX, Underwriting)
+  intelligence-sdk:
+    build:
+      context: ../../../gtcx-intelligence
+      dockerfile: intelligence/sdk/Dockerfile
+    container_name: gtcx-intelligence-sdk
+    environment:
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      SCREENING_PROVIDER: ${SCREENING_PROVIDER:-local}
+      COMPLY_ADVANTAGE_API_KEY: ${COMPLY_ADVANTAGE_API_KEY:-}
+      CORTEX_EVENT_STORE_PATH: /data/cortex-events.ndjson
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4318
+      OTEL_SERVICE_NAME: intelligence-sdk
+    ports:
+      - '8200:8200' # HTTP
+    volumes:
+      - intelligence_sdk_data:/data
+    healthcheck:
+      test: ['CMD', 'wget', '-q', '--spider', 'http://localhost:8200/health']
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    networks:
+      - gtcx-network
+
+  # ===========================================================================
+  # OBSERVABILITY (per OBSERVABLE principle)
+  # ===========================================================================
+
+  # Prometheus (Metrics)
+  prometheus:
+    image: prom/prometheus:v2.48.0
+    container_name: gtcx-prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.enable-lifecycle'
+    ports:
+      - '9090:9090'
+    volumes:
+      - ./observability/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ../monitoring/alerts:/etc/prometheus/alerts:ro
+      - ../monitoring/rules:/etc/prometheus/rules:ro
+      - prometheus_data:/prometheus
+    networks:
+      - gtcx-network
+
+  # Alertmanager (Alert Routing)
+  alertmanager:
+    image: prom/alertmanager:v0.26.0
+    container_name: gtcx-alertmanager
+    command:
+      - '--config.file=/etc/alertmanager/alertmanager.yml'
+      - '--storage.path=/alertmanager'
+    ports:
+      - '9093:9093'
+    volumes:
+      - ./observability/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    depends_on:
+      - prometheus
+    networks:
+      - gtcx-network
+
+  # Grafana (Dashboards)
+  grafana:
+    image: grafana/grafana:10.2.2
+    container_name: gtcx-grafana
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: ${GF_ADMIN_PASSWORD:-admin}
+      GF_USERS_ALLOW_SIGN_UP: false
+    ports:
+      - '3030:3000'
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./observability/grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - ./observability/grafana/datasources:/etc/grafana/provisioning/datasources
+    depends_on:
+      - prometheus
+    networks:
+      - gtcx-network
+
+  # Jaeger (Distributed Tracing)
+  jaeger:
+    image: jaegertracing/all-in-one:1.52
+    container_name: gtcx-jaeger
+    environment:
+      COLLECTOR_OTLP_ENABLED: true
+    ports:
+      - '16686:16686' # UI
+      - '4317:4317' # OTLP gRPC
+      - '4318:4318' # OTLP HTTP
+    networks:
+      - gtcx-network
+
+  # Loki (Log Aggregation)
+  loki:
+    image: grafana/loki:2.9.2
+    container_name: gtcx-loki
+    ports:
+      - '3100:3100'
+    volumes:
+      - loki_data:/loki
+      - ./observability/loki.yml:/etc/loki/local-config.yaml
+    command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      - gtcx-network
+
+# =============================================================================
+# NETWORKS
+# =============================================================================
+
+networks:
+  gtcx-network:
+    driver: bridge
+    name: gtcx-network
+
+# =============================================================================
+# VOLUMES
+# =============================================================================
+
+volumes:
+  postgres_data:
+    name: gtcx-postgres-data
+  postgres_audit_data:
+    name: gtcx-postgres-audit-data
+  redis_data:
+    name: gtcx-redis-data
+  nats_data:
+    name: gtcx-nats-data
+  prometheus_data:
+    name: gtcx-prometheus-data
+  grafana_data:
+    name: gtcx-grafana-data
+  loki_data:
+    name: gtcx-loki-data
+  intelligence_sdk_data:
+    name: gtcx-intelligence-sdk-data

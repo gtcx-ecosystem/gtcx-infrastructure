@@ -18,4 +18,4 @@
 - 10 active TODOs/FIXMEs flagged
 - See individual files for details.
 
-See [baseline-os/docs/operations/organization/memory-schema.md](../../../../baseline-os/docs/operations/organization/memory-schema.md) for schema specification.
+See [baseline-os/01-docs/04-ops/organization/memory-schema.md](../../../../baseline-os/01-docs/04-ops/organization/memory-schema.md) for schema specification.
