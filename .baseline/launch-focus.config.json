@@ -27,23 +27,7 @@
       "owner": "Human / Security"
     }
   ],
-  "planningQueue": [
-    {
-      "storyId": "LAUNCH-PLAN-01",
-      "title": "Reconcile execution-roadmap + work register",
-      "paths": ["docs/audit/execution-roadmap.md", "docs/operations/agent-work-selection.md"]
-    },
-    {
-      "storyId": "LAUNCH-PLAN-02",
-      "title": "Refresh auto-dev-state for launch/GTM",
-      "paths": ["docs/audit/auto-dev-state.md"]
-    },
-    {
-      "storyId": "LAUNCH-PLAN-03",
-      "title": "Global South 10x plan status row update",
-      "paths": ["docs/gtm/plans/global-south-10x-plan.md"]
-    }
-  ],
+  "planningQueue": [],
   "forbidden": [
     "Ask operator to run master-audit before starting work",
     "Story menus when launch-focus.json is provisioned"

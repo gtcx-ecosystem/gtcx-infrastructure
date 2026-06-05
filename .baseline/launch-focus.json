@@ -3,7 +3,7 @@
   "normativeDoc": "docs/operations/agent-launch-focus.md",
   "hubDoc": "https://github.com/gtcx-ecosystem/gtcx-core/blob/main/docs/operations/agent-launch-focus.md",
   "statePath": ".baseline/launch-focus.json",
-  "provisionedAt": "2026-06-04T20:42:09.224Z",
+  "provisionedAt": "2026-06-05T03:18:28.317Z",
   "repo": "gtcx-infrastructure",
   "northStar": {
     "outcome": "Live sovereign pilot substrate (Wire #2, staging/testnet, hub acks, pen-test path) so apps and GTM can close GR-T2 deals.",
@@ -15,37 +15,14 @@
       "ecosystemSovereign": "below-GR-T2"
     }
   },
-  "sessionMode": "plan",
+  "sessionMode": "witness",
   "activePhase": {
     "id": "zwcmp-unblock",
     "label": "ZWCMP pilot + Global South 10x deploy"
   },
   "workSet": {
     "implement": [],
-    "plan": [
-      {
-        "storyId": "LAUNCH-PLAN-01",
-        "title": "Reconcile execution-roadmap + work register",
-        "paths": [
-          "docs/audit/execution-roadmap.md",
-          "docs/operations/agent-work-selection.md"
-        ]
-      },
-      {
-        "storyId": "LAUNCH-PLAN-02",
-        "title": "Refresh auto-dev-state for launch/GTM",
-        "paths": [
-          "docs/audit/auto-dev-state.md"
-        ]
-      },
-      {
-        "storyId": "LAUNCH-PLAN-03",
-        "title": "Global South 10x plan status row update",
-        "paths": [
-          "docs/gtm/plans/global-south-10x-plan.md"
-        ]
-      }
-    ],
+    "plan": [],
     "witness": [],
     "human": [
       {
@@ -56,33 +33,10 @@
       }
     ]
   },
-  "activeWorkSet": [
-    {
-      "storyId": "LAUNCH-PLAN-01",
-      "title": "Reconcile execution-roadmap + work register",
-      "paths": [
-        "docs/audit/execution-roadmap.md",
-        "docs/operations/agent-work-selection.md"
-      ]
-    },
-    {
-      "storyId": "LAUNCH-PLAN-02",
-      "title": "Refresh auto-dev-state for launch/GTM",
-      "paths": [
-        "docs/audit/auto-dev-state.md"
-      ]
-    },
-    {
-      "storyId": "LAUNCH-PLAN-03",
-      "title": "Global South 10x plan status row update",
-      "paths": [
-        "docs/gtm/plans/global-south-10x-plan.md"
-      ]
-    }
-  ],
+  "activeWorkSet": [],
   "workSetCounts": {
     "implement": 0,
-    "plan": 3,
+    "plan": 0,
     "witness": 0,
     "human": 1
   },
@@ -98,6 +52,6 @@
   "agentInstructions": [
     "Launch focus (gtcx-infrastructure) — read .baseline/launch-focus.json before audits.",
     "Live sovereign pilot substrate (Wire #2, staging/testnet, hub acks, pen-test path) so apps and GTM can close GR-T2 deals.",
-    "PLAN mode — 3 Class R planning tasks; reconcile roadmaps and coordination; do not idle."
+    "WITNESS mode — human gates only."
   ]
 }

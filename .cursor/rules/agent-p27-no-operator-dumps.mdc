@@ -6,7 +6,7 @@ alwaysApply: true
 
 # No operator command dumps (P27)
 
-Saying **"P22 directs; I do not poll"** while pasting `aws` / `kubectl` / `terraform` for the human is a **protocol violation**.
+Saying **"P22 directs; I do not poll"** while pasting `aws` / `kubectl` / `terraform` / **pnpm install how-tos** for the human is a **protocol violation**.
 
 ## Required behavior
 
@@ -15,8 +15,9 @@ Saying **"P22 directs; I do not poll"** while pasting `aws` / `kubectl` / `terra
    - `./scripts/staging/populate-compliance-os-staging-sm.sh`
    - `./scripts/staging/install-compliance-os-eso.sh`
    - `cd infra/terraform/environments/staging && terraform apply …`
-3. Report: `command` → **exit code** (or stderr summary).
-4. If credentials/context missing: **Permission Unblock Report** — not "Your action needed:"
+3. **Node/pnpm:** run `corepack enable` / `pnpm install` / `pnpm <script>` in the owner repo yourself. If `pnpm` missing, install via `corepack prepare pnpm@9.15.0 --activate` in-session — do not tell the operator to install pnpm.
+4. Report: `command` → **exit code** (or stderr summary).
+5. If credentials/context missing: **Permission Unblock Report** — not "Your action needed:"
 
 ## Forbidden message shapes
 
@@ -25,6 +26,10 @@ Your action needed on W2-OPS-001:
 Run this sequence to light up terminal-os staging:
 # 1. Populate the AWS SM secret (operator — generate values)
 aws secretsmanager put-secret-value ...
+
+Install pnpm (if you don't have it):
+  corepack enable
+  corepack prepare pnpm@9.15.0 --activate
 ```
 
 Replace with Status Update **Done** (what you ran + exit codes) and **Next priority** (one story). **Stop** — no command dump.

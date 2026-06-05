@@ -32,6 +32,13 @@ After `pnpm agent:next-work`, emit **one Proceed Brief**, then **implement**. Hu
 - Either IR-X in infra or switch to compliance-os now
 - Which do you prefer? / What would you like me to do next?
 - Do you want me to work on A or B?
+- Say push if you want / push queue + ask (push yourself — P27)
+- **Say if you want** / committed next or / left as local WIP (commit Class R yourself)
+- Approval of path already chosen via P22 (Class R — proceed)
+
+## Status Update (end of turn — required)
+
+After substantive work, use **Status Update** (Done → Next priority → Approval needed). See `.cursor/rules/agent-mandatory-closing.mdc`. Never end with only a summary table + a question.
 
 ## When P22 returns a story
 
