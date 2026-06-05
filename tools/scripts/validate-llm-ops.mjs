@@ -2,6 +2,7 @@
 /**
  * SIGNAL INF-002 / INF-008 — LLM ops dashboard + staging monitoring artifacts.
  */
+import { execSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -55,6 +56,17 @@ const patch = readFileSync(
 );
 if (!/prometheus\.io\/scrape/.test(patch)) {
   console.error('llm-ops: FAIL — compliance-gateway metrics patch missing scrape annotation');
+  failed += 1;
+}
+
+try {
+  execSync('kubectl kustomize infra/kubernetes/overlays/staging/monitoring/', {
+    cwd: ROOT,
+    stdio: 'pipe',
+  });
+  console.log('llm-ops: PASS — staging monitoring kustomize build');
+} catch {
+  console.error('llm-ops: FAIL — staging monitoring kustomize build');
   failed += 1;
 }
 

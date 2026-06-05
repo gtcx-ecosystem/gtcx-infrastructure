@@ -5,7 +5,7 @@ kind: Kustomization
 namespace: gtcx-monitoring
 
 resources:
-  - ../../../base/services/monitoring.yaml
+  - ../../../base/services/monitoring
 
 patches:
   - target:
