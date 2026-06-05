@@ -111,10 +111,9 @@ EXT-INF-002 (pen-test SOW), EXT-INF-013 (pilot owner), EXT-INF-014 (DPA), EXT-IN
 
 Run `pnpm agent:next-work` to get the next story. Current computed next:
 
-| Story  | Tier    | Class | Command                                   |
-| ------ | ------- | ----- | ----------------------------------------- |
-| IR-4.1 | IR lift | code  | USSD path soak test in CI                 |
-| IR-5.2 | IR lift | code  | Re-run ecosystem-repo-review; ledger ≥9.0 |
+| Story  | Tier    | Class    | Command                                   |
+| ------ | ------- | -------- | ----------------------------------------- |
+| IR-5.2 | IR lift | ops-docs | Re-run ecosystem-repo-review; ledger ≥9.0 |
 
 ## Resume
 
