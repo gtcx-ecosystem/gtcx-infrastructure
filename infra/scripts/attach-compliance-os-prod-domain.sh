@@ -72,4 +72,4 @@ fi
 echo ""
 echo "Verify:"
 echo "  dig +short ${FQDN} CNAME"
-echo "  curl -sS -o /dev/null -w '%{http_code}\\n' https://${FQDN}/"
+printf '  curl -sS -o /dev/null -w %%{http_code}\\n https://%s/\n' "${FQDN}"

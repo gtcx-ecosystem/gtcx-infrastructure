@@ -38,17 +38,17 @@ review_cycle: on-change
 
 ## Cross-repo reconciliation (2026-06-05)
 
-| XR                             | Status                                                                            | Evidence                                    |
-| ------------------------------ | --------------------------------------------------------------------------------- | ------------------------------------------- |
-| XR-401 INF-86 algorithm        | **done** — CISO sign-off (ECC_NIST_P256)                                          | `c36a5f6`                                   |
-| XR-402 INF-86 ceremony         | **ready** — unblocked for scheduling                                              | —                                           |
-| XR-405 Platforms KMS wire-up   | **done** — staging IRSA in prod KMS policy                                        | `b3ef031` … `a9ca4ce`                       |
-| XR-507 Verifier DNS            | **done** — `verify.explorationos.gtcx.trade` live                                 | 2026-06-05                                  |
-| XR-508 Supabase unpause        | **done** — migrations 006/007 applied                                             | 2026-06-05                                  |
-| W2-OPS-001 terminal-os staging | **done** — EKS deployed, DNS live                                                 | `9fcc8cc`                                   |
-| INT-D05 cluster capacity       | **done** — 2→3 nodes, Litmus installed                                            | `89b5ab8`, `1b9333d`                        |
-| W2-E2E key alignment           | **done** — `COMPLIANCE_OS_TERMINAL_API_KEY` aligned terminal-os ↔ compliance-os   | `3a794fa`                                   |
-| Hub #17 prod W2 close          | **scaffold** — TF/K8s/scripts in-repo; operator apply pending; prod probe **525** | `production-compliance-os-eso-bootstrap.md` |
+| XR                             | Status                                                                              | Evidence                                                       |
+| ------------------------------ | ----------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| XR-401 INF-86 algorithm        | **done** — CISO sign-off (ECC_NIST_P256)                                            | `c36a5f6`                                                      |
+| XR-402 INF-86 ceremony         | **ready** — unblocked for scheduling                                                | —                                                              |
+| XR-405 Platforms KMS wire-up   | **done** — staging IRSA in prod KMS policy                                          | `b3ef031` … `a9ca4ce`                                          |
+| XR-507 Verifier DNS            | **done** — `verify.explorationos.gtcx.trade` live                                   | 2026-06-05                                                     |
+| XR-508 Supabase unpause        | **done** — migrations 006/007 applied                                               | 2026-06-05                                                     |
+| W2-OPS-001 terminal-os staging | **done** — EKS deployed, DNS live                                                   | `9fcc8cc`                                                      |
+| INT-D05 cluster capacity       | **done** — 2→3 nodes, Litmus installed                                              | `89b5ab8`, `1b9333d`                                           |
+| W2-E2E key alignment           | **done** — `COMPLIANCE_OS_TERMINAL_API_KEY` aligned terminal-os ↔ compliance-os     | `3a794fa`                                                      |
+| Hub #17 prod W2 close          | **done** — `compliance.gtcx.trade` + `terminal.gtcx.trade`; baseline-os `7d98352b2` | `from-gtcx-infrastructure-hub-17-prod-w2-sealed-2026-06-08.md` |
 
 ## GTM audit (lane 5)
 

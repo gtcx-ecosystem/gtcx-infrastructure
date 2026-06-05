@@ -2,7 +2,7 @@
 status: current
 date: 2026-06-01
 owner: gtcx-infrastructure
-last_reconciled: 2026-06-08
+last_reconciled: 2026-06-05
 ir_roadmap: docs/audit/ir-10-10-roadmap.md
 sources:
   - docs/audit/ir-10-10-roadmap.md
@@ -11,6 +11,7 @@ sources:
   - docs/audit/master-audit-2026-06-02.md
   - docs/audit/bank-grade-audit-2026-06-07.md
   - docs/audit/engineering-audit-2026-06-07.md
+  - docs/audit/repo-hygiene-2026-06-05.md
   - docs/audit/10-10-remediation-plan-2026-05-30.md
   - docs/audit/10-10-roadmap-2026-05-26.md
   - docs/roadmap/roadmap-2026-07-13.md
@@ -47,18 +48,19 @@ reconciled_against_commits:
 
 ## Active phase: Witness + gate signoff restore (2026-06-07 → 2026-06-14)
 
-S4-04/05/06 **done**. **S4-07 pending** (test quick flake). `backlogClear: true` — witness + EXT-INF human gates parallel.
+S4-04/05/06 **done**. **S4-07 blocked** on docs-standard (27 link violations in `validate.sh quick`). **S4-08 pending** (docs-standard remediation). Hub **#17 closed** 2026-06-05. `backlogClear: true` — witness + EXT-INF human gates parallel.
 
 Prior phase **Close-the-gap + ZWCMP unblock** (2026-05-31 → 2026-06-21) — engineering stories closed; XC blockers remain.
 
 ## Sprint 4: Gate signoff restore (2026-06-07 → 2026-06-14)
 
-| Story | Title                                                | Status   | Acceptance                                    |
-| ----- | ---------------------------------------------------- | -------- | --------------------------------------------- |
-| S4-04 | `deployment-guard` typecheck — JSDoc/param alignment | **done** | `pnpm typecheck` exit 0 @ reconcile           |
-| S4-05 | `@gtcx/audit-signer` + compliance-gateway lint debt  | **done** | `pnpm lint` exit 0 @ reconcile                |
-| S4-07 | Investigate `pnpm test` quick 1/359 flake            | pending  | `bash infra/scripts/validate.sh quick` exit 0 |
-| S4-06 | README gaps (12 dirs) per repo-hygiene audit         | **done** | 12 READMEs added @ execute-roadmap 2026-06-08 |
+| Story | Title                                                          | Status      | Acceptance                                                                                                         |
+| ----- | -------------------------------------------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------ |
+| S4-04 | `deployment-guard` typecheck — JSDoc/param alignment           | **done**    | `pnpm typecheck` exit 0 @ reconcile                                                                                |
+| S4-05 | `@gtcx/audit-signer` + compliance-gateway lint debt            | **done**    | `pnpm lint` exit 0 @ reconcile                                                                                     |
+| S4-07 | `validate.sh quick` green (shellcheck + tests + docs-standard) | **blocked** | `bash infra/scripts/validate.sh quick` exit 0 — shellcheck fixed `786c2e2`; **docs-standard 27 violations** remain |
+| S4-08 | Docs-standard drift — agent README stubs + cross-repo links    | pending     | `node tools/scripts/docs-standard-validator.mjs` exit 0; `validate-all` 50/50                                      |
+| S4-06 | README gaps per repo-hygiene audit                             | **done**    | 15/15 workspace READMEs; 5 dirs remain (see `repo-hygiene-2026-06-05.md` P1) @ 8.8 overall                         |
 
 ---
 
@@ -69,9 +71,11 @@ session opened and unblocks the ZWCMP pilot. Sprint 2 hardens shipped surfaces
 and decides the wire-or-delete fate of unwired primitives. Sprint 3 ships
 external evidence — pilot signature, primitives publication, soak-test baseline.
 
-**Score baseline (2026-06-07, rubric v2):** **IR 7.9** (lane-1 engineering headline) + **bank-grade 8.3** (lane 4, separate) + **XC 9.0** (external/GTM clearance). `validate-all` **50/50**; witness mode (`backlogClear: true`). See [`engineering-audit-2026-06-07.md`](./engineering-audit-2026-06-07.md) and [`bank-grade-audit-2026-06-07.md`](./bank-grade-audit-2026-06-07.md).
+**Score baseline (2026-06-07, rubric v2):** **IR 7.9** + **bank-grade 8.3** + **XC 9.0**. `validate-all` **49/50** (Docs Standard fail). **repoHygiene 8.8** ([`repo-hygiene-2026-06-05.md`](./repo-hygiene-2026-06-05.md)). Witness mode (`backlogClear: true`).
 
-**Reconcile delta (2026-06-08):** **S4-06 done** — READMEs for 12 dirs (4 dotdirs, 3 scripts subdirs, 3 workspace packages, templates, chaos-tests). Next automatable: **S4-07** (pnpm test quick flake). Human blockers unchanged: EXT-INF-002/013/014/015/016.
+**Reconcile delta (2026-06-05):** **Hub #17 closed** — prod `compliance.gtcx.trade` + `terminal.gtcx.trade`; baseline-os locker `7d98352b2`; infra `dee331c`/`e72c728`. **repo-hygiene 8.8** (+0.2). **S4-07** shellcheck fixed; blocked on **docs-standard 27 violations**. Next automatable: **S4-08**. Human blockers unchanged: EXT-INF-002/013/014/015/016.
+
+**Reconcile delta (2026-06-08):** **S4-06 done** — README sweep (12 dirs). Superseded by repo-hygiene 2026-06-05: 5 README gaps remain (P1).
 
 **Reconcile delta (2026-06-07):** Lane audits filed — engineering **7.9**, bank-grade **8.3**. **S4-04/05 done** (gate signoff restore).
 

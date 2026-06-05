@@ -51,7 +51,9 @@
     "gtcxCtlValidateCi": "pass",
     "validateSignal": "pass"
   },
-  "gateFailures": ["pnpm test quick — 1/359 test flake (S4-07 pending investigation)"],
+  "gateFailures": [
+    "validate-all Docs Standard — 27 link violations (S4-08 pending); validate.sh quick exit 1"
+  ],
   "sprint1Closed": {
     "done": ["S1-02", "S1-03", "S1-04", "S1-05", "S1-06", "S1-07", "S1-08", "S1-10"],
     "partial": ["S1-01 → promoted to S2-14"],
