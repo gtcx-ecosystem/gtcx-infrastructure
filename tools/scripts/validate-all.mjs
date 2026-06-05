@@ -103,6 +103,11 @@ run('Empty Catch Blocks', 'node tools/scripts/empty-catch-check.mjs');
 run('Runbook Commands Exist', 'node tools/scripts/runbook-commands-check.mjs');
 run('Runbook Frontmatter', 'node tools/scripts/runbook-frontmatter-check.mjs --check');
 run('Production Overlay Tags', 'node tools/scripts/production-overlay-guard.mjs');
+run(
+  'Environment CI Preflight',
+  'node tools/control-plane/validate-environment.mjs --ci',
+);
+run('Environment Preflight (CI)', 'node tools/control-plane/gtcx-ctl.mjs validate --ci');
 run('Alert Runbook Anchors', 'node tools/scripts/alerts-add-runbook-url.mjs --check');
 run('Dependabot Policy', 'node tools/scripts/dependabot-policy-check.mjs');
 run('SOC2 Agent Owners', 'node tools/scripts/soc2-agent-owners-check.mjs');

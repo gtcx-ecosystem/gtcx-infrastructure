@@ -97,7 +97,8 @@ function showHelp() {
   gtcx-ctl evidence release-bundle --environment=<env> --version=<tag> --commit=<sha> [--build-only|--smoke-base-url=<url> --rollback-target=<target>] --image=<name>=<ref> [--sbom=<name>=<path>] [--scan=<name>=<status>] [--gate=<name>=<status>]
   gtcx-ctl evidence runtime-smoke --environment=<env> --base-url=<url> [--mode=public|bearer] [--bearer-token-env=<ENV_VAR>] [--endpoint=<name>=<path>] [--strict]
   gtcx-ctl evidence worm-upload --manifest=<path/to/worm-upload.json> [--dry-run] [--output-dir=<path>]
-  gtcx-ctl validate --environment=<env> [--dry-run]
+  gtcx-ctl validate --environment=<env> [--dry-run] [--ci]
+  gtcx-ctl validate --ci [--environment=<env>]
 
 Notes:
   - This is a bounded operator interface over infra/scripts.
@@ -289,12 +290,21 @@ if (area === 'evidence') {
 if (area === 'validate') {
   const { flags } = parseFlags(args);
   const environment = flags.get('environment');
+  const ci = flags.get('ci') === true;
 
-  if (!environment || typeof environment !== 'string') {
-    fail('validate requires --environment=<development|staging|testnet-pilot|production>');
+  if (!ci && (!environment || typeof environment !== 'string')) {
+    fail(
+      'validate requires --environment=<development|staging|testnet-pilot|production> or --ci',
+    );
   }
 
-  const commandArgs = [formatFlag('environment', environment)];
+  const commandArgs = [];
+  if (environment && typeof environment === 'string') {
+    commandArgs.push(formatFlag('environment', environment));
+  }
+  if (ci) {
+    commandArgs.push('--ci');
+  }
   if (flags.get('dry-run') === true) {
     commandArgs.push('--dry-run');
   }

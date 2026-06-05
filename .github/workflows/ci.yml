@@ -49,6 +49,9 @@ jobs:
       - name: Infrastructure validation smoke
         run: pnpm test
 
+      - name: Environment preflight (gtcx-ctl validate --ci)
+        run: node tools/control-plane/gtcx-ctl.mjs validate --ci
+
       - name: Terraform binary gate
         run: |
           echo "Checking for committed Terraform binaries or state files..."
@@ -397,6 +400,11 @@ jobs:
 
       - name: Kustomize build — pen-test overlay
         run: kubectl kustomize infra/kubernetes/overlays/pen-test/ > infra/security/reports/kustomize-rendered/ci/pen-test.yaml
+
+      - name: Environment preflight (gtcx-ctl validate-environment --ci)
+        run: |
+          node tools/control-plane/validate-environment.mjs --ci
+          node tools/control-plane/gtcx-ctl.mjs validate --environment=testnet-pilot --ci
 
       - name: Upload Kustomize render evidence
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
