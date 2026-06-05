@@ -1,12 +1,12 @@
 {
   "repo": "gtcx-infrastructure",
   "auditDate": "2026-06-07",
-  "verifiedAt": "2026-06-07T18:00:00.000Z",
-  "head": "9d7d763",
-  "workingTree": "audit-artifacts-pending-commit",
-  "sourceAudit": "docs/audit/bank-grade-audit-2026-06-07.md",
-  "latestAudit": "docs/audit/bank-grade-audit-2026-06-07.md",
-  "previousAudit": "docs/audit/master-audit-2026-06-02.md",
+  "verifiedAt": "2026-06-07T20:00:00.000Z",
+  "head": "c181138",
+  "workingTree": "engineering-audit-pending-commit",
+  "sourceAudit": "docs/audit/engineering-audit-2026-06-07.md",
+  "latestAudit": "docs/audit/engineering-audit-2026-06-07.md",
+  "previousAudit": "docs/audit/bank-grade-audit-2026-06-07.md",
   "remediationPlan": "docs/audit/execution-roadmap.md",
   "latest10-10Roadmap": "docs/audit/10-10-roadmap-2026-06-02.md",
   "irRoadmap": "docs/audit/ir-10-10-roadmap.md",
@@ -14,6 +14,9 @@
   "scores": {
     "internalEngineeringReadiness": 7.9,
     "internalReadiness": 7.9,
+    "engineeringLaneScore": 7.9,
+    "engineeringSignoff": 7.5,
+    "engineeringCompletion": 8.3,
     "externalClearance": 9,
     "externalBlockerBurden": 1,
     "codeQuality": 8.2,
@@ -50,7 +53,8 @@
   },
   "gateFailures": [
     "pnpm test exit 2 — deployment-guard migration-safety.mjs typecheck",
-    "pnpm lint exit 1 — @gtcx/audit-signer ESLint (5 errors)"
+    "pnpm lint exit 1 — @gtcx/audit-signer ESLint (5 errors)",
+    "pnpm typecheck exit 2 — deployment-guard migration-safety.mjs JSDoc/param mismatch"
   ],
   "sprint1Closed": {
     "done": ["S1-02", "S1-03", "S1-04", "S1-05", "S1-06", "S1-07", "S1-08", "S1-10"],
@@ -89,7 +93,8 @@
     "Canonical master-audit 2026-06-02 (4189077): 6-phase formal protocol per gtcx-docs/tools/audit/audit-framework; honest scores applied after forensic verification; IR 7.1 / Investor 7.0 / Enterprise 7.0 / Sovereign 6.9; docs-standard 8.5/10; repo hygiene 8.75/10; 38/38 gates green.",
     "10-10-roadmap 2026-06-02 (1dec78f): honest baseline 7.1 → 10.0; M1 Foundation target 8.0 (2-3w); M2 Hardening target 9.0 (4-6w); M3 Certification target 9.5 (2-3mo); M4 Reference target 10.0 (1-2mo); critical path dominated by external dependencies (SOC 2 + pen-test).",
     "M1 Foundation complete (801c2e0): compliance-gateway lint debt resolved (1 error fixed); 6 missing READMEs added; dead cross-repo links fixed (1198/1198); mutable audit default sink durable (NATS in prod/staging, stdout only in dev/test); typecheck/build wired for all 15 packages (18/18 tasks pass); 39/39 gates green.",
-    "Bank-grade audit 2026-06-07 (9d7d763): lane-4 certified composite 8.3 (+1.2 vs master-audit 2026-06-02); validate-all 50/50; IR-3.4 gtcx-ctl validate --ci + IR-4.1 USSD soak; external assurance unchanged (pen-test, SOC2, FSCA)."
+    "Bank-grade audit 2026-06-07 (9d7d763): lane-4 certified composite 8.3 (+1.2 vs master-audit 2026-06-02); validate-all 50/50; IR-3.4 gtcx-ctl validate --ci + IR-4.1 USSD soak; external assurance unchanged (pen-test, SOC2, FSCA).",
+    "Engineering audit 2026-06-07 (c181138): lane-1 headline 7.9 (signoff 7.5 / completion 8.3); validate-all 50/50; lint/typecheck/test fail on audit-signer + deployment-guard regressions."
   ],
   "remainingGaps": [
     "S2-13 — Pen-test SOW signature (EXT-INF-002).",
@@ -108,9 +113,22 @@
     "repoHygieneAudit": "docs/audit/repo-hygiene-2026-06-06.md",
     "bankGradeAudit": "docs/audit/bank-grade-audit-2026-06-07.md",
     "bankGradeIndex": "docs/audit/bank-grade-2026-06-07.md",
-    "signalAssessment": "docs/audit/signal-assessment-2026-06-07.md"
+    "signalAssessment": "docs/audit/signal-assessment-2026-06-07.md",
+    "engineeringAudit": "docs/audit/engineering-audit-2026-06-07.md",
+    "engineeringIndex": "docs/audit/engineering-completeness-quality-2026-06-07.md"
   },
   "lanes": {
+    "engineeringCompletenessQuality": {
+      "auditQuality1to10": 8.5,
+      "readinessOutcome": {
+        "signoff": 7.5,
+        "completion": 8.3,
+        "laneHeadline": 7.9
+      },
+      "index": "docs/audit/engineering-completeness-quality-2026-06-07.md",
+      "forensic": "docs/audit/engineering-audit-2026-06-07.md",
+      "legacyForensic": "docs/audit/full-audit-2026-06-01.md"
+    },
     "bankGrade": {
       "auditQuality1to10": 8.4,
       "readinessOutcome": {
