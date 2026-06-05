@@ -202,6 +202,11 @@ jobs:
         run: |
           bash tools/load-tests/run-load-tests.sh --output-dir=infra/security/reports/load-evidence/ci/$(date -u +%Y%m%dT%H%M%SZ)
 
+      - name: USSD path soak (IR-4.1)
+        run: |
+          chmod +x tools/load-tests/run-ussd-soak.sh
+          bash tools/load-tests/run-ussd-soak.sh --output-dir=infra/security/reports/ussd-soak/ci/$(date -u +%Y%m%dT%H%M%SZ)
+
       - name: Upload load-test evidence
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:

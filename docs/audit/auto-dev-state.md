@@ -78,7 +78,7 @@ EXT-INF-002 (pen-test SOW), EXT-INF-013 (pilot owner), EXT-INF-014 (DPA), EXT-IN
 
 **Launch-plan mode:** DONE — LAUNCH-PLAN-01/02/03 complete, GTM-AUDIT complete.
 
-**Implement mode:** IR-3.4 **done** (2026-06-06); `pnpm agent:next-work` selects **IR-4.1** next. IR-5.2 pending.
+**Implement mode:** IR-3.4 + IR-4.1 **done** (2026-06-07); `pnpm agent:next-work` selects **IR-5.2** next.
 
 **Human gates (XC — parallel):** [ext-inf-human-gates-unblock-2026-06-06.md](../operations/coordination/outbound/ext-inf-human-gates-unblock-2026-06-06.md)
 
@@ -100,7 +100,7 @@ EXT-INF-002 (pen-test SOW), EXT-INF-013 (pilot owner), EXT-INF-014 (DPA), EXT-IN
 | IR-3.2         | Document operator live path for runtime-evidence-check         | P1  | **done** | ops-docs |
 | IR-3.5         | Refresh DR fire-drill dated artifact                           | P1  | **done** | ops-docs |
 | IR-3.4         | Expand `gtcx-ctl validate-environment` in CI                   | P1  | **done** | code     |
-| IR-4.1         | USSD path soak test in CI                                      | P1  | pending  | code     |
+| IR-4.1         | USSD path soak test in CI                                      | P1  | **done** | code     |
 | IR-5.2         | Re-run ecosystem-repo-review; ledger ≥9.0                      | P2  | pending  | ops-docs |
 | IR-5.1         | Cross-repo-contract token                                      | P2  | **done** | code     |
 | S2-13          | Pen-test SOW signature                                         | P0  | blocked  | external |

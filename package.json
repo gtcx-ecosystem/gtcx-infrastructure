@@ -36,6 +36,7 @@
     "agent:proceed-confirmation:check": "node scripts/check-agent-proceed-confirmation.mjs",
     "validate:environment": "node ./tools/control-plane/validate-environment.mjs",
     "validate:environment:ci": "node ./tools/control-plane/validate-environment.mjs --ci",
+    "validate:ussd-soak": "bash ./tools/load-tests/run-ussd-soak.sh",
     "docker:build": "docker compose build",
     "docker:up": "docker compose up -d",
     "docker:down": "docker compose down",
