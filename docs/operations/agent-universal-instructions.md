@@ -173,11 +173,25 @@ After substantive work (not at cold session start), close with this frame:
 - <Class A/S gates only — omit section if none>
 ```
 
-| Section             | Purpose                                            |
-| ------------------- | -------------------------------------------------- |
-| **Done**            | What completed this turn, with evidence            |
-| **Next priority**   | One recommended follow-on (agent executes Class R) |
-| **Approval needed** | Human gates only — never menus or "I can …"        |
+### Human gates — navigation (mandatory)
+
+Read [`human-gate-navigation.md`](human-gate-navigation.md) before treating any gate as repo-wide **blocked**.
+
+**EXT-INF-002 / H-05 / INT-S12-01 (pen-test SOW):**
+
+| Fact       | Value                                                            |
+| ---------- | ---------------------------------------------------------------- |
+| Class      | **S** — human signs SOW                                          |
+| `blocksIR` | **`false`** — implement + witness queue **continues**            |
+| Blocks     | **Claims** only (`pen-test complete`) — not merges, not P22 head |
+| P26        | **Approval needed** — never **Deferred** unless `dependsOn`      |
+| Wrong      | "Blocked on EXT-INF" · "wait for pen-test before coding"         |
+
+| Section             | Purpose                                               |
+| ------------------- | ----------------------------------------------------- |
+| **Done**            | What completed this turn, with evidence               |
+| **Next priority**   | One recommended follow-on (agent executes Class R)    |
+| **Approval needed** | Human gates only — parallel; never menus or "I can …" |
 
 Full template: `docs/operations/agent-status-update-template.md` (rolled out with universal instructions).
 

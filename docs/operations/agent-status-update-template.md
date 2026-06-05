@@ -40,7 +40,8 @@ Structured operator communication for **progress, handoffs, and end-of-turn** su
 
 ### Approval needed
 
-- <Class A/S only: e.g. populate prod secret, legal sign-off, spend — or omit entire section>
+- <Class A/S only — parallel human gates; omit section if none>
+- Example: **EXT-INF-002 / H-05** — Security signs pen-test SOW (`blocksIR: false` — implement queue continues). Nav: `human-gate-navigation.md`
 ```
 
 ---
@@ -59,7 +60,7 @@ Structured operator communication for **progress, handoffs, and end-of-turn** su
 
 ### Approval needed
 
-- Include **only** when Protocol 28 class **A** or **S** blocks automation.
+- Include **only** when Protocol 28 class **A** or **S** needs human action — **`blocksIR: false`** gates are **parallel**, not repo frozen ([`human-gate-navigation.md`](human-gate-navigation.md)).
 - Omit the heading when empty (do not write "None" or "N/A").
 - Forbidden: story menus, repo pick lists, push delegation.
 
@@ -100,6 +101,7 @@ Structured operator communication for **progress, handoffs, and end-of-turn** su
 | **Next:** W2-OPS-001 + IR-3.5 listed, then "Want me to proceed with IR-3.5 or stay on W2?" | **Next priority** = in_progress W2 only; IR-3.5 → Deferred line; **stop** — no question after Approval |
 | Text after `### Approval needed`                                                           | Message **ends** at Status Update; execute Class R Next in-session                                     |
 | Done section empty when commands ran                                                       | List what ran with exit codes                                                                          |
+| "Repo blocked on EXT-INF-002" / wait for pen-test before coding                            | **Approval needed** for SOW; **Next priority** = implement/witness per `agent:next-work`               |
 
 **Owning work after hub delivery:** Done (commits) → `agent:next-work` in owner repo → Next priority (story ID) → implement Class R in-session.
 
