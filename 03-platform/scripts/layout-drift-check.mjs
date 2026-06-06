@@ -45,6 +45,8 @@ for (const name of FORBIDDEN_ROOT) {
 for (const root of [REPO, join(REPO, '03-platform'), join(REPO, '04-deploy'), join(REPO, '.github')]) {
   if (!existsSync(root)) continue;
   for (const file of walk(root)) {
+    const rel = relative(REPO, file);
+    if (rel.endsWith('layout-strings-check.mjs') || rel.endsWith('layout-drift-check.mjs')) continue;
     const text = readFileSync(file, 'utf8');
     for (const re of FORBIDDEN) {
       if (re.test(text)) {

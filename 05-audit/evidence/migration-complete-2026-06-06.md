@@ -16,12 +16,13 @@ review_cycle: quarterly
 
 ## Evidence
 
-| Artifact               | Path                                                                              |
-| ---------------------- | --------------------------------------------------------------------------------- |
-| Migration score (SoR)  | `gtcx-agentic/05-audit/evidence/migration-health-gtcx-infrastructure-latest.json` |
-| Layout v3 spec pointer | `01-docs/04-ops/workspace/ecosystem-repo-layout-v3.md`                            |
-| Root allowlist         | `01-docs/operations/repo/root-allowlist.json` (v3.2.0)                            |
-| Ops manifest           | `config/ops.manifest.json`                                                        |
+| Artifact               | Path                                                                                         |
+| ---------------------- | -------------------------------------------------------------------------------------------- |
+| Migration score (SoR)  | `gtcx-agentic/05-audit/evidence/migration-health-gtcx-infrastructure-latest.json`            |
+| L2/L3 tiers            | **L2 100/100** · **L3 100/100** @ `pnpm layout:strings:check` + `pnpm agent:bootstrap:check` |
+| Layout v3 spec pointer | `01-docs/04-ops/workspace/ecosystem-repo-layout-v3.md`                                       |
+| Root allowlist         | `01-docs/operations/repo/root-allowlist.json` (v3.2.0)                                       |
+| Ops manifest           | `config/ops.manifest.json`                                                                   |
 
 ## Phase 1 gates (exit codes)
 

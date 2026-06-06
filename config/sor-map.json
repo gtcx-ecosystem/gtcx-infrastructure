@@ -1,0 +1,41 @@
+{
+  "schema": "gtcx.sorMap.v1",
+  "repo": "gtcx-infrastructure",
+  "repoKind": "infra-platform",
+  "migrationTier": "stable",
+  "paths": {
+    "auditEntry": "05-audit/AGENT-START.md",
+    "auditEvidence": "05-audit/evidence/",
+    "auditNarrativeIndex": "01-docs/audit/",
+    "executionRoadmap": "01-docs/audit/execution-roadmap.md",
+    "autoDevState": "01-docs/audit/auto-dev-state.md",
+    "agentsCanonical": "01-docs/agents/",
+    "agentWorkSelection": "01-docs/operations/agent-work-selection.md",
+    "governanceTierB": "01-docs/operations/repo/",
+    "docsIamap": "01-docs/README.md",
+    "docsIndex": "01-docs/INDEX.md",
+    "platformScripts": "03-platform/scripts/",
+    "platformTools": "03-platform/tools/",
+    "deployRoot": "04-deploy/",
+    "deployScripts": "04-deploy/03-platform/scripts/",
+    "deployTerraform": "04-deploy/terraform/",
+    "deployKubernetes": "04-deploy/kubernetes/",
+    "opsDomains": "02-ops/",
+    "workstream": "06-workstream/",
+    "toolchainSoR": "config/toolchain/",
+    "sorMap": "config/sor-map.json",
+    "pathsModule": "config/paths.mjs",
+    "repoKind": "config/repo-kind.json",
+    "governanceSpine": "config/governance-spine.json",
+    "opsManifest": "config/ops.manifest.json"
+  },
+  "deprecated": {
+    "tools/": "03-platform/tools/",
+    "infra/": "04-deploy/",
+    "docs/audit/": "01-docs/audit/",
+    "docs/gtm/": "01-docs/gtm/",
+    "01-docs/05-audit/": "01-docs/audit/ (narrative) + 05-audit/ (evidence hub)",
+    "01-docs/04-ops/": "01-docs/operations/ or 01-docs/04-ops/ (coordination only)",
+    "04-ship/": "04-deploy/"
+  }
+}

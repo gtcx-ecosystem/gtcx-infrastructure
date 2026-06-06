@@ -1,0 +1,17 @@
+{
+  "kind": "infra-platform",
+  "emphasis": [
+    "03-platform/tools",
+    "03-platform/scripts",
+    "04-deploy/terraform",
+    "04-deploy/kubernetes",
+    "04-deploy/03-platform/scripts"
+  ],
+  "deemphasis": ["06-workstream"],
+  "migrationTier": "stable",
+  "notes": "DevOps/IaC monorepo; primary test entry is validate.sh quick via pnpm test.",
+  "turbo": {
+    "testDependsOnBuild": false,
+    "workspacePackages": "03-platform/tools/*"
+  }
+}

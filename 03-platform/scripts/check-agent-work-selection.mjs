@@ -8,17 +8,17 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = join(__dirname, '..');
+const ROOT = join(__dirname, '../..');
 
 const CHECKS = [
   {
     name: 'manifest exists',
-    path: join(ROOT, '01-docs/04-ops/agent-work-selection.md'),
+    path: join(ROOT, '01-docs/operations/agent-work-selection.md'),
     test: (p) => existsSync(p),
   },
   {
     name: 'manifest has adoption_status',
-    path: join(ROOT, '01-docs/04-ops/agent-work-selection.md'),
+    path: join(ROOT, '01-docs/operations/agent-work-selection.md'),
     test: (p) => {
       if (!existsSync(p)) return false;
       const content = readFileSync(p, 'utf8');
@@ -68,7 +68,7 @@ const CHECKS = [
   },
   {
     name: 'auto-dev-state.md has Next work block',
-    path: join(ROOT, '01-docs/05-audit/auto-dev-state.md'),
+    path: join(ROOT, '01-docs/audit/auto-dev-state.md'),
     test: (p) => {
       if (!existsSync(p)) return false;
       const content = readFileSync(p, 'utf8');
@@ -77,7 +77,7 @@ const CHECKS = [
   },
   {
     name: 'execution roadmap exists',
-    path: join(ROOT, '01-docs/05-audit/execution-roadmap.md'),
+    path: join(ROOT, '01-docs/audit/execution-roadmap.md'),
     test: (p) => existsSync(p),
   },
 ];

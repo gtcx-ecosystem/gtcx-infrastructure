@@ -13,12 +13,12 @@ import { attachLaunchFocus, writeLaunchFocusState } from './lib/attach-launch-fo
 import { resolveTraceId } from './lib/trace-context.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const REPO_ROOT = join(__dirname, '..');
+const REPO_ROOT = join(__dirname, '../..');
 const THIS_REPO = 'gtcx-infrastructure';
 
 const PATHS = {
-  manifest: join(REPO_ROOT, '01-docs/04-ops/agent-work-selection.md'),
-  roadmap: join(REPO_ROOT, '01-docs/05-audit/execution-roadmap.md'),
+  manifest: join(REPO_ROOT, '01-docs/operations/agent-work-selection.md'),
+  roadmap: join(REPO_ROOT, '01-docs/audit/execution-roadmap.md'),
   session: join(REPO_ROOT, '.baseline/memory/session.md'),
 };
 

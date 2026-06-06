@@ -16,6 +16,20 @@ autonomy_level: 'permissioned'
 
 Single source of truth for all infrastructure documentation.
 
+## Layout v3 IA map
+
+Seven-hub layout (Protocol 29/30). **Path contract:** [`config/sor-map.json`](../config/sor-map.json) · machine table: [`INDEX.md`](./INDEX.md).
+
+| Hub        | Path             | Role                               |
+| ---------- | ---------------- | ---------------------------------- |
+| Archive    | `00-archive/`    | Retired artifacts                  |
+| Docs       | `01-docs/`       | Internal docs (this tree)          |
+| Ops        | `02-ops/`        | PM, coordination, attestation      |
+| Platform   | `03-platform/`   | `@gtcx/*` packages + agent scripts |
+| Deploy     | `04-deploy/`     | Terraform, K8s, operator scripts   |
+| Audit      | `05-audit/`      | Audit entry + evidence             |
+| Workstream | `06-workstream/` | Active workstream                  |
+
 > **Doc-site architecture.** This repo has ONE public doc-site, not three.
 >
 > - **Source of truth** (markdown): [`01-docs/gitbook/docs-site/`](gitbook/docs-site/README.md) — what gets published at `gtcx.trade/compliance`.

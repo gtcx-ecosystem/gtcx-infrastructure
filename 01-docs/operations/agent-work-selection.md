@@ -21,8 +21,8 @@ adoption_status: pilot
 
 | Artifact                           | Path                                      |
 | ---------------------------------- | ----------------------------------------- |
-| Execution roadmap (story register) | `01-docs/05-audit/execution-roadmap.md`   |
-| Session pointer                    | `01-docs/05-audit/auto-dev-state.md`      |
+| Execution roadmap (story register) | `01-docs/audit/execution-roadmap.md`      |
+| Session pointer                    | `01-docs/audit/auto-dev-state.md`         |
 | Baseline session memory            | `.baseline/memory/session.md`             |
 | Selection script                   | `03-platform/scripts/agent-next-work.mjs` |
 

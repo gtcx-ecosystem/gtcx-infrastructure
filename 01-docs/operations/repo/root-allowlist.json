@@ -2,6 +2,7 @@
   "$schema": "./root-allowlist.schema.json",
   "version": "3.2.0",
   "schema_version": "1.0.0",
+  "migration_tier": "stable",
   "updated": "2026-06-06",
   "description": "Universal seven-hub root allowlist (ecosystem layout v3). Closed world — Protocol 31. No per-repo exceptions.",
   "required_files": ["README.md", "AGENTS.md"],
