@@ -7,7 +7,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execSync } from 'node:child_process';
 
-const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
 
 let failed = 0;
 
@@ -20,7 +20,7 @@ function pass(msg) {
   console.log(`prompt-semver: PASS — ${msg}`);
 }
 
-const out = execSync('node -e "import(\'./03-platform/tools/compliance-gateway/03-platform/src/system-prompt.mjs\').then(m=>console.log(JSON.stringify(m.getPromptMetadata())))"', {
+const out = execSync('node -e "import(\'./03-platform/tools/compliance-gateway/src/system-prompt.mjs\').then(m=>console.log(JSON.stringify(m.getPromptMetadata())))"', {
   cwd: ROOT,
   encoding: 'utf8',
 });

@@ -24,6 +24,8 @@ async function loadBaselineRouter() {
     return false;
   }
   const candidates = [
+    join(__dirname, '../../../../baseline-os/packages/baselineos/dist/core/cost-router.js'),
+    join(__dirname, '../../../../baseline-os/packages/baselineos/src/core/cost-router.ts'),
     join(__dirname, '../../../../baseline-os/03-platform/packages/baselineos/dist/core/cost-router.js'),
     join(__dirname, '../../../../baseline-os/03-platform/packages/baselineos/src/core/cost-router.ts'),
   ];

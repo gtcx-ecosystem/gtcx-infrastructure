@@ -67,6 +67,6 @@ We use NATS JetStream as the audit record transport, with the compliance-gateway
 
 - ADR-015 — Per-tenant JetStream subject routing
 - ADR-016 — Fail-closed audit signing in production
-- `03-platform/tools/audit-flush/03-platform/src/nats-consumer.mjs` — durable consumer implementation
-- `03-platform/tools/compliance-gateway/03-platform/src/audit-sink.mjs` — gateway-side publisher
+- `03-platform/tools/audit-flush/src/nats-consumer.mjs` — durable consumer implementation
+- `03-platform/tools/compliance-gateway/src/audit-sink.mjs` — gateway-side publisher
 - NATS JetStream documentation: https://docs.nats.io/nats-concepts/jetstream

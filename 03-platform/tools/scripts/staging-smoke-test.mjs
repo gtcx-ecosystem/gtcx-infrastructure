@@ -10,7 +10,7 @@
  *   - Protocol handlers respond within SLO latency thresholds
  *
  * Usage:
- *   node 03-platform/tools/03-platform/scripts/staging-smoke-test.mjs --base-url=https://api.staging.gtcx.trade
+ *   node 03-platform/tools/scripts/staging-smoke-test.mjs --base-url=https://api.staging.gtcx.trade
  *
  * Exit codes:
  *   0 = all checks pass

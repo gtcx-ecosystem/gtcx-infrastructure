@@ -6,8 +6,8 @@
   "main": "src/server.mjs",
   "scripts": {
     "lint": "eslint src tests --ext .mjs,.js",
-    "start": "node 03-platform/src/server.mjs",
-    "dev": "node --watch 03-platform/src/server.mjs",
+    "start": "node src/server.mjs",
+    "dev": "node --watch src/server.mjs",
     "test": "node ../scripts/run-package-tests.mjs",
     "test:coverage": "c8 --reporter=text --reporter=json --reporter=lcov --include='src/**' node ../scripts/run-package-tests.mjs",
     "test:coverage:gate": "c8 --check-coverage --branches 90 --statements 90 --functions 90 --lines 90 --reporter=text --reporter=json --reporter=lcov --include='src/**' node ../scripts/run-package-tests.mjs",

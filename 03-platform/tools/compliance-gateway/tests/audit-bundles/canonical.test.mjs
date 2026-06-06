@@ -6,7 +6,7 @@ import {
   canonicalizeUrl,
   computeEnvelopeHash,
   sha256Hex,
-} from '../../03-platform/src/audit-bundles/canonical.mjs';
+} from '../../src/audit-bundles/canonical.mjs';
 
 const FIXTURE = {
   method: 'POST',

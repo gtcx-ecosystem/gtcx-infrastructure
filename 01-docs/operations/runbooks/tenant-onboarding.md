@@ -39,7 +39,7 @@ The same code becomes:
 
 ## 2. Mint tenant tokens
 
-Two tokens per tenant — one read-only operator, one approval signer. There is no `gtcx-ctl token mint` subcommand today; operators generate tokens directly and patch the gateway's `COMPLIANCE_GATEWAY_AUTH_TOKENS_JSON` config (per `03-platform/tools/compliance-gateway/03-platform/src/auth.mjs`).
+Two tokens per tenant — one read-only operator, one approval signer. There is no `gtcx-ctl token mint` subcommand today; operators generate tokens directly and patch the gateway's `COMPLIANCE_GATEWAY_AUTH_TOKENS_JSON` config (per `03-platform/tools/compliance-gateway/src/auth.mjs`).
 
 ```bash
 OPS_TOKEN=$(openssl rand -base64 48 | tr -d '=+/' | head -c 48)

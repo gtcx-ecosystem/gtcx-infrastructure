@@ -12,7 +12,7 @@
  *   4. Verification job is present
  *   5. @gtcx/audit-signer has publishConfig.provenance = true
  *
- * Usage: node 03-platform/tools/03-platform/scripts/slsa-l3-gate.mjs
+ * Usage: node 03-platform/tools/scripts/slsa-l3-gate.mjs
  */
 
 import { readFileSync } from 'node:fs';

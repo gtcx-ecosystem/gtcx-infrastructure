@@ -40,7 +40,7 @@ A shared Redis instance has been added to the base Kubernetes manifest:
 
 ### 2.2 Nonce Store Implementation
 
-**File:** `03-platform/tools/compliance-gateway/03-platform/src/nonce-store/redis.mjs`
+**File:** `03-platform/tools/compliance-gateway/src/nonce-store/redis.mjs`
 
 Semantics:
 
@@ -56,7 +56,7 @@ Fallback:
 
 ### 2.3 Wiring
 
-`03-platform/tools/compliance-gateway/03-platform/src/server.mjs` now initializes the nonce store via:
+`03-platform/tools/compliance-gateway/src/server.mjs` now initializes the nonce store via:
 
 ```js
 const auditBundlesNonceGate = createNonceStore({ tenantId: 'audit-bundles' });

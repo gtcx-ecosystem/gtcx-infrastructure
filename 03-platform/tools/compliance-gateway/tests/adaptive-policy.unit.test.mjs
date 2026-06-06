@@ -8,7 +8,7 @@
 import assert from 'node:assert';
 import { describe, it } from 'node:test';
 
-import { evaluatePolicy } from '../03-platform/src/adaptive-policy.mjs';
+import { evaluatePolicy } from '../src/adaptive-policy.mjs';
 
 const T = {
   enabled: true,

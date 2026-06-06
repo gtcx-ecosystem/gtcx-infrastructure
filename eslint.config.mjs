@@ -60,7 +60,7 @@ export default tseslint.config(
 
   // Override for infrastructure scripts — allow console
   {
-    files: ['04-ship/**/03-platform/scripts/**/*.js', '04-ship/**/03-platform/scripts/**/*.mjs', '03-platform/tools/03-platform/scripts/**/*.js'],
+    files: ['04-ship/**/03-platform/scripts/**/*.js', '04-ship/**/03-platform/scripts/**/*.mjs', '03-platform/tools/scripts/**/*.js'],
     rules: {
       'no-console': 'off',
     },
@@ -68,7 +68,7 @@ export default tseslint.config(
 
   // Override for compliance-gateway — structured JSON logging uses console.log intentionally
   {
-    files: ['03-platform/tools/compliance-gateway/03-platform/src/**/*.mjs'],
+    files: ['03-platform/tools/compliance-gateway/src/**/*.mjs'],
     rules: {
       'no-console': ['warn', { allow: ['log', 'warn', 'error'] }],
     },

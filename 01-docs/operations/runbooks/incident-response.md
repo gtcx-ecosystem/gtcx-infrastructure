@@ -147,12 +147,12 @@ Conduct a post-mortem within 48 hours (P1) or 72 hours (P2):
 
 ## Review Schedule
 
-| Activity                  | Frequency     | Evidence                                                                         |
-| ------------------------- | ------------- | -------------------------------------------------------------------------------- |
-| Plan review               | Quarterly     | Updated runbook with date + owner                                                |
-| Tabletop exercise         | Semi-annually | Drill record with PagerDuty event log                                            |
-| Alert routing validation  | Every CI run  | `03-platform/tools/03-platform/scripts/incident-drill-validator.mjs` green in CI |
-| Canary rollback rehearsal | Weekly        | `.github/workflows/dr-test.yml` canary-rollback job artifact                     |
+| Activity                  | Frequency     | Evidence                                                             |
+| ------------------------- | ------------- | -------------------------------------------------------------------- |
+| Plan review               | Quarterly     | Updated runbook with date + owner                                    |
+| Tabletop exercise         | Semi-annually | Drill record with PagerDuty event log                                |
+| Alert routing validation  | Every CI run  | `03-platform/tools/scripts/incident-drill-validator.mjs` green in CI |
+| Canary rollback rehearsal | Weekly        | `.github/workflows/dr-test.yml` canary-rollback job artifact         |
 
 ## Reference
 

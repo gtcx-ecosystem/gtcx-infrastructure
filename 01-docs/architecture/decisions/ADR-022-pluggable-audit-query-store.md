@@ -159,5 +159,5 @@ The future `WormQueryStore` lands in Sprint 22+ — after EXT-003 ships and the 
 - ADR-019 — Workspace Package Boundary Discipline (the in-memory → durable migration pattern)
 - gtcx-infrastructure#52 — cross-team contract recording Q8/Q9/Q10 wire-shape answers
 - PR #58 — implementation
-- `03-platform/tools/compliance-gateway/03-platform/src/audit-query/` — source
+- `03-platform/tools/compliance-gateway/src/audit-query/` — source
 - `gtcx-mobile/apps/web/portal/lib/audit-client.ts` — canonical schema source

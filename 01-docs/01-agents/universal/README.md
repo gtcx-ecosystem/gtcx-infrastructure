@@ -11,5 +11,5 @@ Normative protocols (all terminals):
 | [P28 Authority classification](https://github.com/gtcx-ecosystem/gtcx-docs/blob/main/01-docs/governance/protocols/28-agent-authority-classification/protocol.md) | Class S / A / R                         |
 | [P29 Workspace domains](https://github.com/gtcx-ecosystem/gtcx-docs/blob/main/01-docs/governance/protocols/29-agent-workspace-domains/protocol.md)               | Nine `workspace/` folders               |
 
-**Repo copy:** [`01-docs/04-ops/agent-universal-instructions.md`](../../01-docs/04-ops/agent-universal-instructions.md)  
+**Repo copy:** [`01-docs/04-ops/agent-universal-instructions.md`](../../operations/agent-universal-instructions.md)  
 **One-page card:** [agent-universal-session-card](https://github.com/gtcx-ecosystem/gtcx-docs/blob/main/01-docs/governance/protocols/agent-universal-session-card.md)

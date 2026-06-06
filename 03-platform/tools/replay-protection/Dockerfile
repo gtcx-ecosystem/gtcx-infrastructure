@@ -17,7 +17,7 @@ RUN addgroup -g 1001 -S replayguard && adduser -u 1001 -S replayguard -G replayg
 
 # Copy source (no build step — pure ESM)
 COPY package.json ./
-COPY 03-platform/src/ ./03-platform/src/
+COPY src/ ./03-platform/src/
 COPY README.md ./
 
 USER replayguard
@@ -30,4 +30,4 @@ EXPOSE 8400
 HEALTHCHECK --interval=15s --timeout=5s --start-period=5s --retries=3 \
   CMD node -e "require('http').get('http://localhost:8400/health', (r) => r.statusCode === 200 ? process.exit(0) : process.exit(1))"
 
-CMD ["node", "03-platform/src/server.mjs"]
+CMD ["node", "src/server.mjs"]

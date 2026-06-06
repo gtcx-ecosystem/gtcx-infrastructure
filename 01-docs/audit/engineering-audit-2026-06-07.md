@@ -49,9 +49,9 @@ Lane 1 engineering readiness is **strong depth with signoff drag**. Orchestrated
 | Test (quick)    | `pnpm test`                                                       | **2** | Fails on deployment-guard typecheck step in `validate.sh quick`; 56 package tests pass before guard |
 | Build           | `pnpm build`                                                      | 0     | 15/15 turbo tasks                                                                                   |
 | Architecture    | `pnpm architecture:check`                                         | N/A   | Not defined in root `package.json`                                                                  |
-| Validate-all    | `node 03-platform/tools/03-platform/scripts/validate-all.mjs`     | 0     | **50/50** PASS (re-run); **49/50** once mid-session (compliance-gateway coverage)                   |
+| Validate-all    | `node 03-platform/tools/scripts/validate-all.mjs`                 | 0     | **50/50** PASS (re-run); **49/50** once mid-session (compliance-gateway coverage)                   |
 | Environment CI  | `node 03-platform/tools/control-plane/gtcx-ctl.mjs validate --ci` | 0     | staging + production kustomize offline                                                              |
-| SIGNAL          | `node 03-platform/tools/03-platform/scripts/validate-signal.mjs`  | 0     | 9.60/10                                                                                             |
+| SIGNAL          | `node 03-platform/tools/scripts/validate-signal.mjs`              | 0     | 9.60/10                                                                                             |
 | Protocol 22     | `pnpm agent:work-selection:check`                                 | 0     | 9/9                                                                                                 |
 | Protocol 27     | `pnpm agent:execution-obligation:check`                           | 0     | 12/12                                                                                               |
 | Readiness lanes | `pnpm readiness:lanes:check` (gtcx-core)                          | 0     | SSOT + anti-drift                                                                                   |
@@ -91,7 +91,7 @@ Lane 1 engineering readiness is **strong depth with signoff drag**. Orchestrated
 ### ENG-P1 — `@gtcx/audit-signer` lint regression
 
 - **Severity:** P1
-- **Evidence:** `03-platform/tools/audit-signer/03-platform/src/signer.mjs:7-8` — import order + unused `isFipsMode`; test files `fips-mode.test.mjs`, `fips-signer.test.mjs` import order
+- **Evidence:** `03-platform/tools/audit-signer/src/signer.mjs:7-8` — import order + unused `isFipsMode`; test files `fips-mode.test.mjs`, `fips-signer.test.mjs` import order
 - **Impact:** `pnpm lint` exit 1 (15/18 turbo tasks pass)
 - **Fix:** `pnpm exec eslint --fix` in package; remove or use `isFipsMode`
 

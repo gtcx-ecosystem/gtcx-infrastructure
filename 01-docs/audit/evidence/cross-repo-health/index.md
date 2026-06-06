@@ -8,5 +8,5 @@ This directory contains the latest output from the cross-repo health probe.
 
 ## See also
 
-- [`03-platform/tools/03-platform/scripts/cross-repo-health-probe.mjs`](../../../../03-platform/tools/03-platform/scripts/cross-repo-health-probe.mjs) — Probe script
+- [`03-platform/tools/scripts/cross-repo-health-probe.mjs`](../../../../03-platform/tools/scripts/cross-repo-health-probe.mjs) — Probe script
 - [`.github/workflows/cross-repo-health.yml`](../../../../.github/workflows/cross-repo-health.yml) — CI workflow

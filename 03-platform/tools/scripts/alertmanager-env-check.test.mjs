@@ -6,8 +6,8 @@ import { fileURLToPath } from 'node:url';
 
 import { validateAlertmanagerCompose } from './alertmanager-env-check.mjs';
 
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
-const COMPOSE_PATH = join(ROOT, 'infra', 'docker', 'docker-compose.infra.yml');
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
+const COMPOSE_PATH = join(ROOT, '04-ship', 'docker', 'docker', 'docker-compose.infra.yml');
 
 describe('alertmanager-env-check', () => {
   it('passes on the committed docker-compose.infra.yml guard', () => {

@@ -8,8 +8,8 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, it } from 'node:test';
 
-import { getPromptMetadata, PROMPT_VERSION } from '../compliance-gateway/03-platform/src/system-prompt.mjs';
-import { recordLlmTrace } from '../compliance-gateway/03-platform/src/llm-trace.mjs';
+import { getPromptMetadata, PROMPT_VERSION } from '../compliance-gateway/src/system-prompt.mjs';
+import { recordLlmTrace } from '../compliance-gateway/src/llm-trace.mjs';
 import { runStaticChecks } from '../eval-pipeline/injection-suite.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');

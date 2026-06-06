@@ -1,7 +1,7 @@
 import assert from 'node:assert';
 import { describe, it, beforeEach, afterEach } from 'node:test';
-import { recordLlmTrace } from '../03-platform/src/llm-trace.mjs';
-import { resetMetrics, renderMetrics } from '../03-platform/src/metrics.mjs';
+import { recordLlmTrace } from '../src/llm-trace.mjs';
+import { resetMetrics, renderMetrics } from '../src/metrics.mjs';
 
 describe('llm-trace', () => {
   const env = { ...process.env };

@@ -190,13 +190,13 @@ kubectl apply -k 04-ship/kubernetes/overlays/development
 
 ### Environment Health Checks
 
-| Environment | Check                                                           | Expected             |
-| ----------- | --------------------------------------------------------------- | -------------------- |
-| Local       | `docker compose ps` (all containers)                            | All healthy          |
-| Local       | `psql -h localhost -U gtcx -d gtcx_development -c "SELECT 1"`   | `1`                  |
-| Staging     | `kubectl get pods -n gtcx-staging`                              | All Running          |
-| Production  | `kubectl get pods -n gtcx-production`                           | All Running          |
-| Any         | `node 03-platform/tools/03-platform/scripts/security-status.js` | No critical findings |
+| Environment | Check                                                         | Expected             |
+| ----------- | ------------------------------------------------------------- | -------------------- |
+| Local       | `docker compose ps` (all containers)                          | All healthy          |
+| Local       | `psql -h localhost -U gtcx -d gtcx_development -c "SELECT 1"` | `1`                  |
+| Staging     | `kubectl get pods -n gtcx-staging`                            | All Running          |
+| Production  | `kubectl get pods -n gtcx-production`                         | All Running          |
+| Any         | `node 03-platform/tools/scripts/security-status.js`           | No critical findings |
 
 ---
 

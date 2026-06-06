@@ -5,7 +5,7 @@
 import assert from 'node:assert';
 import { describe, it } from 'node:test';
 
-import { routeMenu, resolveLanguage, DICTIONARIES } from '../03-platform/src/menu.mjs';
+import { routeMenu, resolveLanguage, DICTIONARIES } from '../src/menu.mjs';
 
 describe('resolveLanguage', () => {
   it('uses profile language when set', () => {
@@ -302,7 +302,7 @@ describe('t() fallback', () => {
   });
 
   it('falls back to key when not in any dictionary', async () => {
-    const { t } = await import('../03-platform/src/menu.mjs');
+    const { t } = await import('../src/menu.mjs');
     const result = t('nonExistentKey', 'en');
     assert.strictEqual(result, 'nonExistentKey');
   });
@@ -338,7 +338,7 @@ describe('routeMenu — edge cases', () => {
 
   it('handles action default in routeMenu switch', async () => {
     // Inject an unknown action type via a manual result to hit the default case
-    const { routeMenu: rm } = await import('../03-platform/src/menu.mjs');
+    const { routeMenu: rm } = await import('../src/menu.mjs');
     const result = rm({ unknownAction: 'test' }, 'prices-country', '1', 'en');
     // Should still work and set country
     assert.strictEqual(result.action.type, 'set-country');

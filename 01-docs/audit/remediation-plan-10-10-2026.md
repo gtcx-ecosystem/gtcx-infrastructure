@@ -40,7 +40,7 @@ autonomy_level: 'permissioned'
 | 1.3 | Add `check:security-control-boundaries` to CI | Required step in `.github/workflows/ci.yml`                                 | ✅ Complete        |
 | 1.4 | Add `validate.sh` quick mode to CI            | `pnpm test` runs `validate.sh quick`                                        | ✅ Complete        |
 | 1.5 | Fix `ai` package startup timeout              | `03-platform/tools/load-tests/run-load-tests.sh` wait loop 120 iterations   | ✅ Complete        |
-| 1.6 | Add Kyverno policy validation to CI           | `03-platform/tools/03-platform/scripts/kyverno-policy-validator.mjs`        | ✅ Complete        |
+| 1.6 | Add Kyverno policy validation to CI           | `03-platform/tools/scripts/kyverno-policy-validator.mjs`                    | ✅ Complete        |
 | 1.7 | Add container image signing to build workflow | Cosign in `.github/workflows/build-push-ecr.yml`                            | ✅ Already existed |
 
 ---
@@ -61,19 +61,19 @@ autonomy_level: 'permissioned'
 
 ## Phase 3: Institutional Controls (3 months) — Target: 8.5/10
 
-| #    | Task                                | Owner              | Evidence                                                                                                                       | Effort  |
-| ---- | ----------------------------------- | ------------------ | ------------------------------------------------------------------------------------------------------------------------------ | ------- |
-| 3.1  | SIGNAL scorecard + CI gates         | Platform AI Safety | `01-docs/05-audit/signal-scorecard.json` + `03-platform/tools/03-platform/scripts/validate-signal.mjs`; 5 pillars instrumented | 3 weeks |
-| 3.2  | Contract tests for protocol APIs    | Platform/Ecosystem | `03-platform/tools/contract-tests/` with schema tests for tool APIs, replay headers, telemetry                                 | 2 weeks |
-| 3.3  | Cross-repo CI matrix                | TPM                | GitHub Actions workflow tests `gtcx-protocols` + `gtcx-core` + `gtcx-infrastructure` on every interface change                 | 2 weeks |
-| 3.4  | mTLS service mesh (Linkerd)         | Platform Engineer  | `linkerd check` passes; 100% pods TLS=ok; p99 latency delta <5ms                                                               | 3 weeks |
-| 3.5  | WAF + VPC Flow Logs                 | Security Engineer  | AWS WAF v2 with OWASP CRS; GuardDuty anomaly detection                                                                         | 1 week  |
-| 3.6  | Just-in-Time (JIT) access           | Security Engineer  | AWS IAM Identity Center + `kubectl-access` tool; 4-hour session expiry                                                         | 2 weeks |
-| 3.7  | SoD matrix v1                       | CISO               | Documented separation of duties; board-approved; quarterly review calendar                                                     | 1 week  |
-| 3.8  | Break-glass procedure               | Security Engineer  | 15-minute max session; PagerDuty alert; post-incident review mandatory                                                         | 3 days  |
-| 3.9  | Signed container images enforcement | Platform Engineer  | Kyverno `require-signed-images` active; unsigned images rejected at admission                                                  | 1 week  |
-| 3.10 | Custom CodeQL queries               | Security Engineer  | Crypto-misuse queries detect hardcoded keys, weak randomness, unverified JWTs                                                  | 1 week  |
-| 3.11 | OWASP ZAP DAST                      | Security Engineer  | Weekly ZAP scan against staging; new findings auto-ticketed                                                                    | 1 week  |
+| #    | Task                                | Owner              | Evidence                                                                                                           | Effort  |
+| ---- | ----------------------------------- | ------------------ | ------------------------------------------------------------------------------------------------------------------ | ------- |
+| 3.1  | SIGNAL scorecard + CI gates         | Platform AI Safety | `01-docs/05-audit/signal-scorecard.json` + `03-platform/tools/scripts/validate-signal.mjs`; 5 pillars instrumented | 3 weeks |
+| 3.2  | Contract tests for protocol APIs    | Platform/Ecosystem | `03-platform/tools/contract-tests/` with schema tests for tool APIs, replay headers, telemetry                     | 2 weeks |
+| 3.3  | Cross-repo CI matrix                | TPM                | GitHub Actions workflow tests `gtcx-protocols` + `gtcx-core` + `gtcx-infrastructure` on every interface change     | 2 weeks |
+| 3.4  | mTLS service mesh (Linkerd)         | Platform Engineer  | `linkerd check` passes; 100% pods TLS=ok; p99 latency delta <5ms                                                   | 3 weeks |
+| 3.5  | WAF + VPC Flow Logs                 | Security Engineer  | AWS WAF v2 with OWASP CRS; GuardDuty anomaly detection                                                             | 1 week  |
+| 3.6  | Just-in-Time (JIT) access           | Security Engineer  | AWS IAM Identity Center + `kubectl-access` tool; 4-hour session expiry                                             | 2 weeks |
+| 3.7  | SoD matrix v1                       | CISO               | Documented separation of duties; board-approved; quarterly review calendar                                         | 1 week  |
+| 3.8  | Break-glass procedure               | Security Engineer  | 15-minute max session; PagerDuty alert; post-incident review mandatory                                             | 3 days  |
+| 3.9  | Signed container images enforcement | Platform Engineer  | Kyverno `require-signed-images` active; unsigned images rejected at admission                                      | 1 week  |
+| 3.10 | Custom CodeQL queries               | Security Engineer  | Crypto-misuse queries detect hardcoded keys, weak randomness, unverified JWTs                                      | 1 week  |
+| 3.11 | OWASP ZAP DAST                      | Security Engineer  | Weekly ZAP scan against staging; new findings auto-ticketed                                                        | 1 week  |
 
 ---
 
@@ -130,6 +130,6 @@ autonomy_level: 'permissioned'
 - `01-docs/05-audit/score-evidence-ledger.json` — Score history with artifacts
 - `03-platform/tools/compliance-gateway/tests/server.integration.test.mjs` — HTTP integration tests
 - `03-platform/tools/replay-protection/tests/production-fail-closed.test.mjs` — Production 503 test
-- `03-platform/tools/03-platform/scripts/kyverno-policy-validator.mjs` — Policy structural validator
+- `03-platform/tools/scripts/kyverno-policy-validator.mjs` — Policy structural validator
 - `.github/workflows/ci.yml` — Hardened CI with required evidence gates
 - `04-ship/03-platform/scripts/validate.sh` — Local validation entrypoint

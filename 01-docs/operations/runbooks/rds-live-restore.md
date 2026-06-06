@@ -199,4 +199,4 @@ Each restore produces a JSON artifact:
 - `04-ship/03-platform/scripts/rds-live-restore.sh` — Automated restore script
 - `01-docs/04-ops/runbooks/disaster-recovery.md` — General DR runbook
 - `01-docs/04-ops/runbooks/dr-fire-drill-exercise.md` — DR exercise template
-- `03-platform/tools/03-platform/scripts/dr-fire-drill-evidence.mjs` — Structural DR evidence gate
+- `03-platform/tools/scripts/dr-fire-drill-evidence.mjs` — Structural DR evidence gate

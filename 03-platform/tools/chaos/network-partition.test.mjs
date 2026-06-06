@@ -12,9 +12,9 @@
 import assert from 'node:assert';
 import { describe, it } from 'node:test';
 
-import { buildAccessProfile } from '../compliance-gateway/03-platform/src/auth.mjs';
-import { ReplayVerifier } from '../replay-protection/03-platform/src/verifier.mjs';
-import { MemoryNonceStore } from '../replay-protection/03-platform/src/store/memory-nonce-store.mjs';
+import { buildAccessProfile } from '../compliance-gateway/src/auth.mjs';
+import { ReplayVerifier } from '../replay-protection/src/verifier.mjs';
+import { MemoryNonceStore } from '../replay-protection/src/store/memory-nonce-store.mjs';
 
 describe('Chaos: Network Partition Resilience', () => {
   it('verifier interface is stable and testable', () => {

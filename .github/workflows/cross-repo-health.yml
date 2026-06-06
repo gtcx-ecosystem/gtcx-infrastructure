@@ -31,7 +31,7 @@ jobs:
 
       - name: Run cross-repo health probe
         run: |
-          node 03-platform/tools/03-platform/scripts/cross-repo-health-probe.mjs
+          node 03-platform/tools/scripts/cross-repo-health-probe.mjs
         env:
           OUTPUT_DIR: 01-docs/05-audit/evidence/cross-repo-health
 

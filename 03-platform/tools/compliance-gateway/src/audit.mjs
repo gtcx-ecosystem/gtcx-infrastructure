@@ -125,7 +125,7 @@ export function initAuditSigner(env = process.env, force = false) {
  * @param {string} [params.tenantId] - explicit tenant; falls back to payload.tenantId
  * @param {string} [params.exceptionKind] - 'low-confidence' | 'integrity-violation' | ...; tagged in recordExceptions
  * @param {unknown} [params.payload]
- * @returns {import('../../audit-signer/03-platform/src/signer.mjs').SignedAuditRecord | null}
+ * @returns {import('../../audit-signer/src/signer.mjs').SignedAuditRecord | null}
  */
 export function signAuditEvent({ actor, action, target, reason, tenantId, exceptionKind, payload }) {
   if (!keyPair) {

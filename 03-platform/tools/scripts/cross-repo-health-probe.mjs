@@ -13,8 +13,8 @@
  *   - compliance-gateway-staging.gtcx.trade/health (gtcx-infrastructure)
  *
  * Usage:
- *   node 03-platform/tools/03-platform/scripts/cross-repo-health-probe.mjs
- *   OUTPUT_DIR=01-docs/05-audit/evidence node 03-platform/tools/03-platform/scripts/cross-repo-health-probe.mjs
+ *   node 03-platform/tools/scripts/cross-repo-health-probe.mjs
+ *   OUTPUT_DIR=01-docs/05-audit/evidence node 03-platform/tools/scripts/cross-repo-health-probe.mjs
  */
 
 import { writeFileSync, mkdirSync } from 'node:fs';

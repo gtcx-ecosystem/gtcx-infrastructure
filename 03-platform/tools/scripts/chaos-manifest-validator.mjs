@@ -12,7 +12,7 @@
  *   - All referenced deployments exist in base K8s manifests
  *
  * Usage:
- *   node 03-platform/tools/03-platform/scripts/chaos-manifest-validator.mjs
+ *   node 03-platform/tools/scripts/chaos-manifest-validator.mjs
  *
  * Exits 0 on pass, 1 with violations.
  */
@@ -20,8 +20,8 @@
 import { readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 
-const CHAOS_DIR = path.join(process.cwd(), 'infra', 'kubernetes', 'overlays', 'chaos');
-const BASE_DIR = path.join(process.cwd(), 'infra', 'kubernetes', 'base');
+const CHAOS_DIR = path.join(process.cwd(), '04-ship', 'kubernetes', 'overlays', 'chaos');
+const BASE_DIR = path.join(process.cwd(), '04-ship', 'kubernetes', 'base');
 
 let exitCode = 0;
 

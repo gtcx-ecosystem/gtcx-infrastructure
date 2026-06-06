@@ -222,7 +222,7 @@ autonomy_level: 'permissioned'
 
 ## Methodology
 
-1. **Automated validation:** `node 03-platform/tools/03-platform/scripts/docs-standard-validator.mjs` — passed with 0 exceptions
+1. **Automated validation:** `node 03-platform/tools/scripts/docs-standard-validator.mjs` — passed with 0 exceptions
 2. **Structure inventory:** `find 01-docs/ -type f | wc -l` and `find 01-docs/ -type d | sort`
 3. **Frontmatter audit:** Sampled 50+ files; all 452 files confirmed to have YAML frontmatter with status/date/owner
 4. **Dead-link detection:** Validator link check + manual grep for `.md` links + cross-repo URL verification

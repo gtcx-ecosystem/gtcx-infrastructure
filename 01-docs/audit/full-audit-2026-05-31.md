@@ -24,7 +24,7 @@ supersedes: 01-docs/05-audit/full-audit-2026-05-22.md
 **HEAD:** `afce75ac` (`afce75a`) — branch `01-docs/roadmap-update-2026-05-30`, 9 commits ahead of origin  
 **Prior full audit:** [`full-audit-2026-05-22.md`](./full-audit-2026-05-22.md) (9.0 self-score; superseded by post-roadmap re-baseline 6.8/6.2)  
 **Execution truth:** [`execution-roadmap.md`](./execution-roadmap.md) — Sprint 2 in progress; S2-09, S2-10, S2-11, S2-12, S2-13 open  
-**Validation at audit time:** `node 03-platform/tools/03-platform/scripts/validate-all.mjs` — **24/24 PASS**; `pnpm test` (quick) — **PASS**
+**Validation at audit time:** `node 03-platform/tools/scripts/validate-all.mjs` — **24/24 PASS**; `pnpm test` (quick) — **PASS**
 
 ## Evidence reviewed
 
@@ -48,13 +48,13 @@ supersedes: 01-docs/05-audit/full-audit-2026-05-22.md
 
 ### Issues (architecture)
 
-| Severity | Category      | Title                                       | Evidence                                                                                                               | Impact                                                                             | Fix                                                                               |
-| -------- | ------------- | ------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| P1       | Spec Fidelity | Audit bundles feature-flagged off in prod   | `03-platform/tools/compliance-gateway/03-platform/src/server.mjs:122-134` — resolver null without `TRADEPASS_BASE_URL` | Pilot TradePass path cannot exercise bundle ingestion end-to-end                   | Wire resolver when protocols #55/#60 stable; keep 503 + signed refusal until then |
-| P2       | Operational   | Stub S3 updates success timestamp           | `03-platform/tools/audit-flush/03-platform/src/s3-uploader.mjs:96-98`                                                  | Readiness/lag probes lie during dev stub                                           | S3-06: stop mutating `lastSuccessMs` on stub `send`                               |
-| P2       | Operational   | Production kustomize tags are placeholders  | `04-ship/kubernetes/overlays/production/kustomization.yaml:43-50`                                                      | Direct `kubectl apply -k` without `deploy.sh` → ImagePullBackOff                   | Document-only risk if deploy.sh is mandatory; add CI gate blocking bare apply     |
-| P3       | Structural    | Budget Redis backend opt-in, default memory | `03-platform/tools/compliance-gateway/03-platform/src/budget-store.mjs:11-18`                                          | Per-pod QPS multiplication until `GTCX_BUDGET_STORE_BACKEND=redis` in prod overlay | S2-02 wired code; Sprint 3: enforce redis backend in production ConfigMap         |
-| P3       | Consistency   | Adaptive policy per-pod                     | Post-roadmap F-adaptive (carried)                                                                                      | Degraded fairness under HPA >10                                                    | Redis-backed policy store (deferred bank-grade item)                              |
+| Severity | Category      | Title                                       | Evidence                                                                                                   | Impact                                                                             | Fix                                                                               |
+| -------- | ------------- | ------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| P1       | Spec Fidelity | Audit bundles feature-flagged off in prod   | `03-platform/tools/compliance-gateway/src/server.mjs:122-134` — resolver null without `TRADEPASS_BASE_URL` | Pilot TradePass path cannot exercise bundle ingestion end-to-end                   | Wire resolver when protocols #55/#60 stable; keep 503 + signed refusal until then |
+| P2       | Operational   | Stub S3 updates success timestamp           | `03-platform/tools/audit-flush/src/s3-uploader.mjs:96-98`                                                  | Readiness/lag probes lie during dev stub                                           | S3-06: stop mutating `lastSuccessMs` on stub `send`                               |
+| P2       | Operational   | Production kustomize tags are placeholders  | `04-ship/kubernetes/overlays/production/kustomization.yaml:43-50`                                          | Direct `kubectl apply -k` without `deploy.sh` → ImagePullBackOff                   | Document-only risk if deploy.sh is mandatory; add CI gate blocking bare apply     |
+| P3       | Structural    | Budget Redis backend opt-in, default memory | `03-platform/tools/compliance-gateway/src/budget-store.mjs:11-18`                                          | Per-pod QPS multiplication until `GTCX_BUDGET_STORE_BACKEND=redis` in prod overlay | S2-02 wired code; Sprint 3: enforce redis backend in production ConfigMap         |
+| P3       | Consistency   | Adaptive policy per-pod                     | Post-roadmap F-adaptive (carried)                                                                          | Degraded fairness under HPA >10                                                    | Redis-backed policy store (deferred bank-grade item)                              |
 
 **Architecture scorecard average: 7.7/10 internal** (up ~0.9 from 6.8 baseline after Sprint 2 closures).
 
@@ -85,13 +85,13 @@ supersedes: 01-docs/05-audit/full-audit-2026-05-22.md
 
 ### Issues (security)
 
-| Severity | Title                                                | Evidence                                                                                                                             | Fix                                                                                                      |
-| -------- | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------- |
-| P1       | Alertmanager dev defaults can render to prod compose | `04-ship/docker/docker-compose.infra.yml:151` `PAGERDUTY_SERVICE_KEY:-CHANGE_ME_DEV`                                                 | S2-09: fail init container if keys are placeholder outside `NODE_ENV=development`; add validate-all gate |
-| P2       | Frontmatter merge allows `tier:` downgrade           | `03-platform/tools/03-platform/scripts/runbook-frontmatter-check.mjs:117-120` — `merged = new Map(second)` with no tier rank compare | S2-10: refuse merge when `tierRank(second) < tierRank(first)`                                            |
-| P2       | Stub S3 success signal                               | `s3-uploader.mjs:97`                                                                                                                 | S3-06                                                                                                    |
-| P2       | MCP read-only but gateway token in env               | `compliance-gateway-mcp/03-platform/src/server.mjs:35-36` — bearer in process env                                                    | Document vault injection; optional short-lived token rotation runbook                                    |
-| P3       | 16+ dependabot PRs aging                             | Post-roadmap F23                                                                                                                     | S2-11 Tier 1+2 merges (Q7 pin done for `@types/node`)                                                    |
+| Severity | Title                                                | Evidence                                                                                                                 | Fix                                                                                                      |
+| -------- | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------- |
+| P1       | Alertmanager dev defaults can render to prod compose | `04-ship/docker/docker-compose.infra.yml:151` `PAGERDUTY_SERVICE_KEY:-CHANGE_ME_DEV`                                     | S2-09: fail init container if keys are placeholder outside `NODE_ENV=development`; add validate-all gate |
+| P2       | Frontmatter merge allows `tier:` downgrade           | `03-platform/tools/scripts/runbook-frontmatter-check.mjs:117-120` — `merged = new Map(second)` with no tier rank compare | S2-10: refuse merge when `tierRank(second) < tierRank(first)`                                            |
+| P2       | Stub S3 success signal                               | `s3-uploader.mjs:97`                                                                                                     | S3-06                                                                                                    |
+| P2       | MCP read-only but gateway token in env               | `compliance-gateway-mcp/03-platform/src/server.mjs:35-36` — bearer in process env                                        | Document vault injection; optional short-lived token rotation runbook                                    |
+| P3       | 16+ dependabot PRs aging                             | Post-roadmap F23                                                                                                         | S2-11 Tier 1+2 merges (Q7 pin done for `@types/node`)                                                    |
 
 ### Compliance posture (honest)
 
@@ -244,16 +244,16 @@ Close F21 and F16 — no silent alert blackholes; no `tier` downgrade on doc mer
 
 ### Tasks
 
-| #   | Task                                                                       | Layer       | Files                                                                                                                     | Effort | Why It Matters                               |
-| --- | -------------------------------------------------------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------- | ------ | -------------------------------------------- |
-| 1   | Fail compose init when PagerDuty/Slack placeholders in non-dev             | Remediation | `04-ship/docker/docker-compose.infra.yml:150-157`, new `03-platform/tools/03-platform/scripts/alertmanager-env-check.mjs` | 0.5d   | Critical alerts must page, not no-op         |
-| 2   | Wire alertmanager-env-check into validate-all                              | Remediation | `03-platform/tools/03-platform/scripts/validate-all.mjs:101` area                                                         | 0.25d  | Regression-proof                             |
-| 3   | Tier rank guard in frontmatter merge                                       | Remediation | `03-platform/tools/03-platform/scripts/runbook-frontmatter-check.mjs:117-140`, `runbook-frontmatter-check.test.mjs`       | 0.5d   | DR/deployment runbooks stay `tier: critical` |
-| 4   | Adversarial fixture: merge `tier: informational` over `critical` must fail | Remediation | `03-platform/tools/03-platform/scripts/runbook-frontmatter-check.test.mjs`                                                | 0.25d  | Proves S2-10                                 |
+| #   | Task                                                                       | Layer       | Files                                                                                                         | Effort | Why It Matters                               |
+| --- | -------------------------------------------------------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------- | ------ | -------------------------------------------- |
+| 1   | Fail compose init when PagerDuty/Slack placeholders in non-dev             | Remediation | `04-ship/docker/docker-compose.infra.yml:150-157`, new `03-platform/tools/scripts/alertmanager-env-check.mjs` | 0.5d   | Critical alerts must page, not no-op         |
+| 2   | Wire alertmanager-env-check into validate-all                              | Remediation | `03-platform/tools/scripts/validate-all.mjs:101` area                                                         | 0.25d  | Regression-proof                             |
+| 3   | Tier rank guard in frontmatter merge                                       | Remediation | `03-platform/tools/scripts/runbook-frontmatter-check.mjs:117-140`, `runbook-frontmatter-check.test.mjs`       | 0.5d   | DR/deployment runbooks stay `tier: critical` |
+| 4   | Adversarial fixture: merge `tier: informational` over `critical` must fail | Remediation | `03-platform/tools/scripts/runbook-frontmatter-check.test.mjs`                                                | 0.25d  | Proves S2-10                                 |
 
 ### Definition of Done
 
-- `node 03-platform/tools/03-platform/scripts/validate-all.mjs` 25/25 (new gate)
+- `node 03-platform/tools/scripts/validate-all.mjs` 25/25 (new gate)
 - Fixture proves tier downgrade rejected
 - `execution-roadmap.md` S2-09 + S2-10 → done
 
@@ -366,7 +366,7 @@ S3-07, S3-09 — citable substrate.
 | --- | ------------------------------------------- | ----------- | -------------------------------------------------------------------------------------- | ------ | -------------------------- |
 | 1   | Flip `private:false` + SLSA on audit-signer | Innovation  | `03-platform/tools/audit-signer/package.json`, `.github/workflows/slsa-provenance.yml` | 1d     | Moat publication           |
 | 2   | Contract tests in validate-all              | Evolution   | `03-platform/tools/contract-tests/`                                                    | 1d     | Cross-repo drift detection |
-| 3   | Fix stub S3 lastSuccessMs                   | Remediation | `03-platform/tools/audit-flush/03-platform/src/s3-uploader.mjs:97`                     | 0.25d  | Honest probes              |
+| 3   | Fix stub S3 lastSuccessMs                   | Remediation | `03-platform/tools/audit-flush/src/s3-uploader.mjs:97`                                 | 0.25d  | Honest probes              |
 
 ---
 

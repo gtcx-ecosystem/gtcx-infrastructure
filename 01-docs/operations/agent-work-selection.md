@@ -39,7 +39,7 @@ AGENT_FRAME=regulatory-audit pnpm agent:next-work
 
 **IR dimension lifts (implement mode) — ACTIVE (2026-06-06).** Sprint 1 infra hardening **done**.
 
-When `pnpm agent:next-work` returns a story ID, execute it. When `backlogClear: true`, run **witness** (`node 03-platform/tools/03-platform/scripts/validate-all.mjs`) + refresh evidence gates — do not idle. **Human gates (XC)** run parallel — do not block IR implement queue.
+When `pnpm agent:next-work` returns a story ID, execute it. When `backlogClear: true`, run **witness** (`node 03-platform/tools/scripts/validate-all.mjs`) + refresh evidence gates — do not idle. **Human gates (XC)** run parallel — do not block IR implement queue.
 
 | Artifact          | Path                                                     |
 | ----------------- | -------------------------------------------------------- |
@@ -103,4 +103,4 @@ When `pnpm agent:next-work` returns a story ID, execute it. When `backlogClear: 
 1. Mark done in work register and/or `01-docs/05-audit/execution-roadmap.md`.
 2. Run `pnpm agent:next-work` for the next ID.
 3. Refresh `01-docs/05-audit/auto-dev-state.md` and `.baseline/memory/session.md`.
-4. Micro-commit; run `node 03-platform/tools/03-platform/scripts/validate-all.mjs` when touching repo gates.
+4. Micro-commit; run `node 03-platform/tools/scripts/validate-all.mjs` when touching repo gates.

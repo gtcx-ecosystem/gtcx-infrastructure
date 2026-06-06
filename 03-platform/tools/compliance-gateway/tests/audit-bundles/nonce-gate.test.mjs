@@ -1,7 +1,7 @@
 import assert from 'node:assert';
 import { describe, it } from 'node:test';
 
-import { NonceGate, NONCE_TTL_MS } from '../../03-platform/src/audit-bundles/nonce-gate.mjs';
+import { NonceGate, NONCE_TTL_MS } from '../../src/audit-bundles/nonce-gate.mjs';
 
 describe('NonceGate.checkAndSet', () => {
   it('accepts a never-seen nonce', () => {

@@ -68,12 +68,12 @@ review_cycle: 'on-change'
 
 ### 1.2 New Features Delivered
 
-| Feature                 | Location                                                                     | Tests | Coverage | Notes                                                |
-| ----------------------- | ---------------------------------------------------------------------------- | ----: | -------: | ---------------------------------------------------- |
-| Audit bundles endpoint  | `03-platform/tools/compliance-gateway/03-platform/src/audit-bundles/`        |   103 |    98.9% | Ed25519 envelope verify, nonce gate, chain validator |
-| Audit query endpoint    | `03-platform/tools/compliance-gateway/03-platform/src/audit-query/`          |   160 |    97.7% | Bearer auth, tenant isolation, NDJSON store          |
-| Redis nonce store       | `03-platform/tools/compliance-gateway/03-platform/src/nonce-store/redis.mjs` |    10 |    52.9% | Cross-service replay protection                      |
-| Staging deploy workflow | `.github/workflows/deploy-staging.yml`                                       |     — |        — | OIDC-based, concurrency controlled                   |
+| Feature                 | Location                                                         | Tests | Coverage | Notes                                                |
+| ----------------------- | ---------------------------------------------------------------- | ----: | -------: | ---------------------------------------------------- |
+| Audit bundles endpoint  | `03-platform/tools/compliance-gateway/src/audit-bundles/`        |   103 |    98.9% | Ed25519 envelope verify, nonce gate, chain validator |
+| Audit query endpoint    | `03-platform/tools/compliance-gateway/src/audit-query/`          |   160 |    97.7% | Bearer auth, tenant isolation, NDJSON store          |
+| Redis nonce store       | `03-platform/tools/compliance-gateway/src/nonce-store/redis.mjs` |    10 |    52.9% | Cross-service replay protection                      |
+| Staging deploy workflow | `.github/workflows/deploy-staging.yml`                           |     — |        — | OIDC-based, concurrency controlled                   |
 
 ### 1.3 Build Health Check Results
 
@@ -161,7 +161,7 @@ review_cycle: 'on-change'
 
 #### P1-001: Low Test Coverage in `redis-nonce-store`
 
-- **File:** `03-platform/tools/compliance-gateway/03-platform/src/nonce-store/redis.mjs`
+- **File:** `03-platform/tools/compliance-gateway/src/nonce-store/redis.mjs`
 - **Coverage:** 52.88% statements, 50% branches, 60% functions
 - **Issue:** New Redis-backed nonce store is under-tested compared to the 90% gate enforced on other critical services. Uncovered lines include connection-error handling (`28-52`), retry logic, and bulk eviction (`80-103`).
 - **Impact:** Production failover paths (Redis → memory fallback) not exercised in unit tests.
@@ -169,7 +169,7 @@ review_cycle: 'on-change'
 
 #### P1-002: Missing Rate Limiting on New Audit Endpoints
 
-- **File:** `03-platform/tools/compliance-gateway/03-platform/src/server.mjs:560-606`
+- **File:** `03-platform/tools/compliance-gateway/src/server.mjs:560-606`
 - **Issue:** `/audit/bundles` and `/audit/query` endpoints lack the per-principal QPS/daily-budget throttling that protects `/v1/query` (`03-platform/src/budget.mjs:checkBudget`). An authenticated principal could flood these endpoints.
 - **Impact:** DoS risk against audit ingestion and query paths; unbounded LLM-cost exposure is mitigated (query has its own budget gate), but audit paths do not.
 - **Fix:** Apply `checkBudget` middleware or a dedicated audit-rate limiter to `/audit/bundles` and `/audit/query`.

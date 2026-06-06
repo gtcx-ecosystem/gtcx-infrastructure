@@ -7,14 +7,14 @@ import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
 
 const REQUIRED = [
   '04-ship/monitoring/dashboards/llm-ops.json',
   '04-ship/monitoring/alerts/llm-ops-alerts.yml',
   '04-ship/kubernetes/overlays/staging/monitoring/kustomization.yaml',
   '04-ship/kubernetes/overlays/staging/patches/compliance-gateway-metrics.yaml',
-  '03-platform/tools/compliance-gateway/03-platform/src/llm-trace.mjs',
+  '03-platform/tools/compliance-gateway/src/llm-trace.mjs',
   '01-docs/04-ops/runbooks/staging-monitoring-apply.md',
 ];
 

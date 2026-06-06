@@ -9,7 +9,7 @@
   },
   "scripts": {
     "lint": "eslint src tests --ext .mjs,.js",
-    "start": "node 03-platform/src/server.mjs",
+    "start": "node src/server.mjs",
     "test": "node ../scripts/run-package-tests.mjs",
     "test:coverage:gate": "node ../scripts/run-package-tests.mjs",
     "typecheck": "echo \"No TypeScript files — typecheck is a no-op for this JS-only package\"",

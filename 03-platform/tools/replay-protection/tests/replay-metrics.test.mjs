@@ -8,7 +8,7 @@
 import assert from 'node:assert';
 import { describe, it } from 'node:test';
 
-import { ReplayMetrics } from '../03-platform/src/metrics/replay-metrics.mjs';
+import { ReplayMetrics } from '../src/metrics/replay-metrics.mjs';
 
 describe('ReplayMetrics — disabled mode', () => {
   it('inc() is a no-op when disabled', () => {

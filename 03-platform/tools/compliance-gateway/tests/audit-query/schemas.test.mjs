@@ -4,7 +4,7 @@ import { describe, it } from 'node:test';
 import {
   QueryAuditRequestSchema,
   QueryAuditResponseSchema,
-} from '../../03-platform/src/audit-query/schemas.mjs';
+} from '../../src/audit-query/schemas.mjs';
 
 describe('QueryAuditRequestSchema', () => {
   it('accepts an empty body (all filters optional)', () => {

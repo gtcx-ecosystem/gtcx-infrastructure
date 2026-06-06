@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 
-import { evaluateCanaryHealth, shouldPromote, computeCanaryReplicaCount } from '../03-platform/src/canary.mjs';
+import { evaluateCanaryHealth, shouldPromote, computeCanaryReplicaCount } from '../src/canary.mjs';
 
 describe('evaluateCanaryHealth', () => {
   it('reports healthy when counts are within thresholds', () => {

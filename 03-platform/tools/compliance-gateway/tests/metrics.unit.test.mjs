@@ -10,7 +10,7 @@ import {
   setGauge,
   renderMetrics,
   resetMetrics,
-} from '../03-platform/src/metrics.mjs';
+} from '../src/metrics.mjs';
 
 describe('metrics', () => {
   beforeEach(() => resetMetrics());

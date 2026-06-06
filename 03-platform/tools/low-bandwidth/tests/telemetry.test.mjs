@@ -5,7 +5,7 @@ import {
   createDegradationEvent,
   shouldAlert,
   toPrometheusMetrics,
-} from '../03-platform/src/telemetry.mjs';
+} from '../src/telemetry.mjs';
 
 describe('createDegradationEvent', () => {
   it('creates a basic event', () => {

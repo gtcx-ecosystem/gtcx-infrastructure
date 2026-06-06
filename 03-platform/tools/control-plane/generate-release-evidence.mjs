@@ -12,7 +12,7 @@ import {
   generateKeyPair,
   toNdjson,
   verifyChain,
-} from '../audit-signer/03-platform/src/index.mjs';
+} from '../audit-signer/src/index.mjs';
 
 function fail(message) {
   console.error(`release-evidence error: ${message}`);

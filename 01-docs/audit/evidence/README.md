@@ -12,4 +12,4 @@ review_cycle: on-change
 
 Operator-generated release and DR evidence bundles land here (for example
 `dr-test.sh` output under dated subdirectories). CI dry-runs use a temp
-directory — see `03-platform/tools/03-platform/scripts/runtime-evidence-check.mjs`.
+directory — see `03-platform/tools/scripts/runtime-evidence-check.mjs`.

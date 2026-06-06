@@ -10,7 +10,7 @@
  *   - Response contains valid dedup_key (proving event was accepted)
  *
  * Usage:
- *   node 03-platform/tools/03-platform/scripts/incident-drill-pagerduty-simulation.mjs \
+ *   node 03-platform/tools/scripts/incident-drill-pagerduty-simulation.mjs \
  *     [--dry-run] \
  *     [--webhook-url=https://events.pagerduty.com/v2/enqueue] \
  *     [--routing-key=your-integration-key]
@@ -31,7 +31,7 @@ import { request as httpsRequest } from 'node:https';
 
 const ALERTMANAGER_CONFIG =
   process.env.ALERTMANAGER_CONFIG ??
-  path.join(process.cwd(), 'infra', 'docker', 'observability', 'alertmanager.yml.tpl');
+  path.join(process.cwd(), '04-ship', 'docker', 'docker', 'observability', 'alertmanager.yml.tpl');
 const PAGERDUTY_ROUTING_KEY = process.env.PAGERDUTY_ROUTING_KEY ?? '';
 const DRY_RUN = process.argv.includes('--dry-run');
 

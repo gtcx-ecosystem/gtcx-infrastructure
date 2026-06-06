@@ -3,15 +3,15 @@
  * @fileoverview Report dependabot PR merge readiness by tier (S3-01 operator aid).
  *
  * Usage:
- *   node 03-platform/tools/03-platform/scripts/dependabot-merge-plan.mjs
- *   node 03-platform/tools/03-platform/scripts/dependabot-merge-plan.mjs --check
+ *   node 03-platform/tools/scripts/dependabot-merge-plan.mjs
+ *   node 03-platform/tools/scripts/dependabot-merge-plan.mjs --check
  */
 
 import { execSync } from 'node:child_process';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
 
 const TIER1 = [/tinyexec/];
 const TIER2 = [/@eslint\/js/];

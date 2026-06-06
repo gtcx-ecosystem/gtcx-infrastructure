@@ -14,7 +14,7 @@ import {
   initAuditSigner,
   resetAuditSigner,
   signAuditEvent,
-} from '../03-platform/src/audit.mjs';
+} from '../src/audit.mjs';
 
 function silence(fn) {
   const out = console.warn;

@@ -22,7 +22,7 @@ protocol: gtcx-docs/01-docs/governance/protocols/24-cross-repo-coordination/prot
 | [`README.md`](README.md)                                                         | Thread index + inbound tracker                      |
 
 **Ecosystem canonical bridge (read for global P0):**  
-[`gtcx-protocols/01-docs/04-ops/coordination/cross-repo-agent-bridge.md`](../../../../gtcx-protocols/01-docs/04-ops/coordination/cross-repo-agent-bridge.md)
+[`gtcx-protocols/01-docs/operations/coordination/cross-repo-agent-bridge.md`](../../../../gtcx-protocols/01-docs/operations/coordination/cross-repo-agent-bridge.md)
 
 **Agentic log (append-only):**  
 [gtcx-agentic agent-coordination-log](https://github.com/gtcx-ecosystem/gtcx-agentic/blob/main/01-docs/04-ops/coordination/agent-coordination-log.md)
@@ -214,7 +214,7 @@ Witness only until XR-507 + XR-508 unblocked. Supabase paused; verifier needs DN
 - Infra → intelligence XR-202 handoff: [`outbound-handoff-xr-202-to-intelligence.md`](outbound-handoff-xr-202-to-intelligence.md)
 - Infra → platforms rollout: [`to-gtcx-platforms-rollout-ready-2026-06-03.md`](to-gtcx-platforms-rollout-ready-2026-06-03.md)
 - Key ceremony runbook: `01-docs/09-security/key-ceremony-runbook.md`
-- Protocols sprint workplan: `gtcx-protocols/01-docs/04-ops/coordination/cross-repo-sprint-workplan-2026-06.md`
+- Protocols sprint workplan: `gtcx-protocols/01-docs/operations/coordination/cross-repo-sprint-workplan-2026-06.md`
 
 ---
 

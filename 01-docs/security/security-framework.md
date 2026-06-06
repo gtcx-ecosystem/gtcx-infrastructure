@@ -338,7 +338,7 @@ Incident_Response:
 infrastructure/security/
 ├── README.md              # This document
 ├── 03-platform/scripts/
-│   └── (security-status.js moved to 03-platform/tools/03-platform/scripts/)
+│   └── (security-status.js moved to 03-platform/tools/scripts/)
 ├── policies/
 │   ├── access-control.md  # Access control policies
 │   ├── data-protection.md # Data handling policies

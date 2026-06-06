@@ -6,7 +6,7 @@
  * silent failure that delayed the audit-flush S3 bug from being
  * caught for weeks.
  *
- * Approach: walk `03-platform/tools/<pkg>/03-platform/src/**` and grep for an exact-match
+ * Approach: walk `03-platform/tools/<pkg>/src/**` and grep for an exact-match
  * `catch {}` or `catch () {}`. Allowlist a small set of justified
  * sites (each with a comment in this file explaining why).
  *
@@ -17,7 +17,7 @@ import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, dirname, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
+const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
 
 // Each allowlist entry is a `path:line` (path relative to repo root)
 // with a justification. Adding new entries requires the explanation
@@ -25,27 +25,26 @@ const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const ALLOWLIST = new Set([
   // Shutdown / drain paths — these run during process termination
   // and reraising would prevent clean teardown.
-  '03-platform/tools/compliance-gateway/03-platform/src/audit-sink.mjs:139', // await natsClient.drain() during sink.close()
-  '03-platform/tools/compliance-gateway/03-platform/src/adaptive-policy-store.mjs:151', // fall-through path with cleanup
-  '03-platform/tools/compliance-gateway/03-platform/src/adaptive-policy-store.mjs:154', // client.disconnect() during shutdown
-  '03-platform/tools/compliance-gateway/03-platform/src/adaptive-policy-store.mjs:244', // await client.quit() during dispose
-  '03-platform/tools/compliance-gateway/03-platform/src/adaptive-policy-store.mjs:280', // await activeStore.close() during reset
+  '03-platform/tools/compliance-gateway/src/audit-sink.mjs:139', // await natsClient.drain() during sink.close()
+  '03-platform/tools/compliance-gateway/src/adaptive-policy-store.mjs:151', // fall-through path with cleanup
+  '03-platform/tools/compliance-gateway/src/adaptive-policy-store.mjs:154', // client.disconnect() during shutdown
+  '03-platform/tools/compliance-gateway/src/adaptive-policy-store.mjs:244', // await client.quit() during dispose
+  '03-platform/tools/compliance-gateway/src/adaptive-policy-store.mjs:280', // await activeStore.close() during reset
   // budget-store shutdown / already-closed paths
-  '03-platform/tools/compliance-gateway/03-platform/src/budget-store.mjs:134', // client.disconnect() during dispose
-  '03-platform/tools/compliance-gateway/03-platform/src/budget-store.mjs:192', // already closed during teardown
-  '03-platform/tools/compliance-gateway/03-platform/src/budget-store.mjs:244', // best-effort reset during swap
-  '03-platform/tools/compliance-gateway/03-platform/src/budget-store.mjs:249', // best-effort close during swap
+  '03-platform/tools/compliance-gateway/src/budget-store.mjs:134', // client.disconnect() during dispose
+  '03-platform/tools/compliance-gateway/src/budget-store.mjs:192', // already closed during teardown
+  '03-platform/tools/compliance-gateway/src/budget-store.mjs:244', // best-effort reset during swap
+  '03-platform/tools/compliance-gateway/src/budget-store.mjs:249', // best-effort close during swap
   // NATS stream already-exists (race-safe creation) + shutdown drain.
-  '03-platform/tools/audit-flush/03-platform/src/nats-consumer.mjs:75',
-  '03-platform/tools/audit-flush/03-platform/src/nats-consumer.mjs:187',
+  '03-platform/tools/audit-flush/src/nats-consumer.mjs:75',
+  '03-platform/tools/audit-flush/src/nats-consumer.mjs:187',
+  // baseline-os cost-router shim — try next import candidate on failure
+  '03-platform/tools/compliance-gateway/src/cost-router-shim.mjs:39',
   // Audit-capture sinks are best-effort by design — a slow / failing
   // sink must not break replay verification on the hot path.
-  '03-platform/tools/replay-protection/03-platform/src/audit/audit-capture.mjs:88',
-  // baseline-os cost-router shim — graceful fallback when dist is not
-  // built or BASELINE_COST_ROUTER=0. Reraising would break the query
-  // path even when cost routing is disabled.
-  '03-platform/tools/compliance-gateway/03-platform/src/server.mjs:91',
-  '03-platform/tools/compliance-gateway/03-platform/src/cost-router-shim.mjs:37',
+  '03-platform/tools/replay-protection/src/audit/audit-capture.mjs:88',
+  // baseline-os cost-router graceful fallback when dist is not built
+  '03-platform/tools/compliance-gateway/src/server.mjs:91',
 ]);
 
 const SRC_GLOBS = [
@@ -131,7 +130,7 @@ function main() {
     }
     console.error(
       '\nEmpty `catch {}` hides silent failures. Either:\n' +
-        '  1. Use 03-platform/tools/03-platform/scripts/fail-closed.mjs to log and decide explicitly.\n' +
+        '  1. Use 03-platform/tools/scripts/fail-closed.mjs to log and decide explicitly.\n' +
         '  2. Log via console.error if the failure is truly informational.\n' +
         '  3. Add the site to ALLOWLIST in this script WITH a justification comment.\n'
     );

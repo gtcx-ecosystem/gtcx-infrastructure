@@ -9,7 +9,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { describe, it, beforeEach, afterEach } from 'node:test';
 
-import { createDiskQueue } from '../03-platform/src/disk-queue.mjs';
+import { createDiskQueue } from '../src/disk-queue.mjs';
 
 function tempDir() {
   return mkdtempSync(join(tmpdir(), 'gtcx-disk-queue-test-'));

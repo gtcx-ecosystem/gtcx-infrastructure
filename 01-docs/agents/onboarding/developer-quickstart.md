@@ -123,7 +123,7 @@ kubectl apply -k 04-ship/kubernetes/overlays/development
 - **Kubernetes (Kustomize)** — three overlays: `development`, `staging`, `production`; five services: `api`, `crypto`, `tradepass`, `geotag`, `gci`
 - **Terraform** — two modules: `vpc/` (network isolation) and `database/` (dual RDS — operational + audit); per-environment directories under `environments/`
 - **Migrations** — Rails-based; config per environment in `migrations/config/`; never touch the audit DB
-- **Security** — policies in `security/policies/`; scanner at `03-platform/tools/03-platform/scripts/security-status.js`; audit reports in `security/reports/`
+- **Security** — policies in `security/policies/`; scanner at `03-platform/tools/scripts/security-status.js`; audit reports in `security/reports/`
 
 Two databases are a hard constraint. They are never merged:
 

@@ -15,7 +15,7 @@ import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { resolve } from 'node:path';
 
-import { createDiskQueue } from '../compliance-gateway/03-platform/src/disk-queue.mjs';
+import { createDiskQueue } from '../compliance-gateway/src/disk-queue.mjs';
 
 const FIXTURE_RECORDS = [
   { id: 'r-001', type: 'auth.success', tenantId: 'zw', signature: 'sig1' },

@@ -63,7 +63,7 @@ Every story is "done" only when **all** of the following hold:
 - [ ] Unit tests at ≥90% branch coverage for new code (≥85% for compliance-gateway per `01-docs/05-audit/coverage-gate-rationale.md`)
 - [ ] Integration tests passing where applicable
 - [ ] Linting + type checks pass with zero errors
-- [ ] `node 03-platform/tools/03-platform/scripts/validate-all.mjs` → 17/17 gates pass
+- [ ] `node 03-platform/tools/scripts/validate-all.mjs` → 17/17 gates pass
 - [ ] Documentation updated (ADR if architectural, runbook if operational, README if interface, audit doc if score-impacting)
 - [ ] UAT scenarios executed and signed off by the named role
 - [ ] Conventional commit on `main` with `Co-Authored-By` line if AI-assisted
@@ -104,7 +104,7 @@ Compressed retrospective form. Full per-sprint detail in commit history under ea
 
 **Stories closed:** DEF-001 (Zod schema on body), DEF-002 (delimited untrusted-context block in prompt), DEF-003 (per-principal token budget), DEF-004 (per-principal QPS limiter), DEF-005 (rename shadowed `runtimePolicy`), DEF-006 (cost metrics counter), DEF-007 (daily prompt-injection self-test suite).
 
-**Evidence:** [`03-platform/tools/compliance-gateway/03-platform/src/schemas.mjs`](../../03-platform/tools/compliance-gateway/03-platform/src/schemas.mjs), [`03-platform/tools/compliance-gateway/03-platform/src/budget.mjs`](../../03-platform/tools/compliance-gateway/03-platform/src/budget.mjs), [`03-platform/tools/eval-pipeline/injection-suite.mjs`](../../03-platform/tools/eval-pipeline/injection-suite.mjs).
+**Evidence:** [`03-platform/tools/compliance-gateway/src/schemas.mjs`](../../03-platform/tools/compliance-gateway/src/schemas.mjs), [`03-platform/tools/compliance-gateway/src/budget.mjs`](../../03-platform/tools/compliance-gateway/src/budget.mjs), [`03-platform/tools/eval-pipeline/injection-suite.mjs`](../../03-platform/tools/eval-pipeline/injection-suite.mjs).
 
 **Velocity:** 13 planned / 17 delivered.
 

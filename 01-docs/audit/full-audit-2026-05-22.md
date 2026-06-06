@@ -33,10 +33,10 @@ autonomy_level: 'permissioned'
 
 - 22 atomic commits since `ec3144e` (cycle-7 baseline).
 - 10 workspace packages with 696 tests passing, 0 failing.
-- `03-platform/tools/03-platform/scripts/validate-all.mjs`: **17/17 gates pass**.
-- `03-platform/tools/03-platform/scripts/docs-standard-validator.mjs`: pass (0 violations).
-- `03-platform/tools/03-platform/scripts/docs-link-checker.mjs`: 696 links across 365 markdown files, all resolve.
-- `03-platform/tools/03-platform/scripts/validate-signal.mjs`: pass at 9.60/10.
+- `03-platform/tools/scripts/validate-all.mjs`: **17/17 gates pass**.
+- `03-platform/tools/scripts/docs-standard-validator.mjs`: pass (0 violations).
+- `03-platform/tools/scripts/docs-link-checker.mjs`: 696 links across 365 markdown files, all resolve.
+- `03-platform/tools/scripts/validate-signal.mjs`: pass at 9.60/10.
 - `terraform fmt -check -recursive` across `testnet-pilot`, `staging`, `production`, `zimbabwe-pilot`: clean.
 - `npm view @gtcx/audit-signer`: live, v0.1.0, MIT, 7 files, published 2026-05-22 by `gtcx-protocol`.
 
@@ -59,17 +59,17 @@ autonomy_level: 'permissioned'
 
 ## Phase 2 — Security
 
-| Surface                         | State                | Evidence                                                                                                                                                                                                                                                             |
-| ------------------------------- | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Audit fail-open in production   | **Closed**           | `03-platform/tools/compliance-gateway/03-platform/src/server.mjs:59-68` exits 78 (EX_CONFIG); `/health` returns 503 on production-unsigned                                                                                                                           |
-| Prompt injection on `/v1/query` | **Mitigated**        | `03-platform/tools/compliance-gateway/03-platform/src/schemas.mjs` Zod schema; `03-platform/tools/compliance-gateway/03-platform/src/system-prompt.mjs` delimited untrusted-context block; `03-platform/tools/eval-pipeline/injection-suite.mjs` 10-payload red-team |
-| Cost amplification              | **Closed**           | `03-platform/tools/compliance-gateway/03-platform/src/budget.mjs` per-principal + per-tenant QPS + daily USD budget; signed `query:throttled` audit on every 429                                                                                                     |
-| In-memory chain unbounded       | **Closed**           | `AUDIT_CHAIN_MAX_RECORDS` default 10K with checkpoint hash; durable sink retains full history                                                                                                                                                                        |
-| Audit-flush IRSA scope          | **Closed**           | `04-ship/terraform/modules/audit-flush-irsa/main.tf` write-only PutObject + KMS:Encrypt; no GetObject, no DeleteObject                                                                                                                                               |
-| Dev creds in scripts            | **Closed**           | `04-ship/03-platform/scripts/dr-test.sh` and `.github/workflows/ci.yml` fail-fast via `:?` guards                                                                                                                                                                    |
-| Audit target sanitization       | **Closed**           | `03-platform/tools/compliance-gateway/03-platform/src/audit-target.mjs` strips query+fragment, caps at 200 chars                                                                                                                                                     |
-| Pen-test                        | **Engagement-ready** | `01-docs/05-audit/pen-test-rfp-2026.md` ready to send                                                                                                                                                                                                                |
-| SOC 2 Type 1                    | **Engagement-ready** | `01-docs/05-audit/soc2-engagement-2026.md` ready to send                                                                                                                                                                                                             |
+| Surface                         | State                | Evidence                                                                                                                                                                                                                                     |
+| ------------------------------- | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Audit fail-open in production   | **Closed**           | `03-platform/tools/compliance-gateway/src/server.mjs:59-68` exits 78 (EX_CONFIG); `/health` returns 503 on production-unsigned                                                                                                               |
+| Prompt injection on `/v1/query` | **Mitigated**        | `03-platform/tools/compliance-gateway/src/schemas.mjs` Zod schema; `03-platform/tools/compliance-gateway/src/system-prompt.mjs` delimited untrusted-context block; `03-platform/tools/eval-pipeline/injection-suite.mjs` 10-payload red-team |
+| Cost amplification              | **Closed**           | `03-platform/tools/compliance-gateway/src/budget.mjs` per-principal + per-tenant QPS + daily USD budget; signed `query:throttled` audit on every 429                                                                                         |
+| In-memory chain unbounded       | **Closed**           | `AUDIT_CHAIN_MAX_RECORDS` default 10K with checkpoint hash; durable sink retains full history                                                                                                                                                |
+| Audit-flush IRSA scope          | **Closed**           | `04-ship/terraform/modules/audit-flush-irsa/main.tf` write-only PutObject + KMS:Encrypt; no GetObject, no DeleteObject                                                                                                                       |
+| Dev creds in scripts            | **Closed**           | `04-ship/03-platform/scripts/dr-test.sh` and `.github/workflows/ci.yml` fail-fast via `:?` guards                                                                                                                                            |
+| Audit target sanitization       | **Closed**           | `03-platform/tools/compliance-gateway/src/audit-target.mjs` strips query+fragment, caps at 200 chars                                                                                                                                         |
+| Pen-test                        | **Engagement-ready** | `01-docs/05-audit/pen-test-rfp-2026.md` ready to send                                                                                                                                                                                        |
+| SOC 2 Type 1                    | **Engagement-ready** | `01-docs/05-audit/soc2-engagement-2026.md` ready to send                                                                                                                                                                                     |
 
 ### Compliance Posture (honest)
 

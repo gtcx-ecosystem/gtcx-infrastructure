@@ -32,11 +32,11 @@ work_ids: [XR-507, XR-508, XR-502, W2-E2E]
 
 ### Bearer token infrastructure
 
-| Component                         | Status     | Evidence                                                                                      |
-| --------------------------------- | ---------- | --------------------------------------------------------------------------------------------- |
-| Compliance-gateway K8s deployment | ✅ Running | `compliance-gateway-staging` pod 1/1 in `gtcx-staging`                                        |
-| Bearer auth middleware            | ✅ Live    | `03-platform/tools/compliance-gateway/03-platform/src/auth.mjs` — constant-time compare, IRSA |
-| Ingress route (`/audit`)          | ✅ Live    | `geotag.staging.gtcx.trade/audit` → compliance-gateway:8500                                   |
+| Component                         | Status     | Evidence                                                                          |
+| --------------------------------- | ---------- | --------------------------------------------------------------------------------- |
+| Compliance-gateway K8s deployment | ✅ Running | `compliance-gateway-staging` pod 1/1 in `gtcx-staging`                            |
+| Bearer auth middleware            | ✅ Live    | `03-platform/tools/compliance-gateway/src/auth.mjs` — constant-time compare, IRSA |
+| Ingress route (`/audit`)          | ✅ Live    | `geotag.staging.gtcx.trade/audit` → compliance-gateway:8500                       |
 
 ### Secrets
 
@@ -86,6 +86,6 @@ work_ids: [XR-507, XR-508, XR-502, W2-E2E]
 ## Cross-references
 
 - Hub P1 register: `gtcx-docs/01-docs/governance/.../hub-p1-register.md`
-- Protocols unblock doc: `gtcx-protocols/01-docs/04-ops/coordination/from-gtcx-protocols-cross-repo-unblock-2026-06-03.md`
+- Protocols unblock doc: `gtcx-protocols/01-docs/operations/coordination/from-gtcx-protocols-cross-repo-unblock-2026-06-03.md`
 - Infra remaining work: `gtcx-infrastructure/01-docs/04-ops/coordination/remaining-cross-repo-work-2026-06-03.md`
 - Sprint workplan: `gtcx-infrastructure/01-docs/04-ops/coordination/cross-repo-sprint-workplan-2026-06.md`

@@ -3,9 +3,9 @@
  * Canonical audit score calculator — IR (engineering) and XC (external) are independent.
  *
  * Usage:
- *   node 03-platform/tools/03-platform/scripts/compute-audit-scores.mjs
- *   node 03-platform/tools/03-platform/scripts/compute-audit-scores.mjs --write
- *   node 03-platform/tools/03-platform/scripts/compute-audit-scores.mjs --markdown
+ *   node 03-platform/tools/scripts/compute-audit-scores.mjs
+ *   node 03-platform/tools/scripts/compute-audit-scores.mjs --write
+ *   node 03-platform/tools/scripts/compute-audit-scores.mjs --markdown
  */
 
 import { readFileSync, writeFileSync } from 'node:fs';
@@ -13,7 +13,7 @@ import { execSync } from 'node:child_process';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
 const RUBRIC = path.join(ROOT, '01-docs/05-audit/scoring-rubric.json');
 const LEDGER = path.join(ROOT, '01-docs/05-audit/score-evidence-ledger.json');
 const CI_SNAPSHOT = path.join(ROOT, '01-docs/05-audit/ci-snapshot.json');
@@ -168,7 +168,7 @@ function scorecardMarkdown(result) {
     '',
     '**Retired:** `certifiedReadiness`, `CR = IR − gap`, `composite` as external-adjusted score.',
     '',
-    'Recompute: `node 03-platform/tools/03-platform/scripts/compute-audit-scores.mjs --write`',
+    'Recompute: `node 03-platform/tools/scripts/compute-audit-scores.mjs --write`',
     ''
   );
   return lines.join('\n');

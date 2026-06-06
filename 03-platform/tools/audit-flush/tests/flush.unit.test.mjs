@@ -16,7 +16,7 @@ import {
   append,
 } from '@gtcx/audit-signer';
 
-import { _resetForTests as resetS3 } from '../03-platform/src/s3-uploader.mjs';
+import { _resetForTests as resetS3 } from '../src/s3-uploader.mjs';
 
 // Set required env BEFORE importing the index so its startup guard
 // doesn't fire process.exit during module load. AUDIT_S3_ALLOW_STUB=1
@@ -25,7 +25,7 @@ import { _resetForTests as resetS3 } from '../03-platform/src/s3-uploader.mjs';
 process.env.AUDIT_S3_BUCKET = 'gtcx-test-bucket';
 process.env.NODE_ENV = 'test';
 process.env.AUDIT_S3_ALLOW_STUB = '1';
-const { flushBatch, tenantFromSubject } = await import('../03-platform/src/index.mjs');
+const { flushBatch, tenantFromSubject } = await import('../src/index.mjs');
 
 function makeChainEnvelopes(count, subject = 'gtcx.audit.compliance-gateway.pilot') {
   const { privateKey, publicKey } = generateKeyPair();

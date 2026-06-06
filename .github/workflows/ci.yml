@@ -29,7 +29,7 @@ jobs:
       - name: Dependency audit gate
         run: |
           echo "Running pnpm audit with acceptance-log filter..."
-          node 03-platform/tools/03-platform/scripts/audit-with-acceptance.mjs --output-file=npm-audit-filtered.json
+          node 03-platform/tools/scripts/audit-with-acceptance.mjs --output-file=npm-audit-filtered.json
           echo "Dependency audit passed."
 
       - name: Install PostgreSQL client
@@ -129,16 +129,16 @@ jobs:
           retention-days: 90
 
       - name: Validate score-evidence ledger
-        run: node 03-platform/tools/03-platform/scripts/validate-score-ledger.mjs
+        run: node 03-platform/tools/scripts/validate-score-ledger.mjs
 
       - name: Security control boundaries
         run: node 03-platform/tools/policy/check-security-control-boundaries.mjs
 
       - name: Kyverno policy validation
-        run: node 03-platform/tools/03-platform/scripts/kyverno-policy-validator.mjs
+        run: node 03-platform/tools/scripts/kyverno-policy-validator.mjs
 
       - name: Master validation (all gates)
-        run: node 03-platform/tools/03-platform/scripts/validate-all.mjs
+        run: node 03-platform/tools/scripts/validate-all.mjs
         env:
           GH_TOKEN: ${{ github.token }}
 
@@ -164,10 +164,10 @@ jobs:
         run: pnpm agent:execution-obligation:check
 
       - name: Chaos manifest validation
-        run: node 03-platform/tools/03-platform/scripts/chaos-manifest-validator.mjs
+        run: node 03-platform/tools/scripts/chaos-manifest-validator.mjs
 
       - name: PagerDuty incident drill simulation
-        run: node 03-platform/tools/03-platform/scripts/incident-drill-pagerduty-simulation.mjs --dry-run
+        run: node 03-platform/tools/scripts/incident-drill-pagerduty-simulation.mjs --dry-run
 
       - name: Compliance gateway tests
         run: |
@@ -190,10 +190,10 @@ jobs:
           pnpm test:coverage:gate
 
       - name: Incident-drill validation
-        run: node 03-platform/tools/03-platform/scripts/incident-drill-validator.mjs
+        run: node 03-platform/tools/scripts/incident-drill-validator.mjs
 
       - name: SIGNAL scorecard validation
-        run: node 03-platform/tools/03-platform/scripts/validate-signal.mjs
+        run: node 03-platform/tools/scripts/validate-signal.mjs
 
       - name: Protocol API contract tests
         run: node --test 03-platform/tools/contract-tests/protocol-schema.test.mjs
@@ -234,7 +234,7 @@ jobs:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
       - name: Docs-standard validation
-        run: node 03-platform/tools/03-platform/scripts/docs-standard-validator.mjs --baseline=.docs-exceptions.json
+        run: node 03-platform/tools/scripts/docs-standard-validator.mjs --baseline=.docs-exceptions.json
 
   eval-pipeline:
     runs-on: ubuntu-latest

@@ -6,7 +6,7 @@ import {
   initAuditSigner,
   resetAuditSigner,
   signAuditEvent,
-} from '../compliance-gateway/03-platform/src/audit.mjs';
+} from '../compliance-gateway/src/audit.mjs';
 
 function silence(fn) {
   const out = console.log;

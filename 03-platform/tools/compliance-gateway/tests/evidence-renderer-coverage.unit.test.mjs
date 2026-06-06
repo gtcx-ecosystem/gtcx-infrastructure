@@ -6,7 +6,7 @@
 import assert from 'node:assert';
 import { describe, it } from 'node:test';
 
-import { renderEvidenceHtml } from '../03-platform/src/evidence-renderer.mjs';
+import { renderEvidenceHtml } from '../src/evidence-renderer.mjs';
 
 describe('renderEvidenceHtml — ndjson edge cases', () => {
   it('skips blank lines and trailing newlines in ndjson', () => {

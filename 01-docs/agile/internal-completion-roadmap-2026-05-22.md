@@ -41,7 +41,7 @@ The main execution roadmap (`execution-roadmap-2026-05-22.md`) mixes internal an
 
 - [ ] Acceptance criteria met with cited evidence
 - [ ] Tests added where applicable; suite green
-- [ ] `node 03-platform/tools/03-platform/scripts/validate-all.mjs` → 17/17 pass
+- [ ] `node 03-platform/tools/scripts/validate-all.mjs` → 17/17 pass
 - [ ] Conventional commit with `Co-Authored-By` line
 - [ ] Docs updated (audit doc, runbook, or ADR — whichever applies)
 - [ ] Cross-references resolve
@@ -137,7 +137,7 @@ The main execution roadmap (`execution-roadmap-2026-05-22.md`) mixes internal an
 
 **Acceptance criteria:**
 
-- [ ] `03-platform/tools/compliance-gateway/03-platform/src/adaptive-policy-store.mjs` (new) exports `getStore({ backend: 'memory' | 'redis' })`.
+- [ ] `03-platform/tools/compliance-gateway/src/adaptive-policy-store.mjs` (new) exports `getStore({ backend: 'memory' | 'redis' })`.
 - [ ] Memory backend identical to current behavior.
 - [ ] Redis backend uses `ioredis` (soft-loaded — if unavailable, falls back to memory with a logged warning).
 - [ ] Feature flag: `GTCX_ADAPTIVE_STORE_BACKEND=redis` enables shared state.
@@ -260,7 +260,7 @@ The main execution roadmap (`execution-roadmap-2026-05-22.md`) mixes internal an
 
 **Acceptance criteria:**
 
-- [ ] `03-platform/tools/03-platform/scripts/distribution-snapshot.mjs` (new) — node script that:
+- [ ] `03-platform/tools/scripts/distribution-snapshot.mjs` (new) — node script that:
   - Fetches npm download stats for `@gtcx/audit-signer` from `https://api.npmjs.org/downloads/point/...`.
   - Fetches GitHub stars + forks + open issues for `gtcx-ecosystem/gtcx-infrastructure` AND `amani-amina-anai/terraform-aws-compliance-db` via GitHub API.
   - Writes a JSON snapshot to `01-docs/05-audit/distribution-snapshots/<YYYY-MM-DD>.json`.
@@ -390,6 +390,6 @@ Cycle 2.5 closes when **all** of the following are true:
 - [ ] All INT-B stories shipped; Redis adaptive state passes mocked tests; 4 ADRs in registry
 - [ ] All INT-C drafts complete and reviewable
 - [ ] All INT-D drafts complete and reviewable
-- [ ] `node 03-platform/tools/03-platform/scripts/validate-all.mjs` → 17/17 throughout
+- [ ] `node 03-platform/tools/scripts/validate-all.mjs` → 17/17 throughout
 - [ ] Cumulative test count grows by ≥10 with each engineering story
 - [ ] Master execution roadmap (`execution-roadmap-2026-05-22.md`) updated to mark Cycle 2.5 closed

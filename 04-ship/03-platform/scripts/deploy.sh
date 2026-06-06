@@ -34,8 +34,8 @@ CYAN='\033[0;36m'
 NC='\033[0m'
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
-INFRA_ROOT="${PROJECT_ROOT}/infra"
+PROJECT_ROOT="$(cd "${SCRIPT_DIR}/../../.." && pwd)"
+INFRA_ROOT="${PROJECT_ROOT}/04-ship"
 
 log_info() { echo -e "${BLUE}[INFO]${NC} $1"; }
 log_success() { echo -e "${GREEN}[SUCCESS]${NC} $1"; }
@@ -131,7 +131,7 @@ validate_inputs() {
     if kubectl cluster-info &>/dev/null; then
         has_kubeconfig=true
     fi
-    local gate_cli="${PROJECT_ROOT}/03-platform/tools/deployment-guard/03-platform/src/cli/deploy-gate.mjs"
+    local gate_cli="${PROJECT_ROOT}/03-platform/tools/deployment-guard/src/cli/deploy-gate.mjs"
     if ! node "${gate_cli}" \
         --environment="${ENVIRONMENT}" \
         --approval-ticket="${APPROVAL_TICKET}" \
@@ -435,7 +435,7 @@ canary_deploy() {
 
         # Delegate canary health decision to typed, tested module.
         local canary_eval
-        canary_eval=$(node "${PROJECT_ROOT}/03-platform/tools/deployment-guard/03-platform/src/cli/canary-eval.mjs" \
+        canary_eval=$(node "${PROJECT_ROOT}/03-platform/tools/deployment-guard/src/cli/canary-eval.mjs" \
             --not-ready="${not_ready}" \
             --restarts="${restarts}" \
             --elapsed="$(( $(date +%s) - (end_time - CANARY_WAIT_SECONDS) ))" \
@@ -496,8 +496,8 @@ rollback_deployment() {
 
     local evidence_dir
     evidence_dir="${INFRA_ROOT}/security/reports/rollback-evidence/${ENVIRONMENT}/$(date -u +%Y%m%dT%H%M%SZ)"
-    if [[ -x "${INFRA_ROOT}/03-platform/scripts/capture-rollback-evidence.sh" ]]; then
-        "${INFRA_ROOT}/03-platform/scripts/capture-rollback-evidence.sh" "${ENVIRONMENT}" \
+    if [[ -x "${SCRIPT_DIR}/capture-rollback-evidence.sh" ]]; then
+        "${SCRIPT_DIR}/capture-rollback-evidence.sh" "${ENVIRONMENT}" \
             --output-dir="${evidence_dir}" \
             --reason="deploy-rollback" || log_warning "Rollback evidence capture failed"
     fi

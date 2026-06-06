@@ -13,7 +13,7 @@ Required on PRs that touch agent workflows, coordination, or compliance-gateway 
 
 - [ ] `pnpm agent:next-work` — copy `traceId` into coordination log if filing handoff
 - [ ] `pnpm test` or targeted package tests for changed paths
-- [ ] `node 03-platform/tools/03-platform/scripts/validate-all.mjs` or documented subset (list gates run)
+- [ ] `node 03-platform/tools/scripts/validate-all.mjs` or documented subset (list gates run)
 
 ## PR body (paste)
 

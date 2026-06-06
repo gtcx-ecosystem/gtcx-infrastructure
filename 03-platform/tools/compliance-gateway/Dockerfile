@@ -23,4 +23,4 @@ USER gtcx
 EXPOSE 8500
 HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
     CMD wget -q --spider http://localhost:8500/health || exit 1
-CMD ["node", "03-platform/src/server.mjs"]
+CMD ["node", "src/server.mjs"]

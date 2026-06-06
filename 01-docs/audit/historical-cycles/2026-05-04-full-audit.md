@@ -356,13 +356,13 @@ Layer mix: Remediation: 0 | Evolution: 4 | Innovation: 1
 
 **Goals:** Harden for pilot production workloads.
 
-| #   | Task                                                 | Layer      | Files                                                                  | Effort |
-| --- | ---------------------------------------------------- | ---------- | ---------------------------------------------------------------------- | ------ |
-| 4.1 | Scale NATS to 3 replicas in production overlay       | Evolution  | `04-ship/kubernetes/overlays/production/`, event-bus module            | 3h     |
-| 4.2 | Add Terraform outputs for database secret ARNs       | Evolution  | `04-ship/terraform/modules/database/main.tf`                           | 30m    |
-| 4.3 | Increase Loki retention to 365 days                  | Evolution  | `04-ship/docker/observability/loki.yml:70`                             | 15m    |
-| 4.4 | Add Pod Security Standards to namespaces             | Evolution  | `04-ship/kubernetes/base/namespace.yaml`                               | 2h     |
-| 4.5 | Create deployment controller CLI (replace deploy.sh) | Innovation | New `03-platform/tools/03-platform/scripts/deploy/` TypeScript project | 8h     |
+| #   | Task                                                 | Layer      | Files                                                       | Effort |
+| --- | ---------------------------------------------------- | ---------- | ----------------------------------------------------------- | ------ |
+| 4.1 | Scale NATS to 3 replicas in production overlay       | Evolution  | `04-ship/kubernetes/overlays/production/`, event-bus module | 3h     |
+| 4.2 | Add Terraform outputs for database secret ARNs       | Evolution  | `04-ship/terraform/modules/database/main.tf`                | 30m    |
+| 4.3 | Increase Loki retention to 365 days                  | Evolution  | `04-ship/docker/observability/loki.yml:70`                  | 15m    |
+| 4.4 | Add Pod Security Standards to namespaces             | Evolution  | `04-ship/kubernetes/base/namespace.yaml`                    | 2h     |
+| 4.5 | Create deployment controller CLI (replace deploy.sh) | Innovation | New `03-platform/tools/scripts/deploy/` TypeScript project  | 8h     |
 
 ---
 

@@ -1,7 +1,7 @@
 import assert from 'node:assert';
 import { describe, it } from 'node:test';
 
-import { AuditBundleRequestSchema, AgentOutputEventSchema } from '../../03-platform/src/audit-bundles/schemas.mjs';
+import { AuditBundleRequestSchema, AgentOutputEventSchema } from '../../src/audit-bundles/schemas.mjs';
 
 function makeEvent(overrides = {}) {
   return {

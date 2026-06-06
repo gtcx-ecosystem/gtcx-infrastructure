@@ -4,9 +4,9 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 
 const repoRoot = process.cwd();
+const shipRoot = path.join(repoRoot, '04-ship');
 const cloudflaredConfig = path.join(
-  repoRoot,
-  'infra',
+  shipRoot,
   'kubernetes',
   'base',
   'services',
@@ -14,8 +14,7 @@ const cloudflaredConfig = path.join(
   'config.yaml'
 );
 const complianceGatewayManifest = path.join(
-  repoRoot,
-  'infra',
+  shipRoot,
   'kubernetes',
   'base',
   'services',

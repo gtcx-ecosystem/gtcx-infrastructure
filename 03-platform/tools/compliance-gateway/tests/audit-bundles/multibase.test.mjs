@@ -1,7 +1,7 @@
 import assert from 'node:assert';
 import { describe, it } from 'node:test';
 
-import { base58btcDecode, ed25519MultibaseToJwk } from '../../03-platform/src/audit-bundles/multibase.mjs';
+import { base58btcDecode, ed25519MultibaseToJwk } from '../../src/audit-bundles/multibase.mjs';
 
 describe('base58btcDecode', () => {
   it('round-trips a known encoding from gtcx-protocols', () => {

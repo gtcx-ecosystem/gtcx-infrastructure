@@ -17,8 +17,8 @@ import {
   initAuditSigner,
   resetAuditSigner,
   signAuditEvent,
-} from '../03-platform/src/audit.mjs';
-import { EVIDENCE_HTML_CSP, renderEvidenceHtml } from '../03-platform/src/evidence-renderer.mjs';
+} from '../src/audit.mjs';
+import { EVIDENCE_HTML_CSP, renderEvidenceHtml } from '../src/evidence-renderer.mjs';
 
 function silence(fn) {
   const out = console.warn;

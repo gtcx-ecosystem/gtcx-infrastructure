@@ -21,23 +21,23 @@ Stage gate S2→S3 requires SOC 2 Type 1 (per `01-docs/05-audit/master-audit-202
 
 ## Trust Service Criteria targeted
 
-| Criterion                          | Status  | Evidence                                                                                                                                     |
-| ---------------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| **CC6.1 Logical access**           | Strong  | `03-platform/tools/compliance-gateway/03-platform/src/auth.mjs`, IRSA everywhere, no static creds, MFA documented in `01-docs/09-security/`. |
-| **CC6.2 Onboarding/offboarding**   | Strong  | `01-docs/09-security/break-glass-procedure.md`, two-person rule, 15-minute sessions.                                                         |
-| **CC6.3 Authentication**           | Strong  | Constant-time token compare, per-principal token budget, rate limiting.                                                                      |
-| **CC6.4 Encryption**               | Strong  | KMS at rest (RDS/S3/EBS/ECR), TLS 1.3 on ALB, Vault TLS enabled.                                                                             |
-| **CC6.6 Network controls**         | Strong  | Deny-by-default NetworkPolicies, Kyverno admission, Linkerd mesh policies ready (Q3 runtime).                                                |
-| **CC6.7 Data transmission**        | Strong  | TLS on every hop, SSL-enforced RDS, NATS TLS.                                                                                                |
-| **CC6.8 Vulnerability management** | Strong  | Trivy FS+image, SBOM, SLSA L3, weekly DAST.                                                                                                  |
-| **CC7.1 Detection**                | Strong  | CloudTrail, GuardDuty, anomaly-detector cron with 5 rules, SLO burn-rate alerts.                                                             |
-| **CC7.2 Monitoring**               | Strong  | Prometheus + Grafana + Loki + Jaeger + Tempo.                                                                                                |
-| **CC7.3 Incident response**        | Strong  | 24+ runbooks in `01-docs/04-ops/runbooks/`, drill #002 executed.                                                                             |
-| **CC7.4 Recovery**                 | Partial | Quarterly DR test workflow exists; restoration evidence not yet in ledger. Address in Sprint 5.                                              |
-| **CC7.5 Resilience**               | Strong  | Multi-provider LLM fallback, per-principal QPS, audit chain durable via NATS+WORM.                                                           |
-| **CC8.1 Change management**        | Strong  | Conventional commits, husky hooks, lint-staged, PR review, SLSA L3 attestation.                                                              |
-| **CC9.1 Risk identification**      | Strong  | Master audit cadence (quarterly), forensic recalc when scores drift.                                                                         |
-| **CC9.2 Risk mitigation**          | Strong  | Per-finding remediation ledger at `01-docs/05-audit/score-evidence-ledger.json`.                                                             |
+| Criterion                          | Status  | Evidence                                                                                                                         |
+| ---------------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| **CC6.1 Logical access**           | Strong  | `03-platform/tools/compliance-gateway/src/auth.mjs`, IRSA everywhere, no static creds, MFA documented in `01-docs/09-security/`. |
+| **CC6.2 Onboarding/offboarding**   | Strong  | `01-docs/09-security/break-glass-procedure.md`, two-person rule, 15-minute sessions.                                             |
+| **CC6.3 Authentication**           | Strong  | Constant-time token compare, per-principal token budget, rate limiting.                                                          |
+| **CC6.4 Encryption**               | Strong  | KMS at rest (RDS/S3/EBS/ECR), TLS 1.3 on ALB, Vault TLS enabled.                                                                 |
+| **CC6.6 Network controls**         | Strong  | Deny-by-default NetworkPolicies, Kyverno admission, Linkerd mesh policies ready (Q3 runtime).                                    |
+| **CC6.7 Data transmission**        | Strong  | TLS on every hop, SSL-enforced RDS, NATS TLS.                                                                                    |
+| **CC6.8 Vulnerability management** | Strong  | Trivy FS+image, SBOM, SLSA L3, weekly DAST.                                                                                      |
+| **CC7.1 Detection**                | Strong  | CloudTrail, GuardDuty, anomaly-detector cron with 5 rules, SLO burn-rate alerts.                                                 |
+| **CC7.2 Monitoring**               | Strong  | Prometheus + Grafana + Loki + Jaeger + Tempo.                                                                                    |
+| **CC7.3 Incident response**        | Strong  | 24+ runbooks in `01-docs/04-ops/runbooks/`, drill #002 executed.                                                                 |
+| **CC7.4 Recovery**                 | Partial | Quarterly DR test workflow exists; restoration evidence not yet in ledger. Address in Sprint 5.                                  |
+| **CC7.5 Resilience**               | Strong  | Multi-provider LLM fallback, per-principal QPS, audit chain durable via NATS+WORM.                                               |
+| **CC8.1 Change management**        | Strong  | Conventional commits, husky hooks, lint-staged, PR review, SLSA L3 attestation.                                                  |
+| **CC9.1 Risk identification**      | Strong  | Master audit cadence (quarterly), forensic recalc when scores drift.                                                             |
+| **CC9.2 Risk mitigation**          | Strong  | Per-finding remediation ledger at `01-docs/05-audit/score-evidence-ledger.json`.                                                 |
 
 **Gap analysis verdict:** ~92% Type 1 ready. The remaining 8% is: (a) pen-test report (Sprint 4 parallel track), (b) DR restoration evidence captured in the ledger (Sprint 5), (c) live on-call rotation evidence (paper drill exists; first live page deferred until Sprint 5 capacity work lands).
 

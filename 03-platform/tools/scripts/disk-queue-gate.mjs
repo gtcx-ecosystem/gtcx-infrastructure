@@ -6,7 +6,7 @@
  *   1. Survives process restart (cursor + records file persisted)
  *   2. Recovers from crash (partial cursor resumes correctly)
  *
- * Usage: node 03-platform/tools/03-platform/scripts/disk-queue-gate.mjs
+ * Usage: node 03-platform/tools/scripts/disk-queue-gate.mjs
  */
 
 import { execSync } from 'node:child_process';

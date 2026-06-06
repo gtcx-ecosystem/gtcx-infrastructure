@@ -75,6 +75,6 @@ Where `<service>` is the publishing service (`compliance-gateway` today, expanda
 
 - ADR-014 — NATS JetStream as the audit record transport
 - ADR-008 — Dual-database architecture (parallel tenant-isolation reasoning)
-- `03-platform/tools/audit-flush/03-platform/src/index.mjs` — `tenantFromSubject` implementation
-- `03-platform/tools/compliance-gateway/03-platform/src/audit-sink.mjs` — gateway-side subject construction
+- `03-platform/tools/audit-flush/src/index.mjs` — `tenantFromSubject` implementation
+- `03-platform/tools/compliance-gateway/src/audit-sink.mjs` — gateway-side subject construction
 - `01-docs/04-ops/runbooks/tenant-onboarding.md` — operator-facing convention

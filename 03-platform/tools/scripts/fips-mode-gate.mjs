@@ -5,7 +5,7 @@
  * Verifies that the audit-signer compiles and all tests pass when
  * GTCX_FIPS_MODE=1 (ECDSA P-256 instead of Ed25519).
  *
- * Usage: node 03-platform/tools/03-platform/scripts/fips-mode-gate.mjs
+ * Usage: node 03-platform/tools/scripts/fips-mode-gate.mjs
  */
 
 import { execSync } from 'node:child_process';

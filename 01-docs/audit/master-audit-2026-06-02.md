@@ -41,11 +41,11 @@ caps_fired: 0
 ## Evidence Reviewed
 
 - **Code paths:**
-  - `03-platform/tools/compliance-gateway/03-platform/src/server.mjs` (routing, health, audit endpoints, brotli error logging)
-  - `03-platform/tools/compliance-gateway/03-platform/src/auth.mjs` (Bearer auth, dev defaults, tenant isolation)
-  - `03-platform/tools/replay-protection/03-platform/src/middleware.mjs` (path normalization, traversal hardening)
-  - `03-platform/tools/audit-flush/03-platform/src/nats-consumer.mjs` (durability path, WORM upload)
-  - `03-platform/tools/03-platform/scripts/validate-all.mjs` (38-gate orchestrator)
+  - `03-platform/tools/compliance-gateway/src/server.mjs` (routing, health, audit endpoints, brotli error logging)
+  - `03-platform/tools/compliance-gateway/src/auth.mjs` (Bearer auth, dev defaults, tenant isolation)
+  - `03-platform/tools/replay-protection/src/middleware.mjs` (path normalization, traversal hardening)
+  - `03-platform/tools/audit-flush/src/nats-consumer.mjs` (durability path, WORM upload)
+  - `03-platform/tools/scripts/validate-all.mjs` (38-gate orchestrator)
   - `04-ship/terraform/modules/*/main.tf` (encryption, WAF, IAM, KMS)
 - **Tests and gates:**
   - `pnpm install` — PASS
@@ -53,7 +53,7 @@ caps_fired: 0
   - `pnpm lint` — PASS (2/15 packages; compliance-gateway has 34 hidden ESLint errors)
   - `pnpm build` — PASS (2/15 packages; 13 no-op)
   - `pnpm test` — PASS (quick script omits 9 packages)
-  - `node 03-platform/tools/03-platform/scripts/validate-all.mjs` — PASS (38/38)
+  - `node 03-platform/tools/scripts/validate-all.mjs` — PASS (38/38)
 - **Coverage forensics:**
   - Compliance-gateway: **87.77%** branches (statements 91.94%), down from claimed 91.87%
   - Replay-protection: **90.45%** branches — matches claim
@@ -102,7 +102,7 @@ caps_fired: 0
 ### Medium
 
 - **[P1] Compliance-gateway branch coverage dropped to 87.77% (stale claim of 91.87%)**
-  Evidence: `03-platform/tools/compliance-gateway/03-platform/src/server.mjs` 78.01% branches, `fail-closed.mjs` 80.76%.
+  Evidence: `03-platform/tools/compliance-gateway/src/server.mjs` 78.01% branches, `fail-closed.mjs` 80.76%.
   Fix: Add missing branch coverage for brotli fallback, auth throttle edge cases.
 
 - **[P1] Hidden lint debt in compliance-gateway (34 ESLint errors not visible to `pnpm lint`)**
@@ -126,12 +126,12 @@ caps_fired: 0
 ### Low
 
 - **[P2] Default audit sink is stdout (ephemeral) — durability depends on external sidecar**
-  Evidence: `03-platform/tools/audit-flush/03-platform/src/nats-consumer.mjs` is optional; sink fails softly.
+  Evidence: `03-platform/tools/audit-flush/src/nats-consumer.mjs` is optional; sink fails softly.
   Risk: Non-durable default path. Production deployments use NATS JetStream → WORM, but the default is best-effort.
   Fix: Document the durability contract; fail closed if NATS is configured but unreachable.
 
 - **[P2] "Offline queue" is a boolean flag (`isDelayedOfflineReplay`), not a durable queue implementation**
-  Evidence: `03-platform/tools/replay-protection/03-platform/src/verifier.mjs` — flag computed from `clockSkewMs > 300000`.
+  Evidence: `03-platform/tools/replay-protection/src/verifier.mjs` — flag computed from `clockSkewMs > 300000`.
   Fix: Rename to `isDelayedReplay` or implement actual offline queue in mobile repo.
 
 - **[P2] `pnpm typecheck` / `pnpm lint` / `pnpm build` cover <25% of workspace packages**

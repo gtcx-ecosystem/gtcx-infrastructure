@@ -17,7 +17,7 @@ the triage steps, and the mitigation in under 60 seconds.**
 
 When a new alert is added, the next on-call rotation owns filling in the
 matching section here. The `pnpm test` gate (via
-`03-platform/tools/03-platform/scripts/alerts-add-runbook-url.mjs --check`) enforces the
+`03-platform/tools/scripts/alerts-add-runbook-url.mjs --check`) enforces the
 `runbook_url` annotation; the section content is enforced by code review.
 
 Section anchors are derived from the alert name lowercased
@@ -100,7 +100,7 @@ anchor rules apply.
 
 ### protocolratelimittriggered
 
-Rate-limit rejections > 10/min. Investigate source IP via access logs; if legitimate traffic, scale HPA upper bound or tune per-principal budget in `03-platform/tools/compliance-gateway/03-platform/src/budget.mjs`.
+Rate-limit rejections > 10/min. Investigate source IP via access logs; if legitimate traffic, scale HPA upper bound or tune per-principal budget in `03-platform/tools/compliance-gateway/src/budget.mjs`.
 
 ### protocolnotraffic
 
@@ -151,11 +151,11 @@ p99 latency breach on AGX. Compare against the recent deploy timeline; common ca
 ## How to add a new alert section
 
 1. Add the alert to `04-ship/monitoring/alerts/<area>.yml`.
-2. Run `node 03-platform/tools/03-platform/scripts/alerts-add-runbook-url.mjs` to add the `runbook_url` annotation.
+2. Run `node 03-platform/tools/scripts/alerts-add-runbook-url.mjs` to add the `runbook_url` annotation.
 3. Add a section here under the matching area, using the template above. Anchor matches the alertname lowercased.
 4. Commit both in one change.
 
-`pnpm test` will fail if any alert is missing the `runbook_url` annotation. `pnpm test` also fails if any `runbook_url` points at an anchor that doesn't exist below — see `03-platform/tools/03-platform/scripts/alerts-add-runbook-url.mjs --check`.
+`pnpm test` will fail if any alert is missing the `runbook_url` annotation. `pnpm test` also fails if any `runbook_url` points at an anchor that doesn't exist below — see `03-platform/tools/scripts/alerts-add-runbook-url.mjs --check`.
 
 ---
 

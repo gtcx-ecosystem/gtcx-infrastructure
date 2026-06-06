@@ -22,7 +22,7 @@ import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
+const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
 const WORKFLOWS_DIR = join(REPO_ROOT, '.github', 'workflows');
 const checkOnly = process.argv.includes('--check');
 
@@ -159,7 +159,7 @@ function main() {
           console.error(`    - ${c.from}`);
         }
       }
-      console.error('\nRun `node 03-platform/tools/03-platform/scripts/pin-actions-sha.mjs` to pin them.');
+      console.error('\nRun `node 03-platform/tools/scripts/pin-actions-sha.mjs` to pin them.');
       process.exit(1);
     }
     console.log('[pin-actions-sha] all GitHub Actions uses: lines are SHA-pinned');

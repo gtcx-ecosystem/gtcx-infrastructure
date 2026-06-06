@@ -101,7 +101,7 @@ autonomy_level: 'sovereign'
 2. _When_ a security alert fires, _I want to_ trace it to a specific K8s pod and Terraform resource, _so I can_ remediate within minutes
 3. _When_ an auditor asks for evidence, _I want to_ generate a compliance report from CI, _so I can_ pass the audit without manual documentation
 
-**How This Repo Helps:** Tendai uses `04-ship/terraform/modules/` to provision infrastructure with security defaults (encrypted storage, least-privilege IAM, VPC isolation). The `03-platform/tools/deployment-guard/` enforces approval tickets for production changes. The `03-platform/tools/03-platform/scripts/audit-with-acceptance.mjs` generates SOC 2 evidence artifacts automatically.
+**How This Repo Helps:** Tendai uses `04-ship/terraform/modules/` to provision infrastructure with security defaults (encrypted storage, least-privilege IAM, VPC isolation). The `03-platform/tools/deployment-guard/` enforces approval tickets for production changes. The `03-platform/tools/scripts/audit-with-acceptance.mjs` generates SOC 2 evidence artifacts automatically.
 
 **Workflow Unlocked:** Tendai receives a Jira ticket to onboard a new pilot bank. She copies the `template/` Terraform environment, adjusts variables for the bank's region, runs `terraform plan`, and attaches the plan output to the deployment-gate CLI. The gate checks for approval ticket GTCX-XXX, verifies no destructive changes, and allows apply. Within 30 minutes, the bank's isolated environment is live with WAF, Flow Logs, and WORM audit storage.
 
@@ -146,7 +146,7 @@ autonomy_level: 'sovereign'
 2. _When_ I modify infrastructure, _I want to_ verify my changes against compliance and security policies, _so I can_ avoid introducing vulnerabilities
 3. _When_ I generate documentation, _I want to_ follow the ecosystem standard automatically, _so I can_ produce consistent, machine-readable output
 
-**How This Repo Helps:** Claude reads `CLAUDE.md` at repo root for identity and commands. The `01-docs/01-agents/` directory contains onboarding, safety rules (three-tier authority structure), and workflow checklists. The `.agent/` directory provides cross-LLM instruction sync. The docs-standard validator (`03-platform/tools/03-platform/scripts/docs-standard-validator.mjs`) ensures generated docs comply with naming, frontmatter, and linking rules.
+**How This Repo Helps:** Claude reads `CLAUDE.md` at repo root for identity and commands. The `01-docs/01-agents/` directory contains onboarding, safety rules (three-tier authority structure), and workflow checklists. The `.agent/` directory provides cross-LLM instruction sync. The docs-standard validator (`03-platform/tools/scripts/docs-standard-validator.mjs`) ensures generated docs comply with naming, frontmatter, and linking rules.
 
 **Workflow Unlocked:** Claude starts a session and reads `CLAUDE.md` → `01-docs/01-agents/onboarding/orientation.md` → `01-docs/01-agents/workflows/agent-safety-rules.md`. It learns that destructive operations (drop DB, delete cluster) require explicit user instruction. It proposes a Terraform change, runs `terraform plan`, and passes the output to the deployment-gate CLI. The gate requires `--approval-ticket=GTCX-XXX`. Claude asks the user for the ticket before proceeding.
 

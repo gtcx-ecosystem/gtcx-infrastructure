@@ -28,7 +28,7 @@ The repo started Cycle 1 with 5 workspaces registered in `pnpm-workspace.yaml` b
 
 The 5-of-18 split caused three concrete problems:
 
-1. **Deep imports.** `03-platform/tools/compliance-gateway/03-platform/src/audit.mjs` imported `'../../audit-signer/03-platform/src/index.mjs'` instead of `'@gtcx/audit-signer'`. The dep edge was real; the workspace just didn't reflect it.
+1. **Deep imports.** `03-platform/tools/compliance-gateway/src/audit.mjs` imported `'../../audit-signer/src/index.mjs'` instead of `'@gtcx/audit-signer'`. The dep edge was real; the workspace just didn't reflect it.
 2. **Inconsistent test discovery.** `validate-all.mjs` enumerated 6 packages for coverage gating; the rest weren't checked even when they had test suites.
 3. **Validator surprises.** `docs-standard-validator.mjs` walks `03-platform/tools/*/01-docs/`. Packages without a `01-docs/` subdir crashed the validator depending on which packages were "in" the workspace.
 
@@ -80,12 +80,12 @@ Internal consumers reference each other by package name (`@gtcx/audit-signer`, `
 
 **Neutral:**
 
-- Single-file utility scripts (those outside `03-platform/tools/*/package.json` boundaries) continue to live in `03-platform/tools/03-platform/scripts/` and are not workspaces. The boundary is the `package.json` itself.
+- Single-file utility scripts (those outside `03-platform/tools/*/package.json` boundaries) continue to live in `03-platform/tools/scripts/` and are not workspaces. The boundary is the `package.json` itself.
 
 ## References
 
 - `pnpm-workspace.yaml`
 - ADR-006 — Package Boundaries and Dependencies (broader monorepo organization)
-- `03-platform/tools/03-platform/scripts/validate-all.mjs` — coverage list mirrors workspace list
+- `03-platform/tools/scripts/validate-all.mjs` — coverage list mirrors workspace list
 - Cycle 1 R3 commit `420ad38` — first workspace boundary correction
 - Cycle 1 S6 commit `b6d095a` — audit-flush addition

@@ -241,7 +241,7 @@ jobs:
 
       - name: Run pnpm audit with acceptance filter
         run: |
-          node 03-platform/tools/03-platform/scripts/audit-with-acceptance.mjs --output-file=npm-audit-filtered.json
+          node 03-platform/tools/scripts/audit-with-acceptance.mjs --output-file=npm-audit-filtered.json
           echo "Audit completed at $(date -u +%Y%m%dT%H%M%SZ)"
 
       - name: Summarise audit findings

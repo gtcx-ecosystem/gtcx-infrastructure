@@ -35,7 +35,7 @@ RUN addgroup -g 65532 -S auditflush && \
 COPY --from=deps /sbin/tini /sbin/tini
 COPY --from=deps /app/node_modules ./node_modules
 COPY package.json ./
-COPY 03-platform/src/ ./03-platform/src/
+COPY src/ ./03-platform/src/
 
 USER auditflush
 
@@ -44,10 +44,10 @@ ENV PORT=8080
 EXPOSE 8080
 
 # tini reaps zombies + forwards signals so SIGTERM reaches the graceful
-# shutdown path in 03-platform/src/index.mjs.
+# shutdown path in src/index.mjs.
 ENTRYPOINT ["/sbin/tini", "--"]
 
 HEALTHCHECK --interval=15s --timeout=3s --start-period=10s --retries=3 \
   CMD node -e "require('http').get('http://localhost:8080/health', (r) => r.statusCode === 200 ? process.exit(0) : process.exit(1))"
 
-CMD ["node", "03-platform/src/index.mjs"]
+CMD ["node", "src/index.mjs"]

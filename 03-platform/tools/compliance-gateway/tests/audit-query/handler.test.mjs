@@ -1,8 +1,8 @@
 import assert from 'node:assert';
 import { describe, it } from 'node:test';
 
-import { processQuery } from '../../03-platform/src/audit-query/handler.mjs';
-import { InMemoryQueryStore } from '../../03-platform/src/audit-query/store.mjs';
+import { processQuery } from '../../src/audit-query/handler.mjs';
+import { InMemoryQueryStore } from '../../src/audit-query/store.mjs';
 
 function event(overrides) {
   return {

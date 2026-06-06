@@ -17,7 +17,7 @@ import {
   recordAndCheckAuthFailure,
   recordAuthFailure,
   sourceIpFromRequest,
-} from '../03-platform/src/auth-failure-throttle.mjs';
+} from '../src/auth-failure-throttle.mjs';
 
 const CFG = { threshold: 3, windowMs: 100, throttleMs: 100 };
 const CAP_CFG = { threshold: 100, windowMs: 60_000, throttleMs: 60_000, maxIps: 3 };

@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { describe, it, before, after } from 'node:test';
 
-import { NdjsonQueryStore } from '../../03-platform/src/audit-query/ndjson-store.mjs';
+import { NdjsonQueryStore } from '../../src/audit-query/ndjson-store.mjs';
 
 function event(overrides) {
   return {

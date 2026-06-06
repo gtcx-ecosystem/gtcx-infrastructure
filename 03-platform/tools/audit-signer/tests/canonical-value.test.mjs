@@ -5,7 +5,7 @@ import { dirname, join } from 'node:path';
 import { describe, it } from 'node:test';
 import { fileURLToPath } from 'node:url';
 
-import { canonicalizeValue } from '../03-platform/src/canonical.mjs';
+import { canonicalizeValue } from '../src/canonical.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 

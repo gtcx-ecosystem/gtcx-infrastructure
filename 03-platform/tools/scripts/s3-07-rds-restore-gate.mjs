@@ -5,14 +5,14 @@
  * Validates that the RDS live restore script and runbook exist,
  * are executable, and the evidence directory is ready.
  *
- * Usage: node 03-platform/tools/03-platform/scripts/s3-07-rds-restore-gate.mjs
+ * Usage: node 03-platform/tools/scripts/s3-07-rds-restore-gate.mjs
  */
 
 import { existsSync, statSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
 const SCRIPT = join(ROOT, 'infra', 'scripts', 'rds-live-restore.sh');
 const RUNBOOK = join(ROOT, 'docs', 'operations', 'runbooks', 'rds-live-restore.md');
 const EVIDENCE_DIR = join(ROOT, 'docs', 'audit', 'evidence', 'rds-restore');

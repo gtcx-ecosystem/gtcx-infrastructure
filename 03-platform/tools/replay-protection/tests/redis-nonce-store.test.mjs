@@ -8,7 +8,7 @@
 import assert from 'node:assert';
 import { describe, it } from 'node:test';
 
-import { RedisNonceStore } from '../03-platform/src/store/redis-nonce-store.mjs';
+import { RedisNonceStore } from '../src/store/redis-nonce-store.mjs';
 
 /** Creates a mock Redis client that stores data in memory. */
 function createMockRedisClient() {

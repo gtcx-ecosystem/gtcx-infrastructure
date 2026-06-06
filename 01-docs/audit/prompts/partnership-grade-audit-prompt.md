@@ -52,7 +52,7 @@ curl -s -o /dev/null -w "%{http_code}\n" https://api.gtcx.trade || true
 # Check that unauthenticated requests are rejected
 curl -s -w "\n%{http_code}" https://api.gtcx.trade/v1/health || true
 # Check auth middleware exists in codebase
-grep -r "auth" 03-platform/tools/compliance-gateway/03-platform/src/ | grep -i "middleware\|verify\|validate" | head -5
+grep -r "auth" 03-platform/tools/compliance-gateway/src/ | grep -i "middleware\|verify\|validate" | head -5
 ```
 
 **Pass:** 401/403 on missing auth. Auth middleware present in gateway.
@@ -61,7 +61,7 @@ grep -r "auth" 03-platform/tools/compliance-gateway/03-platform/src/ | grep -i "
 
 ```bash
 # Check rate limit configuration
-grep -r "rateLimit\|rate_limit\|throttle" 03-platform/tools/compliance-gateway/03-platform/src/ | head -5
+grep -r "rateLimit\|rate_limit\|throttle" 03-platform/tools/compliance-gateway/src/ | head -5
 grep -r "rateLimit\|rate_limit\|throttle" 04-ship/terraform/modules/waf/ | head -5
 ```
 
@@ -92,7 +92,7 @@ grep -ri "incident.*response\|security.*contact" 01-docs/ | head -5
 
 ```bash
 # Check partner API schemas for PII fields
-grep -ri "ssn\|passport\|id_number\|dob\|birth" 03-platform/tools/compliance-gateway/03-platform/src/ || true
+grep -ri "ssn\|passport\|id_number\|dob\|birth" 03-platform/tools/compliance-gateway/src/ || true
 # Check data classification
 grep -ri "pii\|sensitive\|classified" 01-docs/architecture/ || true
 ```

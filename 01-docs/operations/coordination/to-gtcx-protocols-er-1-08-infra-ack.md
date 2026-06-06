@@ -8,7 +8,7 @@ target: gtcx-protocols
 
 # Outbound: ER-1-08 infrastructure acknowledgement
 
-**Purpose:** Append-only row for `gtcx-protocols/01-docs/04-ops/coordination/cross-repo-agent-log.md`.
+**Purpose:** Append-only row for `gtcx-protocols/01-docs/operations/coordination/cross-repo-agent-log.md`.
 
 ## Row to append
 

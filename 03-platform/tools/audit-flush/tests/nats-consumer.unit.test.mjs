@@ -19,7 +19,7 @@ import {
   natsConnectionState,
   nextRetryDelayMs,
   _resetForTests,
-} from '../03-platform/src/nats-consumer.mjs';
+} from '../src/nats-consumer.mjs';
 
 process.env.AUDIT_S3_BUCKET = process.env.AUDIT_S3_BUCKET || 'gtcx-test-bucket';
 process.env.AUDIT_S3_ALLOW_STUB = '1';

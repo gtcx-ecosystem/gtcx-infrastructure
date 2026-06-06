@@ -4,4 +4,4 @@
 | ------------ | ----------------------------------------------------------------------------- |
 | Instructions | [`.github/copilot/instructions.md`](../../../.github/copilot/instructions.md) |
 
-**Workspace:** [`workspace/`](../../../workspace/) · **Universal:** [`universal/`](../universal/)
+**Workspace:** [`workspace/`](../../../02-ops/) · **Universal:** [`universal/`](../universal/)

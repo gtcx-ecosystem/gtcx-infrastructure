@@ -27,7 +27,7 @@
           "id": "S2",
           "name": "Audit trail for every AI action",
           "description": "Every compliance query and tool call is logged with principal, timestamp, and outcome",
-          "evidence": "03-platform/tools/compliance-gateway/03-platform/src/audit.mjs:initAuditSigner fail-closes in production if AUDIT_SIGNING_KEY_B64 absent (server.mjs exits EX_CONFIG 78); 03-platform/tools/compliance-gateway/03-platform/src/audit-sink.mjs publishes signed records to NATS subject gtcx.audit.compliance-gateway.<tenantId>; 03-platform/tools/audit-flush ships verified NDJSON to WORM S3 bucket gtcx-worm-audit-*; restart-recovery proven by tests/audit-recovery.unit.test.mjs (4 scenarios); /health surfaces audit.signing + audit.totalRecords + audit.checkpointHash; auth target sanitized via 03-platform/src/audit-target.mjs",
+          "evidence": "03-platform/tools/compliance-gateway/03-platform/src/audit.mjs:initAuditSigner fail-closes in production if AUDIT_SIGNING_KEY_B64 absent (server.mjs exits EX_CONFIG 78); 03-platform/tools/compliance-gateway/03-platform/src/audit-sink.mjs publishes signed records to NATS subject gtcx.audit.compliance-gateway.<tenantId>; 03-platform/tools/audit-flush ships verified NDJSON to WORM S3 bucket gtcx-worm-audit-*; restart-recovery proven by tests/audit-recovery.unit.test.mjs (4 scenarios); /health surfaces audit.signing + audit.totalRecords + audit.checkpointHash; auth target sanitized via src/audit-target.mjs",
           "status": "pass",
           "score": 10
         },
@@ -95,7 +95,7 @@
           "id": "G1",
           "name": "Authentication boundary",
           "description": "All AI gateway endpoints require valid bearer token",
-          "evidence": "03-platform/tools/compliance-gateway/03-platform/src/auth.mjs: authenticateHeaders requires Bearer token; constant-time comparison; 401/403 tests pass; principal now carries tenantId (Sprint 5); per-principal QPS + daily USD budget at 03-platform/src/budget.mjs bounds blast radius of a stolen token",
+          "evidence": "03-platform/tools/compliance-gateway/03-platform/src/auth.mjs: authenticateHeaders requires Bearer token; constant-time comparison; 401/403 tests pass; principal now carries tenantId (Sprint 5); per-principal QPS + daily USD budget at src/budget.mjs bounds blast radius of a stolen token",
           "status": "pass",
           "score": 10
         },
@@ -195,7 +195,7 @@
           "id": "A3",
           "name": "SIGNAL scorecard CI gate",
           "description": "Scorecard validation runs in CI and blocks PRs on regression",
-          "evidence": "03-platform/tools/03-platform/scripts/validate-signal.mjs: validates schema, computes weighted score, fails CI if score < threshold; 01-docs/05-audit/signal-scorecard.json: 5-pillar maturity scorecard (this file, v2)",
+          "evidence": "03-platform/tools/scripts/validate-signal.mjs: validates schema, computes weighted score, fails CI if score < threshold; 01-docs/05-audit/signal-scorecard.json: 5-pillar maturity scorecard (this file, v2)",
           "status": "pass",
           "score": 10
         }

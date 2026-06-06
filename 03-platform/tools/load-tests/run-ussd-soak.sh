@@ -36,7 +36,7 @@ trap cleanup EXIT
 echo "[INFO] Starting USSD handler on port $USSD_PORT..."
 (
   cd "$PROJECT_ROOT/03-platform/tools/ussd-handler"
-  USSD_PORT=$USSD_PORT NODE_ENV=test node 03-platform/src/server.mjs &>/dev/null
+  USSD_PORT=$USSD_PORT NODE_ENV=test node src/server.mjs &>/dev/null
 ) &
 USSD_PID=$!
 
@@ -71,7 +71,7 @@ if [[ ! -f "$METRICS_FILE" ]]; then
   exit 1
 fi
 
-node "$PROJECT_ROOT/03-platform/tools/03-platform/scripts/ussd-soak-baseline-check.mjs" \
+node "$PROJECT_ROOT/03-platform/tools/scripts/ussd-soak-baseline-check.mjs" \
   --metrics="$METRICS_FILE" || SOAK_RESULT=$?
 
 if [[ -n "$OUTPUT_DIR" ]]; then

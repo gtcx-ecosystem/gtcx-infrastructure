@@ -73,6 +73,6 @@ curl -s -o /dev/null -w "%{http_code}" \
 ## Cross-references
 
 - Intelligence tracker: `gtcx-intelligence/01-docs/08-gtm/inbound-tickets/tracker-wire2-spec17.md`
-- Protocols witness: `gtcx-protocols/01-docs/04-ops/coordination/from-gtcx-intelligence-wave2-blockers-2026-06-05.md`
+- Protocols witness: `gtcx-protocols/01-docs/operations/coordination/from-gtcx-intelligence-wave2-blockers-2026-06-05.md`
 - Infra ingress: `04-ship/kubernetes/overlays/staging/ingress.yaml`
 - Infra protocols env: `04-ship/kubernetes/overlays/staging/patches/protocols-staging-env.yaml`

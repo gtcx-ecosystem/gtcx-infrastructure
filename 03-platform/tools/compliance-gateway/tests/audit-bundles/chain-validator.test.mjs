@@ -1,7 +1,7 @@
 import assert from 'node:assert';
 import { describe, it } from 'node:test';
 
-import { validateWithinBundleChain } from '../../03-platform/src/audit-bundles/chain-validator.mjs';
+import { validateWithinBundleChain } from '../../src/audit-bundles/chain-validator.mjs';
 
 function event(id, eventHash, previousHash) {
   return { id, eventHash, previousHash };

@@ -52,7 +52,7 @@ rubricId: gtcx-infra-canonical-v2
 
 Register: `01-docs/05-audit/external-dependencies-register-2026-05-31.md`
 
-Recompute: `node 03-platform/tools/03-platform/scripts/compute-audit-scores.mjs --write`
+Recompute: `node 03-platform/tools/scripts/compute-audit-scores.mjs --write`
 
 **Retired:** `certifiedReadiness`, `CR = IR − gap`. **Supplementary:** SIGNAL ≈9.6 (`signal-scorecard.json`).
 
@@ -62,15 +62,15 @@ Recompute: `node 03-platform/tools/03-platform/scripts/compute-audit-scores.mjs 
 
 **Threshold:** ≥ 8.0/10 | **Score:** **10.0/10** ✅ | **Status:** `pass`
 
-| Control                               | Weight | Result  | Evidence Summary                                                                                                                                                                               |
-| ------------------------------------- | ------ | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **P.1** HTTPS-only endpoints          | 15%    | ✅ Pass | ALB ingress uses `ELBSecurityPolicy-TLS13-1-2-2021-06` with `ssl-redirect: '443'`; NGINX ingress has `force-ssl-redirect: 'true'` + TLS secret.                                                |
-| **P.2** API authentication            | 15%    | ✅ Pass | `audit-query/handler.mjs` implements Bearer auth; `server.mjs` imports `authenticateHeaders`, `buildAccessProfile`, `loadAuthState`; `auth-failure-throttle.mjs` prevents brute-force.         |
-| **P.3** Rate limiting                 | 15%    | ✅ Pass | Gateway: per-IP auth-failure throttling (20/60s window) + `compliance_gateway_throttle_total` metric. WAF: Terraform `rate_based_statement` with default 2000 req/5min/IP.                     |
-| **P.4** Security contact              | 15%    | ✅ Pass | `SECURITY.md` in repo root with `security@gtcx.trade` and documented response SLA (acknowledgement within 2 business days).                                                                    |
-| **P.5** Incident SLA (72h)            | 15%    | ✅ Pass | `01-docs/09-security/partner-incident-notification-sla.md` explicitly documents ≤72h notification for Medium severity partner-facing incidents.                                                |
-| **P.6** No PII in partner systems     | 15%    | ✅ Pass | Zero matches for `ssn\|passport\|id_number\|dob\|birth` in `03-platform/tools/compliance-gateway/03-platform/src/`. Architecture docs confirm anonymized seed data and explicit PII avoidance. |
-| **P.7** Self-assessment questionnaire | 10%    | ✅ Pass | `01-docs/09-security/partner-security-self-assessment.md` exists (Document ID: GTCX-PSQ-001) with annual review cycle.                                                                         |
+| Control                               | Weight | Result  | Evidence Summary                                                                                                                                                                       |
+| ------------------------------------- | ------ | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **P.1** HTTPS-only endpoints          | 15%    | ✅ Pass | ALB ingress uses `ELBSecurityPolicy-TLS13-1-2-2021-06` with `ssl-redirect: '443'`; NGINX ingress has `force-ssl-redirect: 'true'` + TLS secret.                                        |
+| **P.2** API authentication            | 15%    | ✅ Pass | `audit-query/handler.mjs` implements Bearer auth; `server.mjs` imports `authenticateHeaders`, `buildAccessProfile`, `loadAuthState`; `auth-failure-throttle.mjs` prevents brute-force. |
+| **P.3** Rate limiting                 | 15%    | ✅ Pass | Gateway: per-IP auth-failure throttling (20/60s window) + `compliance_gateway_throttle_total` metric. WAF: Terraform `rate_based_statement` with default 2000 req/5min/IP.             |
+| **P.4** Security contact              | 15%    | ✅ Pass | `SECURITY.md` in repo root with `security@gtcx.trade` and documented response SLA (acknowledgement within 2 business days).                                                            |
+| **P.5** Incident SLA (72h)            | 15%    | ✅ Pass | `01-docs/09-security/partner-incident-notification-sla.md` explicitly documents ≤72h notification for Medium severity partner-facing incidents.                                        |
+| **P.6** No PII in partner systems     | 15%    | ✅ Pass | Zero matches for `ssn\|passport\|id_number\|dob\|birth` in `03-platform/tools/compliance-gateway/src/`. Architecture docs confirm anonymized seed data and explicit PII avoidance.     |
+| **P.7** Self-assessment questionnaire | 10%    | ✅ Pass | `01-docs/09-security/partner-security-self-assessment.md` exists (Document ID: GTCX-PSQ-001) with annual review cycle.                                                                 |
 
 **Score calculation:** Σ(1.0 × weight) × 10 = **10.0**
 

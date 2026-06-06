@@ -5,7 +5,7 @@
 import assert from 'node:assert';
 import { describe, it } from 'node:test';
 
-import { AuditCapture, consoleSink } from '../03-platform/src/audit/audit-capture.mjs';
+import { AuditCapture, consoleSink } from '../src/audit/audit-capture.mjs';
 
 describe('AuditCapture — disabled mode', () => {
   it('returns event without calling sinks when disabled', async () => {

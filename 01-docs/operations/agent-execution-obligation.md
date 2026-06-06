@@ -16,14 +16,14 @@ Agents **run** verifiable commands themselves. They do not outsource runnable wo
 
 ## Verification ladder (V1–V6)
 
-| Step | Command                                                       | Required when                                       |
-| ---- | ------------------------------------------------------------- | --------------------------------------------------- |
-| V1   | `git status`, `git diff --stat`                               | Always                                              |
-| V2   | `pnpm lint`, `pnpm typecheck`, `pnpm format:check`            | Documented in `package.json`                        |
-| V3   | `pnpm test` (quick) or `pnpm test:full`                       | Tests exist for changed behavior                    |
-| V4   | `node 03-platform/tools/03-platform/scripts/validate-all.mjs` | Story touches deploy, evidence, or cross-repo probe |
-| V5   | Hub validators in `gtcx-docs` checkout                        | Changes in `gtcx-docs` coordination                 |
-| V6   | Sibling-repo command in **owner checkout**                    | Cross-repo `XR-*` implementation (Protocol 24)      |
+| Step | Command                                            | Required when                                       |
+| ---- | -------------------------------------------------- | --------------------------------------------------- |
+| V1   | `git status`, `git diff --stat`                    | Always                                              |
+| V2   | `pnpm lint`, `pnpm typecheck`, `pnpm format:check` | Documented in `package.json`                        |
+| V3   | `pnpm test` (quick) or `pnpm test:full`            | Tests exist for changed behavior                    |
+| V4   | `node 03-platform/tools/scripts/validate-all.mjs`  | Story touches deploy, evidence, or cross-repo probe |
+| V5   | Hub validators in `gtcx-docs` checkout             | Changes in `gtcx-docs` coordination                 |
+| V6   | Sibling-repo command in **owner checkout**         | Cross-repo `XR-*` implementation (Protocol 24)      |
 
 ## Quality-gate scripts
 
@@ -35,7 +35,7 @@ pnpm test
 
 # Full validation (V2–V4)
 pnpm test:full
-node 03-platform/tools/03-platform/scripts/validate-all.mjs
+node 03-platform/tools/scripts/validate-all.mjs
 ```
 
 ## Adoption artifacts

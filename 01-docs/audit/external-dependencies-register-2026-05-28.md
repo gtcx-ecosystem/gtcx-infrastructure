@@ -88,7 +88,7 @@ Source: [external-assurance-kickoff-2026-05-27.md](./external-assurance-kickoff-
 | Item                                                           | Resolution                                           | Evidence                                                                       |
 | -------------------------------------------------------------- | ---------------------------------------------------- | ------------------------------------------------------------------------------ |
 | PagerDuty hardcoded key                                        | Env var substitution                                 | `04-ship/docker/observability/alertmanager.yml` `${PAGERDUTY_*}`               |
-| Audit endpoint QPS                                             | `checkBudget` on `/audit/bundles` and `/audit/query` | `03-platform/tools/compliance-gateway/03-platform/src/server.mjs`              |
+| Audit endpoint QPS                                             | `checkBudget` on `/audit/bundles` and `/audit/query` | `03-platform/tools/compliance-gateway/src/server.mjs`                          |
 | Docs-standard failures                                         | `version-standards.md`, `vendor-outreach/README.md`  | `pnpm test` pass 2026-05-28                                                    |
 | Production Kustomize / docs-site / replay lint / Terraform fmt | Green at HEAD                                        | [internal-10-10-signoff-2026-05-28.md](./internal-10-10-signoff-2026-05-28.md) |
 

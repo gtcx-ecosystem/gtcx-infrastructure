@@ -64,7 +64,7 @@ function parseArgs() {
 
 function overlayDirForEnvironment(environment) {
   const dirName = overlayDirNames[environment] ?? environment;
-  return path.join(repoRoot, 'infra', 'kubernetes', 'overlays', dirName);
+  return path.join(repoRoot, '04-ship', 'kubernetes', 'overlays', dirName);
 }
 
 function assertNoLatestTags(rendered, label) {

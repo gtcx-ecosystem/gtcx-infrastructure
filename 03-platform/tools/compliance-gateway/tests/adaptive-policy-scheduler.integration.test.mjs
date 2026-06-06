@@ -17,7 +17,7 @@ import assert from 'node:assert';
 import { afterEach, describe, it } from 'node:test';
 import { setTimeout as delay } from 'node:timers/promises';
 
-import { startAdaptiveScheduler } from '../03-platform/src/adaptive-policy.mjs';
+import { startAdaptiveScheduler } from '../src/adaptive-policy.mjs';
 
 function withEnv(overrides, fn) {
   const original = {};

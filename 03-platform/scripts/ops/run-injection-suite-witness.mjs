@@ -6,7 +6,7 @@ import { writeFileSync, mkdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { runStaticChecks } from '../../03-platform/tools/eval-pipeline/injection-suite.mjs';
-import { PROMPT_VERSION } from '../../03-platform/tools/compliance-gateway/03-platform/src/system-prompt.mjs';
+import { PROMPT_VERSION } from '../../03-platform/tools/compliance-gateway/src/system-prompt.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const OUT = join(ROOT, '01-docs/05-audit/evidence/injection-suite-latest.json');

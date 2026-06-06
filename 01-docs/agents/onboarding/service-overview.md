@@ -106,7 +106,7 @@ gtcx-infrastructure/
 │   │   └── 03-platform/scripts/              # check_docs.py, generate_docs.py
 │   ├── security/
 │   │   ├── policies/             # Access control, data protection, IR
-│   │   ├── 03-platform/scripts/              # (security-status.js moved to 03-platform/tools/03-platform/scripts/)
+│   │   ├── 03-platform/scripts/              # (security-status.js moved to 03-platform/tools/scripts/)
 │   │   └── reports/              # Audit reports
 │   ├── 03-platform/scripts/
 │   │   ├── deploy.sh             # Production deployment (canary, rollback)
@@ -126,16 +126,16 @@ gtcx-infrastructure/
 
 ## Key Files
 
-| File                                                       | Purpose                                                    |
-| ---------------------------------------------------------- | ---------------------------------------------------------- |
-| `04-ship/docker/docker-compose.infra.yml`                  | Local infrastructure services — start here first           |
-| `04-ship/kubernetes/base/`                                 | Shared K8s resources for all environments                  |
-| `04-ship/kubernetes/overlays/production/`                  | Production-specific manifests — changes require approval   |
-| `04-ship/terraform/modules/database/`                      | Dual RDS provisioning with deletion protection on audit DB |
-| `04-ship/terraform/environments/template/`                 | Scaffold for new environments                              |
-| `04-ship/03-platform/scripts/deploy.sh`                    | Canonical deployment entry point                           |
-| `04-ship/03-platform/scripts/migrate.sh`                   | Migration runner with dry-run and environment guards       |
-| `03-platform/tools/03-platform/scripts/security-status.js` | Security posture scanner                                   |
+| File                                           | Purpose                                                    |
+| ---------------------------------------------- | ---------------------------------------------------------- |
+| `04-ship/docker/docker-compose.infra.yml`      | Local infrastructure services — start here first           |
+| `04-ship/kubernetes/base/`                     | Shared K8s resources for all environments                  |
+| `04-ship/kubernetes/overlays/production/`      | Production-specific manifests — changes require approval   |
+| `04-ship/terraform/modules/database/`          | Dual RDS provisioning with deletion protection on audit DB |
+| `04-ship/terraform/environments/template/`     | Scaffold for new environments                              |
+| `04-ship/03-platform/scripts/deploy.sh`        | Canonical deployment entry point                           |
+| `04-ship/03-platform/scripts/migrate.sh`       | Migration runner with dry-run and environment guards       |
+| `03-platform/tools/scripts/security-status.js` | Security posture scanner                                   |
 
 ---
 

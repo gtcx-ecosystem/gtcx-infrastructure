@@ -11,7 +11,7 @@ import assert from 'node:assert';
 import { createServer, request } from 'node:http';
 import { describe, it, before, after } from 'node:test';
 
-import { resetAuditSigner } from '../03-platform/src/audit.mjs';
+import { resetAuditSigner } from '../src/audit.mjs';
 
 let testServer;
 let baseUrl;
@@ -40,7 +40,7 @@ async function setupServer() {
   ]);
 
   resetAuditSigner();
-  const mod = await import(`../03-platform/src/server.mjs?v=new-routes-${Date.now()}`);
+  const mod = await import(`../src/server.mjs?v=new-routes-${Date.now()}`);
   testServer = mod.server;
   baseUrl = `http://127.0.0.1:${port}`;
   await new Promise((r) => setTimeout(r, 200));

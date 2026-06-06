@@ -9,15 +9,31 @@
 
 import assert from 'node:assert';
 import { spawnSync } from 'node:child_process';
-import { readFileSync, renameSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { describe, it } from 'node:test';
 
-const PKG_ROOT = '/Users/amanianai/Sites/gtcx-ecosystem/gtcx-infrastructure/03-platform/tools/compliance-gateway';
-const BASELINE_ROUTER = '/Users/amanianai/Sites/gtcx-ecosystem/baseline-os/03-platform/packages/baselineos/dist/core/cost-router.js';
+const PKG_ROOT = dirname(fileURLToPath(import.meta.url));
+const BASELINE_ROUTER = join(
+  PKG_ROOT,
+  '../../../../baseline-os/packages/baselineos/dist/core/cost-router.js',
+);
+
+function ensureBaselineRouterStub() {
+  if (!existsSync(BASELINE_ROUTER)) {
+    mkdirSync(dirname(BASELINE_ROUTER), { recursive: true });
+    writeFileSync(
+      BASELINE_ROUTER,
+      'export function routeInferenceRequest() { return null; }\n',
+      'utf8',
+    );
+  }
+}
 
 function runInChild(code, env = {}) {
   return spawnSync(process.execPath, ['--eval', code], {
-    cwd: PKG_ROOT,
+    cwd: dirname(PKG_ROOT),
     env: { ...process.env, ...env },
     encoding: 'utf8',
   });
@@ -26,7 +42,7 @@ function runInChild(code, env = {}) {
 describe('cost-router-shim — BASELINE_COST_ROUTER=0', () => {
   it('forces legacy-only routing and returns null', () => {
     const code = `
-      import { selectProviderViaBaseline } from './03-platform/src/cost-router-shim.mjs';
+      import { selectProviderViaBaseline } from './src/cost-router-shim.mjs';
       const result = await selectProviderViaBaseline('hello', { getProviders: () => [] });
       console.log(JSON.stringify({ result }));
     `;
@@ -39,12 +55,13 @@ describe('cost-router-shim — BASELINE_COST_ROUTER=0', () => {
 
 describe('cost-router-shim — import failure fallback', () => {
   it('falls back to false when baseline-os module is missing', () => {
+    ensureBaselineRouterStub();
     // Temporarily hide the real module so all candidate paths fail.
     const backup = BASELINE_ROUTER + '.bak';
     renameSync(BASELINE_ROUTER, backup);
     try {
       const code = `
-        import { selectProviderViaBaseline } from './03-platform/src/cost-router-shim.mjs';
+        import { selectProviderViaBaseline } from './src/cost-router-shim.mjs';
         const result = await selectProviderViaBaseline('hello', { getProviders: () => [] });
         console.log(JSON.stringify({ result }));
       `;
@@ -60,6 +77,7 @@ describe('cost-router-shim — import failure fallback', () => {
 
 describe('cost-router-shim — provider matching branches', () => {
   it('matches by registryId, model, provider, and returns null on no match', () => {
+    ensureBaselineRouterStub();
     const original = readFileSync(BASELINE_ROUTER, 'utf8');
     const mock = `
       export function routeInferenceRequest({ prompt }) {
@@ -73,7 +91,7 @@ describe('cost-router-shim — provider matching branches', () => {
     writeFileSync(BASELINE_ROUTER, mock, 'utf8');
     try {
       const code = `
-        import { selectProviderViaBaseline } from './03-platform/src/cost-router-shim.mjs';
+        import { selectProviderViaBaseline } from './src/cost-router-shim.mjs';
         const providers = [
           { name: 'prov-a', model: 'm-a' },
           { name: 'prov-b', model: 'm-b' },

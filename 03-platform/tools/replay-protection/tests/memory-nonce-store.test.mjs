@@ -5,7 +5,7 @@
 import assert from 'node:assert';
 import { describe, it } from 'node:test';
 
-import { MemoryNonceStore } from '../03-platform/src/store/memory-nonce-store.mjs';
+import { MemoryNonceStore } from '../src/store/memory-nonce-store.mjs';
 
 describe('MemoryNonceStore', () => {
   it('stores and checks a nonce', async () => {

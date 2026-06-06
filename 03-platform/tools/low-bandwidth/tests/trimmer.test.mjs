@@ -5,7 +5,7 @@ import {
   trimObject,
   buildMinimalResponse,
   estimateReduction,
-} from '../03-platform/src/trimmer.mjs';
+} from '../src/trimmer.mjs';
 
 describe('trimObject', () => {
   it('passes through primitives', () => {

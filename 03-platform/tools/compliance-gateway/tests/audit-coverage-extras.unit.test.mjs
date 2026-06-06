@@ -20,7 +20,7 @@ import {
   getSink,
   getSinkInfo,
   resetSink,
-} from '../03-platform/src/audit-sink.mjs';
+} from '../src/audit-sink.mjs';
 import {
   initAuditSigner,
   signAuditEvent,
@@ -28,7 +28,7 @@ import {
   buildEvidenceBundle,
   exportChainNdjson,
   getChainState,
-} from '../03-platform/src/audit.mjs';
+} from '../src/audit.mjs';
 
 function captureStdout(fn) {
   const original = console.log;

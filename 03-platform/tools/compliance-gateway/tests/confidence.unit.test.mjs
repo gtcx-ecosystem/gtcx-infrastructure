@@ -9,7 +9,7 @@
 import assert from 'node:assert';
 import { describe, it } from 'node:test';
 
-import { computeConfidence } from '../03-platform/src/confidence.mjs';
+import { computeConfidence } from '../src/confidence.mjs';
 
 function llm(text, steps = []) {
   return { text, steps };

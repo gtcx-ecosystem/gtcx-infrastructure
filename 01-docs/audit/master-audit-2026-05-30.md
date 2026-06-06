@@ -48,7 +48,7 @@ Internal readiness is assessed at **6.5/10**. Certified composite is assessed at
 | ------------------------------- | ------ | --------------------------------------------------------------------------------------------------- |
 | `pnpm test`                     | Fail   | Docs-standard rejects `01-docs/roadmap/ROADMAP-2026-07-13.md`; `01-docs/roadmap` lacks README/index |
 | `pnpm quality:governance:check` | Fail   | Same docs-standard violations as `pnpm test`                                                        |
-| `pnpm typecheck`                | Fail   | `03-platform/tools/replay-protection/03-platform/src/middleware.mjs:130` implicit `any` parameter   |
+| `pnpm typecheck`                | Fail   | `03-platform/tools/replay-protection/src/middleware.mjs:130` implicit `any` parameter               |
 | `pnpm format:check`             | Fail   | 21 files differ from Prettier output                                                                |
 | `pnpm agent:check`              | Fail   | `AGENTS.md` drift from generated agent docs                                                         |
 | `pnpm lint`                     | Pass   | Turbo lint completed for configured packages                                                        |
@@ -63,7 +63,7 @@ Internal readiness is assessed at **6.5/10**. Certified composite is assessed at
 `01-docs/roadmap/ROADMAP-2026-07-13.md` violates lowercase filename policy, and `01-docs/roadmap/` has no `README.md` or `index.md`. This blocks the root quick validation gate.
 
 **P0-002: Typecheck is red in replay-protection middleware.**  
-`03-platform/tools/replay-protection/03-platform/src/middleware.mjs:130` defines `isExempt(path)` without a JSDoc type, triggering `TS7006` under `checkJs`.
+`03-platform/tools/replay-protection/src/middleware.mjs:130` defines `isExempt(path)` without a JSDoc type, triggering `TS7006` under `checkJs`.
 
 **P0-003: Agent synchronization gate is red.**  
 `pnpm agent:check` reports `AGENTS.md` drift. This breaks the repo's agent coordination contract until `pnpm agent:sync` output is reviewed and committed.
@@ -71,28 +71,28 @@ Internal readiness is assessed at **6.5/10**. Certified composite is assessed at
 ### P1 — Security / Control Gaps
 
 **P1-001: Replay middleware exempts raw prefix paths before normalization.**  
-`03-platform/tools/replay-protection/03-platform/src/middleware.mjs:130-143` treats any raw URL starting with `/_next/` as exempt. A path such as `/_next/../v1/query` satisfies the prefix check unless upstream normalization rejects it first. Normalize and reject traversal before exemption.
+`03-platform/tools/replay-protection/src/middleware.mjs:130-143` treats any raw URL starting with `/_next/` as exempt. A path such as `/_next/../v1/query` satisfies the prefix check unless upstream normalization rejects it first. Normalize and reject traversal before exemption.
 
 **P1-002: `/audit/bundles` budget and audit tenant context still trusts request headers.**  
-`03-platform/tools/compliance-gateway/03-platform/src/audit-bundles/handler.mjs:71-74` uses `x-gtcx-tenant-id` for budget scope, and lines 126-133 write that same header into the signed ingest audit event. Tenant context should derive from resolved device identity or an authorization binding, not a caller-controlled header.
+`03-platform/tools/compliance-gateway/src/audit-bundles/handler.mjs:71-74` uses `x-gtcx-tenant-id` for budget scope, and lines 126-133 write that same header into the signed ingest audit event. Tenant context should derive from resolved device identity or an authorization binding, not a caller-controlled header.
 
 **P1-003: Auth-failure exceptions are invisible to tenant-scoped operator view.**  
-`03-platform/tools/compliance-gateway/03-platform/src/server.mjs:231-237` signs auth failures with `payload.tenantId = 'unknown'`, while `03-platform/tools/compliance-gateway/03-platform/src/audit.mjs:438-446` filters exceptions by exact tenant. This drops auth-failure events from ordinary tenant exception views.
+`03-platform/tools/compliance-gateway/src/server.mjs:231-237` signs auth failures with `payload.tenantId = 'unknown'`, while `03-platform/tools/compliance-gateway/src/audit.mjs:438-446` filters exceptions by exact tenant. This drops auth-failure events from ordinary tenant exception views.
 
 **P1-004: Auth-failure throttle is process-local and unbounded.**  
-`03-platform/tools/compliance-gateway/03-platform/src/auth-failure-throttle.mjs:25-26` stores all source IP state in a module-level `Map` with no maximum size or eviction beyond per-IP window reset. Distributed brute-force can grow memory.
+`03-platform/tools/compliance-gateway/src/auth-failure-throttle.mjs:25-26` stores all source IP state in a module-level `Map` with no maximum size or eviction beyond per-IP window reset. Distributed brute-force can grow memory.
 
 **P1-005: Source IP extraction trusts X-Forwarded-For unconditionally.**  
-`03-platform/tools/compliance-gateway/03-platform/src/auth-failure-throttle.mjs:107-112` trusts the first XFF hop without a trusted-proxy boundary. Attackers that can inject or influence the header can evade per-IP throttling.
+`03-platform/tools/compliance-gateway/src/auth-failure-throttle.mjs:107-112` trusts the first XFF hop without a trusted-proxy boundary. Attackers that can inject or influence the header can evade per-IP throttling.
 
 **P1-006: Catalog verification is self-vouching.**  
 `03-platform/tools/compliance-data/03-platform/scripts/verify-catalog.mjs:60-64` builds the verification key from the signature file itself. Without a pinned trust anchor, replacing catalog, signature, and public key together can pass local verification.
 
 **P1-007: Fail-closed helper is not wired into production paths.**  
-`03-platform/tools/03-platform/scripts/fail-closed.mjs` exists and is tested, but code search found no production caller. Current fail-closed behavior remains implemented ad hoc per path.
+`03-platform/tools/scripts/fail-closed.mjs` exists and is tested, but code search found no production caller. Current fail-closed behavior remains implemented ad hoc per path.
 
 **P1-008: Redis budget-store primitive is not wired into the hot path.**  
-`03-platform/tools/compliance-gateway/03-platform/src/budget.mjs:22-28` explicitly documents that cross-pod budget enforcement requires a future async migration. Current rate/cost enforcement is per pod, so HPA replica count multiplies effective limits.
+`03-platform/tools/compliance-gateway/src/budget.mjs:22-28` explicitly documents that cross-pod budget enforcement requires a future async migration. Current rate/cost enforcement is per pod, so HPA replica count multiplies effective limits.
 
 ### P2 — Hygiene / Operational Gaps
 

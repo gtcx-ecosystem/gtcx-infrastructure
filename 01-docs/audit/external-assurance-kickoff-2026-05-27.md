@@ -36,15 +36,15 @@ This document converts the SOC 2 and penetration-test roadmap into an executable
 
 ## Control Owner Matrix
 
-| Domain                              | Primary Owner         | Backup Owner        | Evidence Source                                                                                                                    |
-| ----------------------------------- | --------------------- | ------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| Identity, auth, rate limits         | Security Lead         | Platform Lead       | `03-platform/tools/compliance-gateway/03-platform/src/auth.mjs`, `03-platform/tools/compliance-gateway/03-platform/src/budget.mjs` |
-| WORM audit chain                    | Compliance Platform   | Security Lead       | `03-platform/tools/audit-signer/`, `03-platform/tools/audit-flush/`, `01-docs/05-audit/worm-runtime-evidence-2026-05-27.md`        |
-| Kubernetes deployability            | Infrastructure Lead   | Platform Lead       | `04-ship/kubernetes/`, `.github/workflows/ci.yml`                                                                                  |
-| Terraform and AWS controls          | Infrastructure Lead   | SRE                 | `04-ship/terraform/`                                                                                                               |
-| DR and recovery                     | SRE                   | Infrastructure Lead | `04-ship/03-platform/scripts/dr-test.sh`, `.github/workflows/dr-test.yml`                                                          |
-| Documentation governance            | Quality Evidence Lead | Security Lead       | `03-platform/tools/03-platform/scripts/docs-standard-validator.mjs`, `03-platform/tools/03-platform/scripts/docs-link-checker.mjs` |
-| External comms and evidence handoff | Security Lead         | Compliance Lead     | `01-docs/05-audit/`, `01-docs/10-compliance/`                                                                                      |
+| Domain                              | Primary Owner         | Backup Owner        | Evidence Source                                                                                                             |
+| ----------------------------------- | --------------------- | ------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| Identity, auth, rate limits         | Security Lead         | Platform Lead       | `03-platform/tools/compliance-gateway/src/auth.mjs`, `03-platform/tools/compliance-gateway/src/budget.mjs`                  |
+| WORM audit chain                    | Compliance Platform   | Security Lead       | `03-platform/tools/audit-signer/`, `03-platform/tools/audit-flush/`, `01-docs/05-audit/worm-runtime-evidence-2026-05-27.md` |
+| Kubernetes deployability            | Infrastructure Lead   | Platform Lead       | `04-ship/kubernetes/`, `.github/workflows/ci.yml`                                                                           |
+| Terraform and AWS controls          | Infrastructure Lead   | SRE                 | `04-ship/terraform/`                                                                                                        |
+| DR and recovery                     | SRE                   | Infrastructure Lead | `04-ship/03-platform/scripts/dr-test.sh`, `.github/workflows/dr-test.yml`                                                   |
+| Documentation governance            | Quality Evidence Lead | Security Lead       | `03-platform/tools/scripts/docs-standard-validator.mjs`, `03-platform/tools/scripts/docs-link-checker.mjs`                  |
+| External comms and evidence handoff | Security Lead         | Compliance Lead     | `01-docs/05-audit/`, `01-docs/10-compliance/`                                                                               |
 
 ## Pen-Test Rules Of Engagement Baseline
 

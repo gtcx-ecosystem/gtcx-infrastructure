@@ -75,14 +75,14 @@ Phase 1 (this session) closed two additional P0/P1 gaps:
 
 ### New Gaps Closed in Phase 1 (2026-05-11)
 
-| ID        | Finding                                                   | Severity | Closure Evidence                                                                                                               |
-| --------- | --------------------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| **G-001** | No HTTP integration tests for compliance gateway          | **P0**   | `03-platform/tools/compliance-gateway/tests/server.integration.test.mjs` — 12 tests, all green in CI                           |
-| **G-002** | `check-security-control-boundaries` policy gate NOT in CI | **P1**   | Explicit step in `.github/workflows/ci.yml`; fails PR on `query.gtcx.trade` reappearance                                       |
-| **G-003** | No replay-protection production-mode HTTP test            | P2       | `03-platform/tools/replay-protection/tests/production-fail-closed.test.mjs` — verifies 503 when Redis unavailable              |
-| **G-004** | `ai` package import ~8s — load test startup fragile       | P2       | `03-platform/tools/load-tests/run-load-tests.sh` wait loop increased to 120 iterations (60s max)                               |
-| **G-005** | No Kyverno policy deployment evidence in CI               | P2       | `03-platform/tools/03-platform/scripts/kyverno-policy-validator.mjs` — structural validation of all 7 policies + kustomization |
-| **G-006** | No container image signing evidence in CI                 | P2       | **PRE-EXISTING** — Cosign keyless signing already in `.github/workflows/build-push-ecr.yml` (lines 201–226)                    |
+| ID        | Finding                                                   | Severity | Closure Evidence                                                                                                   |
+| --------- | --------------------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------ |
+| **G-001** | No HTTP integration tests for compliance gateway          | **P0**   | `03-platform/tools/compliance-gateway/tests/server.integration.test.mjs` — 12 tests, all green in CI               |
+| **G-002** | `check-security-control-boundaries` policy gate NOT in CI | **P1**   | Explicit step in `.github/workflows/ci.yml`; fails PR on `query.gtcx.trade` reappearance                           |
+| **G-003** | No replay-protection production-mode HTTP test            | P2       | `03-platform/tools/replay-protection/tests/production-fail-closed.test.mjs` — verifies 503 when Redis unavailable  |
+| **G-004** | `ai` package import ~8s — load test startup fragile       | P2       | `03-platform/tools/load-tests/run-load-tests.sh` wait loop increased to 120 iterations (60s max)                   |
+| **G-005** | No Kyverno policy deployment evidence in CI               | P2       | `03-platform/tools/scripts/kyverno-policy-validator.mjs` — structural validation of all 7 policies + kustomization |
+| **G-006** | No container image signing evidence in CI                 | P2       | **PRE-EXISTING** — Cosign keyless signing already in `.github/workflows/build-push-ecr.yml` (lines 201–226)        |
 
 ### Remaining Open Findings
 
@@ -123,13 +123,13 @@ Phase 1 (this session) closed two additional P0/P1 gaps:
 | Compliance gateway integration tests | `03-platform/tools/compliance-gateway/tests/server.integration.test.mjs`    | ✅ 12/12 pass                 |
 | Replay protection production test    | `03-platform/tools/replay-protection/tests/production-fail-closed.test.mjs` | ✅ 3/3 pass                   |
 | Security control boundaries CI gate  | `.github/workflows/ci.yml`                                                  | ✅ Required step              |
-| Kyverno policy validator             | `03-platform/tools/03-platform/scripts/kyverno-policy-validator.mjs`        | ✅ 7/7 policies valid         |
+| Kyverno policy validator             | `03-platform/tools/scripts/kyverno-policy-validator.mjs`                    | ✅ 7/7 policies valid         |
 | Load test timeout fix                | `03-platform/tools/load-tests/run-load-tests.sh`                            | ✅ 120 iteration wait         |
 | Full validation suite                | `04-ship/03-platform/scripts/validate.sh quick`                             | ✅ All pass                   |
 | Build evidence                       | `03-platform/tools/control-plane/generate-release-evidence.mjs`             | ✅ `--build-only` required    |
 | Score ledger                         | `01-docs/05-audit/score-evidence-ledger.json`                               | ✅ Validator passes           |
 | DR test evidence                     | `.github/workflows/dr-test.yml`                                             | ✅ Weekly + on-demand         |
-| Incident drill validation            | `03-platform/tools/03-platform/scripts/incident-drill-validator.mjs`        | ✅ Passes against live config |
+| Incident drill validation            | `03-platform/tools/scripts/incident-drill-validator.mjs`                    | ✅ Passes against live config |
 
 ---
 

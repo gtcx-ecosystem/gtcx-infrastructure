@@ -2,7 +2,7 @@
   "version": 1,
   "baselineDate": "2026-05-10",
   "canonicalRubric": "01-docs/05-audit/scoring-rubric.json",
-  "canonicalCalculator": "03-platform/tools/03-platform/scripts/compute-audit-scores.mjs",
+  "canonicalCalculator": "03-platform/tools/scripts/compute-audit-scores.mjs",
   "canonicalOutput": "01-docs/05-audit/latest.json",
   "retiredHeadlineMetrics": [
     "core-weighted",
@@ -237,7 +237,7 @@
           "score": 8.0,
           "commit": "6834b47",
           "ciRun": "https://github.com/gtcx-ecosystem/gtcx-infrastructure/actions/runs/26742421949",
-          "artifact": "03-platform/tools/03-platform/scripts/validate-all.mjs",
+          "artifact": "03-platform/tools/scripts/validate-all.mjs",
           "reason": "Canonical reconciliation: 38/38 validate-all gates pass post-#85; Linux test runner + coverage gates green on PR CI."
         }
       ]
@@ -270,7 +270,7 @@
           "commit": "65cef7c",
           "ciRun": null,
           "artifact": "01-docs/05-audit/quarterly-re-audit-schedule.md",
-          "reason": "Comprehensive folder hygiene cleanup: removed artifacts, deduplicated files, fixed ADR naming, archived dated snapshots, added 26 READMEs, consolidated scripts in 03-platform/tools/03-platform/scripts/."
+          "reason": "Comprehensive folder hygiene cleanup: removed artifacts, deduplicated files, fixed ADR naming, archived dated snapshots, added 26 READMEs, consolidated scripts in 03-platform/tools/scripts/."
         },
         {
           "date": "2026-06-01",
@@ -405,7 +405,7 @@
           "score": 8.9,
           "commit": "d4c947d",
           "ciRun": null,
-          "artifact": "03-platform/tools/03-platform/scripts/kyverno-policy-validator.mjs",
+          "artifact": "03-platform/tools/scripts/kyverno-policy-validator.mjs",
           "reason": "M3 Certification: Kyverno policy validation passes for all 4 M1 services + anomaly-detector. Automated rollback on critical anomalies deployed with RBAC."
         },
         {
@@ -701,7 +701,7 @@
           "score": 9.0,
           "commit": "d4c947d",
           "ciRun": null,
-          "artifact": "03-platform/tools/03-platform/scripts/verify-reproducible-build.mjs",
+          "artifact": "03-platform/tools/scripts/verify-reproducible-build.mjs",
           "reason": "M3 Certification: Reproducible builds verified (SLSA L2 provenance), anomaly detector automated rollback operational, on-call drill #002 executed with evidence log."
         },
         {

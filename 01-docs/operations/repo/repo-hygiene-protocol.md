@@ -120,7 +120,7 @@ pnpm check:workspace-root-cleanliness:strict
 
 Checker: `03-platform/scripts/ops/check-workspace-root-cleanliness.py` (adopted from `compliance-os` / `gtcx-core`).
 
-Wired in `03-platform/tools/03-platform/scripts/validate-all.mjs` and `.github/workflows/ci.yml`.
+Wired in `03-platform/tools/scripts/validate-all.mjs` and `.github/workflows/ci.yml`.
 
 ## Audit command
 

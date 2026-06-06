@@ -10,7 +10,7 @@ review_cycle: on-change
 
 # Canonical audit scoring — gtcx-infrastructure
 
-**Single source of truth:** `node 03-platform/tools/03-platform/scripts/compute-audit-scores.mjs --write` → `01-docs/05-audit/latest.json`
+**Single source of truth:** `node 03-platform/tools/scripts/compute-audit-scores.mjs --write` → `01-docs/05-audit/latest.json`
 
 ## Two independent scores (do not merge them)
 
@@ -66,7 +66,7 @@ When an item closes: set `status: "done"` in **both** the register and `scoring-
 
 ## What full audits must do
 
-1. Run `node 03-platform/tools/03-platform/scripts/compute-audit-scores.mjs --markdown` — paste **both** IR and XC blocks.
+1. Run `node 03-platform/tools/scripts/compute-audit-scores.mjs --markdown` — paste **both** IR and XC blocks.
 2. Phase 1–5: qualitative ratings only (Strong / Good / Pass).
 3. Phase 3 GTM: stage labels (S2, S3) — **not** a third /10 score.
 4. Sprint plans: say which track moves (e.g. “closes EXT-INF-013 → XC +0.25”), not “CR +0.8”.

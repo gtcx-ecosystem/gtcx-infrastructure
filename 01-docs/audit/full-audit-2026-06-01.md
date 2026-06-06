@@ -14,8 +14,8 @@ sources:
   - 01-docs/05-audit/execution-roadmap.md
   - 01-docs/05-audit/external-dependencies-register-2026-05-31.md
   - .github/workflows/ci.yml
-  - 03-platform/tools/03-platform/scripts/validate-all.mjs
-  - 03-platform/tools/03-platform/scripts/compute-audit-scores.mjs
+  - 03-platform/tools/scripts/validate-all.mjs
+  - 03-platform/tools/scripts/compute-audit-scores.mjs
 ---
 
 # Full Audit — gtcx-infrastructure (2026-06-01)
@@ -57,7 +57,7 @@ Post-merge assessment at `6834b476` (#85 on `main`). Six phases + sprint synthes
 
 Register: `01-docs/05-audit/external-dependencies-register-2026-05-31.md`
 
-Recompute: `node 03-platform/tools/03-platform/scripts/compute-audit-scores.mjs --write`
+Recompute: `node 03-platform/tools/scripts/compute-audit-scores.mjs --write`
 
 **Retired:** `certifiedReadiness`, `CR = IR − gap`. **Supplementary:** SIGNAL ≈9.6 (`signal-scorecard.json`).
 

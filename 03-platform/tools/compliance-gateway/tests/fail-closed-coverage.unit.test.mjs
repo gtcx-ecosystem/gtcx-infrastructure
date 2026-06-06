@@ -6,7 +6,7 @@
 import assert from 'node:assert';
 import { describe, it } from 'node:test';
 
-import { failClosed, failClosedSync } from '../03-platform/src/fail-closed.mjs';
+import { failClosed, failClosedSync } from '../src/fail-closed.mjs';
 
 describe('failClosedSync — onStub failure', () => {
   it('logs onStub failures in the sync variant', () => {

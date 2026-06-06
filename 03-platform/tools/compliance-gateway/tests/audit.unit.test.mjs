@@ -19,7 +19,7 @@ import {
   getChainState,
   getSignerHealth,
   resetAuditSigner,
-} from '../03-platform/src/audit.mjs';
+} from '../src/audit.mjs';
 
 function freshKeyB64() {
   const { privateKey } = generateKeyPairSync('ed25519');

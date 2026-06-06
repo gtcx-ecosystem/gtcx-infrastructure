@@ -1,7 +1,7 @@
 /**
  * Runtime-local fail-closed wrapper.
  *
- * Kept inside 03-platform/src/ because the audit-flush Docker image copies only this
+ * Kept inside src/ because the audit-flush Docker image copies only this
  * package's src directory into the runtime image.
  *
  * @template T

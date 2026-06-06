@@ -57,10 +57,10 @@ This schedule satisfies the M4 exit criterion: **"Quarterly re-audit scheduled."
 - [ ] Freeze infrastructure changes (code freeze 48h before audit)
 - [ ] Run full CI validation: `pnpm test`, `pnpm lint`, `pnpm typecheck`
 - [ ] Run all policy validators:
-  - [ ] `node 03-platform/tools/03-platform/scripts/kyverno-policy-validator.mjs`
-  - [ ] `node 03-platform/tools/03-platform/scripts/validate-score-ledger.mjs`
-  - [ ] `node 03-platform/tools/03-platform/scripts/validate-signal.mjs`
-  - [ ] `node 03-platform/tools/03-platform/scripts/docs-standard-validator.mjs`
+  - [ ] `node 03-platform/tools/scripts/kyverno-policy-validator.mjs`
+  - [ ] `node 03-platform/tools/scripts/validate-score-ledger.mjs`
+  - [ ] `node 03-platform/tools/scripts/validate-signal.mjs`
+  - [ ] `node 03-platform/tools/scripts/docs-standard-validator.mjs`
 - [ ] Generate fresh release evidence: `node 03-platform/tools/control-plane/generate-release-evidence.mjs`
 - [ ] Verify anomaly detector is operational (last 7 days of alerts)
 - [ ] Confirm on-call drill executed within last 90 days

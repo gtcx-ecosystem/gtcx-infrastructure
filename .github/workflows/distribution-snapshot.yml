@@ -34,7 +34,7 @@ jobs:
           node-version: '20.18.0'
 
       - name: Run snapshot
-        run: node 03-platform/tools/03-platform/scripts/distribution-snapshot.mjs
+        run: node 03-platform/tools/scripts/distribution-snapshot.mjs
 
       - name: Commit if changed
         run: |

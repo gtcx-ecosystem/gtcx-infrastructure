@@ -16,14 +16,14 @@ import {
   initAuditSigner,
   resetAuditSigner,
   signAuditEvent,
-} from '../03-platform/src/audit.mjs';
+} from '../src/audit.mjs';
 import {
   loadAuthState,
   authenticateHeaders,
   buildAccessProfile,
   parseApprovalContext,
-} from '../03-platform/src/auth.mjs';
-import { checkBudget, getSpend, resetBudget } from '../03-platform/src/budget.mjs';
+} from '../src/auth.mjs';
+import { checkBudget, getSpend, resetBudget } from '../src/budget.mjs';
 
 function tokensFor(env) {
   return {

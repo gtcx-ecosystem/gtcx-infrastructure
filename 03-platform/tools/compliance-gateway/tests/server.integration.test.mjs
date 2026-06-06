@@ -73,7 +73,7 @@ describe('Compliance Gateway Integration', () => {
     process.env.PROTOCOL_BASE_URL = 'http://localhost:9999'; // Dummy — no real protocol calls in these tests
 
     // The ai package import is slow; allow extra time for module load
-    const mod = await import('../03-platform/src/server.mjs');
+    const mod = await import('../src/server.mjs');
     testServer = mod.server;
     baseUrl = `http://127.0.0.1:${port}`;
     // Wait for server to be listening

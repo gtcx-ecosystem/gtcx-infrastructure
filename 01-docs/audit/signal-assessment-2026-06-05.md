@@ -123,7 +123,7 @@ baseline_commit: 6092700
 - **Dimension(s):** Team
 - **Level impact:** Team L2 low → L2 mid (raises overall ceiling)
 - **Current:** `AGENTS.md` — Human Lead: TBD
-- **Target:** Named lead + link `gtcx-protocols/01-docs/04-ops/coordination/ai-reliability-owner-2026-06-06.md`
+- **Target:** Named lead + link `gtcx-protocols/01-docs/operations/coordination/ai-reliability-owner-2026-06-06.md`
 - **Implementation:** Edit AGENTS.md coordination table; update `01-docs/04-ops/coordination/README.md`; append `cross-repo-agent-log.md`
 - **Dependencies:** None
 
@@ -251,8 +251,8 @@ baseline_commit: 6092700
 ```bash
 pnpm agent:next-work                    # exit 0
 pnpm check:workspace-root-cleanliness:strict  # exit 0
-node 03-platform/tools/03-platform/scripts/validate-all.mjs     # ≥50/51 pass
-node 03-platform/tools/03-platform/scripts/validate-signal.mjs  # ≥9.0
+node 03-platform/tools/scripts/validate-all.mjs     # ≥50/51 pass
+node 03-platform/tools/scripts/validate-signal.mjs  # ≥9.0
 ```
 
 Manual: Grafana LLM dashboard 7d trend; one distributed trace spanning two repos in staging evidence JSON; 3 agent incidents with taxonomy columns.

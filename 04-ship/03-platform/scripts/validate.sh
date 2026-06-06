@@ -28,7 +28,7 @@ log_warning() { echo -e "${YELLOW}[WARN]${NC} $1"; }
 log_error() { echo -e "${RED}[ERROR]${NC} $1" >&2; }
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
+PROJECT_ROOT="$(cd "${SCRIPT_DIR}/../../.." && pwd)"
 MODE="${1:-quick}"
 
 usage() {
@@ -91,7 +91,7 @@ run_compliance_gateway_tests() {
 
 run_deployment_guard_tests() {
     log_info "Running deployment-guard tests..."
-    (cd "${PROJECT_ROOT}/03-platform/tools/deployment-guard" && node ../03-platform/scripts/run-package-tests.mjs)
+    (cd "${PROJECT_ROOT}/03-platform/tools/deployment-guard" && node ../scripts/run-package-tests.mjs)
     log_info "Running deployment-guard typecheck..."
     (cd "${PROJECT_ROOT}/03-platform/tools/deployment-guard" && npx tsc --noEmit)
 }
@@ -107,57 +107,57 @@ run_script_smoke_tests() {
 
 run_docs_standard_validation() {
     log_info "Running docs-standard validation..."
-    (cd "${PROJECT_ROOT}" && node 03-platform/tools/03-platform/scripts/docs-standard-validator.mjs --baseline=.docs-exceptions.json)
+    (cd "${PROJECT_ROOT}" && node 03-platform/tools/scripts/docs-standard-validator.mjs --baseline=.docs-exceptions.json)
 }
 
 run_alert_runbook_url_check() {
     log_info "Running alert runbook_url annotation check..."
-    (cd "${PROJECT_ROOT}" && node 03-platform/tools/03-platform/scripts/alerts-add-runbook-url.mjs --check)
+    (cd "${PROJECT_ROOT}" && node 03-platform/tools/scripts/alerts-add-runbook-url.mjs --check)
 }
 
 run_runbook_frontmatter_check() {
     log_info "Running runbook frontmatter dedupe check..."
-    (cd "${PROJECT_ROOT}" && node 03-platform/tools/03-platform/scripts/runbook-frontmatter-check.mjs --check)
+    (cd "${PROJECT_ROOT}" && node 03-platform/tools/scripts/runbook-frontmatter-check.mjs --check)
 }
 
 run_runbook_commands_check() {
     log_info "Running runbook command validation..."
-    (cd "${PROJECT_ROOT}" && node 03-platform/tools/03-platform/scripts/runbook-commands-check.mjs)
+    (cd "${PROJECT_ROOT}" && node 03-platform/tools/scripts/runbook-commands-check.mjs)
 }
 
 run_empty_catch_check() {
     log_info "Running empty-catch lint check..."
-    (cd "${PROJECT_ROOT}" && node 03-platform/tools/03-platform/scripts/empty-catch-check.mjs)
+    (cd "${PROJECT_ROOT}" && node 03-platform/tools/scripts/empty-catch-check.mjs)
 }
 
 run_fail_closed_tests() {
     log_info "Running failClosed helper tests..."
-    (cd "${PROJECT_ROOT}" && node --test 03-platform/tools/03-platform/scripts/fail-closed.test.mjs)
+    (cd "${PROJECT_ROOT}" && node --test 03-platform/tools/scripts/fail-closed.test.mjs)
 }
 
 run_pin_actions_sha_check() {
     log_info "Running GitHub Actions SHA-pin check..."
-    (cd "${PROJECT_ROOT}" && node 03-platform/tools/03-platform/scripts/pin-actions-sha.mjs --check)
+    (cd "${PROJECT_ROOT}" && node 03-platform/tools/scripts/pin-actions-sha.mjs --check)
 }
 
 run_production_overlay_guard() {
     log_info "Running production overlay image-tag guard..."
-    (cd "${PROJECT_ROOT}" && node 03-platform/tools/03-platform/scripts/production-overlay-guard.mjs)
+    (cd "${PROJECT_ROOT}" && node 03-platform/tools/scripts/production-overlay-guard.mjs)
 }
 
 run_compliance_data_signature_verify() {
     log_info "Running compliance-data catalog signature verification..."
-    (cd "${PROJECT_ROOT}" && node 03-platform/tools/compliance-data/03-platform/scripts/verify-catalog.mjs)
+    (cd "${PROJECT_ROOT}" && node 03-platform/tools/compliance-data/scripts/verify-catalog.mjs)
 }
 
 run_docs_link_check() {
     log_info "Running docs link check..."
-    (cd "${PROJECT_ROOT}" && node 03-platform/tools/03-platform/scripts/docs-link-checker.mjs)
+    (cd "${PROJECT_ROOT}" && node 03-platform/tools/scripts/docs-link-checker.mjs)
 }
 
 run_score_ledger_validation() {
     log_info "Running score-evidence ledger validation..."
-    (cd "${PROJECT_ROOT}" && node 03-platform/tools/03-platform/scripts/validate-score-ledger.mjs)
+    (cd "${PROJECT_ROOT}" && node 03-platform/tools/scripts/validate-score-ledger.mjs)
 }
 
 run_build_evidence_generation() {
@@ -170,7 +170,7 @@ run_build_evidence_generation() {
         --image=replay-guard=gtcx/replay-guard:ci-smoke \
         --scan=replay-guard=passed \
         --gate=build-evidence-generation=pass \
-        --evidence=score-ledger=01-docs/05-audit/score-evidence-ledger.json \
+        --evidence=score-ledger=01-docs/audit/score-evidence-ledger.json \
         --output-dir=/tmp/gtcx-build-evidence-smoke)
 }
 
@@ -281,9 +281,9 @@ run_compose_validation() {
     require_command docker
 
     log_info "Running docker compose config validation..."
-    (cd "${PROJECT_ROOT}" && docker compose -f 04-ship/docker/docker-compose.dev.yml config --quiet)
-    (cd "${PROJECT_ROOT}" && docker compose -f 04-ship/docker/docker-compose.test.yml config --quiet)
-    (cd "${PROJECT_ROOT}" && docker compose -f 04-ship/docker/docker-compose.infra.yml config --quiet)
+    (cd "${PROJECT_ROOT}" && docker compose -f 04-ship/docker/docker/docker-compose.dev.yml config --quiet)
+    (cd "${PROJECT_ROOT}" && docker compose -f 04-ship/docker/docker/docker-compose.test.yml config --quiet)
+    (cd "${PROJECT_ROOT}" && docker compose -f 04-ship/docker/docker/docker-compose.infra.yml config --quiet)
 }
 
 run_audit_immutability_fixture() {
@@ -296,17 +296,17 @@ run_audit_immutability_fixture() {
 
 run_incident_drill_validation() {
     log_info "Running incident-drill validation..."
-    (cd "${PROJECT_ROOT}" && node 03-platform/tools/03-platform/scripts/incident-drill-validator.mjs)
+    (cd "${PROJECT_ROOT}" && node 03-platform/tools/scripts/incident-drill-validator.mjs)
 }
 
 run_kyverno_policy_validation() {
     log_info "Running Kyverno policy validation..."
-    (cd "${PROJECT_ROOT}" && node 03-platform/tools/03-platform/scripts/kyverno-policy-validator.mjs)
+    (cd "${PROJECT_ROOT}" && node 03-platform/tools/scripts/kyverno-policy-validator.mjs)
 }
 
 run_signal_scorecard_validation() {
     log_info "Running SIGNAL scorecard validation..."
-    (cd "${PROJECT_ROOT}" && node 03-platform/tools/03-platform/scripts/validate-signal.mjs)
+    (cd "${PROJECT_ROOT}" && node 03-platform/tools/scripts/validate-signal.mjs)
 }
 
 run_contract_tests() {
@@ -316,12 +316,12 @@ run_contract_tests() {
 
 run_chaos_manifest_validation() {
     log_info "Running chaos manifest validation..."
-    (cd "${PROJECT_ROOT}" && node 03-platform/tools/03-platform/scripts/chaos-manifest-validator.mjs)
+    (cd "${PROJECT_ROOT}" && node 03-platform/tools/scripts/chaos-manifest-validator.mjs)
 }
 
 run_pagerduty_drill_simulation() {
     log_info "Running PagerDuty incident drill simulation..."
-    (cd "${PROJECT_ROOT}" && node 03-platform/tools/03-platform/scripts/incident-drill-pagerduty-simulation.mjs --dry-run)
+    (cd "${PROJECT_ROOT}" && node 03-platform/tools/scripts/incident-drill-pagerduty-simulation.mjs --dry-run)
 }
 
 run_nats_integration() {

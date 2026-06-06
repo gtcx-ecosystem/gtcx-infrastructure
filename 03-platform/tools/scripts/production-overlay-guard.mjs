@@ -25,8 +25,8 @@ import { readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
-const TARGET = join(REPO_ROOT, 'infra', 'kubernetes', 'overlays', 'production', 'kustomization.yaml');
+const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
+const TARGET = join(REPO_ROOT, '04-ship', 'kubernetes', 'overlays', 'production', 'kustomization.yaml');
 
 export const SHA_RX = /^[0-9a-f]{40}$/;
 export const PLACEHOLDER_RX = /^PLACEHOLDER-RUN-DEPLOY-SH$/;

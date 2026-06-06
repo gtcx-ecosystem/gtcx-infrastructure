@@ -13,8 +13,8 @@
  *   6. business-hours time interval is defined
  *
  * Usage:
- *   node 03-platform/tools/03-platform/scripts/incident-drill-validator.mjs
- *   node 03-platform/tools/03-platform/scripts/incident-drill-validator.mjs --config=path/to/alertmanager.yml.tpl
+ *   node 03-platform/tools/scripts/incident-drill-validator.mjs
+ *   node 03-platform/tools/scripts/incident-drill-validator.mjs --config=path/to/alertmanager.yml.tpl
  */
 
 import { readFileSync } from 'node:fs';
@@ -26,7 +26,7 @@ const args = process.argv.slice(2);
 const configArg = args.find((a) => a.startsWith('--config='));
 const configPath = configArg
   ? configArg.slice(9)
-  : path.join('infra', 'docker', 'observability', 'alertmanager.yml.tpl');
+  : path.join('04-ship', 'docker', 'docker', 'observability', 'alertmanager.yml.tpl');
 
 // ---------------------------------------------------------------------------
 // Parse YAML into top-level sections (minimal, indentation-aware)

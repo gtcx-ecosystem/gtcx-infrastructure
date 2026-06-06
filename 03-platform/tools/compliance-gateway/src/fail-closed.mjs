@@ -1,7 +1,7 @@
 /**
  * Runtime-local fail-closed wrapper.
  *
- * Kept inside 03-platform/src/ because the compliance-gateway Docker image copies only
+ * Kept inside src/ because the compliance-gateway Docker image copies only
  * this package's src directory into the runtime image.
  *
  * @template T

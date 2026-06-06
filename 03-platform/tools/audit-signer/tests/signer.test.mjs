@@ -8,7 +8,7 @@ import {
   signRecord,
   verifyRecord,
   createRecord,
-} from '../03-platform/src/signer.mjs';
+} from '../src/signer.mjs';
 
 describe('generateKeyPair', () => {
   it('produces a valid Ed25519 key pair', () => {

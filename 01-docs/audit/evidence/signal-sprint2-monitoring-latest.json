@@ -12,8 +12,8 @@
     "runbook": "01-docs/04-ops/runbooks/staging-monitoring-apply.md"
   },
   "gates": {
-    "validateLlmOps": "node 03-platform/tools/03-platform/scripts/validate-llm-ops.mjs",
-    "validateTraceCorrelation": "node 03-platform/tools/03-platform/scripts/validate-trace-correlation.mjs"
+    "validateLlmOps": "node 03-platform/tools/scripts/validate-llm-ops.mjs",
+    "validateTraceCorrelation": "node 03-platform/tools/scripts/validate-trace-correlation.mjs"
   },
   "clusterApply": "pending-operator — run staging-monitoring-apply.md",
   "notes": "In-repo artifacts complete; live Grafana target verification requires kubectl apply on staging."

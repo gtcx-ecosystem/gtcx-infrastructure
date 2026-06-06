@@ -11,7 +11,7 @@ owner: gtcx-infrastructure
 
 ## Shim
 
-`03-platform/tools/compliance-gateway/03-platform/src/cost-router-shim.mjs` imports `routeInferenceRequest()` from built `baseline-os/03-platform/packages/baselineos/dist/core/cost-router.js` when available.
+`03-platform/tools/compliance-gateway/src/cost-router-shim.mjs` imports `routeInferenceRequest()` from built `baseline-os/03-platform/packages/baselineos/dist/core/cost-router.js` when available.
 
 `server.mjs` uses `selectProviderWithBaseline()` (async) before legacy `providers.mjs`.
 

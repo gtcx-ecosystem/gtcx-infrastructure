@@ -5,7 +5,7 @@
 import assert from 'node:assert';
 import { describe, it, beforeEach, afterEach } from 'node:test';
 
-import { MemorySessionStore } from '../03-platform/src/session.mjs';
+import { MemorySessionStore } from '../src/session.mjs';
 
 describe('MemorySessionStore', () => {
   let store;

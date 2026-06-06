@@ -7,7 +7,7 @@ import {
   mostRestrictive,
   encodingForLevel,
   replayWindowForLevel,
-} from '../03-platform/src/negotiator.mjs';
+} from '../src/negotiator.mjs';
 
 describe('acceptsLowBandwidth', () => {
   it('returns true for gtcx-lbw-v1', () => {

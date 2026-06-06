@@ -26,8 +26,8 @@ import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
-const RUNBOOKS_DIR = join(REPO_ROOT, 'docs', 'operations', 'runbooks');
+const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
+const RUNBOOKS_DIR = join(REPO_ROOT, '01-docs', 'operations', 'runbooks');
 
 // Hand-maintained from gtcx-ctl.mjs's showHelp(). The CLI is small
 // enough that drift is detectable on PR review. A self-describing

@@ -3,8 +3,8 @@
  * Compare USSD soak metrics against committed baseline (IR-4.1).
  *
  * Usage:
- *   node 03-platform/tools/03-platform/scripts/ussd-soak-baseline-check.mjs --check
- *   node 03-platform/tools/03-platform/scripts/ussd-soak-baseline-check.mjs --metrics=ussd-soak-metrics.json
+ *   node 03-platform/tools/scripts/ussd-soak-baseline-check.mjs --check
+ *   node 03-platform/tools/scripts/ussd-soak-baseline-check.mjs --metrics=ussd-soak-metrics.json
  */
 
 import { readFileSync, existsSync } from 'node:fs';
@@ -13,7 +13,7 @@ import { fileURLToPath } from 'node:url';
 
 import { compareSoakMetrics } from './soak-baseline-check.mjs';
 
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
 const BASELINE_PATH = join(ROOT, 'docs', 'audit', 'ussd-soak-baseline.json');
 
 function checkFlowCompletion(baseline, actual) {

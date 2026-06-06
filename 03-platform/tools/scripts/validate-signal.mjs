@@ -10,7 +10,7 @@
  *   - CI gate: fails if any critical metric is "fail" or overall score < threshold
  *
  * Usage:
- *   node 03-platform/tools/03-platform/scripts/validate-signal.mjs [--scorecard=path] [--min-score=N]
+ *   node 03-platform/tools/scripts/validate-signal.mjs [--scorecard=path] [--min-score=N]
  *
  * Exit codes:
  *   0 = scorecard valid and meets threshold
@@ -22,7 +22,7 @@ import path from 'node:path';
 
 const SCORECARD_PATH =
   process.argv.find((a) => a.startsWith('--scorecard='))?.slice(12) ??
-  path.join(process.cwd(), 'docs', 'audit', 'signal-scorecard.json');
+  path.join(process.cwd(), '01-docs', 'audit', 'signal-scorecard.json');
 const MIN_SCORE = Number(
   process.argv.find((a) => a.startsWith('--min-score='))?.slice(12) ?? '7.0'
 );

@@ -12,7 +12,7 @@ import {
   planMigrations,
   buildMigrationTableSQL,
   buildMigrationInsertSQL,
-} from '../03-platform/src/migration-safety.mjs';
+} from '../src/migration-safety.mjs';
 
 describe('computeChecksum', () => {
   it('computes stable sha256 for a file', () => {

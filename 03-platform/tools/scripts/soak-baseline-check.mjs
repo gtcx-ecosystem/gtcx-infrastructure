@@ -3,15 +3,15 @@
  * @fileoverview Compare k6 (or smoke) soak metrics against a committed baseline.
  *
  * Usage:
- *   node 03-platform/tools/03-platform/scripts/soak-baseline-check.mjs --check
- *   node 03-platform/tools/03-platform/scripts/soak-baseline-check.mjs --metrics=path/to/metrics.json
+ *   node 03-platform/tools/scripts/soak-baseline-check.mjs --check
+ *   node 03-platform/tools/scripts/soak-baseline-check.mjs --metrics=path/to/metrics.json
  */
 
 import { readFileSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
 const BASELINE_PATH = join(ROOT, 'docs', 'audit', 'soak-baseline.json');
 
 export function compareSoakMetrics(baseline, actual) {

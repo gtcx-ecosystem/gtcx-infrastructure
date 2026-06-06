@@ -32,7 +32,8 @@ BLUE='\033[0;34m'
 NC='\033[0m'
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-INFRA_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+REPO_ROOT="$(cd "${SCRIPT_DIR}/../../.." && pwd)"
+INFRA_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 
 # SQL migration files — applied in filename order
 MIGRATION_DIR="${INFRA_ROOT}/docker/init-03-platform/scripts/postgres"
@@ -80,7 +81,7 @@ validate_environment() {
     esac
 
     # Delegate safety-critical gating to typed, tested module.
-    local gate_cli="${INFRA_ROOT}/../03-platform/tools/deployment-guard/03-platform/src/cli/migrate-gate.mjs"
+    local gate_cli="${REPO_ROOT}/03-platform/tools/deployment-guard/src/cli/migrate-gate.mjs"
     if ! node "${gate_cli}" \
         --environment="${ENVIRONMENT}" \
         ${DRY_RUN:+--dry-run} \

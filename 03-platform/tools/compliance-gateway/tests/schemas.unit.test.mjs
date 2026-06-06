@@ -5,7 +5,7 @@
 import assert from 'node:assert';
 import { describe, it } from 'node:test';
 
-import { validateQueryBody, buildUserMessage } from '../03-platform/src/schemas.mjs';
+import { validateQueryBody, buildUserMessage } from '../src/schemas.mjs';
 
 describe('validateQueryBody', () => {
   it('accepts a minimal valid body', () => {

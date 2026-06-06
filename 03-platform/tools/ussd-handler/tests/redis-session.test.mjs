@@ -7,7 +7,7 @@
 import assert from 'node:assert';
 import { describe, it } from 'node:test';
 
-import { RedisSessionStore } from '../03-platform/src/session.mjs';
+import { RedisSessionStore } from '../src/session.mjs';
 
 function createMockRedis() {
   const data = new Map();
@@ -96,16 +96,16 @@ describe('RedisSessionStore', () => {
 
 describe('createSessionStore', () => {
   it('returns MemorySessionStore when REDIS_URL absent', async () => {
-    const { createSessionStore } = await import('../03-platform/src/session.mjs');
+    const { createSessionStore } = await import('../src/session.mjs');
     const store = createSessionStore();
     assert.ok(store.constructor.name === 'MemorySessionStore');
   });
 
   it('returns RedisSessionStore when REDIS_URL present', async () => {
-    const { config } = await import('../03-platform/src/config.mjs');
+    const { config } = await import('../src/config.mjs');
     const prev = config.redisUrl;
     config.redisUrl = 'redis://localhost:6379';
-    const { createSessionStore } = await import('../03-platform/src/session.mjs');
+    const { createSessionStore } = await import('../src/session.mjs');
     const store = createSessionStore();
     assert.ok(store.constructor.name === 'RedisSessionStore');
     config.redisUrl = prev;

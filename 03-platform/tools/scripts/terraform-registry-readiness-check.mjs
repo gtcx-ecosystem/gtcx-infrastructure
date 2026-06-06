@@ -7,7 +7,7 @@ import { readFileSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
 const MODULE = join(ROOT, 'infra', 'terraform', 'modules', 'compliance-db');
 
 const REQUIRED_FILES = [

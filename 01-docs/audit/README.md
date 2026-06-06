@@ -38,7 +38,7 @@ Audit reports, evidence, execution planning, and **canonical scoring** for `gtcx
 **Retired (do not publish as headline scores):** `certifiedReadiness`, `certified composite`, `CR = IR − gap`.
 
 ```bash
-node 03-platform/tools/03-platform/scripts/compute-audit-scores.mjs --write   # refresh latest.json
+node 03-platform/tools/scripts/compute-audit-scores.mjs --write   # refresh latest.json
 ```
 
 ## Historical documents

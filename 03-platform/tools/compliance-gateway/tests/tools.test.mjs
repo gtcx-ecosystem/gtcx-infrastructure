@@ -11,7 +11,7 @@ const originalFetch = global.fetch;
 
 describe('listToolsForAccess', () => {
   it('lists tools accessible to the given profile', async () => {
-    const { listToolsForAccess } = await import('../03-platform/src/tools.mjs?v=list1');
+    const { listToolsForAccess } = await import('../src/tools.mjs?v=list1');
     const tools = listToolsForAccess({
       canMutate: false,
       canQuery: true,
@@ -43,7 +43,7 @@ describe('protocolTool execute', () => {
       };
     };
 
-    const { toolDefinitions } = await import('../03-platform/src/tools.mjs?v=raw1');
+    const { toolDefinitions } = await import('../src/tools.mjs?v=raw1');
     const result = await toolDefinitions.tradepass_resolveIdentity.execute({ did: 'did:gtcx:test-123' });
 
     assert.strictEqual(capturedRequest.url, 'http://test-protocol.local/v1/tradepass/resolveIdentity');
@@ -66,7 +66,7 @@ describe('protocolTool execute', () => {
     };
 
     // Re-import to pick up the mocked fetch and PROTOCOL_BASE_URL
-    const { createToolRegistry } = await import('../03-platform/src/tools.mjs?v=exec1');
+    const { createToolRegistry } = await import('../src/tools.mjs?v=exec1');
     const registry = createToolRegistry({
       canMutate: false,
       canQuery: true,
@@ -97,7 +97,7 @@ describe('protocolTool execute', () => {
       };
     };
 
-    const { createToolRegistry } = await import('../03-platform/src/tools.mjs?v=exec2');
+    const { createToolRegistry } = await import('../src/tools.mjs?v=exec2');
     const registry = createToolRegistry({
       canMutate: true,
       canQuery: true,
@@ -134,7 +134,7 @@ describe('protocolTool execute', () => {
       };
     };
 
-    const { createToolRegistry } = await import('../03-platform/src/tools.mjs?v=exec3');
+    const { createToolRegistry } = await import('../src/tools.mjs?v=exec3');
     const registry = createToolRegistry({
       canMutate: false,
       canQuery: true,

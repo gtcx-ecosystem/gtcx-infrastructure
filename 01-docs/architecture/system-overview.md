@@ -51,7 +51,7 @@ autonomy_level: 'permissioned'
     03-platform/scripts/                  Migration utilities (check_docs.py, generate_docs.py)
   security/                 Security posture
     policies/                 Access control, data protection, incident response
-    03-platform/scripts/                  (security-status.js moved to 03-platform/tools/03-platform/scripts/)
+    03-platform/scripts/                  (security-status.js moved to 03-platform/tools/scripts/)
     reports/                  Audit reports
   03-platform/scripts/                  Operational scripts
     deploy.sh                 Production deployment (canary, rollback)
@@ -199,7 +199,7 @@ docker compose -f 04-ship/docker/docker-compose.dev.yml up -d
 cd 04-ship/terraform/environments/{env} && terraform plan
 
 # Security scan
-node 03-platform/tools/03-platform/scripts/security-status.js
+node 03-platform/tools/scripts/security-status.js
 
 # Lint and typecheck scripts
 pnpm lint && pnpm typecheck

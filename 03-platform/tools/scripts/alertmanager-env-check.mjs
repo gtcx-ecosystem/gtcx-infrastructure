@@ -11,8 +11,8 @@ import { readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
-const COMPOSE_PATH = join(ROOT, 'infra', 'docker', 'docker-compose.infra.yml');
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
+const COMPOSE_PATH = join(ROOT, '04-ship', 'docker', 'docker', 'docker-compose.infra.yml');
 
 const REQUIRED_MARKERS = [
   'GTCX_ALERTS_DEV_MODE',

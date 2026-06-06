@@ -70,8 +70,8 @@ In non-production, the signer generates an ephemeral keypair so local developmen
 ## References
 
 - ADR-014 — NATS JetStream audit transport (parallel reasoning on durability)
-- `03-platform/tools/compliance-gateway/03-platform/src/audit.mjs` — `initAuditSigner` implementation
-- `03-platform/tools/compliance-gateway/03-platform/src/server.mjs:59-68` — startup check + exit
+- `03-platform/tools/compliance-gateway/src/audit.mjs` — `initAuditSigner` implementation
+- `03-platform/tools/compliance-gateway/src/server.mjs:59-68` — startup check + exit
 - `03-platform/tools/compliance-gateway/tests/audit.unit.test.mjs` — fail-closed contract tests
 - `01-docs/05-audit/master-audit-2026-05-17.md` §Phase 1 — original finding
 - BSD sysexits.h convention: https://man.openbsd.org/sysexits

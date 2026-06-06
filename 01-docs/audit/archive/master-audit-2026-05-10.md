@@ -33,12 +33,12 @@ autonomy_level: 'permissioned'
 | Enterprise Buyer Lens        | 5.9/10 | hardened prototype / early beta |
 | African Sovereign / DFI Lens | 6.4/10 | hardened prototype / early beta |
 
-**Verdict:** The repo demonstrates credible infrastructure engineering patterns: passing install/typecheck/test/build, meaningful replay-protection tests, Kubernetes and Terraform coverage, observability artifacts, and an append-only audit database design. It is not bank-grade today because an externally reachable AI gateway can invoke consequential protocol mutations without authentication, authorization, or approval gating (`03-platform/tools/compliance-gateway/03-platform/src/server.mjs:43`, `03-platform/tools/compliance-gateway/03-platform/src/tools.mjs:17`, `03-platform/tools/compliance-gateway/03-platform/src/tools.mjs:230`, `04-ship/kubernetes/base/services/cloudflared/config.yaml:9`).
+**Verdict:** The repo demonstrates credible infrastructure engineering patterns: passing install/typecheck/test/build, meaningful replay-protection tests, Kubernetes and Terraform coverage, observability artifacts, and an append-only audit database design. It is not bank-grade today because an externally reachable AI gateway can invoke consequential protocol mutations without authentication, authorization, or approval gating (`03-platform/tools/compliance-gateway/src/server.mjs:43`, `03-platform/tools/compliance-gateway/src/tools.mjs:17`, `03-platform/tools/compliance-gateway/src/tools.mjs:230`, `04-ship/kubernetes/base/services/cloudflared/config.yaml:9`).
 
 **Top 3 priorities for next sprint:**
 
-- Add authn/authz, read-only vs mutating tool separation, and approval gating to the compliance gateway before any protocol mutation path is exposed again (`03-platform/tools/compliance-gateway/03-platform/src/server.mjs:43`, `03-platform/tools/compliance-gateway/03-platform/src/tools.mjs:71`, `03-platform/tools/compliance-gateway/03-platform/src/tools.mjs:243`, `04-ship/kubernetes/base/services/cloudflared/config.yaml:9`).
-- Fail closed when replay-guard loses Redis instead of silently degrading to process-local nonce state in production (`03-platform/tools/replay-protection/03-platform/src/server.mjs:54`).
+- Add authn/authz, read-only vs mutating tool separation, and approval gating to the compliance gateway before any protocol mutation path is exposed again (`03-platform/tools/compliance-gateway/src/server.mjs:43`, `03-platform/tools/compliance-gateway/src/tools.mjs:71`, `03-platform/tools/compliance-gateway/src/tools.mjs:243`, `04-ship/kubernetes/base/services/cloudflared/config.yaml:9`).
+- Fail closed when replay-guard loses Redis instead of silently degrading to process-local nonce state in production (`03-platform/tools/replay-protection/src/server.mjs:54`).
 - Replace declarative-only audit-constraint claims with live verification and CI evidence for audit DB immutability (`04-ship/03-platform/scripts/migrate.sh:228`, `.github/workflows/ci.yml:90`).
 
 ---
@@ -51,18 +51,18 @@ autonomy_level: 'permissioned'
 | --------------------- | -----: | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Spec fidelity         | 5.8/10 | Repo docs were materially improved later, but initial state contained 165 broken internal references and 197 missing frontmatter blocks, creating high drift between intended navigation and actual source-of-truth behavior (`01-docs/05-audit/docs-standard-compliance-2026-05-10.md:27`). |
 | Structural integrity  | 7.2/10 | Monorepo boundaries are legible across `04-ship/`, `03-platform/tools/`, and `.github/`, and the main services have coherent separation.                                                                                                                                                     |
-| Code quality          | 7.2/10 | Typecheck, tests, and build pass, but the compliance gateway concentrates unsafe authority in a thin HTTP wrapper (`03-platform/tools/compliance-gateway/03-platform/src/server.mjs:43`).                                                                                                    |
+| Code quality          | 7.2/10 | Typecheck, tests, and build pass, but the compliance gateway concentrates unsafe authority in a thin HTTP wrapper (`03-platform/tools/compliance-gateway/src/server.mjs:43`).                                                                                                                |
 | Testability           | 7.8/10 | Replay protection has strong integration and failure-mode coverage; infrastructure validation is scripted and reproducible.                                                                                                                                                                  |
 | Operational readiness | 7.0/10 | IaC, runbooks, and observability exist, but some critical evidence paths are partial or non-enforced in automation (`.github/workflows/ci.yml:76`, `04-ship/03-platform/scripts/migrate.sh:228`).                                                                                            |
 | Consistency           | 5.9/10 | Documentation structure, naming, and link conventions were inconsistent before Phase 3 and materially improved afterward (`01-docs/05-audit/docs-standard-compliance-2026-05-10.md:25`).                                                                                                     |
 
 **Critical findings**
 
-**[P0] Agentic Control Failure — Public AI gateway can mutate consequential protocol state** `03-platform/tools/compliance-gateway/03-platform/src/server.mjs:43`  
-The natural-language query endpoint accepts any POST body, builds a prompt, and hands the request to a tool-capable model without any authentication, authorization, role check, or mutation guard. The tool registry issues raw POSTs to protocol endpoints and includes mutating operations such as credential issuance/revocation and settlement creation/execution (`03-platform/tools/compliance-gateway/03-platform/src/tools.mjs:17`, `03-platform/tools/compliance-gateway/03-platform/src/tools.mjs:55`, `03-platform/tools/compliance-gateway/03-platform/src/tools.mjs:230`). The service is also published through `query.gtcx.trade` (`04-ship/kubernetes/base/services/cloudflared/config.yaml:9`).  
+**[P0] Agentic Control Failure — Public AI gateway can mutate consequential protocol state** `03-platform/tools/compliance-gateway/src/server.mjs:43`  
+The natural-language query endpoint accepts any POST body, builds a prompt, and hands the request to a tool-capable model without any authentication, authorization, role check, or mutation guard. The tool registry issues raw POSTs to protocol endpoints and includes mutating operations such as credential issuance/revocation and settlement creation/execution (`03-platform/tools/compliance-gateway/src/tools.mjs:17`, `03-platform/tools/compliance-gateway/src/tools.mjs:55`, `03-platform/tools/compliance-gateway/src/tools.mjs:230`). The service is also published through `query.gtcx.trade` (`04-ship/kubernetes/base/services/cloudflared/config.yaml:9`).  
 **Fix:** Require authenticated identity and scoped authorization at the HTTP boundary, split read-only and mutating tools, and enforce human or proof gating before any consequential tool call is executed.
 
-**[P1] Replay Integrity Degradation — Production replay protection falls back to memory state** `03-platform/tools/replay-protection/03-platform/src/server.mjs:54`  
+**[P1] Replay Integrity Degradation — Production replay protection falls back to memory state** `03-platform/tools/replay-protection/src/server.mjs:54`  
 If `REDIS_URL` is absent or Redis is unavailable, the replay verifier logs a warning and continues with `MemoryNonceStore`, which weakens replay guarantees in multi-instance production deployments. That is explicitly dangerous for a consequential anti-replay control because nonce authority becomes process-local during outage or misconfiguration.  
 **Fix:** Treat missing or unavailable Redis as a readiness failure in production and refuse traffic until durable nonce storage is restored.
 
@@ -74,7 +74,7 @@ If `REDIS_URL` is absent or Redis is unavailable, the replay verifier logs a war
 
 | Dimension                      |  Score | Notes                                                                                                                                                                   |
 | ------------------------------ | -----: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Authentication & Authorization | 3.2/10 | The compliance gateway has no auth boundary despite exposing consequential tool execution (`03-platform/tools/compliance-gateway/03-platform/src/server.mjs:43`).       |
+| Authentication & Authorization | 3.2/10 | The compliance gateway has no auth boundary despite exposing consequential tool execution (`03-platform/tools/compliance-gateway/src/server.mjs:43`).                   |
 | Data protection                | 6.6/10 | Audit DB separation, secret references, and signed-request replay protection are positive, but AI gateway trust is under-governed.                                      |
 | Input validation               | 6.8/10 | Basic JSON validation exists, but natural-language inputs can still induce mutating tool paths without explicit policy separation.                                      |
 | Dependency security            | 7.6/10 | CI includes dependency audit, CodeQL, Trivy config scan, and Terraform validation (`.github/workflows/security-evidence.yml:223`, `.github/workflows/ci.yml:106`).      |
@@ -83,12 +83,12 @@ If `REDIS_URL` is absent or Redis is unavailable, the replay verifier logs a war
 
 ### Security Issues to Fix
 
-| #   | Severity | Issue                                                               | File                                                                 | Fix                                                                  |
-| --- | -------- | ------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| S1  | P0       | Unauthenticated natural-language mutation path to protocol handlers | `03-platform/tools/compliance-gateway/03-platform/src/server.mjs:43` | Add authn/authz, mutating-tool segregation, and approval gating      |
-| S2  | P1       | Replay verifier degrades to memory nonce state in production        | `03-platform/tools/replay-protection/03-platform/src/server.mjs:54`  | Fail closed on Redis loss in production                              |
-| S3  | P1       | Audit immutability is asserted but not operationally verified       | `04-ship/03-platform/scripts/migrate.sh:228`                         | Add live privilege verification and CI evidence                      |
-| S4  | P2       | `redis.d.ts` still carries an explicit `any` listener signature     | `03-platform/tools/replay-protection/03-platform/src/redis.d.ts:19`  | Replace `any[]` with a typed event payload map or narrower overloads |
+| #   | Severity | Issue                                                               | File                                                     | Fix                                                                  |
+| --- | -------- | ------------------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------------------- |
+| S1  | P0       | Unauthenticated natural-language mutation path to protocol handlers | `03-platform/tools/compliance-gateway/src/server.mjs:43` | Add authn/authz, mutating-tool segregation, and approval gating      |
+| S2  | P1       | Replay verifier degrades to memory nonce state in production        | `03-platform/tools/replay-protection/src/server.mjs:54`  | Fail closed on Redis loss in production                              |
+| S3  | P1       | Audit immutability is asserted but not operationally verified       | `04-ship/03-platform/scripts/migrate.sh:228`             | Add live privilege verification and CI evidence                      |
+| S4  | P2       | `redis.d.ts` still carries an explicit `any` listener signature     | `03-platform/tools/replay-protection/src/redis.d.ts:19`  | Replace `any[]` with a typed event payload map or narrower overloads |
 
 ### 1.3 GTM Readiness
 
@@ -107,8 +107,8 @@ The repo can support a single regulated pilot with hand-holding, especially for 
 
 **Top 5 stage-gate blockers**
 
-1. Unauthenticated AI mutation path to protocol actions (`03-platform/tools/compliance-gateway/03-platform/src/server.mjs:43`).
-2. Replay integrity weakens under Redis outage or misconfiguration (`03-platform/tools/replay-protection/03-platform/src/server.mjs:54`).
+1. Unauthenticated AI mutation path to protocol actions (`03-platform/tools/compliance-gateway/src/server.mjs:43`).
+2. Replay integrity weakens under Redis outage or misconfiguration (`03-platform/tools/replay-protection/src/server.mjs:54`).
 3. Audit DB immutability is not live-verified in the migration or release path (`04-ship/03-platform/scripts/migrate.sh:228`).
 4. CI release evidence is intentionally partial, not a real institutional proof package (`.github/workflows/ci.yml:76`).
 5. No third-party pen-test or comparable external validation is evidenced in-repo.
@@ -199,8 +199,8 @@ The repo can support a single regulated pilot with hand-holding, especially for 
 
 **Remaining**
 
-- P0 AI gateway control failure remains open (`03-platform/tools/compliance-gateway/03-platform/src/server.mjs:43`).
-- Replay durability and audit verification gaps remain open (`03-platform/tools/replay-protection/03-platform/src/server.mjs:54`, `04-ship/03-platform/scripts/migrate.sh:228`).
+- P0 AI gateway control failure remains open (`03-platform/tools/compliance-gateway/src/server.mjs:43`).
+- Replay durability and audit verification gaps remain open (`03-platform/tools/replay-protection/src/server.mjs:54`, `04-ship/03-platform/scripts/migrate.sh:228`).
 
 ### 4.2 Security Audit
 
@@ -259,15 +259,15 @@ The GTM stage remains **S2 Pilot**, but the narrative is cleaner post-standardiz
 
 ### 5.2 Caps Applied
 
-| Cap                                      | Triggered? | Triggering finding                                                                                                                                                                                                                             | New ceiling               |
-| ---------------------------------------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------- |
-| Unresolved critical                      | Y          | Unauthenticated public AI gateway can invoke mutating protocol tools (`03-platform/tools/compliance-gateway/03-platform/src/server.mjs:43`, `04-ship/kubernetes/base/services/cloudflared/config.yaml:9`)                                      | 5.9 overall               |
-| 2+ unresolved high (consequential)       | N          | —                                                                                                                                                                                                                                              | 6.9 overall               |
-| Money/settlement in process memory       | N          | —                                                                                                                                                                                                                                              | 4.5 Enterprise            |
-| Non-durable audit on consequential paths | N          | Audit DB design is durable; verification evidence is weaker but not absent                                                                                                                                                                     | 5.0 Security/Enterprise   |
-| Raw AI output approves consequential     | Y          | Gateway prompt can reach `pvp_executeSettlement` and other mutating tools without approval gating (`03-platform/tools/compliance-gateway/03-platform/src/server.mjs:84`, `03-platform/tools/compliance-gateway/03-platform/src/tools.mjs:243`) | 4.5 Agentic/Security      |
-| Local placeholder ecosystem authority    | N          | —                                                                                                                                                                                                                                              | 5.5 Ecosystem Integration |
-| No safe degraded-mode                    | N          | Offline and low-connectivity semantics exist, though replay durability needs hardening                                                                                                                                                         | 4.5 Resilience            |
+| Cap                                      | Triggered? | Triggering finding                                                                                                                                                                                                     | New ceiling               |
+| ---------------------------------------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------- |
+| Unresolved critical                      | Y          | Unauthenticated public AI gateway can invoke mutating protocol tools (`03-platform/tools/compliance-gateway/src/server.mjs:43`, `04-ship/kubernetes/base/services/cloudflared/config.yaml:9`)                          | 5.9 overall               |
+| 2+ unresolved high (consequential)       | N          | —                                                                                                                                                                                                                      | 6.9 overall               |
+| Money/settlement in process memory       | N          | —                                                                                                                                                                                                                      | 4.5 Enterprise            |
+| Non-durable audit on consequential paths | N          | Audit DB design is durable; verification evidence is weaker but not absent                                                                                                                                             | 5.0 Security/Enterprise   |
+| Raw AI output approves consequential     | Y          | Gateway prompt can reach `pvp_executeSettlement` and other mutating tools without approval gating (`03-platform/tools/compliance-gateway/src/server.mjs:84`, `03-platform/tools/compliance-gateway/src/tools.mjs:243`) | 4.5 Agentic/Security      |
+| Local placeholder ecosystem authority    | N          | —                                                                                                                                                                                                                      | 5.5 Ecosystem Integration |
+| No safe degraded-mode                    | N          | Offline and low-connectivity semantics exist, though replay durability needs hardening                                                                                                                                 | 4.5 Resilience            |
 
 **Final core score:** **5.9/10**
 
@@ -316,14 +316,14 @@ The GTM stage remains **S2 Pilot**, but the narrative is cleaner post-standardiz
 ### Sprint 1: Lock Down Consequential AI Paths
 
 **Goal:** Remove the critical institutional blocker.  
-**Deliverables:** Add authenticated identity, scoped authorization, and read-only/mutating tool separation to the compliance gateway; require approval/proof gating before any state-changing tool executes (`03-platform/tools/compliance-gateway/03-platform/src/server.mjs:43`, `03-platform/tools/compliance-gateway/03-platform/src/tools.mjs:243`).  
+**Deliverables:** Add authenticated identity, scoped authorization, and read-only/mutating tool separation to the compliance gateway; require approval/proof gating before any state-changing tool executes (`03-platform/tools/compliance-gateway/src/server.mjs:43`, `03-platform/tools/compliance-gateway/src/tools.mjs:243`).  
 **Acceptance:** Unauthenticated requests cannot reach mutating tool calls; settlement and credential mutations require a non-LLM control gate.  
 **Risk:** Depends on downstream protocol auth contracts and gateway product intent.
 
 ### Sprint 2: Make Replay Protection Fail Closed
 
 **Goal:** Remove process-local authority from the replay control plane.  
-**Deliverables:** Refuse readiness or startup in production when Redis is unavailable; add negative tests for degraded production mode (`03-platform/tools/replay-protection/03-platform/src/server.mjs:54`).  
+**Deliverables:** Refuse readiness or startup in production when Redis is unavailable; add negative tests for degraded production mode (`03-platform/tools/replay-protection/src/server.mjs:54`).  
 **Acceptance:** Production replay verifier cannot serve traffic without durable nonce storage.  
 **Risk:** Requires clear operating-mode split between dev/test and production.
 
@@ -359,13 +359,13 @@ The GTM stage remains **S2 Pilot**, but the narrative is cleaner post-standardiz
 
 ## 7. Top 5 Remediation Items
 
-| Priority | Item                                                                                                                                                                                                                                                                                                           | Owner                  | Dependency                                   | Target   | Expected Score Lift           |
-| -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- | -------------------------------------------- | -------- | ----------------------------- |
-| P0       | Add authn/authz, approval gating, and read-only/mutating tool segregation to the compliance gateway (`03-platform/tools/compliance-gateway/03-platform/src/server.mjs:43`, `03-platform/tools/compliance-gateway/03-platform/src/tools.mjs:243`, `04-ship/kubernetes/base/services/cloudflared/config.yaml:9`) | Security + Platform    | Protocol auth contract, gateway policy model | Sprint 1 | +1.4 core, +1.7 enterprise    |
-| P1       | Fail closed when replay-guard loses Redis in production (`03-platform/tools/replay-protection/03-platform/src/server.mjs:54`)                                                                                                                                                                                  | Platform Security      | Redis HA posture, readiness policy           | Sprint 2 | +0.4 core, +0.6 sovereign     |
-| P1       | Replace `setup_audit_constraints()` no-op with live immutability verification (`04-ship/03-platform/scripts/migrate.sh:228`)                                                                                                                                                                                   | Database Platform      | Audit DB test fixture                        | Sprint 3 | +0.3 core, +0.5 enterprise    |
-| P2       | Turn partial release evidence into a required, complete proof path (`.github/workflows/ci.yml:76`)                                                                                                                                                                                                             | DevOps                 | Stable smoke environment                     | Sprint 4 | +0.3 core, +0.5 investor      |
-| P2       | Replace the stub docs link job with a real docs-standard CI gate (`.github/workflows/ci.yml:90`)                                                                                                                                                                                                               | Developer Productivity | Docs validation script                       | Sprint 5 | +0.2 hygiene, +0.2 enterprise |
+| Priority | Item                                                                                                                                                                                                                                                                                   | Owner                  | Dependency                                   | Target   | Expected Score Lift           |
+| -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- | -------------------------------------------- | -------- | ----------------------------- |
+| P0       | Add authn/authz, approval gating, and read-only/mutating tool segregation to the compliance gateway (`03-platform/tools/compliance-gateway/src/server.mjs:43`, `03-platform/tools/compliance-gateway/src/tools.mjs:243`, `04-ship/kubernetes/base/services/cloudflared/config.yaml:9`) | Security + Platform    | Protocol auth contract, gateway policy model | Sprint 1 | +1.4 core, +1.7 enterprise    |
+| P1       | Fail closed when replay-guard loses Redis in production (`03-platform/tools/replay-protection/src/server.mjs:54`)                                                                                                                                                                      | Platform Security      | Redis HA posture, readiness policy           | Sprint 2 | +0.4 core, +0.6 sovereign     |
+| P1       | Replace `setup_audit_constraints()` no-op with live immutability verification (`04-ship/03-platform/scripts/migrate.sh:228`)                                                                                                                                                           | Database Platform      | Audit DB test fixture                        | Sprint 3 | +0.3 core, +0.5 enterprise    |
+| P2       | Turn partial release evidence into a required, complete proof path (`.github/workflows/ci.yml:76`)                                                                                                                                                                                     | DevOps                 | Stable smoke environment                     | Sprint 4 | +0.3 core, +0.5 investor      |
+| P2       | Replace the stub docs link job with a real docs-standard CI gate (`.github/workflows/ci.yml:90`)                                                                                                                                                                                       | Developer Productivity | Docs validation script                       | Sprint 5 | +0.2 hygiene, +0.2 enterprise |
 
 ---
 

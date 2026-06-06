@@ -192,8 +192,8 @@ Do not publish fake “IR 8.2 after sprint N” tables — run `pnpm score:compu
 4. Run:
 
 ```bash
-node 03-platform/tools/03-platform/scripts/validate-score-ledger.mjs
-node 03-platform/tools/03-platform/scripts/compute-audit-scores.mjs --write
+node 03-platform/tools/scripts/validate-score-ledger.mjs
+node 03-platform/tools/scripts/compute-audit-scores.mjs --write
 ```
 
 5. Bump `last_reconciled` in this file and `execution-roadmap.md` if stories moved.

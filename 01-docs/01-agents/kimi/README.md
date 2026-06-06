@@ -1,8 +1,8 @@
 # Kimi CLI — gtcx-infrastructure
 
-| Resource    | Path                                    |
-| ----------- | --------------------------------------- |
-| Entry       | [`KIMI.md`](../../KIMI.md)              |
-| Kimi config | [`.kimi/`](../../.kimi/) (when present) |
+| Resource    | Path                                          |
+| ----------- | --------------------------------------------- |
+| Entry       | [`.kimi/AGENTS.md`](../../../.kimi/AGENTS.md) |
+| Kimi config | [`.kimi/`](../../../.kimi/) (when present)    |
 
-**Workspace:** [`workspace/`](../../workspace/) · **Universal:** [`agents/universal/`](../universal/)
+**Workspace:** [`workspace/`](../../../02-ops/) · **Universal:** [`agents/universal/`](../universal/)

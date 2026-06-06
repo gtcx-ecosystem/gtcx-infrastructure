@@ -18,7 +18,7 @@ const DOCS_SITE_PACKAGE_ENGINE = '>=22.12.0';
 const DOCS_SITE_CI_NODE_VERSION = '22.12.0';
 const DOCS_SITE_CI_WORKFLOW = '.github/workflows/docs-site-build.yml';
 
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
 
 function readJson(path) {
   return JSON.parse(readFileSync(path, 'utf8'));

@@ -1,7 +1,7 @@
 # GitHub Copilot — gtcx-infrastructure
 
-| Resource     | Path                                                                       |
-| ------------ | -------------------------------------------------------------------------- |
-| Instructions | [`.github/copilot/instructions.md`](../../.github/copilot/instructions.md) |
+| Resource     | Path                                                                          |
+| ------------ | ----------------------------------------------------------------------------- |
+| Instructions | [`.github/copilot/instructions.md`](../../../.github/copilot/instructions.md) |
 
-**Workspace:** [`workspace/`](../../workspace/) · **Universal:** [`agents/universal/`](../universal/)
+**Workspace:** [`workspace/`](../../../02-ops/) · **Universal:** [`agents/universal/`](../universal/)

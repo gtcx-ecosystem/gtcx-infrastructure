@@ -128,7 +128,7 @@ Each phase requires:
 
 ```bash
 # Check mesh status for all pods
-node 03-platform/tools/03-platform/scripts/verify-mesh-injection.mjs
+node 03-platform/tools/scripts/verify-mesh-injection.mjs
 
 # Check authorization policies
 linkerd authz -n gtcx

@@ -6,7 +6,7 @@ import {
   buildNegativeDMLProbeSQL,
   parsePrivilegeResult,
   auditVerificationPolicy,
-} from '../03-platform/src/audit-verifier.mjs';
+} from '../src/audit-verifier.mjs';
 
 describe('buildPrivilegeCheckSQL', () => {
   it('includes the role name', () => {

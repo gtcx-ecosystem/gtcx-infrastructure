@@ -5,7 +5,7 @@ import {
   buildRuntimePolicyPrompt,
   canAccessTool,
   isMutatingToolName,
-} from '../03-platform/src/policy.mjs';
+} from '../src/policy.mjs';
 
 describe('compliance-gateway tool policy', () => {
   it('classifies consequential settlement execution as mutating', () => {

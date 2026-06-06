@@ -16,7 +16,7 @@
  * tests can red-team itself before pen-test.
  */
 
-import { buildUserMessage, validateQueryBody } from '../compliance-gateway/03-platform/src/schemas.mjs';
+import { buildUserMessage, validateQueryBody } from '../compliance-gateway/src/schemas.mjs';
 
 export const INJECTION_PAYLOADS = [
   {

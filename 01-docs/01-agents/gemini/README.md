@@ -1,7 +1,7 @@
 # Gemini — gtcx-infrastructure
 
-| Resource | Path                           |
-| -------- | ------------------------------ |
-| Entry    | [`GEMINI.md`](../../GEMINI.md) |
+| Resource | Path                                      |
+| -------- | ----------------------------------------- |
+| Entry    | [`GEMINI.md`](../../../.gemini/GEMINI.md) |
 
-**Workspace:** [`workspace/`](../../workspace/) · **Universal:** [`agents/universal/`](../universal/)
+**Workspace:** [`workspace/`](../../../02-ops/) · **Universal:** [`agents/universal/`](../universal/)

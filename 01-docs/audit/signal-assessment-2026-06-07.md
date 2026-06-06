@@ -43,7 +43,7 @@ baseline_commit: HEAD
 
 **Evidence (production-real):**
 
-- `compliance-gateway` on staging EKS — LLM inference path with cost-router shim (`03-platform/tools/compliance-gateway/03-platform/src/cost-router-shim.mjs` → baseline-os).
+- `compliance-gateway` on staging EKS — LLM inference path with cost-router shim (`03-platform/tools/compliance-gateway/src/cost-router-shim.mjs` → baseline-os).
 - `eval-pipeline` + `injection-suite.mjs` — AI output validation and red-team payloads.
 - `anomaly-detector` — 5 rules, staging CronJob (`build-push-anomaly-detector.yml`).
 - NATS audit bus + WORM pipeline; MCP read-only tool surface (`compliance-gateway-mcp`).
@@ -55,10 +55,10 @@ baseline_commit: HEAD
 
 **Evidence:**
 
-- `node 03-platform/tools/03-platform/scripts/validate-all.mjs` — **48 gates** (coverage, static, security, build).
+- `node 03-platform/tools/scripts/validate-all.mjs` — **48 gates** (coverage, static, security, build).
 - CI: Protocol 22 `agent:next-work` smoke, adoption checks, `gtcx-ctl validate --ci` (IR-3.4).
 - `eval-pipeline.yml` — model benchmark CI on gateway/eval changes.
-- `03-platform/tools/03-platform/scripts/validate-signal.mjs` — compliance scorecard gate (9.6/10).
+- `03-platform/tools/scripts/validate-signal.mjs` — compliance scorecard gate (9.6/10).
 - Turbo monorepo: lint/typecheck/test/build across 13 packages.
 
 **Gaps to L3:** No LangSmith/Braintrust/Helicone wired to compliance-gateway LLM calls; promptfoo lives in sibling repos.
@@ -145,7 +145,7 @@ baseline_commit: HEAD
 - **Dimension(s):** Team
 - **Level impact:** Team **L2 low → L2 mid** — raises overall ceiling
 - **Current:** `AGENTS.md` coordination table: **Human Lead: TBD**
-- **Target:** Named lead + link to `gtcx-protocols/01-docs/04-ops/coordination/ai-reliability-owner-2026-06-06.md`
+- **Target:** Named lead + link to `gtcx-protocols/01-docs/operations/coordination/ai-reliability-owner-2026-06-06.md`
 - **Implementation:** Update AGENTS.md + `01-docs/04-ops/coordination/README.md`; append `cross-repo-agent-log.md`
 - **Effort:** XS | **Priority:** P0 | **Dependencies:** None
 
@@ -280,8 +280,8 @@ baseline_commit: HEAD
 
 ```bash
 pnpm agent:next-work
-node 03-platform/tools/03-platform/scripts/validate-all.mjs          # expect 48+ pass
-node 03-platform/tools/03-platform/scripts/validate-signal.mjs       # expect ≥9.0
+node 03-platform/tools/scripts/validate-all.mjs          # expect 48+ pass
+node 03-platform/tools/scripts/validate-signal.mjs       # expect ≥9.0
 node --test 03-platform/tools/eval-pipeline/injection-suite.mjs  # if wired
 # Manual: Grafana LLM dashboard shows 7d token trend
 # Manual: 3 agent incidents logged with taxonomy columns

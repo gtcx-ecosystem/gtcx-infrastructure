@@ -12,7 +12,7 @@ review_cycle: on-change
 
 ## Authoritative scores (v2 rubric)
 
-Run: `node 03-platform/tools/03-platform/scripts/compute-audit-scores.mjs --write`
+Run: `node 03-platform/tools/scripts/compute-audit-scores.mjs --write`
 
 | Track              | ID     | Meaning                                             | Typical use                       |
 | ------------------ | ------ | --------------------------------------------------- | --------------------------------- |

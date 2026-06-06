@@ -1,7 +1,7 @@
 /**
  * @fileoverview Adaptive Policy Store — pluggable backend for shared state.
  *
- * The single-pod adaptive policy in 03-platform/src/adaptive-policy.mjs holds state
+ * The single-pod adaptive policy in src/adaptive-policy.mjs holds state
  * in module-scope variables: per-pod, per-process. At pilot scale that's
  * fine. Beyond ~5 pods, divergent degradation modes become observable
  * (one pod in `reduced`, another in `auto`), which is acceptable for a

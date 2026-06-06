@@ -90,8 +90,8 @@ gtcx-infrastructure is a **credible beta / limited-production platform substrate
 | Command                                                           | Exit | Notes                                                                         |
 | ----------------------------------------------------------------- | ---: | ----------------------------------------------------------------------------- |
 | `git rev-parse --short HEAD`                                      |    0 | `9d7d763`                                                                     |
-| `node 03-platform/tools/03-platform/scripts/validate-all.mjs`     |    0 | **50/50** gates PASS                                                          |
-| `node 03-platform/tools/03-platform/scripts/validate-signal.mjs`  |    0 | 9.60/10 PASS                                                                  |
+| `node 03-platform/tools/scripts/validate-all.mjs`                 |    0 | **50/50** gates PASS                                                          |
+| `node 03-platform/tools/scripts/validate-signal.mjs`              |    0 | 9.60/10 PASS                                                                  |
 | `node 03-platform/tools/control-plane/gtcx-ctl.mjs validate --ci` |    0 | staging + production kustomize offline                                        |
 | `pnpm format:check`                                               |    0 | After prettier on DR + pen-test evidence docs                                 |
 | `pnpm agent:work-selection:check`                                 |    0 | 9/9 Protocol 22 adoption                                                      |

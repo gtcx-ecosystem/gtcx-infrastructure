@@ -162,7 +162,7 @@ tags: ['audit', 'hygiene', 'repo-structure']
 - Files >1000 LOC (tracked, justified):
   - `pnpm-lock.yaml` — 7,444 lines (~245KB) — justified as package manager lock file
   - `01-docs/api/openapi.yaml` — 931 lines — justified as API specification
-  - `03-platform/tools/compliance-gateway/03-platform/src/server.mjs` — 1,057 lines — justified as main server entry point
+  - `03-platform/tools/compliance-gateway/src/server.mjs` — 1,057 lines — justified as main server entry point
 - Coverage lcov.info files exist locally (8,222 lines in `03-platform/tools/compliance-gateway/coverage/lcov.info`) but are ignored
 
 **Deduction:** -1 for large coverage files persisting in working tree (lcov.info 2000-8000+ lines, 500KB-2MB)

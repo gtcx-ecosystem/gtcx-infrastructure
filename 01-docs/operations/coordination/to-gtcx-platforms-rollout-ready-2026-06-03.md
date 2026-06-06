@@ -26,7 +26,7 @@ Infra is **ready** to receive image push and execute rollout. No blockers on inf
 
 1. Push `gtcx-sovereign:staging` image to ECR
 2. Push `gtcx-agx:staging` image to ECR
-3. Notify infra via append to [`gtcx-protocols/.../cross-repo-agent-log.md`](../../../../gtcx-protocols/01-docs/04-ops/coordination/cross-repo-agent-log.md) or ping in this repo's bridge
+3. Notify infra via append to [`gtcx-protocols/.../cross-repo-agent-log.md`](../../../../gtcx-protocols/01-docs/operations/coordination/cross-repo-agent-log.md) or ping in this repo's bridge
 
 ## What infra will do after push notification
 
@@ -55,6 +55,6 @@ Infra is **ready** to receive image push and execute rollout. No blockers on inf
 
 ## References
 
-- gtcx-platforms bridge: `gtcx-platforms/01-docs/04-ops/coordination/cross-repo-agent-bridge.md`
-- gtcx-platforms staging live: `gtcx-platforms/01-docs/04-ops/coordination/staging-live-2026-06-02.md`
-- P4-07 runbook: `gtcx-platforms/01-docs/04-ops/coordination/p4-07-unblock-runbook.md`
+- gtcx-platforms bridge: `gtcx-platforms/01-docs/operations/coordination/cross-repo-agent-bridge.md`
+- gtcx-platforms staging live: `gtcx-platforms/01-docs/operations/coordination/staging-live-2026-06-02.md`
+- P4-07 runbook: `gtcx-platforms/01-docs/operations/coordination/p4-07-unblock-runbook.md`

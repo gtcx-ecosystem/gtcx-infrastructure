@@ -55,13 +55,13 @@ Prior phase **Close-the-gap + ZWCMP unblock** (2026-05-31 → 2026-06-21) — en
 
 ## Sprint 4: Gate signoff restore (2026-06-07 → 2026-06-14)
 
-| Story | Title                                                          | Status   | Acceptance                                                                                                         |
-| ----- | -------------------------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------ |
-| S4-04 | `deployment-guard` typecheck — JSDoc/param alignment           | **done** | `pnpm typecheck` exit 0 @ reconcile                                                                                |
-| S4-05 | `@gtcx/audit-signer` + compliance-gateway lint debt            | **done** | `pnpm lint` exit 0 @ reconcile                                                                                     |
-| S4-07 | `validate.sh quick` green (shellcheck + tests + docs-standard) | **done** | `bash 04-ship/03-platform/scripts/validate.sh quick` exit 0 @ 2026-06-05 (S4-08 unblocked docs-standard)           |
-| S4-08 | Docs-standard drift — agent README stubs + cross-repo links    | **done** | `node 03-platform/tools/03-platform/scripts/docs-standard-validator.mjs` exit 0; `validate-all` 55/55 @ 2026-06-05 |
-| S4-06 | README gaps per repo-hygiene audit                             | **done** | 15/15 workspace READMEs; 5 dirs remain (see `repo-hygiene-2026-06-05.md` P1) @ 8.8 overall                         |
+| Story | Title                                                          | Status   | Acceptance                                                                                               |
+| ----- | -------------------------------------------------------------- | -------- | -------------------------------------------------------------------------------------------------------- |
+| S4-04 | `deployment-guard` typecheck — JSDoc/param alignment           | **done** | `pnpm typecheck` exit 0 @ reconcile                                                                      |
+| S4-05 | `@gtcx/audit-signer` + compliance-gateway lint debt            | **done** | `pnpm lint` exit 0 @ reconcile                                                                           |
+| S4-07 | `validate.sh quick` green (shellcheck + tests + docs-standard) | **done** | `bash 04-ship/03-platform/scripts/validate.sh quick` exit 0 @ 2026-06-05 (S4-08 unblocked docs-standard) |
+| S4-08 | Docs-standard drift — agent README stubs + cross-repo links    | **done** | `node 03-platform/tools/scripts/docs-standard-validator.mjs` exit 0; `validate-all` 55/55 @ 2026-06-05   |
+| S4-06 | README gaps per repo-hygiene audit                             | **done** | 15/15 workspace READMEs; 5 dirs remain (see `repo-hygiene-2026-06-05.md` P1) @ 8.8 overall               |
 
 ---
 
@@ -132,7 +132,7 @@ scheduled cadence call.
 ```bash
 git status --short   # clean
 pnpm test
-node 03-platform/tools/03-platform/scripts/validate-all.mjs
+node 03-platform/tools/scripts/validate-all.mjs
 ```
 
 ### S4-02: PRD-002 Tier A: staging `/audit/*` reachable (≠404) + evidence probe script in CI
@@ -159,7 +159,7 @@ curl -sS -o /dev/null -w "%{http_code}\n" -X POST https://api.staging.gtcx.trade
 
 ### S1-01: Replay-guard traversal — verify closure + add fuzz fixtures
 
-**Files:** `03-platform/tools/replay-protection/03-platform/src/middleware.mjs:130-139`, `03-platform/tools/replay-protection/tests/failure-modes.test.mjs`
+**Files:** `03-platform/tools/replay-protection/src/middleware.mjs:130-139`, `03-platform/tools/replay-protection/tests/failure-modes.test.mjs`
 
 The closure (commit `a364439`) is in HEAD; post-roadmap audit was written before
 that landed. Story is now: add adversarial fuzz coverage so the next regression
@@ -182,7 +182,7 @@ pnpm --filter @gtcx/replay-protection test:coverage:gate
 
 ### S1-02: `/audit/bundles` tenant binding — verify closure + spoof test
 
-**Files:** `03-platform/tools/compliance-gateway/03-platform/src/audit-bundles/handler.mjs:73,132`, `03-platform/tools/compliance-gateway/tests/audit-bundles/handler.test.mjs`
+**Files:** `03-platform/tools/compliance-gateway/src/audit-bundles/handler.mjs:73,132`, `03-platform/tools/compliance-gateway/tests/audit-bundles/handler.test.mjs`
 
 Closure shipped in `1b940d7`. Story is: prove `X-GTCX-Tenant-Id` spoof is
 inert and that the signed `audit-bundle.received` event records the
@@ -204,7 +204,7 @@ node --test 03-platform/tools/compliance-gateway/tests/**/*.test.mjs
 
 ### S1-03: Auth-failure events visible in `/v1/exceptions` (platform tenant)
 
-**Files:** `03-platform/tools/compliance-gateway/03-platform/src/server.mjs:236`, `03-platform/tools/compliance-gateway/03-platform/src/audit.mjs:444`, `03-platform/tools/compliance-gateway/tests/exceptions.test.mjs` (new or extend)
+**Files:** `03-platform/tools/compliance-gateway/src/server.mjs:236`, `03-platform/tools/compliance-gateway/src/audit.mjs:444`, `03-platform/tools/compliance-gateway/tests/exceptions.test.mjs` (new or extend)
 
 Auth failures stamp `payload.tenantId='unknown'`. `/v1/exceptions` filters by
 tenant token, so security principals never see them. Tag with synthetic
@@ -226,7 +226,7 @@ node --test 03-platform/tools/compliance-gateway/tests/**/*.test.mjs
 
 ### S1-04: Adversarial fixtures for each newly-wired gate
 
-**Files:** `03-platform/tools/03-platform/scripts/{pin-actions-sha,empty-catch-check,runbook-commands-check,production-overlay-guard,runbook-frontmatter-check}.test.mjs`, `.github/workflows/dependabot-triage.test.mjs` (or equivalent regression test)
+**Files:** `03-platform/tools/scripts/{pin-actions-sha,empty-catch-check,runbook-commands-check,production-overlay-guard,runbook-frontmatter-check}.test.mjs`, `.github/workflows/dependabot-triage.test.mjs` (or equivalent regression test)
 
 The 6 gates I wired (`fb26c9f`) need adversarial input fixtures so CI proves
 they would have failed on a pre-fix snapshot of each bypass.
@@ -234,8 +234,8 @@ they would have failed on a pre-fix snapshot of each bypass.
 **Acceptance**
 
 ```bash
-node --test 03-platform/tools/03-platform/scripts/*.test.mjs
-node 03-platform/tools/03-platform/scripts/validate-all.mjs
+node --test 03-platform/tools/scripts/*.test.mjs
+node 03-platform/tools/scripts/validate-all.mjs
 ```
 
 **UAT / QA**
@@ -268,7 +268,7 @@ git checkout main && pnpm install && pnpm test
 
 ### S1-06: `isExempt(path)` JSDoc + typecheck CI gate
 
-**Files:** `03-platform/tools/replay-protection/03-platform/src/middleware.mjs:174`, `.github/workflows/ci.yml`
+**Files:** `03-platform/tools/replay-protection/src/middleware.mjs:174`, `.github/workflows/ci.yml`
 
 10/10 plan P0-002 / G0-003. Currently `isExempt` is untyped; typecheck passes
 because JSDoc inference works, but a future refactor could silently widen the
@@ -279,7 +279,7 @@ static section.
 
 ```bash
 pnpm typecheck
-node 03-platform/tools/03-platform/scripts/validate-all.mjs
+node 03-platform/tools/scripts/validate-all.mjs
 ```
 
 **UAT / QA**
@@ -312,7 +312,7 @@ pnpm format:check
 
 ### S1-08: Validate alert `runbook_url` anchors
 
-**Files:** `03-platform/tools/03-platform/scripts/alerts-add-runbook-url.mjs`, `01-docs/04-ops/runbooks/alerts.md`, `04-ship/monitoring/alerts/*.yml`
+**Files:** `03-platform/tools/scripts/alerts-add-runbook-url.mjs`, `01-docs/04-ops/runbooks/alerts.md`, `04-ship/monitoring/alerts/*.yml`
 
 F7. The annotator confirms 44 of 44 alerts have `runbook_url` annotations but
 31 of 44 anchors do not exist in the target runbook. Extend the validator to
@@ -321,8 +321,8 @@ read the target and assert the `#anchor` resolves.
 **Acceptance**
 
 ```bash
-node 03-platform/tools/03-platform/scripts/alerts-add-runbook-url.mjs --check
-node 03-platform/tools/03-platform/scripts/validate-all.mjs
+node 03-platform/tools/scripts/alerts-add-runbook-url.mjs --check
+node 03-platform/tools/scripts/validate-all.mjs
 ```
 
 **UAT / QA**
@@ -404,7 +404,7 @@ closed. Regulator-readiness checklists have named owners.
 | S2-11  | Dependabot Tier 1+2 merges + `.github/dependabot.yml` ignore rules    | **done** — Q7 pin in dependabot.yml; `dependabot-policy-check` wired in validate-all                                                              |
 | S2-12  | SOC 2 readiness owner mapping + IRP v1 board sign-off prep            | **done** — agent ownership model + `soc2-agent-owners-check`; IRP v1 agent-prep section (board signatures = EXT-INF escalation)                   |
 | S2-13  | **Pen-test SOW signature** (Bet 1 external validation)                | **intake ready** — `pen-test-intake-evidence-2026-05-31.md` + scope updated; human SOW signature pending (EXT-INF-002)                            |
-| S2-14  | Replay-protection package coverage pump (close 90% branches gate)     | **done** (`570ad49`) — replay-protection branch coverage 90.45%; `node 03-platform/tools/03-platform/scripts/validate-all.mjs` 23/23 pass         |
+| S2-14  | Replay-protection package coverage pump (close 90% branches gate)     | **done** (`570ad49`) — replay-protection branch coverage 90.45%; `node 03-platform/tools/scripts/validate-all.mjs` 23/23 pass                     |
 
 > Per-story acceptance commands will be filled in when Sprint 2 opens (sprint
 > start = 2026-06-08). All file paths and acceptance shapes are in
@@ -469,7 +469,7 @@ session rather than across the planned 1-week window.
 
 **Decisions still pending before Sprint 2:** _none_ — all four Q4–Q7 answered.
 
-**Net commits this session:** 21 (8 audit-finding closes + reconciled roadmap + 4 docs updates + 7 misc fixes + 1 scaffolding). All landed on `01-docs/roadmap-update-2026-05-30`. Follow-up S2-14 work in the current working tree closes the replay-protection coverage gap; `node 03-platform/tools/03-platform/scripts/validate-all.mjs` passes 23 of 23 gates.
+**Net commits this session:** 21 (8 audit-finding closes + reconciled roadmap + 4 docs updates + 7 misc fixes + 1 scaffolding). All landed on `01-docs/roadmap-update-2026-05-30`. Follow-up S2-14 work in the current working tree closes the replay-protection coverage gap; `node 03-platform/tools/scripts/validate-all.mjs` passes 23 of 23 gates.
 
 ---
 

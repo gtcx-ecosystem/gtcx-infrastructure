@@ -26,7 +26,7 @@ tags: ['coordination', 'outbound', 'human-gates', 'ext-inf', 'witness']
 | Signal             | Value                | Evidence                                                                            |
 | ------------------ | -------------------- | ----------------------------------------------------------------------------------- |
 | Implement queue    | `backlogClear: true` | `pnpm agent:next-work`                                                              |
-| validate-all       | **50/50 PASS**       | `node 03-platform/tools/03-platform/scripts/validate-all.mjs`                       |
+| validate-all       | **50/50 PASS**       | `node 03-platform/tools/scripts/validate-all.mjs`                                   |
 | Lane 1 engineering | **7.9**              | [`engineering-audit-2026-06-07.md`](../../../audit/engineering-audit-2026-06-07.md) |
 | Lane 4 bank-grade  | **8.3**              | [`bank-grade-audit-2026-06-07.md`](../../../audit/bank-grade-audit-2026-06-07.md)   |
 | Sprint 4 code      | S4-04/05/06 **done** | [`execution-roadmap.md`](../../../audit/execution-roadmap.md)                       |

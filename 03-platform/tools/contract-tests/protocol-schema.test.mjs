@@ -14,7 +14,7 @@
 import assert from 'node:assert';
 import { describe, it } from 'node:test';
 
-import { toolDefinitions } from '../compliance-gateway/03-platform/src/tools.mjs';
+import { toolDefinitions } from '../compliance-gateway/src/tools.mjs';
 
 const PROTOCOL_DOMAINS = ['tradepass', 'gci', 'geotag', 'vaultmark', 'pvp', 'panx'];
 

@@ -69,7 +69,7 @@ describe('handleQuery', () => {
     process.env.COMPLIANCE_GATEWAY_AUTH_TOKENS_JSON = JSON.stringify([
       { token: 'hq-test-token', subject: 'hq-test', permissions: ['query:read'] },
     ]);
-    const mod = await import('../03-platform/src/server.mjs?v=hq');
+    const mod = await import('../src/server.mjs?v=hq');
     handleQuery = mod.handleQuery;
     srv = mod.server;
   });
@@ -209,7 +209,7 @@ describe('estimateCost', () => {
 
   before(async () => {
     process.env.PORT = '0';
-    const mod = await import('../03-platform/src/server.mjs?v=ec');
+    const mod = await import('../src/server.mjs?v=ec');
     estimateCost = mod.estimateCost;
     srv = mod.server;
   });
@@ -252,7 +252,7 @@ describe('stripForLowBandwidth', () => {
 
   before(async () => {
     process.env.PORT = '0';
-    const mod = await import('../03-platform/src/server.mjs?v=slb');
+    const mod = await import('../src/server.mjs?v=slb');
     stripForLowBandwidth = mod.stripForLowBandwidth;
     srv = mod.server;
   });
@@ -338,7 +338,7 @@ describe('sendJson', () => {
 
   before(async () => {
     process.env.PORT = '0';
-    const mod = await import('../03-platform/src/server.mjs?v=sj');
+    const mod = await import('../src/server.mjs?v=sj');
     sendJson = mod.sendJson;
     srv = mod.server;
   });
@@ -416,7 +416,7 @@ describe('Server top-level error handling', () => {
       { token: 'err-token', subject: 'err', permissions: ['query:read'] },
     ]);
 
-    const mod = await import('../03-platform/src/server.mjs?v=catch');
+    const mod = await import('../src/server.mjs?v=catch');
     const srv = mod.server;
     await new Promise((r) => setTimeout(r, 200));
 
@@ -458,7 +458,7 @@ describe('Server startup warning', () => {
     console.warn = (...args) => warnings.push(args.join(' '));
 
     try {
-      const mod = await import('../03-platform/src/server.mjs?v=defaulted');
+      const mod = await import('../src/server.mjs?v=defaulted');
       const srv = mod.server;
       await new Promise((r) => setTimeout(r, 200));
       srv.close();
@@ -491,7 +491,7 @@ describe('System prompt fallback', () => {
       const existed = fs.existsSync(jurPath);
       if (existed) fs.renameSync(jurPath, tempPath);
       try {
-        const mod = await import('../03-platform/src/system-prompt.mjs');
+        const mod = await import('../src/system-prompt.mjs');
         const hasBase = mod.systemPrompt.includes('GTCX Compliance Gateway');
         const hasJur = mod.systemPrompt.includes('KYC 1825d');
         console.log(JSON.stringify({ hasBase, hasJur }));

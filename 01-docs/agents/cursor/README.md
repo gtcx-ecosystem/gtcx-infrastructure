@@ -8,4 +8,4 @@
 
 Cursor reads **`AGENTS.md`** at repo root. Synced blocks come from [`.agent/`](../../../.agent/) via `pnpm agent:sync`.
 
-**Workspace:** [`workspace/`](../../../workspace/) · **Protocols:** [`universal/`](../universal/)
+**Workspace:** [`workspace/`](../../../02-ops/) · **Protocols:** [`universal/`](../universal/)

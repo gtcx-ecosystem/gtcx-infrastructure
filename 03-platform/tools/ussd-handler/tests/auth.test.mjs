@@ -5,8 +5,8 @@
 import assert from 'node:assert';
 import { describe, it } from 'node:test';
 
-import { hashPin, verifyPin, checkLockout, recordFailedAttempt, resetAttempts } from '../03-platform/src/auth.mjs';
-import { config } from '../03-platform/src/config.mjs';
+import { hashPin, verifyPin, checkLockout, recordFailedAttempt, resetAttempts } from '../src/auth.mjs';
+import { config } from '../src/config.mjs';
 
 describe('hashPin + verifyPin', () => {
   it('hashes and verifies a PIN', () => {
@@ -97,7 +97,7 @@ describe('hashPin + verifyPin production params', () => {
   it('covers production branch via fresh import', async () => {
     const originalEnv = process.env.NODE_ENV;
     process.env.NODE_ENV = 'production';
-    const { hashPin: hp, verifyPin: vp } = await import(`../03-platform/src/auth.mjs?v=prod-${Date.now()}`);
+    const { hashPin: hp, verifyPin: vp } = await import(`../src/auth.mjs?v=prod-${Date.now()}`);
     const hash = hp('1234');
     assert.ok(vp('1234', hash));
     process.env.NODE_ENV = originalEnv;

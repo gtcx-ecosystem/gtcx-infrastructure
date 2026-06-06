@@ -2,7 +2,7 @@
 /**
  * IR-5.2 gate — ecosystem integration matrix must be green and review fresh.
  *
- * Usage: node 03-platform/tools/03-platform/scripts/ecosystem-integration-matrix-check.mjs
+ * Usage: node 03-platform/tools/scripts/ecosystem-integration-matrix-check.mjs
  */
 
 import { readFileSync, existsSync } from 'node:fs';
@@ -10,7 +10,7 @@ import { execSync } from 'node:child_process';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
 const MATRIX = join(ROOT, 'docs', 'audit', 'ecosystem-integration-matrix-2026-06-07.json');
 const REVIEW = join(ROOT, 'docs', 'audit', 'ecosystem-repo-review-2026-06-07.md');
 const MAX_AGE_DAYS = 120;

@@ -24,7 +24,7 @@ Accepted
 
 ## Context
 
-The repo's coverage gate started at branches=functions=statements=lines=90 for every workspace package. That worked while the surface was tight. By the end of Cycle 1, two specific files (`03-platform/tools/audit-flush/03-platform/src/index.mjs` for the soft-loaded NATS path, `03-platform/tools/compliance-gateway/03-platform/src/server.mjs` for the startup-listener + SIGTERM path) had genuine coverage gaps that would have required real-broker integration tests + subprocess-signaling tests to close.
+The repo's coverage gate started at branches=functions=statements=lines=90 for every workspace package. That worked while the surface was tight. By the end of Cycle 1, two specific files (`03-platform/tools/audit-flush/src/index.mjs` for the soft-loaded NATS path, `03-platform/tools/compliance-gateway/src/server.mjs` for the startup-listener + SIGTERM path) had genuine coverage gaps that would have required real-broker integration tests + subprocess-signaling tests to close.
 
 The choices were:
 
@@ -76,5 +76,5 @@ The rationale doc is part of `validate-all.mjs --full` link-checking and updates
 
 - `01-docs/05-audit/coverage-gate-rationale.md` — the canonical deviation registry
 - ADR-019 — workspace boundary discipline (the list of packages this ADR applies to)
-- `03-platform/tools/03-platform/scripts/validate-all.mjs` — coverage sweep that uses each package's own thresholds
+- `03-platform/tools/scripts/validate-all.mjs` — coverage sweep that uses each package's own thresholds
 - Cycle 1 R4 commit `70dbc62` — first per-package threshold + rationale doc

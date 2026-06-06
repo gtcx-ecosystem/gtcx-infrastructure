@@ -7,7 +7,7 @@
  * expected by mobile cert-pins.json.
  *
  * Usage:
- *   node 03-platform/tools/03-platform/scripts/verify-cert-pins.mjs [--host=api.staging.gtcx.trade] [--port=443]
+ *   node 03-platform/tools/scripts/verify-cert-pins.mjs [--host=api.staging.gtcx.trade] [--port=443]
  *
  * Output (JSON):
  *   {

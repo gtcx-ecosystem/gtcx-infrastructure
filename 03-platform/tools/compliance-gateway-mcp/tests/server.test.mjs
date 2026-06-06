@@ -8,7 +8,7 @@
 import assert from 'node:assert';
 import { afterEach, beforeEach, describe, it } from 'node:test';
 
-import { handleRpc, TOOLS, RESOURCES, PROMPTS } from '../03-platform/src/server.mjs';
+import { handleRpc, TOOLS, RESOURCES, PROMPTS } from '../src/server.mjs';
 
 let fetchCalls = [];
 const originalFetch = globalThis.fetch;

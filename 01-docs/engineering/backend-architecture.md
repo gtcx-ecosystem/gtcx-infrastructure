@@ -193,7 +193,7 @@ Prometheus scrape configs and Grafana dashboard definitions live in `04-ship/doc
 Security posture is managed through three components:
 
 1. **Policies** (`04-ship/security/policies/`) — access control, data protection policy, incident response playbooks
-2. **Scanner** (`03-platform/tools/03-platform/scripts/security-status.js`) — run manually and in CI; generates reports
+2. **Scanner** (`03-platform/tools/scripts/security-status.js`) — run manually and in CI; generates reports
 3. **Reports** (`04-ship/security/reports/`) — audit reports, SOC2 evidence
 
 CI gates include weekly container image scans and weekly `pnpm audit` dependency checks. Critical CVEs block release.

@@ -6,7 +6,7 @@ import {
   decode,
   encodeMinimalBinary,
   decodeMinimalBinary,
-} from '../03-platform/src/encoder.mjs';
+} from '../src/encoder.mjs';
 
 describe('encode / decode — json', () => {
   it('round-trips an object', () => {

@@ -7,7 +7,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
 const PILOT = path.join(ROOT, '01-docs/05-audit/evidence/signal-trace-pilot-latest.json');
 const LOG = path.join(ROOT, '01-docs/04-ops/coordination/cross-repo-agent-log.md');
 const TOPOLOGY = path.join(ROOT, '01-docs/architecture/agent-topology-2026-q3.md');

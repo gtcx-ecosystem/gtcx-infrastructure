@@ -111,4 +111,4 @@ The gateway intentionally does **not** expose:
 - [`../architecture/compliance-substrate-deep-dive.md`](../architecture/compliance-substrate-deep-dive.md) — long-form architecture + failure modes
 - [`../operations/runbooks/deploy.md`](../operations/runbooks/deploy.md) — deployment runbook
 - [`../security/threat-model-2026-05.md`](../security/threat-model-2026-05.md) — STRIDE coverage of API surface
-- Source: [`03-platform/tools/compliance-gateway/03-platform/src/server.mjs`](../../03-platform/tools/compliance-gateway/03-platform/src/server.mjs)
+- Source: [`03-platform/tools/compliance-gateway/src/server.mjs`](../../03-platform/tools/compliance-gateway/src/server.mjs)

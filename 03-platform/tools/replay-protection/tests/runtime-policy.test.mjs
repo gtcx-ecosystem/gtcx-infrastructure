@@ -1,7 +1,7 @@
 import assert from 'node:assert';
 import { describe, it } from 'node:test';
 
-import { getTrafficBlockReason } from '../03-platform/src/runtime-policy.mjs';
+import { getTrafficBlockReason } from '../src/runtime-policy.mjs';
 
 describe('Replay Guard runtime policy', () => {
   it('does not block traffic in development without Redis', () => {

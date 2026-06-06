@@ -20,7 +20,7 @@ import {
   _setSdkLoaderForTests,
   buildS3Client,
   s3LastSuccessTimestamp,
-} from '../03-platform/src/s3-uploader.mjs';
+} from '../src/s3-uploader.mjs';
 
 describe('s3-uploader — fail-closed in production', () => {
   let priorNodeEnv;

@@ -63,7 +63,7 @@ No counter-proposal. No scope reduction.
 ### #51 — nonce store + replay rejection
 
 - **ETA deploy:** Thursday 2026-05-29 (same PR #56 as #50)
-- **Status:** ✅ **COMPLETE + ENHANCED.** Core nonce gate merged with #50. Redis-backed cross-replica nonce store delivered (`03-platform/tools/compliance-gateway/03-platform/src/nonce-store/redis.mjs`) with `createNonceStore({ tenantId })` API — shared across agx/audit/crx/sgx, fallback to in-memory with WARN log. K8s Redis manifest committed. Deployment tracked in `01-docs/05-audit/agile/issues/infra-redis-nonce-store.md`.
+- **Status:** ✅ **COMPLETE + ENHANCED.** Core nonce gate merged with #50. Redis-backed cross-replica nonce store delivered (`03-platform/tools/compliance-gateway/src/nonce-store/redis.mjs`) with `createNonceStore({ tenantId })` API — shared across agx/audit/crx/sgx, fallback to in-memory with WARN log. K8s Redis manifest committed. Deployment tracked in `01-docs/05-audit/agile/issues/infra-redis-nonce-store.md`.
 
 ### #52 — /audit/query
 

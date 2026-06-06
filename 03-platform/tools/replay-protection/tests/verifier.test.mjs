@@ -7,13 +7,13 @@
 import assert from 'node:assert';
 import { describe, it } from 'node:test';
 
-import { AuditCapture } from '../03-platform/src/audit/audit-capture.mjs';
-import { computeBodyHash, computeHeadersHash, computeEnvelopeHash } from '../03-platform/src/crypto/hash.mjs';
-import { ReplayMetrics } from '../03-platform/src/metrics/replay-metrics.mjs';
-import { MemoryNonceStore } from '../03-platform/src/store/memory-nonce-store.mjs';
-import { ReplayVerifier } from '../03-platform/src/verifier.mjs';
+import { AuditCapture } from '../src/audit/audit-capture.mjs';
+import { computeBodyHash, computeHeadersHash, computeEnvelopeHash } from '../src/crypto/hash.mjs';
+import { ReplayMetrics } from '../src/metrics/replay-metrics.mjs';
+import { MemoryNonceStore } from '../src/store/memory-nonce-store.mjs';
+import { ReplayVerifier } from '../src/verifier.mjs';
 
-/** @returns {import('../03-platform/src/types.mjs').QueueIntegrity} */
+/** @returns {import('../src/types.mjs').QueueIntegrity} */
 function makeIntegrity(overrides = {}, requestData = null) {
   const now = new Date().toISOString();
   const body = requestData?.body ?? '{"test":true}';

@@ -21,7 +21,7 @@
   },
   "crossRepoHealth": {
     "workflow": ".github/workflows/cross-repo-health.yml",
-    "probe": "03-platform/tools/03-platform/scripts/cross-repo-health-probe.mjs"
+    "probe": "03-platform/tools/scripts/cross-repo-health-probe.mjs"
   },
   "xrReconciliation": {
     "XR-401": "done",

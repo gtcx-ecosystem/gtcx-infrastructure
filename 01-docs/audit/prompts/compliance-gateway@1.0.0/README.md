@@ -8,4 +8,4 @@ Semver-tagged system prompt (SIGNAL INF-014).
 | `system.md`     | Static template (jurisdictions injected at runtime) |
 | `CHANGELOG.md`  | Version history                                     |
 
-Runtime: `03-platform/tools/compliance-gateway/03-platform/src/system-prompt.mjs` · Audit field: `promptVersion` on `query:success`.
+Runtime: `03-platform/tools/compliance-gateway/src/system-prompt.mjs` · Audit field: `promptVersion` on `query:success`.

@@ -23,7 +23,7 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
-const REPO_ROOT = resolve(SCRIPT_DIR, '..', '..');
+const REPO_ROOT = resolve(SCRIPT_DIR, '..', '..', '..');
 const OUTPUT_DIR = resolve(REPO_ROOT, 'docs', 'audit', 'distribution-snapshots');
 
 const NPM_PACKAGE = '@gtcx/audit-signer';

@@ -7,7 +7,7 @@ import {
   buildAccessProfile,
   loadAuthState,
   parseApprovalContext,
-} from '../03-platform/src/auth.mjs';
+} from '../src/auth.mjs';
 
 describe('compliance-gateway auth', () => {
   it('fails closed in production when auth config is missing', () => {

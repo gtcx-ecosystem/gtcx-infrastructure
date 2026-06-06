@@ -24,7 +24,7 @@ import { readdirSync, readFileSync, writeFileSync, statSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
+const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
 // Scan the whole 01-docs/ tree — the session-backfill double-frontmatter
 // pattern touched runbooks, agent docs, and the top-level index.
 // gitbook was previously excluded under the assumption that Astro
@@ -33,7 +33,7 @@ const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 // frontmatter shape there too. Including gitbook in the merge guard
 // catches that regression at commit time instead of leaving 12 files
 // to be manually discarded the next time the generator runs.
-const SCAN_DIRS = [join(REPO_ROOT, 'docs')];
+const SCAN_DIRS = [join(REPO_ROOT, '01-docs')];
 const EXCLUDE_SEGMENTS = new Set(['node_modules', 'dist']);
 const checkOnly = process.argv.includes('--check');
 
@@ -266,7 +266,7 @@ function main() {
         `[runbook-frontmatter-check] ${offenders.length} file(s) with duplicated frontmatter:`
       );
       for (const f of offenders) console.error(`  - ${f}`);
-      console.error('\nRun `node 03-platform/tools/03-platform/scripts/runbook-frontmatter-check.mjs` to merge.');
+      console.error('\nRun `node 03-platform/tools/scripts/runbook-frontmatter-check.mjs` to merge.');
       process.exit(1);
     }
     console.log(`[runbook-frontmatter-check] ${files.length} runbook(s) clean`);

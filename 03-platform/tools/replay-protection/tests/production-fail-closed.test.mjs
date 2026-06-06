@@ -52,7 +52,7 @@ describe('Replay Guard Production Fail-Closed', () => {
     process.env.OTLP_ENDPOINT = '';
 
     // Dynamic import so the server picks up our env vars
-    const mod = await import('../03-platform/src/server.mjs');
+    const mod = await import('../src/server.mjs');
     testServer = mod.server;
     baseUrl = `http://127.0.0.1:${port}`;
     await new Promise((r) => setTimeout(r, 100));

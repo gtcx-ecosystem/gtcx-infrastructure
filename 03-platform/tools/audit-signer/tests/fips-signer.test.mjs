@@ -11,7 +11,7 @@ import { describe, it } from 'node:test';
 
 // Set FIPS mode BEFORE dynamically importing the signer module.
 process.env.GTCX_FIPS_MODE = '1';
-const { generateKeyPair, signRecord, verifyRecord, createRecord } = await import('../03-platform/src/signer.mjs');
+const { generateKeyPair, signRecord, verifyRecord, createRecord } = await import('../src/signer.mjs');
 
 describe('FIPS mode signer — ECDSA P-256', () => {
   it('generates an ECDSA key pair', () => {

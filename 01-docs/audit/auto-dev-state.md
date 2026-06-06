@@ -134,7 +134,7 @@ Run `pnpm agent:next-work` to get the next story. Current computed next:
 
 ```bash
 pnpm agent:next-work
-node 03-platform/tools/03-platform/scripts/validate-all.mjs
+node 03-platform/tools/scripts/validate-all.mjs
 pnpm typecheck && pnpm lint && pnpm test
 pnpm agent:work-selection:check
 pnpm agent:execution-obligation:check

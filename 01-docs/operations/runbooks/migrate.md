@@ -40,7 +40,7 @@ Before running migrations against staging or production:
 
 - [ ] Confirm target environment and target database
 - [ ] Export `DATABASE_URL`, `AUDIT_DATABASE_URL`, and `AUDIT_WRITER_DATABASE_URL`
-- [ ] Run `python 04-ship/migrations/03-platform/scripts/check_docs.py` and clear warnings
+- [ ] Run `python 03-platform/tools/scripts/check_docs.py` and clear warnings
 - [ ] Review the migration file and confirm it is forward-only
 - [ ] Confirm a rollback or compensating migration path exists
 - [ ] Obtain explicit human approval
@@ -156,7 +156,7 @@ When authoring a new migration file:
 
 1. Place it in `04-ship/docker/init-03-platform/scripts/postgres/` using the existing ordering convention.
 2. Add a header comment describing purpose, target database, and recovery path.
-3. Run `python 04-ship/migrations/03-platform/scripts/check_docs.py`.
+3. Run `python 03-platform/tools/scripts/check_docs.py`.
 4. Run `python 04-ship/migrations/03-platform/scripts/generate_docs.py`.
 5. Test against development before requesting staging approval.
 6. If the audit schema or grants change, run `bash 04-ship/03-platform/scripts/test-audit-immutability.sh`.
@@ -196,6 +196,6 @@ Escalate to human review immediately if:
 
 - [`04-ship/03-platform/scripts/migrate.sh`](../../../04-ship/03-platform/scripts/migrate.sh) — migration runner
 - [`04-ship/03-platform/scripts/test-audit-immutability.sh`](../../../04-ship/03-platform/scripts/test-audit-immutability.sh) — live audit immutability fixture
-- [`04-ship/migrations/03-platform/scripts/check_docs.py`](../../../03-platform/tools/03-platform/scripts/check_docs.py) — migration doc validation
+- [`03-platform/tools/scripts/check_docs.py`](../../../03-platform/tools/scripts/check_docs.py) — migration doc validation
 - [`01-docs/01-agents/workflows/agent-safety-rules.md`](../../agents/workflows/agent-safety-rules.md) — authority tiers
 - [`01-docs/architecture/system-overview.md`](../../architecture/system-overview.md) — system overview

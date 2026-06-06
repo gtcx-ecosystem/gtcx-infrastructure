@@ -5,11 +5,11 @@ import {
   canonicalizeUrl,
   computeEnvelopeHash,
   sha256Hex,
-} from '../../03-platform/src/audit-bundles/canonical.mjs';
-import { createMockResolver } from '../../03-platform/src/audit-bundles/did-resolver.mjs';
-import { generateEd25519KeyPair, signEd25519 } from '../../03-platform/src/audit-bundles/ed25519.mjs';
-import { processBundle, tenantIdFromSignedDid } from '../../03-platform/src/audit-bundles/handler.mjs';
-import { NonceGate } from '../../03-platform/src/audit-bundles/nonce-gate.mjs';
+} from '../../src/audit-bundles/canonical.mjs';
+import { createMockResolver } from '../../src/audit-bundles/did-resolver.mjs';
+import { generateEd25519KeyPair, signEd25519 } from '../../src/audit-bundles/ed25519.mjs';
+import { processBundle, tenantIdFromSignedDid } from '../../src/audit-bundles/handler.mjs';
+import { NonceGate } from '../../src/audit-bundles/nonce-gate.mjs';
 
 const AUDIENCE = 'https://geotag.staging.gtcx.trade';
 const URL = 'https://geotag.staging.gtcx.trade/audit/bundles';

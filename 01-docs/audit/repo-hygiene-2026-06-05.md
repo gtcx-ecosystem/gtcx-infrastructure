@@ -198,11 +198,11 @@ find . -type d -empty -not -path '*/node_modules/*' -not -path '*/.git/*'
 
 ### Verification gates (Protocol 27)
 
-| Command                                                                  | Exit  | Note                                                  |
-| ------------------------------------------------------------------------ | ----- | ----------------------------------------------------- |
-| `node 03-platform/tools/03-platform/scripts/validate-all.mjs`            | **1** | 49/50 PASS; Docs Standard fail (27 link violations)   |
-| `node 03-platform/tools/03-platform/scripts/docs-standard-validator.mjs` | **1** | 27 violations (agent README stubs + cross-repo links) |
-| `git status -sb`                                                         | **0** | ahead 4; operator artifacts untracked                 |
+| Command                                                      | Exit  | Note                                                  |
+| ------------------------------------------------------------ | ----- | ----------------------------------------------------- |
+| `node 03-platform/tools/scripts/validate-all.mjs`            | **1** | 49/50 PASS; Docs Standard fail (27 link violations)   |
+| `node 03-platform/tools/scripts/docs-standard-validator.mjs` | **1** | 27 violations (agent README stubs + cross-repo links) |
+| `git status -sb`                                             | **0** | ahead 4; operator artifacts untracked                 |
 
 ---
 
@@ -288,7 +288,7 @@ _Audit per `gtcx-docs/03-platform/tools/audit/audit-framework/prompts/hygiene/re
 | Bootstrap | `01-docs/04-ops/repo/root-allowlist.schema.json`                                                                     |
 | Bootstrap | `03-platform/scripts/ops/check-workspace-root-cleanliness.py`                                                        |
 | Wire      | `package.json` — `check:workspace-root-cleanliness:strict`                                                           |
-| Wire      | `03-platform/tools/03-platform/scripts/validate-all.mjs` — Workspace Root Cleanliness gate                           |
+| Wire      | `03-platform/tools/scripts/validate-all.mjs` — Workspace Root Cleanliness gate                                       |
 | Wire      | `.github/workflows/ci.yml` — CI step                                                                                 |
 | P1-1      | `git mv` `audit-deploy-comment.md` → `01-docs/05-audit/evidence/deploy-comments/staging-audit-bundles-2026-06-02.md` |
 | P1-2      | `git rm` `roadmap.md` (redirect stub; canonical roadmap in `01-docs/05-audit/execution-roadmap.md`)                  |
@@ -311,12 +311,12 @@ Repo root matches the canonical allowlist.
 
 ### Verification gates (Protocol 27)
 
-| Command                                                       | Exit  | Note                                                                                                    |
-| ------------------------------------------------------------- | ----- | ------------------------------------------------------------------------------------------------------- |
-| `pnpm check:workspace-root-cleanliness:strict`                | **0** | Root allowlist enforced                                                                                 |
-| `node 03-platform/tools/03-platform/scripts/validate-all.mjs` | **1** | **50/51 gates** incl. new root gate PASS; Docs Standard fail (27 link violations — S4-08, pre-existing) |
-| `git ls-files` build-artifact scan                            | **0** | 0 tracked artifacts                                                                                     |
-| `find` empty-dir scan                                         | **0** | 0 empty dirs                                                                                            |
+| Command                                           | Exit  | Note                                                                                                    |
+| ------------------------------------------------- | ----- | ------------------------------------------------------------------------------------------------------- |
+| `pnpm check:workspace-root-cleanliness:strict`    | **0** | Root allowlist enforced                                                                                 |
+| `node 03-platform/tools/scripts/validate-all.mjs` | **1** | **50/51 gates** incl. new root gate PASS; Docs Standard fail (27 link violations — S4-08, pre-existing) |
+| `git ls-files` build-artifact scan                | **0** | 0 tracked artifacts                                                                                     |
+| `find` empty-dir scan                             | **0** | 0 empty dirs                                                                                            |
 
 ### Post-remediation axis scores
 

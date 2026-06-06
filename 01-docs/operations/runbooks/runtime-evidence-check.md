@@ -35,7 +35,7 @@ Dry-run validation of the release evidence bundle generator. This gate runs insi
 ### Local (development or pre-flight)
 
 ```bash
-node 03-platform/tools/03-platform/scripts/runtime-evidence-check.mjs
+node 03-platform/tools/scripts/runtime-evidence-check.mjs
 ```
 
 Expected output:
@@ -51,7 +51,7 @@ Exit code `0` on success, `1` on any failure.
 This script is already wired into `validate-all` (gate 46):
 
 ```bash
-node 03-platform/tools/03-platform/scripts/validate-all.mjs
+node 03-platform/tools/scripts/validate-all.mjs
 ```
 
 Look for the line:

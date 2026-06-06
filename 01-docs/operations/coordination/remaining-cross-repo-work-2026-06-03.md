@@ -91,8 +91,8 @@ to: baseline-os coordination hub + sibling repos
 **Sibling docs:**
 
 - Infra outbound: [`to-gtcx-platforms-rollout-ready-2026-06-03.md`](to-gtcx-platforms-rollout-ready-2026-06-03.md)
-- Platforms bridge: `gtcx-platforms/01-docs/04-ops/coordination/cross-repo-agent-bridge.md`
-- Platforms staging live: `gtcx-platforms/01-docs/04-ops/coordination/staging-live-2026-06-02.md`
+- Platforms bridge: `gtcx-platforms/01-docs/operations/coordination/cross-repo-agent-bridge.md`
+- Platforms staging live: `gtcx-platforms/01-docs/operations/coordination/staging-live-2026-06-02.md`
 
 ---
 
@@ -177,7 +177,7 @@ to: baseline-os coordination hub + sibling repos
 **Sibling docs:**
 
 - Key ceremony runbook: `01-docs/09-security/key-ceremony-runbook.md`
-- Protocols runbook: `gtcx-protocols/01-docs/04-ops/coordination/inf-86-pilot-gh-bog-protocols-runbook-2026-06-02.md`
+- Protocols runbook: `gtcx-protocols/01-docs/operations/coordination/inf-86-pilot-gh-bog-protocols-runbook-2026-06-02.md`
 
 ---
 

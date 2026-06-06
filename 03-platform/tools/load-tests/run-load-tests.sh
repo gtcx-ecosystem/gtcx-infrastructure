@@ -46,7 +46,7 @@ trap cleanup EXIT
 echo "[INFO] Starting replay-protection server on port $REPLAY_PORT..."
 (
   cd "$PROJECT_ROOT/03-platform/tools/replay-protection"
-  PORT=$REPLAY_PORT REDIS_URL="" NODE_ENV=development REPLAY_GUARD_ALLOW_STUB_SIGNATURE=true node 03-platform/src/server.mjs &>/dev/null
+  PORT=$REPLAY_PORT REDIS_URL="" NODE_ENV=development REPLAY_GUARD_ALLOW_STUB_SIGNATURE=true node src/server.mjs &>/dev/null
 ) &
 REPLAY_PID=$!
 
@@ -57,7 +57,7 @@ echo "[INFO] Starting compliance-gateway server on port $GATEWAY_PORT..."
   cd "$PROJECT_ROOT/03-platform/tools/compliance-gateway"
   PORT=$GATEWAY_PORT NODE_ENV=development AUDIT_QUERY_ENABLED=1 \
     COMPLIANCE_GATEWAY_AUTH_TOKENS_JSON='[{"token":"load-test-token","subject":"load-test","permissions":["audit:read"],"label":"load-test","tenantId":"zw"}]' \
-    node 03-platform/src/server.mjs &>/dev/null
+    node src/server.mjs &>/dev/null
 ) &
 GATEWAY_PID=$!
 

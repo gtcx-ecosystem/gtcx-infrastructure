@@ -7,7 +7,7 @@ import { readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
 const CATALOG = join(ROOT, 'tools', 'compliance-data', 'jurisdictions.json');
 const VARIABLES = join(ROOT, 'infra', 'terraform', 'modules', 'compliance-db', 'variables.tf');
 

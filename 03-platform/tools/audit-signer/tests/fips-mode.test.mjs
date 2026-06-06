@@ -10,7 +10,7 @@ import {
   signingAlgorithm,
   fipsCurve,
   assertFipsDigest,
-} from '../03-platform/src/fips-mode.mjs';
+} from '../src/fips-mode.mjs';
 
 describe('isFipsMode', () => {
   it('returns false when GTCX_FIPS_MODE is unset', () => {

@@ -5,8 +5,8 @@
   "type": "module",
   "main": "src/server.mjs",
   "scripts": {
-    "start": "node 03-platform/src/server.mjs",
-    "dev": "node --watch 03-platform/src/server.mjs",
+    "start": "node src/server.mjs",
+    "dev": "node --watch src/server.mjs",
     "test": "node ../scripts/run-package-tests.mjs",
     "test:coverage": "c8 --reporter=text --reporter=json --reporter=lcov --include='src/**' node ../scripts/run-package-tests.mjs",
     "_coverage_gate_note": "branches/functions thresholds at 85 (not 90) because audit-sink.mjs soft-loads nats and server.mjs has startup-listener/SIGTERM paths that genuinely require real broker/process integration to exercise. statements + lines remain at 90 since the only excluded branches are the ones above. See 01-docs/05-audit/coverage-gate-rationale.md.",

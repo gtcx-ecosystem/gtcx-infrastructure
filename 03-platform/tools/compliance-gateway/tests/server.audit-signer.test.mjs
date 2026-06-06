@@ -9,7 +9,7 @@ import assert from 'node:assert';
 import { createServer, request } from 'node:http';
 import { describe, it, before, after } from 'node:test';
 
-import { resetAuditSigner, resetChain, getChainState } from '../03-platform/src/audit.mjs';
+import { resetAuditSigner, resetChain, getChainState } from '../src/audit.mjs';
 
 let testServer;
 let baseUrl;
@@ -36,7 +36,7 @@ async function setupServer(envOverrides = {}) {
 
   resetAuditSigner();
 
-  const mod = await import(`../03-platform/src/server.mjs?v=audit-${Date.now()}`);
+  const mod = await import(`../src/server.mjs?v=audit-${Date.now()}`);
   testServer = mod.server;
   baseUrl = `http://127.0.0.1:${port}`;
   await new Promise((r) => setTimeout(r, 300));

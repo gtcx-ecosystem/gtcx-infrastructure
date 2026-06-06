@@ -7,8 +7,8 @@ import {
   verifyChain,
   toNdjson,
   fromNdjson,
-} from '../03-platform/src/chain.mjs';
-import { generateKeyPair, createRecord, signRecord } from '../03-platform/src/signer.mjs';
+} from '../src/chain.mjs';
+import { generateKeyPair, createRecord, signRecord } from '../src/signer.mjs';
 
 describe('createChain', () => {
   it('starts empty', () => {

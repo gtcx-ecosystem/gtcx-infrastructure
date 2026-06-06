@@ -13,7 +13,7 @@ import assert from 'node:assert';
 import { createServer, request as httpRequest } from 'node:http';
 import { describe, it, before, after } from 'node:test';
 
-import { computeBodyHash, computeHeadersHash, computeEnvelopeHash } from '../03-platform/src/crypto/hash.mjs';
+import { computeBodyHash, computeHeadersHash, computeEnvelopeHash } from '../src/crypto/hash.mjs';
 
 import { installMockFetch, signEnvelopeV1, signTestJwt } from './helpers/jwt-fixture.mjs';
 
@@ -119,7 +119,7 @@ describe('Replay Guard Integration', () => {
     process.env.OTLP_ENDPOINT = '';
     // REPLAY_GUARD_ALLOW_STUB_SIGNATURE removed — real crypto verification is active
 
-    const mod = await import('../03-platform/src/server.mjs');
+    const mod = await import('../src/server.mjs');
     testServer = mod.server;
     baseUrl = `http://127.0.0.1:${port}`;
     await new Promise((r) => setTimeout(r, 100));

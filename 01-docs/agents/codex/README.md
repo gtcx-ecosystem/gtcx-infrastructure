@@ -1,7 +1,7 @@
 # Codex — gtcx-infrastructure
 
-| Resource | Path                            |
-| -------- | ------------------------------- |
-| Entry    | [`CODEX.md`](../../../CODEX.md) |
+| Resource | Path                          |
+| -------- | ----------------------------- |
+| Entry    | [`.agent/`](../../../.agent/) |
 
-**Workspace:** [`workspace/`](../../../workspace/) · **Universal:** [`universal/`](../universal/)
+**Workspace:** [`workspace/`](../../../02-ops/) · **Universal:** [`universal/`](../universal/)

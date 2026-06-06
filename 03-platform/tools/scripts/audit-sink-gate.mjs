@@ -7,7 +7,7 @@
  *   2. Defaults to NATS in production
  *   3. Rejects stdout explicitly in production/staging
  *
- * Usage: node 03-platform/tools/03-platform/scripts/audit-sink-gate.mjs
+ * Usage: node 03-platform/tools/scripts/audit-sink-gate.mjs
  */
 
 import { execSync } from 'node:child_process';

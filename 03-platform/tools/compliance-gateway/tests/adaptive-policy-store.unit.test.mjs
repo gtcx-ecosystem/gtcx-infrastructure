@@ -8,7 +8,7 @@
 import assert from 'node:assert';
 import { afterEach, beforeEach, describe, it } from 'node:test';
 
-import { getStore, getStoreInfo, _resetForTests } from '../03-platform/src/adaptive-policy-store.mjs';
+import { getStore, getStoreInfo, _resetForTests } from '../src/adaptive-policy-store.mjs';
 
 describe('adaptive-policy-store — memory backend (default)', () => {
   beforeEach(async () => {
@@ -120,7 +120,7 @@ describe('adaptive-policy-store — Redis backend falls back to memory when iore
 
   it('covers the redis branch via dynamic import with env pre-set', async () => {
     process.env.GTCX_ADAPTIVE_STORE_BACKEND = 'redis';
-    const mod = await import('../03-platform/src/adaptive-policy-store.mjs?v=redis-branch');
+    const mod = await import('../src/adaptive-policy-store.mjs?v=redis-branch');
     const store = await mod.getStore();
     assert.ok(store);
     assert.ok(['memory', 'redis'].includes(store.backend));

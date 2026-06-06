@@ -6,7 +6,7 @@ import {
   createTradePassResolver,
   createMockResolver,
   DidResolverError,
-} from '../../03-platform/src/audit-bundles/did-resolver.mjs';
+} from '../../src/audit-bundles/did-resolver.mjs';
 
 const SAMPLE_JWK = { kty: 'OKP', crv: 'Ed25519', x: 'base64-public-key-bytes' };
 

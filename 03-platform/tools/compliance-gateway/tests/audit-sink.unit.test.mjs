@@ -9,7 +9,7 @@
 import assert from 'node:assert';
 import { afterEach, beforeEach, describe, it } from 'node:test';
 
-import { getSink, getSinkInfo, resetSink } from '../03-platform/src/audit-sink.mjs';
+import { getSink, getSinkInfo, resetSink } from '../src/audit-sink.mjs';
 
 function captureStdout(fn) {
   const original = console.log;

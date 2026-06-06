@@ -27,10 +27,10 @@
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import path from 'node:path';
 
-const POLICIES_DIR = path.join(process.cwd(), 'infra', 'kubernetes', 'base', 'policies');
+const POLICIES_DIR = path.join(process.cwd(), '04-ship', 'kubernetes', 'base', 'policies');
 const KUSTOMIZATION_FILE = path.join(POLICIES_DIR, 'kustomization.yaml');
-const SERVICES_DIR = path.join(process.cwd(), 'infra', 'kubernetes', 'base', 'services');
-const OVERLAYS_DIR = path.join(process.cwd(), 'infra', 'kubernetes', 'overlays');
+const SERVICES_DIR = path.join(process.cwd(), '04-ship', 'kubernetes', 'base', 'services');
+const OVERLAYS_DIR = path.join(process.cwd(), '04-ship', 'kubernetes', 'overlays');
 
 const VALID_POLICY_KINDS = new Set(['ClusterPolicy', 'Policy']);
 const VALID_API_VERSIONS = new Set(['kyverno.io/v1', 'kyverno.io/v2', 'kyverno.io/v2beta1', 'kustomize.config.k8s.io/v1beta1']);

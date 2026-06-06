@@ -14,7 +14,7 @@ import {
   verifyJwt,
   signJwt,
   generateEs256KeyPair,
-} from '../03-platform/src/crypto/jwt-verify.mjs';
+} from '../src/crypto/jwt-verify.mjs';
 
 describe('resolveDid', () => {
   it('throws on non-ok HTTP response', async () => {

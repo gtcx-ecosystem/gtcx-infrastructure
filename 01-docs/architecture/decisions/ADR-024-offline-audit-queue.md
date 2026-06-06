@@ -118,7 +118,7 @@ $AUDIT_QUEUE_DIR/
 ## Interface
 
 ```javascript
-// 03-platform/tools/compliance-gateway/03-platform/src/disk-queue.mjs
+// 03-platform/tools/compliance-gateway/src/disk-queue.mjs
 export function createDiskQueue(options);
 // Returns: { enqueue(record), startDrain(sink), stopDrain(), getStats() }
 ```
@@ -137,6 +137,6 @@ queue.startDrain(natsSink);
 
 - ADR-014 — NATS JetStream as the Audit Record Transport
 - ADR-016 — Fail-closed audit signing in production
-- `03-platform/tools/compliance-gateway/03-platform/src/audit-sink.mjs` — current sink implementation
+- `03-platform/tools/compliance-gateway/src/audit-sink.mjs` — current sink implementation
 - `03-platform/tools/chaos-tests/offline-queue-restart.test.mjs` — M2 acceptance test (to be created)
 - 10/10 roadmap — Global South Resilience cap risk (M2)

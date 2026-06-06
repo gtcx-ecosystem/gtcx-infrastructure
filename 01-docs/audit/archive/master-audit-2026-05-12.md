@@ -46,14 +46,14 @@ autonomy_level: 'permissioned'
 
 ### 1.1 Architecture Audit
 
-| Dimension                  | Score | Evidence                                                                                                  |
-| -------------------------- | ----- | --------------------------------------------------------------------------------------------------------- |
-| Modularity                 | 8.0   | 6 protocol domains, clear separation via `03-platform/tools/compliance-gateway/03-platform/src/tools.mjs` |
-| Service Boundaries         | 8.0   | replay-guard, compliance-gateway, deployment-guard are distinct services with typed boundaries            |
-| Consequential Path Clarity | 8.5   | Mutating tools require approval ticket; auth boundary explicit in `auth.mjs`                              |
-| Testability                | 7.5   | 85 tests; 1 flaky integration test under full suite                                                       |
-| Type Safety                | 8.0   | TypeScript strict mode clean; deployment-guard fully typed                                                |
-| Regression Coverage        | 7.5   | Production fail-closed test, audit immutability fixture, security boundary gate                           |
+| Dimension                  | Score | Evidence                                                                                       |
+| -------------------------- | ----- | ---------------------------------------------------------------------------------------------- |
+| Modularity                 | 8.0   | 6 protocol domains, clear separation via `03-platform/tools/compliance-gateway/src/tools.mjs`  |
+| Service Boundaries         | 8.0   | replay-guard, compliance-gateway, deployment-guard are distinct services with typed boundaries |
+| Consequential Path Clarity | 8.5   | Mutating tools require approval ticket; auth boundary explicit in `auth.mjs`                   |
+| Testability                | 7.5   | 85 tests; 1 flaky integration test under full suite                                            |
+| Type Safety                | 8.0   | TypeScript strict mode clean; deployment-guard fully typed                                     |
+| Regression Coverage        | 7.5   | Production fail-closed test, audit immutability fixture, security boundary gate                |
 
 **P0 findings:** None
 **P1 findings:**
@@ -146,15 +146,15 @@ No commit produced for this phase.
 
 ### Changes Since Prior Master Audit (2026-05-11)
 
-| Finding                             | Status     | Resolution                                                                                                               |
-| ----------------------------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------ |
-| F-012: No cross-repo contract tests | **CLOSED** | `03-platform/tools/contract-tests/protocol-schema.test.mjs` + `.github/workflows/cross-repo-contract.yml`                |
-| F-015: No SIGNAL scorecard          | **CLOSED** | `01-docs/05-audit/signal-scorecard.json` (8.60/10) + `03-platform/tools/03-platform/scripts/validate-signal.mjs` CI gate |
-| Phase 3: WAF + VPC Flow Logs        | **CLOSED** | Terraform modules created, not yet deployed                                                                              |
-| Phase 3: mTLS mesh configs          | **CLOSED** | Production + staging Linkerd overlays with kustomization                                                                 |
-| Phase 3: JIT access tool            | **CLOSED** | `03-platform/tools/kubectl-access/kubectl-access.sh` with audit trail                                                    |
-| Phase 3: CodeQL expansion           | **CLOSED** | 4 queries (crypto, jwt, sql, deserialization) in CI config                                                               |
-| Phase 3: ZAP DAST                   | **CLOSED** | `.github/workflows/zap-dast.yml` + `.zap/rules.tsv`                                                                      |
+| Finding                             | Status     | Resolution                                                                                                   |
+| ----------------------------------- | ---------- | ------------------------------------------------------------------------------------------------------------ |
+| F-012: No cross-repo contract tests | **CLOSED** | `03-platform/tools/contract-tests/protocol-schema.test.mjs` + `.github/workflows/cross-repo-contract.yml`    |
+| F-015: No SIGNAL scorecard          | **CLOSED** | `01-docs/05-audit/signal-scorecard.json` (8.60/10) + `03-platform/tools/scripts/validate-signal.mjs` CI gate |
+| Phase 3: WAF + VPC Flow Logs        | **CLOSED** | Terraform modules created, not yet deployed                                                                  |
+| Phase 3: mTLS mesh configs          | **CLOSED** | Production + staging Linkerd overlays with kustomization                                                     |
+| Phase 3: JIT access tool            | **CLOSED** | `03-platform/tools/kubectl-access/kubectl-access.sh` with audit trail                                        |
+| Phase 3: CodeQL expansion           | **CLOSED** | 4 queries (crypto, jwt, sql, deserialization) in CI config                                                   |
+| Phase 3: ZAP DAST                   | **CLOSED** | `.github/workflows/zap-dast.yml` + `.zap/rules.tsv`                                                          |
 
 ### New Findings
 

@@ -13,8 +13,8 @@ import {
   getHeader,
   parseBearerToken,
   authenticateHeaders,
-} from '../03-platform/src/auth.mjs';
-import { canAccessTool, buildRuntimePolicyPrompt } from '../03-platform/src/policy.mjs';
+} from '../src/auth.mjs';
+import { canAccessTool, buildRuntimePolicyPrompt } from '../src/policy.mjs';
 
 describe('loadAuthState edge cases', () => {
   it('returns configuration error for invalid JSON', () => {

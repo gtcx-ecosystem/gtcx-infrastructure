@@ -11,7 +11,7 @@ review_cycle: append-only
 
 **Monitor:** [`README.md`](README.md) (snapshot) · [`cross-repo-agent-bridge.md`](cross-repo-agent-bridge.md) (live updates)  
 **Ecosystem log (canonical multi-repo):**  
-[`gtcx-protocols/01-docs/04-ops/coordination/cross-repo-agent-log.md`](../../../../gtcx-protocols/01-docs/04-ops/coordination/cross-repo-agent-log.md)
+[`gtcx-protocols/01-docs/operations/coordination/cross-repo-agent-log.md`](../../../../gtcx-protocols/01-docs/operations/coordination/cross-repo-agent-log.md)
 
 Append **newest entries at the top** of the table below. One row per meaningful state change (deploy, blocker lift, handoff, sprint close).
 

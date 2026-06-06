@@ -11,7 +11,7 @@ import {
   computeBodyHash,
   computeHeadersHash,
   computeEnvelopeHash,
-} from '../03-platform/src/crypto/hash.mjs';
+} from '../src/crypto/hash.mjs';
 
 describe('sha256Hex', () => {
   it('produces consistent hex output', () => {

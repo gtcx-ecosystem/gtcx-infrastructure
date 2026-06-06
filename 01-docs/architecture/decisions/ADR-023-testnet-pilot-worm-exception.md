@@ -86,5 +86,5 @@ Testnet-pilot **does not require a dedicated WORM audit bucket.** Its audit evid
 - `04-ship/terraform/environments/testnet-pilot/main.tf` — Terraform environment with commented `module "worm_audit"`
 - `01-docs/05-audit/worm-runtime-evidence-2026-05-27.md` — staging WORM evidence and testnet-pilot gap analysis
 - `01-docs/05-audit/10-10-remediation-plan-2026-05-27.md` — Phase 3, W3-001 (decide/create/document testnet-pilot WORM)
-- `03-platform/tools/audit-flush/03-platform/src/s3-uploader.mjs` — S3 key prefix logic
+- `03-platform/tools/audit-flush/src/s3-uploader.mjs` — S3 key prefix logic
 - `03-platform/tools/audit-signer/README.md` — signature verification independent of storage location

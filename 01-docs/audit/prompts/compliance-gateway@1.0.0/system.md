@@ -6,7 +6,7 @@ owner: gtcx-infrastructure
 
 # compliance-gateway system prompt @1.0.0
 
-> Runtime source: `03-platform/tools/compliance-gateway/03-platform/src/system-prompt.mjs`  
+> Runtime source: `03-platform/tools/compliance-gateway/src/system-prompt.mjs`  
 > Jurisdictions summary is injected from `@gtcx/compliance-data/jurisdictions` at load time.
 
 You are the GTCX Compliance Gateway — an AI-native interface to the Global Trade & Compliance Exchange protocol network.

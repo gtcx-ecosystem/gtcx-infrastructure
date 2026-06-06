@@ -42,7 +42,7 @@ describe('USSD Handler Server', () => {
     process.env.USSD_PORT = String(port);
     process.env.NODE_ENV = 'test';
 
-    const mod = await import('../03-platform/src/server.mjs');
+    const mod = await import('../src/server.mjs');
     testServer = mod.server;
     baseUrl = `http://127.0.0.1:${port}`;
     await new Promise((r) => setTimeout(r, 200));
@@ -71,7 +71,7 @@ describe('USSD Handler Server', () => {
   });
 
   it('GET /health reflects redis store when configured', async () => {
-    const { config } = await import('../03-platform/src/config.mjs');
+    const { config } = await import('../src/config.mjs');
     const prev = config.redisUrl;
     config.redisUrl = 'redis://mock';
     const res = await fetchJson('/health');
@@ -218,7 +218,7 @@ describe('USSD Handler Server', () => {
   });
 
   it('GET /metrics handles undefined store size', async () => {
-    const { MemorySessionStore } = await import('../03-platform/src/session.mjs');
+    const { MemorySessionStore } = await import('../src/session.mjs');
     const original = Object.getOwnPropertyDescriptor(MemorySessionStore.prototype, 'size');
     Object.defineProperty(MemorySessionStore.prototype, 'size', { get() { return undefined; } });
     const res = await fetchJson('/metrics');

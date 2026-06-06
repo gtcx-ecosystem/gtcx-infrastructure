@@ -51,21 +51,21 @@ Per-control mapping lives at:
 
 ### Controls Ready for Walkthrough
 
-| Control                            | Evidence Location                                                                                                                  | Grade |
-| ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ----- |
-| CC1.1 Integrity and ethical values | `CONTRIBUTING.md`, `SECURITY.md`                                                                                                   | 🟢    |
-| CC1.2 Board oversight              | `01-docs/10-compliance/board-security-committee-charter.md`                                                                        | 🟢    |
-| CC1.3 Org structure + reporting    | `01-docs/09-security/security-framework.md`                                                                                        | 🟢    |
-| CC1.4 Commitment to competence     | `01-docs/01-agents/onboarding/`, 24 runbooks                                                                                       | 🟢    |
-| CC1.5 Accountability               | `01-docs/09-security/security-framework.md`, `04-ship/security/policies/access-control.md`                                         | 🟢    |
-| CC2.1 Internal information needs   | `01-docs/README.md`, `03-platform/tools/03-platform/scripts/docs-link-checker.mjs`                                                 | 🟢    |
-| CC2.2 Internal communication       | `01-docs/04-ops/runbooks/` — 25 runbooks                                                                                           | 🟢    |
-| CC4.1 Monitoring activities        | Grafana dashboards, `03-platform/tools/compliance-gateway/03-platform/src/metrics.mjs`                                             | 🟢    |
-| CC4.2 Deficiency communication     | `.github/workflows/dast-zap.yml`, `dr-test-quarterly.yml`                                                                          | 🟢    |
-| CC6.1 Logical access security      | `03-platform/tools/compliance-gateway/03-platform/src/auth.mjs`, `03-platform/tools/compliance-gateway/03-platform/src/budget.mjs` | 🟢    |
-| CC7.2 System operations            | `04-ship/terraform/`, `04-ship/kubernetes/`                                                                                        | 🟢    |
-| CC7.3 Change management            | `.github/workflows/ci.yml`, ADRs                                                                                                   | 🟢    |
-| CC8.1 Risk assessment              | `01-docs/05-audit/master-audit-*.md`                                                                                               | 🟢    |
+| Control                            | Evidence Location                                                                                          | Grade |
+| ---------------------------------- | ---------------------------------------------------------------------------------------------------------- | ----- |
+| CC1.1 Integrity and ethical values | `CONTRIBUTING.md`, `SECURITY.md`                                                                           | 🟢    |
+| CC1.2 Board oversight              | `01-docs/10-compliance/board-security-committee-charter.md`                                                | 🟢    |
+| CC1.3 Org structure + reporting    | `01-docs/09-security/security-framework.md`                                                                | 🟢    |
+| CC1.4 Commitment to competence     | `01-docs/01-agents/onboarding/`, 24 runbooks                                                               | 🟢    |
+| CC1.5 Accountability               | `01-docs/09-security/security-framework.md`, `04-ship/security/policies/access-control.md`                 | 🟢    |
+| CC2.1 Internal information needs   | `01-docs/README.md`, `03-platform/tools/scripts/docs-link-checker.mjs`                                     | 🟢    |
+| CC2.2 Internal communication       | `01-docs/04-ops/runbooks/` — 25 runbooks                                                                   | 🟢    |
+| CC4.1 Monitoring activities        | Grafana dashboards, `03-platform/tools/compliance-gateway/src/metrics.mjs`                                 | 🟢    |
+| CC4.2 Deficiency communication     | `.github/workflows/dast-zap.yml`, `dr-test-quarterly.yml`                                                  | 🟢    |
+| CC6.1 Logical access security      | `03-platform/tools/compliance-gateway/src/auth.mjs`, `03-platform/tools/compliance-gateway/src/budget.mjs` | 🟢    |
+| CC7.2 System operations            | `04-ship/terraform/`, `04-ship/kubernetes/`                                                                | 🟢    |
+| CC7.3 Change management            | `.github/workflows/ci.yml`, ADRs                                                                           | 🟢    |
+| CC8.1 Risk assessment              | `01-docs/05-audit/master-audit-*.md`                                                                       | 🟢    |
 
 ### WORM Audit Substrate (CC7.2 / A1.2)
 
@@ -175,15 +175,15 @@ Closure checklist:
 
 ## Control Owner Matrix
 
-| Domain                              | Primary Owner         | Backup Owner        | Contact               | Evidence Source                                                               |
-| ----------------------------------- | --------------------- | ------------------- | --------------------- | ----------------------------------------------------------------------------- |
-| Identity, auth, rate limits         | Security Lead         | Platform Lead       | security@gtcx.trade   | `03-platform/tools/compliance-gateway/03-platform/src/auth.mjs`, `budget.mjs` |
-| WORM audit chain                    | Compliance Platform   | Security Lead       | compliance@gtcx.trade | `03-platform/tools/audit-signer/`, `03-platform/tools/audit-flush/`           |
-| Kubernetes deployability            | Infrastructure Lead   | Platform Lead       | infra@gtcx.trade      | `04-ship/kubernetes/`, `.github/workflows/ci.yml`                             |
-| Terraform and AWS controls          | Infrastructure Lead   | SRE                 | infra@gtcx.trade      | `04-ship/terraform/`                                                          |
-| DR and recovery                     | SRE                   | Infrastructure Lead | sre@gtcx.trade        | `01-docs/04-ops/runbooks/disaster-recovery-detailed.md`                       |
-| Documentation governance            | Quality Evidence Lead | Security Lead       | docs@gtcx.trade       | `03-platform/tools/03-platform/scripts/docs-standard-validator.mjs`           |
-| External comms and evidence handoff | Security Lead         | Compliance Lead     | security@gtcx.trade   | `01-docs/05-audit/`, `01-docs/10-compliance/`                                 |
+| Domain                              | Primary Owner         | Backup Owner        | Contact               | Evidence Source                                                     |
+| ----------------------------------- | --------------------- | ------------------- | --------------------- | ------------------------------------------------------------------- |
+| Identity, auth, rate limits         | Security Lead         | Platform Lead       | security@gtcx.trade   | `03-platform/tools/compliance-gateway/src/auth.mjs`, `budget.mjs`   |
+| WORM audit chain                    | Compliance Platform   | Security Lead       | compliance@gtcx.trade | `03-platform/tools/audit-signer/`, `03-platform/tools/audit-flush/` |
+| Kubernetes deployability            | Infrastructure Lead   | Platform Lead       | infra@gtcx.trade      | `04-ship/kubernetes/`, `.github/workflows/ci.yml`                   |
+| Terraform and AWS controls          | Infrastructure Lead   | SRE                 | infra@gtcx.trade      | `04-ship/terraform/`                                                |
+| DR and recovery                     | SRE                   | Infrastructure Lead | sre@gtcx.trade        | `01-docs/04-ops/runbooks/disaster-recovery-detailed.md`             |
+| Documentation governance            | Quality Evidence Lead | Security Lead       | docs@gtcx.trade       | `03-platform/tools/scripts/docs-standard-validator.mjs`             |
+| External comms and evidence handoff | Security Lead         | Compliance Lead     | security@gtcx.trade   | `01-docs/05-audit/`, `01-docs/10-compliance/`                       |
 
 ---
 

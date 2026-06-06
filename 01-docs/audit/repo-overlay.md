@@ -77,7 +77,7 @@ These caps OVERRIDE the ecosystem caps when they're stricter; they never relax t
 - **`Enterprise / Production Readiness` ≤ 7.0 unless `terraform fmt -check -recursive` passes across all environments AND drift detection has run in the last 30 days.**
 - **`Enterprise / Production Readiness` ≤ 7.0 if any environment commits operator IP addresses to tfvars** (personal-IP-as-firewall is fragile + leaks geolocation).
 - **`Global South Resilience` ≤ 7.0 if NAT Gateway is single-AZ in any environment overlay claiming HA.**
-- **`Agentic Maturity` ≤ 8.0 if `AUDIT_SIGNING_KEY_B64` is not required in production deployments via fail-closed startup check.** (As of 2026-05-22 this is enforced — `03-platform/tools/compliance-gateway/03-platform/src/server.mjs` exits EX_CONFIG 78.)
+- **`Agentic Maturity` ≤ 8.0 if `AUDIT_SIGNING_KEY_B64` is not required in production deployments via fail-closed startup check.** (As of 2026-05-22 this is enforced — `03-platform/tools/compliance-gateway/src/server.mjs` exits EX_CONFIG 78.)
 - **`Code Quality` ≤ 8.0 if any workspace package's coverage gate threshold differs from 90 without a documented rationale.** (See `01-docs/05-audit/coverage-gate-rationale.md`.)
 
 ## Additional Lens Guidance

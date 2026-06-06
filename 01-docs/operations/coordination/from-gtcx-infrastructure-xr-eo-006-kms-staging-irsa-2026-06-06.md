@@ -28,7 +28,7 @@ Staging sovereign pods reference `alias/gtcx-production-sovereign-gh-bog` with I
 ```bash
 cd 04-ship/terraform/environments/production && terraform validate  # exit 0
 cd 04-ship/terraform/environments/staging && terraform validate     # exit 0
-node 03-platform/tools/03-platform/scripts/validate-all.mjs                               # 46/46 PASS
+node 03-platform/tools/scripts/validate-all.mjs                               # 46/46 PASS
 ```
 
 ## Apply + live verify (2026-06-06)

@@ -31,7 +31,7 @@ async function setupServer(envOverrides = {}) {
     process.env[k] = v;
   }
 
-  const mod = await import(`../03-platform/src/server.mjs?v=rp-${Date.now()}`);
+  const mod = await import(`../src/server.mjs?v=rp-${Date.now()}`);
   testServer = mod.server;
   baseUrl = `http://127.0.0.1:${port}`;
   await new Promise((r) => setTimeout(r, 300));

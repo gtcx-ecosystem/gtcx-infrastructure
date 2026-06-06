@@ -10,11 +10,11 @@
 import assert from 'node:assert';
 import { describe, it } from 'node:test';
 
-import { computeBodyHash, computeHeadersHash, computeEnvelopeHash } from '../03-platform/src/crypto/hash.mjs';
-import { ReplayMetrics } from '../03-platform/src/metrics/replay-metrics.mjs';
-import { replayGuardMiddleware } from '../03-platform/src/middleware.mjs';
-import { MemoryNonceStore } from '../03-platform/src/store/memory-nonce-store.mjs';
-import { ReplayVerifier } from '../03-platform/src/verifier.mjs';
+import { computeBodyHash, computeHeadersHash, computeEnvelopeHash } from '../src/crypto/hash.mjs';
+import { ReplayMetrics } from '../src/metrics/replay-metrics.mjs';
+import { replayGuardMiddleware } from '../src/middleware.mjs';
+import { MemoryNonceStore } from '../src/store/memory-nonce-store.mjs';
+import { ReplayVerifier } from '../src/verifier.mjs';
 
 function makeIntegrityPayload(requestData, overrides = {}) {
   const now = new Date().toISOString();

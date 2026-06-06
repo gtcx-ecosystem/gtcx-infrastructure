@@ -57,5 +57,5 @@ curl -sS -o /dev/null -w "%{http_code}\n" https://api.staging.gtcx.trade/api/hea
 
 ## Ref
 
-- Platforms outbound: `gtcx-platforms/01-docs/04-ops/coordination/to-gtcx-infrastructure-ecr-rollout-2026-06-03.md`
+- Platforms outbound: `gtcx-platforms/01-docs/operations/coordination/to-gtcx-infrastructure-ecr-rollout-2026-06-03.md`
 - Infra bridge: `gtcx-infrastructure/01-docs/04-ops/coordination/cross-repo-agent-bridge.md`

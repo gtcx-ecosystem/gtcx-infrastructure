@@ -21,11 +21,11 @@ import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
-const ALERTS_DIR = join(REPO_ROOT, 'infra', 'monitoring', 'alerts');
-const RUNBOOK_PATH = join(REPO_ROOT, 'docs', 'operations', 'runbooks', 'alerts.md');
+const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
+const ALERTS_DIR = join(REPO_ROOT, '04-ship', 'monitoring', 'alerts');
+const RUNBOOK_PATH = join(REPO_ROOT, '01-docs', 'operations', 'runbooks', 'alerts.md');
 const RUNBOOK_BASE =
-  'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/01-docs/04-ops/runbooks/alerts.md';
+  'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/01-docs/operations/runbooks/alerts.md';
 
 const checkOnly = process.argv.includes('--check');
 
@@ -222,7 +222,7 @@ function main() {
         console.error(`  - ${m.file}: ${m.alert}`);
       }
       console.error(
-        '\nRun `node 03-platform/tools/03-platform/scripts/alerts-add-runbook-url.mjs` to add them.'
+        '\nRun `node 03-platform/tools/scripts/alerts-add-runbook-url.mjs` to add them.'
       );
       process.exit(1);
     }

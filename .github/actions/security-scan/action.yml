@@ -63,7 +63,7 @@ runs:
       run: |
         # Download the shared audit script from gtcx-infrastructure
         curl -sL \
-          https://raw.githubusercontent.com/gtcx-ecosystem/gtcx-infrastructure/main/03-platform/tools/03-platform/scripts/audit-with-acceptance.mjs \
+          https://raw.githubusercontent.com/gtcx-ecosystem/gtcx-infrastructure/main/03-platform/tools/scripts/audit-with-acceptance.mjs \
           > /tmp/audit-with-acceptance.mjs
 
         # Download the shared CVE acceptance log

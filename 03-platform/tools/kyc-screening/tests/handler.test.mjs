@@ -9,7 +9,7 @@
 import assert from 'node:assert';
 import { afterEach, beforeEach, describe, it } from 'node:test';
 
-import { handler, localScreen } from '../03-platform/src/handler.mjs';
+import { handler, localScreen } from '../src/handler.mjs';
 
 function s3Event(key, bucket = 'gtcx-test-kyc-documents') {
   return {
@@ -95,7 +95,7 @@ describe('screen — dispatcher', () => {
   it('uses local by default', async () => {
     delete process.env.SCREENING_PROVIDER;
     // Re-import to pick up the env var change.
-    const mod = await import(`../03-platform/src/handler.mjs?v=${Date.now()}`);
+    const mod = await import(`../src/handler.mjs?v=${Date.now()}`);
     const r = await mod.screen({ documentKey: 'kyc/test.png' });
     assert.strictEqual(r.provider, 'local');
     assert.ok(['clear', 'review', 'block'].includes(r.verdict));
@@ -103,7 +103,7 @@ describe('screen — dispatcher', () => {
 
   it('throws on unknown provider', async () => {
     process.env.SCREENING_PROVIDER = 'mystery-meat';
-    const mod = await import(`../03-platform/src/handler.mjs?v=${Date.now()}-unknown`);
+    const mod = await import(`../src/handler.mjs?v=${Date.now()}-unknown`);
     await assert.rejects(() => mod.screen({ documentKey: 'k' }), /unknown SCREENING_PROVIDER/);
   });
 });

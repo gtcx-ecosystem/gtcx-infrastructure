@@ -11,7 +11,7 @@
 import assert from 'node:assert';
 import { afterEach, beforeEach, describe, it } from 'node:test';
 
-import { _resetForTests, getBudgetStore, _setStoreForTests } from '../03-platform/src/budget-store.mjs';
+import { _resetForTests, getBudgetStore, _setStoreForTests } from '../src/budget-store.mjs';
 
 describe('budget-store — memory backend (default)', () => {
   beforeEach(async () => {

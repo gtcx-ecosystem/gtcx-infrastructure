@@ -10,7 +10,7 @@
 import assert from 'node:assert';
 import { describe, it } from 'node:test';
 
-import { sanitizeAuditTarget } from '../03-platform/src/audit-target.mjs';
+import { sanitizeAuditTarget } from '../src/audit-target.mjs';
 
 describe('sanitizeAuditTarget', () => {
   it('returns empty string for non-string input', () => {

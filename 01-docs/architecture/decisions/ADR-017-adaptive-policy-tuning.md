@@ -80,8 +80,8 @@ Adaptive policy is disabled by default (`GTCX_ADAPTIVE_POLICY_ENABLED=false`). O
 
 - ADR-014 — NATS JetStream audit transport
 - ADR-016 — Fail-closed audit signing
-- `03-platform/tools/compliance-gateway/03-platform/src/adaptive-policy.mjs` — pure-function policy + scheduler
-- `03-platform/tools/compliance-gateway/03-platform/src/adaptive-policy-store.mjs` — pluggable store (memory / Redis)
+- `03-platform/tools/compliance-gateway/src/adaptive-policy.mjs` — pure-function policy + scheduler
+- `03-platform/tools/compliance-gateway/src/adaptive-policy-store.mjs` — pluggable store (memory / Redis)
 - `03-platform/tools/compliance-gateway/tests/adaptive-policy.unit.test.mjs` — 8 state-machine cases
 - `03-platform/tools/compliance-gateway/tests/adaptive-policy-scheduler.integration.test.mjs` — 6 live-scheduler cases
 - `03-platform/tools/compliance-gateway/tests/adaptive-policy-store.unit.test.mjs` — 8 store-backend cases

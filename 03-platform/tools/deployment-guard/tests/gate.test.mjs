@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 
-import { normalizeEnvironment, validateDeploymentGate, validateRollbackGate } from '../03-platform/src/gate.mjs';
+import { normalizeEnvironment, validateDeploymentGate, validateRollbackGate } from '../src/gate.mjs';
 
 describe('normalizeEnvironment', () => {
   it('normalizes aliases', () => {

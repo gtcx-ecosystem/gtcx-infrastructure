@@ -1,7 +1,7 @@
 import assert from 'node:assert';
 import { describe, it } from 'node:test';
 
-import { InMemoryQueryStore, applyFilter } from '../../03-platform/src/audit-query/store.mjs';
+import { InMemoryQueryStore, applyFilter } from '../../src/audit-query/store.mjs';
 
 function event(overrides) {
   return {

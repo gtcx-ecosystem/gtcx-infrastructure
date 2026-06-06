@@ -8,7 +8,7 @@
 import assert from 'node:assert';
 import { describe, it } from 'node:test';
 
-import { verifyDidSignature, verifyDidSignatureStubBypass } from '../03-platform/src/crypto/did-verify.mjs';
+import { verifyDidSignature, verifyDidSignatureStubBypass } from '../src/crypto/did-verify.mjs';
 
 import {
   getEd25519KeyPair,
@@ -17,7 +17,7 @@ import {
   signTestJwt,
 } from './helpers/jwt-fixture.mjs';
 
-/** @returns {import('../03-platform/src/types.mjs').QueueIntegrity} */
+/** @returns {import('../src/types.mjs').QueueIntegrity} */
 function makeIntegrity(overrides = {}) {
   const now = new Date().toISOString();
   return {
