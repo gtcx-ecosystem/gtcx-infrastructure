@@ -8,7 +8,7 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
-const CHECKLIST = join(ROOT, 'docs', 'gtm', 'regulatory', 'soc2-readiness-checklist.md');
+const CHECKLIST = join(ROOT, '01-docs/compliance', 'soc2-readiness-checklist.md');
 
 const ALLOWED_HUMAN_ESCALATION = new Set(['CISO', 'Legal', 'Board']);
 

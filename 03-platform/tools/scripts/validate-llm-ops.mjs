@@ -15,7 +15,7 @@ const REQUIRED = [
   '04-deploy/kubernetes/overlays/staging/monitoring/kustomization.yaml',
   '04-deploy/kubernetes/overlays/staging/patches/compliance-gateway-metrics.yaml',
   '03-platform/tools/compliance-gateway/src/llm-trace.mjs',
-  '01-docs/04-ops/runbooks/staging-monitoring-apply.md',
+  '01-docs/operations/runbooks/staging-monitoring-apply.md',
 ];
 
 let failed = 0;

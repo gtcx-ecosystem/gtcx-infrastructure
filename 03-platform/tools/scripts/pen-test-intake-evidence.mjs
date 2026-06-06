@@ -9,10 +9,10 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
-const OUT = join(ROOT, 'docs', 'audit', 'pen-test-intake-evidence-2026-05-31.md');
-const LATEST = join(ROOT, 'docs', 'audit', 'latest.json');
-const SCOPE = join(ROOT, 'docs', 'audit', 'pen-test-scope-2026.md');
-const RFP = join(ROOT, 'docs', 'audit', 'pen-test-rfp-2026.md');
+const OUT = join(ROOT, '01-docs/audit', 'pen-test-intake-evidence-2026-05-31.md');
+const LATEST = join(ROOT, '01-docs/audit', 'latest.json');
+const SCOPE = join(ROOT, '01-docs/audit', 'pen-test-scope-2026.md');
+const RFP = join(ROOT, '01-docs/audit', 'pen-test-rfp-2026.md');
 
 const REQUIRED_SCOPE_MARKERS = [
   'api.gtcx.trade',

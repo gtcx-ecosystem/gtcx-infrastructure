@@ -20,7 +20,7 @@ import { fileURLToPath } from 'node:url';
 import {
   PINNED_PUBLIC_KEY,
   verifyCatalog,
-} from '../03-platform/scripts/verify-catalog.mjs';
+} from '../scripts/verify-catalog.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const VERIFIER = join(HERE, '..', 'scripts', 'verify-catalog.mjs');

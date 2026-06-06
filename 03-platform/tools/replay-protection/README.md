@@ -90,13 +90,13 @@ Future-dated timestamps >2 min ahead are always rejected.
 
 Add the replay-guard container to the `gtcx-agx` pod. The agx container calls `localhost:8400/v1/replay/verify` for every authenticated request carrying `X-GTCX-*` headers.
 
-See: `04-ship/kubernetes/base/services/replay-guard-sidecar-integration.yaml`
+See: `04-deploy/kubernetes/base/services/replay-guard-sidecar-integration.yaml`
 
 ### Option 2: Standalone Service
 
 Deploy `gtcx-replay-guard` as a standalone ClusterIP service. Any backend can call it over the network.
 
-See: `04-ship/kubernetes/base/services/replay-guard.yaml`
+See: `04-deploy/kubernetes/base/services/replay-guard.yaml`
 
 ### Option 3: NGINX auth_request
 
@@ -136,7 +136,7 @@ Pathnames are normalized (`//` → `/`). Query parameters are sorted lexicograph
 
 ### Alert Rules
 
-See: `04-ship/monitoring/alerts/replay-protection-alerts.yml`
+See: `04-deploy/monitoring/alerts/replay-protection-alerts.yml`
 
 Key alerts:
 
@@ -148,7 +148,7 @@ Key alerts:
 
 ### Grafana Dashboard
 
-See: `04-ship/monitoring/dashboards/replay-protection.json`
+See: `04-deploy/monitoring/dashboards/replay-protection.json`
 
 ### Audit Events
 

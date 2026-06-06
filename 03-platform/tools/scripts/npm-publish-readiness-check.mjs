@@ -9,8 +9,8 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
 const PACKAGES = [
-  join(ROOT, 'tools', 'audit-signer', 'package.json'),
-  join(ROOT, 'tools', 'compliance-data', 'package.json'),
+  join(ROOT, '03-platform/tools', 'audit-signer', 'package.json'),
+  join(ROOT, '03-platform/tools', 'compliance-data', 'package.json'),
 ];
 
 export function validatePublishReadiness(manifests) {

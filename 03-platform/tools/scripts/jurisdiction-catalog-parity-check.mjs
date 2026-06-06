@@ -8,8 +8,8 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
-const CATALOG = join(ROOT, 'tools', 'compliance-data', 'jurisdictions.json');
-const VARIABLES = join(ROOT, 'infra', 'terraform', 'modules', 'compliance-db', 'variables.tf');
+const CATALOG = join(ROOT, '03-platform/tools', 'compliance-data', 'jurisdictions.json');
+const VARIABLES = join(ROOT, '04-deploy/terraform', 'modules', 'compliance-db', 'variables.tf');
 
 export function extractTerraformJurisdictions(text) {
   const match = text.match(/contains\(\[\s*([\s\S]*?)\],\s*var\.jurisdiction\)/);

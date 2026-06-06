@@ -25,7 +25,7 @@ review_cycle: 'on-change'
 
 ## What does NOT belong here
 
-- Runtime operations (deploy, migrate, bootstrap) → use [`04-ship/03-platform/scripts/`](../../04-ship/03-platform/scripts/README.md)
+- Runtime operations (deploy, migrate, bootstrap) → use [`04-deploy/03-platform/scripts/`](../../04-deploy/03-platform/scripts/README.md)
 - Cross-repo coordination / agent-sync → use [`03-platform/scripts/`](../../03-platform/scripts/README.md)
 - Per-workspace-package scripts → use that package's `package.json` scripts
 
@@ -73,6 +73,6 @@ These run as part of `node 03-platform/tools/03-platform/scripts/validate-all.mj
 
 ## Related
 
-- [`04-ship/03-platform/scripts/`](../../04-ship/03-platform/scripts/README.md) — runtime operations
+- [`04-deploy/03-platform/scripts/`](../../04-deploy/03-platform/scripts/README.md) — runtime operations
 - [`03-platform/scripts/`](../../03-platform/scripts/README.md) — cross-repo automation
 - [`03-platform/tools/policy/`](../policy/) — Kyverno policy source these validators check against

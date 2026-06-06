@@ -8,8 +8,8 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = join(__dirname, '..', '..');
-const OUT = join(ROOT, '01-docs/05-audit/evidence/baseline-cost-stats-latest.json');
+const ROOT = join(__dirname, '..', '..', '..');
+const OUT = join(ROOT, '05-audit/evidence/baseline-cost-stats-latest.json');
 
 const input =
   process.argv.find((a) => a.startsWith('--input='))?.slice(8) ??

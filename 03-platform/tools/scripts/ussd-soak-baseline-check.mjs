@@ -14,7 +14,7 @@ import { fileURLToPath } from 'node:url';
 import { compareSoakMetrics } from './soak-baseline-check.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
-const BASELINE_PATH = join(ROOT, 'docs', 'audit', 'ussd-soak-baseline.json');
+const BASELINE_PATH = join(ROOT, '01-docs/audit', 'ussd-soak-baseline.json');
 
 function checkFlowCompletion(baseline, actual) {
   const min = baseline.minimumFlowCompletion ?? 0.95;

@@ -11,18 +11,18 @@ review_cycle: 'on-change'
 
 # 03-platform/scripts/ — Cross-Repo Automation
 
-**Charter:** Top-level convenience scripts that don't fit cleanly inside `04-ship/03-platform/scripts/` (runtime ops) or `03-platform/tools/03-platform/scripts/` (CI validators). Typically cross-repo coordination or one-shot intelligence-deploy convenience. Keep this directory small — when a script grows beyond one-purpose, move it to the right home.
+**Charter:** Top-level convenience scripts that don't fit cleanly inside `04-deploy/03-platform/scripts/` (runtime ops) or `03-platform/tools/scripts/` (CI validators). Typically cross-repo coordination or one-shot intelligence-deploy convenience. Keep this directory small — when a script grows beyond one-purpose, move it to the right home.
 
 ## What belongs here
 
 - Cross-repo coordination utilities (e.g. agent-orchestration file sync)
 - One-shot top-level convenience scripts that operators run from repo root
-- Anything that genuinely spans both `04-ship/` and `03-platform/tools/` boundaries
+- Anything that genuinely spans both `04-deploy/` and `03-platform/tools/` boundaries
 
 ## What does NOT belong here
 
-- Runtime operations (deploy, migrate, bootstrap) → use [`04-ship/03-platform/scripts/`](../04-ship/03-platform/scripts/README.md)
-- CI validators / lint / hygiene → use [`03-platform/tools/03-platform/scripts/`](../03-platform/tools/03-platform/scripts/README.md)
+- Runtime operations (deploy, migrate, bootstrap) → use [`04-deploy/03-platform/scripts/`](../04-deploy/03-platform/scripts/README.md)
+- CI validators / lint / hygiene → use [`03-platform/tools/scripts/`](../03-platform/tools/scripts/README.md)
 - Per-workspace-package scripts → use that package's `package.json`
 
 ## Contents
@@ -34,10 +34,10 @@ review_cycle: 'on-change'
 
 ## Three-locations charter (quick reference)
 
-| Directory                                                                                      | Charter                                       | Language             | Touches production? |
-| ---------------------------------------------------------------------------------------------- | --------------------------------------------- | -------------------- | ------------------- |
-| [`04-ship/03-platform/scripts/`](../04-ship/03-platform/scripts/README.md)                     | Runtime ops (deploy, migrate, bootstrap)      | bash                 | Yes                 |
-| [`03-platform/tools/03-platform/scripts/`](../03-platform/tools/03-platform/scripts/README.md) | CI validators + dev tooling                   | `.mjs`, `.sh`, `.py` | No                  |
-| `03-platform/scripts/` (this dir)                                                              | Cross-repo automation + top-level convenience | mixed                | Rare                |
+| Directory                                                                      | Charter                                       | Language             | Touches production? |
+| ------------------------------------------------------------------------------ | --------------------------------------------- | -------------------- | ------------------- |
+| [`04-deploy/03-platform/scripts/`](../04-deploy/03-platform/scripts/README.md) | Runtime ops (deploy, migrate, bootstrap)      | bash                 | Yes                 |
+| [`03-platform/tools/scripts/`](../03-platform/tools/scripts/README.md)         | CI validators + dev tooling                   | `.mjs`, `.sh`, `.py` | No                  |
+| `03-platform/scripts/` (this dir)                                              | Cross-repo automation + top-level convenience | mixed                | Rare                |
 
-When in doubt: if a script invokes `aws`/`kubectl`/`terraform` against a real environment, it's `04-ship/03-platform/scripts/`. If it validates/lints/snapshots, it's `03-platform/tools/03-platform/scripts/`. Else it's here.
+When in doubt: if a script invokes `aws`/`kubectl`/`terraform` against a real environment, it's `04-deploy/03-platform/scripts/`. If it validates/lints/snapshots, it's `03-platform/tools/scripts/`. Else it's here.

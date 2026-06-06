@@ -11,8 +11,8 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
-const DR_SCRIPT = join(ROOT, 'infra', 'scripts', 'dr-test.sh');
-const OUT = join(ROOT, 'docs', 'audit', 'dr-fire-drill-evidence-2026-05-31.md');
+const DR_SCRIPT = join(ROOT, '04-deploy/03-platform/scripts', 'dr-test.sh');
+const OUT = join(ROOT, '01-docs/audit', 'dr-fire-drill-evidence-2026-05-31.md');
 
 const REQUIRED_GUARDS = [
   'POSTGRES_HOST:?',

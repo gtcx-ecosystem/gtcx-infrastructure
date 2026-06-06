@@ -13,9 +13,9 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
-const SCRIPT = join(ROOT, 'infra', 'scripts', 'rds-live-restore.sh');
-const RUNBOOK = join(ROOT, 'docs', 'operations', 'runbooks', 'rds-live-restore.md');
-const EVIDENCE_DIR = join(ROOT, 'docs', 'audit', 'evidence', 'rds-restore');
+const SCRIPT = join(ROOT, '04-deploy/03-platform/scripts', 'rds-live-restore.sh');
+const RUNBOOK = join(ROOT, '01-docs/operations/runbooks', 'rds-live-restore.md');
+const EVIDENCE_DIR = join(ROOT, '01-docs/audit/evidence', 'rds-restore');
 
 const RED = '\x1b[31m';
 const GREEN = '\x1b[32m';

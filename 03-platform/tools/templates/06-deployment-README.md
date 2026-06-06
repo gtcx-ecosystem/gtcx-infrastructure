@@ -23,7 +23,7 @@
 ## Infrastructure Overview
 
 ```
-04-ship/
+04-deploy/
 ├── docker/              # Dockerfiles and compose
 │   └── observability/   # Prometheus, Loki, Grafana
 ├── kubernetes/          # K8s manifests
@@ -56,21 +56,21 @@
 
 ```bash
 # Start local services
-docker-compose -f 04-ship/docker/docker-compose.dev.yml up
+docker-compose -f 04-deploy/docker/docker-compose.dev.yml up
 
 # Or use Kubernetes
-kubectl apply -k 04-ship/kubernetes/overlays/development/
+kubectl apply -k 04-deploy/kubernetes/overlays/development/
 ```
 
 ### Production Deployment
 
 ```bash
 # Apply Terraform
-cd 04-ship/terraform/environments/ghana
+cd 04-deploy/terraform/environments/ghana
 terraform apply
 
 # Deploy to Kubernetes
-kubectl apply -k 04-ship/kubernetes/overlays/production/
+kubectl apply -k 04-deploy/kubernetes/overlays/production/
 ```
 
 ## Air-Gapped Deployments

@@ -1,6 +1,6 @@
 # `03-platform/tools/chaos-tests/` — Resilience chaos fixtures
 
-Node test fixtures for offline-queue and restart semantics. Invoked from `04-ship/03-platform/scripts/validate.sh` (ADR-019 exemption — single-purpose, not a workspace package).
+Node test fixtures for offline-queue and restart semantics. Invoked from `04-deploy/03-platform/scripts/validate.sh` (ADR-019 exemption — single-purpose, not a workspace package).
 
 | File                             | Purpose                                 |
 | -------------------------------- | --------------------------------------- |

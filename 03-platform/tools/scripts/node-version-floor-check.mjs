@@ -26,7 +26,7 @@ function readJson(path) {
 
 function listWorkspacePackageFiles() {
   const files = ['package.json', '04-deploy/migrations/package.json'];
-  const toolsDir = join(ROOT, 'tools');
+  const toolsDir = join(ROOT, '03-platform/tools');
   for (const entry of readdirSync(toolsDir, { withFileTypes: true })) {
     if (!entry.isDirectory()) continue;
     const packagePath = `03-platform/tools/${entry.name}/package.json`;

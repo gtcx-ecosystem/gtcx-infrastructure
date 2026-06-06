@@ -17,10 +17,10 @@ live_rds_execution: pending
 
 ## Validation performed
 
-| Check                             | Result                                   |
-| --------------------------------- | ---------------------------------------- |
-| `dr-test.sh` fail-fast env guards | PASS                                     |
-| Evidence fields (RTO/RPO/steps)   | PASS                                     |
+| Check                             | Result                                     |
+| --------------------------------- | ------------------------------------------ |
+| `dr-test.sh` fail-fast env guards | PASS                                       |
+| Evidence fields (RTO/RPO/steps)   | PASS                                       |
 | Script path                       | `04-deploy/03-platform/scripts/dr-test.sh` |
 
 ## Next operator step

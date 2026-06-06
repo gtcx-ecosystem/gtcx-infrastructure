@@ -11,7 +11,7 @@ const PER_FILE_THRESHOLD = 80;
 const METRIC = 'branches';
 
 async function findSummaries() {
-  const toolsDir = resolve(REPO_ROOT, 'tools');
+  const toolsDir = resolve(REPO_ROOT, '03-platform/tools');
   const entries = await readdir(toolsDir, { withFileTypes: true });
   const summaries = [];
   for (const entry of entries) {

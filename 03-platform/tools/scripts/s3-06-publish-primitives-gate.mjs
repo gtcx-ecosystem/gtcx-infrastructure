@@ -14,7 +14,7 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
 const WORKFLOW = join(ROOT, '.github', 'workflows', 'slsa-provenance.yml');
-const PKG_JSON = join(ROOT, 'tools', 'audit-signer', 'package.json');
+const PKG_JSON = join(ROOT, '03-platform/tools', 'audit-signer', 'package.json');
 
 const RED = '\x1b[31m';
 const GREEN = '\x1b[32m';

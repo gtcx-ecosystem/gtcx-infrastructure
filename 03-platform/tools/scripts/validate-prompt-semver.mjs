@@ -26,7 +26,7 @@ const out = execSync('node -e "import(\'./03-platform/tools/compliance-gateway/s
 });
 const meta = JSON.parse(out.trim());
 const version = meta.promptVersion;
-const dir = path.join(ROOT, `01-docs/05-audit/prompts/compliance-gateway@${version}`);
+const dir = path.join(ROOT, `01-docs/audit/prompts/compliance-gateway@${version}`);
 for (const file of ['manifest.json', 'system.md', 'CHANGELOG.md']) {
   const abs = path.join(dir, file);
   if (!existsSync(abs)) fail(`missing ${file} for @${version}`);
