@@ -16,11 +16,10 @@ vpc_cidr = "10.2.0.0/16"
 db_instance_class    = "db.t3.micro"
 db_allocated_storage = 20
 
-# EKS — single small node, scale up if evaluation load requires
+# EKS — cost_profile ephemeral → nodeMin 0 / desired 0 / max 5 (ECO-ENV-07)
+# Up via bridgeOS env:up --ttl; down by default
+cost_profile            = "ephemeral"
 eks_node_instance_types = ["t3.small"]
-eks_node_desired_size   = 1
-eks_node_min_size       = 1
-eks_node_max_size       = 3
 
 # API access — Cloudflare Tunnel handles all service traffic.
 # EKS public API endpoint is DISABLED. Operators must use AWS Systems Manager

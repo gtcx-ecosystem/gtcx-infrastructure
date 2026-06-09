@@ -114,22 +114,36 @@ variable "eks_node_instance_types" {
   default     = ["t3.small"]
 }
 
+variable "cost_profile" {
+  description = "Fleet cost tier: scheduled (staging default). See modules/cost-profile and bridgeOS environment-cost-policy.v1.json."
+  type        = string
+  default     = null
+
+  validation {
+    condition = (
+      var.cost_profile == null ||
+      contains(["always_on", "scheduled", "ephemeral"], var.cost_profile)
+    )
+    error_message = "cost_profile must be always_on, scheduled, or ephemeral."
+  }
+}
+
 variable "eks_node_desired_size" {
-  description = "EKS node desired size"
+  description = "EKS node desired size (optional override when cost_profile is set)"
   type        = number
-  default     = 2
+  default     = null
 }
 
 variable "eks_node_min_size" {
-  description = "EKS node minimum size"
+  description = "EKS node minimum size (optional override when cost_profile is set)"
   type        = number
-  default     = 2
+  default     = null
 }
 
 variable "eks_node_max_size" {
-  description = "EKS node maximum size"
+  description = "EKS node maximum size (optional override when cost_profile is set)"
   type        = number
-  default     = 4
+  default     = null
 }
 
 variable "enable_public_api" {
@@ -250,6 +264,15 @@ module "database" {
 # EKS Module
 # -----------------------------------------------------------------------------
 
+module "cost_profile" {
+  source = "../../modules/cost-profile"
+
+  cost_profile          = var.cost_profile
+  eks_node_min_size     = var.eks_node_min_size
+  eks_node_desired_size = var.eks_node_desired_size
+  eks_node_max_size     = var.eks_node_max_size
+}
+
 module "eks" {
   source = "../../modules/eks"
 
@@ -259,9 +282,9 @@ module "eks" {
   private_subnet_ids         = module.vpc.private_subnet_ids
   public_subnet_ids          = module.vpc.public_subnet_ids
   node_instance_types        = var.eks_node_instance_types
-  node_desired_size          = var.eks_node_desired_size
-  node_min_size              = var.eks_node_min_size
-  node_max_size              = var.eks_node_max_size
+  node_desired_size          = module.cost_profile.node_desired_size
+  node_min_size              = module.cost_profile.node_min_size
+  node_max_size              = module.cost_profile.node_max_size
   enable_public_access       = var.enable_public_api
   allowed_cidr_blocks        = var.admin_cidr_blocks
   database_security_group_id = module.database.security_group_id
@@ -436,10 +459,10 @@ module "audit_flush_irsa" {
 module "irsa_platform" {
   source = "../../modules/irsa-platform"
 
-  environment             = var.environment
-  oidc_provider_arn       = module.eks.oidc_provider_arn
-  oidc_provider_url       = replace(module.eks.oidc_provider_url, "https://", "")
-  kms_signing_key_arn     = "arn:aws:kms:af-south-1:348389439381:key/d44106a0-cb37-4225-b84d-bb8105eaaca5"
+  environment         = var.environment
+  oidc_provider_arn   = module.eks.oidc_provider_arn
+  oidc_provider_url   = replace(module.eks.oidc_provider_url, "https://", "")
+  kms_signing_key_arn = "arn:aws:kms:af-south-1:348389439381:key/d44106a0-cb37-4225-b84d-bb8105eaaca5"
   service_account_subjects = [
     "system:serviceaccount:gtcx-staging:gtcx-platform-staging",
   ]

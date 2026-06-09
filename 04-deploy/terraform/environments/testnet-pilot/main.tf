@@ -90,22 +90,36 @@ variable "eks_node_instance_types" {
   default     = ["t3.small"]
 }
 
+variable "cost_profile" {
+  description = "Fleet cost tier: ephemeral (testnet default). See modules/cost-profile and bridgeOS environment-cost-policy.v1.json."
+  type        = string
+  default     = null
+
+  validation {
+    condition = (
+      var.cost_profile == null ||
+      contains(["always_on", "scheduled", "ephemeral"], var.cost_profile)
+    )
+    error_message = "cost_profile must be always_on, scheduled, or ephemeral."
+  }
+}
+
 variable "eks_node_desired_size" {
-  description = "Desired worker node count"
+  description = "Desired worker node count (optional override when cost_profile is set)"
   type        = number
-  default     = 1
+  default     = null
 }
 
 variable "eks_node_min_size" {
-  description = "Minimum worker node count"
+  description = "Minimum worker node count (optional override when cost_profile is set)"
   type        = number
-  default     = 1
+  default     = null
 }
 
 variable "eks_node_max_size" {
-  description = "Maximum worker node count"
+  description = "Maximum worker node count (optional override when cost_profile is set)"
   type        = number
-  default     = 3
+  default     = null
 }
 
 variable "enable_public_api" {
@@ -288,6 +302,15 @@ module "ecr" {
 # Kubernetes Cluster
 # -----------------------------------------------------------------------------
 
+module "cost_profile" {
+  source = "../../modules/cost-profile"
+
+  cost_profile          = var.cost_profile
+  eks_node_min_size     = var.eks_node_min_size
+  eks_node_desired_size = var.eks_node_desired_size
+  eks_node_max_size     = var.eks_node_max_size
+}
+
 module "eks" {
   source = "../../modules/eks"
 
@@ -299,9 +322,9 @@ module "eks" {
 
   cluster_version     = "1.31"
   node_instance_types = var.eks_node_instance_types
-  node_desired_size   = var.eks_node_desired_size
-  node_min_size       = var.eks_node_min_size
-  node_max_size       = var.eks_node_max_size
+  node_desired_size   = module.cost_profile.node_desired_size
+  node_min_size       = module.cost_profile.node_min_size
+  node_max_size       = module.cost_profile.node_max_size
 
   enable_public_access       = var.enable_public_api
   allowed_cidr_blocks        = var.admin_cidr_blocks

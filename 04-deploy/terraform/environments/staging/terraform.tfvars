@@ -18,13 +18,10 @@ vpc_cidr = "10.3.0.0/16"
 db_instance_class    = "db.t3.small"
 db_allocated_storage = 50
 
-# EKS — 3 nodes for HA during chaos experiments and pen-tests
-# Bumped from t3.small (2Gi) to t3.medium (4Gi) to schedule nats + agx + protocols
-# Scaled to 3 on 2026-06-04 to resolve Unschedulable (terminal-os + Litmus capacity)
+# EKS — cost_profile scheduled → nodeMin 0 / desired 0 / max 4 (ECO-ENV-07)
+# Warm via bridgeOS env:warm; cold default per environment-cost-policy.v1.json
+cost_profile            = "scheduled"
 eks_node_instance_types = ["t3.medium"]
-eks_node_desired_size   = 3
-eks_node_min_size       = 2
-eks_node_max_size       = 4
 
 # API access — public for CI/CD deploys from GitHub Actions.
 # Staging is pre-production; 0.0.0.0/0 is acceptable here because
