@@ -15,11 +15,11 @@ import { fileURLToPath } from 'node:url';
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
 const CONFIG = join(
   ROOT,
-  '04-deploy/kubernetes/base/services/cloudflared/config.yaml',
+  'deploy/kubernetes/base/services/cloudflared/config.yaml',
 );
 const INGRESS = join(
   ROOT,
-  '04-deploy/kubernetes/overlays/production',
+  'deploy/kubernetes/overlays/production',
   'ingress.yaml'
 );
 

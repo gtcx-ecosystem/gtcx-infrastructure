@@ -159,7 +159,7 @@ function main() {
           console.error(`    - ${c.from}`);
         }
       }
-      console.error('\nRun `node 03-platform/tools/scripts/pin-actions-sha.mjs` to pin them.');
+      console.error('\nRun `node platform/tools/scripts/pin-actions-sha.mjs` to pin them.');
       process.exit(1);
     }
     console.log('[pin-actions-sha] all GitHub Actions uses: lines are SHA-pinned');

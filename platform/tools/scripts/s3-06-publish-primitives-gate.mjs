@@ -5,7 +5,7 @@
  * Validates that @gtcx/audit-signer is configured for npm publish
  * with provenance and that the CI workflow has a publish job.
  *
- * Usage: node 03-platform/tools/scripts/s3-06-publish-primitives-gate.mjs
+ * Usage: node platform/tools/scripts/s3-06-publish-primitives-gate.mjs
  */
 
 import { readFileSync } from 'node:fs';
@@ -14,7 +14,7 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
 const WORKFLOW = join(ROOT, '.github', 'workflows', 'slsa-provenance.yml');
-const PKG_JSON = join(ROOT, '03-platform/tools', 'audit-signer', 'package.json');
+const PKG_JSON = join(ROOT, 'platform/tools', 'audit-signer', 'package.json');
 
 const RED = '\x1b[31m';
 const GREEN = '\x1b[32m';

@@ -6,7 +6,7 @@
  * silent failure that delayed the audit-flush S3 bug from being
  * caught for weeks.
  *
- * Approach: walk `03-platform/tools/<pkg>/src/**` and grep for an exact-match
+ * Approach: walk `platform/tools/<pkg>/src/**` and grep for an exact-match
  * `catch {}` or `catch () {}`. Allowlist a small set of justified
  * sites (each with a comment in this file explaining why).
  *
@@ -25,33 +25,33 @@ const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..'
 const ALLOWLIST = new Set([
   // Shutdown / drain paths — these run during process termination
   // and reraising would prevent clean teardown.
-  '03-platform/tools/compliance-gateway/src/audit-sink.mjs:139', // await natsClient.drain() during sink.close()
-  '03-platform/tools/compliance-gateway/src/adaptive-policy-store.mjs:151', // fall-through path with cleanup
-  '03-platform/tools/compliance-gateway/src/adaptive-policy-store.mjs:154', // client.disconnect() during shutdown
-  '03-platform/tools/compliance-gateway/src/adaptive-policy-store.mjs:244', // await client.quit() during dispose
-  '03-platform/tools/compliance-gateway/src/adaptive-policy-store.mjs:280', // await activeStore.close() during reset
+  'platform/tools/compliance-gateway/src/audit-sink.mjs:139', // await natsClient.drain() during sink.close()
+  'platform/tools/compliance-gateway/src/adaptive-policy-store.mjs:151', // fall-through path with cleanup
+  'platform/tools/compliance-gateway/src/adaptive-policy-store.mjs:154', // client.disconnect() during shutdown
+  'platform/tools/compliance-gateway/src/adaptive-policy-store.mjs:244', // await client.quit() during dispose
+  'platform/tools/compliance-gateway/src/adaptive-policy-store.mjs:280', // await activeStore.close() during reset
   // budget-store shutdown / already-closed paths
-  '03-platform/tools/compliance-gateway/src/budget-store.mjs:134', // client.disconnect() during dispose
-  '03-platform/tools/compliance-gateway/src/budget-store.mjs:192', // already closed during teardown
-  '03-platform/tools/compliance-gateway/src/budget-store.mjs:244', // best-effort reset during swap
-  '03-platform/tools/compliance-gateway/src/budget-store.mjs:249', // best-effort close during swap
+  'platform/tools/compliance-gateway/src/budget-store.mjs:134', // client.disconnect() during dispose
+  'platform/tools/compliance-gateway/src/budget-store.mjs:192', // already closed during teardown
+  'platform/tools/compliance-gateway/src/budget-store.mjs:244', // best-effort reset during swap
+  'platform/tools/compliance-gateway/src/budget-store.mjs:249', // best-effort close during swap
   // NATS stream already-exists (race-safe creation) + shutdown drain.
-  '03-platform/tools/audit-flush/src/nats-consumer.mjs:75',
-  '03-platform/tools/audit-flush/src/nats-consumer.mjs:187',
+  'platform/tools/audit-flush/src/nats-consumer.mjs:75',
+  'platform/tools/audit-flush/src/nats-consumer.mjs:187',
   // Audit-capture sinks are best-effort by design — a slow / failing
   // sink must not break replay verification on the hot path.
-  '03-platform/tools/replay-protection/src/audit/audit-capture.mjs:88',
+  'platform/tools/replay-protection/src/audit/audit-capture.mjs:88',
   // baseline-os cost-router graceful fallback when dist is not built
-  '03-platform/tools/compliance-gateway/src/server.mjs:91',
+  'platform/tools/compliance-gateway/src/server.mjs:91',
 ]);
 
 const SRC_GLOBS = [
-  '03-platform/tools/compliance-gateway/src',
-  '03-platform/tools/audit-flush/src',
-  '03-platform/tools/replay-protection/src',
-  '03-platform/tools/audit-signer/src',
-  '03-platform/tools/deployment-guard/src',
-  '03-platform/tools/compliance-gateway-mcp/src',
+  'platform/tools/compliance-gateway/src',
+  'platform/tools/audit-flush/src',
+  'platform/tools/replay-protection/src',
+  'platform/tools/audit-signer/src',
+  'platform/tools/deployment-guard/src',
+  'platform/tools/compliance-gateway-mcp/src',
 ];
 
 // Matches a `catch` whose body is empty, OR contains only whitespace +
@@ -128,7 +128,7 @@ function main() {
     }
     console.error(
       '\nEmpty `catch {}` hides silent failures. Either:\n' +
-        '  1. Use 03-platform/tools/scripts/fail-closed.mjs to log and decide explicitly.\n' +
+        '  1. Use platform/tools/scripts/fail-closed.mjs to log and decide explicitly.\n' +
         '  2. Log via console.error if the failure is truly informational.\n' +
         '  3. Add the site to ALLOWLIST in this script WITH a justification comment.\n'
     );

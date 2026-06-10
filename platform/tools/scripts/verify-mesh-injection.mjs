@@ -18,9 +18,9 @@ const namespace = process.argv.includes('--namespace')
   : 'gtcx';
 
 const ENV = namespace === 'gtcx' ? 'production' : 'staging';
-const POLICY_PATH = `04-deploy/kubernetes/overlays/${ENV}/linkerd/mesh-policies.yaml`;
-const CANARY_PATH = `04-deploy/kubernetes/overlays/${ENV}/linkerd/canary-rollout.yaml`;
-const BASE_SERVICES = '04-deploy/kubernetes/base/services';
+const POLICY_PATH = `deploy/kubernetes/overlays/${ENV}/linkerd/mesh-policies.yaml`;
+const CANARY_PATH = `deploy/kubernetes/overlays/${ENV}/linkerd/canary-rollout.yaml`;
+const BASE_SERVICES = 'deploy/kubernetes/base/services';
 
 const errors = [];
 const warnings = [];

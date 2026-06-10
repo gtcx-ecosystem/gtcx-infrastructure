@@ -10,14 +10,14 @@
  *   - Response contains valid dedup_key (proving event was accepted)
  *
  * Usage:
- *   node 03-platform/tools/scripts/incident-drill-pagerduty-simulation.mjs \
+ *   node platform/tools/scripts/incident-drill-pagerduty-simulation.mjs \
  *     [--dry-run] \
  *     [--webhook-url=https://events.pagerduty.com/v2/enqueue] \
  *     [--routing-key=your-integration-key]
  *
  * Environment:
  *   PAGERDUTY_ROUTING_KEY — PagerDuty integration key (required for real send)
- *   ALERTMANAGER_CONFIG — Path to alertmanager.yml.tpl (default: 04-deploy/docker/observability/alertmanager.yml.tpl)
+ *   ALERTMANAGER_CONFIG — Path to alertmanager.yml.tpl (default: deploy/docker/observability/alertmanager.yml.tpl)
  *
  * Exit codes:
  *   0 = simulation passed

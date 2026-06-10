@@ -6,7 +6,7 @@
  *   1. Survives process restart (cursor + records file persisted)
  *   2. Recovers from crash (partial cursor resumes correctly)
  *
- * Usage: node 03-platform/tools/scripts/disk-queue-gate.mjs
+ * Usage: node platform/tools/scripts/disk-queue-gate.mjs
  */
 
 import { execSync } from 'node:child_process';
@@ -19,7 +19,7 @@ console.log('[disk-queue-gate] Running disk-queue tests ...');
 
 try {
   execSync('node --test tests/disk-queue-coverage.unit.test.mjs', {
-    cwd: '03-platform/tools/compliance-gateway',
+    cwd: 'platform/tools/compliance-gateway',
     stdio: 'inherit',
     encoding: 'utf8',
     timeout: 180000,

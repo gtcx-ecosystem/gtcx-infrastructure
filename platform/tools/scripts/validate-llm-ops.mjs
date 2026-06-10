@@ -10,11 +10,11 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
 
 const REQUIRED = [
-  '04-deploy/monitoring/dashboards/llm-ops.json',
-  '04-deploy/monitoring/alerts/llm-ops-alerts.yml',
-  '04-deploy/kubernetes/overlays/staging/monitoring/kustomization.yaml',
-  '04-deploy/kubernetes/overlays/staging/patches/compliance-gateway-metrics.yaml',
-  '03-platform/tools/compliance-gateway/src/llm-trace.mjs',
+  'deploy/monitoring/dashboards/llm-ops.json',
+  'deploy/monitoring/alerts/llm-ops-alerts.yml',
+  'deploy/kubernetes/overlays/staging/monitoring/kustomization.yaml',
+  'deploy/kubernetes/overlays/staging/patches/compliance-gateway-metrics.yaml',
+  'platform/tools/compliance-gateway/src/llm-trace.mjs',
   '01-docs/operations/runbooks/staging-monitoring-apply.md',
 ];
 
@@ -31,7 +31,7 @@ for (const rel of REQUIRED) {
 }
 
 const dashboard = JSON.parse(
-  readFileSync(path.join(ROOT, '04-deploy/monitoring/dashboards/llm-ops.json'), 'utf8'),
+  readFileSync(path.join(ROOT, 'deploy/monitoring/dashboards/llm-ops.json'), 'utf8'),
 );
 const panelTitles = dashboard.dashboard?.panels?.map((p) => p.title) ?? [];
 for (const title of ['LLM cost (USD / day)', 'Query latency p95 (ms)']) {
@@ -42,7 +42,7 @@ for (const title of ['LLM cost (USD / day)', 'Query latency p95 (ms)']) {
 }
 
 const alerts = readFileSync(
-  path.join(ROOT, '04-deploy/monitoring/alerts/llm-ops-alerts.yml'),
+  path.join(ROOT, 'deploy/monitoring/alerts/llm-ops-alerts.yml'),
   'utf8',
 );
 if (!/runbook_url:/.test(alerts)) {
@@ -51,7 +51,7 @@ if (!/runbook_url:/.test(alerts)) {
 }
 
 const patch = readFileSync(
-  path.join(ROOT, '04-deploy/kubernetes/overlays/staging/patches/compliance-gateway-metrics.yaml'),
+  path.join(ROOT, 'deploy/kubernetes/overlays/staging/patches/compliance-gateway-metrics.yaml'),
   'utf8',
 );
 if (!/prometheus\.io\/scrape/.test(patch)) {
@@ -60,7 +60,7 @@ if (!/prometheus\.io\/scrape/.test(patch)) {
 }
 
 try {
-  execSync('kubectl kustomize 04-deploy/kubernetes/overlays/staging/monitoring/', {
+  execSync('kubectl kustomize deploy/kubernetes/overlays/staging/monitoring/', {
     cwd: ROOT,
     stdio: 'pipe',
   });

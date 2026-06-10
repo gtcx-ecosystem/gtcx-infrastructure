@@ -47,7 +47,7 @@ if (!existsSync(TOPOLOGY)) {
 }
 
 try {
-  const out = execSync('node 03-platform/scripts/agent-next-work.mjs', {
+  const out = execSync('node platform/scripts/agent-next-work.mjs', {
     cwd: ROOT,
     encoding: 'utf8',
     stdio: ['ignore', 'pipe', 'pipe'],

@@ -266,7 +266,7 @@ function main() {
         `[runbook-frontmatter-check] ${offenders.length} file(s) with duplicated frontmatter:`
       );
       for (const f of offenders) console.error(`  - ${f}`);
-      console.error('\nRun `node 03-platform/tools/scripts/runbook-frontmatter-check.mjs` to merge.');
+      console.error('\nRun `node platform/tools/scripts/runbook-frontmatter-check.mjs` to merge.');
       process.exit(1);
     }
     console.log(`[runbook-frontmatter-check] ${files.length} runbook(s) clean`);

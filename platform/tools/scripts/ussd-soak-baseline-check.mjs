@@ -3,8 +3,8 @@
  * Compare USSD soak metrics against committed baseline (IR-4.1).
  *
  * Usage:
- *   node 03-platform/tools/scripts/ussd-soak-baseline-check.mjs --check
- *   node 03-platform/tools/scripts/ussd-soak-baseline-check.mjs --metrics=ussd-soak-metrics.json
+ *   node platform/tools/scripts/ussd-soak-baseline-check.mjs --check
+ *   node platform/tools/scripts/ussd-soak-baseline-check.mjs --metrics=ussd-soak-metrics.json
  */
 
 import { readFileSync, existsSync } from 'node:fs';

@@ -10,7 +10,7 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
-const SCRIPT = join(ROOT, '03-platform/tools', 'control-plane', 'generate-release-evidence.mjs');
+const SCRIPT = join(ROOT, 'platform/tools', 'control-plane', 'generate-release-evidence.mjs');
 
 function main() {
   if (!existsSync(SCRIPT)) {

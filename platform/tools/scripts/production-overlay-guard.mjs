@@ -3,7 +3,7 @@
  * @fileoverview Guard against committing a version-shaped (`v1.0.0`,
  * `1.2.3`, `latest`) tag in production overlay image references.
  *
- * Production deploys go through `04-deploy/03-platform/scripts/deploy.sh`, which
+ * Production deploys go through `deploy/platform/scripts/deploy.sh`, which
  * rewrites the kustomization at runtime via `kustomize edit set image`
  * to inject the real ECR URI + 40-char commit SHA. The committed file
  * must contain a placeholder tag so that a manual

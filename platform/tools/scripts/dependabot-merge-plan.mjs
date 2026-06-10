@@ -3,8 +3,8 @@
  * @fileoverview Report dependabot PR merge readiness by tier (S3-01 operator aid).
  *
  * Usage:
- *   node 03-platform/tools/scripts/dependabot-merge-plan.mjs
- *   node 03-platform/tools/scripts/dependabot-merge-plan.mjs --check
+ *   node platform/tools/scripts/dependabot-merge-plan.mjs
+ *   node platform/tools/scripts/dependabot-merge-plan.mjs --check
  */
 
 import { execSync } from 'node:child_process';

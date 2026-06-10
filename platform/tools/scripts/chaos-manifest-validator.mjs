@@ -12,7 +12,7 @@
  *   - All referenced deployments exist in base K8s manifests
  *
  * Usage:
- *   node 03-platform/tools/scripts/chaos-manifest-validator.mjs
+ *   node platform/tools/scripts/chaos-manifest-validator.mjs
  *
  * Exits 0 on pass, 1 with violations.
  */

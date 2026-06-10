@@ -2,7 +2,7 @@
 /**
  * IR-5.2 gate — ecosystem integration matrix must be green and review fresh.
  *
- * Usage: node 03-platform/tools/scripts/ecosystem-integration-matrix-check.mjs
+ * Usage: node platform/tools/scripts/ecosystem-integration-matrix-check.mjs
  */
 
 import { readFileSync, existsSync } from 'node:fs';
@@ -35,7 +35,7 @@ if (ageDays > MAX_AGE_DAYS) {
 }
 
 try {
-  execSync('node --test 03-platform/tools/contract-tests/*.test.mjs', {
+  execSync('node --test platform/tools/contract-tests/*.test.mjs', {
     cwd: ROOT,
     stdio: 'pipe',
     encoding: 'utf8',

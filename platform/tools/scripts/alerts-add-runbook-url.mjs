@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * @fileoverview Ensure every Prometheus alert in 04-deploy/monitoring/alerts/
+ * @fileoverview Ensure every Prometheus alert in deploy/monitoring/alerts/
  * carries a `runbook_url` annotation pointing at the canonical alerts
  * runbook section (01-docs/04-ops/runbooks/alerts.md#<alertname-lower>).
  *
@@ -222,7 +222,7 @@ function main() {
         console.error(`  - ${m.file}: ${m.alert}`);
       }
       console.error(
-        '\nRun `node 03-platform/tools/scripts/alerts-add-runbook-url.mjs` to add them.'
+        '\nRun `node platform/tools/scripts/alerts-add-runbook-url.mjs` to add them.'
       );
       process.exit(1);
     }

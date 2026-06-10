@@ -7,7 +7,7 @@
  *   2. Defaults to NATS in production
  *   3. Rejects stdout explicitly in production/staging
  *
- * Usage: node 03-platform/tools/scripts/audit-sink-gate.mjs
+ * Usage: node platform/tools/scripts/audit-sink-gate.mjs
  */
 
 import { execSync } from 'node:child_process';
@@ -20,7 +20,7 @@ console.log('[audit-sink-gate] Running audit-sink unit tests ...');
 
 try {
   execSync('node --test tests/audit-sink.unit.test.mjs', {
-    cwd: '03-platform/tools/compliance-gateway',
+    cwd: 'platform/tools/compliance-gateway',
     stdio: 'inherit',
     encoding: 'utf8',
     timeout: 120000,

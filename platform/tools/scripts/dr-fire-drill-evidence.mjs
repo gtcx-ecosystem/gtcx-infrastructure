@@ -11,7 +11,7 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
-const DR_SCRIPT = join(ROOT, '04-deploy/03-platform/scripts', 'dr-test.sh');
+const DR_SCRIPT = join(ROOT, 'deploy/03-platform/scripts', 'dr-test.sh');
 const OUT = join(ROOT, '01-docs/audit', 'dr-fire-drill-evidence-2026-05-31.md');
 
 const REQUIRED_GUARDS = [
@@ -59,7 +59,7 @@ live_rds_execution: pending
 # DR Fire Drill Evidence — 2026-05-31
 
 > Agent-generated structural evidence. Live RDS restore against staging is
-> **pending** — requires operator credentials per \`04-deploy/03-platform/scripts/dr-test.sh\`.
+> **pending** — requires operator credentials per \`deploy/platform/scripts/dr-test.sh\`.
 
 ## Validation performed
 
@@ -67,14 +67,14 @@ live_rds_execution: pending
 |-------|--------|
 | \`dr-test.sh\` fail-fast env guards | PASS |
 | Evidence fields (RTO/RPO/steps) | PASS |
-| Script path | \`04-deploy/03-platform/scripts/dr-test.sh\` |
+| Script path | \`deploy/platform/scripts/dr-test.sh\` |
 
 ## Next operator step
 
 \`\`\`bash
 POSTGRES_HOST=... POSTGRES_USER=... POSTGRES_DB=... POSTGRES_PASSWORD=... \\
 AUDIT_HOST=... AUDIT_USER=... AUDIT_DB=... POSTGRES_AUDIT_PASSWORD=... \\
-./04-deploy/03-platform/scripts/dr-test.sh staging 01-docs/05-audit/evidence/
+./deploy/platform/scripts/dr-test.sh staging 01-docs/05-audit/evidence/
 \`\`\`
 
 ## Agent attestation

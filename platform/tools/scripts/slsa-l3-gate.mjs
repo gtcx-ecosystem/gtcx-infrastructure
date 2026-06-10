@@ -12,7 +12,7 @@
  *   4. Verification job is present
  *   5. @gtcx/audit-signer has publishConfig.provenance = true
  *
- * Usage: node 03-platform/tools/scripts/slsa-l3-gate.mjs
+ * Usage: node platform/tools/scripts/slsa-l3-gate.mjs
  */
 
 import { readFileSync } from 'node:fs';
@@ -53,7 +53,7 @@ try {
 }
 
 // 6. Audit-signer has npm provenance enabled
-const auditSignerPkgPath = '03-platform/tools/audit-signer/package.json';
+const auditSignerPkgPath = 'platform/tools/audit-signer/package.json';
 try {
   const pkg = JSON.parse(readFileSync(auditSignerPkgPath, 'utf8'));
   if (!pkg.publishConfig?.provenance) {

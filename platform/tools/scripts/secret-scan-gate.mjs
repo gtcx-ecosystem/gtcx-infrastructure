@@ -5,7 +5,7 @@
  * Runs gitleaks (or falls back to trufflehog if available) to detect
  * leaked secrets, API keys, tokens, and credentials in the repository.
  *
- * Usage: node 03-platform/tools/scripts/secret-scan-gate.mjs
+ * Usage: node platform/tools/scripts/secret-scan-gate.mjs
  */
 
 import { execSync } from 'node:child_process';

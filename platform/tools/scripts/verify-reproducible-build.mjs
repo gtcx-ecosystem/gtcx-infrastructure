@@ -37,7 +37,7 @@ function hashDirectory(dir) {
   return hash.digest('hex');
 }
 
-const distDirs = ['03-platform/tools/replay-protection/dist', '03-platform/tools/compliance-gateway/dist']
+const distDirs = ['platform/tools/replay-protection/dist', 'platform/tools/compliance-gateway/dist']
   .filter((d) => {
     try {
       statSync(d);

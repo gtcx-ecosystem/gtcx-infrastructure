@@ -7,8 +7,8 @@
  * corresponding ledger entry.
  *
  * Usage:
- *   node 03-platform/tools/scripts/validate-score-ledger.mjs
- *   node 03-platform/tools/scripts/validate-score-ledger.mjs --ledger=01-docs/05-audit/score-evidence-ledger.json
+ *   node platform/tools/scripts/validate-score-ledger.mjs
+ *   node platform/tools/scripts/validate-score-ledger.mjs --ledger=01-docs/05-audit/score-evidence-ledger.json
  */
 
 import { readFileSync, readdirSync } from 'node:fs';

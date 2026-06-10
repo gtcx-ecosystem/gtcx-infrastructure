@@ -3,8 +3,8 @@
  * @fileoverview Compare k6 (or smoke) soak metrics against a committed baseline.
  *
  * Usage:
- *   node 03-platform/tools/scripts/soak-baseline-check.mjs --check
- *   node 03-platform/tools/scripts/soak-baseline-check.mjs --metrics=path/to/metrics.json
+ *   node platform/tools/scripts/soak-baseline-check.mjs --check
+ *   node platform/tools/scripts/soak-baseline-check.mjs --metrics=path/to/metrics.json
  */
 
 import { readFileSync, existsSync } from 'node:fs';

@@ -5,7 +5,7 @@
  * Runs `pnpm audit --json`, removes CVEs documented in the acceptance log,
  * and exits non-zero if unaccepted CRITICAL or HIGH findings remain.
  *
- * Usage: node 03-platform/tools/scripts/audit-with-acceptance.mjs [--output-file=path]
+ * Usage: node platform/tools/scripts/audit-with-acceptance.mjs [--output-file=path]
  */
 import { execSync } from "node:child_process";
 import { readFileSync, writeFileSync } from "node:fs";

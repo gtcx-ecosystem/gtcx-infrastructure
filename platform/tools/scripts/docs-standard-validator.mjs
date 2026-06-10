@@ -14,9 +14,9 @@
  *   5. Missing README/index in docs subdirectories
  *
  * Usage:
- *   node 03-platform/tools/scripts/docs-standard-validator.mjs
- *   node 03-platform/tools/scripts/docs-standard-validator.mjs --dump-baseline > .docs-exceptions.json
- *   node 03-platform/tools/scripts/docs-standard-validator.mjs --baseline=.docs-exceptions.json
+ *   node platform/tools/scripts/docs-standard-validator.mjs
+ *   node platform/tools/scripts/docs-standard-validator.mjs --dump-baseline > .docs-exceptions.json
+ *   node platform/tools/scripts/docs-standard-validator.mjs --baseline=.docs-exceptions.json
  */
 
 import { readdirSync, readFileSync, statSync, existsSync } from 'node:fs';
@@ -24,7 +24,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 // REPO_ROOT is resolved relative to this script's location, not cwd.
-// The script lives at <repo>/03-platform/tools/scripts/, so two dirname() calls land
+// The script lives at <repo>/platform/tools/scripts/, so two dirname() calls land
 // at the repo root regardless of where the user invoked it from.
 const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(SCRIPT_DIR, '..', '..', '..');

@@ -9,11 +9,11 @@
  *   - `pnpm <script>` references → must exist as a script in the root
  *     package.json scripts map.
  *   - `pnpm ctl <area> <action>` → must match a known subcommand in
- *     03-platform/tools/control-plane/gtcx-ctl.mjs's help output.
+ *     platform/tools/control-plane/gtcx-ctl.mjs's help output.
  *
  * Out of scope (would produce too many false positives):
  *   - Bare shell commands (curl, kubectl, etc).
- *   - `node 03-platform/tools/...` direct invocations (those exist as files;
+ *   - `node platform/tools/...` direct invocations (those exist as files;
  *     verified separately).
  *   - Command flags/options — only the verb path is checked. A bad
  *     flag value passes; a misnamed subcommand fails.

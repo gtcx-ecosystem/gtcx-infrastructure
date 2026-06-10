@@ -2,7 +2,7 @@
 /**
  * @fileoverview Fail closed on Alertmanager placeholder env defaults.
  *
- * Ensures `04-deploy/docker/docker-compose.infra.yml` rejects CHANGE_ME_DEV and
+ * Ensures `deploy/docker/docker-compose.infra.yml` rejects CHANGE_ME_DEV and
  * no-op Slack URLs unless GTCX_ALERTS_DEV_MODE=1 before envsubst renders
  * alertmanager.yml. Prevents silent paging blackholes in staging/production.
  */

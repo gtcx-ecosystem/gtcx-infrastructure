@@ -13,8 +13,8 @@
  *   6. business-hours time interval is defined
  *
  * Usage:
- *   node 03-platform/tools/scripts/incident-drill-validator.mjs
- *   node 03-platform/tools/scripts/incident-drill-validator.mjs --config=path/to/alertmanager.yml.tpl
+ *   node platform/tools/scripts/incident-drill-validator.mjs
+ *   node platform/tools/scripts/incident-drill-validator.mjs --config=path/to/alertmanager.yml.tpl
  */
 
 import { readFileSync } from 'node:fs';

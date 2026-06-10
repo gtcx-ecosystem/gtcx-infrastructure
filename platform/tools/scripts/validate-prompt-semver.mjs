@@ -20,7 +20,7 @@ function pass(msg) {
   console.log(`prompt-semver: PASS — ${msg}`);
 }
 
-const out = execSync('node -e "import(\'./03-platform/tools/compliance-gateway/src/system-prompt.mjs\').then(m=>console.log(JSON.stringify(m.getPromptMetadata())))"', {
+const out = execSync('node -e "import(\'./platform/tools/compliance-gateway/src/system-prompt.mjs\').then(m=>console.log(JSON.stringify(m.getPromptMetadata())))"', {
   cwd: ROOT,
   encoding: 'utf8',
 });

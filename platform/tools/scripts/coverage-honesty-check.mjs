@@ -11,7 +11,7 @@ const PER_FILE_THRESHOLD = 80;
 const METRIC = 'branches';
 
 async function findSummaries() {
-  const toolsDir = resolve(REPO_ROOT, '03-platform/tools');
+  const toolsDir = resolve(REPO_ROOT, 'platform/tools');
   const entries = await readdir(toolsDir, { withFileTypes: true });
   const summaries = [];
   for (const entry of entries) {
@@ -57,7 +57,7 @@ async function main() {
     const aggregatePct = summary.total?.[METRIC]?.pct ?? 0;
     if (offenses.length > 0) {
       failed = true;
-      console.error('\n[coverage-honesty] FAIL  03-platform/tools/' + pkgName);
+      console.error('\n[coverage-honesty] FAIL  platform/tools/' + pkgName);
       console.error('  Aggregate ' + METRIC + ': ' + aggregatePct + '% (> ' + AGGREGATE_THRESHOLD + '%)');
       console.error('  Per-file gaps (< ' + PER_FILE_THRESHOLD + '%):');
       for (const o of offenses) {
@@ -65,7 +65,7 @@ async function main() {
         console.error('    - ' + shortFile + ': ' + o.pct + '%');
       }
     } else {
-      console.log('[coverage-honesty] PASS  03-platform/tools/' + pkgName + '  aggregate=' + aggregatePct + '%  no per-file gaps');
+      console.log('[coverage-honesty] PASS  platform/tools/' + pkgName + '  aggregate=' + aggregatePct + '%  no per-file gaps');
     }
   }
   if (failed) {

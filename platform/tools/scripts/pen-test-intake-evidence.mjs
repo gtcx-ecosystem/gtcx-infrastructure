@@ -87,8 +87,8 @@ human_signature: pending
 ## Post-remediation scope anchors (attach to SOW)
 
 1. **Public API:** \`api.gtcx.trade\` routes via Cloudflare Tunnel to \`compliance-gateway:8500\` (not raw protocols).
-2. **Replay guard:** \`/v1/replay/verify\` — contract tests in \`03-platform/tools/contract-tests/\`.
-3. **Audit chain:** \`@gtcx/audit-signer\` canonical signing; catalog pinned in \`03-platform/tools/compliance-data/\`.
+2. **Replay guard:** \`/v1/replay/verify\` — contract tests in \`platform/tools/contract-tests/\`.
+3. **Audit chain:** \`@gtcx/audit-signer\` canonical signing; catalog pinned in \`platform/tools/compliance-data/\`.
 4. **Tenant isolation:** gateway tenancy contract tests; auth failures tagged \`platform\`.
 5. **Closed P0s (2026-05-30 audit):** F1–F4, F7, F10–F14; S2-01–S2-10, S2-14; S3 structural gates.
 

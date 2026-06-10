@@ -10,7 +10,7 @@
  *   - CI gate: fails if any critical metric is "fail" or overall score < threshold
  *
  * Usage:
- *   node 03-platform/tools/scripts/validate-signal.mjs [--scorecard=path] [--min-score=N]
+ *   node platform/tools/scripts/validate-signal.mjs [--scorecard=path] [--min-score=N]
  *
  * Exit codes:
  *   0 = scorecard valid and meets threshold

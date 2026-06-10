@@ -3,9 +3,9 @@
  * Canonical audit score calculator — IR (engineering) and XC (external) are independent.
  *
  * Usage:
- *   node 03-platform/tools/scripts/compute-audit-scores.mjs
- *   node 03-platform/tools/scripts/compute-audit-scores.mjs --write
- *   node 03-platform/tools/scripts/compute-audit-scores.mjs --markdown
+ *   node platform/tools/scripts/compute-audit-scores.mjs
+ *   node platform/tools/scripts/compute-audit-scores.mjs --write
+ *   node platform/tools/scripts/compute-audit-scores.mjs --markdown
  */
 
 import { readFileSync, writeFileSync } from 'node:fs';
@@ -168,7 +168,7 @@ function scorecardMarkdown(result) {
     '',
     '**Retired:** `certifiedReadiness`, `CR = IR − gap`, `composite` as external-adjusted score.',
     '',
-    'Recompute: `node 03-platform/tools/scripts/compute-audit-scores.mjs --write`',
+    'Recompute: `node platform/tools/scripts/compute-audit-scores.mjs --write`',
     ''
   );
   return lines.join('\n');

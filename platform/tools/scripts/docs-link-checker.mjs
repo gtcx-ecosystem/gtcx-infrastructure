@@ -6,7 +6,7 @@
  * links resolve to existing files.
  *
  * Usage:
- *   node 03-platform/tools/scripts/docs-link-checker.mjs
+ *   node platform/tools/scripts/docs-link-checker.mjs
  *
  * Exit codes:
  *   0 = all links valid
@@ -19,7 +19,7 @@ import { fileURLToPath } from 'node:url';
 
 // REPO_ROOT is resolved relative to this script's location, not cwd, so
 // the link checker works from any working directory (including from
-// inside a 03-platform/tools/* package after a publish or test run).
+// inside a platform/tools/* package after a publish or test run).
 const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(SCRIPT_DIR, '..', '..', '..');
 const DOCS_ROOT = resolve(REPO_ROOT, '01-docs');

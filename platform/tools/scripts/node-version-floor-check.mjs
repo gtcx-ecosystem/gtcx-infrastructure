@@ -13,7 +13,7 @@ import { fileURLToPath } from 'node:url';
 const REQUIRED_PACKAGE_ENGINE = '>=20.18.0';
 const REQUIRED_CI_NODE_VERSION = '20.18.0';
 /** Astro 6 requires Node >=22.12; built in docs-site-build.yml, excluded from main CI turbo build. */
-const DOCS_SITE_PACKAGE = '03-platform/tools/docs-site/package.json';
+const DOCS_SITE_PACKAGE = 'platform/tools/docs-site/package.json';
 const DOCS_SITE_PACKAGE_ENGINE = '>=22.12.0';
 const DOCS_SITE_CI_NODE_VERSION = '22.12.0';
 const DOCS_SITE_CI_WORKFLOW = '.github/workflows/docs-site-build.yml';
@@ -25,11 +25,11 @@ function readJson(path) {
 }
 
 function listWorkspacePackageFiles() {
-  const files = ['package.json', '04-deploy/migrations/package.json'];
-  const toolsDir = join(ROOT, '03-platform/tools');
+  const files = ['package.json', 'deploy/migrations/package.json'];
+  const toolsDir = join(ROOT, 'platform/tools');
   for (const entry of readdirSync(toolsDir, { withFileTypes: true })) {
     if (!entry.isDirectory()) continue;
-    const packagePath = `03-platform/tools/${entry.name}/package.json`;
+    const packagePath = `platform/tools/${entry.name}/package.json`;
     if (existsSync(join(ROOT, packagePath))) files.push(packagePath);
   }
   return files.sort();
