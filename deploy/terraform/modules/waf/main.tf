@@ -43,6 +43,12 @@ variable "allow_audit_paths" {
   default     = false
 }
 
+variable "allow_markets_authority_paths" {
+  description = "Allow XR-MKT-011 markets authority trace paths (Bearer POST from gtcx-markets capture)"
+  type        = bool
+  default     = false
+}
+
 resource "aws_wafv2_web_acl" "main" {
   name        = "${var.name_prefix}-waf-${var.aws_region}"
   description = "OWASP CRS + BotControl + RateLimit for ${var.name_prefix}"
@@ -154,10 +160,125 @@ resource "aws_wafv2_web_acl" "main" {
     }
   }
 
+  # XR-MKT-011 / S39-01 — markets authority trace capture (non-browser fetch + Bearer).
+  dynamic "rule" {
+    for_each = var.allow_markets_authority_paths ? [1] : []
+    content {
+      name     = "AllowMarketsAuthorityEndpoints"
+      priority = 2
+
+      action {
+        allow {}
+      }
+
+      statement {
+        or_statement {
+          statement {
+            byte_match_statement {
+              search_string         = "/orders"
+              positional_constraint = "STARTS_WITH"
+              field_to_match {
+                uri_path {}
+              }
+              text_transformation {
+                priority = 0
+                type     = "LOWERCASE"
+              }
+            }
+          }
+          statement {
+            byte_match_statement {
+              search_string         = "/escrow-deposit"
+              positional_constraint = "STARTS_WITH"
+              field_to_match {
+                uri_path {}
+              }
+              text_transformation {
+                priority = 0
+                type     = "LOWERCASE"
+              }
+            }
+          }
+          statement {
+            byte_match_statement {
+              search_string         = "/escrow-release"
+              positional_constraint = "STARTS_WITH"
+              field_to_match {
+                uri_path {}
+              }
+              text_transformation {
+                priority = 0
+                type     = "LOWERCASE"
+              }
+            }
+          }
+          statement {
+            byte_match_statement {
+              search_string         = "/settle-init"
+              positional_constraint = "STARTS_WITH"
+              field_to_match {
+                uri_path {}
+              }
+              text_transformation {
+                priority = 0
+                type     = "LOWERCASE"
+              }
+            }
+          }
+          statement {
+            byte_match_statement {
+              search_string         = "/settle-final"
+              positional_constraint = "STARTS_WITH"
+              field_to_match {
+                uri_path {}
+              }
+              text_transformation {
+                priority = 0
+                type     = "LOWERCASE"
+              }
+            }
+          }
+          statement {
+            byte_match_statement {
+              search_string         = "/cc-issue"
+              positional_constraint = "STARTS_WITH"
+              field_to_match {
+                uri_path {}
+              }
+              text_transformation {
+                priority = 0
+                type     = "LOWERCASE"
+              }
+            }
+          }
+          statement {
+            byte_match_statement {
+              search_string         = "/cc-pay"
+              positional_constraint = "STARTS_WITH"
+              field_to_match {
+                uri_path {}
+              }
+              text_transformation {
+                priority = 0
+                type     = "LOWERCASE"
+              }
+            }
+          }
+        }
+      }
+
+      visibility_config {
+        cloudwatch_metrics_enabled = true
+        metric_name                = "AllowMarketsAuthorityEndpointsMetric"
+        sampled_requests_enabled   = true
+      }
+    }
+  }
+
   # AWS Managed Rule: OWASP Core Rule Set
   rule {
     name     = "AWSManagedRulesCommonRuleSet"
-    priority = 2
+    priority = 3
     override_action {
       none {}
     }
@@ -177,7 +298,7 @@ resource "aws_wafv2_web_acl" "main" {
   # AWS Managed Rule: Known Bad Inputs
   rule {
     name     = "AWSManagedRulesKnownBadInputsRuleSet"
-    priority = 3
+    priority = 4
     override_action {
       none {}
     }
@@ -197,7 +318,7 @@ resource "aws_wafv2_web_acl" "main" {
   # Rate Limiting — per IP
   rule {
     name     = "RateLimitPerIP"
-    priority = 4
+    priority = 5
     action {
       block {}
     }
@@ -217,7 +338,7 @@ resource "aws_wafv2_web_acl" "main" {
   # AWS Managed Rule: Bot Control (optional, lower priority)
   rule {
     name     = "AWSManagedRulesBotControlRuleSet"
-    priority = 5
+    priority = 6
     override_action {
       none {}
     }

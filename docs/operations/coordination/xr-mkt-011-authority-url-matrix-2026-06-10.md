@@ -27,16 +27,22 @@ protocol: P24 + P41
 
 ## Ingress
 
-All paths route to `gtcx-agx-staging:3000` in
+All paths route to `markets-authority-stub-staging:8510` in
 `deploy/kubernetes/overlays/staging/ingress.yaml` (before `/` protocols catch-all).
+
+Pilot stub source: `deploy/kubernetes/overlays/staging/markets-authority-stub/server.mjs`
+(mirror: `platform/tools/markets-authority-stub/server.mjs`).
+
+WAF: `AllowMarketsAuthorityEndpoints` on `gtcx-staging-waf-af-south-1` (priority 2).
 
 ## Acceptance
 
-| Gate            | Target                                                              |
-| --------------- | ------------------------------------------------------------------- |
-| AGX health      | `GET /api/health` → **200**                                         |
-| Authority trace | `pnpm authority:trace:capture` (gtcx-markets) → **7/7**, exit **0** |
-| Fleet probe     | `pnpm daas:fleet:health` → agx-api **PASS**                         |
+| Gate            | Target                                                              | Status (2026-06-10) |
+| --------------- | ------------------------------------------------------------------- | ------------------- |
+| Authority trace | `pnpm authority:trace:capture` (gtcx-markets) → **7/7**, exit **0** | **PASS**            |
+| Public POST     | Bearer + decision JSON on all 7 paths                               | **PASS**            |
+| AGX health      | `GET /api/health` → **200**                                         | pending (F-AGX-01)  |
+| Fleet probe     | `pnpm daas:fleet:health` → agx-api **PASS**                         | pending             |
 
 ## Witness
 

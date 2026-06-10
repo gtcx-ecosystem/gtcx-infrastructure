@@ -403,7 +403,8 @@ module "waf" {
   scope             = "REGIONAL"
   rate_limit        = 500 # 100/min for staging (TradePass Wire #2 §10.1)
   aws_region        = var.region
-  allow_audit_paths = true
+  allow_audit_paths             = true
+  allow_markets_authority_paths = true
 }
 
 # -----------------------------------------------------------------------------

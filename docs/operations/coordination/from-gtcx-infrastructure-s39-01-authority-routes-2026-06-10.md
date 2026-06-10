@@ -2,6 +2,7 @@
 title: 'Seal — S39-01 authority routes (XR-MKT-011)'
 status: delivered
 date: 2026-06-10
+owner: gtcx-infrastructure
 from: gtcx-infrastructure
 to: gtcx-markets
 ticket: XR-MKT-011

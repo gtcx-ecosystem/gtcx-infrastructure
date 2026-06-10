@@ -51,56 +51,56 @@ spec:
                 name: gtcx-protocols-staging
                 port:
                   number: 8300
-          # XR-MKT-011 — markets authority trace capture (7 operations → AGX)
+          # XR-MKT-011 / S39-01 — markets authority trace capture (7 operations → stub)
           - path: /orders
             pathType: Prefix
             backend:
               service:
-                name: gtcx-agx-staging
+                name: markets-authority-stub-staging
                 port:
-                  number: 3000
+                  number: 8510
           - path: /escrow-deposit
             pathType: Prefix
             backend:
               service:
-                name: gtcx-agx-staging
+                name: markets-authority-stub-staging
                 port:
-                  number: 3000
+                  number: 8510
           - path: /escrow-release
             pathType: Prefix
             backend:
               service:
-                name: gtcx-agx-staging
+                name: markets-authority-stub-staging
                 port:
-                  number: 3000
+                  number: 8510
           - path: /settle-init
             pathType: Prefix
             backend:
               service:
-                name: gtcx-agx-staging
+                name: markets-authority-stub-staging
                 port:
-                  number: 3000
+                  number: 8510
           - path: /settle-final
             pathType: Prefix
             backend:
               service:
-                name: gtcx-agx-staging
+                name: markets-authority-stub-staging
                 port:
-                  number: 3000
+                  number: 8510
           - path: /cc-issue
             pathType: Prefix
             backend:
               service:
-                name: gtcx-agx-staging
+                name: markets-authority-stub-staging
                 port:
-                  number: 3000
+                  number: 8510
           - path: /cc-pay
             pathType: Prefix
             backend:
               service:
-                name: gtcx-agx-staging
+                name: markets-authority-stub-staging
                 port:
-                  number: 3000
+                  number: 8510
           # Sovereign API (CRX/SGX modules) — routes to platform AGX service
           - path: /api
             pathType: Prefix

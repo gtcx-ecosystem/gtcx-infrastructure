@@ -1,0 +1,90 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: markets-authority-stub
+  namespace: gtcx-staging
+  labels:
+    app: markets-authority-stub
+    environment: staging
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: markets-authority-stub
+      environment: staging
+  template:
+    metadata:
+      labels:
+        app: markets-authority-stub
+        environment: staging
+    spec:
+      containers:
+        - name: stub
+          image: node:20-alpine
+          command: ['node', '/app/server.mjs']
+          ports:
+            - containerPort: 8510
+              name: http
+          env:
+            - name: PORT
+              value: '8510'
+            - name: GTX_MARKETS_AUTHORITY_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: markets-authority-stub-secrets
+                  key: GTX_MARKETS_AUTHORITY_API_KEY
+          volumeMounts:
+            - name: app
+              mountPath: /app
+              readOnly: true
+          resources:
+            requests:
+              cpu: 25m
+              memory: 64Mi
+            limits:
+              cpu: 100m
+              memory: 128Mi
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 1000
+            capabilities:
+              drop:
+                - ALL
+      volumes:
+        - name: app
+          configMap:
+            name: markets-authority-stub-script
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: markets-authority-stub-staging
+  namespace: gtcx-staging
+  labels:
+    app: markets-authority-stub
+spec:
+  selector:
+    app: markets-authority-stub
+    environment: staging
+  ports:
+    - port: 8510
+      targetPort: http
+      name: http
