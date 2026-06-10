@@ -1,0 +1,36 @@
+{
+  "schema": "gtcx.penTestWindow.v1",
+  "id": "PEN-TEST-WINDOW-2026-06-10",
+  "storyId": "SECAS-S2-01",
+  "frictionId": "SEC-PENTEST-01",
+  "program": "INIT-GTCX-INFRA-SECAS",
+  "scheduledAt": "2026-06-10T09:30:00.000Z",
+  "scheduledBy": "agent:gtcx-infrastructure",
+  "authorityBasis": [
+    "audit/evidence/ext-inf-002-sow-approval-2026-06-10.json",
+    "audit/evidence/ext-inf-002-countersign-approval-2026-06-10.json"
+  ],
+  "environment": "staging",
+  "window": {
+    "start": "2026-06-17",
+    "end": "2026-06-21",
+    "timezone": "Africa/Johannesburg",
+    "businessDays": 5
+  },
+  "scope": "audit/pen-test-scope-2026.md",
+  "targets": [
+    "https://api.staging.gtcx.trade/api/health",
+    "https://intelligence-staging.gtcx.trade",
+    "https://sovereign-staging.gtcx.trade/api/health",
+    "compliance-gateway-staging (in-cluster — external CF optional)"
+  ],
+  "prerequisites": {
+    "fleetHealth": "audit/evidence/cross-repo-health/cross-repo-health-probe-latest.json",
+    "fleetHealthResult": "PASS 4/4",
+    "fleetHealthAt": "2026-06-10T09:27:04.746Z"
+  },
+  "status": "scheduled",
+  "nextMilestone": "ingest vendor report to audit/evidence/pen-test-report-YYYY-MM-DD.json",
+  "blocksIR": false,
+  "repo": "gtcx-infrastructure"
+}

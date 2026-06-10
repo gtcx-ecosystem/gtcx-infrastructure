@@ -2,7 +2,7 @@
 title: Execution roadmap — Security-as-a-Service
 status: current
 date: 2026-06-10
-last_reconciled: 2026-06-10T08:11:42.781Z
+last_reconciled: 2026-06-10T09:28:29.751Z
 owner: gtcx-infrastructure
 program: INIT-GTCX-INFRA-SECAS
 generated: true
@@ -45,7 +45,7 @@ pnpm secas:approval:check:write
 **UAT / QA**
 
 - [x] Vendor SOW countersign received (2026-06-10 — audit/evidence/ext-inf-002-countersign-approval-2026-06-10.json)
-- [ ] Pen-test window scheduled and witnessed
+- [x] Pen-test window scheduled and witnessed (2026-06-10 — audit/evidence/pen-test-window-2026-06-10.json (window 2026-06-17..21))
 - [ ] Report ingested to audit/evidence/
 
 **Blockers:** none

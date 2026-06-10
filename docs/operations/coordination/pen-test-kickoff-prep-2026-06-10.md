@@ -15,7 +15,9 @@ tags: ['coordination', 'pen-test', 'secas-s2', 'ext-inf-002']
 
 **Countersign:** approved 2026-06-10 — [`ext-inf-002-countersign-approval-2026-06-10.json`](../../../audit/evidence/ext-inf-002-countersign-approval-2026-06-10.json).
 
-**Next:** Schedule pen-test window and publish witness JSON.
+**Window:** scheduled 2026-06-17..21 — [`pen-test-window-2026-06-10.json`](../../../audit/evidence/pen-test-window-2026-06-10.json) · [seal](./from-gtcx-infrastructure-pen-test-window-scheduled-2026-06-10.md).
+
+**Next:** Ingest vendor report after window execution.
 
 ## Intake pack (attach to vendor kickoff)
 

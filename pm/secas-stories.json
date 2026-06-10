@@ -71,7 +71,11 @@
           "done": true,
           "note": "2026-06-10 — audit/evidence/ext-inf-002-countersign-approval-2026-06-10.json"
         },
-        { "text": "Pen-test window scheduled and witnessed", "done": false },
+        {
+          "text": "Pen-test window scheduled and witnessed",
+          "done": true,
+          "note": "2026-06-10 — audit/evidence/pen-test-window-2026-06-10.json (window 2026-06-17..21)"
+        },
         { "text": "Report ingested to audit/evidence/", "done": false }
       ],
       "blockers": null
