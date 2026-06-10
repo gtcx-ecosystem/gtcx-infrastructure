@@ -71,7 +71,8 @@ All infra P0 items verified. **Next:** owner-repo smoke (compliance hub #17 inta
 | **gtcx-agile**                               | None                        | Sprint tooling                                |
 | **ledger-ui**                                | None until XR-510 npm creds | npm publish is XC, not EKS                    |
 | **terra-os**                                 | None until W2 adapter epic  | Live permit adapters — terra owns             |
-| **gtcx-markets** / **gtcx-operations**       | None                        | Satellite; AWS when product turns on          |
+| **gtcx-operations**                          | None                        | Satellite; AWS when product turns on          |
+| **gtcx-markets**                             | **P41 DaaS** — XR-MKT-011   | S39-01 authority routes, AGX ingress, auth SM   |
 | **gtcx-hardware**                            | None                        | Device edge — out of cloud matrix             |
 | **nyota-ai** / **griot-ai** / **veritas-ai** | None                        | Call intelligence over HTTPS on AWS           |
 | **sensei-ai**                                | **Out of band**             | Separate product — not GTCX EKS unless merged |
