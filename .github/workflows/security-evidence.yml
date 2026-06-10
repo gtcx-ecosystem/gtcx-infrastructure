@@ -68,7 +68,7 @@ jobs:
           echo "Scanning: $URL"
 
       - name: OWASP ZAP full scan
-        uses: zaproxy/action-full-scan@75ee1686750ab1511a73b26b77a2aedd295053ed # v0.12.0
+        uses: zaproxy/action-full-scan@3c58388149901b9a03b7718852c5ba889646c27c # v0.13.0
         with:
           target: ${{ steps.target.outputs.url }}
           rules_file_name: '.github/zap/rules.tsv'
@@ -136,7 +136,7 @@ jobs:
           echo "Scanning: ${IMAGE}:${TAG}"
 
       - name: Trivy scan (SARIF)
-        uses: aquasecurity/trivy-action@314ff8b43182423b84c50b1670b0e10f858f2d98 # pin: master (branch — review on dependabot bumps)
+        uses: aquasecurity/trivy-action@bfa4b33a029b9aa80ddb784b45574c30e072c59e # pin: master (branch — review on dependabot bumps)
         continue-on-error: true
         with:
           image-ref: ${{ steps.resolve.outputs.image_ref }}
@@ -145,7 +145,7 @@ jobs:
           severity: CRITICAL,HIGH,MEDIUM
 
       - name: Trivy scan (JSON)
-        uses: aquasecurity/trivy-action@314ff8b43182423b84c50b1670b0e10f858f2d98 # pin: master (branch — review on dependabot bumps)
+        uses: aquasecurity/trivy-action@bfa4b33a029b9aa80ddb784b45574c30e072c59e # pin: master (branch — review on dependabot bumps)
         continue-on-error: true
         with:
           image-ref: ${{ steps.resolve.outputs.image_ref }}
@@ -154,7 +154,7 @@ jobs:
           severity: CRITICAL,HIGH,MEDIUM
 
       - name: Generate SBOM (CycloneDX)
-        uses: aquasecurity/trivy-action@314ff8b43182423b84c50b1670b0e10f858f2d98 # pin: master (branch — review on dependabot bumps)
+        uses: aquasecurity/trivy-action@bfa4b33a029b9aa80ddb784b45574c30e072c59e # pin: master (branch — review on dependabot bumps)
         continue-on-error: true
         with:
           image-ref: ${{ steps.resolve.outputs.image_ref }}
@@ -185,19 +185,19 @@ jobs:
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@7211b7c8077ea37d8641b6271f6a365a22a5fbfa # v4
+        uses: github/codeql-action/init@8aad20d150bbac5944a9f9d289da16a4b0d87c1e # v4
         with:
           languages: javascript-typescript
           config-file: ./.github/codeql/codeql-config.yml
 
       - name: Perform CodeQL analysis
-        uses: github/codeql-action/analyze@7211b7c8077ea37d8641b6271f6a365a22a5fbfa # v4
+        uses: github/codeql-action/analyze@8aad20d150bbac5944a9f9d289da16a4b0d87c1e # v4
         with:
           category: '/language:javascript-typescript'
           output: codeql-results
 
       - name: Upload CodeQL SARIF to security tab
-        uses: github/codeql-action/upload-sarif@7211b7c8077ea37d8641b6271f6a365a22a5fbfa # v4
+        uses: github/codeql-action/upload-sarif@8aad20d150bbac5944a9f9d289da16a4b0d87c1e # v4
         if: always()
         with:
           sarif_file: codeql-results
