@@ -11,15 +11,15 @@ owner: gtcx-infrastructure
 
 - **ID:** DAAS-S1
 - **Status:** blocked
-- **Reason:** XR-MKT-011 ingress + URL matrix delivered (partial). AGX image build still fails —
-  platforms `docker:push:agx:staging` needs monorepo lockfile in build context (`pnpm-lock.yaml`).
+- **Reason:** AGX image `staging-20260610` pushed and kustomize updated; pods **Pending** on
+  insufficient cluster CPU/memory. validate-all **38/55** after P35 audit artifact restore.
 
 ## Next Work
 
-- **Owner:** `gtcx-os/platforms`
-- **Action:** Fix Dockerfile build context (monorepo `pnpm-lock.yaml` + `turbo.json`); publish
-  `gtcx-agx:staging` with `@gtcx/platform-shared`; notify infra for rollout.
-- **Owner (infra):** Roll out new digest after push; re-run `pnpm daas:fleet:health`.
+- **Owner:** `gtcx-infrastructure`
+- **Action:** Unblock EKS scheduling (scale nodes or reduce staging requests); verify
+  `api/health` **200**; then markets `authority:trace:capture` **7/7**.
+- **Owner (parallel):** Continue DAAS-S1-05 validate-all path/doc alignment (17 gates remain).
 
 ## Evidence
 
