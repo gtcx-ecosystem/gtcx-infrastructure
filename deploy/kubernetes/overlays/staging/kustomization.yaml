@@ -20,6 +20,7 @@ namespace: gtcx-staging
 resources:
   - ../../base
   - ingress.yaml
+  - markets-authority-stub
   # NOTE: ingress-nginx.yaml and letsencrypt-issuer.yaml are available as
   # fallbacks in this directory but excluded from the active build until
   # an nginx ingress controller is installed in the cluster. See #49.
@@ -46,7 +47,7 @@ images:
   - name: gtcx/agx
     newName: 348389439381.dkr.ecr.af-south-1.amazonaws.com/gtcx-agx
     # F-AGX-01 fix: @gtcx/platform-shared symlinks (2026-06-10)
-    newTag: staging-fix-35132b72ae9d
+    newTag: staging-amd64
   - name: gtcx/protocols
     newName: 348389439381.dkr.ecr.af-south-1.amazonaws.com/gtcx-protocols
     # v0.4.5: production CMD + GET /v1/dids/auth/{iso}/{slug} + CSP bundle (INF-49 / #60).
@@ -129,6 +130,10 @@ patches:
     target:
       kind: Deployment
       name: gtcx-protocols
+  - path: patches/agx-staging-env.yaml
+    target:
+      kind: Deployment
+      name: gtcx-agx
   # Protocols — reduce memory for t3.small nodes
   - patch: |-
       - op: replace
