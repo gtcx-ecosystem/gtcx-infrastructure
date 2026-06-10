@@ -1,0 +1,31 @@
+{
+  "schema": "gtcx://gtcx-infrastructure/secas-cards-check/v1",
+  "protocol": "P42-SECURITY-AS-A-SERVICE",
+  "sprint": "SECAS-S3",
+  "checkedAt": "2026-06-10T04:32:44.767Z",
+  "owner": "gtcx-infrastructure",
+  "gates": {
+    "index": {
+      "ok": true
+    },
+    "cards": {
+      "compliance-os": {
+        "ok": true,
+        "path": "docs/operations/secas/cards/compliance-os.md"
+      },
+      "gtcx-markets": {
+        "ok": true,
+        "path": "docs/operations/secas/cards/gtcx-markets.md"
+      },
+      "gtcx-intelligence": {
+        "ok": true,
+        "path": "docs/operations/secas/cards/gtcx-intelligence.md"
+      }
+    },
+    "s3FrictionCards": {
+      "ok": true,
+      "missing": []
+    }
+  },
+  "ok": true
+}

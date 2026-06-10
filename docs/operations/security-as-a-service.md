@@ -7,13 +7,16 @@ protocol: P42-SECURITY-AS-A-SERVICE
 initiative: INIT-GTCX-INFRA-SECAS
 ---
 
-# Security-as-a-Service — gtcx-infrastructure
+# Security-as-a-Service — gtcx-infrastructure co-primary program
 
 **Normative:** `gtcx-docs/.../42-security-as-a-service/protocol.md`  
 **Machine spec:** `bridge-os/pm/spec/security-as-a-service.v1.json`  
 **Operational friction:** `pm/security-friction-register.json`  
 **Class S gates:** `pm/sovereign-approval-register.json`  
-**Roadmap:** `pm/secas-roadmap.json`
+**Roadmap SoR:** `pm/secas-roadmap.json`  
+**Stories SoR:** `pm/secas-stories.json`  
+**Execution roadmap:** `audit/product-management/secas-execution-roadmap.md`  
+**Task inbox:** `pm/_tasks` — `INIT-GTCX-INFRA-SECAS`
 
 ## Obligation
 
@@ -47,12 +50,28 @@ Witness: `audit/evidence/ext-inf-002-sow-approval-2026-06-10.json`
 2. Stack security handoff → `to-gtcx-infrastructure-{topic}-YYYY-MM-DD.md`
 3. Re-probe when `from-gtcx-infrastructure-*` security seal **delivered**
 
+## Four-plane model
+
+| Plane           | Owner                      | Product engineering                                   |
+| --------------- | -------------------------- | ----------------------------------------------------- |
+| **Engineering** | Product repo               | Features, tests, app security controls                |
+| **DaaS**        | gtcx-infrastructure        | Deploy handoff only (P41)                             |
+| **SECaaS**      | **gtcx-infrastructure**    | Stack security handoff — WAF, IRSA, pen-test window   |
+| **Assurance**   | gtcx-core + gtcx-protocols | Normative only — witness parallel (`blocksIR: false`) |
+
 ## Infra interface
 
+1. Triage security inbound → `pm/security-friction-register.json`
+2. Class S gates → `pm/sovereign-approval-register.json` (witness only)
+3. Execute on `pm/secas-roadmap.json` sprints (SECAS-S\*)
+4. Seal with `from-gtcx-infrastructure-*` + `audit/evidence/secas-*-latest.json`
+
 ```bash
+pnpm agent:next-work              # P22 — infra programs (DaaS + SECaaS)
+pnpm generate:secas-roadmap       # refresh SECaaS execution roadmap
 pnpm secas:friction:check
 pnpm secas:approval:check
-pnpm agent:next-work
+pnpm secas:cards:check
 ```
 
 ## Cross-repo false blocks (baseline-os M3 pattern)

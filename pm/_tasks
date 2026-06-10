@@ -34,3 +34,36 @@ DevOps and infrastructure are a separate concern from product engineering — pa
 ## Sprint plan
 
 DAAS-S1 friction + health · DAAS-S2 per-repo cards · DAAS-S3 cost automation
+
+--
+INIT-GTCX-INFRA-SECAS - Security-as-a-Service co-primary program - initiative
+status: in_progress
+priority: P0
+owner: gtcx-infrastructure
+initiative: INIT-GTCX-INFRA-SECAS
+persona: security-engineer
+frame: regulatory-audit
+intakeStage: structured
+protocol: P42-SECURITY-AS-A-SERVICE
+evidence: pm/security-friction-register.json
+
+## Context
+
+Stack security operations are a separate concern from product engineering — parallel to DaaS (P41). gtcx-infrastructure owns WAF, IRSA, pen-test execution, security evidence, and the sovereign approval register. Class S gates are Approval needed only (`blocksIR: false`).
+
+## Acceptance
+
+- [x] pm/sovereign-approval-register.json (EXT-INF-002 approved, BL-SOC2-01 approval-needed)
+- [x] pm/security-friction-register.json (SEC-PENTEST-01, SEC-IRSA-01)
+- [x] pm/secas-roadmap.json (SECAS-S1–S3)
+- [x] pm/secas-stories.json
+- [x] docs/operations/security-as-a-service.md
+- [x] P42 hub protocol published (gtcx-docs)
+- [x] secas:friction:check + secas:approval:check harness green
+- [x] docs/operations/secas/cards/ (compliance-os, gtcx-markets, gtcx-intelligence)
+- [ ] SEC-PENTEST-01 pen-test window after vendor countersign
+- [ ] SEC-IRSA-01 compliance-os IRSA review
+
+## Sprint plan
+
+SECAS-S1 registers + harness · SECAS-S2 pen-test execution · SECAS-S3 IRSA + security cards

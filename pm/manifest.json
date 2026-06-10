@@ -16,8 +16,20 @@
     "output": "ops/pm/backlog.json"
   },
   "generate": {
-    "command": "pnpm generate:roadmap",
-    "sources": ["pm/daas-roadmap.json", "pm/friction-register.json", "pm/daas-stories.json"],
-    "output": "audit/product-management/execution-roadmap.md"
+    "daas": {
+      "command": "pnpm generate:roadmap",
+      "sources": ["pm/daas-roadmap.json", "pm/friction-register.json", "pm/daas-stories.json"],
+      "output": "audit/product-management/execution-roadmap.md"
+    },
+    "secas": {
+      "command": "pnpm generate:secas-roadmap",
+      "sources": [
+        "pm/secas-roadmap.json",
+        "pm/security-friction-register.json",
+        "pm/secas-stories.json",
+        "pm/sovereign-approval-register.json"
+      ],
+      "output": "audit/product-management/secas-execution-roadmap.md"
+    }
   }
 }
