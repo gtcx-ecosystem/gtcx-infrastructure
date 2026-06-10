@@ -1,0 +1,38 @@
+# Sibling-repo template — checks out bridge-os for the CLI until @gtcx/hygiene is published.
+name: Hygiene
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  hygiene:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Checkout hygiene tool
+        uses: actions/checkout@v4
+        with:
+          repository: gtcx-ecosystem/bridge-os
+          path: bridge-os
+          sparse-checkout: |
+            platform/tools/hygiene
+            package.json
+            pnpm-lock.yaml
+            pnpm-workspace.yaml
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Build hygiene CLI
+        working-directory: bridge-os
+        run: |
+          pnpm install --frozen-lockfile --filter @gtcx/hygiene...
+          pnpm --filter @gtcx/hygiene build
+
+      - name: Run hygiene check
+        run: node bridge-os/platform/tools/hygiene/dist/cli.js check

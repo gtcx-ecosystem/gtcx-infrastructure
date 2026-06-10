@@ -2,23 +2,41 @@
   "$schema": "https://gtcx.org/schemas/hygiene-config/v1.json",
   "extends": "@gtcx/hygiene/monorepo",
   "workspace_type": "monorepo",
+  "layoutVersion": "v5",
   "root": {
-    "max_entries": 48,
-    "max_files": 16,
-    "required_dirs": ["01-docs"],
+    "max_entries": 52,
+    "max_files": 22,
+    "required_dirs": ["docs"],
     "case_rules": {
       "uppercase_allowlist": ["README.md", "LICENSE", "Dockerfile", "AGENTS.md"],
+      "uppercase_relocations": {
+        "CHANGELOG.md": "docs/changelog.md"
+      },
       "forbid_uppercase_outside_allowlist": true
     },
     "allowed_dirs": [
-      "00-archive",
-      "01-docs",
-      "02-ops",
-      "03-platform",
-      "04-deploy",
-      "05-audit",
+      "agentic",
+      "archive",
+      "audit",
+      "deploy",
+      "docs",
+      "ops",
+      "platform",
+      "pm",
+      "workstream",
       "config",
-      "node_modules"
+      "node_modules",
+      ".github",
+      ".husky",
+      ".baseline",
+      ".agent",
+      ".claude",
+      ".cursor",
+      ".gemini",
+      ".kimi",
+      ".keys",
+      ".local",
+      ".turbo"
     ],
     "allowed_files": [
       "hygiene.config.json",
@@ -26,22 +44,66 @@
       "pnpm-lock.yaml",
       "pnpm-workspace.yaml",
       "tsconfig.json",
+      "tsconfig.*.json",
       "eslint.config.js",
       "turbo.json",
       "baseline.config.json",
+      "vitest.config.ts",
+      "vitest.workspace.ts",
       ".editorconfig",
       ".nvmrc",
-      ".gitignore"
+      ".gitignore",
+      ".markdown-link-check.json",
+      "Makefile",
+      "Makefile.local",
+      "AGENTS.md",
+      ".env.example"
+    ],
+    "forbidden_patterns": [
+      {
+        "pattern": ".env",
+        "kind": "file",
+        "message": ".env must not live at repo root — use .env.example + vault",
+        "severity": "P1"
+      },
+      {
+        "pattern": ".env.local",
+        "kind": "file",
+        "severity": "P1"
+      }
     ]
   },
   "naming": {
     "docs_case": "kebab",
     "exceptions": [
-      "01-docs/README.md",
-      "01-docs/**/README.md",
-      "01-docs/AGENTS.md",
-      "01-docs/roadmap/ROADMAP-*.md",
-      "00-archive/**/README.md"
+      "docs/README.md",
+      "docs/**/README.md",
+      "docs/AGENTS.md",
+      "archive/**/README.md",
+      "audit/**/README.md"
     ]
+  },
+  "build_artifacts": {
+    "must_be_gitignored": ["dist/", "build/", ".next/", ".turbo/", "coverage/", "node_modules/"]
+  },
+  "per_directory_readme": {
+    "min_chars": 120,
+    "exceptions": [
+      ".github",
+      ".husky",
+      ".baseline",
+      ".agent",
+      ".claude",
+      ".cursor",
+      ".gemini",
+      ".kimi",
+      ".keys",
+      ".local",
+      ".turbo"
+    ]
+  },
+  "score_targets": {
+    "fail_ci_below": 7.0,
+    "strict_ci": false
   }
 }
