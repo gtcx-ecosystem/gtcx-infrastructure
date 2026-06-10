@@ -14,10 +14,10 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
-const RUBRIC = path.join(ROOT, '01-docs/05-audit/scoring-rubric.json');
-const LEDGER = path.join(ROOT, '01-docs/05-audit/score-evidence-ledger.json');
-const CI_SNAPSHOT = path.join(ROOT, '01-docs/05-audit/ci-snapshot.json');
-const LATEST = path.join(ROOT, '01-docs/05-audit/latest.json');
+const RUBRIC = path.join(ROOT, 'audit/scoring-rubric.json');
+const LEDGER = path.join(ROOT, 'audit/score-evidence-ledger.json');
+const CI_SNAPSHOT = path.join(ROOT, 'audit/ci-snapshot.json');
+const LATEST = path.join(ROOT, 'audit/latest.json');
 
 function round1(n) {
   return Math.round(n * 10) / 10;
@@ -164,7 +164,7 @@ function scorecardMarkdown(result) {
   }
   lines.push(
     '',
-    `Register: \`${result.externalRegister ?? '01-docs/05-audit/external-dependencies-register-2026-05-31.md'}\``,
+    `Register: \`${result.externalRegister ?? 'audit/external-dependencies-register-2026-05-31.md'}\``,
     '',
     '**Retired:** `certifiedReadiness`, `CR = IR − gap`, `composite` as external-adjusted score.',
     '',
@@ -214,7 +214,7 @@ function main() {
         byCategory: result.externalByCategory,
       },
       scoreReconciliation:
-        'IR = in-repo engineering only. XC = external/GTM track (separate). See 01-docs/05-audit/SCORING.md v2. certifiedReadiness/composite as IR−gap are retired.',
+        'IR = in-repo engineering only. XC = external/GTM track (separate). See audit/SCORING.md v2. certifiedReadiness/composite as IR−gap are retired.',
       deprecatedScores: {
         certifiedReadiness: 'retired — use externalClearance (XC) for external track; IR for engineering',
         composite: 'retired — use internalEngineeringReadiness',

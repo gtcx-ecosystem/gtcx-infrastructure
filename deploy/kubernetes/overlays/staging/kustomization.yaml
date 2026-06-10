@@ -45,7 +45,8 @@ configMapGenerator:
 images:
   - name: gtcx/agx
     newName: 348389439381.dkr.ecr.af-south-1.amazonaws.com/gtcx-agx
-    newTag: v0.4.0
+    # F-AGX-01 fix: @gtcx/platform-shared symlinks (2026-06-10)
+    newTag: staging-fix-35132b72ae9d
   - name: gtcx/protocols
     newName: 348389439381.dkr.ecr.af-south-1.amazonaws.com/gtcx-protocols
     # v0.4.5: production CMD + GET /v1/dids/auth/{iso}/{slug} + CSP bundle (INF-49 / #60).

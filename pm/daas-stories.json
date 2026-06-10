@@ -50,16 +50,27 @@
       "sprint": "DAAS-S1",
       "title": "Correct AGX staging image and health",
       "priority": "P0",
-      "status": "blocked",
+      "status": "in_progress",
       "owner": "gtcx-os/platforms → gtcx-infrastructure",
       "frictionIds": ["F-AGX-01"],
-      "files": ["gtcx-os/platform/platforms — supplier image; infra rollout after digest"],
+      "files": [
+        "gtcx-os/platform/platforms — image gtcx-agx:staging-20260610",
+        "deploy/kubernetes/overlays/staging/kustomization.yaml"
+      ],
       "acceptance": ["pnpm daas:fleet:health"],
       "uat": [
-        { "text": "gtcx-agx:staging contains @gtcx/platform-shared", "done": false },
-        { "text": "GET https://api.staging.gtcx.trade/api/health returns 200", "done": false }
+        {
+          "text": "gtcx-agx:staging contains @gtcx/platform-shared",
+          "done": true,
+          "note": "staging-20260610 pushed 2026-06-10"
+        },
+        {
+          "text": "GET https://api.staging.gtcx.trade/api/health returns 200",
+          "done": false,
+          "note": "pods Pending — cluster CPU/memory"
+        }
       ],
-      "blockers": "gtcx-os/platforms must publish corrected staging image; AGX health 503"
+      "blockers": "EKS scheduling — 0/2 nodes Insufficient cpu/memory; rollout image set, pods Pending"
     },
     {
       "id": "DAAS-S1-04",
@@ -98,7 +109,11 @@
       "acceptance": ["node platform/tools/scripts/validate-all.mjs"],
       "uat": [
         { "text": "Mesh injection, publish primitives, runtime evidence gates pass", "done": true },
-        { "text": "validate-all 55/55", "done": false, "note": "current 28/55" }
+        {
+          "text": "validate-all 55/55",
+          "done": false,
+          "note": "current 38/55 after P35 path restore"
+        }
       ],
       "blockers": null
     }

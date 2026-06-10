@@ -2,7 +2,7 @@
 /**
  * @fileoverview Docs Link Checker
  *
- * Scans all markdown files in 01-docs/ and validates that internal relative
+ * Scans all markdown files in docs/ and validates that internal relative
  * links resolve to existing files.
  *
  * Usage:

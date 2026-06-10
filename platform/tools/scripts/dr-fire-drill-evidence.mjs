@@ -12,7 +12,7 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
 const DR_SCRIPT = join(ROOT, 'deploy/03-platform/scripts', 'dr-test.sh');
-const OUT = join(ROOT, '01-docs/audit', 'dr-fire-drill-evidence-2026-05-31.md');
+const OUT = join(ROOT, 'audit', 'dr-fire-drill-evidence-2026-05-31.md');
 
 const REQUIRED_GUARDS = [
   'POSTGRES_HOST:?',
@@ -74,7 +74,7 @@ live_rds_execution: pending
 \`\`\`bash
 POSTGRES_HOST=... POSTGRES_USER=... POSTGRES_DB=... POSTGRES_PASSWORD=... \\
 AUDIT_HOST=... AUDIT_USER=... AUDIT_DB=... POSTGRES_AUDIT_PASSWORD=... \\
-./deploy/platform/scripts/dr-test.sh staging 01-docs/05-audit/evidence/
+./deploy/platform/scripts/dr-test.sh staging audit/evidence/
 \`\`\`
 
 ## Agent attestation

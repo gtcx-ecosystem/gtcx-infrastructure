@@ -10,7 +10,7 @@
  *   - GitHub stars + forks + open issues for amani-amina-anai/terraform-aws-compliance-db
  *   - Last-success timestamps so a stale snapshot is detectable
  *
- * Writes to 01-docs/05-audit/distribution-snapshots/<YYYY-MM-DD>.json.
+ * Writes to audit/distribution-snapshots/<YYYY-MM-DD>.json.
  * Idempotent — same-day reruns overwrite.
  *
  * Designed to be called by a daily GitHub Actions cron, but runs

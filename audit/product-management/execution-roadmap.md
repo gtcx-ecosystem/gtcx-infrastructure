@@ -2,7 +2,7 @@
 title: Execution roadmap — DevOps-as-a-Service
 status: current
 date: 2026-06-10
-last_reconciled: 2026-06-10T01:42:26.152Z
+last_reconciled: 2026-06-10T02:04:31.786Z
 owner: gtcx-infrastructure
 program: INIT-GTCX-INFRA-DAAS
 generated: true
@@ -32,7 +32,7 @@ sources:
 | ---------- | -------------------------------------------------- | -------- | ----------- | --------------------------------------- |
 | DAAS-S1-01 | DaaS friction register structural witness          | P0       | done        | gtcx-infrastructure                     |
 | DAAS-S1-02 | Canonical scheduled fleet-health witness           | P0       | done        | gtcx-infrastructure                     |
-| DAAS-S1-03 | Correct AGX staging image and health               | P0       | blocked     | gtcx-os/platforms → gtcx-infrastructure |
+| DAAS-S1-03 | Correct AGX staging image and health               | P0       | in_progress | gtcx-os/platforms → gtcx-infrastructure |
 | DAAS-S1-04 | Deliver XR-MKT-011 authority routes and trace seal | P0       | in_progress | gtcx-infrastructure → gtcx-markets      |
 | DAAS-S1-05 | Align validate-all gates to P35 paths              | P1       | in_progress | gtcx-infrastructure                     |
 
@@ -74,7 +74,7 @@ pnpm ops:check
 
 ### DAAS-S1-03: Correct AGX staging image and health
 
-**Files:** gtcx-os/platform/platforms — supplier image; infra rollout after digest
+**Files:** gtcx-os/platform/platforms — image gtcx-agx:staging-20260610, deploy/kubernetes/overlays/staging/kustomization.yaml
 
 **Acceptance**
 
@@ -84,10 +84,10 @@ pnpm daas:fleet:health
 
 **UAT / QA**
 
-- [ ] gtcx-agx:staging contains @gtcx/platform-shared
-- [ ] GET https://api.staging.gtcx.trade/api/health returns 200
+- [x] gtcx-agx:staging contains @gtcx/platform-shared (staging-20260610 pushed 2026-06-10)
+- [ ] GET https://api.staging.gtcx.trade/api/health returns 200 (pods Pending — cluster CPU/memory)
 
-**Blockers:** gtcx-os/platforms must publish corrected staging image; AGX health 503
+**Blockers:** EKS scheduling — 0/2 nodes Insufficient cpu/memory; rollout image set, pods Pending
 
 ### DAAS-S1-04: Deliver XR-MKT-011 authority routes and trace seal
 
@@ -123,7 +123,7 @@ node platform/tools/scripts/validate-all.mjs
 **UAT / QA**
 
 - [x] Mesh injection, publish primitives, runtime evidence gates pass
-- [ ] validate-all 55/55 (current 28/55)
+- [ ] validate-all 55/55 (current 34+/55 after P35 path restore)
 
 **Blockers:** none
 
@@ -138,7 +138,7 @@ node platform/tools/scripts/validate-all.mjs
 
 | Issue                        | Source                      | Roadmap Mapping               | Status          |
 | ---------------------------- | --------------------------- | ----------------------------- | --------------- |
-| `F-AGX-01`                   | `pm/friction-register.json` | DAAS-S1-03                    | blocked         |
+| `F-AGX-01`                   | `pm/friction-register.json` | DAAS-S1-03                    | in_progress     |
 | `XR-MKT-011`                 | `pm/friction-register.json` | DAAS-S1-04                    | in_progress     |
 | `F1`                         | `pm/friction-register.json` | DAAS-S2                       | pending         |
 | `F2`                         | `pm/friction-register.json` | DAAS-S2                       | pending         |

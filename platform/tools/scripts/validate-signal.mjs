@@ -22,7 +22,7 @@ import path from 'node:path';
 
 const SCORECARD_PATH =
   process.argv.find((a) => a.startsWith('--scorecard='))?.slice(12) ??
-  path.join(process.cwd(), '01-docs', 'audit', 'signal-scorecard.json');
+  path.join(process.cwd(), 'audit', 'signal-scorecard.json');
 const MIN_SCORE = Number(
   process.argv.find((a) => a.startsWith('--min-score='))?.slice(12) ?? '7.0'
 );

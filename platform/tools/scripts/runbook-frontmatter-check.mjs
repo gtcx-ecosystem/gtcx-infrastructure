@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * @fileoverview Detect (and optionally fix) duplicated YAML frontmatter
- * blocks in 01-docs/04-ops/runbooks/.
+ * blocks in docs/04-ops/runbooks/.
  *
  * Background: a session-backfill batch update prepended a new
  * frontmatter block to every runbook without removing the original,
@@ -25,7 +25,7 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
-// Scan the whole 01-docs/ tree — the session-backfill double-frontmatter
+// Scan the whole docs/ tree — the session-backfill double-frontmatter
 // pattern touched runbooks, agent docs, and the top-level index.
 // gitbook was previously excluded under the assumption that Astro
 // frontmatter was structurally different, but inspection showed the

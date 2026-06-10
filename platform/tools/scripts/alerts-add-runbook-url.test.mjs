@@ -51,7 +51,7 @@ describe('alerts-add-runbook-url extractReferencedAnchors', () => {
   it('finds anchors only in alerts.md URLs (ignores other runbook hosts)', () => {
     const files = {
       'alerts/foo.yml':
-        "runbook_url: 'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/01-docs/04-ops/runbooks/alerts.md#foo'",
+        "runbook_url: 'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/docs/04-ops/runbooks/alerts.md#foo'",
       'alerts/bar.yml':
         "runbook_url: 'https://elsewhere.example.com/some/other.md#bar'",
     };

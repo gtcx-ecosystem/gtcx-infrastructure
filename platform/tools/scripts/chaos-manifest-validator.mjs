@@ -20,8 +20,8 @@
 import { readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 
-const CHAOS_DIR = path.join(process.cwd(), '04-deploy', 'kubernetes', 'overlays', 'chaos');
-const BASE_DIR = path.join(process.cwd(), '04-deploy', 'kubernetes', 'base');
+const CHAOS_DIR = path.join(process.cwd(), 'deploy', 'kubernetes', 'overlays', 'chaos');
+const BASE_DIR = path.join(process.cwd(), 'deploy', 'kubernetes', 'base');
 
 let exitCode = 0;
 

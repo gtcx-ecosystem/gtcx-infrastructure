@@ -8,18 +8,18 @@
  *
  * Usage:
  *   node platform/tools/scripts/validate-score-ledger.mjs
- *   node platform/tools/scripts/validate-score-ledger.mjs --ledger=01-docs/05-audit/score-evidence-ledger.json
+ *   node platform/tools/scripts/validate-score-ledger.mjs --ledger=audit/score-evidence-ledger.json
  */
 
 import { readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 
 const REPO_ROOT = process.cwd();
-const AUDIT_DIR = path.join(REPO_ROOT, '01-docs', 'audit');
+const AUDIT_DIR = path.join(REPO_ROOT, 'audit');
 
 const args = process.argv.slice(2);
 const ledgerArg = args.find((a) => a.startsWith('--ledger='));
-const ledgerPath = ledgerArg ? ledgerArg.slice(9) : path.join('01-docs', 'audit', 'score-evidence-ledger.json');
+const ledgerPath = ledgerArg ? ledgerArg.slice(9) : path.join('audit', 'score-evidence-ledger.json');
 
 // ---------------------------------------------------------------------------
 // Load ledger

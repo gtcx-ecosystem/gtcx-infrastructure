@@ -8,9 +8,9 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
-const PILOT = path.join(ROOT, '01-docs/audit/evidence/signal-trace-pilot-latest.json');
-const LOG = path.join(ROOT, '01-docs/operations/coordination/cross-repo-agent-log.md');
-const TOPOLOGY = path.join(ROOT, '01-docs/architecture/agent-topology-2026-q3.md');
+const PILOT = path.join(ROOT, 'audit/evidence/signal-trace-pilot-latest.json');
+const LOG = path.join(ROOT, 'docs/operations/coordination/cross-repo-agent-log.md');
+const TOPOLOGY = path.join(ROOT, 'docs/architecture/agent-topology-2026-q3.md');
 
 let failed = 0;
 

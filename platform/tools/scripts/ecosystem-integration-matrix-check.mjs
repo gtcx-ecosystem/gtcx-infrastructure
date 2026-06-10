@@ -11,8 +11,8 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
-const MATRIX = join(ROOT, '01-docs/audit', 'ecosystem-integration-matrix-2026-06-07.json');
-const REVIEW = join(ROOT, '01-docs/audit', 'ecosystem-repo-review-2026-06-07.md');
+const MATRIX = join(ROOT, 'audit', 'ecosystem-integration-matrix-2026-06-07.json');
+const REVIEW = join(ROOT, 'audit', 'ecosystem-repo-review-2026-06-07.md');
 const MAX_AGE_DAYS = 120;
 
 function fail(msg) {

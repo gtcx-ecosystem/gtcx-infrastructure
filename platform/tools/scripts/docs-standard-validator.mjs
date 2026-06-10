@@ -10,7 +10,7 @@
  *   1. Broken internal markdown links
  *   2. Missing frontmatter on substantive docs
  *   3. Non-canonical filenames (uppercase, spaces, etc.)
- *   4. Empty directories under 01-docs/
+ *   4. Empty directories under docs/
  *   5. Missing README/index in docs subdirectories
  *
  * Usage:
@@ -28,7 +28,7 @@ import { fileURLToPath } from 'node:url';
 // at the repo root regardless of where the user invoked it from.
 const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(SCRIPT_DIR, '..', '..', '..');
-const DOCS_ROOT = path.join(REPO_ROOT, '01-docs');
+const DOCS_ROOT = path.join(REPO_ROOT, 'docs');
 
 // ---------------------------------------------------------------------------
 // Args

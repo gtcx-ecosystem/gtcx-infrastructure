@@ -9,10 +9,10 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
-const OUT = join(ROOT, '01-docs/audit', 'pen-test-intake-evidence-2026-05-31.md');
-const LATEST = join(ROOT, '01-docs/audit', 'latest.json');
-const SCOPE = join(ROOT, '01-docs/audit', 'pen-test-scope-2026.md');
-const RFP = join(ROOT, '01-docs/audit', 'pen-test-rfp-2026.md');
+const OUT = join(ROOT, 'audit', 'pen-test-intake-evidence-2026-05-31.md');
+const LATEST = join(ROOT, 'audit', 'latest.json');
+const SCOPE = join(ROOT, 'audit', 'pen-test-scope-2026.md');
+const RFP = join(ROOT, 'audit', 'pen-test-rfp-2026.md');
 
 const REQUIRED_SCOPE_MARKERS = [
   'api.gtcx.trade',
@@ -79,7 +79,7 @@ human_signature: pending
 | Field | Value |
 |-------|-------|
 | HEAD | \`${head}\` |
-| Branch | \`01-docs/roadmap-update-2026-05-30\` |
+| Branch | \`docs/roadmap-update-2026-05-30\` |
 | Internal readiness | ${latest.scores.internalReadiness}/10 |
 | Certified composite | ${latest.scores.composite}/10 |
 | validate-all | 36/36 gates (agent closure session) |
@@ -96,10 +96,10 @@ human_signature: pending
 
 | Document | Path |
 |----------|------|
-| Scope | \`01-docs/05-audit/pen-test-scope-2026.md\` |
-| RFP | \`01-docs/05-audit/pen-test-rfp-2026.md\` |
-| Shortlist | \`01-docs/05-audit/pen-test-vendor-shortlist.md\` |
-| Readiness pack | \`01-docs/05-audit/vendor-engagement-readiness-pack.md\` |
+| Scope | \`audit/pen-test-scope-2026.md\` |
+| RFP | \`audit/pen-test-rfp-2026.md\` |
+| Shortlist | \`audit/pen-test-vendor-shortlist.md\` |
+| Readiness pack | \`audit/vendor-engagement-readiness-pack.md\` |
 
 ## Human escalation (EXT-INF)
 
@@ -110,7 +110,7 @@ human_signature: pending
 ## Agent attestation
 
 - [x] Scope documents present and reference compliance-gateway boundary
-- [x] Machine-readable scores in \`01-docs/05-audit/latest.json\`
+- [x] Machine-readable scores in \`audit/latest.json\`
 - [ ] SOW signature and vendor engagement (human)
 `;
 

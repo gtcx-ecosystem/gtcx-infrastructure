@@ -2,7 +2,7 @@
 /**
  * @fileoverview Ensure every Prometheus alert in deploy/monitoring/alerts/
  * carries a `runbook_url` annotation pointing at the canonical alerts
- * runbook section (01-docs/04-ops/runbooks/alerts.md#<alertname-lower>).
+ * runbook section (docs/04-ops/runbooks/alerts.md#<alertname-lower>).
  *
  * Rationale: the prior repo had 0 alerts with `runbook_url` despite
  * routing P0 pages to PagerDuty. An on-call engineer paged at 02:00
@@ -25,7 +25,7 @@ const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..'
 const ALERTS_DIR = join(REPO_ROOT, '04-deploy', 'monitoring', 'alerts');
 const RUNBOOK_PATH = join(REPO_ROOT, '01-docs', 'operations', 'runbooks', 'alerts.md');
 const RUNBOOK_BASE =
-  'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/01-docs/operations/runbooks/alerts.md';
+  'https://github.com/gtcx-ecosystem/gtcx-infrastructure/blob/main/docs/operations/runbooks/alerts.md';
 
 const checkOnly = process.argv.includes('--check');
 
@@ -250,7 +250,7 @@ function main() {
       console.error(
         '\nAdd a `### ' +
           uniqueDead[0] +
-          '` (etc.) section to 01-docs/04-ops/runbooks/alerts.md so the\n' +
+          '` (etc.) section to docs/04-ops/runbooks/alerts.md so the\n' +
           'on-call engineer paged at 02:00 lands on a real runbook section, not a 404.'
       );
       process.exit(1);

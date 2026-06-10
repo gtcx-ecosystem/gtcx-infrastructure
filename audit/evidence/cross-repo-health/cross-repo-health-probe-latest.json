@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "testType": "cross-repo-health-probe",
   "storyId": "S1-13",
-  "timestamp": "2026-06-10T01:38:36.733Z",
+  "timestamp": "2026-06-10T02:03:59.411Z",
   "environment": "staging",
   "overall": "FAIL",
   "services": [
@@ -13,7 +13,7 @@
       "status": "000",
       "error": "fetch failed",
       "body": null,
-      "latencyMs": 820,
+      "latencyMs": 881,
       "required": true
     },
     {
@@ -23,7 +23,7 @@
       "status": 503,
       "error": null,
       "body": "<html>\r\n<head><title>503 Service Temporarily Unavailable</title></head>\r\n<body>\r\n<center><h1>503 Service Temporarily Unavailable</h1></center>\r\n</body>\r\n</html>\r\n",
-      "latencyMs": 2099,
+      "latencyMs": 3440,
       "required": true
     },
     {
@@ -33,7 +33,7 @@
       "status": "000",
       "error": "fetch failed",
       "body": null,
-      "latencyMs": 786,
+      "latencyMs": 1062,
       "required": true
     },
     {
@@ -43,7 +43,7 @@
       "status": "000",
       "error": "fetch failed",
       "body": null,
-      "latencyMs": 1057,
+      "latencyMs": 1061,
       "required": false
     }
   ],

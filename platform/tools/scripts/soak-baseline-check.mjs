@@ -12,7 +12,7 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
-const BASELINE_PATH = join(ROOT, '01-docs/audit', 'soak-baseline.json');
+const BASELINE_PATH = join(ROOT, 'audit', 'soak-baseline.json');
 
 export function compareSoakMetrics(baseline, actual) {
   const failures = [];

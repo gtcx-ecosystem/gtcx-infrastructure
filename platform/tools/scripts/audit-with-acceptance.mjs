@@ -11,7 +11,7 @@ import { execSync } from "node:child_process";
 import { readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 
-const ACCEPTANCE_LOG = resolve("01-docs/09-security/cve-acceptance-log.md");
+const ACCEPTANCE_LOG = resolve("docs/09-security/cve-acceptance-log.md");
 
 function parseArgs() {
   const args = process.argv.slice(2);

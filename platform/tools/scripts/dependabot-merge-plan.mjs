@@ -97,7 +97,7 @@ function main() {
   }
 
   if (checkOnly && failures.length > 0) {
-    console.error('[dependabot-merge-plan] unblock: merge 01-docs/roadmap-update-2026-05-30 to main');
+    console.error('[dependabot-merge-plan] unblock: merge docs/roadmap-update-2026-05-30 to main');
     for (const f of failures) console.error(`- ${f}`);
     process.exit(1);
   }
