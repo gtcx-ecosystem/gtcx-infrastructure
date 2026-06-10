@@ -66,11 +66,15 @@
       ],
       "acceptance": ["pnpm secas:friction:check:write", "pnpm secas:approval:check:write"],
       "uat": [
-        { "text": "Vendor SOW countersign received", "done": false },
+        {
+          "text": "Vendor SOW countersign received",
+          "done": true,
+          "note": "2026-06-10 — audit/evidence/ext-inf-002-countersign-approval-2026-06-10.json"
+        },
         { "text": "Pen-test window scheduled and witnessed", "done": false },
         { "text": "Report ingested to audit/evidence/", "done": false }
       ],
-      "blockers": "vendor countersign (Class S parallel — not repo frozen)"
+      "blockers": null
     },
     {
       "id": "SECAS-S3-01",

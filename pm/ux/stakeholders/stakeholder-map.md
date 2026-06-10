@@ -17,11 +17,12 @@ date: 2026-06-10
 
 ## Class S gates (stakeholder-linked)
 
-| Gate ID                           | Stakeholder                   | Status              | blocksIR |
-| --------------------------------- | ----------------------------- | ------------------- | -------- |
-| EXT-INF-002 (pen-test SOW)        | Human / Security              | approved 2026-06-10 | false    |
-| BL-SOC2-01 (SOC 2 Type I auditor) | Human / Legal, CISO + Finance | approved 2026-06-10 | false    |
-| EXT-INF-013 (ZWCMP pilot owner)   | GTM / Leadership              | open (hub)          | false    |
-| Vendor pen-test countersign       | Human / Procurement           | pending             | false    |
+| Gate ID                           | Stakeholder         | Status              | blocksIR |
+| --------------------------------- | ------------------- | ------------------- | -------- |
+| EXT-INF-002 (pen-test SOW)        | Human / Security    | approved 2026-06-10 | false    |
+| EXT-INF-002-COUNTERSIGN           | Human / Procurement | approved 2026-06-10 | false    |
+| BL-SOC2-01 (SOC 2 Type I auditor) | Human / Legal       | approved 2026-06-10 | false    |
+| BL-SOC2-01-MSA (auditor MSA)      | CISO + Finance      | approved 2026-06-10 | false    |
+| EXT-INF-013 (ZWCMP pilot owner)   | GTM / Leadership    | open (hub)          | false    |
 
 Engineering stories must **not** encode sovereign signature work — link stakeholder row instead.

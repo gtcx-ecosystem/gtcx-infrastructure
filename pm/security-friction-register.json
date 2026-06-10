@@ -12,10 +12,11 @@
     {
       "id": "SEC-PENTEST-01",
       "priority": "P0",
-      "status": "open",
+      "status": "in_progress",
       "repo": "gtcx-infrastructure",
       "title": "Live-stack pen-test execution window",
-      "symptom": "EXT-INF-002 approved — vendor kickoff + window scheduling pending",
+      "symptom": "EXT-INF-002 countersign approved — pen-test window scheduling + report ingest pending",
+      "countersignWitness": "audit/evidence/ext-inf-002-countersign-approval-2026-06-10.json",
       "dependsOn": "EXT-INF-002",
       "dependsOnClass": "S",
       "infraAction": "Schedule pen-test after vendor SOW countersign; publish evidence pack",

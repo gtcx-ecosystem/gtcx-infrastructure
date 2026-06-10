@@ -1,0 +1,22 @@
+{
+  "schema": "gtcx.sovereignApproval.v1",
+  "id": "EXT-INF-002-COUNTERSIGN",
+  "parentId": "EXT-INF-002",
+  "aliases": ["H-05-PROC", "SECAS-S2-PROC"],
+  "title": "Vendor pen-test SOW countersign (procurement)",
+  "authorityClass": "S",
+  "approvedAt": "2026-06-10T08:00:00.000Z",
+  "approvedBy": "human:sovereign",
+  "approvalChannel": "cursor-session",
+  "approvalUtterance": "APPROVED",
+  "scope": "Procurement countersign of live-stack pen-test vendor SOW — authorizes kickoff and test window scheduling",
+  "prerequisite": "audit/evidence/ext-inf-002-sow-approval-2026-06-10.json",
+  "postApprovalActions": [
+    "gtcx-infrastructure: confirm pen-test window with vendor",
+    "gtcx-infrastructure: publish audit/evidence/pen-test-window-YYYY-MM-DD.json",
+    "gtcx-infrastructure: ingest vendor report to audit/evidence/"
+  ],
+  "blocksIR": false,
+  "repo": "gtcx-infrastructure",
+  "commitAtApproval": "735cefb"
+}

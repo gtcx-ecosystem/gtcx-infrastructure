@@ -23,6 +23,13 @@
       "seal": "docs/operations/coordination/from-gtcx-infrastructure-ext-inf-002-sow-approved-2026-06-10.md",
       "postApprovalOwner": "gtcx-infrastructure",
       "postApprovalAction": "Schedule live-stack pen-test window after vendor countersign",
+      "countersign": {
+        "id": "EXT-INF-002-COUNTERSIGN",
+        "status": "approved",
+        "approvedAt": "2026-06-10",
+        "witness": "audit/evidence/ext-inf-002-countersign-approval-2026-06-10.json",
+        "seal": "docs/operations/coordination/from-gtcx-infrastructure-ext-inf-002-countersign-approved-2026-06-10.md"
+      },
       "blocksClaims": ["pen-test complete"],
       "blocksIR": false,
       "hubManifest": "bridge-os/.../human-gates.manifest.json#H-05"
@@ -42,6 +49,13 @@
       "intake": "docs/governance/regulatory/soc2-readiness-checklist.md",
       "postApprovalOwner": "CISO + Finance",
       "postApprovalAction": "Execute auditor MSA/SOW and schedule Type I fieldwork",
+      "msaExecution": {
+        "id": "BL-SOC2-01-MSA",
+        "status": "approved",
+        "approvedAt": "2026-06-10",
+        "witness": "audit/evidence/bl-soc2-01-msa-execution-approval-2026-06-10.json",
+        "seal": "docs/operations/coordination/from-gtcx-infrastructure-bl-soc2-01-msa-approved-2026-06-10.md"
+      },
       "blocksClaims": ["SOC 2 Type I attested", "SOC 2 attested"],
       "blocksIR": false,
       "note": "baseline-os BG-10-11 — not gtcx-docs Q2 hygiene BG-10-11"

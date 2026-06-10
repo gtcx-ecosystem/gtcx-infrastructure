@@ -206,6 +206,22 @@
         "answeredOn": "2026-06-10",
         "rationale": "Sovereign approval for auditor selection and engagement; readiness checklist in-repo; CISO/Finance execute MSA.",
         "evidence": "audit/evidence/bl-soc2-01-auditor-approval-2026-06-10.json"
+      },
+      {
+        "id": "EXT-INF-002-COUNTERSIGN",
+        "question": "Vendor pen-test SOW countersign (procurement)?",
+        "answer": "APPROVED",
+        "answeredOn": "2026-06-10",
+        "rationale": "Sovereign procurement countersign; pen-test window scheduling authorized for gtcx-infrastructure.",
+        "evidence": "audit/evidence/ext-inf-002-countersign-approval-2026-06-10.json"
+      },
+      {
+        "id": "BL-SOC2-01-MSA",
+        "question": "SOC 2 Type I auditor MSA execution?",
+        "answer": "APPROVED",
+        "answeredOn": "2026-06-10",
+        "rationale": "Sovereign approval for auditor MSA execution; Type I fieldwork may proceed after MSA signing.",
+        "evidence": "audit/evidence/bl-soc2-01-msa-execution-approval-2026-06-10.json"
       }
     ],
     "open": []

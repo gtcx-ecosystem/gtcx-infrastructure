@@ -27,8 +27,8 @@ Sovereign operator approved **SOC 2 Type I auditor engagement** on 2026-06-10. R
 
 ## Remaining (procurement execution)
 
-| Step                    | Owner                         | Status                   |
-| ----------------------- | ----------------------------- | ------------------------ |
-| Auditor MSA/SOW         | CISO + Finance                | **authorized** — execute |
-| Type I fieldwork window | gtcx-infrastructure + auditor | after engagement         |
-| Attestation publish     | gtcx-infrastructure           | after auditor report     |
+| Step                    | Owner                         | Status                                                                                                             |
+| ----------------------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| Auditor MSA/SOW         | CISO + Finance                | **approved** 2026-06-10 — [MSA witness](../../../audit/evidence/bl-soc2-01-msa-execution-approval-2026-06-10.json) |
+| Type I fieldwork window | gtcx-infrastructure + auditor | after MSA signing                                                                                                  |
+| Attestation publish     | gtcx-infrastructure           | after auditor report                                                                                               |

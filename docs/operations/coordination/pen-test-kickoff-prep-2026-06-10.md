@@ -13,7 +13,9 @@ tags: ['coordination', 'pen-test', 'secas-s2', 'ext-inf-002']
 
 **Prerequisite:** EXT-INF-002 sovereign approval recorded (`audit/evidence/ext-inf-002-sow-approval-2026-06-10.json`).
 
-**Blocked on:** Vendor SOW countersign (Class S — procurement/security).
+**Countersign:** approved 2026-06-10 — [`ext-inf-002-countersign-approval-2026-06-10.json`](../../../audit/evidence/ext-inf-002-countersign-approval-2026-06-10.json).
+
+**Next:** Schedule pen-test window and publish witness JSON.
 
 ## Intake pack (attach to vendor kickoff)
 

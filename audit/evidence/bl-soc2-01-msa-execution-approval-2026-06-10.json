@@ -1,0 +1,22 @@
+{
+  "schema": "gtcx.sovereignApproval.v1",
+  "id": "BL-SOC2-01-MSA",
+  "parentId": "BL-SOC2-01",
+  "aliases": ["EXT-INF-016-MSA", "BG-10-11-PROC"],
+  "title": "SOC 2 Type I auditor MSA execution",
+  "authorityClass": "S",
+  "approvedAt": "2026-06-10T08:00:00.000Z",
+  "approvedBy": "human:sovereign",
+  "approvalChannel": "cursor-session",
+  "approvalUtterance": "APPROVED",
+  "scope": "Authorize execution of auditor MSA/SOW and scheduling of Type I fieldwork",
+  "prerequisite": "audit/evidence/bl-soc2-01-auditor-approval-2026-06-10.json",
+  "postApprovalActions": [
+    "CISO + Finance: execute auditor MSA with selected firm",
+    "gtcx-infrastructure: publish Type I readiness evidence pack when fieldwork begins",
+    "gtcx-infrastructure: ingest auditor report when delivered"
+  ],
+  "blocksIR": false,
+  "repo": "gtcx-infrastructure",
+  "commitAtApproval": "735cefb"
+}
