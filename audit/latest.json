@@ -1,32 +1,32 @@
 {
   "repo": "gtcx-infrastructure",
-  "auditDate": "2026-06-06",
-  "verifiedAt": "2026-06-06T22:00:00.000Z",
-  "head": "6a70f4c",
-  "workingTree": "engineering-audit-2026-06-06",
-  "sourceAudit": "01-docs/audit/engineering-audit-2026-06-06.md",
-  "latestAudit": "01-docs/audit/engineering-audit-2026-06-06.md",
-  "previousAudit": "01-docs/05-audit/bank-grade-audit-2026-06-07.md",
-  "remediationPlan": "01-docs/05-audit/execution-roadmap.md",
+  "auditDate": "2026-06-10",
+  "verifiedAt": "2026-06-10T04:20:00.000Z",
+  "head": "cfd0982981f52c9858673062de43a93beccc17e5",
+  "workingTree": "56-path-wip",
+  "sourceAudit": "audit/master-audit-2026-06-10.md",
+  "latestAudit": "audit/master-audit-2026-06-10.md",
+  "previousAudit": "audit/bank-grade-audit-2026-06-07.md",
+  "remediationPlan": "audit/product-management/execution-roadmap.md",
   "latest10-10Roadmap": "01-docs/05-audit/10-10-roadmap-2026-06-02.md",
   "irRoadmap": "01-docs/05-audit/ir-10-10-roadmap.md",
-  "status": "sprint-3-agent-closed",
+  "status": "daas-s1-complete",
   "scores": {
-    "internalEngineeringReadiness": 7.1,
-    "internalReadiness": 7.1,
-    "engineeringLaneScore": 7.1,
-    "engineeringSignoff": 5.0,
-    "engineeringCompletion": 7.8,
+    "internalEngineeringReadiness": 8.4,
+    "internalReadiness": 8.4,
+    "engineeringLaneScore": 8.4,
+    "engineeringSignoff": 8.0,
+    "engineeringCompletion": 8.5,
     "externalClearance": 9,
-    "externalBlockerBurden": 1,
-    "codeQuality": 8.2,
-    "repoHygiene": 9.8,
-    "security": 8.6,
-    "globalSouthResilience": 7.2,
-    "ecosystemIntegration": 8.7,
-    "agenticMaturity": 8.3,
-    "enterpriseReadiness": 7.6,
-    "bankGradeComposite": 8.3
+    "externalBlockerBurden": 0.7,
+    "codeQuality": 8.0,
+    "repoHygiene": 8.5,
+    "security": 8.7,
+    "globalSouthResilience": 8.3,
+    "ecosystemIntegration": 8.4,
+    "agenticMaturity": 8.2,
+    "enterpriseReadiness": 8.0,
+    "bankGradeComposite": 8.4
   },
   "scoreReconciliation": "IR = in-repo engineering only. XC = external/GTM track (separate). See 01-docs/05-audit/SCORING.md v2. certifiedReadiness/composite as IR−gap are retired.",
   "findings": {
@@ -37,13 +37,13 @@
     "p3": 1
   },
   "gates": {
-    "testQuick": "fail",
-    "validateAll": "fail",
+    "testQuick": "unknown",
+    "validateAll": "pass",
     "governance": "pass",
-    "typecheck": "pass",
-    "format": "fail",
-    "agentCheck": "fail",
-    "lint": "pass",
+    "typecheck": "fail",
+    "format": "pass",
+    "agentCheck": "pass",
+    "lint": "fail",
     "docsLinks": "pass",
     "repoHygiene": "pass",
     "workspaceRootCleanliness": "pass",
@@ -53,10 +53,9 @@
     "validateSignal": "pass"
   },
   "gateFailures": [
-    "pnpm format:check — 65 Prettier violations",
-    "pnpm test — docs-standard broken link in agent-command-lookup.md",
-    "validate-all — 22/55 gates fail (post-v3 path drift)",
-    "pnpm agent:work-selection:check — 0/9 (ROOT + manifest path)"
+    "pnpm lint — @gtcx/docs-site",
+    "pnpm typecheck — @gtcx/docs-site",
+    "pnpm daas:fleet:health — sovereign staging unreachable"
   ],
   "sprint1Closed": {
     "done": ["S1-02", "S1-03", "S1-04", "S1-05", "S1-06", "S1-07", "S1-08", "S1-10"],
@@ -99,10 +98,11 @@
     "Engineering audit 2026-06-07 (c181138): lane-1 headline 7.9 (signoff 7.5 / completion 8.3); validate-all 50/50; lint/typecheck/test fail on audit-signer + deployment-guard regressions.",
     "Engineering audit 2026-06-06 (6a70f4c): lane-1 headline 7.1 (signoff 5.0 / completion 7.8); validate-all 33/55 post-v3 path drift; lint/typecheck fixed; format + test + P22 check fail.",
     "Execute-roadmap reconcile 2026-06-07: S4-04/05 closed — lint + typecheck green; validate-all 50/50; S4-07 tracks pnpm test quick 1/359 flake.",
-    "Execute-roadmap 2026-06-08: S4-06 done — 12 READMEs (dotdirs, scripts, workspace packages, templates, chaos-tests); backlogClear true; S4-07 deferred."
+    "Execute-roadmap 2026-06-08: S4-06 done — 12 READMEs (dotdirs, scripts, workspace packages, templates, chaos-tests); backlogClear true; S4-07 deferred.",
+    "Master audit 2026-06-10: DAAS-S1 complete; validate-all 55/55; composite 8.4 (+0.1); AGX + intelligence staging 200; S39-01 7/7; sovereign fleet gap remains.",
+    "EXT-INF-002 approved 2026-06-10: sovereign pen-test SOW path authorized; evidence audit/evidence/ext-inf-002-sow-approval-2026-06-10.json."
   ],
   "remainingGaps": [
-    "S2-13 — Pen-test SOW signature (EXT-INF-002).",
     "S3-08 — Indemnified SLA legal review (EXT-INF-015).",
     "S3-11 — ZWCMP DPA + pilot agreement (EXT-INF-014).",
     "Operator — npm publish, registry tag, live DR/WORM, dependabot PR merges on main.",
@@ -193,18 +193,26 @@
         "answer": "PIN",
         "answeredOn": "2026-05-31",
         "rationale": "Implemented same-day in .github/dependabot.yml — ignore rule on @types/node semver-major. Package.json was already ^22.10.0 (tied to Node 20.x runtime). Open PR #62 to close with rationale."
+      },
+      {
+        "id": "EXT-INF-002",
+        "question": "Live-stack pen-test vendor SOW (S2-13)?",
+        "answer": "APPROVED",
+        "answeredOn": "2026-06-10",
+        "rationale": "Sovereign approval after DAAS-S1 seal and master audit 8.4; intake pack + vendor artifacts acked; procurement countersign and kickoff authorized.",
+        "evidence": "audit/evidence/ext-inf-002-sow-approval-2026-06-10.json"
       }
     ],
     "open": []
   },
   "rubricId": "gtcx-infra-canonical-v2",
-  "openExternalAssurance": ["EXT-INF-013", "EXT-INF-014", "EXT-INF-002", "EXT-INF-003"],
+  "openExternalAssurance": ["EXT-INF-013", "EXT-INF-014", "EXT-INF-003"],
   "ciSnapshot": {
     "mainCiFormatFail": false,
     "mainCiJobFail": false,
-    "localValidateAllPass": false,
+    "localValidateAllPass": true,
     "localValidateAllGateCount": 55,
-    "localValidateAllPassCount": 33
+    "localValidateAllPassCount": 55
   },
   "externalBlockers": {
     "register": "01-docs/05-audit/external-dependencies-register-2026-05-31.md",
@@ -222,23 +230,17 @@
         "weight": 0.25
       },
       {
-        "id": "EXT-INF-002",
-        "category": "assurance",
-        "label": "Pen-test SOW signed",
-        "weight": 0.3
-      },
-      {
         "id": "EXT-INF-003",
         "category": "operator",
         "label": "Recurring WORM upload on main merge",
         "weight": 0.2
       }
     ],
-    "burden": 1,
+    "burden": 0.7,
     "byCategory": {
       "gtm": 0.25,
       "legal": 0.25,
-      "assurance": 0.3,
+      "assurance": 0,
       "operator": 0.2,
       "other": 0
     }
