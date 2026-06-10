@@ -1,7 +1,7 @@
 {
   "schema": "gtcx://gtcx-infrastructure/daas-friction-check/v1",
   "protocol": "P41-DEVOPS-AS-A-SERVICE",
-  "checkedAt": "2026-06-10T01:38:34.374Z",
+  "checkedAt": "2026-06-10T04:15:57.529Z",
   "owner": "gtcx-infrastructure",
   "gates": {
     "register": {
@@ -18,10 +18,10 @@
     },
     "openP0": {
       "ok": true,
-      "count": 2,
-      "ids": ["F-AGX-01", "XR-MKT-011"]
+      "count": 0,
+      "ids": []
     }
   },
-  "openP0": 2,
+  "openP0": 0,
   "ok": true
 }

@@ -23,10 +23,13 @@ DevOps and infrastructure are a separate concern from product engineering — pa
 - [x] pm/friction-register.json (XR-MKT-011, F-AGX-01, F1, F2, F6)
 - [x] pm/daas-roadmap.json (DAAS-S1–S3)
 - [x] docs/operations/devops-as-a-service.md
-- [ ] P41 hub protocol published (gtcx-docs — blocked-sibling)
+- [x] P41 hub protocol published (gtcx-docs `a34baa8a`)
 - [x] daas:friction:check harness green
-- [ ] XR-MKT-011 seal status delivered
-- [ ] F-AGX-01 AGX health 200
+- [x] daas:cards:check harness green (DAAS-S2)
+- [x] XR-MKT-011 seal status delivered
+- [x] F-AGX-01 AGX health 200
+- [x] F1 terminal-os EKS seal delivered
+- [ ] F2 compliance-os GHCR rollout (api pods — imagePullSecrets patch)
 
 ## Sprint plan
 

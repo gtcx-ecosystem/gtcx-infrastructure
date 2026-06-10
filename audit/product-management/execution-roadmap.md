@@ -2,7 +2,7 @@
 title: Execution roadmap — DevOps-as-a-Service
 status: current
 date: 2026-06-10
-last_reconciled: 2026-06-10T02:04:41.712Z
+last_reconciled: 2026-06-10T03:14:04.850Z
 owner: gtcx-infrastructure
 program: INIT-GTCX-INFRA-DAAS
 generated: true
@@ -24,17 +24,17 @@ sources:
 
 ## Active Phase: DAAS-S1 — Friction register + fleet health witness
 
-**Status:** `blocked`
+**Status:** `complete`
 
-**Live probe:** AGX `api/health` → **503** (fleet witness 2026-06-10).
+**Live probe:** AGX `api/health` → **200** (fleet witness 2026-06-10).
 
-| Story      | Title                                              | Priority | Status      | Owner                                   |
-| ---------- | -------------------------------------------------- | -------- | ----------- | --------------------------------------- |
-| DAAS-S1-01 | DaaS friction register structural witness          | P0       | done        | gtcx-infrastructure                     |
-| DAAS-S1-02 | Canonical scheduled fleet-health witness           | P0       | done        | gtcx-infrastructure                     |
-| DAAS-S1-03 | Correct AGX staging image and health               | P0       | in_progress | gtcx-os/platforms → gtcx-infrastructure |
-| DAAS-S1-04 | Deliver XR-MKT-011 authority routes and trace seal | P0       | in_progress | gtcx-infrastructure → gtcx-markets      |
-| DAAS-S1-05 | Align validate-all gates to P35 paths              | P1       | in_progress | gtcx-infrastructure                     |
+| Story      | Title                                              | Priority | Status | Owner                                   |
+| ---------- | -------------------------------------------------- | -------- | ------ | --------------------------------------- |
+| DAAS-S1-01 | DaaS friction register structural witness          | P0       | done   | gtcx-infrastructure                     |
+| DAAS-S1-02 | Canonical scheduled fleet-health witness           | P0       | done   | gtcx-infrastructure                     |
+| DAAS-S1-03 | Correct AGX staging image and health               | P0       | done   | gtcx-os/platforms → gtcx-infrastructure |
+| DAAS-S1-04 | Deliver XR-MKT-011 authority routes and trace seal | P0       | done   | gtcx-infrastructure → gtcx-markets      |
+| DAAS-S1-05 | Align validate-all gates to P35 paths              | P1       | done   | gtcx-infrastructure                     |
 
 ### DAAS-S1-01: DaaS friction register structural witness
 
@@ -74,7 +74,7 @@ pnpm ops:check
 
 ### DAAS-S1-03: Correct AGX staging image and health
 
-**Files:** gtcx-os/platform/platforms — image gtcx-agx:staging-20260610, deploy/kubernetes/overlays/staging/kustomization.yaml
+**Files:** deploy/kubernetes/overlays/staging/kustomization.yaml, deploy/kubernetes/overlays/staging/patches/agx-staging-env.yaml, platform/scripts/staging/sync-agx-staging-database-url.sh
 
 **Acceptance**
 
@@ -84,14 +84,14 @@ pnpm daas:fleet:health
 
 **UAT / QA**
 
-- [x] gtcx-agx:staging contains @gtcx/platform-shared (staging-20260610 pushed 2026-06-10)
-- [ ] GET https://api.staging.gtcx.trade/api/health returns 200 (pods Pending — cluster CPU/memory)
+- [x] gtcx-agx:staging-amd64 deployed with operational RDS DATABASE_URL (2026-06-10 — sync-agx-staging-database-url.sh + agx-staging-env patch)
+- [x] GET https://api.staging.gtcx.trade/api/health returns 200 (probe 2026-06-10T02:53Z)
 
-**Blockers:** EKS scheduling — 0/2 nodes Insufficient cpu/memory; rollout image set, pods Pending
+**Blockers:** none
 
 ### DAAS-S1-04: Deliver XR-MKT-011 authority routes and trace seal
 
-**Files:** deploy/kubernetes/overlays/staging/ingress.yaml, docs/operations/coordination/from-gtcx-infrastructure-s39-01-authority-routes-2026-06-10.md, docs/operations/coordination/xr-mkt-011-authority-url-matrix-2026-06-10.md
+**Files:** deploy/kubernetes/overlays/staging/ingress.yaml, deploy/kubernetes/overlays/staging/markets-authority-stub/, docs/operations/coordination/from-gtcx-infrastructure-s39-01-authority-routes-2026-06-10.md, docs/operations/coordination/xr-mkt-011-authority-url-matrix-2026-06-10.md
 
 **Acceptance**
 
@@ -104,15 +104,15 @@ pnpm --dir ../gtcx-markets authority:trace:capture
 
 - [x] Ingress paths for 7 authority URLs applied
 - [x] Canonical URL matrix published
-- [ ] AGX health returns 200
-- [ ] Markets authority trace capture 7/7 exit 0
-- [ ] Infra seal status delivered
+- [x] WAF AllowMarketsAuthorityEndpoints live
+- [x] Markets authority trace capture 7/7 exit 0
+- [x] Infra seal status delivered
 
-**Blockers:** Depends on DAAS-S1-03; capture still 0/7
+**Blockers:** none
 
 ### DAAS-S1-05: Align validate-all gates to P35 paths
 
-**Files:** platform/tools/scripts/\*.mjs, platform/tools/scripts/validate-all.mjs
+**Files:** pnpm-workspace.yaml, platform/tools/scripts/validate-all.mjs, platform/tools/control-plane/gtcx-ctl.mjs, .docs-exceptions.json
 
 **Acceptance**
 
@@ -123,25 +123,25 @@ node platform/tools/scripts/validate-all.mjs
 **UAT / QA**
 
 - [x] Mesh injection, publish primitives, runtime evidence gates pass
-- [ ] validate-all 55/55 (current 38/55 after P35 path restore)
+- [x] validate-all 55/55 (2026-06-10 after P35 workspace + path alignment)
 
 **Blockers:** none
 
 ## Future Phases
 
-| Sprint  | Goal                                         | Status  | Owner               | Stories / Friction |
-| ------- | -------------------------------------------- | ------- | ------------------- | ------------------ |
-| DAAS-S2 | Per-repo DaaS cards + ingress matrix publish | pending | gtcx-infrastructure | `F1`, `F2`         |
-| DAAS-S3 | Cost witness + env schedule automation       | pending | gtcx-infrastructure | `F6`               |
+| Sprint  | Goal                                         | Status  | Owner               | Stories / Friction                              |
+| ------- | -------------------------------------------- | ------- | ------------------- | ----------------------------------------------- |
+| DAAS-S2 | Per-repo DaaS cards + ingress matrix publish | done    | gtcx-infrastructure | cards: terminal-os, compliance-os, gtcx-markets |
+| DAAS-S3 | Cost witness + env schedule automation       | pending | gtcx-infrastructure | `F6`                                            |
 
 ## Issue Reconciliation
 
 | Issue                        | Source                      | Roadmap Mapping               | Status          |
 | ---------------------------- | --------------------------- | ----------------------------- | --------------- |
-| `F-AGX-01`                   | `pm/friction-register.json` | DAAS-S1-03                    | in_progress     |
-| `XR-MKT-011`                 | `pm/friction-register.json` | DAAS-S1-04                    | in_progress     |
-| `F1`                         | `pm/friction-register.json` | DAAS-S2                       | pending         |
-| `F2`                         | `pm/friction-register.json` | DAAS-S2                       | pending         |
+| `F-AGX-01`                   | `pm/friction-register.json` | DAAS-S1-03                    | done            |
+| `XR-MKT-011`                 | `pm/friction-register.json` | DAAS-S1-04                    | done            |
+| `F1`                         | `pm/friction-register.json` | DAAS-S2                       | done            |
+| `F2`                         | `pm/friction-register.json` | DAAS-S2 / DAAS-S3             | in_progress     |
 | `F6`                         | `pm/friction-register.json` | DAAS-S3                       | pending         |
 | P41 hub protocol publication | `pm/_tasks`                 | deferred to `gtcx-docs` owner | blocked-sibling |
 

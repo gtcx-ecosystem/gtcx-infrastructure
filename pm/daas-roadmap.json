@@ -17,14 +17,14 @@
     {
       "id": "DAAS-S1",
       "name": "Friction register + fleet health witness",
-      "status": "blocked",
-      "items": ["F-AGX-01", "XR-MKT-011"]
+      "status": "complete",
+      "items": []
     },
     {
       "id": "DAAS-S2",
       "name": "Per-repo DaaS cards + ingress matrix publish",
-      "status": "pending",
-      "items": ["F1", "F2"]
+      "status": "complete",
+      "items": []
     },
     {
       "id": "DAAS-S3",

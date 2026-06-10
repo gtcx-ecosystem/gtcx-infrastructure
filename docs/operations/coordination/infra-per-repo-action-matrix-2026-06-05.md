@@ -72,7 +72,7 @@ All infra P0 items verified. **Next:** owner-repo smoke (compliance hub #17 inta
 | **ledger-ui**                                | None until XR-510 npm creds | npm publish is XC, not EKS                    |
 | **terra-os**                                 | None until W2 adapter epic  | Live permit adapters — terra owns             |
 | **gtcx-operations**                          | None                        | Satellite; AWS when product turns on          |
-| **gtcx-markets**                             | **P41 DaaS** — XR-MKT-011   | S39-01 authority routes, AGX ingress, auth SM   |
+| **gtcx-markets**                             | **P41 DaaS** — XR-MKT-011   | S39-01 authority routes, AGX ingress, auth SM |
 | **gtcx-hardware**                            | None                        | Device edge — out of cloud matrix             |
 | **nyota-ai** / **griot-ai** / **veritas-ai** | None                        | Call intelligence over HTTPS on AWS           |
 | **sensei-ai**                                | **Out of band**             | Separate product — not GTCX EKS unless merged |
@@ -104,6 +104,14 @@ Inbound says gtcx-infrastructure?
 ```
 
 ---
+
+## Staging ingress (DaaS-S2 publish)
+
+| Host                          | Service          | Namespace             | Card                                                      |
+| ----------------------------- | ---------------- | --------------------- | --------------------------------------------------------- |
+| `api.staging.gtcx.trade`      | gtcx-agx-staging | gtcx-staging          | [gtcx-markets DaaS card](../daas/cards/gtcx-markets.md)   |
+| `terminal-staging.gtcx.trade` | terminal-os      | terminal-os-staging   | [terminal-os DaaS card](../daas/cards/terminal-os.md)     |
+| compliance-os staging         | multi-workload   | compliance-os-staging | [compliance-os DaaS card](../daas/cards/compliance-os.md) |
 
 ## Friction register (infra-owned fixes)
 
