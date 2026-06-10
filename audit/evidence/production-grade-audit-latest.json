@@ -6,9 +6,32 @@
   "date": "2026-06-10",
   "score10": 8,
   "score100": 80,
-  "status": "migrated-from-master-audit",
-  "migratedFrom": "master-audit",
-  "gaps": ["full five-core audit not yet run"],
-  "checks": {},
-  "note": "Transition witness — run full A1–A5 audit to replace migration scores"
+  "status": "probe-driven",
+  "source": "run-five-core-audit",
+  "checks": {
+    "ciPipeline": {
+      "ok": true,
+      "detail": "ci.yml or test/lint scripts"
+    },
+    "opsCheck": {
+      "ok": true,
+      "code": 0,
+      "out": "> gtcx-infrastructure@0.1.0 ops:check /Users/amanianai/Sites/gtcx-ecosystem/gtcx-infrastructure\n> pnpm workspace:check && pnpm check:workspace-root-cleanliness:strict\n\n\n> gtcx-infrastructure@0.1.0 workspace:check /Users/amanianai/Sites/gtcx-ecosystem/gtcx-infrastructure\n> node platform/scripts/workspace/check.mjs\n\nworkspace:root OK\nworkspace:coordination OK\nworkspace:compliance OK\nworkspace:gtm OK\nworkspace:attestation OK\nworkspace:product-management OK\nworkspace:security OK\nworkspace:assurance-programs OK\nworkspace:audit OK\nworkspace:operations OK\nworkspace:readmes OK\nworkspace:agents OK\nwork"
+    },
+    "deployPath": {
+      "ok": true,
+      "detail": "deploy directory"
+    },
+    "pmGates": {
+      "ok": true,
+      "detail": "pm ci gates or manifest"
+    },
+    "p35Strict": {
+      "ok": false,
+      "code": 1,
+      "out": "{\n  \"ok\": false,\n  \"protocol\": \"35-ecosystem-workspace-world-class/v5.0.0\",\n  \"engine\": \"layout-spec-enforce/v1\",\n  \"contractVersion\": \"5.1.0\",\n  \"contractPath\": \"/Users/amanianai/Sites/gtcx-ecosystem/bridge-os/config/ecosystem-layout-contract.v5.json\",\n  \"mode\": \"strict\",\n  \"repo\": \"gtcx-infrastructure\",\n  \"repoRoot\": \"/Users/amanianai/Sites/gtcx-ecosystem/gtcx-infrastructure\",\n  \"repoKind\": \"product\",\n  \"layoutVersion\": \"v5\",\n  \"resolvedHubs\": {\n    \"agentic\": {\n      \"path\": \"agentic\",\n      \"kind\": \"v5\"\n    },\n    \"archive\": {\n      \"path\": \"archive\",\n      \"kind\": \"v5\"\n    },\n    \"audit\":"
+    }
+  },
+  "gaps": ["p35Strict"],
+  "runbook": "audit/runbooks/A2-production-grade.md"
 }

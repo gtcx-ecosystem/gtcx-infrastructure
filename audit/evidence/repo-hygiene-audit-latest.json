@@ -4,11 +4,29 @@
   "slug": "repo-hygiene",
   "repo": "gtcx-infrastructure",
   "date": "2026-06-10",
-  "score10": 8,
-  "score100": 80,
-  "status": "migrated-from-master-audit",
-  "migratedFrom": "master-audit",
-  "gaps": ["full five-core audit not yet run"],
-  "checks": {},
-  "note": "Transition witness — run full A1–A5 audit to replace migration scores"
+  "score10": 7.5,
+  "score100": 75,
+  "status": "probe-driven",
+  "source": "run-five-core-audit",
+  "checks": {
+    "p35Strict": {
+      "ok": false,
+      "code": 1,
+      "out": "{\n  \"ok\": false,\n  \"protocol\": \"35-ecosystem-workspace-world-class/v5.0.0\",\n  \"engine\": \"layout-spec-enforce/v1\",\n  \"contractVersion\": \"5.1.0\",\n  \"contractPath\": \"/Users/amanianai/Sites/gtcx-ecosystem/bridge-os/config/ecosystem-layout-contract.v5.json\",\n  \"mode\": \"strict\",\n  \"repo\": \"gtcx-infrastructure\",\n  \"repoRoot\": \"/Users/amanianai/Sites/gtcx-ecosystem/gtcx-infrastructure\",\n  \"repoKind\": \"product\",\n  \"layoutVersion\": \"v5\",\n  \"resolvedHubs\": {\n    \"agentic\": {\n      \"path\": \"agentic\",\n      \"kind\": \"v5\"\n    },\n    \"archive\": {\n      \"path\": \"archive\",\n      \"kind\": \"v5\"\n    },\n    \"audit\":"
+    },
+    "docsSor": {
+      "ok": true,
+      "detail": "docs SoR manifest"
+    },
+    "pmManifest": {
+      "ok": true,
+      "detail": "pm/manifest.json"
+    },
+    "fiveCoreIndex": {
+      "ok": true,
+      "detail": "audit/FIVE-CORE-AUDITS.md"
+    }
+  },
+  "gaps": ["p35Strict"],
+  "runbook": "audit/runbooks/A5-repo-hygiene.md"
 }

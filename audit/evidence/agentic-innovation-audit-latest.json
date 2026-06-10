@@ -6,9 +6,32 @@
   "date": "2026-06-10",
   "score10": 8,
   "score100": 80,
-  "status": "migrated-from-master-audit",
-  "migratedFrom": "master-audit",
-  "gaps": ["full five-core audit not yet run"],
-  "checks": {},
-  "note": "Transition witness — run full A1–A5 audit to replace migration scores"
+  "status": "probe-driven",
+  "source": "run-five-core-audit",
+  "checks": {
+    "agenticManifest": {
+      "ok": true,
+      "detail": "agentic/manifest.json"
+    },
+    "agentsMd": {
+      "ok": true,
+      "detail": "AGENTS.md"
+    },
+    "nextWork": {
+      "ok": true,
+      "code": 0,
+      "out": "> gtcx-infrastructure@0.1.0 agent:next-work /Users/amanianai/Sites/gtcx-ecosystem/gtcx-infrastructure\n> node platform/scripts/agent-next-work.mjs \"--json\""
+    },
+    "workSelection": {
+      "ok": true,
+      "code": 0,
+      "out": "> gtcx-infrastructure@0.1.0 agent:work-selection:check /Users/amanianai/Sites/gtcx-ecosystem/gtcx-infrastructure\n> node platform/scripts/check-agent-work-selection.mjs\n\n  ✓ manifest exists\n  ✓ manifest has adoption_status\n  ✓ selection script exists\n  ✓ selection script is executable\n  ✓ package.json has agent:next-work script\n  ✓ package.json has agent:work-selection:check script\n  ✓ AGENTS.md references Protocol 22\n  ✓ auto-dev-state.md has Next work block\n  ✓ execution roadmap exists\n\n9/9 checks passed\nProtocol 22 adoption check passed."
+    },
+    "mcpHub": {
+      "ok": false,
+      "detail": "MCP hub or hub repo"
+    }
+  },
+  "gaps": ["mcpHub"],
+  "runbook": "audit/runbooks/A3-agentic-innovation.md"
 }
