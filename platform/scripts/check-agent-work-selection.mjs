@@ -13,12 +13,12 @@ const ROOT = join(__dirname, '../..');
 const CHECKS = [
   {
     name: 'manifest exists',
-    path: join(ROOT, '01-docs/operations/agent-work-selection.md'),
+    path: join(ROOT, 'docs/operations/agent-work-selection.md'),
     test: (p) => existsSync(p),
   },
   {
     name: 'manifest has adoption_status',
-    path: join(ROOT, '01-docs/operations/agent-work-selection.md'),
+    path: join(ROOT, 'docs/operations/agent-work-selection.md'),
     test: (p) => {
       if (!existsSync(p)) return false;
       const content = readFileSync(p, 'utf8');
@@ -27,12 +27,12 @@ const CHECKS = [
   },
   {
     name: 'selection script exists',
-    path: join(ROOT, '03-platform/scripts/agent-next-work.mjs'),
+    path: join(ROOT, 'platform/scripts/agent-next-work.mjs'),
     test: (p) => existsSync(p),
   },
   {
     name: 'selection script is executable',
-    path: join(ROOT, '03-platform/scripts/agent-next-work.mjs'),
+    path: join(ROOT, 'platform/scripts/agent-next-work.mjs'),
     test: (p) => {
       if (!existsSync(p)) return false;
       const content = readFileSync(p, 'utf8');
@@ -68,16 +68,16 @@ const CHECKS = [
   },
   {
     name: 'auto-dev-state.md has Next work block',
-    path: join(ROOT, '01-docs/audit/auto-dev-state.md'),
+    path: join(ROOT, 'audit/product-management/auto-dev-state.md'),
     test: (p) => {
       if (!existsSync(p)) return false;
       const content = readFileSync(p, 'utf8');
-      return /Next work \(computed\)/i.test(content);
+      return /## Next Work/i.test(content);
     },
   },
   {
     name: 'execution roadmap exists',
-    path: join(ROOT, '01-docs/audit/execution-roadmap.md'),
+    path: join(ROOT, 'audit/product-management/execution-roadmap.md'),
     test: (p) => existsSync(p),
   },
 ];

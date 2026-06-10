@@ -10,16 +10,14 @@ owner: gtcx-infrastructure
 ## Active Phase
 
 - **ID:** DAAS-S1
-- **Status:** blocked
-- **Reason:** AGX image `staging-20260610` pushed and kustomize updated; pods **Pending** on
-  insufficient cluster CPU/memory. validate-all **38/55** after P35 audit artifact restore.
+- **Status:** complete
+- **Reason:** All 5 stories done; validate-all **55/55**; AGX health **200**; authority trace **7/7**.
 
 ## Next Work
 
 - **Owner:** `gtcx-infrastructure`
-- **Action:** Unblock EKS scheduling (scale nodes or reduce staging requests); verify
-  `api/health` **200**; then markets `authority:trace:capture` **7/7**.
-- **Owner (parallel):** Continue DAAS-S1-05 validate-all path/doc alignment (17 gates remain).
+- **Action:** FLEET-SOV-01 — restore sovereign staging probe in `pnpm daas:fleet:health`.
+- **Parallel:** docs-site lint/typecheck; pen-test vendor kickoff after procurement countersign (EXT-INF-002 approved 2026-06-10).
 
 ## Evidence
 
