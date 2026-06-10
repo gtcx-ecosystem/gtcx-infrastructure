@@ -31,13 +31,13 @@ jobs:
             test-command: bash 04-deploy/03-platform/scripts/validate.sh quick
     steps:
       - name: Checkout infrastructure (this repo)
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
         with:
           path: infrastructure
 
       - name: Checkout ${{ matrix.repo.name }}
         if: matrix.repo.name != 'gtcx-infrastructure'
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
         with:
           repository: gtcx-ecosystem/${{ matrix.repo.name }}
           token: ${{ secrets.GTCX_REPO_TOKEN }}
@@ -71,7 +71,7 @@ jobs:
 
       - name: Upload contract evidence
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: contract-evidence-${{ matrix.repo.name }}-${{ github.run_id }}
           path: |

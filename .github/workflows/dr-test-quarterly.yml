@@ -25,7 +25,7 @@ jobs:
     environment: ${{ github.event.inputs.environment || 'testnet' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
 
       - name: Setup kubectl
         uses: azure/setup-kubectl@776406bce94f63e41d621b960d78ee25c8b76ede # v4
@@ -79,7 +79,7 @@ jobs:
 
       - name: Upload DR evidence
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: dr-evidence-quarterly-${{ github.run_id }}
           path: |
@@ -117,7 +117,7 @@ jobs:
 
       - name: Upload quarterly report
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: dr-quarterly-report-${{ github.run_id }}
           path: 04-deploy/security/reports/dr-evidence/quarterly/${{ github.event.inputs.environment || 'testnet' }}/${{ github.run_id }}/quarterly-report.md
