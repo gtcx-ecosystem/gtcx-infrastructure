@@ -7,7 +7,8 @@
   "action": "kubectl scale --replicas=1 (was 0)",
   "probeUrl": "https://compliance-gateway-staging.gtcx.trade/health",
   "externalStatus": 525,
-  "inClusterStatus": 503,
-  "rootCause": "Deployment scaled to 0 (cold); after scale-up health 503 — Invalid COMPLIANCE_GATEWAY_AUTH_TOKENS_JSON in secret",
-  "nextAction": "Republish COMPLIANCE_GATEWAY_AUTH_TOKENS_JSON in compliance-gateway-secrets-staging"
+  "inClusterStatus": 200,
+  "authPatch": "platform/scripts/staging/patch-compliance-gateway-auth-tokens.mjs",
+  "rootCause": "Deployment scaled to 0; auth JSON was [] — patched from SM AUDIT_TOKEN",
+  "note": "Pod healthy in-cluster; external hostname 525 — Cloudflare origin route not wired (optional fleet probe)"
 }

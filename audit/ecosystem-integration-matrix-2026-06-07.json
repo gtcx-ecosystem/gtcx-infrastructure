@@ -10,7 +10,7 @@
     "siblingExpansion": "Uncomment protocols/core rows when GTCX_REPO_TOKEN is provisioned (IR-5.3 optional)."
   },
   "contractTests": {
-    "command": "node --test 03-platform/tools/contract-tests/*.test.mjs",
+    "command": "node --test platform/tools/contract-tests/*.test.mjs",
     "suites": [
       "protocol-schema.test.mjs",
       "gateway-tenancy.test.mjs",
@@ -21,7 +21,7 @@
   },
   "crossRepoHealth": {
     "workflow": ".github/workflows/cross-repo-health.yml",
-    "probe": "03-platform/tools/scripts/cross-repo-health-probe.mjs"
+    "probe": "platform/tools/scripts/cross-repo-health-probe.mjs"
   },
   "xrReconciliation": {
     "XR-401": "done",

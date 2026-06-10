@@ -17,7 +17,7 @@ owner: gtcx-infrastructure
 
 - **Owner:** Human / Security
 - **Action:** Vendor SOW countersign → schedule pen-test window per `pen-test-kickoff-prep-2026-06-10.md`.
-- **Parallel (Class R):** Fix `COMPLIANCE_GATEWAY_AUTH_TOKENS_JSON` in `compliance-gateway-secrets-staging` (health 503).
+- **Parallel (Class R):** Wire `compliance-gateway-staging.gtcx.trade` CF origin (optional — in-cluster health **200**).
 
 ## Evidence
 
