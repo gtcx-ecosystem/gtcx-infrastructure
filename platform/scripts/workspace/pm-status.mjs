@@ -2,7 +2,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-const path = '02-ops/pm/backlog.json';
+const path = 'ops/pm/backlog.json';
 if (!existsSync(join(process.cwd(), path))) {
   console.error('pm:status — run pnpm pm:sync first');
   process.exit(1);

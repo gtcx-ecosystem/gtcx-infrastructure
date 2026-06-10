@@ -1,5 +1,5 @@
 /**
- * product-management sync — local P22 state → 02-ops/pm/backlog.json
+ * product-management sync — local P22 state → ops/pm/backlog.json
  */
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
@@ -23,8 +23,9 @@ function writeJson(rel, data) {
 function resolveRoadmap(pmManifest) {
   const candidates = [
     pmManifest?.local?.executionRoadmap,
-    '01-docs/05-audit/execution-roadmap.md',
-    '01-docs/strategy/execution-roadmap.md',
+    'audit/product-management/execution-roadmap.md',
+    'audit/execution-roadmap.md',
+    'docs/strategy/execution-roadmap.md',
   ].filter(Boolean);
   for (const rel of candidates) {
     if (existsSync(join(repoRoot(), rel))) return rel;
@@ -43,10 +44,25 @@ function parseRoadmapStories(md) {
       .filter(Boolean);
     if (cells.length < 2) continue;
     const id = cells[0].replace(/\*\*/g, '').trim();
-    if (!/^(S\d+-\d+|EAP-\d+|P22-\d+|ER-\d+-\d+|MA-\d+|PLAT-[A-Z0-9-]+|CORE-\d+)$/i.test(id)) {
+    if (
+      !/^(S\d+-\d+|DAAS-S\d+|EAP-\d+|P22-\d+|ER-\d+-\d+|MA-\d+|PLAT-[A-Z0-9-]+|CORE-\d+)$/i.test(
+        id,
+      )
+    ) {
       continue;
     }
-    const statusRaw = (cells[1] ?? '').toLowerCase();
+    const statusIndex = cells.findIndex((cell, index) => {
+      if (index === 0) return false;
+      const normalized = cell
+        .replace(/\*\*/g, '')
+        .replace(/[✅🔄]/g, '')
+        .trim()
+        .toLowerCase();
+      return /^(done|complete|completed|in.?progress|active|pending|todo|open|next|handoff|witness|blocked)$/.test(
+        normalized,
+      );
+    });
+    const statusRaw = (cells[statusIndex] ?? '').toLowerCase();
     let status = 'unknown';
     if (/done|✅|complete/.test(statusRaw)) status = 'done';
     else if (/in.?progress|🔄|active/.test(statusRaw)) status = 'in_progress';
@@ -55,8 +71,8 @@ function parseRoadmapStories(md) {
     stories.push({
       id,
       status,
-      title: cells[2] ?? null,
-      owner: cells[3] ?? null,
+      title: cells[1] ?? null,
+      owner: statusIndex >= 0 ? (cells[statusIndex + 1] ?? null) : null,
     });
   }
   return stories;
@@ -79,7 +95,7 @@ function runNextWork(scriptRel) {
 }
 
 function loadCrossRepoRefs() {
-  const rw = readJson('02-ops/coordination/remaining-work.json');
+  const rw = readJson('ops/coordination/remaining-work.json');
   if (!rw?.items?.length) return [];
   return rw.items.map((item) => ({
     id: item.id ?? item.storyId ?? null,
@@ -90,11 +106,11 @@ function loadCrossRepoRefs() {
 }
 
 export function syncProductManagement() {
-  const pmManifest = readJson('02-ops/pm/manifest.json');
+  const pmManifest = readJson('pm/manifest.json');
   const rootManifest = readJson('workspace/manifest.json');
   const repo = rootManifest?.repo ?? pmManifest?.repo ?? 'unknown';
 
-  const nextWorkScript = pmManifest?.local?.nextWorkScript ?? '03-platform/scripts/agent-next-work.mjs';
+  const nextWorkScript = pmManifest?.local?.nextWorkScript ?? 'platform/scripts/agent-next-work.mjs';
   const nextJson = runNextWork(nextWorkScript);
 
   const roadmapPath = resolveRoadmap(pmManifest);
@@ -125,7 +141,7 @@ export function syncProductManagement() {
     roadmapPath,
   };
 
-  const out = pmManifest?.sync?.output ?? '02-ops/pm/backlog.json';
+  const out = pmManifest?.sync?.output ?? 'ops/pm/backlog.json';
   writeJson(out, backlog);
   return backlog;
 }

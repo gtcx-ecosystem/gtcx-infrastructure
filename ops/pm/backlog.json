@@ -1,18 +1,31 @@
 {
   "$schema": "gtcx://workspace/pm-backlog/v1",
   "repo": "gtcx-infrastructure",
-  "updated": "2026-06-06",
+  "updated": "2026-06-10",
   "syncSource": "pnpm pm:sync",
   "active": null,
   "backlogClear": true,
-  "stories": [],
+  "stories": [
+    {
+      "id": "DAAS-S1",
+      "status": "in_progress",
+      "title": "Close P0 friction (XR-MKT-011, F-AGX-01)",
+      "owner": null
+    },
+    {
+      "id": "DAAS-S2",
+      "status": "pending",
+      "title": "Terminal EKS (F1), compliance GHCR (F2), DaaS cards",
+      "owner": null
+    },
+    {
+      "id": "DAAS-S3",
+      "status": "pending",
+      "title": "Intelligence cost-router image (F6), cost witness",
+      "owner": null
+    }
+  ],
   "crossRepoRefs": [],
-  "agileHub": {
-    "repo": "gtcx-agile",
-    "crossRepoWorkplan": "https://github.com/gtcx-ecosystem/gtcx-agile/blob/main/01-docs/06-coordination/cross-repo-sprint-workplan-2026-06.md",
-    "ecosystemReconcile": "https://github.com/gtcx-ecosystem/gtcx-agile/blob/main/01-docs/sprints/ecosystem-reconcile-program-2026-06.md",
-    "v1Tracker": "https://github.com/gtcx-ecosystem/gtcx-agile/blob/main/01-docs/v1-shipping/execution-tracker.json",
-    "agentBridge": "https://github.com/gtcx-ecosystem/gtcx-agile/blob/main/01-docs/06-coordination/agent-bridge.md"
-  },
-  "roadmapPath": null
+  "agileHub": null,
+  "roadmapPath": "audit/product-management/execution-roadmap.md"
 }
