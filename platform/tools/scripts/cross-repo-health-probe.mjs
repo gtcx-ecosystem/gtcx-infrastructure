@@ -10,7 +10,7 @@
  *   - sovereign-staging.gtcx.trade/api/health  (gtcx-platforms)
  *   - api.staging.gtcx.trade/api/health        (gtcx-platforms / core)
  *   - intelligence-staging.gtcx.trade/health   (gtcx-intelligence)
- *   - compliance-gateway-staging.gtcx.trade/health (gtcx-infrastructure)
+ *   - compliance-gateway-staging in-cluster /health (optional; external hostname unwired)
  *
  * Usage:
  *   pnpm daas:fleet:health
@@ -55,6 +55,11 @@ const SERVICES = [
     repo: 'gtcx-infrastructure',
     url: 'https://compliance-gateway-staging.gtcx.trade/health',
     required: false,
+    inClusterProbe: {
+      namespace: 'gtcx-staging',
+      deployment: 'compliance-gateway-staging',
+      path: '/health',
+    },
   },
 ];
 
@@ -87,6 +92,27 @@ async function probeWithCurl(url) {
   return { status: Number.isFinite(status) ? status : 0, body };
 }
 
+async function probeInCluster(service) {
+  const ic = service.inClusterProbe;
+  if (!ic) return null;
+  const { stdout } = await execFileAsync(
+    'kubectl',
+    [
+      'exec',
+      '-n',
+      ic.namespace,
+      `deploy/${ic.deployment}`,
+      '--',
+      'wget',
+      '-qO-',
+      `http://127.0.0.1:8500${ic.path}`,
+    ],
+    { maxBuffer: 1024 * 1024 },
+  );
+  const body = JSON.parse(stdout);
+  return { status: body.status === 'healthy' ? 200 : 503, body, transport: 'kubectl-exec' };
+}
+
 async function probe(service) {
   const start = Date.now();
   let status = '000';
@@ -115,6 +141,19 @@ async function probe(service) {
       transport = 'curl';
     } catch (curlErr) {
       error = `${err.message}; curl: ${curlErr.message}`;
+    }
+  }
+  if (!service.required && status !== 200 && service.inClusterProbe) {
+    try {
+      const ic = await probeInCluster(service);
+      if (ic?.status === 200) {
+        status = ic.status;
+        body = ic.body;
+        error = null;
+        transport = ic.transport;
+      }
+    } catch (icErr) {
+      error = error ? `${error}; in-cluster: ${icErr.message}` : icErr.message;
     }
   }
   return {

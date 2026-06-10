@@ -86,6 +86,10 @@ patches:
       kind: Deployment
       name: compliance-gateway
     path: patches/compliance-gateway-metrics.yaml
+  - target:
+      kind: Deployment
+      name: compliance-gateway
+    path: patches/compliance-gateway-replicas.yaml
   # NOTE: audit-flush removed from base — image is ARM64-only, nodes are AMD64.
   # Re-add when AMD64 image is available.
   # - path: audit-flush-patch.yaml

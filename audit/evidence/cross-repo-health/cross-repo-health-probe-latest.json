@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "testType": "cross-repo-health-probe",
   "storyId": "S1-13",
-  "timestamp": "2026-06-10T05:30:18.557Z",
+  "timestamp": "2026-06-10T05:55:52.691Z",
   "environment": "staging",
   "overall": "PASS",
   "services": [
@@ -14,7 +14,7 @@
       "error": null,
       "body": {
         "status": "up",
-        "timestamp": "2026-06-10T05:30:18.461Z",
+        "timestamp": "2026-06-10T05:55:46.032Z",
         "database": {
           "status": "up",
           "details": {
@@ -36,13 +36,13 @@
         "audit-trail": {
           "status": "up",
           "details": {
-            "lastAppend": "2026-06-10T05:30:18.461Z",
+            "lastAppend": "2026-06-10T05:55:46.032Z",
             "chainVerified": true
           }
         }
       },
       "transport": "curl",
-      "latencyMs": 2621,
+      "latencyMs": 4502,
       "required": true
     },
     {
@@ -53,7 +53,7 @@
       "error": null,
       "body": {
         "status": "up",
-        "timestamp": "2026-06-10T05:30:18.416Z",
+        "timestamp": "2026-06-10T05:55:44.993Z",
         "database": {
           "status": "up",
           "details": {
@@ -75,13 +75,13 @@
         "audit-trail": {
           "status": "up",
           "details": {
-            "lastAppend": "2026-06-10T05:30:18.416Z",
+            "lastAppend": "2026-06-10T05:55:44.993Z",
             "chainVerified": true
           }
         }
       },
       "transport": "fetch",
-      "latencyMs": 2492,
+      "latencyMs": 3417,
       "required": true
     },
     {
@@ -93,7 +93,7 @@
       "body": {
         "service": "intelligence-sdk",
         "version": "0.1.0",
-        "uptime": 16534,
+        "uptime": 18063,
         "status": "healthy",
         "dependencies": {
           "inference_backend": {
@@ -110,8 +110,8 @@
           "jobs": {
             "anomaly": {
               "enabled": true,
-              "lastRun": "2026-06-10T05:29:44.554Z",
-              "runCount": 55
+              "lastRun": "2026-06-10T05:54:44.554Z",
+              "runCount": 60
             },
             "trend": {
               "enabled": true,
@@ -137,25 +137,43 @@
         }
       },
       "transport": "curl",
-      "latencyMs": 2793,
+      "latencyMs": 6698,
       "required": true
     },
     {
       "name": "compliance-gateway",
       "repo": "gtcx-infrastructure",
       "url": "https://compliance-gateway-staging.gtcx.trade/health",
-      "status": 525,
+      "status": 200,
       "error": null,
-      "body": "error code: 525",
-      "transport": "curl",
-      "latencyMs": 2437,
+      "body": {
+        "authConfigured": true,
+        "authMode": "configured",
+        "audit": {
+          "signing": true,
+          "ephemeral": false,
+          "maxInMemoryRecords": 10000,
+          "lastHash": "",
+          "recordCount": 0,
+          "totalRecords": 0,
+          "checkpointHash": "",
+          "inMemoryVerified": true,
+          "verifiedScope": "full-chain"
+        },
+        "status": "healthy",
+        "tools": 30,
+        "providers": 2,
+        "availableProviders": ["claude-sonnet", "claude-haiku"]
+      },
+      "transport": "kubectl-exec",
+      "latencyMs": 11292,
       "required": false
     }
   ],
   "summary": {
     "total": 4,
-    "healthy": 3,
-    "unhealthy": 1,
+    "healthy": 4,
+    "unhealthy": 0,
     "requiredUnhealthy": 0
   }
 }

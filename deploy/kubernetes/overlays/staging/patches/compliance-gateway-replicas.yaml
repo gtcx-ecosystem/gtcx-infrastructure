@@ -1,0 +1,7 @@
+# Keep compliance-gateway warm on staging (was scaled to 0 — 525/503 fleet witness).
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: compliance-gateway
+spec:
+  replicas: 1
