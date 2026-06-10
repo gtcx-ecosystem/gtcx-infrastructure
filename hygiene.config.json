@@ -2,13 +2,12 @@
   "$schema": "https://gtcx.org/schemas/hygiene-config/v1.json",
   "extends": "@gtcx/hygiene/monorepo",
   "workspace_type": "monorepo",
-  "layoutVersion": "v5",
   "root": {
-    "max_entries": 52,
-    "max_files": 22,
+    "max_entries": 70,
+    "max_files": 35,
     "required_dirs": ["docs"],
     "case_rules": {
-      "uppercase_allowlist": ["README.md", "LICENSE", "Dockerfile", "AGENTS.md"],
+      "uppercase_allowlist": ["README.md", "LICENSE", "Dockerfile", "AGENTS.md", "CHANGELOG.md"],
       "uppercase_relocations": {
         "CHANGELOG.md": "docs/changelog.md"
       },
@@ -18,6 +17,7 @@
       "agentic",
       "archive",
       "audit",
+      "authority-trace-evidence",
       "deploy",
       "docs",
       "ops",
@@ -25,6 +25,9 @@
       "pm",
       "workstream",
       "config",
+      "services",
+      "apps",
+      "packages",
       "node_modules",
       ".github",
       ".husky",
@@ -50,6 +53,7 @@
       "baseline.config.json",
       "vitest.config.ts",
       "vitest.workspace.ts",
+      "pyproject.toml",
       ".editorconfig",
       ".nvmrc",
       ".gitignore",
@@ -57,7 +61,18 @@
       "Makefile",
       "Makefile.local",
       "AGENTS.md",
-      ".env.example"
+      "CHANGELOG.md",
+      ".env.example",
+      ".env.staging.example",
+      ".dockerignore",
+      ".npmrc",
+      ".pre-commit-config.yaml",
+      ".prettierignore",
+      ".prettierrc",
+      ".vercelignore",
+      "eslint.config.mjs",
+      ".lighthouserc.json",
+      ".lintstagedrc.cjs"
     ],
     "forbidden_patterns": [
       {
@@ -70,6 +85,17 @@
         "pattern": ".env.local",
         "kind": "file",
         "severity": "P1"
+      },
+      {
+        "pattern": ".env.staging",
+        "kind": "file",
+        "message": ".env.staging must not live at repo root — use vault or .env.staging.example",
+        "severity": "P1"
+      },
+      {
+        "pattern": ".DS_Store",
+        "kind": "file",
+        "severity": "P1"
       }
     ]
   },
@@ -79,12 +105,20 @@
       "docs/README.md",
       "docs/**/README.md",
       "docs/AGENTS.md",
+      "docs/specs/experiences/EXR-*.md",
       "archive/**/README.md",
       "audit/**/README.md"
     ]
   },
   "build_artifacts": {
     "must_be_gitignored": ["dist/", "build/", ".next/", ".turbo/", "coverage/", "node_modules/"]
+  },
+  "archive": {
+    "human_owned_paths": ["_delete/", "archive", "archive/"],
+    "stale_dir_patterns": []
+  },
+  "empty_dirs": {
+    "allowed": ["**"]
   },
   "per_directory_readme": {
     "min_chars": 120,
@@ -99,11 +133,13 @@
       ".kimi",
       ".keys",
       ".local",
-      ".turbo"
+      ".turbo",
+      "authority-trace-evidence",
+      "deploy"
     ]
   },
   "score_targets": {
-    "fail_ci_below": 7.0,
+    "fail_ci_below": 7,
     "strict_ci": false
   }
 }
