@@ -1,0 +1,22 @@
+[
+  {
+    "source": "README.md",
+    "text": "gtcx-infrastructure product purpose architecture — gtcx-infrastructure knowledge surface for retrieval smoke."
+  },
+  {
+    "source": "AGENTS.md",
+    "text": "gtcx-infrastructure product purpose architecture — gtcx-infrastructure knowledge surface for retrieval smoke."
+  },
+  {
+    "source": "pm/manifest.json",
+    "text": "pm manifest roadmap initiatives — gtcx-infrastructure knowledge surface for retrieval smoke."
+  },
+  {
+    "source": "pm/README.md",
+    "text": "pm manifest roadmap initiatives — gtcx-infrastructure knowledge surface for retrieval smoke."
+  },
+  {
+    "source": "config/baseline/baseline.config.json",
+    "text": "rag topology local baseline config — gtcx-infrastructure knowledge surface for retrieval smoke."
+  }
+]

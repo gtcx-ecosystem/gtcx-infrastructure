@@ -1,0 +1,85 @@
+{
+  "schemaVersion": "1.0",
+  "goldenName": "gtcx-infrastructure-baseline",
+  "goldenVersion": "1.0",
+  "goldenPath": "/Users/amanianai/Sites/gtcx-ecosystem/gtcx-infrastructure/config/baseline/rag-eval-golden.json",
+  "runAt": 1781089659103,
+  "totalQueries": 3,
+  "averagePrecision": 0.8,
+  "averageRecall": 1,
+  "averageF1": 0.857,
+  "passed": true,
+  "threshold": {
+    "minAverageF1": 0.5
+  },
+  "queryResults": [
+    {
+      "id": "repo-purpose",
+      "query": "gtcx-infrastructure product purpose architecture",
+      "topK": 5,
+      "retrieved": [
+        {
+          "source": "README.md",
+          "score": 1
+        },
+        {
+          "source": "AGENTS.md",
+          "score": 1
+        },
+        {
+          "source": "pm/README.md",
+          "score": 0.4
+        },
+        {
+          "source": "pm/manifest.json",
+          "score": 0.4
+        },
+        {
+          "source": "config/baseline/baseline.config.json",
+          "score": 0.4
+        }
+      ],
+      "matchedExpected": ["README.md", "AGENTS.md"],
+      "missedExpected": [],
+      "precision": 0.4,
+      "recall": 1,
+      "f1": 0.571
+    },
+    {
+      "id": "pm-hub",
+      "query": "pm manifest roadmap initiatives",
+      "topK": 5,
+      "retrieved": [
+        {
+          "source": "pm/README.md",
+          "score": 1
+        },
+        {
+          "source": "pm/manifest.json",
+          "score": 1
+        }
+      ],
+      "matchedExpected": ["pm/manifest.json", "pm/README.md"],
+      "missedExpected": [],
+      "precision": 1,
+      "recall": 1,
+      "f1": 1
+    },
+    {
+      "id": "rag-config",
+      "query": "rag topology local baseline config",
+      "topK": 5,
+      "retrieved": [
+        {
+          "source": "config/baseline/baseline.config.json",
+          "score": 1
+        }
+      ],
+      "matchedExpected": ["config/baseline/baseline.config.json"],
+      "missedExpected": [],
+      "precision": 1,
+      "recall": 1,
+      "f1": 1
+    }
+  ]
+}

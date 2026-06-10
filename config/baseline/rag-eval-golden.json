@@ -1,0 +1,26 @@
+{
+  "version": "1.0",
+  "name": "gtcx-infrastructure-baseline",
+  "description": "S14 Model B golden eval — gtcx-infrastructure. Expand to ≥10 queries.",
+  "defaultTopK": 5,
+  "queries": [
+    {
+      "id": "repo-purpose",
+      "query": "gtcx-infrastructure product purpose architecture",
+      "expectedSources": ["README.md", "AGENTS.md"],
+      "tags": ["overview"]
+    },
+    {
+      "id": "pm-hub",
+      "query": "pm manifest roadmap initiatives",
+      "expectedSources": ["pm/manifest.json", "pm/README.md"],
+      "tags": ["pm", "engine"]
+    },
+    {
+      "id": "rag-config",
+      "query": "rag topology local baseline config",
+      "expectedSources": ["config/baseline/baseline.config.json"],
+      "tags": ["rag"]
+    }
+  ]
+}

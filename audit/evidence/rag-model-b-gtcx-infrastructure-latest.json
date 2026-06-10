@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-06-10T11:07:39.078Z",
+  "repo": "gtcx-infrastructure",
+  "topology": "model-b",
+  "sprint": "S14-RM-14-01",
+  "config": "config/baseline/baseline.config.json",
+  "validateExitCode": 0,
+  "knowledgeFileCount": 895,
+  "index": null,
+  "evalGolden": "config/baseline/rag-eval-golden.json",
+  "mcpDoc": "docs/operations/mcp-setup.md"
+}

@@ -84,7 +84,9 @@
     "pm:sync": "node platform/scripts/workspace/pm-sync.mjs",
     "pm:status": "node platform/scripts/workspace/pm-status.mjs",
     "config:stubs:sync": "node platform/scripts/config/sync-root-stubs.mjs",
-    "config:stubs:check": "node platform/scripts/config/sync-root-stubs.mjs --check"
+    "config:stubs:check": "node platform/scripts/config/sync-root-stubs.mjs --check",
+    "validate:rag-config": "node ../baseline-os/platform/scripts/validate-rag-config.mjs --root .",
+    "rag:eval": "node ../baseline-os/platform/packages/rag-eval/dist/cli.js --golden config/baseline/rag-eval-golden.json --mock config/baseline/rag-eval-mock-corpus.json --out audit/evidence/rag-eval-latest.json"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",
