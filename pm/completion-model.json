@@ -1,0 +1,20 @@
+{
+  "$schema": "gtcx://pm/completion-model/v1",
+  "version": "1.0.0",
+  "updated": "2026-06-10",
+  "repo": "gtcx-infrastructure",
+  "productName": "GTCX Infrastructure Control Plane",
+  "valueProposition": "Sovereign AWS/K8s substrate with auditable DaaS handoffs and parallel SECaaS evidence",
+  "definitionOfDone": [
+    "JTBD acceptanceCriteria met with witness JSON",
+    "User flow happy + error paths documented",
+    "EXR pack p0 journeys linked to pm/ux",
+    "PRD uxRefs populated",
+    "Fleet health and validate-all green at seal"
+  ],
+  "programs": {
+    "daas": { "initiative": "INIT-GTCX-INFRA-DAAS", "status": "complete" },
+    "secas": { "initiative": "INIT-GTCX-INFRA-SECAS", "status": "in_progress" }
+  },
+  "uxSoR": "pm/ux"
+}

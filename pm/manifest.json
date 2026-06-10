@@ -5,11 +5,15 @@
   "layoutVersion": "v5",
   "updated": "2026-06-09",
   "agileHub": null,
+  "ux": "pm/ux",
+  "product": "pm/product",
   "local": {
     "executionRoadmap": "audit/product-management/execution-roadmap.md",
     "workSelection": "docs/operations/agent-work-selection.md",
     "autoDevState": "audit/product-management/auto-dev-state.md",
-    "nextWorkScript": "platform/scripts/agent-next-work.mjs"
+    "nextWorkScript": "platform/scripts/agent-next-work.mjs",
+    "completionModel": "pm/completion-model.json",
+    "initiatives": "pm/roadmap/initiatives.json"
   },
   "sync": {
     "command": "pnpm pm:sync",

@@ -1,0 +1,34 @@
+{
+  "$schema": "gtcx://pm/initiatives/v1",
+  "version": "1.0.0",
+  "updated": "2026-06-10",
+  "repo": "gtcx-infrastructure",
+  "initiatives": [
+    {
+      "id": "INIT-GTCX-INFRA-DAAS",
+      "title": "DevOps-as-a-Service",
+      "status": "complete",
+      "protocol": "P41-DEVOPS-AS-A-SERVICE",
+      "uxRefs": {
+        "jtbdId": "JTBD-staging-substrate-ready",
+        "flowId": "flow-staging-handoff",
+        "exrId": "EXR-001",
+        "personaIds": ["platform-operator", "sibling-integrator"]
+      },
+      "prd": "pm/product/prds/PRD-daass-operator-substrate.md"
+    },
+    {
+      "id": "INIT-GTCX-INFRA-SECAS",
+      "title": "Security-as-a-Service",
+      "status": "in_progress",
+      "protocol": "P42-SECURITY-AS-A-SERVICE",
+      "uxRefs": {
+        "jtbdId": "JTBD-security-evidence-path",
+        "flowId": "flow-secas-pentest-evidence",
+        "exrId": "EXR-003",
+        "personaIds": ["security-operator", "compliance-buyer"]
+      },
+      "prd": "pm/product/prds/PRD-secas-stack-security.md"
+    }
+  ]
+}

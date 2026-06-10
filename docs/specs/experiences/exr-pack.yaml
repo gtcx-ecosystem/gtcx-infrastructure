@@ -1,0 +1,17 @@
+schema: gtcx.exrPack.v1
+repo: gtcx-infrastructure
+tier: control-plane
+maturity: p0
+
+spine: docs/specs/operator-journey-map.md
+iaSpec: docs/specs/ia-navigation-spec.md
+
+p0:
+  - docs/specs/experiences/EXR-001-staging-handoff-to-witness.md
+  - docs/specs/experiences/EXR-002-fleet-health-probe.md
+  - docs/specs/experiences/EXR-003-secas-evidence-delivery.md
+
+notes:
+  - P0 is operator/integrator journeys for DaaS + SECaaS — not end-user commodity trade UI.
+  - Parent product EXRs live in compliance-os, gtcx-markets, terminal-os.
+  - UX SoR: pm/ux/
