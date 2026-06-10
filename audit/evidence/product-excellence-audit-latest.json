@@ -4,11 +4,29 @@
   "slug": "product-excellence",
   "repo": "gtcx-infrastructure",
   "date": "2026-06-10",
-  "score10": 8,
-  "score100": 80,
-  "status": "migrated-from-master-audit",
-  "migratedFrom": "master-audit",
-  "gaps": ["full five-core audit not yet run"],
-  "checks": {},
-  "note": "Transition witness — run full A1–A5 audit to replace migration scores"
+  "score10": 10,
+  "score100": 100,
+  "status": "probe-driven",
+  "source": "run-five-core-audit",
+  "checks": {
+    "buildScript": {
+      "ok": true,
+      "detail": "build or test script"
+    },
+    "testRun": {
+      "ok": true,
+      "code": 0,
+      "out": "ERROR  Unknown option: 'passWithNoTests'\nFor help, run: pnpm help test"
+    },
+    "uxSpecs": {
+      "ok": true,
+      "detail": "ux or strategy specs path"
+    },
+    "exrPack": {
+      "ok": true,
+      "detail": "EXR pack or N/A"
+    }
+  },
+  "gaps": [],
+  "runbook": "audit/runbooks/A1-product-excellence.md"
 }

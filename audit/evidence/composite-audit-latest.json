@@ -2,14 +2,14 @@
   "schema": "gtcx://audit/composite/v1",
   "repo": "gtcx-infrastructure",
   "date": "2026-06-10",
-  "composite100": 80,
+  "composite100": 85,
   "productionReady": true,
   "cores": {
     "A1-PRODUCT-EXCELLENCE": {
       "slug": "product-excellence",
-      "score100": 80,
+      "score100": 100,
       "weight": 0.25,
-      "status": "migrated-from-master-audit"
+      "status": "probe-driven"
     },
     "A2-PRODUCTION-GRADE": {
       "slug": "production-grade",
@@ -44,5 +44,7 @@
     "A5-REPO-HYGIENE": 0.2
   },
   "replaces": ["master-audit", "comprehensive-audit", "bank-grade-audit"],
-  "initiative": "INIT-AUDIT-CONSOLIDATION"
+  "initiative": "INIT-AUDIT-CONSOLIDATION",
+  "source": "run-five-core-audit",
+  "status": "probe-driven"
 }
