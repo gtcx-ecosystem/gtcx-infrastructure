@@ -14,5 +14,10 @@
   "sync": {
     "command": "pnpm pm:sync",
     "output": "ops/pm/backlog.json"
+  },
+  "generate": {
+    "command": "pnpm generate:roadmap",
+    "sources": ["pm/daas-roadmap.json", "pm/friction-register.json", "pm/daas-stories.json"],
+    "output": "audit/product-management/execution-roadmap.md"
   }
 }

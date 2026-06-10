@@ -1,0 +1,106 @@
+{
+  "$schema": "gtcx://gtcx-infrastructure/daas-stories/v1",
+  "version": "1.0.0",
+  "updated": "2026-06-10",
+  "program": "DevOps-as-a-Service",
+  "owner": "gtcx-infrastructure",
+  "stories": [
+    {
+      "id": "DAAS-S1-01",
+      "sprint": "DAAS-S1",
+      "title": "DaaS friction register structural witness",
+      "priority": "P0",
+      "status": "done",
+      "owner": "gtcx-infrastructure",
+      "files": [
+        "pm/friction-register.json",
+        "pm/daas-roadmap.json",
+        "audit/evidence/daas-friction-check-latest.json"
+      ],
+      "acceptance": ["pnpm daas:friction:check:write"],
+      "uat": [
+        { "text": "Structural DaaS gate passed", "done": true },
+        { "text": "Evidence records open P0 friction IDs", "done": true }
+      ],
+      "blockers": null
+    },
+    {
+      "id": "DAAS-S1-02",
+      "sprint": "DAAS-S1",
+      "title": "Canonical scheduled fleet-health witness",
+      "priority": "P0",
+      "status": "done",
+      "owner": "gtcx-infrastructure",
+      "files": [
+        "package.json",
+        "platform/tools/scripts/cross-repo-health-probe.mjs",
+        ".github/workflows/cross-repo-health.yml",
+        "audit/evidence/cross-repo-health/cross-repo-health-probe-latest.json"
+      ],
+      "acceptance": ["pnpm daas:fleet:health", "pnpm ops:check"],
+      "uat": [
+        { "text": "Canonical pnpm daas:fleet:health command exists", "done": true },
+        { "text": "Scheduled workflow uses P35 paths", "done": true },
+        { "text": "Live witness writes canonical evidence", "done": true }
+      ],
+      "blockers": null
+    },
+    {
+      "id": "DAAS-S1-03",
+      "sprint": "DAAS-S1",
+      "title": "Correct AGX staging image and health",
+      "priority": "P0",
+      "status": "blocked",
+      "owner": "gtcx-os/platforms → gtcx-infrastructure",
+      "frictionIds": ["F-AGX-01"],
+      "files": ["gtcx-os/platform/platforms — supplier image; infra rollout after digest"],
+      "acceptance": ["pnpm daas:fleet:health"],
+      "uat": [
+        { "text": "gtcx-agx:staging contains @gtcx/platform-shared", "done": false },
+        { "text": "GET https://api.staging.gtcx.trade/api/health returns 200", "done": false }
+      ],
+      "blockers": "gtcx-os/platforms must publish corrected staging image; AGX health 503"
+    },
+    {
+      "id": "DAAS-S1-04",
+      "sprint": "DAAS-S1",
+      "title": "Deliver XR-MKT-011 authority routes and trace seal",
+      "priority": "P0",
+      "status": "in_progress",
+      "owner": "gtcx-infrastructure → gtcx-markets",
+      "frictionIds": ["XR-MKT-011"],
+      "files": [
+        "deploy/kubernetes/overlays/staging/ingress.yaml",
+        "docs/operations/coordination/from-gtcx-infrastructure-s39-01-authority-routes-2026-06-10.md",
+        "docs/operations/coordination/xr-mkt-011-authority-url-matrix-2026-06-10.md"
+      ],
+      "acceptance": [
+        "pnpm daas:fleet:health",
+        "pnpm --dir ../gtcx-markets authority:trace:capture"
+      ],
+      "uat": [
+        { "text": "Ingress paths for 7 authority URLs applied", "done": true },
+        { "text": "Canonical URL matrix published", "done": true },
+        { "text": "AGX health returns 200", "done": false },
+        { "text": "Markets authority trace capture 7/7 exit 0", "done": false },
+        { "text": "Infra seal status delivered", "done": false }
+      ],
+      "blockers": "Depends on DAAS-S1-03; capture still 0/7"
+    },
+    {
+      "id": "DAAS-S1-05",
+      "sprint": "DAAS-S1",
+      "title": "Align validate-all gates to P35 paths",
+      "priority": "P1",
+      "status": "in_progress",
+      "owner": "gtcx-infrastructure",
+      "files": ["platform/tools/scripts/*.mjs", "platform/tools/scripts/validate-all.mjs"],
+      "acceptance": ["node platform/tools/scripts/validate-all.mjs"],
+      "uat": [
+        { "text": "Mesh injection, publish primitives, runtime evidence gates pass", "done": true },
+        { "text": "validate-all 55/55", "done": false, "note": "current 28/55" }
+      ],
+      "blockers": null
+    }
+  ]
+}

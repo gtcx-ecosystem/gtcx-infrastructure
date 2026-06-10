@@ -8,7 +8,8 @@
 | Backlog (generated) | [`backlog.json`](./backlog.json)   |
 
 ```bash
-pnpm pm:sync    # refresh backlog from agent:next-work + roadmap
+pnpm generate:roadmap   # pm/daas-*.json → audit/product-management/execution-roadmap.md
+pnpm pm:sync            # refresh backlog from agent:next-work + roadmap
 pnpm pm:status
 ```
 

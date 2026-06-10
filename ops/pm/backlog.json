@@ -26,20 +26,26 @@
     },
     {
       "id": "DAAS-S1-04",
-      "status": "handoff",
+      "status": "in_progress",
       "title": "Deliver XR-MKT-011 authority routes and trace seal",
       "owner": "gtcx-infrastructure → gtcx-markets"
     },
     {
+      "id": "DAAS-S1-05",
+      "status": "in_progress",
+      "title": "Align validate-all gates to P35 paths",
+      "owner": "gtcx-infrastructure"
+    },
+    {
       "id": "DAAS-S2",
       "status": "pending",
-      "title": "Terminal EKS, compliance GHCR, DaaS cards",
+      "title": "Per-repo DaaS cards + ingress matrix publish",
       "owner": "gtcx-infrastructure"
     },
     {
       "id": "DAAS-S3",
       "status": "pending",
-      "title": "Intelligence cost-router image and cost witness",
+      "title": "Cost witness + env schedule automation",
       "owner": "gtcx-infrastructure"
     }
   ],

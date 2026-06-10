@@ -71,6 +71,7 @@
     "agent:entry": "node platform/scripts/agent-entry.mjs",
     "docs:ia:check": "node platform/scripts/docs-ia-check.mjs",
     "workspace:check": "node platform/scripts/workspace/check.mjs",
+    "generate:roadmap": "node platform/scripts/generate-execution-roadmap.mjs",
     "pm:sync": "node platform/scripts/workspace/pm-sync.mjs",
     "pm:status": "node platform/scripts/workspace/pm-status.mjs",
     "config:stubs:sync": "node platform/scripts/config/sync-root-stubs.mjs",
