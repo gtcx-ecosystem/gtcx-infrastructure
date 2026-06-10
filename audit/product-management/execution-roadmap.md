@@ -2,7 +2,7 @@
 title: Execution roadmap — DevOps-as-a-Service
 status: current
 date: 2026-06-10
-last_reconciled: 2026-06-10T02:04:31.786Z
+last_reconciled: 2026-06-10T02:04:41.712Z
 owner: gtcx-infrastructure
 program: INIT-GTCX-INFRA-DAAS
 generated: true
@@ -123,7 +123,7 @@ node platform/tools/scripts/validate-all.mjs
 **UAT / QA**
 
 - [x] Mesh injection, publish primitives, runtime evidence gates pass
-- [ ] validate-all 55/55 (current 34+/55 after P35 path restore)
+- [ ] validate-all 55/55 (current 38/55 after P35 path restore)
 
 **Blockers:** none
 
