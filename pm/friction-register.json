@@ -1,0 +1,64 @@
+{
+  "$schema": "gtcx://gtcx-infrastructure/friction-register/v1",
+  "version": "1.0.0",
+  "updated": "2026-06-10",
+  "program": "DevOps-as-a-Service",
+  "initiative": "INIT-GTCX-INFRA-DAAS",
+  "protocol": "P41-DEVOPS-AS-A-SERVICE",
+  "owner": "gtcx-infrastructure",
+  "programOfficeHarness": "bridge-os",
+  "principle": "Infra unblocks in parallel — blocksIR false for product engineering",
+  "items": [
+    {
+      "id": "F-AGX-01",
+      "priority": "P0",
+      "status": "open",
+      "repo": "gtcx-os/platforms",
+      "title": "AGX staging image — @gtcx/platform-shared MODULE_NOT_FOUND",
+      "symptom": "gtcx-agx-staging CrashLoopBackOff; api/health 503",
+      "supplier": "gtcx-os/platforms",
+      "infraAction": "Rollout new digest after pnpm docker:push:agx:staging",
+      "handoff": "gtcx-os/platform/platforms/01-docs/operations/coordination/remaining-cross-repo-work-2026-06-02.md",
+      "blocksIR": false
+    },
+    {
+      "id": "XR-MKT-011",
+      "priority": "P0",
+      "status": "open",
+      "repo": "gtcx-markets",
+      "title": "S39-01 authority routes + auth contract alignment",
+      "symptom": "authority:trace:capture 0/7 HTTP 401; health 503",
+      "inbound": "gtcx-markets/docs/operations/coordination/to-gtcx-infrastructure-s39-01-authority-routes-2026-06-10.md",
+      "seal": "docs/operations/coordination/from-gtcx-infrastructure-s39-01-authority-routes-2026-06-10.md",
+      "acceptance": "api/health 200; capture 7/7; from-* status delivered",
+      "blocksIR": false
+    },
+    {
+      "id": "F1",
+      "priority": "P1",
+      "status": "open",
+      "repo": "terminal-os",
+      "title": "Terminal EKS + COMPLIANCE_OS_TERMINAL_API_KEY secret mirror",
+      "matrixRef": "INF-PER-REPO-001#terminal-os",
+      "blocksIR": false
+    },
+    {
+      "id": "F2",
+      "priority": "P1",
+      "status": "open",
+      "repo": "compliance-os",
+      "title": "GHCR imagePullSecret staging",
+      "matrixRef": "INF-PER-REPO-001#compliance-os",
+      "blocksIR": false
+    },
+    {
+      "id": "F6",
+      "priority": "P1",
+      "status": "open",
+      "repo": "gtcx-intelligence",
+      "title": "Intelligence staging image with ENABLE_COST_ROUTER",
+      "matrixRef": "infra-per-repo-action-matrix F6",
+      "blocksIR": false
+    }
+  ]
+}

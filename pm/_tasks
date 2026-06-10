@@ -1,0 +1,33 @@
+# gtcx-infrastructure task inbox — DaaS primary
+# FORMAT: bridge-os/pm/intake/TASK-INTAKE-FORMAT.md
+# Owner: gtcx-infrastructure — NOT bridge-os program office
+
+--
+INIT-GTCX-INFRA-DAAS - DevOps-as-a-Service primary program - initiative
+status: in_progress
+priority: P0
+owner: gtcx-infrastructure
+initiative: INIT-GTCX-INFRA-DAAS
+persona: platform-engineer
+frame: field-operations
+intakeStage: structured
+protocol: P41-DEVOPS-AS-A-SERVICE
+evidence: pm/friction-register.json
+
+## Context
+
+DevOps and infrastructure are a separate concern from product engineering — parallel to security/compliance/GTM. gtcx-infrastructure owns friction register, DaaS roadmap, fleet health, and seal of all `to-gtcx-infrastructure-*` handoffs.
+
+## Acceptance
+
+- [x] pm/friction-register.json (XR-MKT-011, F-AGX-01, F1, F2, F6)
+- [x] pm/daas-roadmap.json (DAAS-S1–S3)
+- [x] docs/operations/devops-as-a-service.md
+- [ ] P41 hub protocol published (gtcx-docs)
+- [ ] daas:friction:check harness green
+- [ ] XR-MKT-011 seal status delivered
+- [ ] F-AGX-01 AGX health 200
+
+## Sprint plan
+
+DAAS-S1 friction + health · DAAS-S2 per-repo cards · DAAS-S3 cost automation

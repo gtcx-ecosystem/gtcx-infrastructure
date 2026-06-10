@@ -36,6 +36,8 @@
     "ctl": "node ./platform/tools/control-plane/gtcx-ctl.mjs",
     "evidence:release-bundle": "node ./platform/tools/control-plane/generate-release-evidence.mjs",
     "agent:next-work": "node platform/scripts/agent-next-work.mjs",
+    "daas:friction:check": "node platform/scripts/daas-friction-check.mjs",
+    "daas:friction:check:write": "node platform/scripts/daas-friction-check.mjs --write",
     "agent:launch:check": "node ../gtcx-agentic/platform/scripts/check-agent-launch-focus.mjs",
     "agent:work-selection:check": "node platform/scripts/check-agent-work-selection.mjs",
     "agent:execution-obligation:check": "node platform/scripts/check-agent-execution-obligation.mjs",

@@ -1,0 +1,41 @@
+{
+  "$schema": "gtcx://gtcx-infrastructure/daas-roadmap/v1",
+  "version": "1.0.0",
+  "updated": "2026-06-10",
+  "program": "DevOps-as-a-Service",
+  "initiative": "INIT-GTCX-INFRA-DAAS",
+  "protocol": "P41-DEVOPS-AS-A-SERVICE",
+  "owner": "gtcx-infrastructure",
+  "primaryRoadmap": true,
+  "note": "Primary gtcx-infrastructure program — not bridge-os ECO-PROD or product PM",
+  "extends": {
+    "p40": "bridge-os/pm/spec/deployment-choreography.v1.json",
+    "matrix": "docs/operations/coordination/infra-per-repo-action-matrix-2026-06-05.md",
+    "friction": "pm/friction-register.json"
+  },
+  "sprints": [
+    {
+      "id": "DAAS-S1",
+      "name": "Friction register + fleet health witness",
+      "status": "in_progress",
+      "items": ["F-AGX-01", "XR-MKT-011"]
+    },
+    {
+      "id": "DAAS-S2",
+      "name": "Per-repo DaaS cards + ingress matrix publish",
+      "status": "pending",
+      "items": ["F1", "F2"]
+    },
+    {
+      "id": "DAAS-S3",
+      "name": "Cost witness + env schedule automation",
+      "status": "pending",
+      "items": ["F6"]
+    }
+  ],
+  "forbidden": [
+    "product PM owning infra execution stories",
+    "bridge-os pm/_tasks carrying infra cluster apply",
+    "blocksIR true for staging 503/401"
+  ]
+}
