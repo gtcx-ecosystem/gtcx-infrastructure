@@ -1,0 +1,9 @@
+{
+  "id": "ref-staging-runbooks",
+  "title": "Staging script entry points",
+  "figmaUrl": null,
+  "screenIds": [],
+  "linkedFlows": ["flow-staging-handoff"],
+  "sefTier": "L4",
+  "notes": "Canonical paths: platform/scripts/staging/*.sh, docs/operations/agent-staging-execution.md. Agents execute scripts; humans only Class A secrets."
+}

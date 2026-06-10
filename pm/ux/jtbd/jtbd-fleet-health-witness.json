@@ -1,0 +1,33 @@
+{
+  "id": "JTBD-fleet-health-witness",
+  "title": "When releasing infra changes, I want fleet health proven across sibling endpoints, so I can seal DaaS sprints without false green",
+  "personaId": "platform-operator",
+  "job": "Run cross-repo health probe and publish PASS witness before marking DaaS friction closed",
+  "situation": "After staging deploy, terraform apply, or ingress/WAF change affecting multiple repos",
+  "motivation": "Master audit and launch focus require live substrate proof — not docs-only claims",
+  "expectedOutcome": "`pnpm daas:fleet:health` PASS; evidence JSON updated under `audit/evidence/cross-repo-health/`",
+  "painPoints": [
+    "IPv4/hostname timeouts on optional external probes",
+    "Optional services scaled to zero break fleet counts",
+    "Probe failures without in-cluster fallback cause false P0 friction"
+  ],
+  "opportunities": [
+    "In-cluster kubectl exec fallback for optional probes",
+    "Friction register auto-sync from probe output",
+    "4/4 PASS as DAAS sprint seal criterion"
+  ],
+  "acceptanceCriteria": [
+    "`pnpm daas:fleet:health` exits 0 with documented PASS count",
+    "`audit/evidence/cross-repo-health/cross-repo-health-probe-latest.json` refreshed",
+    "Open P0 friction in `pm/friction-register.json` is zero or explicitly linked to non-infra blocker",
+    "`validate-all` gate count matches repo manifest (55/55 at 2026-06-10)"
+  ],
+  "priority": "P0",
+  "linkedFlows": ["flow-fleet-health-witness"],
+  "linkedExrs": ["EXR-002"],
+  "linkedPrds": ["PRD-daass-operator-substrate"],
+  "nonGoals": [
+    "Replacing sibling-repo application health tests",
+    "Production fleet probe without change window"
+  ]
+}

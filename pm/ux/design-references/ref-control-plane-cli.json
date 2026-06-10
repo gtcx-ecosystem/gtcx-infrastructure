@@ -1,0 +1,9 @@
+{
+  "id": "ref-control-plane-cli",
+  "title": "gtcx-ctl control plane CLI",
+  "figmaUrl": null,
+  "screenIds": [],
+  "linkedFlows": ["flow-staging-handoff", "flow-fleet-health-witness"],
+  "sefTier": "L4",
+  "notes": "Operator surface via `platform/tools/control-plane/gtcx-ctl.mjs` and package.json scripts — no graphical Run Deploy button. SEF L4 = governed CLI with validate-environment gates."
+}

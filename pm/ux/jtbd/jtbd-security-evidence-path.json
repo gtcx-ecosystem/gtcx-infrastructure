@@ -1,0 +1,33 @@
+{
+  "id": "JTBD-security-evidence-path",
+  "title": "When assurance is required for pilot, I want stack security evidence prepared and sovereign gates recorded, so auditors can trace claims without blocking IR",
+  "personaId": "security-operator",
+  "job": "Execute SECaaS friction items and maintain sovereign register after human approval",
+  "situation": "Pen-test window, WAF apply, IRSA review, or SOC 2 readiness checkpoint",
+  "motivation": "GR-T2 pilot and master audit require parallel assurance track (`blocksIR: false`)",
+  "expectedOutcome": "Security friction witness green; sovereign approvals recorded; pen-test evidence path documented",
+  "painPoints": [
+    "Sovereign approval mistaken for vendor completion",
+    "Security work conflated with product app security",
+    "Open P0 SEC-PENTEST-01 while waiting on procurement countersign"
+  ],
+  "opportunities": [
+    "Separate sovereign vs friction registers (P42)",
+    "Kickoff prep doc before vendor window",
+    "SECaaS cards per sibling repo"
+  ],
+  "acceptanceCriteria": [
+    "`pnpm secas:approval:check:write` reflects accurate approval-needed count",
+    "`pnpm secas:friction:check:write` documents open P0 with owner and next action",
+    "Class S items link evidence JSON and coordination seal",
+    "Pen-test prep artifacts exist before claiming pen-test complete"
+  ],
+  "priority": "P0",
+  "linkedFlows": ["flow-secas-pentest-evidence"],
+  "linkedExrs": ["EXR-003"],
+  "linkedPrds": ["PRD-secas-stack-security"],
+  "nonGoals": [
+    "Agent signing vendor SOW or auditor MSA",
+    "Blocking engineering on EXT-INF-013 pilot owner selection"
+  ]
+}

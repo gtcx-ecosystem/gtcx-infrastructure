@@ -1,0 +1,33 @@
+{
+  "id": "JTBD-staging-substrate-ready",
+  "title": "When a sibling repo needs staging, I want infra handoff executed with witness, so I can run product prereq checks",
+  "personaId": "sibling-integrator",
+  "job": "Receive staging substrate (secrets, ingress, deploy) from gtcx-infrastructure with auditable completion",
+  "situation": "Product repo files inbound handoff (e.g. terminal-os W2, compliance-os Hub #17, markets authority routes)",
+  "motivation": "Pilot deadline or sprint commitment blocked on AWS/K8s outside product repo ownership",
+  "expectedOutcome": "Outbound seal published; product `w2:staging-prereq-check` or equivalent passes",
+  "painPoints": [
+    "Handoff boundary unclear between product PM and infra execution",
+    "External URL failures mask in-cluster healthy services",
+    "Operator runbook dumps instead of agent execution"
+  ],
+  "opportunities": [
+    "Standard DaaS card per sibling repo",
+    "Repo scripts as default entry (`platform/scripts/staging/*.sh`)",
+    "Coordination seal template with evidence JSON links"
+  ],
+  "acceptanceCriteria": [
+    "Inbound handoff acked in `docs/operations/coordination/`",
+    "Staging scripts or terraform apply executed in-session with exit codes recorded",
+    "Outbound `from-gtcx-infrastructure-*` seal links witness JSON",
+    "Sibling integrator can run product-side prereq check without infra shell access"
+  ],
+  "priority": "P0",
+  "linkedFlows": ["flow-staging-handoff"],
+  "linkedExrs": ["EXR-001"],
+  "linkedPrds": ["PRD-daass-operator-substrate"],
+  "nonGoals": [
+    "Product feature development in gtcx-infrastructure",
+    "Production apply without Class A authorization artifact"
+  ]
+}
