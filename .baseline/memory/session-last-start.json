@@ -1,12 +1,12 @@
 {
-  "startedAt": "2026-06-11T05:40:29.227Z",
+  "startedAt": "2026-06-11T18:36:26.274Z",
   "repo": "fabric-os",
   "ssot": "baseline-os/platform/scripts/ecosystem/repo-session-core.mjs",
   "agentTrace": {
-    "id": "gtcx-agent-a038b7dc-ba5a-432c-97fd-f3ed1cf15c53",
+    "id": "gtcx-agent-5f5e1ed2-d677-402a-80fc-60bf60681a8e",
     "header": "x-gtcx-agent-trace-id",
     "otelAttribute": "gtcx.agent_trace_id",
-    "traceparent": "00-572a43d053c9a9e0461d64e34bfb75ea-cf4227477e12ee08-01"
+    "traceparent": "00-5b45340393c9f482723a0c767bc40f6c-2d8da15516e2cb0e-01"
   },
   "nextWork": {
     "protocol": "22-agent-work-selection",
@@ -20,8 +20,8 @@
       "bridgeUrl": "https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/01-docs/04-ops/coordination/ecosystem-persona-bridge-2026-06.md",
       "instruction": "Read persona doc before work; re-select persona on task switch (Phase 4)."
     },
-    "traceId": "06e98489-b4a7-4ac2-8ebe-464076f564a1",
-    "coordinationHint": "Append cross-repo-agent-log row with trace_id=06e98489-b4a7-4ac2-8ebe-464076f564a1",
+    "traceId": "58d3e9e5-1578-4efa-a9d3-647773e2f3bf",
+    "coordinationHint": "Append cross-repo-agent-log row with trace_id=58d3e9e5-1578-4efa-a9d3-647773e2f3bf",
     "ok": true,
     "backlogClear": false,
     "message": "Implement queue empty — PLAN mode: advance launch/GTM state without forensic audit.",
@@ -45,7 +45,7 @@
       "normativeDoc": "01-docs/04-ops/agent-launch-focus.md",
       "hubDoc": "https://github.com/gtcx-ecosystem/gtcx-core/blob/main/01-docs/04-ops/agent-launch-focus.md",
       "statePath": ".baseline/launch-focus.json",
-      "provisionedAt": "2026-06-11T05:40:29.221Z",
+      "provisionedAt": "2026-06-11T18:36:26.269Z",
       "repo": "fabric-os",
       "northStar": {
         "outcome": "Live sovereign pilot substrate (Wire #2, staging/testnet, hub acks, pen-test path) so apps and GTM can close GR-T2 deals.",
@@ -97,6 +97,6 @@
       "personaDocUrl": "https://github.com/gtcx-ecosystem/gtcx-docs/blob/main/01-docs/governance/institutional/personas/platform-architect.md"
     }
   },
-  "gitChanged": 20,
+  "gitChanged": 14,
   "authorityClass": "R"
 }
