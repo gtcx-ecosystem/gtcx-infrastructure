@@ -90,7 +90,7 @@ not the platform's primary identity.
 | Opportunity and Evidence Graph               | markets-os + intelligence/authority owners                | Ingest fragmented material, resolve claims, expose contradictions and missing proof                                                                           |
 | Asset Passport and authority registry        | markets-os + terra-os + exploration-os + authority owners | Portable asset/project/programme identity with current evidence                                                                                               |
 | Capital Compiler and Scenario Room           | markets-os                                                | Explainable ranked structures, capital stacks, waterfalls, covenants, scenarios                                                                               |
-| Capital Discovery and Formation Intelligence | markets-os + griot-ai + terminal-os                       | Capital Graph, investor research, structure-market optimization, fundraising strategy, syndication, and outcome learning                                      |
+| Capital Discovery and Formation Intelligence | markets-os + griot-ai + terminal-os                       | Mandate-triggered pre-market, Capital Graph, qualified soft-circling, fundraising strategy, syndication, and outcome learning                                 |
 | Two-sided Deal Team OS                       | markets-os + professional-service owners                  | Dedicated lister and investor teams combining governed agents with accountable human professionals                                                            |
 | Institutional Assurance Network              | markets-os + independent professional owners              | Counsel-led deal channel and portable legal, valuation, model, technical, bankability, and settlement assurance                                               |
 | GTCX-native transaction stack                | fabric-os + ecosystem owners                              | Compose Terminal OS, Griot AI, Veritas, Compliance OS, protocols, Exploration OS, Terra OS, Ledger UI, and external authorities without duplicating ownership |
@@ -246,9 +246,9 @@ replication; independently governed nodes can use the shared kernel.
 11. Use the GTCX-native capability map as the owner-allocation baseline; treat
     external vendors as adapters, data providers, professional authorities, or
     execution rails rather than default product owners.
-12. Elevate Capital Discovery and Formation Intelligence from basic matching to
-    the primary commercial workstream and compose Markets, Griot AI, Terminal
-    OS, TradePass, Veritas, Compliance OS, and GTCX Intelligence around it.
+12. Elevate Capital Discovery and Formation Intelligence to the primary
+    commercial workstream; mandate acceptance starts confidential pre-market,
+    and no live listing proceeds below its qualified soft-circle threshold.
 
 ## Recommended sequencing
 
