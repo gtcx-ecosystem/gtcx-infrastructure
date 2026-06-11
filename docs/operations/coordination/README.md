@@ -1,5 +1,5 @@
 ---
-title: 'Cross-repo coordination — gtcx-infrastructure hub index'
+title: 'Cross-repo coordination — fabric-os hub index'
 status: current
 date: 2026-06-03
 owner: fabric-os
@@ -9,7 +9,7 @@ review_cycle: daily
 tags: ['coordination', 'cross-repo', 'inbound', 'bridge', 'index']
 ---
 
-# Cross-repo coordination — gtcx-infrastructure hub index
+# Cross-repo coordination — fabric-os hub index
 
 **Agent norms (normative):** [`ecosystem-unblock-playbook-2026-06.md`](../../../../gtcx-protocols/01-docs/operations/coordination/ecosystem-unblock-playbook-2026-06.md) — **EXT-INF ≠ IR merge freeze**; INT-S9-01 owner = **gtcx-intelligence**  
 **Canonical XR-### SoR:** [`gtcx-protocols/01-docs/operations/coordination/cross-repo-sprint-workplan-2026-06.md`](../../../../gtcx-protocols/01-docs/operations/coordination/cross-repo-sprint-workplan-2026-06.md)  
@@ -21,21 +21,22 @@ tags: ['coordination', 'cross-repo', 'inbound', 'bridge', 'index']
 
 ## Artifacts in this folder
 
-| Artifact                                                                                                             | Role                                                              | Path                                                                                                                                                    |
-| -------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **This file**                                                                                                        | Hub index — XR sprint status                                      | [`README.md`](README.md)                                                                                                                                |
-| [`infra-per-repo-action-matrix-2026-06-05.md`](infra-per-repo-action-matrix-2026-06-05.md)                           | **Per-repo: what infra does vs owner** — read first when confused | P0 hub #17, P1 hosting, P2 no-op repos                                                                                                                  |
-| [`cloud-placement-aws-control-plane-2026-06-05.md`](cloud-placement-aws-control-plane-2026-06-05.md)                 | **AWS control plane** — scope boundaries                          | EKS, SM, RDS, S3, GCP→AWS bridge                                                                                                                        |
-| Ecosystem canonical                                                                                                  | AWS + GCP split by workload                                       | [`gtcx-docs/.../cloud-placement/gtcx-ecosystem-2026-06-05.md`](../../../../gtcx-docs/01-docs/architecture/cloud-placement/gtcx-ecosystem-2026-06-05.md) |
-| [`cross-repo-agent-bridge.md`](cross-repo-agent-bridge.md)                                                           | **Chat-style bridge** — snapshot, broadcasts, rules               | `cross-repo-agent-bridge.md`                                                                                                                            |
-| [`cross-repo-agent-log.md`](cross-repo-agent-log.md)                                                                 | **Append-only log** — infra-specific entries                      | `cross-repo-agent-log.md`                                                                                                                               |
-| [`cross-repo-sprint-workplan-2026-06.md`](cross-repo-sprint-workplan-2026-06.md)                                     | Unified XR-### register + sprint plan                             | `cross-repo-sprint-workplan-2026-06.md`                                                                                                                 |
-| [`remaining-cross-repo-work-2026-06-03.md`](remaining-cross-repo-work-2026-06-03.md)                                 | Detailed notes on all open cross-repo work                        | `remaining-cross-repo-work-2026-06-03.md`                                                                                                               |
-| [`xr-201-intelligence-auth-gate-runbook.md`](xr-201-intelligence-auth-gate-runbook.md)                               | **P0 runbook** — XR-201 step-by-step with findings                | `xr-201-intelligence-auth-gate-runbook.md`                                                                                                              |
-| [`../staging-xr-104-compliance-gateway-rollout.md`](../staging-xr-104-compliance-gateway-rollout.md)                 | **P0 runbook** — XR-104 gateway image + signing key               | `01-docs/04-ops/staging-xr-104-compliance-gateway-rollout.md`                                                                                           |
-| [`from-gtcx-protocols-staging-operator-seed-2026-06-02.md`](from-gtcx-protocols-staging-operator-seed-2026-06-02.md) | Inbound — Track A done handoff                                    | `from-gtcx-protocols-staging-operator-seed-2026-06-02.md`                                                                                               |
-| [`to-gtcx-intelligence-track-b-auth-2026-06-03.md`](to-gtcx-intelligence-track-b-auth-2026-06-03.md)                 | Outbound — XR-201 auth gate                                       | `to-gtcx-intelligence-track-b-auth-2026-06-03.md`                                                                                                       |
-| [`to-gtcx-platforms-rollout-ready-2026-06-03.md`](to-gtcx-platforms-rollout-ready-2026-06-03.md)                     | Outbound — XR-301/302 rollout                                     | `to-gtcx-platforms-rollout-ready-2026-06-03.md`                                                                                                         |
+| Artifact                                                                                                                             | Role                                                                          | Path                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **This file**                                                                                                                        | Hub index — XR sprint status                                                  | [`README.md`](README.md)                                                                                                                                |
+| [`infra-per-repo-action-matrix-2026-06-05.md`](infra-per-repo-action-matrix-2026-06-05.md)                                           | **Per-repo: what infra does vs owner** — read first when confused             | P0 hub #17, P1 hosting, P2 no-op repos                                                                                                                  |
+| [`cloud-placement-aws-control-plane-2026-06-05.md`](cloud-placement-aws-control-plane-2026-06-05.md)                                 | **AWS control plane** — scope boundaries                                      | EKS, SM, RDS, S3, GCP→AWS bridge                                                                                                                        |
+| Ecosystem canonical                                                                                                                  | AWS + GCP split by workload                                                   | [`gtcx-docs/.../cloud-placement/gtcx-ecosystem-2026-06-05.md`](../../../../gtcx-docs/01-docs/architecture/cloud-placement/gtcx-ecosystem-2026-06-05.md) |
+| [`cross-repo-agent-bridge.md`](cross-repo-agent-bridge.md)                                                                           | **Chat-style bridge** — snapshot, broadcasts, rules                           | `cross-repo-agent-bridge.md`                                                                                                                            |
+| [`cross-repo-agent-log.md`](cross-repo-agent-log.md)                                                                                 | **Append-only log** — infra-specific entries                                  | `cross-repo-agent-log.md`                                                                                                                               |
+| [`cross-repo-sprint-workplan-2026-06.md`](cross-repo-sprint-workplan-2026-06.md)                                                     | Unified XR-### register + sprint plan                                         | `cross-repo-sprint-workplan-2026-06.md`                                                                                                                 |
+| [`remaining-cross-repo-work-2026-06-03.md`](remaining-cross-repo-work-2026-06-03.md)                                                 | Detailed notes on all open cross-repo work                                    | `remaining-cross-repo-work-2026-06-03.md`                                                                                                               |
+| [`xr-201-intelligence-auth-gate-runbook.md`](xr-201-intelligence-auth-gate-runbook.md)                                               | **P0 runbook** — XR-201 step-by-step with findings                            | `xr-201-intelligence-auth-gate-runbook.md`                                                                                                              |
+| [`../staging-xr-104-compliance-gateway-rollout.md`](../staging-xr-104-compliance-gateway-rollout.md)                                 | **P0 runbook** — XR-104 gateway image + signing key                           | `01-docs/04-ops/staging-xr-104-compliance-gateway-rollout.md`                                                                                           |
+| [`from-gtcx-protocols-staging-operator-seed-2026-06-02.md`](from-gtcx-protocols-staging-operator-seed-2026-06-02.md)                 | Inbound — Track A done handoff                                                | `from-gtcx-protocols-staging-operator-seed-2026-06-02.md`                                                                                               |
+| [`to-gtcx-intelligence-track-b-auth-2026-06-03.md`](to-gtcx-intelligence-track-b-auth-2026-06-03.md)                                 | Outbound — XR-201 auth gate                                                   | `to-gtcx-intelligence-track-b-auth-2026-06-03.md`                                                                                                       |
+| [`to-gtcx-platforms-rollout-ready-2026-06-03.md`](to-gtcx-platforms-rollout-ready-2026-06-03.md)                                     | Outbound — XR-301/302 rollout                                                 | `to-gtcx-platforms-rollout-ready-2026-06-03.md`                                                                                                         |
+| [`from-bridge-os-sprint-authority-ceremony-planning-2026-06-12.md`](from-bridge-os-sprint-authority-ceremony-planning-2026-06-12.md) | **Inbound P1** — Sprint authority read contract (`XR-FABRIC-SPRINT-AUTH-001`) | fabric owns L2 programme coordination; read product SoR — no operator sprint flags                                                                      |
 
 ---
 
@@ -212,7 +213,7 @@ Some sibling bridges use an early numbering scheme. Map to canonical protocols r
 # Report infra work to coordination hub
 cd /path/to/baseline-os
 pnpm ecosystem:repo:report-work \
-  --repo=gtcx-infrastructure \
+  --repo=fabric-os \
   --item="<description>" \
   --status=<pending|in-progress|blocked|completed|deferred>
 ```
