@@ -53,6 +53,9 @@ The GTCX-native capability and external-authority composition map is:
 
 `markets-os/docs/specs/gtcx-native-capability-and-authority-map.md`
 
+The primary commercial engine is:
+`markets-os/docs/specs/capital-discovery-and-formation-intelligence-product-spec.md`
+
 ## Scope correction
 
 `PROG-TOKENIZATION-001` correctly coordinates the controlled ownership and
@@ -80,27 +83,27 @@ not the platform's primary identity.
 
 ## Required programme workstreams
 
-| Workstream                            | Primary owner                                             | Required outcome                                                                                                                                              |
-| ------------------------------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Programme orchestration               | fabric-os                                                 | Dependency graph, milestones, owner allocation, assurance, hub status                                                                                         |
-| Transaction Graph                     | markets-os                                                | Canonical opportunity, claim, right, obligation, vehicle, instrument, transaction, evidence, exception, and outcome model                                     |
-| Opportunity and Evidence Graph        | markets-os + intelligence/authority owners                | Ingest fragmented material, resolve claims, expose contradictions and missing proof                                                                           |
-| Asset Passport and authority registry | markets-os + terra-os + exploration-os + authority owners | Portable asset/project/programme identity with current evidence                                                                                               |
-| Capital Compiler and Scenario Room    | markets-os                                                | Explainable ranked structures, capital stacks, waterfalls, covenants, scenarios                                                                               |
-| Mandate and Capital Network           | markets-os                                                | Machine-readable capital-provider mandates, matching, syndication, and relationship status                                                                    |
-| Two-sided Deal Team OS                | markets-os + professional-service owners                  | Dedicated lister and investor teams combining governed agents with accountable human professionals                                                            |
-| Institutional Assurance Network       | markets-os + independent professional owners              | Counsel-led deal channel and portable legal, valuation, model, technical, bankability, and settlement assurance                                               |
-| GTCX-native transaction stack         | fabric-os + ecosystem owners                              | Compose Terminal OS, Griot AI, Veritas, Compliance OS, protocols, Exploration OS, Terra OS, Ledger UI, and external authorities without duplicating ownership |
-| Time-boxed primary market             | markets-os + fabric-os                                    | Close-ready admission and terminal market outcome inside declared 7/14/30-day windows                                                                         |
-| Controlled close                      | markets-os                                                | Conditions precedent, approvals, commitments, payments, issuance, closing evidence                                                                            |
-| Ownership and controlled instruments  | markets-os + ledger-ui                                    | Direct, SPV/fund, and permissioned digital ownership lifecycle                                                                                                |
-| Servicing and covenant engine         | markets-os + authority owners                             | Obligations, performance, draws, distributions, monitoring, exception handling                                                                                |
-| Workout and exit                      | markets-os + human/legal owners                           | Waiver, remediation, restructuring, enforcement, wind-down, redemption, exit                                                                                  |
-| Controlled secondary liquidity        | markets-os + authority owners                             | RFQ, block trade, periodic auction, buyback, redemption, and qualified continuous-market pathways                                                             |
-| Regulatory adapter                    | compliance-os + markets-os                                | Jurisdiction profiles, classification, filings, restrictions, regulator evidence                                                                              |
-| Runtime and assurance                 | fabric-os                                                 | Secure runtime, secrets, observability, DR, external assurance, deployment proof                                                                              |
-| Product UI and assisted channels      | ledger-ui + markets-os + mobile/messaging owners          | Decision-first role surfaces, field/offline/voice/local-language access                                                                                       |
-| Human legal/regulatory authority      | human owners                                              | Enforceable rights, vehicles, instruments, approvals, agreements, regulated actions                                                                           |
+| Workstream                                   | Primary owner                                             | Required outcome                                                                                                                                              |
+| -------------------------------------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Programme orchestration                      | fabric-os                                                 | Dependency graph, milestones, owner allocation, assurance, hub status                                                                                         |
+| Transaction Graph                            | markets-os                                                | Canonical opportunity, claim, right, obligation, vehicle, instrument, transaction, evidence, exception, and outcome model                                     |
+| Opportunity and Evidence Graph               | markets-os + intelligence/authority owners                | Ingest fragmented material, resolve claims, expose contradictions and missing proof                                                                           |
+| Asset Passport and authority registry        | markets-os + terra-os + exploration-os + authority owners | Portable asset/project/programme identity with current evidence                                                                                               |
+| Capital Compiler and Scenario Room           | markets-os                                                | Explainable ranked structures, capital stacks, waterfalls, covenants, scenarios                                                                               |
+| Capital Discovery and Formation Intelligence | markets-os + griot-ai + terminal-os                       | Capital Graph, investor research, structure-market optimization, fundraising strategy, syndication, and outcome learning                                      |
+| Two-sided Deal Team OS                       | markets-os + professional-service owners                  | Dedicated lister and investor teams combining governed agents with accountable human professionals                                                            |
+| Institutional Assurance Network              | markets-os + independent professional owners              | Counsel-led deal channel and portable legal, valuation, model, technical, bankability, and settlement assurance                                               |
+| GTCX-native transaction stack                | fabric-os + ecosystem owners                              | Compose Terminal OS, Griot AI, Veritas, Compliance OS, protocols, Exploration OS, Terra OS, Ledger UI, and external authorities without duplicating ownership |
+| Time-boxed primary market                    | markets-os + fabric-os                                    | Close-ready admission and terminal market outcome inside declared 7/14/30-day windows                                                                         |
+| Controlled close                             | markets-os                                                | Conditions precedent, approvals, commitments, payments, issuance, closing evidence                                                                            |
+| Ownership and controlled instruments         | markets-os + ledger-ui                                    | Direct, SPV/fund, and permissioned digital ownership lifecycle                                                                                                |
+| Servicing and covenant engine                | markets-os + authority owners                             | Obligations, performance, draws, distributions, monitoring, exception handling                                                                                |
+| Workout and exit                             | markets-os + human/legal owners                           | Waiver, remediation, restructuring, enforcement, wind-down, redemption, exit                                                                                  |
+| Controlled secondary liquidity               | markets-os + authority owners                             | RFQ, block trade, periodic auction, buyback, redemption, and qualified continuous-market pathways                                                             |
+| Regulatory adapter                           | compliance-os + markets-os                                | Jurisdiction profiles, classification, filings, restrictions, regulator evidence                                                                              |
+| Runtime and assurance                        | fabric-os                                                 | Secure runtime, secrets, observability, DR, external assurance, deployment proof                                                                              |
+| Product UI and assisted channels             | ledger-ui + markets-os + mobile/messaging owners          | Decision-first role surfaces, field/offline/voice/local-language access                                                                                       |
+| Human legal/regulatory authority             | human owners                                              | Enforceable rights, vehicles, instruments, approvals, agreements, regulated actions                                                                           |
 
 ## Product boundaries
 
@@ -243,6 +246,9 @@ replication; independently governed nodes can use the shared kernel.
 11. Use the GTCX-native capability map as the owner-allocation baseline; treat
     external vendors as adapters, data providers, professional authorities, or
     execution rails rather than default product owners.
+12. Elevate Capital Discovery and Formation Intelligence from basic matching to
+    the primary commercial workstream and compose Markets, Griot AI, Terminal
+    OS, TradePass, Veritas, Compliance OS, and GTCX Intelligence around it.
 
 ## Recommended sequencing
 
@@ -277,6 +283,7 @@ See acceptance criteria below — fabric-os outbound ack + programme milestones 
 - `docs/specs/time-boxed-capital-formation-market-protocol.md`
 - `docs/specs/institutional-assurance-network-product-spec.md`
 - `docs/specs/gtcx-native-capability-and-authority-map.md`
+- `docs/specs/capital-discovery-and-formation-intelligence-product-spec.md`
 - `docs/specs/tokenization-platform-requirements.md`
 - `docs/specs/african-financial-markets-regulatory-adapter-requirements.md`
 - `docs/strategy/e2e-transaction-shipping-spec-2026-06-09.md`
