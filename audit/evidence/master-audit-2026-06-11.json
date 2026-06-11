@@ -1,11 +1,10 @@
 {
-  "schema": "gtcx://audit/composite/v1",
   "repo": "fabric-os",
   "date": "2026-06-11",
-  "composite100": 90,
+  "score": 9,
   "productionReady": false,
-  "source": "ecosystem-master-audit-gate-rollup",
-  "gates": {
+  "gaps": ["P35 strict"],
+  "checks": {
     "baselineConfig": {
       "ok": true,
       "sor": true,
@@ -35,8 +34,5 @@
       "ok": true,
       "detail": "To https://github.com/gtcx-ecosystem/fabric-os.git\n   985bba6..5d4b122  HEAD -> "
     }
-  },
-  "gaps": ["P35 strict"],
-  "note": "Gate rollup — replace with five-core witness composite after A1–A5 audits",
-  "replaces": "master-audit"
+  }
 }

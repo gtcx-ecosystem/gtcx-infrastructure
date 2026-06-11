@@ -1,0 +1,229 @@
+{
+  "schema": "gtcx://audit/documentation-pack/v1",
+  "repo": "fabric-os",
+  "repoKind": "infra",
+  "isPilot": true,
+  "date": "2026-06-11",
+  "ok": true,
+  "score100": 100,
+  "pillar": "compliance",
+  "packs": [
+    {
+      "id": "CORE-P32",
+      "label": "P32 core narrative + audit entry",
+      "pillar": "compliance",
+      "required": true,
+      "score100": 100,
+      "items": [
+        {
+          "id": "readme",
+          "label": "README.md",
+          "severity": "P1",
+          "pass": true,
+          "detail": "README.md"
+        },
+        {
+          "id": "docs-readme",
+          "label": "docs/README.md IA entry",
+          "severity": "P1",
+          "pass": true,
+          "detail": "docs/README.md"
+        },
+        {
+          "id": "docs-sor",
+          "label": "docs/sor.json machine SoR",
+          "severity": "P1",
+          "pass": true,
+          "detail": "docs/sor.json"
+        },
+        {
+          "id": "audit-agent-start",
+          "label": "audit/AGENT-START.md",
+          "severity": "P1",
+          "pass": true,
+          "detail": "audit/AGENT-START.md"
+        },
+        {
+          "id": "tier-b-conduct",
+          "label": "docs/operations/repo/CODE_OF_CONDUCT.md",
+          "severity": "P2",
+          "pass": true,
+          "detail": "docs/operations/repo/CODE_OF_CONDUCT.md"
+        }
+      ]
+    },
+    {
+      "id": "AGENT-OPS",
+      "label": "Agent onboarding surfaces",
+      "pillar": "compliance",
+      "required": true,
+      "score100": 100,
+      "items": [
+        {
+          "id": "agents-md",
+          "label": "AGENTS.md repo entry",
+          "severity": "P1",
+          "pass": true,
+          "detail": "AGENTS.md"
+        },
+        {
+          "id": "agents-readme",
+          "label": "docs/agents/README.md or agent index",
+          "severity": "P2",
+          "pass": true,
+          "detail": "docs/agents/README.md"
+        }
+      ]
+    },
+    {
+      "id": "JURISDICTION-SOR",
+      "label": "Documentation jurisdiction + sor.json validity",
+      "pillar": "compliance",
+      "required": true,
+      "score100": 100,
+      "items": [
+        {
+          "id": "sor-schema",
+          "label": "docs/sor.json schema gtcx.docs.sor.v1",
+          "severity": "P1",
+          "pass": true,
+          "detail": "/Users/amanianai/Sites/gtcx-ecosystem/fabric-os/docs/sor.json"
+        },
+        {
+          "id": "no-ops-under-docs",
+          "label": "No ops machine domains duplicated under docs/",
+          "severity": "P1",
+          "pass": true,
+          "detail": "ok"
+        },
+        {
+          "id": "canon-upstream-pointer",
+          "label": "upstream canon-os or gtcx-docs constitution pointer",
+          "severity": "P2",
+          "pass": true,
+          "detail": "upstream ok"
+        }
+      ]
+    },
+    {
+      "id": "ONBOARD-PACK",
+      "label": "Contributor onboarding",
+      "pillar": "compliance",
+      "required": true,
+      "score100": 50,
+      "items": [
+        {
+          "id": "contributing",
+          "label": "CONTRIBUTING.md (repo or docs/operations/repo/)",
+          "severity": "P1",
+          "pass": true,
+          "detail": "docs/operations/repo/CONTRIBUTING.md"
+        },
+        {
+          "id": "contributing-sections",
+          "label": "CONTRIBUTING required sections",
+          "severity": "P2",
+          "pass": false,
+          "detail": "missing sections: Quick Start, Commit Convention"
+        }
+      ]
+    },
+    {
+      "id": "GTM-PACK",
+      "label": "GTM / demo / deploy narrative",
+      "pillar": "compliance",
+      "required": true,
+      "score100": 100,
+      "items": [
+        {
+          "id": "gtm-dod",
+          "label": "demo-walkthrough or deployment-profile",
+          "severity": "P2",
+          "pass": true,
+          "detail": "docs/operations/deployment-profile.json"
+        }
+      ]
+    },
+    {
+      "id": "OPS-DOCS-MANIFEST",
+      "label": "ops/docs/manifest.json canon subscribe (pilots)",
+      "pillar": "compliance",
+      "required": true,
+      "score100": 100,
+      "items": [
+        {
+          "id": "ops-docs-manifest",
+          "label": "ops/docs/manifest.json",
+          "severity": "P1",
+          "pass": true,
+          "detail": "ops/docs/manifest.json"
+        },
+        {
+          "id": "ops-docs-manifest-schema",
+          "label": "ops/docs/manifest.json schema valid",
+          "severity": "P1",
+          "pass": true,
+          "detail": "valid"
+        }
+      ]
+    },
+    {
+      "id": "GITBOOK-EXT",
+      "label": "External GitBook source tree (advisory)",
+      "pillar": "technicalExcellence",
+      "required": false,
+      "score100": 100,
+      "items": [
+        {
+          "id": "gitbook-readme",
+          "label": "docs/gitbook/README.md when external narrative expected",
+          "severity": "P3",
+          "pass": true,
+          "detail": "docs/gitbook/README.md"
+        }
+      ]
+    },
+    {
+      "id": "DX-PACK",
+      "label": "Developer experience quickstart (advisory)",
+      "pillar": "technicalExcellence",
+      "required": false,
+      "score100": 100,
+      "items": [
+        {
+          "id": "readme-quick-start",
+          "label": "README Quick start section",
+          "severity": "P3",
+          "pass": false,
+          "detail": "README missing ## Quick start"
+        }
+      ]
+    },
+    {
+      "id": "API-PACK",
+      "label": "API documentation when api tree present",
+      "pillar": "technicalExcellence",
+      "required": false,
+      "score100": 100,
+      "items": [
+        {
+          "id": "api-readme",
+          "label": "docs/api/README.md when docs/api/ exists",
+          "severity": "P2",
+          "pass": true,
+          "detail": "docs/api/README.md"
+        }
+      ]
+    }
+  ],
+  "violations": [
+    {
+      "packId": "ONBOARD-PACK",
+      "itemId": "contributing-sections",
+      "severity": "P2",
+      "detail": "missing sections: Quick Start, Commit Convention"
+    }
+  ],
+  "openP0": 0,
+  "openP1": 0
+}

@@ -1,0 +1,15 @@
+{
+  "schema": "gtcx://ops/docs-manifest/v1",
+  "repo": "fabric-os",
+  "updated": "2026-06-11",
+  "docsRoot": "docs/",
+  "canonSubscribe": {
+    "canonRepo": "canon-os",
+    "legacyCanonRepo": "gtcx-docs",
+    "servicesSpec": "../bridge-os/pm/spec/documentation-services.v1.json",
+    "jurisdictionSpec": "../bridge-os/pm/spec/documentation-jurisdiction.v1.json"
+  },
+  "gitbookSourcePath": "docs/gitbook/",
+  "publishRegister": "../canon-os/pm/publish-register.json",
+  "packRegistry": "../bridge-os/pm/spec/documentation-pack-registry.v1.json"
+}
