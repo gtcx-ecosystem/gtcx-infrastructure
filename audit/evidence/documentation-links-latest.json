@@ -1,0 +1,657 @@
+{
+  "schema": "gtcx://audit/documentation-links/v1",
+  "ok": false,
+  "filesScanned": 403,
+  "brokenCount": 259,
+  "results": [
+    {
+      "file": "docs/README.md",
+      "broken": [
+        {
+          "href": "../03-platform/tools/docs-site/README.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "gtm/plans/bank-grade-10x-remediation-plan.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "gtm/plans/global-south-10x-plan.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "gtm/plans/moat-execution-plan.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "gtm/regulatory/incident-response-plan-v1.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "gtm/regulatory/iso27001-isms-scope.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "gtm/regulatory/pci-dss-scoping.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "gtm/regulatory/pentest-scope-rfp.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "gtm/regulatory/regulatory-notification-templates.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "gtm/regulatory/rto-rpo-resolution.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "gtm/regulatory/soc2-readiness-checklist.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "gtm/sandbox-application/architecture-overview.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "gtm/sandbox-application/data-residency-proof.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "gtm/sandbox-application/encryption-statement.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "gtm/sandbox-application/internal-security-assessment.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "gtm/sandbox-application/kyc-retention-schedule.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "gtm/sandbox-application/pre-submission-agenda.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "audit/execution-roadmap.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "audit/latest.json",
+          "reason": "missing target"
+        },
+        {
+          "href": "security/security-framework.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "security/security-architecture.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "security/security-policy.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "security/threat-model.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "security/threat-model-template.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "security/secrets-management.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "security/defense-readiness.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "security/nist-800-53-mapping.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "security/fips-assessment.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "security/stig-compliance.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "security/zero-trust-assessment.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "security/data-flow.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "security/tokenization-architecture.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "security/key-ceremony-runbook.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "security/signed-commits-policy.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "security/cosign-ci-integration.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "security/audit-integrity-verification.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "security/break-glass-procedure.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "security/bug-bounty-policy.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "security/forensic-readiness.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "security/red-team-playbook.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "security/rasp-integration-guide.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "security/security-training-program.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "security/soc-requirements.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "compliance/compliance-requirements.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "compliance/controls-matrix.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "compliance/regulatory-framework.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "compliance/soc2-evidence-pipeline.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "compliance/compliance-templates-overview.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "compliance/accessibility-checklist.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "compliance/board-security-committee-charter.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "compliance/data-classification-policy.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "compliance/data-retention-policy.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "compliance/risk-register.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "compliance/separation-of-duties-matrix.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "compliance/vendor-risk-program.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "compliance/policies/a05-information-security-policy.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "compliance/policies/a06-organization-of-information-security.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "compliance/policies/a07-human-resource-security.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "compliance/policies/a08-asset-management.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "compliance/policies/a09-access-control.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "compliance/policies/a10-cryptography.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "compliance/policies/a11-physical-security.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "compliance/policies/a12-operations-security.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "compliance/policies/a13-communications-security.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "compliance/policies/a14-system-acquisition.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "compliance/policies/a15-supplier-relationships.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "compliance/policies/a16-incident-management.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "compliance/policies/a17-business-continuity.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "compliance/policies/a18-compliance.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "audit/implementation-truth.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "audit/remediation/remediation-plan-10x10.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "audit/ecosystem-integration-assessment.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "audit/gtm-q2-africa-assessment.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "audit/pilot-agreement-template.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "audit/pilot-success-criteria.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "audit/historical-cycles/auto-dev-state.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "audit/historical-cycles/2026-05-04-cycle-2.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "audit/historical-cycles/2026-05-04-cycle-3.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "audit/historical-cycles/2026-05-04-cycle-4.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "audit/historical-cycles/2026-05-04-full-audit.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "audit/historical-cycles/2026-05-05-cycle-5.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "audit/historical-cycles/2026-05-05-cycle-6.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "audit/historical-cycles/2026-05-05-cycle-7-final.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "audit/production-readiness-evidence-2026-05-08.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "audit/qa-reviews/2026-05-05-documentation-coverage-proposal.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "audit/qa-reviews/2026-05-05-gtcx-hardening-strategy.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "audit/qa-reviews/2026-05-05-gtcx-sovereign-stack-whitepaper.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "audit/qa-reviews/2026-05-05-infrastructure-improvement-roadmap.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "audit/qa-reviews/2026-05-05-innovation-roadmap.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "audit/qa-reviews/2026-05-05-innovation-spec-suite.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "security/security-framework.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "compliance/controls-matrix.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "security/threat-model.md",
+          "reason": "missing target"
+        }
+      ]
+    },
+    {
+      "file": "docs/agents/README.md",
+      "broken": [
+        {
+          "href": "../01-agents/README.md",
+          "reason": "missing target"
+        }
+      ]
+    },
+    {
+      "file": "docs/agents/claude/README.md",
+      "broken": [
+        {
+          "href": "../../../02-ops/",
+          "reason": "missing target"
+        }
+      ]
+    },
+    {
+      "file": "docs/agents/codex/README.md",
+      "broken": [
+        {
+          "href": "../../../02-ops/",
+          "reason": "missing target"
+        }
+      ]
+    },
+    {
+      "file": "docs/agents/copilot/README.md",
+      "broken": [
+        {
+          "href": "../../../02-ops/",
+          "reason": "missing target"
+        }
+      ]
+    },
+    {
+      "file": "docs/agents/cursor/README.md",
+      "broken": [
+        {
+          "href": "../../../02-ops/",
+          "reason": "missing target"
+        }
+      ]
+    },
+    {
+      "file": "docs/agents/gemini/README.md",
+      "broken": [
+        {
+          "href": "../../../02-ops/",
+          "reason": "missing target"
+        }
+      ]
+    },
+    {
+      "file": "docs/agents/kimi/README.md",
+      "broken": [
+        {
+          "href": "../../../02-ops/",
+          "reason": "missing target"
+        }
+      ]
+    },
+    {
+      "file": "docs/agents/profile.md",
+      "broken": [
+        {
+          "href": "../audit/execution-roadmap.md",
+          "reason": "missing target"
+        }
+      ]
+    },
+    {
+      "file": "docs/agile/README.md",
+      "broken": [
+        {
+          "href": "../audit/execution-roadmap.md",
+          "reason": "missing target"
+        }
+      ]
+    },
+    {
+      "file": "docs/agile/execution-roadmap-2026-05-22.md",
+      "broken": [
+        {
+          "href": "../audit/execution-roadmap.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "../audit/master-audit-2026-05-17.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "../audit/full-audit-2026-05-22.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "../audit/repo-overlay.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "../audit/full-audit-2026-05-22.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "../../03-platform/tools/compliance-gateway/src/schemas.mjs",
+          "reason": "missing target"
+        },
+        {
+          "href": "../../03-platform/tools/compliance-gateway/src/budget.mjs",
+          "reason": "missing target"
+        },
+        {
+          "href": "../../03-platform/tools/eval-pipeline/injection-suite.mjs",
+          "reason": "missing target"
+        },
+        {
+          "href": "../audit/pen-test-rfp-2026.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "../audit/soc2-engagement-2026.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "../audit/master-audit-2026-05-17.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "../audit/full-audit-2026-05-22.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "../audit/repo-overlay.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "../audit/signal-scorecard.json",
+          "reason": "missing target"
+        },
+        {
+          "href": "../audit/score-evidence-ledger.json",
+          "reason": "missing target"
+        },
+        {
+          "href": "../audit/coverage-gate-rationale.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "../audit/pen-test-rfp-2026.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "../audit/soc2-engagement-2026.md",
+          "reason": "missing target"
+        }
+      ]
+    },
+    {
+      "file": "docs/agile/executive-summary.md",
+      "broken": [
+        {
+          "href": "../audit/execution-roadmap.md",
+          "reason": "missing target"
+        }
+      ]
+    },
+    {
+      "file": "docs/agile/sprints/README.md",
+      "broken": [
+        {
+          "href": "../../audit/execution-roadmap.md",
+          "reason": "missing target"
+        }
+      ]
+    },
+    {
+      "file": "docs/agile/sprints/current.md",
+      "broken": [
+        {
+          "href": "../../audit/execution-roadmap.md",
+          "reason": "missing target"
+        }
+      ]
+    },
+    {
+      "file": "docs/api/README.md",
+      "broken": [
+        {
+          "href": "../security/credential-rotation-log.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "../security/threat-model-2026-05.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "../../03-platform/tools/compliance-gateway/src/server.mjs",
+          "reason": "missing target"
+        }
+      ]
+    },
+    {
+      "file": "docs/architecture/compliance-substrate-deep-dive.md",
+      "broken": [
+        {
+          "href": "../security/threat-model-2026-05.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "../compliance/dpia-2026-05.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "../audit/full-audit-2026-05-22.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "../audit/signal-scorecard.json",
+          "reason": "missing target"
+        }
+      ]
+    },
+    {
+      "file": "docs/architecture/infrastructure-architecture-overview.md",
+      "broken": [
+        {
+          "href": "../security/security-policy.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "../../04-deploy/security/policies/access-control.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "../compliance/data-classification-policy.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "../compliance/compliance-templates-overview.md",
+          "reason": "missing target"
+        }
+      ]
+    },
+    {
+      "file": "docs/architecture/system-overview.md",
+      "broken": [
+        {
+          "href": "../compliance/platform-compliance-governance.md",
+          "reason": "missing target"
+        }
+      ]
+    },
+    {
+      "file": "docs/architecture/trust-model.md",
+      "broken": [
+        {
+          "href": "../security/security-architecture.md",
+          "reason": "missing target"
+        }
+      ]
+    },
+    {
+      "file": "docs/engineering/backend-architecture.md",
+      "broken": [
+        {
+          "href": "../compliance/soc2-evidence-pipeline.md",
+          "reason": "missing target"
+        }
+      ]
+    }
+  ],
+  "repo": "fabric-os"
+}

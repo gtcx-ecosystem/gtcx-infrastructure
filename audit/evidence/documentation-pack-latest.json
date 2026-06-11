@@ -110,7 +110,7 @@
       "label": "Contributor onboarding",
       "pillar": "compliance",
       "required": true,
-      "score100": 50,
+      "score100": 100,
       "items": [
         {
           "id": "contributing",
@@ -123,8 +123,8 @@
           "id": "contributing-sections",
           "label": "CONTRIBUTING required sections",
           "severity": "P2",
-          "pass": false,
-          "detail": "missing sections: Quick Start, Commit Convention"
+          "pass": true,
+          "detail": "/Users/amanianai/Sites/gtcx-ecosystem/fabric-os/docs/operations/repo/CONTRIBUTING.md"
         }
       ]
     },
@@ -168,18 +168,41 @@
       ]
     },
     {
-      "id": "GITBOOK-EXT",
-      "label": "External GitBook source tree (advisory)",
+      "id": "GITBOOK-NAV",
+      "label": "GitBook navigation (PublishaaS)",
+      "pillar": "technicalExcellence",
+      "required": true,
+      "score100": 100,
+      "items": [
+        {
+          "id": "gitbook-readme",
+          "label": "docs/gitbook/README.md",
+          "severity": "P2",
+          "pass": true,
+          "detail": "docs/gitbook/README.md"
+        },
+        {
+          "id": "gitbook-summary",
+          "label": "docs/gitbook/SUMMARY.md navigation",
+          "severity": "P2",
+          "pass": true,
+          "detail": "SUMMARY present"
+        }
+      ]
+    },
+    {
+      "id": "LINKAAS",
+      "label": "Internal docs link integrity",
       "pillar": "technicalExcellence",
       "required": false,
       "score100": 100,
       "items": [
         {
-          "id": "gitbook-readme",
-          "label": "docs/gitbook/README.md when external narrative expected",
-          "severity": "P3",
-          "pass": true,
-          "detail": "docs/gitbook/README.md"
+          "id": "docs-internal-links",
+          "label": "Broken internal links in docs/ ≤25",
+          "severity": "P2",
+          "pass": false,
+          "detail": "259 broken / 403 files"
         }
       ]
     },
@@ -216,14 +239,7 @@
       ]
     }
   ],
-  "violations": [
-    {
-      "packId": "ONBOARD-PACK",
-      "itemId": "contributing-sections",
-      "severity": "P2",
-      "detail": "missing sections: Quick Start, Commit Convention"
-    }
-  ],
+  "violations": [],
   "openP0": 0,
   "openP1": 0
 }
