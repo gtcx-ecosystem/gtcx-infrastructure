@@ -40,6 +40,7 @@ Detailed specifications:
 - `docs/specs/mandate-engagement-and-exclusivity-protocol.md`
 - `docs/specs/jurisdiction-policy-compiler-product-spec.md`
 - `docs/specs/gtcx-ecosystem-integration-maximization-protocol.md`
+- `docs/specs/gtcx-os-protocol-native-listing-admission-and-execution-standard.md`
 - `docs/specs/bankability-dependency-and-commitment-graph-product-spec.md`
 - `docs/specs/time-boxed-capital-formation-market-protocol.md`
 - `docs/specs/institutional-assurance-network-product-spec.md`
@@ -85,6 +86,8 @@ Tokenization is one optional ownership and distribution mechanism.
    rails through typed adapters.
 10. Post-close servicing, monitoring, liquidity, workout, and outcomes remain
     part of the product.
+11. Every listing must use the applicable `gtcx-os/protocols` verification and
+    execution rails under a signed Protocol Applicability Manifest.
 
 ## Canonical Product Primitives
 
@@ -106,23 +109,23 @@ conditions, expiry, and owner.
 
 ## Required Workstreams and Owners
 
-| Workstream                                                                         | Primary owners                                                          |
-| ---------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
-| Programme, runtime, security, deployment, and assurance orchestration              | Fabric OS                                                               |
-| Transaction Graph, market state, close, servicing, liquidity, and outcomes         | Markets OS / EIX                                                        |
-| Capital Graph, investor discovery, formation strategy, pre-market, and syndication | Markets OS + Griot AI + Terminal OS                                     |
-| Two-sided participant qualification, capability, capacity, and reliability         | TradePass + Markets OS + Veritas + Compliance OS                        |
-| Jurisdiction Policy Compiler, execution profiles, and regulatory-change impact     | Markets OS + Compliance OS + Griot AI + Protocols + adopted authorities |
-| Bankability Graph, Capital Compiler, valuation, scenarios, and Plans A/B/C         | Markets OS + GTCX Intelligence + domain owners                          |
-| Opportunity, evidence, asset, title, technical, and production readiness           | Markets OS + Exploration OS + Terra OS                                  |
-| Identity, eligibility, compliance, regulatory, and authority signals               | TradePass + GCI + Compliance OS + Veritas                               |
-| Government and Institutional Authority Gateway                                     | Markets OS + Compliance OS + authority owners                           |
-| Two-Sided Deal Team OS and professional marketplace                                | Markets OS + Terminal OS + professional owners                          |
-| Institutional Assurance Network                                                    | Markets OS + independent professional owners                            |
-| Document, media, secure collaboration, and role-specific interfaces                | Markets OS + Terminal OS + Ledger UI                                    |
-| Settlement, custody, price, reserve, registers, and authority receipts             | Markets OS + PvP + VaultMark + PANX + adopted rails                     |
-| Controlled ownership and tokenization                                              | Markets OS + Ledger UI + Protocols + adopted authorities                |
-| Sovereign/private nodes, ecosystem conformance, Golden Transaction, and federation | Markets OS + Fabric OS + Protocols + ecosystem owners                   |
+| Workstream                                                                         | Primary owners                                                                    |
+| ---------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| Programme, runtime, security, deployment, and assurance orchestration              | Fabric OS                                                                         |
+| Transaction Graph, market state, close, servicing, liquidity, and outcomes         | Markets OS / EIX                                                                  |
+| Capital Graph, investor discovery, formation strategy, pre-market, and syndication | Markets OS + Griot AI + Terminal OS                                               |
+| Two-sided participant qualification, capability, capacity, and reliability         | TradePass + Markets OS + Veritas + Compliance OS                                  |
+| Jurisdiction Policy Compiler, execution profiles, and regulatory-change impact     | Markets OS + Compliance OS + Griot AI + `gtcx-os/protocols` + adopted authorities |
+| Bankability Graph, Capital Compiler, valuation, scenarios, and Plans A/B/C         | Markets OS + GTCX Intelligence + domain owners                                    |
+| Opportunity, evidence, asset, title, technical, and production readiness           | Markets OS + Exploration OS + Terra OS                                            |
+| Identity, eligibility, compliance, regulatory, and authority signals               | TradePass + GCI + Compliance OS + Veritas                                         |
+| Government and Institutional Authority Gateway                                     | Markets OS + Compliance OS + authority owners                                     |
+| Two-Sided Deal Team OS and professional marketplace                                | Markets OS + Terminal OS + professional owners                                    |
+| Institutional Assurance Network                                                    | Markets OS + independent professional owners                                      |
+| Document, media, secure collaboration, and role-specific interfaces                | Markets OS + Terminal OS + Ledger UI                                              |
+| Settlement, custody, price, reserve, registers, and authority receipts             | Markets OS + PvP + VaultMark + PANX + adopted rails                               |
+| Controlled ownership and tokenization                                              | Markets OS + Ledger UI + `gtcx-os/protocols` + adopted authorities                |
+| Sovereign/private nodes, ecosystem conformance, Golden Transaction, and federation | Markets OS + Fabric OS + `gtcx-os/protocols` + ecosystem owners                   |
 
 ## Initial Programme Phases
 
@@ -133,6 +136,8 @@ conditions, expiry, and owner.
 - Define Passport, Transaction Certainty, and Authority-Trace Receipt schemas.
 - Define Transaction Jurisdiction and Execution Profile, ecosystem capability
   registry, and integration conformance contracts.
+- Define Protocol Applicability Manifest and mandatory TradePass, GeoTag, GCI,
+  VaultMark, PvP, PANX, and protocol-receipt listing gates.
 - Map current capabilities, gaps, owners, external authorities, and Class S
   gates.
 - Build Ghana, ZWCMP, Kasai, Sierra Leone diamond, Ghana gold, and Zimbabwe
@@ -205,6 +210,8 @@ Select one **Assured and Authority-Supported Deal Programme**. It must show:
   explicit.
 - Current active work is preserved and mapped.
 - Product claims remain evidence-gated and authority boundaries fail closed.
+- Every listing proves applicable `gtcx-os/protocols` admission, execution,
+  settlement, and receipt conformance.
 
 ## What This Document Does NOT Cover
 

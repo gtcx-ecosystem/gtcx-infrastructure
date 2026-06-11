@@ -15,22 +15,25 @@ blocksIR: false
 
 ## Required Decision
 
-Assign the TradePass protocol owner and establish a joint TradePass and Markets
+Coordinate the `gtcx-os/protocols` TradePass owner and Markets OS as a joint
 workstream for the Participant Capability and Reliability Passport.
 
 Canonical product specification:
 `docs/specs/participant-capability-and-reliability-passport-product-spec.md`.
 
+Direct protocol-owner handoff:
+`docs/operations/coordination/to-gtcx-os-protocols-tradepass-qualified-counterparty-2026-06-12.md`.
+
 ## Ownership Boundary
 
-| Domain                                                                                                                                                                              | Authority            |
-| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- |
-| Stable participant identity, legal entity, beneficial ownership, representatives, signatories, credentials, roles, consent, privacy, revocation, and portable reputation assertions | TradePass            |
-| Transaction capability policy, dimensional assessment, transaction qualification, conditions, exposure, market access, and realized market outcomes                                 | Markets OS / EIX     |
-| Screening, adverse events, fraud, references, and surveillance                                                                                                                      | Veritas              |
-| Compliance, eligibility, licensing, jurisdiction, and regulatory evidence                                                                                                           | Compliance OS + GCI  |
-| Signed evidence, qualification, outcome, correction, and revocation envelopes                                                                                                       | GTCX Protocols owner |
-| Runtime, connectors, live traces, conformance, and programme coordination                                                                                                           | Fabric OS            |
+| Domain                                                                                                                                                                              | Authority           |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------- |
+| Stable participant identity, legal entity, beneficial ownership, representatives, signatories, credentials, roles, consent, privacy, revocation, and portable reputation assertions | TradePass           |
+| Transaction capability policy, dimensional assessment, transaction qualification, conditions, exposure, market access, and realized market outcomes                                 | Markets OS / EIX    |
+| Screening, adverse events, fraud, references, and surveillance                                                                                                                      | Veritas             |
+| Compliance, eligibility, licensing, jurisdiction, and regulatory evidence                                                                                                           | Compliance OS + GCI |
+| Signed evidence, qualification, outcome, correction, and revocation envelopes                                                                                                       | `gtcx-os/protocols` |
+| Runtime, connectors, live traces, conformance, and programme coordination                                                                                                           | Fabric OS           |
 
 TradePass credentials must not independently qualify a participant for a
 specific transaction. Markets must not duplicate or become authoritative for
@@ -68,7 +71,8 @@ Run one offtake buyer qualification and one capital-provider qualification:
 
 ## Fabric Actions
 
-1. Assign the TradePass and protocol-contract owners.
+1. Coordinate the TradePass owner in `gtcx-os/platform/protocols` and Markets
+   OS owner.
 2. Publish the cross-repo contract and authority matrix.
 3. Add the workstream to the Golden Transaction and Capital Formation
    programme.
