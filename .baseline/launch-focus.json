@@ -3,8 +3,8 @@
   "normativeDoc": "01-docs/04-ops/agent-launch-focus.md",
   "hubDoc": "https://github.com/gtcx-ecosystem/gtcx-core/blob/main/01-docs/04-ops/agent-launch-focus.md",
   "statePath": ".baseline/launch-focus.json",
-  "provisionedAt": "2026-06-10T15:04:49.529Z",
-  "repo": "gtcx-infrastructure",
+  "provisionedAt": "2026-06-11T06:28:51.587Z",
+  "repo": "fabric-os",
   "northStar": {
     "outcome": "Live sovereign pilot substrate (Wire #2, staging/testnet, hub acks, pen-test path) so apps and GTM can close GR-T2 deals.",
     "repoRole": "Deploy EKS/testnet, secrets, observability — unblock intelligence, markets, protocols.",

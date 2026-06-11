@@ -1,6 +1,6 @@
 {
   "schema": "gtcx.governanceSpine.v1",
-  "repo": "gtcx-infrastructure",
+  "repo": "fabric-os",
   "syncedFrom": "gtcx-agentic/config/ecosystem-governance-spine.json",
   "syncedAt": "2026-06-06",
   "product_name": "GTCX Infrastructure",

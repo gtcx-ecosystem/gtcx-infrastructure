@@ -1,4 +1,4 @@
-# AGENTS.md — GTCX Infrastructure
+# AGENTS.md — Fabric OS
 
 > **Applies to:** ALL AI agents operating on this codebase  
 > **Layout:** P35 v5 — `platform/`, `deploy/`, `docs/`, `ops/`, `audit/`, `workstream/`, `agentic/`, `pm/`  
@@ -207,7 +207,7 @@ This repo participates in the GTCX ecosystem coordination system managed by `bas
 
 | Field | Value |
 |-------|-------|
-| Repo ID | `gtcx-infrastructure` |
+| Repo ID | `fabric-os` |
 | Tier | Tier 2 (Platform) |
 | Human Lead | @amanianai |
 | AI Reliability (ecosystem) | [gtcx-protocols ai-reliability-owner-2026-06-06](https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/docs/operations/coordination/ai-reliability-owner-2026-06-06.md) |
@@ -220,7 +220,7 @@ Report work items to the coordination hub:
 
 ```bash
 cd /path/to/baseline-os
-pnpm ecosystem:repo:report-work --repo=gtcx-infrastructure --item="Description" --status=in-progress
+pnpm ecosystem:repo:report-work --repo=fabric-os --item="Description" --status=in-progress
 ```
 
 Valid statuses: `pending`, `in-progress`, `blocked`, `completed`, `deferred`.
@@ -246,7 +246,7 @@ Check `baseline-os/workstream/coordination/coordination-report-latest.md` for cr
 
 ## Repository
 
-`gtcx-infrastructure` — Infrastructure, compliance substrate, and governance platform for GTCX: an AI-native compliance engine powering African commodity trade (KYC, attestation, settlement, audit).
+`fabric-os` — Service fabric execution layer for GTCX: AWS/K8s/Terraform control plane, deployment orchestration, assurance, and cross-repo program coordination (legacy id: `gtcx-infrastructure`).
 
 ## Stack
 
@@ -302,7 +302,7 @@ The audit registry is provider-agnostic — the same prompts work for Claude, Co
 
 - **System-of-record (SoR)**: `gtcx-agentic` Baseline vault (shared provider creds + audited access)
 - **Runtime usage owner**: product repo (e.g. `gtcx-intelligence`) owns its runtime secrets
-- **CI/automation owner**: `gtcx-infrastructure` owns org automation secrets/policy
+- **CI/automation owner**: `fabric-os` owns org automation secrets/policy
 - **Contracts only**: `gtcx-protocols` defines env var names, redaction rules, and artifact paths/globs
 
 **Credentialed evidence packs:** run either via vault injection on a dev laptop or in infra-owned CI; write redacted JSON evidence only (no raw secrets).

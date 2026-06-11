@@ -1,7 +1,7 @@
 {
   "$schema": "gtcx://ops/manifest/v14",
   "schema": "gtcx.ops.manifest.v14",
-  "repo": "gtcx-infrastructure",
+  "repo": "fabric-os",
   "updated": "2026-06-09",
   "protocol": "https://github.com/gtcx-ecosystem/gtcx-docs/blob/main/01-docs/governance/protocols/29-agent-workspace-domains/protocol.md",
   "layout": "docs/operations/workspace/ecosystem-repo-layout-v5.md",

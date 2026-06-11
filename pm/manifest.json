@@ -1,7 +1,7 @@
 {
   "$schema": "gtcx://pm/manifest/v5",
   "schema": "gtcx.pm.manifest.v5",
-  "repo": "gtcx-infrastructure",
+  "repo": "fabric-os",
   "layoutVersion": "v5",
   "updated": "2026-06-09",
   "agileHub": null,

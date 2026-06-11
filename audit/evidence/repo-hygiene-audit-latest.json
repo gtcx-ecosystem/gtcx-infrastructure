@@ -1,13 +1,69 @@
 {
-  "schema": "gtcx://audit/core-witness/v1",
+  "schema": "gtcx://audit/core-witness/v2",
   "coreId": "A5-REPO-HYGIENE",
   "slug": "repo-hygiene",
-  "repo": "gtcx-infrastructure",
+  "repo": "fabric-os",
   "date": "2026-06-10",
-  "score10": 7.5,
-  "score100": 75,
-  "status": "probe-driven",
+  "score10": 7,
+  "score100": 70,
+  "score100Raw": 75,
+  "status": "probe-gates-only",
   "source": "run-five-core-audit",
+  "metrics": {
+    "documentation": {
+      "score100": 0,
+      "weight": 1,
+      "confidence": "D",
+      "source": "missing"
+    },
+    "repo-folder-hygiene": {
+      "score100": 0,
+      "weight": 1,
+      "confidence": "D",
+      "source": "missing"
+    },
+    "spec-drift": {
+      "score100": 0,
+      "weight": 1,
+      "confidence": "D",
+      "source": "missing"
+    }
+  },
+  "gates": [
+    {
+      "id": "p35-strict-pass",
+      "label": "P35 layout strict",
+      "pass": false,
+      "severity": "P1",
+      "cap100": 70
+    },
+    {
+      "id": "docs-sor-present",
+      "label": "Docs SoR manifest",
+      "pass": true,
+      "severity": "P1",
+      "cap100": 75
+    },
+    {
+      "id": "pm-folder-requirements",
+      "label": "pm/manifest.json present",
+      "pass": true,
+      "severity": "P2",
+      "cap100": 85
+    }
+  ],
+  "capsFired": [
+    {
+      "id": "gate-p35-strict-pass",
+      "label": "Gate failed: P35 layout strict",
+      "ceiling100": 70,
+      "trigger": "p35-strict-pass"
+    }
+  ],
+  "openP0": 0,
+  "openP1": 0,
+  "rubricSource": null,
+  "rubricSourcePath": null,
   "checks": {
     "p35Strict": {
       "ok": false,

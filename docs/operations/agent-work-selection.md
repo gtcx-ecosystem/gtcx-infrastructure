@@ -2,7 +2,7 @@
 title: 'Agent Work Selection Manifest'
 status: current
 date: 2026-06-05
-owner: gtcx-infrastructure
+owner: fabric-os
 role: platform-architect
 tier: critical
 tags: ['protocol-22', 'agent', 'work-selection']
@@ -12,7 +12,7 @@ protocol: gtcx-docs/01-docs/governance/protocols/22-agent-work-selection/protoco
 adoption_status: pilot
 ---
 
-# Agent Work Selection — gtcx-infrastructure
+# Agent Work Selection — fabric-os
 
 > **Protocol:** [Protocol 22 — Agent Work Selection](https://github.com/gtcx-ecosystem/gtcx-docs/blob/main/01-docs/governance/protocols/22-agent-work-selection/protocol.md) (AGENT-WORK-SEL)
 > **Rule:** Agents compute next work from the execution roadmap and work register. **Never ask the operator which story to pick.**

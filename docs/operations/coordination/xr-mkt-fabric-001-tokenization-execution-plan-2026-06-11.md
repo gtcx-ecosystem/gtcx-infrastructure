@@ -3,7 +3,7 @@ title: 'PROG-TOKENIZATION-001 — cross-repo execution plan'
 status: current
 date: 2026-06-11
 owner: fabric-os
-canonical_repo: gtcx-infrastructure
+canonical_repo: fabric-os
 program: PROG-TOKENIZATION-001
 ticket: XR-MKT-FABRIC-001
 protocol: P24

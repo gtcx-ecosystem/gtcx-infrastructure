@@ -1,13 +1,50 @@
 {
-  "schema": "gtcx://audit/core-witness/v1",
+  "schema": "gtcx://audit/core-witness/v2",
   "coreId": "A2-PRODUCTION-GRADE",
   "slug": "production-grade",
-  "repo": "gtcx-infrastructure",
+  "repo": "fabric-os",
   "date": "2026-06-10",
   "score10": 8,
   "score100": 80,
-  "status": "probe-driven",
+  "score100Raw": 80,
+  "status": "probe-gates-only",
   "source": "run-five-core-audit",
+  "metrics": {
+    "production-readiness": {
+      "score100": 0,
+      "weight": 1,
+      "confidence": "D",
+      "source": "missing"
+    }
+  },
+  "gates": [
+    {
+      "id": "ci-pipeline-defined",
+      "label": "CI workflow or test/lint scripts",
+      "pass": true,
+      "severity": "P1",
+      "cap100": 75
+    },
+    {
+      "id": "ops-check-pass",
+      "label": "pnpm ops:check exit 0",
+      "pass": true,
+      "severity": "P1",
+      "cap100": 70
+    },
+    {
+      "id": "deploy-path-documented",
+      "label": "Deploy path exists",
+      "pass": true,
+      "severity": "P2",
+      "cap100": 85
+    }
+  ],
+  "capsFired": [],
+  "openP0": 0,
+  "openP1": 0,
+  "rubricSource": null,
+  "rubricSourcePath": null,
   "checks": {
     "ciPipeline": {
       "ok": true,

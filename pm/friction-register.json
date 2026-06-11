@@ -1,11 +1,11 @@
 {
-  "$schema": "gtcx://gtcx-infrastructure/friction-register/v1",
+  "$schema": "gtcx://fabric-os/friction-register/v1",
   "version": "1.0.0",
   "updated": "2026-06-10",
   "program": "DevOps-as-a-Service",
   "initiative": "INIT-GTCX-INFRA-DAAS",
   "protocol": "P41-DEVOPS-AS-A-SERVICE",
-  "owner": "gtcx-infrastructure",
+  "owner": "fabric-os",
   "programOfficeHarness": "bridge-os",
   "principle": "Infra unblocks in parallel — blocksIR false for product engineering",
   "items": [

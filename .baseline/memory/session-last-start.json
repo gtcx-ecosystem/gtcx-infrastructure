@@ -1,16 +1,16 @@
 {
-  "startedAt": "2026-06-10T06:16:35.060Z",
-  "repo": "gtcx-infrastructure",
+  "startedAt": "2026-06-11T05:40:29.227Z",
+  "repo": "fabric-os",
   "ssot": "baseline-os/platform/scripts/ecosystem/repo-session-core.mjs",
   "agentTrace": {
-    "id": "gtcx-agent-e6c5aa73-9d84-4946-abdd-9e44722d86cf",
+    "id": "gtcx-agent-a038b7dc-ba5a-432c-97fd-f3ed1cf15c53",
     "header": "x-gtcx-agent-trace-id",
     "otelAttribute": "gtcx.agent_trace_id",
-    "traceparent": "00-e218c51dd4e9cb76e9425825e7e7149d-349090d663fbd1de-01"
+    "traceparent": "00-572a43d053c9a9e0461d64e34bfb75ea-cf4227477e12ee08-01"
   },
   "nextWork": {
     "protocol": "22-agent-work-selection",
-    "repo": "gtcx-infrastructure",
+    "repo": "fabric-os",
     "frame": "development",
     "persona": {
       "institutional": "platform-architect",
@@ -20,8 +20,8 @@
       "bridgeUrl": "https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/01-docs/04-ops/coordination/ecosystem-persona-bridge-2026-06.md",
       "instruction": "Read persona doc before work; re-select persona on task switch (Phase 4)."
     },
-    "traceId": "8773fe5c-a2f1-4785-9ba7-0feefc4a16a5",
-    "coordinationHint": "Append cross-repo-agent-log row with trace_id=8773fe5c-a2f1-4785-9ba7-0feefc4a16a5",
+    "traceId": "06e98489-b4a7-4ac2-8ebe-464076f564a1",
+    "coordinationHint": "Append cross-repo-agent-log row with trace_id=06e98489-b4a7-4ac2-8ebe-464076f564a1",
     "ok": true,
     "backlogClear": false,
     "message": "Implement queue empty — PLAN mode: advance launch/GTM state without forensic audit.",
@@ -45,8 +45,8 @@
       "normativeDoc": "01-docs/04-ops/agent-launch-focus.md",
       "hubDoc": "https://github.com/gtcx-ecosystem/gtcx-core/blob/main/01-docs/04-ops/agent-launch-focus.md",
       "statePath": ".baseline/launch-focus.json",
-      "provisionedAt": "2026-06-10T06:16:35.055Z",
-      "repo": "gtcx-infrastructure",
+      "provisionedAt": "2026-06-11T05:40:29.221Z",
+      "repo": "fabric-os",
       "northStar": {
         "outcome": "Live sovereign pilot substrate (Wire #2, staging/testnet, hub acks, pen-test path) so apps and GTM can close GR-T2 deals.",
         "repoRole": "Deploy EKS/testnet, secrets, observability — unblock intelligence, markets, protocols.",
@@ -97,6 +97,6 @@
       "personaDocUrl": "https://github.com/gtcx-ecosystem/gtcx-docs/blob/main/01-docs/governance/institutional/personas/platform-architect.md"
     }
   },
-  "gitChanged": 40,
+  "gitChanged": 20,
   "authorityClass": "R"
 }

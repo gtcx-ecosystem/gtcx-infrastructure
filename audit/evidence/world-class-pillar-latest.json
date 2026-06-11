@@ -1,0 +1,87 @@
+{
+  "schema": "gtcx://audit/world-class-pillar/v1",
+  "repo": "fabric-os",
+  "date": "2026-06-11",
+  "score100": 69,
+  "published": false,
+  "provisional": true,
+  "blockedBy": "compliance",
+  "unlockThreshold100": 85,
+  "metrics": {
+    "documentation-world-class": {
+      "score100": 0,
+      "weight": 8,
+      "qualityAvg100": 0,
+      "worldClassBar100": 95,
+      "gap100": 95,
+      "sourceIds": ["documentation"]
+    },
+    "security-world-class": {
+      "score100": 100,
+      "weight": 12,
+      "qualityAvg100": 100,
+      "worldClassBar100": 98,
+      "gap100": 0,
+      "sourceIds": ["security"]
+    },
+    "devops-observability": {
+      "score100": 84,
+      "weight": 12,
+      "qualityAvg100": 80,
+      "worldClassBar100": 95,
+      "gap100": 15,
+      "sourceIds": ["production-readiness"]
+    },
+    "agentic-trust": {
+      "score100": 84,
+      "weight": 10,
+      "qualityAvg100": 80,
+      "worldClassBar100": 95,
+      "gap100": 15,
+      "sourceIds": ["ai-maturity", "hallucination-resilience"]
+    },
+    "ecosystem-moat": {
+      "score100": 100,
+      "weight": 10,
+      "qualityAvg100": 100,
+      "worldClassBar100": 95,
+      "gap100": 0,
+      "sourceIds": ["ecosystem-integration", "technical-moat"]
+    },
+    "enterprise-sovereign": {
+      "score100": 100,
+      "weight": 12,
+      "qualityAvg100": 100,
+      "worldClassBar100": 95,
+      "gap100": 0,
+      "sourceIds": ["enterprise-readiness", "bank-grade-auditability"]
+    },
+    "repo-hygiene-world-class": {
+      "score100": 0,
+      "weight": 8,
+      "qualityAvg100": 0,
+      "worldClassBar100": 95,
+      "gap100": 95,
+      "sourceIds": ["repo-folder-hygiene", "spec-drift"]
+    },
+    "spec-truth": {
+      "score100": 0,
+      "weight": 8,
+      "qualityAvg100": 0,
+      "worldClassBar100": 95,
+      "gap100": 95,
+      "sourceIds": ["spec-drift"]
+    },
+    "global-south-resilience": {
+      "score100": 100,
+      "weight": 8,
+      "qualityAvg100": 90,
+      "worldClassBar100": 90,
+      "gap100": 0,
+      "sourceIds": ["production-readiness", "ux-product-design"]
+    }
+  },
+  "hasRubric": true,
+  "rubricSpec": "pm/spec/world-class-rubric.v1.json",
+  "rubricVersion": "1.0.0"
+}

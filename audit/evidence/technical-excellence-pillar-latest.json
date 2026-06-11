@@ -1,0 +1,67 @@
+{
+  "schema": "gtcx://audit/technical-excellence-pillar/v1",
+  "repo": "fabric-os",
+  "date": "2026-06-11",
+  "score100": 70,
+  "published": false,
+  "provisional": true,
+  "blockedBy": "compliance",
+  "unlockThreshold100": 85,
+  "metrics": {
+    "engineering-production": {
+      "score100": 80,
+      "weight": 18,
+      "sourceIds": ["production-readiness"],
+      "confidence": "C",
+      "source": "audit-output"
+    },
+    "security-depth": {
+      "score100": 100,
+      "weight": 16,
+      "sourceIds": ["security"],
+      "confidence": "C",
+      "source": "audit-output"
+    },
+    "product-ux-quality": {
+      "score100": 100,
+      "weight": 14,
+      "sourceIds": ["ux-product-design"],
+      "confidence": "C",
+      "source": "audit-output"
+    },
+    "ecosystem-integration": {
+      "score100": 100,
+      "weight": 12,
+      "sourceIds": ["ecosystem-integration"],
+      "confidence": "C",
+      "source": "audit-output"
+    },
+    "innovation-ip": {
+      "score100": 100,
+      "weight": 12,
+      "sourceIds": ["innovation-originality", "technical-moat"],
+      "confidence": "C",
+      "source": "audit-output"
+    },
+    "ai-agentic-maturity": {
+      "score100": 80,
+      "weight": 14,
+      "sourceIds": ["ai-maturity", "hallucination-resilience"],
+      "confidence": "C",
+      "source": "audit-output"
+    },
+    "enterprise-bank-grade": {
+      "score100": 100,
+      "weight": 14,
+      "sourceIds": ["enterprise-readiness", "bank-grade-auditability"],
+      "confidence": "C",
+      "source": "audit-output"
+    }
+  },
+  "hasRubric": true,
+  "rubricSource": "audit-output",
+  "rubricSpec": "pm/spec/technical-excellence-rubric.v1.json",
+  "rubricVersion": "1.0.0",
+  "capped": true,
+  "capReason": "probe-only-or-snapshot"
+}

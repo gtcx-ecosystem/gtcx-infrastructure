@@ -1,7 +1,7 @@
 {
   "$schema": "gtcx://agentic/bridge/v1",
   "schema": "gtcx.agentic.bridge.v1",
-  "repo": "gtcx-infrastructure",
+  "repo": "fabric-os",
   "role": "thin-bridge",
   "updated": "2026-06-09",
   "baseline": {

@@ -1,5 +1,5 @@
 {
-  "repo": "gtcx-infrastructure",
+  "repo": "fabric-os",
   "normativeDoc": "01-docs/04-ops/agent-launch-focus.md",
   "northStar": {
     "outcome": "Live sovereign pilot substrate (Wire #2, staging/testnet, hub acks, pen-test path) so apps and GTM can close GR-T2 deals.",

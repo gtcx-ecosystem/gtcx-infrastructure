@@ -1,6 +1,6 @@
 {
   "$schema": "gtcx://bridge-os/deployment-profile/v1",
-  "repo": "gtcx-infrastructure",
+  "repo": "fabric-os",
   "deployMode": "eks-platform",
   "environments": ["staging", "production"],
   "smokeCommand": "pnpm deployment:smoke",

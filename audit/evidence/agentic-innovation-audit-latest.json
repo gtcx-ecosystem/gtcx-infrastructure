@@ -1,13 +1,56 @@
 {
-  "schema": "gtcx://audit/core-witness/v1",
+  "schema": "gtcx://audit/core-witness/v2",
   "coreId": "A3-AGENTIC-INNOVATION",
   "slug": "agentic-innovation",
-  "repo": "gtcx-infrastructure",
+  "repo": "fabric-os",
   "date": "2026-06-10",
   "score10": 8,
   "score100": 80,
-  "status": "probe-driven",
+  "score100Raw": 80,
+  "status": "probe-gates-only",
   "source": "run-five-core-audit",
+  "metrics": {
+    "ai-maturity": {
+      "score100": 0,
+      "weight": 1,
+      "confidence": "D",
+      "source": "missing"
+    },
+    "hallucination-resilience": {
+      "score100": 0,
+      "weight": 1,
+      "confidence": "D",
+      "source": "missing"
+    }
+  },
+  "gates": [
+    {
+      "id": "agent-protocol-wiring",
+      "label": "AGENTS.md + agent:next-work or work-selection",
+      "pass": true,
+      "severity": "P1",
+      "cap100": 75
+    },
+    {
+      "id": "baseline-session-ok",
+      "label": "Baseline session or agentic manifest",
+      "pass": false,
+      "severity": "P2",
+      "cap100": 80
+    }
+  ],
+  "capsFired": [
+    {
+      "id": "gate-baseline-session-ok",
+      "label": "Gate failed: Baseline session or agentic manifest",
+      "ceiling100": 80,
+      "trigger": "baseline-session-ok"
+    }
+  ],
+  "openP0": 0,
+  "openP1": 0,
+  "rubricSource": null,
+  "rubricSourcePath": null,
   "checks": {
     "agenticManifest": {
       "ok": true,

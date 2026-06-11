@@ -2,7 +2,7 @@
   "$schema": "gtcx://pm/initiatives/v1",
   "version": "1.0.0",
   "updated": "2026-06-10",
-  "repo": "gtcx-infrastructure",
+  "repo": "fabric-os",
   "initiatives": [
     {
       "id": "INIT-GTCX-INFRA-DAAS",

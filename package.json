@@ -1,11 +1,11 @@
 {
-  "name": "gtcx-infrastructure",
+  "name": "fabric-os",
   "version": "0.1.0",
   "private": true,
-  "description": "GTCX Infrastructure - Docker, Kubernetes, Terraform, security, migrations, and deployment tooling",
+  "description": "Fabric OS — service fabric execution: Docker, Kubernetes, Terraform, security, and deployment control plane",
   "repository": {
     "type": "git",
-    "url": "https://github.com/gtcx-ecosystem/gtcx-infrastructure.git"
+    "url": "https://github.com/gtcx-ecosystem/fabric-os.git"
   },
   "author": "GTCX Protocol",
   "license": "MIT",

@@ -1,10 +1,10 @@
 {
-  "$schema": "gtcx://gtcx-infrastructure/gtm-friction-register/v1",
+  "$schema": "gtcx://fabric-os/gtm-friction-register/v1",
   "version": "1.0.0",
   "updated": "2026-06-10",
   "program": "GTM-as-a-Service",
   "initiative": "INIT-GTCX-SERVICE-FABRIC",
-  "owner": "gtcx-infrastructure",
+  "owner": "fabric-os",
   "principle": "GTM narratives and sales friction centralized — product repos consume cards",
   "items": [
     {

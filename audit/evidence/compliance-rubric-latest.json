@@ -1,0 +1,917 @@
+{
+  "schema": "gtcx://audit/compliance-rubric/v1",
+  "repo": "fabric-os",
+  "date": "2026-06-11",
+  "score100": 69,
+  "categories": {
+    "layout-p35": {
+      "label": "Layout & workspace (P35 v5)",
+      "weight": 8,
+      "score100": 65,
+      "protocol": "P35",
+      "items": [
+        {
+          "id": "p35-strict-pass",
+          "label": "P35 layout strict GREEN",
+          "pass": false,
+          "score100": 0,
+          "weight": 35,
+          "severity": "P1",
+          "optional": false,
+          "detail": "p35Strict",
+          "protocol": "P35"
+        },
+        {
+          "id": "hub-resolve",
+          "label": "v5 hubs resolve (audit, docs, platform, agentic, pm)",
+          "pass": true,
+          "score100": 100,
+          "weight": 25,
+          "severity": "P1",
+          "optional": false,
+          "detail": "5/4 present",
+          "protocol": "P35"
+        },
+        {
+          "id": "root-allowlist",
+          "label": "Root allowlist / workspace root cleanliness",
+          "pass": true,
+          "score100": 100,
+          "weight": 20,
+          "severity": "P2",
+          "optional": false,
+          "detail": "opsCheck",
+          "protocol": "P35"
+        },
+        {
+          "id": "layout-contract",
+          "label": "Layout contract v5 registered",
+          "pass": true,
+          "score100": 100,
+          "weight": 20,
+          "severity": "P2",
+          "optional": false,
+          "detail": "config/layout-contract.v5.json",
+          "protocol": "P35"
+        }
+      ],
+      "itemCount": 4
+    },
+    "governance-spine-p33": {
+      "label": "Governance spine (P33)",
+      "weight": 7,
+      "score100": 100,
+      "protocol": "P33",
+      "items": [
+        {
+          "id": "root-license",
+          "label": "LICENSE present",
+          "pass": true,
+          "score100": 100,
+          "weight": 15,
+          "severity": "P1",
+          "optional": false,
+          "detail": "LICENSE",
+          "protocol": "P33"
+        },
+        {
+          "id": "root-changelog",
+          "label": "CHANGELOG.md present",
+          "pass": true,
+          "score100": 100,
+          "weight": 10,
+          "severity": "P2",
+          "optional": false,
+          "detail": "CHANGELOG.md",
+          "protocol": "P33"
+        },
+        {
+          "id": "root-readme",
+          "label": "README.md with governance + agents sections",
+          "pass": true,
+          "score100": 100,
+          "weight": 20,
+          "severity": "P1",
+          "optional": false,
+          "detail": "README.md",
+          "protocol": "P33"
+        },
+        {
+          "id": "root-agents-md",
+          "label": "AGENTS.md entry (P22 markers)",
+          "pass": true,
+          "score100": 100,
+          "weight": 25,
+          "severity": "P0",
+          "optional": false,
+          "detail": "AGENTS.md",
+          "protocol": "P33"
+        },
+        {
+          "id": "root-makefile",
+          "label": "Makefile with help/install/check/stubs/agent-sync",
+          "pass": true,
+          "score100": 100,
+          "weight": 15,
+          "severity": "P2",
+          "optional": false,
+          "detail": "Makefile",
+          "protocol": "P33"
+        },
+        {
+          "id": "tier-b-governance-docs",
+          "label": "Tier-B repo governance docs",
+          "pass": true,
+          "score100": 100,
+          "weight": 15,
+          "severity": "P2",
+          "optional": false,
+          "detail": "3/1 present",
+          "protocol": "P33"
+        }
+      ],
+      "itemCount": 6
+    },
+    "ops-domains-p29": {
+      "label": "Operational domains (P29)",
+      "weight": 6,
+      "score100": 100,
+      "protocol": "P29",
+      "items": [
+        {
+          "id": "ops-check-pass",
+          "label": "pnpm ops:check exit 0",
+          "pass": true,
+          "score100": 100,
+          "weight": 50,
+          "severity": "P1",
+          "optional": false,
+          "detail": "opsCheck",
+          "protocol": "P29"
+        },
+        {
+          "id": "ops-manifest",
+          "label": "config/ops.manifest.json",
+          "pass": true,
+          "score100": 100,
+          "weight": 25,
+          "severity": "P2",
+          "optional": false,
+          "detail": "config/ops.manifest.json",
+          "protocol": "P29"
+        },
+        {
+          "id": "ops-pm-domain",
+          "label": "ops/pm or pm/ SoR wired",
+          "pass": true,
+          "score100": 100,
+          "weight": 25,
+          "severity": "P2",
+          "optional": false,
+          "detail": "2/1 present",
+          "protocol": "P29"
+        }
+      ],
+      "itemCount": 3
+    },
+    "docs-sor-p32": {
+      "label": "Documentation SoR (P32)",
+      "weight": 6,
+      "score100": 100,
+      "protocol": "P32",
+      "items": [
+        {
+          "id": "docs-sor-manifest",
+          "label": "docs/sor.json or docs/INDEX.md or 01-docs/manifest.json",
+          "pass": true,
+          "score100": 100,
+          "weight": 40,
+          "severity": "P1",
+          "optional": false,
+          "detail": "docs SoR manifest",
+          "protocol": "P32"
+        },
+        {
+          "id": "docs-index",
+          "label": "docs/INDEX.md or docs/README.md IA map",
+          "pass": true,
+          "score100": 100,
+          "weight": 30,
+          "severity": "P2",
+          "optional": false,
+          "detail": "2/1 present",
+          "protocol": "P32"
+        },
+        {
+          "id": "audit-entry-doc",
+          "label": "audit/AGENT-START.md or audit/FIVE-CORE-AUDITS.md",
+          "pass": true,
+          "score100": 100,
+          "weight": 30,
+          "severity": "P2",
+          "optional": false,
+          "detail": "audit/FIVE-CORE-AUDITS.md",
+          "protocol": "P32"
+        }
+      ],
+      "itemCount": 3
+    },
+    "anti-version-bloat-p32": {
+      "label": "Anti-version bloat (P32)",
+      "weight": 4,
+      "score100": 25,
+      "protocol": "P32",
+      "items": [
+        {
+          "id": "no-version-fork-filenames",
+          "label": "No -v2/-v3 filename forks outside pm/spec/*.vN.json",
+          "pass": false,
+          "score100": 0,
+          "weight": 35,
+          "severity": "P1",
+          "optional": false,
+          "detail": "2 version-fork file(s) — e.g. docs/operations/workspace/ecosystem-repo-layout-v3.md",
+          "protocol": "P32"
+        },
+        {
+          "id": "no-copy-suffix-filenames",
+          "label": "No -copy/-old/-backup/-superseded in active trees",
+          "pass": true,
+          "score100": 100,
+          "weight": 25,
+          "severity": "P2",
+          "optional": false,
+          "detail": "no copy suffixes",
+          "protocol": "P32"
+        },
+        {
+          "id": "witness-latest-only",
+          "label": "No dated audit/evidence siblings when *-latest.* exists",
+          "pass": false,
+          "score100": 0,
+          "weight": 40,
+          "severity": "P2",
+          "optional": false,
+          "detail": "5 dated sibling(s) with -latest witness — e.g. audit/agentic-innovation-audit-2026-06-10.md",
+          "protocol": "P32"
+        }
+      ],
+      "itemCount": 3
+    },
+    "pm-folder-p37": {
+      "label": "PM folder requirements (P37)",
+      "weight": 12,
+      "score100": 38,
+      "protocol": "P37",
+      "specRef": "pm/spec/pm-folder-requirements.v1.json",
+      "items": [
+        {
+          "id": "pm-folder-check",
+          "label": "pnpm pm:folder:check exit 0",
+          "pass": false,
+          "score100": 0,
+          "weight": 30,
+          "severity": "P1",
+          "optional": false,
+          "detail": "pmFolder",
+          "protocol": "P37"
+        },
+        {
+          "id": "pm-readme",
+          "label": "pm/README.md entry policy",
+          "pass": false,
+          "score100": 0,
+          "weight": 8,
+          "severity": "P1",
+          "optional": false,
+          "detail": "missing pm/README.md",
+          "protocol": "P37"
+        },
+        {
+          "id": "pm-manifest",
+          "label": "pm/manifest.json SoR",
+          "pass": true,
+          "score100": 100,
+          "weight": 10,
+          "severity": "P1",
+          "optional": false,
+          "detail": "pm/manifest.json",
+          "protocol": "P37"
+        },
+        {
+          "id": "pm-completion-model",
+          "label": "pm/completion-model.json DoD gates",
+          "pass": true,
+          "score100": 100,
+          "weight": 10,
+          "severity": "P1",
+          "optional": false,
+          "detail": "pm/completion-model.json",
+          "protocol": "P37"
+        },
+        {
+          "id": "pm-shipping-tracks",
+          "label": "pm/shipping-tracks.json",
+          "pass": false,
+          "score100": 0,
+          "weight": 10,
+          "severity": "P1",
+          "optional": false,
+          "detail": "missing pm/shipping-tracks.json",
+          "protocol": "P37"
+        },
+        {
+          "id": "pm-initiatives",
+          "label": "pm/roadmap/initiatives.json",
+          "pass": true,
+          "score100": 100,
+          "weight": 10,
+          "severity": "P1",
+          "optional": false,
+          "detail": "pm/roadmap/initiatives.json",
+          "protocol": "P37"
+        },
+        {
+          "id": "pm-active-sprint",
+          "label": "pm/roadmap/sprints/active.json",
+          "pass": false,
+          "score100": 0,
+          "weight": 8,
+          "severity": "P2",
+          "optional": false,
+          "detail": "missing pm/roadmap/sprints/active.json",
+          "protocol": "P37"
+        },
+        {
+          "id": "pm-product-specs",
+          "label": "pm/product/ with ≥1 PRD/spec",
+          "pass": true,
+          "score100": 100,
+          "weight": 8,
+          "severity": "P2",
+          "optional": false,
+          "detail": "1 files",
+          "protocol": "P37"
+        },
+        {
+          "id": "pm-ci-witness-dir",
+          "label": "pm/ci/ witnesses directory",
+          "pass": false,
+          "score100": 0,
+          "weight": 6,
+          "severity": "P2",
+          "optional": false,
+          "detail": "missing pm/ci",
+          "protocol": "P37"
+        }
+      ],
+      "itemCount": 9
+    },
+    "shipping-culture-engine": {
+      "label": "Shipping culture & PM engine",
+      "weight": 8,
+      "score100": 65,
+      "protocol": "shipping-culture",
+      "specRef": "pm/spec/shipping-culture-pm-engine.v1.json",
+      "items": [
+        {
+          "id": "execution-roadmap",
+          "label": "pm/execution-roadmap.md or audit/product-management/execution-roadmap.md",
+          "pass": true,
+          "score100": 100,
+          "weight": 20,
+          "severity": "P1",
+          "optional": false,
+          "detail": "1/1 present",
+          "protocol": "shipping-culture"
+        },
+        {
+          "id": "auto-dev-state",
+          "label": "auto-dev-state.md with Next work block",
+          "pass": true,
+          "score100": 100,
+          "weight": 20,
+          "severity": "P1",
+          "optional": false,
+          "detail": "1/1 present",
+          "protocol": "shipping-culture"
+        },
+        {
+          "id": "backlog-sor",
+          "label": "ops/pm/backlog.json or pm/backlog.json",
+          "pass": true,
+          "score100": 100,
+          "weight": 15,
+          "severity": "P2",
+          "optional": false,
+          "detail": "1/1 present",
+          "protocol": "shipping-culture"
+        },
+        {
+          "id": "shipping-status-witness",
+          "label": "pm/ci/shipping-status-latest.json",
+          "pass": false,
+          "score100": 0,
+          "weight": 15,
+          "severity": "P2",
+          "optional": false,
+          "detail": "missing dir pm/ci",
+          "protocol": "shipping-culture"
+        },
+        {
+          "id": "readiness-snapshot",
+          "label": "pm/readiness-snapshot.json (generated)",
+          "pass": false,
+          "score100": 0,
+          "weight": 15,
+          "severity": "P2",
+          "optional": false,
+          "detail": "pm/readiness-snapshot.json",
+          "protocol": "shipping-culture"
+        }
+      ],
+      "itemCount": 5
+    },
+    "agentic-harness-p22-p28": {
+      "label": "Agentic harness (P22–P28)",
+      "weight": 10,
+      "score100": 85,
+      "protocol": "P22-P28",
+      "items": [
+        {
+          "id": "agentic-manifest",
+          "label": "agentic/manifest.json",
+          "pass": true,
+          "score100": 100,
+          "weight": 20,
+          "severity": "P1",
+          "optional": false,
+          "detail": "agentic/manifest.json",
+          "protocol": "P22-P28"
+        },
+        {
+          "id": "agent-next-work",
+          "label": "pnpm agent:next-work wired",
+          "pass": true,
+          "score100": 100,
+          "weight": 25,
+          "severity": "P1",
+          "optional": false,
+          "detail": "nextWork",
+          "protocol": "P22-P28"
+        },
+        {
+          "id": "agent-work-selection-check",
+          "label": "pnpm agent:work-selection:check",
+          "pass": true,
+          "score100": 100,
+          "weight": 25,
+          "severity": "P1",
+          "optional": false,
+          "detail": "workSelection",
+          "protocol": "P22-P28"
+        },
+        {
+          "id": "mcp-or-hub-exception",
+          "label": "MCP hub or hub-repo exception",
+          "pass": false,
+          "score100": 0,
+          "weight": 15,
+          "severity": "P2",
+          "optional": false,
+          "detail": "MCP hub or hub repo",
+          "protocol": "P22-P28"
+        },
+        {
+          "id": "audit-agent-start",
+          "label": "05-audit/AGENT-START.md or audit/AGENT-START.md",
+          "pass": true,
+          "score100": 100,
+          "weight": 15,
+          "severity": "P2",
+          "optional": false,
+          "detail": "1/1 present",
+          "protocol": "P22-P28"
+        }
+      ],
+      "itemCount": 5
+    },
+    "ci-retrospectives-improvement": {
+      "label": "CI, retrospectives & continuous improvement",
+      "weight": 10,
+      "score100": 30,
+      "protocol": "T16-ci-retrospectives",
+      "specRef": "pm/spec/ci-retrospectives-sprint-gate.v1.json",
+      "items": [
+        {
+          "id": "retrospectives-readme",
+          "label": "pm/retrospectives/README.md",
+          "pass": false,
+          "score100": 0,
+          "weight": 15,
+          "severity": "P2",
+          "optional": false,
+          "detail": "missing pm/retrospectives/README.md",
+          "protocol": "T16-ci-retrospectives"
+        },
+        {
+          "id": "retrospectives-template",
+          "label": "pm/retrospectives/TEMPLATE-session-retrospective.md",
+          "pass": false,
+          "score100": 0,
+          "weight": 10,
+          "severity": "P2",
+          "optional": false,
+          "detail": "missing pm/retrospectives/TEMPLATE-session-retrospective.md",
+          "protocol": "T16-ci-retrospectives"
+        },
+        {
+          "id": "pm-ci-gates",
+          "label": "pm/ci/gates.json",
+          "pass": true,
+          "score100": 100,
+          "weight": 15,
+          "severity": "P2",
+          "optional": false,
+          "detail": "pm/manifest.json",
+          "protocol": "T16-ci-retrospectives"
+        },
+        {
+          "id": "pm-ci-readme",
+          "label": "pm/ci/README.md",
+          "pass": false,
+          "score100": 0,
+          "weight": 10,
+          "severity": "P3",
+          "optional": false,
+          "detail": "missing pm/ci/README.md",
+          "protocol": "T16-ci-retrospectives"
+        }
+      ],
+      "itemCount": 4
+    },
+    "roadmap-agile-planning": {
+      "label": "Roadmap & agile planning",
+      "weight": 6,
+      "score100": 69,
+      "items": [
+        {
+          "id": "roadmap-readme",
+          "label": "pm/roadmap/README.md",
+          "pass": false,
+          "score100": 0,
+          "weight": 20,
+          "severity": "P2",
+          "optional": false,
+          "detail": "missing pm/roadmap/README.md"
+        },
+        {
+          "id": "roadmap-initiatives-populated",
+          "label": "initiatives.json has ≥1 initiative",
+          "pass": true,
+          "score100": 100,
+          "weight": 30,
+          "severity": "P2",
+          "optional": false,
+          "detail": "2 items"
+        },
+        {
+          "id": "uat-scenarios",
+          "label": "pm/roadmap/uat/ (optional until R1)",
+          "pass": true,
+          "score100": 100,
+          "weight": 15,
+          "severity": "P3",
+          "optional": true,
+          "detail": "pm/roadmap/uat"
+        }
+      ],
+      "itemCount": 3
+    },
+    "agentic-product-team": {
+      "label": "World-class agentic product team signals",
+      "weight": 8,
+      "score100": 80,
+      "items": [
+        {
+          "id": "persona-profiles",
+          "label": "Repo persona profile in bridge-os or institutional adoption",
+          "pass": true,
+          "score100": 100,
+          "weight": 20,
+          "severity": "P3",
+          "optional": false,
+          "detail": "agentic/manifest.json"
+        },
+        {
+          "id": "conduct-protocol-adoption",
+          "label": "Agent conduct / P26 status update template referenced",
+          "pass": true,
+          "score100": 100,
+          "weight": 20,
+          "severity": "P2",
+          "optional": false,
+          "detail": "2/1 present"
+        },
+        {
+          "id": "zenhub-or-pm-standard",
+          "label": "ZenHub PM standard or pm/zenhub linkage",
+          "pass": true,
+          "score100": 100,
+          "weight": 20,
+          "severity": "P2",
+          "optional": false,
+          "detail": "2/1 present"
+        },
+        {
+          "id": "five-pillar-or-five-core-runbook",
+          "label": "Five-pillar or five-core audit runbook",
+          "pass": true,
+          "score100": 100,
+          "weight": 20,
+          "severity": "P2",
+          "optional": false,
+          "detail": "1/1 present"
+        },
+        {
+          "id": "continuous-improvement-chain",
+          "label": "Retro → backlog → roadmap chain witness",
+          "pass": false,
+          "score100": 0,
+          "weight": 20,
+          "severity": "P2",
+          "optional": false,
+          "detail": "1/2 present"
+        }
+      ],
+      "itemCount": 5
+    },
+    "ci-build-test": {
+      "label": "CI, build & test hygiene",
+      "weight": 6,
+      "score100": 100,
+      "items": [
+        {
+          "id": "ci-pipeline",
+          "label": "CI workflow or test/lint scripts",
+          "pass": true,
+          "score100": 100,
+          "weight": 40,
+          "severity": "P1",
+          "optional": false,
+          "detail": "ci.yml or test/lint scripts"
+        },
+        {
+          "id": "build-or-test",
+          "label": "Build or test script runnable",
+          "pass": true,
+          "score100": 100,
+          "weight": 35,
+          "severity": "P1",
+          "optional": false,
+          "detail": "build or test script"
+        },
+        {
+          "id": "test-green-optional",
+          "label": "Test run green (when wired)",
+          "pass": true,
+          "score100": 100,
+          "weight": 25,
+          "severity": "P2",
+          "optional": true,
+          "detail": "testRun"
+        }
+      ],
+      "itemCount": 3
+    },
+    "security-hygiene": {
+      "label": "Security hygiene",
+      "weight": 6,
+      "score100": 100,
+      "items": [
+        {
+          "id": "secrets-no-leak",
+          "label": "No committed .env secrets",
+          "pass": true,
+          "score100": 100,
+          "weight": 35,
+          "severity": "P0",
+          "optional": false,
+          "detail": ".env should not be committed"
+        },
+        {
+          "id": "gitleaks-or-ci-security",
+          "label": "Gitleaks witness or CI security gate",
+          "pass": true,
+          "score100": 100,
+          "weight": 35,
+          "severity": "P0",
+          "optional": false,
+          "detail": "gitleaks witness or CI workflow"
+        },
+        {
+          "id": "assurance-workspace",
+          "label": "ops/assurance or ops/security domain",
+          "pass": true,
+          "score100": 100,
+          "weight": 30,
+          "severity": "P1",
+          "optional": false,
+          "detail": "assurance or security ops domain"
+        }
+      ],
+      "itemCount": 3
+    },
+    "audit-evidence-index": {
+      "label": "Audit & evidence index",
+      "weight": 6,
+      "score100": 100,
+      "items": [
+        {
+          "id": "audit-evidence-dir",
+          "label": "audit/evidence/ directory",
+          "pass": true,
+          "score100": 100,
+          "weight": 35,
+          "severity": "P1",
+          "optional": false,
+          "detail": "audit/evidence or attestation"
+        },
+        {
+          "id": "five-pillar-witness",
+          "label": "audit/evidence/five-pillar-latest.json",
+          "pass": true,
+          "score100": 100,
+          "weight": 25,
+          "severity": "P2",
+          "optional": false,
+          "detail": "audit/evidence/five-pillar-latest.json"
+        },
+        {
+          "id": "composite-or-five-core",
+          "label": "composite-audit or five-core witnesses",
+          "pass": true,
+          "score100": 100,
+          "weight": 25,
+          "severity": "P2",
+          "optional": false,
+          "detail": "2/1 present"
+        },
+        {
+          "id": "attestation-ops",
+          "label": "ops/attestation when assurance program active",
+          "pass": true,
+          "score100": 100,
+          "weight": 15,
+          "severity": "P3",
+          "optional": false,
+          "detail": "ops/attestation"
+        }
+      ],
+      "itemCount": 4
+    },
+    "deploy-production-hygiene": {
+      "label": "Deploy & production hygiene",
+      "weight": 5,
+      "score100": 100,
+      "items": [
+        {
+          "id": "deploy-path",
+          "label": "deploy/ or 04-deploy/ documented",
+          "pass": true,
+          "score100": 100,
+          "weight": 50,
+          "severity": "P2",
+          "optional": false,
+          "detail": "deploy directory"
+        },
+        {
+          "id": "pm-ci-gates-json",
+          "label": "pm/ci/gates.json settlement gates",
+          "pass": true,
+          "score100": 100,
+          "weight": 50,
+          "severity": "P2",
+          "optional": false,
+          "detail": "pm ci gates or manifest"
+        }
+      ],
+      "itemCount": 2
+    }
+  },
+  "violations": [
+    {
+      "id": "p35-strict-pass",
+      "categoryId": "layout-p35",
+      "label": "P35 layout strict GREEN",
+      "severity": "P1",
+      "detail": "p35Strict"
+    },
+    {
+      "id": "no-version-fork-filenames",
+      "categoryId": "anti-version-bloat-p32",
+      "label": "No -v2/-v3 filename forks outside pm/spec/*.vN.json",
+      "severity": "P1",
+      "detail": "2 version-fork file(s) — e.g. docs/operations/workspace/ecosystem-repo-layout-v3.md"
+    },
+    {
+      "id": "witness-latest-only",
+      "categoryId": "anti-version-bloat-p32",
+      "label": "No dated audit/evidence siblings when *-latest.* exists",
+      "severity": "P2",
+      "detail": "5 dated sibling(s) with -latest witness — e.g. audit/agentic-innovation-audit-2026-06-10.md"
+    },
+    {
+      "id": "pm-folder-check",
+      "categoryId": "pm-folder-p37",
+      "label": "pnpm pm:folder:check exit 0",
+      "severity": "P1",
+      "detail": "pmFolder"
+    },
+    {
+      "id": "pm-readme",
+      "categoryId": "pm-folder-p37",
+      "label": "pm/README.md entry policy",
+      "severity": "P1",
+      "detail": "missing pm/README.md"
+    },
+    {
+      "id": "pm-shipping-tracks",
+      "categoryId": "pm-folder-p37",
+      "label": "pm/shipping-tracks.json",
+      "severity": "P1",
+      "detail": "missing pm/shipping-tracks.json"
+    },
+    {
+      "id": "pm-active-sprint",
+      "categoryId": "pm-folder-p37",
+      "label": "pm/roadmap/sprints/active.json",
+      "severity": "P2",
+      "detail": "missing pm/roadmap/sprints/active.json"
+    },
+    {
+      "id": "pm-ci-witness-dir",
+      "categoryId": "pm-folder-p37",
+      "label": "pm/ci/ witnesses directory",
+      "severity": "P2",
+      "detail": "missing pm/ci"
+    },
+    {
+      "id": "shipping-status-witness",
+      "categoryId": "shipping-culture-engine",
+      "label": "pm/ci/shipping-status-latest.json",
+      "severity": "P2",
+      "detail": "missing dir pm/ci"
+    },
+    {
+      "id": "readiness-snapshot",
+      "categoryId": "shipping-culture-engine",
+      "label": "pm/readiness-snapshot.json (generated)",
+      "severity": "P2",
+      "detail": "pm/readiness-snapshot.json"
+    },
+    {
+      "id": "mcp-or-hub-exception",
+      "categoryId": "agentic-harness-p22-p28",
+      "label": "MCP hub or hub-repo exception",
+      "severity": "P2",
+      "detail": "MCP hub or hub repo"
+    },
+    {
+      "id": "retrospectives-readme",
+      "categoryId": "ci-retrospectives-improvement",
+      "label": "pm/retrospectives/README.md",
+      "severity": "P2",
+      "detail": "missing pm/retrospectives/README.md"
+    },
+    {
+      "id": "retrospectives-template",
+      "categoryId": "ci-retrospectives-improvement",
+      "label": "pm/retrospectives/TEMPLATE-session-retrospective.md",
+      "severity": "P2",
+      "detail": "missing pm/retrospectives/TEMPLATE-session-retrospective.md"
+    },
+    {
+      "id": "pm-ci-readme",
+      "categoryId": "ci-retrospectives-improvement",
+      "label": "pm/ci/README.md",
+      "severity": "P3",
+      "detail": "missing pm/ci/README.md"
+    },
+    {
+      "id": "roadmap-readme",
+      "categoryId": "roadmap-agile-planning",
+      "label": "pm/roadmap/README.md",
+      "severity": "P2",
+      "detail": "missing pm/roadmap/README.md"
+    },
+    {
+      "id": "continuous-improvement-chain",
+      "categoryId": "agentic-product-team",
+      "label": "Retro → backlog → roadmap chain witness",
+      "severity": "P2",
+      "detail": "1/2 present"
+    }
+  ],
+  "itemTotal": 62
+}

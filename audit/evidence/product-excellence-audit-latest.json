@@ -1,13 +1,61 @@
 {
-  "schema": "gtcx://audit/core-witness/v1",
+  "schema": "gtcx://audit/core-witness/v2",
   "coreId": "A1-PRODUCT-EXCELLENCE",
   "slug": "product-excellence",
-  "repo": "gtcx-infrastructure",
+  "repo": "fabric-os",
   "date": "2026-06-10",
   "score10": 10,
   "score100": 100,
-  "status": "probe-driven",
+  "score100Raw": 100,
+  "status": "probe-gates-only",
   "source": "run-five-core-audit",
+  "metrics": {
+    "ux-product-design": {
+      "score100": 0,
+      "weight": 1,
+      "confidence": "D",
+      "source": "missing"
+    },
+    "ecosystem-integration": {
+      "score100": 0,
+      "weight": 1,
+      "confidence": "D",
+      "source": "missing"
+    },
+    "innovation-originality": {
+      "score100": 0,
+      "weight": 1,
+      "confidence": "D",
+      "source": "missing"
+    },
+    "technical-moat": {
+      "score100": 0,
+      "weight": 1,
+      "confidence": "D",
+      "source": "missing"
+    }
+  },
+  "gates": [
+    {
+      "id": "build-or-test-green",
+      "label": "Build or test script present and runnable",
+      "pass": true,
+      "severity": "P1",
+      "cap100": 70
+    },
+    {
+      "id": "ux-spec-present-if-product",
+      "label": "UX/strategy spec path exists for product repos",
+      "pass": true,
+      "severity": "P2",
+      "cap100": 85
+    }
+  ],
+  "capsFired": [],
+  "openP0": 0,
+  "openP1": 0,
+  "rubricSource": null,
+  "rubricSourcePath": null,
   "checks": {
     "buildScript": {
       "ok": true,

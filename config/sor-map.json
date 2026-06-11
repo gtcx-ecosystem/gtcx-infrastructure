@@ -1,6 +1,6 @@
 {
   "schema": "gtcx.sorMap.v1",
-  "repo": "gtcx-infrastructure",
+  "repo": "fabric-os",
   "repoKind": "infra-platform",
   "migrationTier": "stable",
   "paths": {

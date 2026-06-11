@@ -1,6 +1,6 @@
 {
   "$schema": "gtcx://workspace/pm-backlog/v1",
-  "repo": "gtcx-infrastructure",
+  "repo": "fabric-os",
   "updated": "2026-06-10",
   "syncSource": "pnpm pm:sync",
   "active": {

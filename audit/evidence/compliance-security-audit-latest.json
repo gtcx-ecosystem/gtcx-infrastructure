@@ -1,13 +1,62 @@
 {
-  "schema": "gtcx://audit/core-witness/v1",
+  "schema": "gtcx://audit/core-witness/v2",
   "coreId": "A4-COMPLIANCE-SECURITY",
   "slug": "compliance-security",
-  "repo": "gtcx-infrastructure",
+  "repo": "fabric-os",
   "date": "2026-06-10",
   "score10": 10,
   "score100": 100,
-  "status": "probe-driven",
+  "score100Raw": 100,
+  "status": "probe-gates-only",
   "source": "run-five-core-audit",
+  "metrics": {
+    "security": {
+      "score100": 0,
+      "weight": 1,
+      "confidence": "D",
+      "source": "missing"
+    },
+    "enterprise-readiness": {
+      "score100": 0,
+      "weight": 1,
+      "confidence": "D",
+      "source": "missing"
+    },
+    "bank-grade-auditability": {
+      "score100": 0,
+      "weight": 1,
+      "confidence": "D",
+      "source": "missing"
+    }
+  },
+  "gates": [
+    {
+      "id": "security-scan-clean-or-waived",
+      "label": "Gitleaks witness or CI security gate",
+      "pass": true,
+      "severity": "P0",
+      "cap100": 59
+    },
+    {
+      "id": "secrets-no-leak",
+      "label": "No committed .env secrets",
+      "pass": true,
+      "severity": "P0",
+      "cap100": 50
+    },
+    {
+      "id": "trust-evidence-indexed",
+      "label": "audit/evidence or attestation path",
+      "pass": true,
+      "severity": "P1",
+      "cap100": 75
+    }
+  ],
+  "capsFired": [],
+  "openP0": 0,
+  "openP1": 0,
+  "rubricSource": null,
+  "rubricSourcePath": null,
   "checks": {
     "noEnvInGit": {
       "ok": true,

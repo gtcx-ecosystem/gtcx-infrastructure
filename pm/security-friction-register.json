@@ -1,11 +1,11 @@
 {
-  "$schema": "gtcx://gtcx-infrastructure/security-friction-register/v1",
+  "$schema": "gtcx://fabric-os/security-friction-register/v1",
   "version": "1.0.0",
   "updated": "2026-06-10",
   "program": "Security-as-a-Service",
   "initiative": "INIT-GTCX-INFRA-SECAS",
   "protocol": "P42-SECURITY-AS-A-SERVICE",
-  "owner": "gtcx-infrastructure",
+  "owner": "fabric-os",
   "programOfficeHarness": "bridge-os",
   "principle": "Operational security unblocks in parallel — distinct from Class S sovereign register",
   "items": [

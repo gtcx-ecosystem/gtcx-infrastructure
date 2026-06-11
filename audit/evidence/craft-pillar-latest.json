@@ -1,0 +1,56 @@
+{
+  "schema": "gtcx://audit/craft-pillar/v1",
+  "repo": "fabric-os",
+  "date": "2026-06-11",
+  "score100": 70,
+  "published": false,
+  "provisional": true,
+  "blockedBy": "compliance",
+  "unlockThreshold100": 85,
+  "metrics": {
+    "selectivity-ingredients": {
+      "score100": 93,
+      "weight": 22,
+      "sourceIds": ["ai-maturity", "innovation-originality", "technical-moat"],
+      "confidence": "C",
+      "source": "audit-output"
+    },
+    "process-composition": {
+      "score100": 87,
+      "weight": 22,
+      "sourceIds": ["production-readiness", "ecosystem-integration", "ai-maturity"],
+      "confidence": "C",
+      "source": "audit-output"
+    },
+    "taste-operator-finish": {
+      "score100": 100,
+      "weight": 18,
+      "sourceIds": ["ux-product-design"],
+      "confidence": "C",
+      "source": "audit-output"
+    },
+    "restraint-anti-commodity": {
+      "score100": 90,
+      "weight": 18,
+      "sourceIds": ["ux-product-design", "documentation", "hallucination-resilience"],
+      "confidence": "C",
+      "source": "audit-output"
+    },
+    "uniqueness-provenance": {
+      "score100": 100,
+      "weight": 20,
+      "sourceIds": ["innovation-originality", "technical-moat", "enterprise-readiness"],
+      "confidence": "C",
+      "source": "audit-output"
+    }
+  },
+  "hasRubric": true,
+  "rubricSpec": "pm/spec/craft-rubric.v1.json",
+  "rubricVersion": "1.0.0",
+  "capped": true,
+  "capReasons": ["quality-scaffold"],
+  "craftFlags": {
+    "interchangeable": false,
+    "aiSlop": false
+  }
+}

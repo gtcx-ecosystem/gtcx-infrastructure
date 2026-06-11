@@ -1,6 +1,6 @@
 {
   "schema": "gtcx.auditScrubManifest.v1",
-  "repo": "gtcx-infrastructure",
+  "repo": "fabric-os",
   "date": "2026-06-10",
   "initiative": "INIT-AUDIT-CONSOLIDATION",
   "dryRun": false,

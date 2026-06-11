@@ -1,7 +1,7 @@
 {
   "$schema": "gtcx://docs/sor/v1",
   "schema": "gtcx.docs.sor.v1",
-  "repo": "gtcx-infrastructure",
+  "repo": "fabric-os",
   "repoKind": "infra-platform",
   "updated": "2026-06-09",
   "narrativeRoot": "docs/",

@@ -38,15 +38,15 @@ function main() {
   });
 
   const witness = {
-    schema: 'gtcx://gtcx-infrastructure/fabric-assurance/v1',
+    schema: 'gtcx://fabric-os/fabric-assurance/v1',
     at: new Date().toISOString(),
-    repo: 'gtcx-infrastructure',
+    repo: 'fabric-os',
     initiative: 'INIT-GTCX-SERVICE-FABRIC',
     story: 'ECO-EE-09',
     ok: evaluate.status === 0,
     evaluateExitCode: evaluate.status ?? 1,
     contextBundle: buildContextBundle(),
-    executionOwner: 'gtcx-infrastructure',
+    executionOwner: 'fabric-os',
     orchestrator: 'bridge-os',
     note: 'stub runner — delegates trigger evaluation to bridge-os; fabric executes assurance planes',
   };

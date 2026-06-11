@@ -2,7 +2,7 @@
   "$schema": "gtcx://pm/completion-model/v1",
   "version": "1.0.0",
   "updated": "2026-06-10",
-  "repo": "gtcx-infrastructure",
+  "repo": "fabric-os",
   "productName": "GTCX Infrastructure Control Plane",
   "valueProposition": "Sovereign AWS/K8s substrate with auditable DaaS handoffs and parallel SECaaS evidence",
   "definitionOfDone": [
