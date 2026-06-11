@@ -90,6 +90,7 @@ not the platform's primary identity.
 | Opportunity and Evidence Graph                 | markets-os + intelligence/authority owners                | Ingest fragmented material, resolve claims, expose contradictions and missing proof                                                                           |
 | Asset Passport and authority registry          | markets-os + terra-os + exploration-os + authority owners | Portable asset/project/programme identity with current evidence                                                                                               |
 | Capital Compiler and Scenario Room             | markets-os                                                | Explainable ranked structures, capital stacks, waterfalls, covenants, scenarios                                                                               |
+| Bankability Dependency and Commitment Graph    | markets-os + intelligence/authority owners                | Encode LOIs, MOUs, offtake, insurance, guarantees, support, conversion paths, and learned close configurations                                                |
 | Capital Discovery and Formation Intelligence   | markets-os + griot-ai + terminal-os                       | Mandate-triggered pre-market, Capital Graph, qualified soft-circling, fundraising strategy, syndication, and outcome learning                                 |
 | Two-sided Deal Team OS                         | markets-os + professional-service owners                  | Dedicated lister and investor teams combining governed agents with accountable human professionals                                                            |
 | Institutional Assurance Network                | markets-os + independent professional owners              | Counsel-led deal channel and portable legal, valuation, model, technical, bankability, and settlement assurance                                               |
@@ -261,10 +262,6 @@ replication; independently governed nodes can use the shared kernel.
 | P4 — Sovereign nodes      | Independently governed nodes and federation                                                    |
 | P5 — Intelligence utility | Outcome-driven benchmarks, pricing, policy, and capital allocation                             |
 
-## Acceptance
-
-See acceptance criteria below — fabric-os outbound ack + programme milestones in ZenHub.
-
 ## Acceptance criteria
 
 1. Durable Fabric acknowledgement and programme identifier.
@@ -285,6 +282,7 @@ See acceptance criteria below — fabric-os outbound ack + programme milestones 
 - `docs/specs/government-and-institutional-authority-gateway-product-spec.md`
 - `docs/specs/gtcx-native-capability-and-authority-map.md`
 - `docs/specs/capital-discovery-and-formation-intelligence-product-spec.md`
+- `docs/specs/bankability-dependency-and-commitment-graph-product-spec.md`
 - `docs/specs/tokenization-platform-requirements.md`
 - `docs/specs/african-financial-markets-regulatory-adapter-requirements.md`
 - `docs/strategy/e2e-transaction-shipping-spec-2026-06-09.md`
