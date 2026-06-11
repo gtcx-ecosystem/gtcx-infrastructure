@@ -1,7 +1,7 @@
 ---
 title: 'Agent Proceed Confirmation — Protocol 26 Adoption'
 status: established
-protocol: gtcx-docs/01-docs/governance/protocols/26-agent-proceed-confirmation/
+protocol: canon-os/01-docs/governance/protocols/26-agent-proceed-confirmation/
 date: 2026-06-03
 owner: fabric-os
 document_id: OPS-APC-001
@@ -9,7 +9,7 @@ document_id: OPS-APC-001
 
 # Agent Proceed Confirmation — Protocol 26 Adoption
 
-This repo implements [Protocol 26 — Agent Proceed Confirmation](https://github.com/gtcx-ecosystem/gtcx-docs/blob/main/01-docs/governance/protocols/26-agent-proceed-confirmation/protocol.md).
+This repo implements [Protocol 26 — Agent Proceed Confirmation](https://github.com/gtcx-ecosystem/canon-os/blob/main/01-docs/governance/protocols/26-agent-proceed-confirmation/protocol.md).
 
 ## Principle
 

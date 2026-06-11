@@ -9,11 +9,11 @@ initiative: INIT-GTCX-INFRA-DAAS
 
 # DevOps-as-a-Service — gtcx-infrastructure primary program
 
-**Normative:** `gtcx-docs/.../41-devops-as-a-service/protocol.md`  
-**Machine spec:** `bridge-os/pm/spec/devops-as-a-service.v1.json`  
+**Normative:** `canon-os/.../41-devops-as-a-service/protocol.md`  
+**Machine spec:** `bridge-os/pm/spec/devops-as-a-service.json`  
 **Friction SoR:** `pm/friction-register.json`  
 **Roadmap SoR:** `pm/daas-roadmap.json`  
-**Deploy choreography:** P40 (`bridge-os/pm/spec/deployment-choreography.v1.json`)
+**Deploy choreography:** P40 (`bridge-os/pm/spec/deployment-choreography.json`)
 
 ## Obligation
 

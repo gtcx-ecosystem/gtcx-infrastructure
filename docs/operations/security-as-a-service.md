@@ -9,8 +9,8 @@ initiative: INIT-GTCX-INFRA-SECAS
 
 # Security-as-a-Service — gtcx-infrastructure co-primary program
 
-**Normative:** `gtcx-docs/.../42-security-as-a-service/protocol.md`  
-**Machine spec:** `bridge-os/pm/spec/security-as-a-service.v1.json`  
+**Normative:** `canon-os/.../42-security-as-a-service/protocol.md`  
+**Machine spec:** `bridge-os/pm/spec/security-as-a-service.json`  
 **Operational friction:** `pm/security-friction-register.json`  
 **Class S gates:** `pm/sovereign-approval-register.json`  
 **Roadmap SoR:** `pm/secas-roadmap.json`  
@@ -89,7 +89,7 @@ Use **Approval needed** — `blocksIR: false` — implement/witness queues conti
 **ID collision:** gtcx-docs **BG-10-11/12** are M2 Q2/Q3 hygiene gates (automatable, done) — different
 stories from baseline-os M3 Class S gates. Resolve by **owner repo**, not ID alone.
 
-Fleet reconciliation spec: `bridge-os/pm/spec/sovereign-gate-reconciliation.v1.json`
+Fleet reconciliation spec: `bridge-os/pm/spec/sovereign-gate-reconciliation.json`
 
 ## Operator entry
 

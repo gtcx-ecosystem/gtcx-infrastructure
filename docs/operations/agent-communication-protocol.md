@@ -12,7 +12,7 @@ review_cycle: on-change
 # Agent communication protocol (P45)
 
 > **Normative:** complements [Protocol 26](https://github.com/gtcx-ecosystem/canon-os/blob/main/docs/governance/protocols/45-agent-communication/protocol.md) (Proceed Brief) and [Protocol 27](https://github.com/gtcx-ecosystem/canon-os/blob/main/docs/governance/protocols/27-agent-execution-obligation/protocol.md) (execution).  
-> **Spec:** `pm/spec/agent-communication-protocol.v1.json`
+> **Spec:** `pm/spec/agent-communication-protocol.json`
 
 ## Rule
 

@@ -3,7 +3,7 @@ title: 'EAP Secrets and IAM (Protocol 23)'
 status: current
 date: 2026-06-02
 owner: fabric-os
-protocol: gtcx-docs/01-docs/governance/protocols/23-external-access-credentials/protocol.md
+protocol: canon-os/01-docs/governance/protocols/23-external-access-credentials/protocol.md
 ---
 
 # EAP secrets and IAM

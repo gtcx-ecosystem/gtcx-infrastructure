@@ -8,13 +8,13 @@ tier: critical
 tags: ['protocol-22', 'agent', 'work-selection']
 review_cycle: on-change
 document_id: OPS-AWS-001
-protocol: gtcx-docs/01-docs/governance/protocols/22-agent-work-selection/protocol.md
+protocol: canon-os/01-docs/governance/protocols/22-agent-work-selection/protocol.md
 adoption_status: pilot
 ---
 
 # Agent Work Selection — fabric-os
 
-> **Protocol:** [Protocol 22 — Agent Work Selection](https://github.com/gtcx-ecosystem/gtcx-docs/blob/main/01-docs/governance/protocols/22-agent-work-selection/protocol.md) (AGENT-WORK-SEL)
+> **Protocol:** [Protocol 22 — Agent Work Selection](https://github.com/gtcx-ecosystem/canon-os/blob/main/01-docs/governance/protocols/22-agent-work-selection/protocol.md) (AGENT-WORK-SEL)
 > **Rule:** Agents compute next work from the execution roadmap and work register. **Never ask the operator which story to pick.**
 
 ## Canonical paths

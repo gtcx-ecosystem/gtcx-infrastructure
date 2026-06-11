@@ -10,8 +10,8 @@ programPartner: compliance-os
 
 # Compliance-as-a-Service — GTCX Service Fabric
 
-**Normative:** `gtcx-docs/docs/governance/protocols/44-fabric-consumption/protocol.md`  
-**Machine spec:** `bridge-os/pm/spec/service-fabric.v1.json`  
+**Normative:** `canon-os/docs/governance/protocols/44-fabric-consumption/protocol.md`  
+**Machine spec:** `bridge-os/pm/spec/service-fabric.json`  
 **Friction SoR:** `pm/compliance-friction-register.json`
 
 ## Obligation

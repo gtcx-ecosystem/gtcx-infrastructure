@@ -28,4 +28,4 @@ review_cycle: on-change
 
 Then **implement** — no menus, no approval to proceed on Class R.
 
-Spec: `pm/spec/agent-communication-protocol.v1.json` · Parent: Protocol 26.
+Spec: `pm/spec/agent-communication-protocol.json` · Parent: Protocol 26.

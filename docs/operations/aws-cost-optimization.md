@@ -1,8 +1,8 @@
 # AWS cost optimization (T7)
 
 **Owner:** `gtcx-infrastructure`  
-**Policy SoR:** [`bridge-os/pm/spec/environment-cost-policy.v1.json`](../../../bridge-os/pm/spec/environment-cost-policy.v1.json)  
-**Governance SoR:** [`bridge-os/pm/spec/aws-cost-governance.v1.json`](../../../bridge-os/pm/spec/aws-cost-governance.v1.json)
+**Policy SoR:** [`bridge-os/pm/spec/environment-cost-policy.json`](../../../bridge-os/pm/spec/environment-cost-policy.json)  
+**Governance SoR:** [`bridge-os/pm/spec/aws-cost-governance.json`](../../../bridge-os/pm/spec/aws-cost-governance.json)
 
 ## Principle
 
@@ -33,13 +33,13 @@ terraform test
 
 ## Runtime fleet controller (bridge-os)
 
-| Action | Command |
-| ------ | ------- |
+| Action                      | Command                                         |
+| --------------------------- | ----------------------------------------------- |
 | Weekly Cost Explorer rollup | `pnpm --dir ../bridge-os env:cost:report:write` |
-| Warm staging | `pnpm --dir ../bridge-os env:warm` |
-| Cold staging | `pnpm --dir ../bridge-os env:cold` |
-| Budget gate check | `pnpm --dir ../bridge-os env:governance:check` |
-| Fleet status | `pnpm --dir ../bridge-os env:status` |
+| Warm staging                | `pnpm --dir ../bridge-os env:warm`              |
+| Cold staging                | `pnpm --dir ../bridge-os env:cold`              |
+| Budget gate check           | `pnpm --dir ../bridge-os env:governance:check`  |
+| Fleet status                | `pnpm --dir ../bridge-os env:status`            |
 
 Live AWS mutations require credentials for account `348389439381` (primarily `af-south-1`). Cost Explorer uses `us-east-1`.
 

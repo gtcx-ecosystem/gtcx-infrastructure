@@ -21,7 +21,7 @@ Complements **Proceed Brief** (`agent-proceed-brief-template.md`) at session sta
 | Session start, new story, blocker cleared         | **Proceed Brief**                 |
 | After executing work, mid-session report, handoff | **Status Update** (this template) |
 
-Spec: `pm/spec/agent-communication-protocol.v1.json` (P45)
+Spec: `pm/spec/agent-communication-protocol.json` (P45)
 
 ---
 

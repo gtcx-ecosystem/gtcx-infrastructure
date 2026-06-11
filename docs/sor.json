@@ -6,18 +6,18 @@
   "updated": "2026-06-09",
   "narrativeRoot": "docs/",
   "rootSorMap": "config/sor-map.json",
-  "layoutContract": "config/layout-contract.v5.json",
+  "layoutContract": "config/layout-contract.json",
   "upstream": {
     "constitution": {
       "repo": "gtcx-docs",
       "path": "../gtcx-docs",
-      "manifest": "../gtcx-docs/config/ecosystem-central-sor.json",
+      "manifest": "../canon-os/config/ecosystem-central-sor.json",
       "role": "protocols and audit-engine specs — read-only"
     },
     "platform": {
       "repo": "bridge-os",
       "path": "../bridge-os",
-      "layoutContract": "../bridge-os/config/ecosystem-layout-contract.v5.json",
+      "layoutContract": "../bridge-os/config/ecosystem-layout-contract.json",
       "role": "fleet layout and rollout — read-only"
     },
     "runtime": {

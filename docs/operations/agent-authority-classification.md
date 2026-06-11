@@ -1,14 +1,14 @@
 ---
 title: 'Agent Authority Classification — Protocol 28 Reference'
 status: current
-protocol: gtcx-docs/01-docs/governance/protocols/28-agent-authority-classification/
+protocol: canon-os/01-docs/governance/protocols/28-agent-authority-classification/
 date: 2026-06-03
 owner: fabric-os
 ---
 
 # Agent Authority Classification — Protocol 28 Reference
 
-This repo follows [Protocol 28 — Agent Authority Classification](https://github.com/gtcx-ecosystem/gtcx-docs/blob/main/01-docs/governance/protocols/28-agent-authority-classification/protocol.md).
+This repo follows [Protocol 28 — Agent Authority Classification](https://github.com/gtcx-ecosystem/canon-os/blob/main/01-docs/governance/protocols/28-agent-authority-classification/protocol.md).
 
 ## Authority classes in this repo
 

@@ -1,14 +1,14 @@
 ---
 title: 'Agent Execution Obligation — Protocol 27 Adoption'
 status: established
-protocol: gtcx-docs/01-docs/governance/protocols/27-agent-execution-obligation/
+protocol: canon-os/01-docs/governance/protocols/27-agent-execution-obligation/
 date: 2026-06-03
 owner: fabric-os
 ---
 
 # Agent Execution Obligation — Protocol 27 Adoption
 
-This repo implements [Protocol 27 — Agent Execution Obligation](https://github.com/gtcx-ecosystem/gtcx-docs/blob/main/01-docs/governance/protocols/27-agent-work-selection/protocol.md).
+This repo implements [Protocol 27 — Agent Execution Obligation](https://github.com/gtcx-ecosystem/canon-os/blob/main/01-docs/governance/protocols/27-agent-work-selection/protocol.md).
 
 ## Principle
 
