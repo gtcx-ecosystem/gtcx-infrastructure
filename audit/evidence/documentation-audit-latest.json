@@ -5,7 +5,7 @@
   "date": "2026-06-11",
   "auditType": "documentation-pillar",
   "ok": true,
-  "composite100": 84,
+  "composite100": 80,
   "pillars": {
     "compliance": {
       "score100": 100,
@@ -29,6 +29,15 @@
         "aiSlop": true
       },
       "source": "forensic-doc-standard"
+    },
+    "worldClass": {
+      "score100": 64,
+      "documentationQuality100": 61,
+      "worldClassBar100": 95,
+      "gap100": 34,
+      "gapLabel": "competitive",
+      "references": ["Stripe docs", "Kubernetes docs", "gtcx-docs hub"],
+      "source": "documentation-quality-vs-global-bar"
     }
   },
   "forensic": {
@@ -44,7 +53,7 @@
       "competingRoots": [],
       "docsHub": "docs",
       "markdownFileCount": 403,
-      "brokenLinks": 259,
+      "brokenLinks": 213,
       "scaffoldFileCount": 24,
       "aiSlopFileCount": 1
     }
