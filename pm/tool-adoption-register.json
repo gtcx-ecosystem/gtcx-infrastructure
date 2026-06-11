@@ -3,10 +3,84 @@
   "version": "1.0.0",
   "updated": "2026-06-12",
   "initiative": "INIT-AGENT-TOOL-SCOUT",
-  "spec": "bridge-os/pm/spec/agent-tool-scout.v1.json",
+  "spec": "bridge-os/pm/spec/agent-tool-scout.json",
+  "gtmCreativeSpec": "bridge-os/pm/spec/agent-tool-scout-gtm-creative.v1.json",
+  "matrix": "bridge-os/pm/spec/tool-scout-matrix.v1.json",
   "programOffice": "bridge-os",
-  "status": "active",
-  "adoptions": [],
+  "handoff": "bridge-os/docs/operations/coordination/to-fabric-os-agent-tool-scout-handoff-2026-06-12.md",
+  "status": "awaiting-fabric-ack",
+  "policy": {
+    "countryAgnostic": true,
+    "executionOwner": "fabric-os TAAS"
+  },
+  "adoptions": [
+    {
+      "pilotId": "PILOT-CODEOWNER-FLEET",
+      "tool": "baseline-ai-codeowner-fleet-rollout",
+      "owner": "fabric-os",
+      "phase": "P0-desk",
+      "status": "planned",
+      "source": "bridge-os/pm/tool-scout-register.json"
+    },
+    {
+      "pilotId": "PILOT-NAPKIN-DIAGRAM-FLEET",
+      "tool": "napkin-ai",
+      "owner": "canon-os",
+      "phase": "P0-desk",
+      "status": "planned",
+      "priority": "P0-fleet",
+      "pillars": ["craft", "compliance"],
+      "source": "bridge-os/pm/tool-scout-register.json"
+    },
+    {
+      "pilotId": "PILOT-ADV-PITCH-INTERNAL",
+      "tool": "adv-pitch-001",
+      "owner": "markets-os",
+      "phase": "P0-desk",
+      "status": "planned",
+      "pillars": ["worldClass", "craft"],
+      "source": "bridge-os/pm/tool-scout-register.json"
+    },
+    {
+      "pilotId": "PILOT-FIGMA-MCP-EXR",
+      "tool": "figma-mcp",
+      "owner": "ledger-ui",
+      "phase": "P0-desk",
+      "status": "planned",
+      "pillars": ["technicalExcellence", "craft"],
+      "source": "bridge-os/pm/tool-scout-register.json"
+    },
+    {
+      "pilotId": "PILOT-NOTEBOOKLM-BRIEF-SYNTHESIS",
+      "tool": "notebooklm",
+      "owner": "canon-os",
+      "phase": "P1-pilot",
+      "status": "blocked",
+      "blockedBy": "core-spec-gate",
+      "pillars": ["trustAndSafety", "compliance"],
+      "source": "bridge-os/pm/tool-scout-register.json"
+    },
+    {
+      "pilotId": "PILOT-QWILR-PILOT-PACK",
+      "tool": "qwilr",
+      "owner": "fabric-os",
+      "phase": "P1-pilot",
+      "status": "blocked",
+      "blockedBy": "PILOT-ADV-PITCH-INTERNAL",
+      "pillars": ["worldClass", "trustAndSafety"],
+      "source": "bridge-os/pm/tool-scout-register.json"
+    },
+    {
+      "pilotId": "PILOT-POSTHOG-PILOT-PROOF",
+      "tool": "posthog-self-host",
+      "owner": "fabric-os",
+      "phase": "P1-pilot",
+      "status": "blocked",
+      "blockedBy": "fabric-staging-deploy",
+      "pillars": ["trustAndSafety", "technicalExcellence"],
+      "source": "bridge-os/pm/tool-scout-register.json"
+    }
+  ],
   "friction": [],
-  "note": "Fabric execution owner for TAAS pilots. Populate from bridge-os/pm/tool-scout-register.json on P2-fabric promotion."
+  "note": "Seeded from bridge-os handoff XR-BRIDGE-TOOL-SCOUT-001. Fabric executes Phase B/C under TAAS; owner repos publish pilot witnesses."
 }
