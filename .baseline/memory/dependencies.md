@@ -1,6 +1,6 @@
 # Cross-Repo Dependencies
 
-> Last updated: 2026-06-08
+> Last updated: 2026-06-11
 
 ## Hard Dependencies (Blocking — XC / Class S)
 
@@ -24,12 +24,22 @@
 | **Hub #18 prod Postgres** | terminal-os + **gtcx-infrastructure** | **open** — prod audit `DATABASE_URL` + `workflow:persistence-proof` |
 | EXT-INF-003 WORM recurrence on main | Infra operator | open |
 
+## Program orchestration (fabric-os)
+
+| Program | Originating handoff | Status | Evidence |
+| --- | --- | --- | --- |
+| **PROG-GHANA-TOKENIZATION-001** / XR-MKT-FABRIC-001 | markets-os → fabric-os | **acknowledged** 2026-06-11 | `docs/operations/coordination/from-gtcx-infrastructure-xr-mkt-fabric-001-ack-2026-06-11.md`, `xr-mkt-fabric-001-ghana-tokenization-execution-plan-2026-06-11.md` |
+
+**Canonical identity:** `fabric-os` = alias for `gtcx-infrastructure` (`bridge-os/pm/spec/service-fabric.v1.json`, P44).
+
 ## Soft Dependencies
 
 | Needs | From Repo | Status |
 | --- | --- | --- |
 | XR-403 bog.json PR | gtcx-protocols | ready post H-03 |
 | `COMPLIANCE_OS_INTAKE_API_KEY` | compliance-os | ready when asked |
+| ledger-ui UI-GH-00 fixture track | ledger-ui | open — inbound pending |
+| MKT-GH-00 contract freeze | markets-os | in progress (markets-os `03e4d46`) |
 
 ## Downstream Consumers (infra delivered)
 
