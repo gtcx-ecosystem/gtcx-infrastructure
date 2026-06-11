@@ -4,7 +4,7 @@ status: delivered
 date: 2026-06-10
 owner: fabric-os
 from: fabric-os
-to: gtcx-markets
+to: markets-os
 ticket: XR-MKT-011
 protocol: P24 + P40
 priority: P0
@@ -26,7 +26,7 @@ Markets authority trace capture is **7/7** on staging. Root cause was **WAF 403*
 | Ingress            | `kubectl apply -f deploy/kubernetes/overlays/staging/ingress.yaml`                                  | exit **0** — 7 paths → `markets-authority-stub-staging:8510`                            |
 | WAF allow          | `aws wafv2 update-web-acl` — `AllowMarketsAuthorityEndpoints` priority **2**                        | exit **0** — `/orders`, `/escrow-*`, `/settle-*`, `/cc-*`                               |
 | Public probe       | `POST https://api.staging.gtcx.trade/orders` + Bearer                                               | **200** decision JSON                                                                   |
-| Markets capture    | `pnpm staging:env:materialize && pnpm authority:trace:capture` (gtcx-markets)                       | exit **0** — **7/7**                                                                    |
+| Markets capture    | `pnpm staging:env:materialize && pnpm authority:trace:capture` (markets-os)                         | exit **0** — **7/7**                                                                    |
 | AGX DATABASE_URL   | `bash platform/scripts/staging/sync-agx-staging-database-url.sh`                                    | exit **0** — RDS `gtcx_admin` from master secret                                        |
 | AGX health         | `curl https://api.staging.gtcx.trade/api/health`                                                    | **200** — `database: up`, `audit-trail: up`                                             |
 | Markets re-capture | `pnpm authority:trace:capture` @ 2026-06-10T02:52:46Z                                               | exit **0** — **7/7** (post-AGX green)                                                   |
@@ -56,11 +56,11 @@ Markets authority trace capture is **7/7** on staging. Root cause was **WAF 403*
 | Item                         | Owner                  | Status                                                                                |
 | ---------------------------- | ---------------------- | ------------------------------------------------------------------------------------- |
 | `GET /api/health` → **200**  | gtcx-platforms + infra | **done** — `staging-amd64` + RDS URL sync                                             |
-| Terraform WAF codification   | gtcx-infrastructure    | Module updated; `terraform apply` blocked by missing `rotation.zip` in secrets module |
+| Terraform WAF codification   | fabric-os              | Module updated; `terraform apply` blocked by missing `rotation.zip` in secrets module |
 | Production authority backend | gtcx-platforms         | Replace stub with real decision engine                                                |
 
 ## Witness
 
 - Matrix: `docs/operations/coordination/xr-mkt-011-authority-url-matrix-2026-06-10.md`
-- Markets inbound: `gtcx-markets/docs/operations/coordination/to-fabric-os-s39-01-authority-routes-2026-06-10.md`
-- Capture manifest: `gtcx-markets/authority-trace-evidence/2026-06-10T02-39-46.130Z/manifest.json`
+- Markets inbound: `markets-os/docs/operations/coordination/to-fabric-os-s39-01-authority-routes-2026-06-10.md`
+- Capture manifest: `markets-os/authority-trace-evidence/2026-06-10T02-39-46.130Z/manifest.json`

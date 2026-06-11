@@ -33,8 +33,8 @@ Sovereign operator approved the **live-stack pen-test vendor SOW path** on 2026-
 | Step                   | Owner                  | Status                      |
 | ---------------------- | ---------------------- | --------------------------- |
 | Vendor SOW countersign | Security + procurement | **authorized** — execute    |
-| Kickoff scheduling     | gtcx-infrastructure    | **ready** after countersign |
-| Findings intake        | gtcx-infrastructure    | after test window           |
+| Kickoff scheduling     | fabric-os              | **ready** after countersign |
+| Findings intake        | fabric-os              | after test window           |
 
 ## Hub action
 

@@ -55,4 +55,4 @@ aws iam get-role --role-name gtcx-production-platforms-irsa --region af-south-1 
 - Staging IRSA role: `gtcx-staging-platforms-irsa` (captured in Terraform via S1-05)
 - Production IRSA role: `gtcx-production-platforms-irsa`
 - OIDC providers: staging `8822...`, production `E7AA...`
-- Sprint roadmap: `gtcx-infrastructure/01-docs/05-audit/agile/sprints/sprint-2026-06-phase3-roadmap.md`
+- Sprint roadmap: `fabric-os/01-docs/05-audit/agile/sprints/sprint-2026-06-phase3-roadmap.md`

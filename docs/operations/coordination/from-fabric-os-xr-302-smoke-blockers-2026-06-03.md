@@ -9,7 +9,7 @@ priority: P0
 work_ids: [XR-302]
 ---
 
-# Outbound from gtcx-infrastructure — XR-302 smoke blockers resolved
+# Outbound from fabric-os — XR-302 smoke blockers resolved
 
 **Reply to:** [`gtcx-platforms/01-docs/operations/coordination/to-fabric-os-xr-302-smoke-blockers-2026-06-03.md`](../../../../gtcx-platforms/01-docs/operations/coordination/to-fabric-os-xr-302-smoke-blockers-2026-06-03.md)
 

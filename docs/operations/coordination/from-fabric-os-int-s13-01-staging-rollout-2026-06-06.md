@@ -8,7 +8,7 @@ to: gtcx-intelligence
 story_id: INT-S13-01
 ---
 
-# From gtcx-infrastructure — INT-S13-01 staging image pin
+# From fabric-os — INT-S13-01 staging image pin
 
 ## Actions taken (2026-06-06)
 
@@ -18,7 +18,7 @@ story_id: INT-S13-01
 ## Operator commands (Class R — run in-session)
 
 ```bash
-# 1) Build + push (gtcx-infrastructure, Docker + AWS CLI required)
+# 1) Build + push (fabric-os, Docker + AWS CLI required)
 bash 04-deploy/03-platform/scripts/build-push.sh intelligence-sdk --version=b0488d2d955471f439b824309dd5e15264d4ce53
 
 # 2) Roll staging

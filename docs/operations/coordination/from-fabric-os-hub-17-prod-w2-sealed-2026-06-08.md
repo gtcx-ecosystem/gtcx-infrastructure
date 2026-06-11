@@ -35,12 +35,12 @@ Prod W2 secrets, ESO, web-app, ALB ingress, ACM `*.gtcx.trade`, and Cloudflare C
 
 ## Hub #17 bundle
 
-| #   | Owner               | Status                                                                      |
-| --- | ------------------- | --------------------------------------------------------------------------- |
-| 1   | exploration-os      | ☑ `w2:prod:retest` **201** @ `compliance.gtcx.trade`                        |
-| 2   | gtcx-infrastructure | ☑ prod W2 secrets + `compliance.gtcx.trade` + `terminal.gtcx.trade` ingress |
-| 3   | compliance-os       | ☑ `w2-hub-17-cos-patch-latest.json` `ok: true`                              |
-| 4   | terminal-os         | ☑ PATCH receiver **200** @ `terminal.gtcx.trade`                            |
+| #   | Owner          | Status                                                                      |
+| --- | -------------- | --------------------------------------------------------------------------- |
+| 1   | exploration-os | ☑ `w2:prod:retest` **201** @ `compliance.gtcx.trade`                        |
+| 2   | fabric-os      | ☑ prod W2 secrets + `compliance.gtcx.trade` + `terminal.gtcx.trade` ingress |
+| 3   | compliance-os  | ☑ `w2-hub-17-cos-patch-latest.json` `ok: true`                              |
+| 4   | terminal-os    | ☑ PATCH receiver **200** @ `terminal.gtcx.trade`                            |
 
 **Note:** Terminal prod uses file-backed task store (`LICENCE_INTELLIGENCE_FORCE_FILE=1`) until hub **#18** seals production audit `DATABASE_URL`.
 

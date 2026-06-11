@@ -11,7 +11,7 @@ work_id: INT-R2-03 / ER-2-02
 ## Rollout steps
 
 ```bash
-$ cd /Users/amanianai/Sites/gtcx-ecosystem/gtcx-infrastructure
+$ cd /Users/amanianai/Sites/gtcx-ecosystem/fabric-os
 $ kubectl apply -k 04-deploy/kubernetes/overlays/staging/intelligence/
 namespace/intelligence unchanged
 service/intelligence-orchestrator unchanged

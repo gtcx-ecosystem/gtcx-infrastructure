@@ -1,5 +1,5 @@
 ---
-title: 'From gtcx-infrastructure — AGX staging ARM64-only blocker'
+title: 'From fabric-os — AGX staging ARM64-only blocker'
 status: closed
 date: 2026-06-03
 owner: fabric-os
@@ -8,7 +8,7 @@ priority: P0
 blocking: XR-302 / P4-07
 ---
 
-# From gtcx-infrastructure — AGX staging ARM64-only blocker
+# From fabric-os — AGX staging ARM64-only blocker
 
 ## Finding
 
@@ -58,4 +58,4 @@ curl -sS -o /dev/null -w "%{http_code}\n" https://api.staging.gtcx.trade/api/hea
 ## Ref
 
 - Platforms outbound: `gtcx-platforms/01-docs/operations/coordination/to-fabric-os-ecr-rollout-2026-06-03.md`
-- Infra bridge: `gtcx-infrastructure/01-docs/04-ops/coordination/cross-repo-agent-bridge.md`
+- Infra bridge: `fabric-os/01-docs/04-ops/coordination/cross-repo-agent-bridge.md`

@@ -19,7 +19,7 @@ responds_to: markets-os/docs/operations/coordination/to-fabric-os-tokenization-p
 | Field                     | Value                                                                                                                                       |
 | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Canonical repo id**     | `fabric-os`                                                                                                                                 |
-| **Legacy id**             | `gtcx-infrastructure` (resolves via ecosystem alias registry)                                                                               |
+| **Legacy id**             | `fabric-os` (resolves via ecosystem alias registry)                                                                                         |
 | **GitHub**                | `https://github.com/gtcx-ecosystem/fabric-os`                                                                                               |
 | **Machine spec**          | `bridge-os/pm/spec/service-fabric.v1.json`                                                                                                  |
 | **Protocol**              | [P44 Fabric Consumption](https://github.com/gtcx-ecosystem/gtcx-docs/blob/main/docs/governance/protocols/44-fabric-consumption/protocol.md) |

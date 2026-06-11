@@ -20,8 +20,8 @@ Sovereign operator approved **auditor MSA execution** on 2026-06-10. CISO + Fina
 
 ## Remaining
 
-| Step                    | Owner                         | Status               |
-| ----------------------- | ----------------------------- | -------------------- |
-| Execute auditor MSA/SOW | CISO + Finance                | **authorized**       |
-| Type I fieldwork window | Auditor + gtcx-infrastructure | after MSA            |
-| Attestation publish     | gtcx-infrastructure           | after auditor report |
+| Step                    | Owner               | Status               |
+| ----------------------- | ------------------- | -------------------- |
+| Execute auditor MSA/SOW | CISO + Finance      | **authorized**       |
+| Type I fieldwork window | Auditor + fabric-os | after MSA            |
+| Attestation publish     | fabric-os           | after auditor report |

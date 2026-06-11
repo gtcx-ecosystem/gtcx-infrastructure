@@ -32,8 +32,8 @@ tags: ['coordination', 'pen-test', 'secas-s2']
 
 ## Remaining
 
-| Step                            | Owner               | Status         |
-| ------------------------------- | ------------------- | -------------- |
-| Vendor executes live-stack test | Vendor              | during window  |
-| Report ingest                   | gtcx-infrastructure | pending        |
-| Close SEC-PENTEST-01            | gtcx-infrastructure | pending report |
+| Step                            | Owner     | Status         |
+| ------------------------------- | --------- | -------------- |
+| Vendor executes live-stack test | Vendor    | during window  |
+| Report ingest                   | fabric-os | pending        |
+| Close SEC-PENTEST-01            | fabric-os | pending report |
