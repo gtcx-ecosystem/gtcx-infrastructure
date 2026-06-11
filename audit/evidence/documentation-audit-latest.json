@@ -1,0 +1,57 @@
+{
+  "schema": "gtcx://audit/documentation-audit/v1",
+  "repo": "fabric-os",
+  "repoKind": "infra",
+  "date": "2026-06-11",
+  "auditType": "documentation-pillar",
+  "ok": true,
+  "composite100": 84,
+  "pillars": {
+    "compliance": {
+      "score100": 100,
+      "openP1": 0,
+      "source": "documentation-pack"
+    },
+    "technicalExcellence": {
+      "score100": 87,
+      "score100Raw": 87,
+      "packTe100": 100,
+      "capped": false,
+      "source": "pack+forensic-links"
+    },
+    "craft": {
+      "score100": 55,
+      "score100Raw": 60,
+      "capped": true,
+      "capReasons": ["ai-slop"],
+      "craftFlags": {
+        "interchangeable": false,
+        "aiSlop": true
+      },
+      "source": "forensic-doc-standard"
+    }
+  },
+  "forensic": {
+    "axes": {
+      "structural": 100,
+      "naming": 85,
+      "frontmatter": 96,
+      "links": 0,
+      "agentic": 55
+    },
+    "score100": 67,
+    "signals": {
+      "competingRoots": [],
+      "docsHub": "docs",
+      "markdownFileCount": 403,
+      "brokenLinks": 259,
+      "scaffoldFileCount": 24,
+      "aiSlopFileCount": 1
+    }
+  },
+  "pack": {
+    "score100": 100,
+    "openP1": 0,
+    "violations": []
+  }
+}
