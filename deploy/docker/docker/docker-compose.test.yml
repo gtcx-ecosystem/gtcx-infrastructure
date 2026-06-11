@@ -80,7 +80,7 @@ services:
   platforms-test:
     build:
       context: ../../../6-platforms
-      dockerfile: ../gtcx-infrastructure/04-deploy/docker/Dockerfile.platforms
+      dockerfile: ../fabric-os/04-deploy/docker/Dockerfile.platforms
       target: build
       args:
         PLATFORM: agx
@@ -107,7 +107,7 @@ services:
   protocols-test:
     build:
       context: ../../../gtcx-protocols
-      dockerfile: ../gtcx-infrastructure/04-deploy/docker/Dockerfile.protocols
+      dockerfile: ../fabric-os/04-deploy/docker/Dockerfile.protocols
       target: production
     container_name: gtcx-test-protocols
     environment:

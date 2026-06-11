@@ -1,13 +1,14 @@
 # Legacy repo id audit — gtcx-markets / gtcxMarkets / gtcx-infrastructure
 
 **Date:** 2026-06-12  
+**Status:** resolved (live-tooling paths)  
 **Auditor:** fabric-os agent session  
 **Canonical ids:** `markets-os`, `fabric-os`  
 **Alias SoR:** `bridge-os/pm/spec/ecosystem-repo-aliases.v1.json`
 
 ## Executive summary
 
-GitHub renames are **complete** and redirects work. Local folders match (`markets-os/`, `fabric-os/`). The remaining gap was **stale fleet metadata and operational docs** still keyed on legacy ids — not missing renames.
+GitHub renames are **complete** and redirects work. Local folders match (`markets-os/`, `fabric-os/`). Stale fleet metadata, deployment specs, monitoring URLs, and operational docs have been swept for paths that affect live tooling. Historical evidence and npm package scopes remain intentionally unchanged.
 
 | Layer                                       | Status after sweep                                |
 | ------------------------------------------- | ------------------------------------------------- |
