@@ -1,13 +1,40 @@
 {
   "$schema": "gtcx://pm/initiatives/v1",
-  "version": "1.0.0",
-  "updated": "2026-06-10",
+  "version": "1.1.0",
+  "updated": "2026-06-12",
   "repo": "fabric-os",
   "initiatives": [
+    {
+      "id": "INIT-GTCX-TRADE-ECOSYSTEM-LANES",
+      "title": "Trade ecosystem lane taxonomy",
+      "status": "in_progress",
+      "laneId": "I",
+      "spec": "docs/specs/ecosystem/trade-ecosystem-lanes-spec.md",
+      "machineSpec": "pm/spec/trade-ecosystem-lanes.v1.json",
+      "handoff": "docs/operations/coordination/from-ecosystem-strategy-to-fabric-os-trade-lanes-2026-06-12.md",
+      "ticket": "XR-FABRIC-TRADE-LANES-001"
+    },
+    {
+      "id": "INIT-FABRIC-LANE-DEPLOY-MATRIX",
+      "title": "Deploy matrix by trade lane",
+      "status": "in_progress",
+      "matrixTagged": "2026-06-12",
+      "laneId": "I",
+      "parentInitiative": "INIT-GTCX-TRADE-ECOSYSTEM-LANES",
+      "spec": "docs/specs/ecosystem/lane-deploy-matrix.md"
+    },
+    {
+      "id": "INIT-FABRIC-README-SOR-REconcile",
+      "title": "fabric-os README vs AGENTS.md SoR reconcile",
+      "status": "pending",
+      "laneId": "I",
+      "parentInitiative": "INIT-GTCX-TRADE-ECOSYSTEM-LANES"
+    },
     {
       "id": "INIT-GTCX-INFRA-DAAS",
       "title": "DevOps-as-a-Service",
       "status": "complete",
+      "laneId": "I",
       "protocol": "P41-DEVOPS-AS-A-SERVICE",
       "uxRefs": {
         "jtbdId": "JTBD-staging-substrate-ready",
@@ -21,6 +48,7 @@
       "id": "INIT-GTCX-INFRA-SECAS",
       "title": "Security-as-a-Service",
       "status": "in_progress",
+      "laneId": "I",
       "protocol": "P42-SECURITY-AS-A-SERVICE",
       "uxRefs": {
         "jtbdId": "JTBD-security-evidence-path",
