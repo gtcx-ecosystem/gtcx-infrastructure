@@ -1,6 +1,6 @@
 ---
 title: 'Handoff — Trade ecosystem lanes → bridge-os registry sync'
-status: open
+status: done
 date: 2026-06-12
 from: fabric-os
 to: bridge-os
@@ -53,9 +53,9 @@ Validates:
 
 ## Acceptance
 
-- [ ] `pnpm ecosystem:execution-engine:check` green
-- [ ] Fleet deploy registry shows lane IDs
-- [ ] Ack on fabric-os `cross-repo-agent-log.md`
+- [x] `pnpm ecosystem:execution-engine:check` green
+- [x] Fleet deploy registry shows lane IDs
+- [x] Ack on fabric-os `cross-repo-agent-log.md`
 
 ---
 
