@@ -14,6 +14,20 @@ blocksIR: false
 
 # Handoff: Capital Formation Operating System
 
+## Summary
+
+Expand PROG-TOKENIZATION-001 into **Capital Formation OS** per `docs/specs/capital-markets-operating-system-product-spec.md` and time-boxed market protocol spec. fabric-os owns programme coordination and infra delegation.
+
+## Requested action
+
+1. Adopt PROG-CAPITAL-FORMATION-001 scope (supersedes XR-MKT-FABRIC-001 tokenization-only framing).
+2. Publish fabric programme plan linking Ghana / ZWCMP / Kasai corpora to deployable milestones.
+3. Route XR-MKT-FABRIC-002 acceptance through fabric-os outbound ack.
+
+## Witness
+
+`bridge-os/pm/ci/production-deploy-witness-latest.json` · markets-os `docs/operations/deployment-profile.json`
+
 ## Direction
 
 The human lead has directed that analysis of the Ghana, ZWCMP, and Kasai deal
@@ -30,6 +44,10 @@ broader Capital Formation OS programme described in that specification.
 The time-to-close and controlled-market protocol is:
 
 `markets-os/docs/specs/time-boxed-capital-formation-market-protocol.md`
+
+The professional-firm and independent-assurance network is:
+
+`markets-os/docs/specs/institutional-assurance-network-product-spec.md`
 
 ## Scope correction
 
@@ -67,6 +85,7 @@ not the platform's primary identity.
 | Capital Compiler and Scenario Room    | markets-os                                                | Explainable ranked structures, capital stacks, waterfalls, covenants, scenarios                                           |
 | Mandate and Capital Network           | markets-os                                                | Machine-readable capital-provider mandates, matching, syndication, and relationship status                                |
 | Two-sided Deal Team OS                | markets-os + professional-service owners                  | Dedicated lister and investor teams combining governed agents with accountable human professionals                        |
+| Institutional Assurance Network       | markets-os + independent professional owners              | Counsel-led deal channel and portable legal, valuation, model, technical, bankability, and settlement assurance           |
 | Time-boxed primary market             | markets-os + fabric-os                                    | Close-ready admission and terminal market outcome inside declared 7/14/30-day windows                                     |
 | Controlled close                      | markets-os                                                | Conditions precedent, approvals, commitments, payments, issuance, closing evidence                                        |
 | Ownership and controlled instruments  | markets-os + ledger-ui                                    | Direct, SPV/fund, and permissioned digital ownership lifecycle                                                            |
@@ -187,40 +206,13 @@ replication; independently governed nodes can use the shared kernel.
 - no shared mutable operational database;
 - explicit sovereign data and authority controls.
 
-### Epic 9 — Transaction Certainty and Time-Boxed Market
+### Epics 9–11 — Controlled Market and Assurance
 
-**Outcome:** Every live listing is close-ready and reaches a declared terminal
-market outcome inside a governed 7, 14, or 30-day window.
-
-**Exit evidence:**
-
-- Transaction Certainty Record and Close Readiness Score;
-- live-admission and deadline state machine;
-- predeclared award, binding-commitment, financial-close, or first-funding
-  standard;
-- governed extension, withdrawal, failure, and redisclosure rules;
-- AI Evidence Room, approved-answer disclosure, media room, and syndication
-  book; and
-- separate lister and investor deal teams with conflicts, privilege,
-  engagement, authority, and information-barrier controls; and
-- measured live-to-close performance by instrument and window.
-
-### Epic 10 — Controlled Secondary Market
-
-**Outcome:** Holders have credible, compliant exit pathways appropriate to each
-instrument's liquidity and legal characteristics.
-
-**Exit evidence:**
-
-- negotiated assignment, institutional RFQ, block trade, and periodic
-  call-auction workflows;
-- issuer tender, buyback, redemption, and refinancing pathways;
-- transfer-rule simulation before order acceptance;
-- DvP/PvP settlement and authoritative-register reconciliation;
-- clear distinction between model, indicative, executable, and traded prices;
-  and
-- continuous order book or AMM enabled only after explicit liquidity,
-  disclosure, legal, and surveillance gates pass.
+| Epic                                            | Outcome                                                                                            | Required exit evidence                                                                                                                              |
+| ----------------------------------------------- | -------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 9 — Transaction Certainty and Time-Boxed Market | Every live listing is close-ready and reaches a declared terminal outcome inside 7, 14, or 30 days | Certainty Record, Close Readiness Score, deadline state machine, governed exceptions, two-sided deal teams, measured live-to-close performance      |
+| 10 — Controlled Secondary Market                | Holders have compliant exit pathways appropriate to instrument liquidity and legal form            | Assignment, RFQ, block trade, call auction, buyback/redemption, transfer simulation, DvP/PvP, register reconciliation, gated continuous-market path |
+| 11 — Institutional Assurance Network            | Professional firms use Markets for client deals and issue scoped, signed, portable conclusions     | Counsel channel, Assurance Passport, review modules, independence controls, explicit authority distinctions, one completed Assured Deal Programme   |
 
 ## Requested Fabric actions
 
@@ -240,6 +232,9 @@ instrument's liquidity and legal characteristics.
 9. Map the Two-Sided Deal Team OS across agent runtime, professional-service
    marketplace, identity, conflicts, privilege, billing, and licensed-human
    authority owners.
+10. Add the Institutional Assurance Network as a programme workstream and
+    identify legal, valuation, assurance, technical, banking, rating, custody,
+    settlement, and regulatory owner dependencies.
 
 ## Recommended sequencing
 
@@ -251,6 +246,10 @@ instrument's liquidity and legal characteristics.
 | P3 — Controlled market    | Ownership mechanisms, controlled secondary-liquidity ladder, refinancing, portfolio operations |
 | P4 — Sovereign nodes      | Independently governed nodes and federation                                                    |
 | P5 — Intelligence utility | Outcome-driven benchmarks, pricing, policy, and capital allocation                             |
+
+## Acceptance
+
+See acceptance criteria below — fabric-os outbound ack + programme milestones in ZenHub.
 
 ## Acceptance criteria
 
@@ -268,6 +267,7 @@ instrument's liquidity and legal characteristics.
 
 - `docs/specs/capital-markets-operating-system-product-spec.md`
 - `docs/specs/time-boxed-capital-formation-market-protocol.md`
+- `docs/specs/institutional-assurance-network-product-spec.md`
 - `docs/specs/tokenization-platform-requirements.md`
 - `docs/specs/african-financial-markets-regulatory-adapter-requirements.md`
 - `docs/strategy/e2e-transaction-shipping-spec-2026-06-09.md`
@@ -276,8 +276,6 @@ instrument's liquidity and legal characteristics.
 
 ## Does NOT Cover
 
-- Authorization to execute legal, regulated, production, funding, or ownership
-  actions.
-- Confirmation of partner, sovereign, financing, custody, or regulator
-  commitments.
+- Authorization to execute legal, regulated, production, funding, or ownership actions.
+- Confirmation of partner, sovereign, financing, custody, or regulator commitments.
 - Transfer of authority ownership to Markets or Fabric.
