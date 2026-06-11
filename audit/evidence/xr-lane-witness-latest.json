@@ -1,0 +1,46 @@
+{
+  "schema": "gtcx://fabric-os/xr-lane-witness/v1",
+  "capturedAt": "2026-06-12T22:00:00.000Z",
+  "owner": "fabric-os",
+  "initiative": "INIT-GTCX-TRADE-ECOSYSTEM-LANES",
+  "supplyChainOrder": ["T0", "L1", "L4a", "L4b", "L3", "X"],
+  "witnesses": [
+    {
+      "workId": "XR-101",
+      "laneId": "T0",
+      "deployProduct": "protocol-rail",
+      "title": "Staging operator DID + native protocols deploy",
+      "status": "done",
+      "acceptance": "GET /v1/tradepass/did:gtcx:tp_staging_e2e_001 → 200",
+      "evidenceRef": "docs/operations/coordination/from-gtcx-protocols-staging-operator-seed-2026-06-02.md"
+    },
+    {
+      "workId": "XR-301",
+      "laneId": "L4a",
+      "deployProduct": "GTCX Sovereign",
+      "title": "Sovereign staging image rollout",
+      "status": "done",
+      "acceptance": "sovereign-staging.gtcx.trade/api/health → 200",
+      "evidenceRef": "docs/operations/coordination/README.md#S-XR-2"
+    },
+    {
+      "workId": "XR-302",
+      "laneId": "L4b",
+      "deployProduct": "GTCX Cloud",
+      "title": "AGX staging image + rollout",
+      "status": "done",
+      "acceptance": "api.staging.gtcx.trade/api/health → 200",
+      "evidenceRef": "docs/operations/coordination/from-fabric-os-agx-architecture-blocker-2026-06-03.md"
+    },
+    {
+      "workId": "XR-104",
+      "laneId": "L3",
+      "deployProduct": "product-hosted",
+      "title": "Compliance gateway staging rollout",
+      "status": "done",
+      "acceptance": "compliance-gateway DID resolve + signing path green",
+      "evidenceRef": "docs/operations/staging-xr-104-compliance-gateway-rollout.md"
+    }
+  ],
+  "ok": true
+}

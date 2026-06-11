@@ -1,32 +1,37 @@
 {
   "$schema": "gtcx://pm/initiatives/v1",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "updated": "2026-06-12",
   "repo": "fabric-os",
   "initiatives": [
     {
       "id": "INIT-GTCX-TRADE-ECOSYSTEM-LANES",
       "title": "Trade ecosystem lane taxonomy",
-      "status": "in_progress",
+      "status": "complete",
+      "completedAt": "2026-06-12",
       "laneId": "I",
       "spec": "docs/specs/ecosystem/trade-ecosystem-lanes-spec.md",
-      "machineSpec": "pm/spec/trade-ecosystem-lanes.v1.json",
+      "machineSpec": "pm/spec/trade-ecosystem-lanes.json",
       "handoff": "docs/operations/coordination/from-ecosystem-strategy-to-fabric-os-trade-lanes-2026-06-12.md",
-      "ticket": "XR-FABRIC-TRADE-LANES-001"
+      "ticket": "XR-FABRIC-TRADE-LANES-001",
+      "witness": "audit/evidence/fabric-lanes-check-latest.json"
     },
     {
       "id": "INIT-FABRIC-LANE-DEPLOY-MATRIX",
       "title": "Deploy matrix by trade lane",
-      "status": "in_progress",
+      "status": "complete",
+      "completedAt": "2026-06-12",
       "matrixTagged": "2026-06-12",
       "laneId": "I",
       "parentInitiative": "INIT-GTCX-TRADE-ECOSYSTEM-LANES",
-      "spec": "docs/specs/ecosystem/lane-deploy-matrix.md"
+      "spec": "docs/specs/ecosystem/lane-deploy-matrix.md",
+      "gate": "pnpm fabric:lanes:check"
     },
     {
       "id": "INIT-FABRIC-README-SOR-REconcile",
       "title": "fabric-os README vs AGENTS.md SoR reconcile",
-      "status": "pending",
+      "status": "complete",
+      "completedAt": "2026-06-12",
       "laneId": "I",
       "parentInitiative": "INIT-GTCX-TRADE-ECOSYSTEM-LANES"
     },
@@ -36,6 +41,7 @@
       "status": "complete",
       "laneId": "I",
       "protocol": "P41-DEVOPS-AS-A-SERVICE",
+      "laneAwareCards": "2026-06-12",
       "uxRefs": {
         "jtbdId": "JTBD-staging-substrate-ready",
         "flowId": "flow-staging-handoff",
@@ -50,6 +56,7 @@
       "status": "in_progress",
       "laneId": "I",
       "protocol": "P42-SECURITY-AS-A-SERVICE",
+      "lanePentestScope": "2026-06-12",
       "uxRefs": {
         "jtbdId": "JTBD-security-evidence-path",
         "flowId": "flow-secas-pentest-evidence",

@@ -53,7 +53,7 @@ A multi-hour ecosystem strategy session produced a **corrected domain model** fo
 | ------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------- |
 | Raw session brainstorm    | `docs/specs/ecosystem/session-brainstorm-trade-domain-model-2026-06-12.md`                        | Narrative SoR             |
 | Normative lane spec       | `docs/specs/ecosystem/trade-ecosystem-lanes-spec.md`                                              | Human spec                |
-| Machine registry          | `pm/spec/trade-ecosystem-lanes.v1.json`                                                           | Harness input             |
+| Machine registry          | `pm/spec/trade-ecosystem-lanes.json`                                                              | Harness input             |
 | Lane deploy matrix        | `docs/specs/ecosystem/lane-deploy-matrix.md`                                                      | **fabric execution view** |
 | Initiatives catalog       | `docs/specs/ecosystem/initiatives-from-domain-model-2026-06-12.md`                                | Full INIT-\* list         |
 | Share note                | `docs/operations/coordination/outbound/share-note-trade-ecosystem-lanes-for-fabric-2026-06-12.md` | Paste to team             |
@@ -77,16 +77,18 @@ A multi-hour ecosystem strategy session produced a **corrected domain model** fo
 
 ### Short-term (Sprint)
 
-- [ ] **Extend** DaaS cards with `deployProduct: Sovereign | Cloud` per ADR-007
-- [ ] **Extend** SECAS pentest scope with L4a vs L4b vs T0 boundaries
-- [ ] **Implement** `pnpm fabric:lanes:check` (validate JSON vs deploy registry)
-- [ ] **Reconcile** README archived banner vs active AGENTS.md
+- [x] **Extend** DaaS cards with `deployProduct: Sovereign | Cloud` per ADR-007
+- [x] **Extend** SECAS pentest scope with L4a vs L4b vs T0 boundaries
+- [x] **Implement** `pnpm fabric:lanes:check` (validate JSON vs deploy registry)
+- [x] **Reconcile** README archived banner vs active AGENTS.md
+- [x] **Publish** `audit/evidence/xr-lane-witness-latest.json` (XR-101/301/302/104 laneId)
 
 ### Coordination (P24)
 
-- [ ] **Ack** bridge handoff when `gtcx-execution-engine.v1.json` updated
+- [x] **Ack** bridge handoff — `XR-BRIDGE-LANES-REGISTRY-001` done (bridge log 2026-06-11)
 - [ ] **Ack** canon handoff when INST-F-006 frame published
-- [ ] **Do not** duplicate normative protocol text — link canon-os utilities
+- [x] **Do not** duplicate normative protocol text — link canon-os utilities
+- [x] **Reply** sprint authority eval — `from-fabric-os-sprint-authority-eval-2026-06-12.md`
 
 ---
 

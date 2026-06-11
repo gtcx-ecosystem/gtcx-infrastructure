@@ -1,10 +1,10 @@
 {
   "schema": "gtcx://fabric-os/fabric-lanes-check/v1",
-  "checkedAt": "2026-06-11T20:51:28.947Z",
+  "checkedAt": "2026-06-11T22:14:05.488Z",
   "owner": "fabric-os",
   "initiative": "INIT-GTCX-TRADE-ECOSYSTEM-LANES",
   "sources": {
-    "registry": "pm/spec/trade-ecosystem-lanes.v1.json",
+    "registry": "pm/spec/trade-ecosystem-lanes.json",
     "matrix": "docs/operations/coordination/infra-per-repo-action-matrix-2026-06-05.md"
   },
   "gates": {

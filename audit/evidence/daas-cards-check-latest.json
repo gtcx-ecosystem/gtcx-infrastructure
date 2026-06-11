@@ -2,7 +2,7 @@
   "schema": "gtcx://fabric-os/daas-cards-check/v1",
   "protocol": "P41-DEVOPS-AS-A-SERVICE",
   "sprint": "DAAS-S2",
-  "checkedAt": "2026-06-10T04:15:57.292Z",
+  "checkedAt": "2026-06-11T22:14:05.691Z",
   "owner": "fabric-os",
   "gates": {
     "index": {
@@ -11,14 +11,26 @@
     "cards": {
       "terminal-os": {
         "ok": true,
+        "exists": true,
+        "metaOk": true,
+        "laneId": "L2",
+        "deployProduct": "product-hosted",
         "path": "docs/operations/daas/cards/terminal-os.md"
       },
       "compliance-os": {
         "ok": true,
+        "exists": true,
+        "metaOk": true,
+        "laneId": "L3",
+        "deployProduct": "product-hosted",
         "path": "docs/operations/daas/cards/compliance-os.md"
       },
       "markets-os": {
         "ok": true,
+        "exists": true,
+        "metaOk": true,
+        "laneId": "L4b",
+        "deployProduct": "GTCX Cloud",
         "path": "docs/operations/daas/cards/markets-os.md"
       }
     },
