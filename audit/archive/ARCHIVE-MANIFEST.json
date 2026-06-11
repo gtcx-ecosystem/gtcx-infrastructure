@@ -1,0 +1,42 @@
+{
+  "schema": "gtcx.archive.manifest.v1",
+  "entries": [
+    {
+      "from": "audit/agentic-innovation-audit-2026-06-10.md",
+      "to": "audit/archive/2026-06-11/audit/agentic-innovation-audit-2026-06-10.md",
+      "reason": "dated-sibling-when-latest-exists",
+      "at": "2026-06-11T17:44:04.451Z"
+    },
+    {
+      "from": "audit/compliance-security-audit-2026-06-10.md",
+      "to": "audit/archive/2026-06-11/audit/compliance-security-audit-2026-06-10.md",
+      "reason": "dated-sibling-when-latest-exists",
+      "at": "2026-06-11T17:44:04.451Z"
+    },
+    {
+      "from": "audit/dr-fire-drill-evidence-2026-05-31.md",
+      "to": "audit/archive/2026-06-11/audit/dr-fire-drill-evidence-2026-05-31.md",
+      "reason": "superseded-by-newer-dated-sibling",
+      "at": "2026-06-11T17:44:04.451Z"
+    },
+    {
+      "from": "audit/product-excellence-audit-2026-06-10.md",
+      "to": "audit/archive/2026-06-11/audit/product-excellence-audit-2026-06-10.md",
+      "reason": "dated-sibling-when-latest-exists",
+      "at": "2026-06-11T17:44:04.451Z"
+    },
+    {
+      "from": "audit/production-grade-audit-2026-06-10.md",
+      "to": "audit/archive/2026-06-11/audit/production-grade-audit-2026-06-10.md",
+      "reason": "dated-sibling-when-latest-exists",
+      "at": "2026-06-11T17:44:04.451Z"
+    },
+    {
+      "from": "audit/repo-hygiene-audit-2026-06-10.md",
+      "to": "audit/archive/2026-06-11/audit/repo-hygiene-audit-2026-06-10.md",
+      "reason": "dated-sibling-when-latest-exists",
+      "at": "2026-06-11T17:44:04.451Z"
+    }
+  ],
+  "updated": "2026-06-11T17:44:04.451Z"
+}
