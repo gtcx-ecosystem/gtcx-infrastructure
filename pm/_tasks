@@ -1,12 +1,31 @@
-# gtcx-infrastructure task inbox — DaaS primary
+# fabric-os task inbox — DaaS primary
 # FORMAT: bridge-os/pm/intake/TASK-INTAKE-FORMAT.md
-# Owner: gtcx-infrastructure — NOT bridge-os program office
+# Owner: fabric-os — NOT bridge-os program office
+
+--
+INIT-FABRIC-OS-CUTOVER - Fabric OS canonical identity cutover - initiative
+status: done
+priority: P1
+owner: fabric-os
+programOffice: bridge-os
+initiative: INIT-FABRIC-OS-CUTOVER
+evidence: audit/evidence/fabric-cutover-check-latest.json
+
+## Context
+gtcx-infrastructure → fabric-os rename (ADR-0007). Lane I service fabric; GitHub repo `gtcx-ecosystem/fabric-os`.
+
+## Acceptance
+- [x] `package.json` name + repository URL = fabric-os
+- [x] `pm/spec/trade-ecosystem-lanes.v1.json` lane I.repo = fabric-os
+- [x] `pnpm ops:check` + `pnpm fabric:lanes:check` exit 0
+- [x] `pnpm fabric:cutover:check:write` witness
+- [x] Inbound ack to bridge-os
 
 --
 INIT-GTCX-INFRA-DAAS - DevOps-as-a-Service primary program - initiative
 status: in_progress
 priority: P0
-owner: gtcx-infrastructure
+owner: fabric-os
 initiative: INIT-GTCX-INFRA-DAAS
 persona: platform-engineer
 frame: field-operations
@@ -16,7 +35,7 @@ evidence: pm/friction-register.json
 
 ## Context
 
-DevOps and infrastructure are a separate concern from product engineering — parallel to security/compliance/GTM. gtcx-infrastructure owns friction register, DaaS roadmap, fleet health, and seal of all `to-gtcx-infrastructure-*` handoffs.
+DevOps and infrastructure are a separate concern from product engineering — parallel to security/compliance/GTM. fabric-os owns friction register, DaaS roadmap, fleet health, and seal of all `to-fabric-os-*` handoffs.
 
 ## Acceptance
 
@@ -39,7 +58,7 @@ DAAS-S1 friction + health · DAAS-S2 per-repo cards · DAAS-S3 cost automation
 INIT-GTCX-INFRA-SECAS - Security-as-a-Service co-primary program - initiative
 status: in_progress
 priority: P0
-owner: gtcx-infrastructure
+owner: fabric-os
 initiative: INIT-GTCX-INFRA-SECAS
 persona: security-engineer
 frame: regulatory-audit
@@ -49,7 +68,7 @@ evidence: pm/security-friction-register.json
 
 ## Context
 
-Stack security operations are a separate concern from product engineering — parallel to DaaS (P41). gtcx-infrastructure owns WAF, IRSA, pen-test execution, security evidence, and the sovereign approval register. Class S gates are Approval needed only (`blocksIR: false`).
+Stack security operations are a separate concern from product engineering — parallel to DaaS (P41). fabric-os owns WAF, IRSA, pen-test execution, security evidence, and the sovereign approval register. Class S gates are Approval needed only (`blocksIR: false`).
 
 ## Acceptance
 

@@ -1,6 +1,6 @@
 # Ship (04-ship)
 
-Deploy and runtime infrastructure for **gtcx-infrastructure**.
+Deploy and runtime infrastructure for **fabric-os**.
 
 | Path                   | Role                                          |
 | ---------------------- | --------------------------------------------- |

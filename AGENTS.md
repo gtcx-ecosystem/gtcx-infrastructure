@@ -246,7 +246,7 @@ Check `baseline-os/workstream/coordination/coordination-report-latest.md` for cr
 
 ## Repository
 
-`fabric-os` — Service fabric execution layer for GTCX: AWS/K8s/Terraform control plane, deployment orchestration, assurance, and cross-repo program coordination (legacy id: `gtcx-infrastructure`).
+`fabric-os` — Service fabric execution layer for GTCX: AWS/K8s/Terraform control plane, deployment choreography, DaaS/SECaaS, and fleet infra assurance.
 
 ## Stack
 
@@ -292,13 +292,13 @@ To run any forensic audit on this repo (master-audit, full-audit, 10-10-roadmap,
 2. Read the specific command file (`../gtcx-agentic/audit/commands/<command>.md`).
 3. Read the prompt file referenced there (`../gtcx-agentic/audit/prompts/<category>/<file>.md`).
 4. Execute the prompt against this repo.
-5. Write the output to the path the command specifies (typically `audit/<command>-<YYYY-MM-DD>.md`).
+5. Write the output to the path the command specifies (typically `01-docs/05-audit/<command>-<YYYY-MM-DD>.md`).
 
 The audit registry is provider-agnostic — the same prompts work for Claude, Codex, Gemini, Kimi, Deepseek, Grok, etc.
 
 ## Credentials: system-of-record + ownership split (cross-repo)
 
-**Canonical policy:** `gtcx-docs/docs/governance/protocols/19-agent-credential-access/protocol.md` (see “System-of-Record and Operational Ownership Split”).
+**Canonical policy:** `gtcx-docs/01-docs/governance/protocols/19-agent-credential-access/protocol.md` (see “System-of-Record and Operational Ownership Split”).
 
 - **System-of-record (SoR)**: `gtcx-agentic` Baseline vault (shared provider creds + audited access)
 - **Runtime usage owner**: product repo (e.g. `gtcx-intelligence`) owns its runtime secrets
@@ -314,40 +314,40 @@ The audit registry is provider-agnostic — the same prompts work for Claude, Co
 | Route decisions + pricing     | `baseline-os`  | `baseline cost-route --prompt "..." --json`                   |
 | Token usage aggregate         | `baseline-os`  | `baseline cost-stats --json`                                  |
 | Agent vault (populate/verify) | `gtcx-agentic` | `pnpm agent:vault:verify`                                     |
-| Staging vs production keys    | `gtcx-agentic` | `01-docs/operators/vault-environments.md`                        |
+| Staging vs production keys    | `gtcx-agentic` | `01-docs/operators/vault-environments.md`                     |
 | Ecosystem coordination        | `baseline-os`  | `workstream/coordination/ECOSYSTEM-COST-ROUTER-2026-06-03.md` |
 
-**Do not** use `baseline-os/deploy/docker/.env.staging` for production vault work.
+**Do not** use `baseline-os/04-ship/docker/.env.staging` for production vault work.
 
 ## Execute roadmap (any LLM, any repo)
 
 Command: **`execute-roadmap`** (not `roadmap`).
 
-1. Read `../gtcx-docs/platform/tools/roadmap/roadmap-framework/AGENT-START.md`
+1. Read `../gtcx-docs/03-platform/tools/roadmap/roadmap-framework/AGENT-START.md`
 2. Read `commands/execute-roadmap.md` and `prompts/roadmap/roadmap-reconcile-execute-prompt.md`
-3. Update `docs/strategy/execution-roadmap.md` or `audit/execution-roadmap.md`; execute until active phase done
+3. Update `01-docs/strategy/execution-roadmap.md` or `01-docs/05-audit/execution-roadmap.md`; execute until active phase done
 4. Quick: `prompts/shareable/execute-roadmap-prompt-RUN.md`
 
 Provider-agnostic — Claude, Codex, Gemini, Kimi, Cursor, etc.
 
 ## Cross-repo coordination (Protocol 24)
 
-**Canonical policy:** [Protocol 24 — Cross-Repo Coordination](https://github.com/gtcx-ecosystem/gtcx-docs/blob/main/docs/governance/protocols/24-cross-repo-coordination/protocol.md)  
-**Complements:** [Protocol 22 — Agent Work Selection](https://github.com/gtcx-ecosystem/gtcx-docs/blob/main/docs/governance/protocols/22-agent-work-selection/protocol.md) (what to work on next).
+**Canonical policy:** [Protocol 24 — Cross-Repo Coordination](https://github.com/gtcx-ecosystem/gtcx-docs/blob/main/01-docs/governance/protocols/24-cross-repo-coordination/protocol.md)  
+**Complements:** [Protocol 22 — Agent Work Selection](https://github.com/gtcx-ecosystem/gtcx-docs/blob/main/01-docs/governance/protocols/22-agent-work-selection/protocol.md) (what to work on next).
 
 When a story is **blocked on a sibling repo** or you **hand off** cross-repo work, follow these five steps in order:
 
-| Step                | Action                                                                                                                                                                                                                                                                         |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **1. Ack**          | Read open handoffs: `baseline-os/workstream/coordination/coordination-report-latest.md` (if present) and any `from-*` / `to-*` tickets naming this repo. Reply with `outbound-ack` template when you receive a durable inbound.                                                |
-| **2. Roadmap**      | Record ticket IDs and blocker repo in `audit/auto-dev-state.md`, `.baseline/memory/dependencies.md`, and/or `audit/agent-work-pointer.md` (if used). Do not leave blockers chat-only.                                                                                |
-| **3. Inbound doc**  | File a durable handoff: `ops/gtm/inbound-tickets/from-<this-repo>-<topic>-YYYY-MM-DD.md` or `ops/coordination/<initiative>-coordination.md` ([template](https://github.com/gtcx-ecosystem/gtcx-docs/blob/main/docs/reference/templates/agents/3-structure/coordination.md)). |
-| **4. Hub if P0**    | Ecosystem-critical path: from `baseline-os`, `pnpm ecosystem:repo:report-work --repo=<repo> --item="..." --status=blocked`. Use `gtcx-docs/docs/08-gtm/inbound-tickets/` only when the **docs hub** is the coordination witness (releases, standards).                            |
-| **5. No duplicate** | Link [deployment-proof-index](https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/audit/evidence/deployment-proof-index.md) and protocol contracts — **do not** copy harness YAML, evidence indexes, or normative protocol text into product repos.                |
+| Step                | Action                                                                                                                                                                                                                                                                                        |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **1. Ack**          | Read open handoffs: `baseline-os/workstream/coordination/coordination-report-latest.md` (if present) and any `from-*` / `to-*` tickets naming this repo. Reply with `outbound-ack` template when you receive a durable inbound.                                                               |
+| **2. Roadmap**      | Record ticket IDs and blocker repo in `01-docs/05-audit/auto-dev-state.md`, `.baseline/memory/dependencies.md`, and/or `01-docs/05-audit/agent-work-pointer.md` (if used). Do not leave blockers chat-only.                                                                                   |
+| **3. Inbound doc**  | File a durable handoff: `01-docs/08-gtm/inbound-tickets/from-<this-repo>-<topic>-YYYY-MM-DD.md` or `01-docs/06-coordination/<initiative>-coordination.md` ([template](https://github.com/gtcx-ecosystem/gtcx-docs/blob/main/01-docs/reference/templates/agents/3-structure/coordination.md)). |
+| **4. Hub if P0**    | Ecosystem-critical path: from `baseline-os`, `pnpm ecosystem:repo:report-work --repo=<repo> --item="..." --status=blocked`. Use `gtcx-docs/01-docs/08-gtm/inbound-tickets/` only when the **docs hub** is the coordination witness (releases, standards).                                     |
+| **5. No duplicate** | Link [deployment-proof-index](https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/01-docs/05-audit/evidence/deployment-proof-index.md) and protocol contracts — **do not** copy harness YAML, evidence indexes, or normative protocol text into product repos.                         |
 
 **Not in this repo:** inbound archive SoR for ecosystem-wide weekly reports — that stays **`baseline-os`** (`workstream/coordination/`).
 
-**Evidence paths (link only):** production smoke and EAP issuance artifacts live in owning repos per deployment-proof-index (e.g. `gtcx-intelligence/audit/evidence/`).
+**Evidence paths (link only):** production smoke and EAP issuance artifacts live in owning repos per deployment-proof-index (e.g. `gtcx-intelligence/01-docs/05-audit/evidence/`).
 
 ## Claude-Specific Notes
 
@@ -361,8 +361,8 @@ When a story is **blocked on a sibling repo** or you **hand off** cross-repo wor
 
 **Canonical docs (read every session):**
 
-1. `docs/operations/agent-universal-instructions.md`
-2. `docs/operations/human-gate-navigation.md` — Class **S** + **`blocksIR: false`** gates are **parallel**, not repo frozen
+1. `01-docs/04-ops/agent-universal-instructions.md`
+2. `01-docs/04-ops/human-gate-navigation.md` — Class **S** + **`blocksIR: false`** gates are **parallel**, not repo frozen
 
 **Full chain:** `baseline start` (INST-003 + repo session + gates). Repo-only: `pnpm agent:start`.
 
@@ -392,7 +392,7 @@ Emit **one** brief, then work. Human may **stop**, **correct:**, or story ID —
 
 **Required close:** **Status Update** only — message **stops** after Approval needed. **One** Next priority (from `agent:next-work`); never "Want me to proceed with A or B?". Execute Class R Next in-session.
 
-**Status Update (end of turn):** `### Done` · `### Next priority` (one owner + action) · `### Approval needed` (Class A/S only — omit if empty). Template: `docs/operations/agent-status-update-template.md`.
+**Status Update (end of turn):** `### Done` · `### Next priority` (one owner + action) · `### Approval needed` (Class A/S only — omit if empty). Template: `01-docs/04-ops/agent-status-update-template.md`.
 
 ### P27 — You run commands
 
@@ -411,9 +411,9 @@ Emit **one** brief, then work. Human may **stop**, **correct:**, or story ID —
 
 ### Hub specs
 
-- P22 `gtcx-docs/docs/governance/protocols/22-agent-work-selection/protocol.md`
-- P26 `gtcx-docs/docs/governance/protocols/26-agent-proceed-confirmation/protocol.md`
-- P27 `gtcx-docs/docs/governance/protocols/27-agent-execution-obligation/protocol.md`
+- P22 `gtcx-docs/01-docs/governance/protocols/22-agent-work-selection/protocol.md`
+- P26 `gtcx-docs/01-docs/governance/protocols/26-agent-proceed-confirmation/protocol.md`
+- P27 `gtcx-docs/01-docs/governance/protocols/27-agent-execution-obligation/protocol.md`
 
 ## Session start (all terminals / LLMs)
 
@@ -423,13 +423,13 @@ pnpm session
 pnpm session --json
 ```
 
-**Lookup:** `session` → `next` → `gates` → `hub` — see `docs/operations/agent-command-lookup.md`
+**Lookup:** `session` → `next` → `gates` → `hub` — see `01-docs/04-ops/agent-command-lookup.md`
 
 Prints P22 next-work + P26 Proceed Brief skeleton. Not IDE-specific.
 
 ## Protocol 26 — Proceed Brief (no menus)
 
-After P22: **one Proceed Brief → implement**. Template: `docs/operations/agent-proceed-brief-template.md` (when present).
+After P22: **one Proceed Brief → implement**. Template: `01-docs/04-ops/agent-proceed-brief-template.md` (when present).
 
 **Forbidden:** Your call · Two options · Say push if you want · path-approval ask for Class R work.
 
@@ -465,12 +465,12 @@ Use **after work in the turn** or when reporting cluster/repo state — not inst
 
 **Rules:** One next priority (not a menu). **Approval needed** only for real gates — never "I can push / I can help / if you want." Class **R**: execute, then show Done + Next.
 
-Template: `docs/operations/agent-status-update-template.md` · Spec: P26 §3b (gtcx-docs).
+Template: `01-docs/04-ops/agent-status-update-template.md` · Spec: P26 §3b (gtcx-docs).
 
 ## Persona selection (Phase 4 — mandatory)
 
-**Bridge:** [ecosystem-persona-bridge-2026-06.md](https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/docs/operations/coordination/ecosystem-persona-bridge-2026-06.md)  
-**Registry:** [gtcx-docs institutional personas](https://github.com/gtcx-ecosystem/gtcx-docs/tree/main/docs/governance/institutional/personas)
+**Bridge:** [ecosystem-persona-bridge-2026-06.md](https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/01-docs/04-ops/coordination/ecosystem-persona-bridge-2026-06.md)  
+**Registry:** [gtcx-docs institutional personas](https://github.com/gtcx-ecosystem/gtcx-docs/tree/main/01-docs/governance/institutional/personas)
 
 | Step | Action                                                                                        |
 | ---- | --------------------------------------------------------------------------------------------- |
@@ -485,19 +485,19 @@ Template: `docs/operations/agent-status-update-template.md` · Spec: P26 §3b (g
 
 ## Ecosystem agent learning card (normative — read every session)
 
-**Canonical SoR:** [ecosystem-agent-learning-card-2026-06.md](https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/docs/operations/coordination/ecosystem-agent-learning-card-2026-06.md) (gtcx-protocols).
+**Canonical SoR:** [ecosystem-agent-learning-card-2026-06.md](https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/01-docs/04-ops/coordination/ecosystem-agent-learning-card-2026-06.md) (gtcx-protocols).
 
 ### Read order
 
-| Step | Link                                                                                                                                                                                     |
-| ---- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1    | [Unblock playbook F1–F10](https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/docs/operations/coordination/ecosystem-unblock-playbook-2026-06.md)                                 |
-| 2    | [P26 Status Update + post-pilot gating](https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/docs/operations/coordination/agent-status-update-and-post-pilot-gating-2026-06-06.md) |
-| 3    | [Human-external register](https://github.com/gtcx-ecosystem/gtcx-agentic/blob/main/docs/operations/coordination/human-external-blocker-register-2026-06.md)                              |
-| 4    | [Cross-repo bridge — Latest updates](https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/docs/operations/coordination/cross-repo-agent-bridge.md)                                 |
-| 5    | This repo `docs/operations/agent-work-selection.md` · `audit/auto-dev-state.md`                                                                                                     |
+| Step | Link                                                                                                                                                                                    |
+| ---- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1    | [Unblock playbook F1–F10](https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/01-docs/04-ops/coordination/ecosystem-unblock-playbook-2026-06.md)                                 |
+| 2    | [P26 Status Update + post-pilot gating](https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/01-docs/04-ops/coordination/agent-status-update-and-post-pilot-gating-2026-06-06.md) |
+| 3    | [Human-external register](https://github.com/gtcx-ecosystem/gtcx-agentic/blob/main/01-docs/04-ops/coordination/human-external-blocker-register-2026-06.md)                              |
+| 4    | [Cross-repo bridge — Latest updates](https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/01-docs/04-ops/coordination/cross-repo-agent-bridge.md)                                 |
+| 5    | This repo `01-docs/04-ops/agent-work-selection.md` · `01-docs/05-audit/auto-dev-state.md`                                                                                               |
 
-**End of turn:** one P26 Status Update (not a menu) → append [cross-repo-agent-log](https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/docs/operations/coordination/cross-repo-agent-log.md) if state changed.
+**End of turn:** one P26 Status Update (not a menu) → append [cross-repo-agent-log](https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/01-docs/04-ops/coordination/cross-repo-agent-log.md) if state changed.
 
 ### Rules (all repos)
 

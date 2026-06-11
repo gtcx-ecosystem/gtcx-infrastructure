@@ -1,6 +1,6 @@
 # `.cursor/` — Cursor IDE agent configuration
 
-Cursor-specific rules, permissions, and CLI settings for agents working in `gtcx-infrastructure`.
+Cursor-specific rules, permissions, and CLI settings for agents working in `fabric-os`.
 
 | Path               | Purpose                                                        |
 | ------------------ | -------------------------------------------------------------- |

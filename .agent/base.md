@@ -1,6 +1,6 @@
 ## Repository
 
-`gtcx-infrastructure` — Infrastructure, compliance substrate, and governance platform for GTCX: an AI-native compliance engine powering African commodity trade (KYC, attestation, settlement, audit).
+`fabric-os` — Service fabric execution layer for GTCX: AWS/K8s/Terraform control plane, deployment choreography, DaaS/SECaaS, and fleet infra assurance.
 
 ## Stack
 
@@ -23,17 +23,17 @@
 pnpm install
 
 # Run all validation gates (17 gates: coverage, static, security, build)
-node 03-platform/tools/03-platform/scripts/validate-all.mjs
+node platform/tools/platform/scripts/validate-all.mjs
 
 # Run tests for a specific tool
-node --test 03-platform/tools/<tool>/tests/**/*.test.mjs
+node --test platform/tools/<tool>/tests/**/*.test.mjs
 
 # Regenerate agent-sync docs
 pnpm agent:sync
 
 # Docker build (example: audit-flush)
-docker build -t audit-flush:latest 03-platform/tools/audit-flush/
+docker build -t audit-flush:latest platform/tools/audit-flush/
 
 # Terraform (staging)
-cd 04-ship/terraform/environments/staging && terraform plan -var-file=terraform.tfvars
+cd deploy/terraform/environments/staging && terraform plan -var-file=terraform.tfvars
 ```

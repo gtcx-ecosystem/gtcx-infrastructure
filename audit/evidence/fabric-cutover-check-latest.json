@@ -1,0 +1,43 @@
+{
+  "schema": "gtcx://fabric-os/fabric-cutover-check/v1",
+  "initiative": "INIT-FABRIC-OS-CUTOVER",
+  "at": "2026-06-11T21:48:25.234Z",
+  "status": "complete",
+  "gates": {
+    "packageName": {
+      "ok": true,
+      "detail": "fabric-os"
+    },
+    "repositoryUrl": {
+      "ok": true,
+      "detail": "https://github.com/gtcx-ecosystem/fabric-os.git"
+    },
+    "laneRegistry": {
+      "ok": true,
+      "detail": "I.repo=fabric-os legacy=gtcx-infrastructure"
+    },
+    "zenhubRegistry": {
+      "ok": true,
+      "detail": "github=fabric-os"
+    },
+    "deployRegistry": {
+      "ok": true,
+      "detail": "laneId=I"
+    },
+    "tasksOwner": {
+      "ok": true,
+      "detail": "pm/_tasks header uses fabric-os"
+    },
+    "opsCheck": {
+      "ok": true,
+      "exitCode": 0,
+      "tail": " Repo root matches the canonical allowlist."
+    },
+    "lanesCheck": {
+      "ok": true,
+      "exitCode": 0,
+      "tail": " PASS — 18 matrix rows, 3 lane handoffs"
+    }
+  },
+  "ok": true
+}

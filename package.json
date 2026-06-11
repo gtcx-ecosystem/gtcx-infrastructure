@@ -40,6 +40,8 @@
     "fabric:assurance:check": "node platform/scripts/fabric-assurance-run.mjs --check",
     "fabric:lanes:check": "node platform/scripts/fabric-lanes-check.mjs",
     "fabric:lanes:check:write": "node platform/scripts/fabric-lanes-check.mjs --write",
+    "fabric:cutover:check": "node platform/scripts/fabric-cutover-check.mjs",
+    "fabric:cutover:check:write": "node platform/scripts/fabric-cutover-check.mjs --write",
     "daas:friction:check": "node platform/scripts/daas-friction-check.mjs",
     "daas:friction:check:write": "node platform/scripts/daas-friction-check.mjs --write",
     "daas:cards:check": "node platform/scripts/daas-cards-check.mjs",

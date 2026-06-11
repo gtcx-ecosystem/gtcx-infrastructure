@@ -1,6 +1,6 @@
 # `.husky/` — Git hooks
 
-Pre-commit hooks for `gtcx-infrastructure`. Configured via root `package.json` `"prepare": "husky"`.
+Pre-commit hooks for `fabric-os`. Configured via root `package.json` `"prepare": "husky"`.
 
 **Active hook:** `pre-commit` runs `lint-staged` (Prettier on staged `*.{json,md,yml,yaml}` and related paths).
 
