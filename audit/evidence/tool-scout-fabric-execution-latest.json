@@ -1,0 +1,44 @@
+{
+  "schema": "gtcx://fabric-os/tool-scout-fabric-execution/v1",
+  "initiative": "INIT-AGENT-TOOL-SCOUT",
+  "at": "2026-06-12T03:51:32.307Z",
+  "ok": true,
+  "gates": {
+    "register": {
+      "ok": true
+    },
+    "bridgeRegister": {
+      "ok": true
+    },
+    "ackDoc": {
+      "ok": true
+    },
+    "countryAgnostic": {
+      "ok": true
+    },
+    "phaseBPilots": {
+      "PILOT-NAPKIN-DIAGRAM-FLEET": {
+        "ok": true,
+        "complete": false,
+        "path": "../canon-os/audit/evidence/tool-scout-napkin-fleet-pilot.json"
+      },
+      "PILOT-ADV-PITCH-INTERNAL": {
+        "ok": false,
+        "complete": false,
+        "path": "../markets-os/audit/evidence/tool-scout-adv-pitch-pilot.json"
+      },
+      "PILOT-CODEOWNER-FLEET": {
+        "ok": false,
+        "complete": false,
+        "path": "audit/evidence/tool-scout-codeowner-fleet-pilot.json"
+      },
+      "PILOT-FIGMA-MCP-EXR": {
+        "ok": false,
+        "complete": false,
+        "path": "../ledger-ui/audit/evidence/tool-scout-figma-mcp-pilot.json"
+      }
+    }
+  },
+  "registerStatus": "in_progress",
+  "phaseBComplete": false
+}

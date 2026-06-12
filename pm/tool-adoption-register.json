@@ -8,7 +8,7 @@
   "matrix": "bridge-os/pm/spec/tool-scout-matrix.v1.json",
   "programOffice": "bridge-os",
   "handoff": "bridge-os/docs/operations/coordination/to-fabric-os-agent-tool-scout-handoff-2026-06-12.md",
-  "status": "awaiting-fabric-ack",
+  "status": "in_progress",
   "policy": {
     "countryAgnostic": true,
     "executionOwner": "fabric-os TAAS"
@@ -27,7 +27,8 @@
       "tool": "napkin-ai",
       "owner": "canon-os",
       "phase": "P0-desk",
-      "status": "planned",
+      "status": "in_progress",
+      "witness": "canon-os/audit/evidence/tool-scout-napkin-fleet-pilot.json",
       "priority": "P0-fleet",
       "pillars": ["craft", "compliance"],
       "source": "bridge-os/pm/tool-scout-register.json"
