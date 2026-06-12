@@ -73,6 +73,19 @@ Three parallel numbering schemes exist across the ecosystem. This register adopt
 
 ---
 
+## Product sprint witness (L1 — read-only)
+
+> **Contract:** `bridge-os/pm/spec/sprint-authority.json` · fabric L2 consumes; never writes product `active.json`.  
+> **Fleet witness:** `bridge-os/pm/ci/fleet-sprint-orientation-latest.json` (planned) — until present, cite product SoR directly.
+
+| Repo       | Active sprint (SoR)      | `updated`  | Icebox (initiative)    | fabric programme use                      |
+| ---------- | ------------------------ | ---------- | ---------------------- | ----------------------------------------- |
+| markets-os | `SPR-82-TOKENIZATION-UI` | 2026-06-11 | `INIT-AFM-REG-ADAPTER` | XR tokenization / ledger-ui — no AFM pull |
+
+**markets-os SPR-82 status:** all scoped tasks `done` in `pm/roadmap/sprints/active.json` — seal + next sprint is **markets-os** ceremony, not fabric.
+
+---
+
 ## Assessment key
 
 | Status          | Meaning                                      |
