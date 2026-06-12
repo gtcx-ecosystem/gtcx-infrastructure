@@ -93,31 +93,54 @@ const podList = kubectl([
 ]);
 const pod = podList.stdout?.trim().split(/\s+/).filter(Boolean)[0] || null;
 
+const brokerageReady = kubectl([
+  'get',
+  'deployment',
+  'markets-brokerage-protocol-trace',
+  '-n',
+  NAMESPACE,
+  '-o',
+  'jsonpath={.status.readyReplicas}',
+]);
+const marketsBrokerageDeployed =
+  Number(brokerageReady.stdout?.trim() || 0) >= 1;
+
 let verifyProbe = { ok: false, note: 'no running protocols pod' };
 if (pod && token) {
   verifyProbe = probeVerifyRoute(pod, token);
 }
+
+const traceComplete = marketsBrokerageDeployed && verifyProbe.ok;
 
 const witness = {
   schema: 'gtcx://fabric-os/golden-transaction-protocol-native/v1',
   id: 'GOLDEN-TXN-PROTOCOL-NATIVE-2026-06-12',
   ticket: 'XR-MKT-PROTOCOL-NATIVE-001',
   probedAt: new Date().toISOString(),
-  ok: false,
-  phase: verifyProbe.ok ? 'verify_route_live_markets_trace_pending' : 'blocked_prerequisites',
+  ok: traceComplete,
+  phase: traceComplete
+    ? 'golden_transaction_protocol_native_live'
+    : verifyProbe.ok
+      ? 'verify_route_live_markets_trace_pending'
+      : 'blocked_prerequisites',
   prerequisites: {
     verifierUrl: Boolean(url),
     verifierToken: Boolean(token),
     tokenSource: source,
     readinessWitness: 'audit/evidence/protocol-verifier-staging-readiness-2026-06-12.json',
-    marketsBrokerageDeployed: false,
-    pnv2Image: 'e7525dfa',
+    marketsBrokerageDeployed,
+    marketsTraceWitness:
+      '../markets-os/audit/evidence/golden-transaction-markets-staging-2026-06-12.json',
+    pnv2Image: 'f399b116-tradepass-active-amd64',
+    brokerageImage:
+      '348389439381.dkr.ecr.af-south-1.amazonaws.com/gtx-markets/brokerage-api:pnv2-staging-20260612-amd64',
   },
   verifyRouteProbe: verifyProbe,
-  note:
-    verifyProbe.ok
+  note: traceComplete
+    ? 'Verify route live and Markets brokerage cluster deploy ready for Golden Transaction trace.'
+    : verifyProbe.ok
       ? 'Verify route live (409 rejection on probe manifest). Golden Transaction trace pack blocked on Markets brokerage cluster deploy.'
-      : 'Live Golden Transaction trace pack requires e7525dfa image, Markets brokerage deploy, and trace orchestration.',
+      : 'Live Golden Transaction trace pack requires protocols image, Markets brokerage deploy, and trace orchestration.',
   repo: 'fabric-os',
 };
 
@@ -125,8 +148,10 @@ if (!token) {
   console.error('BLOCKED — GTCX_OS_PROTOCOLS_VERIFIER_TOKEN not in env and not in k8s secret');
 } else if (!verifyProbe.ok) {
   console.error('BLOCKED — verify route probe failed (image may lack PNV-2 fail-closed route)');
+} else if (!marketsBrokerageDeployed) {
+  console.error('PARTIAL — verify route reachable; Markets brokerage cluster deploy not ready');
 } else {
-  console.error('PARTIAL — verify route reachable; Markets trace orchestration not wired');
+  console.error('PASS — verify route live and Markets brokerage deployed');
 }
 
 if (WRITE) {
