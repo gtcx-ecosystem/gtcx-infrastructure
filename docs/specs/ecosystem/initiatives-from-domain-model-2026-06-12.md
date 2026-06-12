@@ -97,10 +97,10 @@ Each initiative below was indicated in the 2026-06-11/12 strategy session. **Own
 | **Status**     | **complete** (bridge log 2026-06-11)                                                     |
 | **Owner**      | bridge-os                                                                                |
 | **Handoff**    | `docs/operations/coordination/to-bridge-os-trade-ecosystem-lanes-registry-2026-06-12.md` |
-| **Witness**    | XR-BRIDGE-LANES-REGISTRY-001                                                             |
+| **Witness**    | XR-BRIDGE-LANES-REGISTRY-001 · `pnpm ecosystem:lanes:check` PASS 2026-06-12              |
 | **Goal**       | Add `tradeCore` plane; remove gtcx-os from fabric/agentRuntime confusion                 |
 | **Files**      | `pm/spec/gtcx-execution-engine.json`, `config/fleet-deploy-readiness-registry.json`      |
-| **Acceptance** | `pnpm ecosystem:execution-engine:check` green with lane refs                             |
+| **Acceptance** | `pnpm ecosystem:lanes:check` green with lane refs                                        |
 
 ---
 
@@ -152,12 +152,13 @@ Each initiative below was indicated in the 2026-06-11/12 strategy session. **Own
 
 ### INIT-GTCX-INFRA-SECAS (existing — extend)
 
-| Field         | Value                                                              |
-| ------------- | ------------------------------------------------------------------ |
-| **Title**     | Security-as-a-Service — lane-boundary in pentest scope             |
-| **Status**    | in_progress                                                        |
-| **Owner**     | fabric-os                                                          |
-| **Extension** | Pentest scope maps CRX/SGX (L4a) vs AGX (L4b) vs T0 API separately |
+| Field         | Value                                                                                                                 |
+| ------------- | --------------------------------------------------------------------------------------------------------------------- |
+| **Title**     | Security-as-a-Service — lane-boundary in pentest scope                                                                |
+| **Status**    | in_progress (SECAS-S2-01 awaiting vendor report 2026-06-17..21)                                                       |
+| **Owner**     | fabric-os                                                                                                             |
+| **Extension** | Pentest scope maps CRX/SGX (L4a) vs AGX (L4b) vs T0 API separately                                                    |
+| **Witness**   | `docs/operations/secas/cards/protocols-t0.md` · `gtcx-sovereign-l4a` DaaS card · `audit/pen-test-scope-2026.md` §2.1b |
 
 ---
 
@@ -223,15 +224,29 @@ Each initiative below was indicated in the 2026-06-11/12 strategy session. **Own
 
 ---
 
+### INIT-GTCX-SPRINT-AUTHORITY (bridge — from sprint eval)
+
+| Field         | Value                                                                                       |
+| ------------- | ------------------------------------------------------------------------------------------- |
+| **Title**     | Fleet sprint authority witness + read-only gate                                             |
+| **Status**    | **complete** (bridge 2026-06-12)                                                            |
+| **Owner**     | bridge-os                                                                                   |
+| **Witness**   | `pm/ci/fleet-sprint-orientation-latest.json` · `pnpm ecosystem:sprint-authority:check` PASS |
+| **Ticket**    | XR-FABRIC-SPRINT-AUTH-001 (fabric eval done)                                                |
+| **Follow-on** | AGILE-SA-02 Phase D ZenHub closeout (agile-os)                                              |
+
+---
+
 ## P2 — Documentation hygiene
 
 ### INIT-ECOSYSTEM-README-REFRESH
 
-| Field     | Value                                                   |
-| --------- | ------------------------------------------------------- |
-| **Title** | gtcx-ecosystem root README lane map                     |
-| **Owner** | bridge-os or gtcx-os                                    |
-| **Goal**  | Replace gtcx-docs refs with canon-os; full lane diagram |
+| Field      | Value                                                                                                            |
+| ---------- | ---------------------------------------------------------------------------------------------------------------- |
+| **Title**  | gtcx-ecosystem root README lane map                                                                              |
+| **Status** | **partial** — root README refreshed 2026-06-12 (canon-os, agile-os, fabric rename); full lane diagram still open |
+| **Owner**  | bridge-os or gtcx-os                                                                                             |
+| **Goal**   | Replace gtcx-docs refs with canon-os; full lane diagram                                                          |
 
 ---
 

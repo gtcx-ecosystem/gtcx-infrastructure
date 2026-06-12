@@ -148,13 +148,13 @@ Protocol (T0) → Pathways/VIA + field capture (L1)
 
 ## 4. Known drift flagged in session
 
-| Item                                | Issue                                                    | Triage (2026-06-12)                                          |
-| ----------------------------------- | -------------------------------------------------------- | ------------------------------------------------------------ |
-| Root `gtcx-ecosystem/README.md`     | Still references `gtcx-docs`; narrow compliance framing  | **Open** — bridge-os `INIT-ECOSYSTEM-README-REFRESH`         |
-| `fabric-os/README.md`               | Says "archived" while AGENTS.md active                   | **Resolved** — README is active I-tier SoR                   |
-| Fable pillar reports (2026-06-11)   | Missing agile-os, canon-os naming, full platform map     | **Open** — bridge `INIT-FABLE-REPORTS-LANE-REFRESH`          |
-| Constitution Article IV             | Planes omit explicit **Trade core** plane for gtcx-os    | **Open** — canon Class S `INIT-GTCX-CONSTITUTION-ART-IV-BIS` |
-| bridge `gtcx-execution-engine.json` | Planes list fabric/baseline/canon/bridge — no **C** tier | **Resolved** — XR-BRIDGE-LANES-REGISTRY-001 complete         |
+| Item                                | Issue                                                        | Triage (2026-06-12)                                          |
+| ----------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Root `gtcx-ecosystem/README.md`     | Still references `gtcx-docs`; narrow compliance framing      | **Open** — bridge-os `INIT-ECOSYSTEM-README-REFRESH`         |
+| `fabric-os/README.md`               | ~~Says "archived"~~ **fixed 2026-06-12** — active I-tier SoR | **Resolved** — README is active I-tier SoR                   |
+| Fable pillar reports (2026-06-11)   | Missing agile-os, canon-os naming, full platform map         | **Open** — bridge `INIT-FABLE-REPORTS-LANE-REFRESH`          |
+| Constitution Article IV             | Planes omit explicit **Trade core** plane for gtcx-os        | **Open** — canon Class S `INIT-GTCX-CONSTITUTION-ART-IV-BIS` |
+| bridge `gtcx-execution-engine.json` | Planes list fabric/baseline/canon/bridge — no **C** tier     | **Resolved** — XR-BRIDGE-LANES-REGISTRY-001 complete         |
 
 ---
 

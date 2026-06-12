@@ -1,19 +1,20 @@
 {
   "schema": "gtcx://baseline-os/session-open-items/v1",
-  "at": "2026-06-12T13:55:56.508Z",
+  "at": "2026-06-12T22:45:00.000Z",
+  "sessionId": "fabric-os-domain-model-2026-06-12",
   "repo": "fabric-os",
   "repoPath": "/Users/amanianai/Sites/gtcx-ecosystem/fabric-os",
-  "session": {
-    "startedAt": "2026-06-12T13:03:44.111Z",
-    "agentTrace": "gtcx-agent-66f615ce-fdbe-4771-b3fe-0ac9d23e9193"
-  },
-  "transcript": {
-    "path": null,
-    "lineCount": 0,
-    "userTurns": 0,
-    "userQueries": [],
-    "mentionedIds": []
-  },
+  "reconciledFrom": [
+    "transcript-0bc17772",
+    "docs/specs/ecosystem/session-brainstorm-trade-domain-model-2026-06-12.md",
+    "docs/specs/ecosystem/initiatives-from-domain-model-2026-06-12.md",
+    "pm/roadmap/initiatives.json",
+    "git-log",
+    "bridge-os/pnpm ecosystem:lanes:check",
+    "bridge-os/pnpm ecosystem:sprint-authority:check",
+    "fabric-os/pnpm fabric:lanes:check",
+    "fabric-os/pnpm secas:pentest:ingest:check"
+  ],
   "p22": {
     "backlogClear": false,
     "next": {
@@ -21,160 +22,170 @@
       "title": "Live-stack pen-test execution window",
       "priority": "P0",
       "status": "in_progress",
-      "implementationClass": "ops-docs",
-      "source": "work-register"
-    },
-    "selection": {
-      "tier": "resume-in_progress",
-      "reason": "Story already in_progress in backlog"
+      "phase": "awaiting_vendor_report",
+      "implementationClass": "ops-docs"
     }
   },
-  "git": {
-    "dirtyCount": 1,
-    "commitsSinceSession": 20
+  "summary": {
+    "sessionThreads": 18,
+    "laneSprintClosed": true,
+    "canonRatificationOpen": true,
+    "fleetLanesCheck": "PASS",
+    "sprintAuthorityCheck": "PASS",
+    "gitAheadOfOrigin": 0,
+    "dirtyPaths": 17
   },
-  "productionWeek": null,
-  "intake": null,
-  "actionable": [
+  "completedSinceForensicCompile": [
     {
-      "task": "Live-stack pen-test execution window",
-      "owner": "fabric-os",
-      "command": "baseline next · execute in fabric-os",
-      "doneWhen": "P22 story done + auditNotes",
-      "authority": "R",
-      "n": 1
+      "id": "git-push",
+      "detail": "origin/main parity — 0 commits ahead (was 6+)"
     },
     {
-      "task": "Git-clean fabric-os (1 uncommitted path(s) in working tree)",
-      "owner": "fabric-os",
-      "command": "micro-commit conventional + push when GATE-PUSH green",
-      "doneWhen": "working tree clean; ahead=0",
-      "authority": "R",
-      "n": 2
-    }
-  ],
-  "completed": [
-    {
-      "kind": "commit",
-      "detail": "739b620 chore(secas): refresh witnesses and reconcile auto-dev state.",
-      "source": "git log"
+      "id": "daas-l4a-sovereign-card",
+      "detail": "docs/operations/daas/cards/gtcx-sovereign-l4a.md"
     },
     {
-      "kind": "commit",
-      "detail": "2cc1983 chore(cursor): add superpowers skill adapter rules.",
-      "source": "git log"
+      "id": "secas-t0-card",
+      "detail": "docs/operations/secas/cards/protocols-t0.md"
     },
     {
-      "kind": "commit",
-      "detail": "d6ba422 chore(audit): refresh witnesses after validate-all run.",
-      "source": "git log"
+      "id": "ecosystem-sprint-authority-check",
+      "detail": "bridge-os pnpm ecosystem:sprint-authority:check PASS; sprint-authority.json normative"
     },
     {
-      "kind": "commit",
-      "detail": "eba1174 chore(pm): settlement-commit witness post-batch.",
-      "source": "git log"
+      "id": "fleet-sprint-orientation",
+      "detail": "bridge-os/pm/ci/fleet-sprint-orientation-latest.json (replaces active-sprint-witness naming)"
     },
     {
-      "kind": "commit",
-      "detail": "d9dc059 chore(pm): sync session witnesses after git settlement batch.",
-      "source": "git log"
+      "id": "ecosystem-lanes-check-verified",
+      "detail": "bridge-os pnpm ecosystem:lanes:check PASS — 16 fleet repos"
     },
     {
-      "kind": "commit",
-      "detail": "fde97b6 chore(repo): ignore local .claude/skills symlinks.",
-      "source": "git log"
+      "id": "secas-pre-window-prep",
+      "detail": "pen-test-window-execution-ready-2026-06-12.json; ingest scaffold PASS"
     },
     {
-      "kind": "commit",
-      "detail": "ff8eb3d chore(session): refresh open-items witness and launch focus.",
-      "source": "git log"
-    },
-    {
-      "kind": "commit",
-      "detail": "63c1be0 chore(pm): update settlement-commit witness after batch commits.",
-      "source": "git log"
-    },
-    {
-      "kind": "commit",
-      "detail": "04657e1 chore(pm): refresh settlement witness after git micro-commits.",
-      "source": "git log"
-    },
-    {
-      "kind": "commit",
-      "detail": "67883db docs(ops): reconcile fabric-os rename refs and P22 register.",
-      "source": "git log"
-    },
-    {
-      "kind": "commit",
-      "detail": "c857f0f chore(pm): refresh roadmaps, session witnesses, and baseline memory.",
-      "source": "git log"
-    },
-    {
-      "kind": "commit",
-      "detail": "02d99b2 fix(platform): resolve P35 hub paths in fabric assurance scripts.",
-      "source": "git log"
-    },
-    {
-      "kind": "commit",
-      "detail": "f5a47d5 chore(audit): update archive manifest and legacy repo-id scans.",
-      "source": "git log"
-    },
-    {
-      "kind": "commit",
-      "detail": "3ba4f49 chore(audit): archive 2026-06-12 witnesses and retire stale evidence.",
-      "source": "git log"
-    },
-    {
-      "kind": "commit",
-      "detail": "17ba726 chore(audit): refresh evidence witness latest JSON outputs.",
-      "source": "git log"
-    },
-    {
-      "kind": "commit",
-      "detail": "5d963e7 feat(secas): add pen-test report ingest helper for SECAS-S2-01.",
-      "source": "git log"
-    },
-    {
-      "kind": "commit",
-      "detail": "94c3567 fix(test): baseline docs links and P35 deploy hub resolution.",
-      "source": "git log"
-    },
-    {
-      "kind": "commit",
-      "detail": "b399724 fix(test): resolve docs hub paths in link and runbook validators",
-      "source": "git log"
-    },
-    {
-      "kind": "commit",
-      "detail": "b7a31c0 docs(coordination): add owner frontmatter and repair broken witness links",
-      "source": "git log"
-    },
-    {
-      "kind": "commit",
-      "detail": "7332f8f docs(standard): fix frontmatter, links, and EXR naming exceptions",
-      "source": "git log"
+      "id": "gtcx-ecosystem-readme-refresh",
+      "detail": "/gtcx-ecosystem/README.md lists canon-os, agile-os, trade core lanes"
     }
   ],
   "openItems": [
     {
       "type": "story",
       "id": "SECAS-S2-01",
-      "title": "Live-stack pen-test execution window",
+      "title": "Pen-test report ingest after vendor window",
       "owner": "fabric-os",
-      "source": "P22 agent:next-work",
+      "priority": "P0",
       "status": "in_progress",
-      "because": "Story already in_progress in backlog"
+      "blockedUntil": "2026-06-17 vendor window start; vendor report delivery",
+      "command": "pnpm secas:pentest:report:ingest -- --input=<vendor-report.json>",
+      "witness": "audit/evidence/secas-pentest-ingest-check-latest.json"
     },
     {
-      "type": "blocker",
-      "id": "uncommitted-work",
-      "title": "1 uncommitted path(s) in working tree",
-      "owner": "fabric-os",
-      "source": "git status",
+      "type": "handoff",
+      "id": "XR-CANON-TRADE-LANES-001",
+      "title": "Canon ratification — INST-F-006, Article IV bis, P46",
+      "owner": "canon-os",
       "status": "open",
-      "sample": [" M pm/ci/settlement-commit-latest.json"]
+      "authority": "S for constitution"
+    },
+    {
+      "type": "initiative",
+      "id": "INIT-GTCX-TWO-PRODUCT-DEPLOY-WITNESS",
+      "title": "sovereign-cloud-e2e-latest.json with W2/W5/W6 lane tags",
+      "owner": "gtcx-os+fabric-os",
+      "status": "open"
+    },
+    {
+      "type": "initiative",
+      "id": "INIT-FABLE-REPORTS-LANE-REFRESH",
+      "title": "Regenerate Fable pack — agile-os, canon-os, lane taxonomy",
+      "owner": "bridge-os",
+      "status": "open"
+    },
+    {
+      "type": "initiative",
+      "id": "INIT-GTCX-CONVERGENCE-FRAME",
+      "title": "ClickUp convergence frame doc",
+      "owner": "bridge-os+canon-os",
+      "status": "brainstorm"
+    },
+    {
+      "type": "initiative",
+      "id": "AGILE-SA-02",
+      "title": "ZenHub sprint authority Phase D closeout",
+      "owner": "agile-os+bridge-os",
+      "status": "open"
+    },
+    {
+      "type": "feature",
+      "id": "F-LANE-002",
+      "title": "Supply chain order witness in bridge harness",
+      "owner": "bridge-os",
+      "status": "open"
+    },
+    {
+      "type": "feature",
+      "id": "F-LANE-003",
+      "title": "Forbidden-bucket CI lint in ecosystem:lanes:check",
+      "owner": "bridge-os",
+      "status": "open"
+    },
+    {
+      "type": "decision",
+      "id": "product-arch-1",
+      "title": "terminal vs markets vs AGX exchange boundary",
+      "owner": "product",
+      "status": "open"
+    },
+    {
+      "type": "decision",
+      "id": "product-arch-2",
+      "title": "veritas-ai sibling vs platforms module",
+      "owner": "product",
+      "status": "open"
+    },
+    {
+      "type": "decision",
+      "id": "infra-shadow-sunset",
+      "title": "gtcx-os/platform/infrastructure shadow vs fabric-only SoR",
+      "owner": "gtcx-os+fabric-os",
+      "status": "open"
+    },
+    {
+      "type": "hygiene",
+      "id": "fable-folder-index",
+      "title": "Fable FOLDER-INDEX still references gtcx-docs; missing agile-os/canon-os",
+      "owner": "bridge-os",
+      "status": "open"
+    },
+    {
+      "type": "hygiene",
+      "id": "fabric-wip",
+      "title": "17 dirty paths — SECAS pen-test witnesses + settlement CI",
+      "owner": "fabric-os",
+      "status": "open"
     }
   ],
-  "threads": [],
-  "backlogCandidates": []
+  "closedTickets": [
+    "XR-FABRIC-TRADE-LANES-001",
+    "XR-BRIDGE-LANES-REGISTRY-001",
+    "XR-FABRIC-SPRINT-AUTH-001",
+    "XR-101",
+    "XR-301",
+    "XR-302",
+    "XR-104"
+  ],
+  "fleetBlockers": {
+    "complianceBelow85": "13/14 repos",
+    "fullUnlock": 0,
+    "criticalFableRepos": [
+      "bridge-os",
+      "fabric-os",
+      "baseline-os",
+      "canon-os",
+      "exploration-os",
+      "compliance-os"
+    ]
+  }
 }
