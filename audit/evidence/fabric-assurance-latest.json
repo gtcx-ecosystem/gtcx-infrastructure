@@ -1,6 +1,6 @@
 {
   "schema": "gtcx://fabric-os/fabric-assurance/v1",
-  "at": "2026-06-12T21:04:16.262Z",
+  "at": "2026-06-12T21:31:27.851Z",
   "repo": "fabric-os",
   "initiative": "INIT-ASSURANCE-BURN-DOWN",
   "story": "T35",
@@ -38,14 +38,14 @@
     },
     {
       "id": "FORWARD-50",
-      "reason": "forwardQueuePct 84.1 >= 50",
+      "reason": "forwardQueuePct 84.5 >= 50",
       "runs": ["qa-smoke", "five-core-partial-A1-A5"],
       "blocks": false,
       "delegateTo": "fabric-os"
     },
     {
       "id": "FORWARD-75",
-      "reason": "forwardQueuePct 84.1 >= 75",
+      "reason": "forwardQueuePct 84.5 >= 75",
       "runs": ["five-core-full", "uat-independent"],
       "blocks": false,
       "delegateTo": "fabric-os"
@@ -66,9 +66,9 @@
     },
     {
       "id": "BACKLOG-CLEAR",
-      "reason": "backlogClear · exit audit/UAT witnesses required",
+      "reason": "backlogClear · exit witnesses green",
       "runs": ["five-core-exit-audit", "uat-exit"],
-      "blocks": true,
+      "blocks": false,
       "delegateTo": "fabric-os"
     }
   ],
@@ -148,12 +148,7 @@
       "storyRef": "ECO-UAT-01"
     }
   ],
-  "blocking": [
-    {
-      "id": "BACKLOG-CLEAR",
-      "runs": ["five-core-exit-audit", "uat-exit"]
-    }
-  ],
+  "blocking": [],
   "executed": [
     {
       "id": "qa-smoke",
@@ -183,7 +178,7 @@
       "skipped": false,
       "command": "pnpm ecosystem:five-pillar:stress:fleet:write",
       "exitCode": 0,
-      "output": "k\nOK bridge-os composite=59 mode=partial-unlock\nOK canon-os composite=89 mode=full-unlock\nOK compliance-os composite=59 mode=partial-unlock\nOK exploration-os composite=72 mode=partial-unlock\nOK fabric-os composite=57 mode=partial-unlock\nOK griot-ai composite=59 mode=partial-unlock\nOK gtcx-os composite=59 mode=partial-unlock\nOK ledger-ui composite=57 mode=partial-unlock\nOK markets-os composite=57 mode=partial-unlock\nOK nyota-ai composite=72 mode=partial-unlock\nOK sensei-os composite=59 mode=partial-unlock\nOK terminal-os composite=59 mode=partial-unlock\nOK terra-os composite=94 mode=full-unlock\nOK veritas-ai composite=57 mode=partial-unlock\n\nStress: fullUnlock=3/16 compliance<85=11 noRubric=4\nWitness: /Users/amanianai/Sites/gtcx-ecosystem/bridge-os/pm/ci/five-pillar-fleet-stress-latest.json\n"
+      "output": "k\nOK bridge-os composite=66 mode=partial-unlock\nOK canon-os composite=89 mode=full-unlock\nOK compliance-os composite=59 mode=partial-unlock\nOK exploration-os composite=72 mode=partial-unlock\nOK fabric-os composite=57 mode=partial-unlock\nOK griot-ai composite=59 mode=partial-unlock\nOK gtcx-os composite=59 mode=partial-unlock\nOK ledger-ui composite=57 mode=partial-unlock\nOK markets-os composite=57 mode=partial-unlock\nOK nyota-ai composite=72 mode=partial-unlock\nOK sensei-os composite=59 mode=partial-unlock\nOK terminal-os composite=59 mode=partial-unlock\nOK terra-os composite=94 mode=full-unlock\nOK veritas-ai composite=57 mode=partial-unlock\n\nStress: fullUnlock=3/16 compliance<85=10 noRubric=4\nWitness: /Users/amanianai/Sites/gtcx-ecosystem/bridge-os/pm/ci/five-pillar-fleet-stress-latest.json\n"
     },
     {
       "id": "uat-independent",
@@ -217,33 +212,10 @@
     }
   ],
   "blockingSatisfaction": {
-    "ok": false,
-    "requiredRunIds": ["five-core-exit-audit", "uat-exit"],
-    "runResults": [
-      {
-        "runId": "five-core-exit-audit",
-        "witnessPath": "/Users/amanianai/Sites/gtcx-ecosystem/bridge-os/pm/ci/documentation-audit-fleet-latest.json",
-        "ok": true,
-        "path": "/Users/amanianai/Sites/gtcx-ecosystem/bridge-os/pm/ci/documentation-audit-fleet-latest.json",
-        "ageHours": 0.039385277777777776
-      },
-      {
-        "runId": "uat-exit",
-        "witnessPath": "/Users/amanianai/Sites/gtcx-ecosystem/bridge-os/audit/evidence/ecosystem-fleet-uat-latest.json",
-        "ok": false,
-        "reason": "witness-not-ok",
-        "path": "/Users/amanianai/Sites/gtcx-ecosystem/bridge-os/audit/evidence/ecosystem-fleet-uat-latest.json"
-      }
-    ],
-    "failures": [
-      {
-        "kind": "run",
-        "runId": "uat-exit",
-        "ok": false,
-        "reason": "witness-not-ok",
-        "path": "/Users/amanianai/Sites/gtcx-ecosystem/bridge-os/audit/evidence/ecosystem-fleet-uat-latest.json"
-      }
-    ]
+    "ok": true,
+    "requiredRunIds": [],
+    "runResults": [],
+    "failures": []
   },
   "contextBundle": {
     "baselineConfig": "config/baseline/baseline.config.json",

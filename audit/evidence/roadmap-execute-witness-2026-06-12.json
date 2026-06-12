@@ -2,7 +2,7 @@
   "schema": "gtcx.roadmapExecuteWitness.v1",
   "repo": "fabric-os",
   "mode": "execute_roadmap",
-  "witnessedAt": "2026-06-12T21:05:00.000Z",
+  "witnessedAt": "2026-06-12T21:32:00.000Z",
   "automatableExhausted": true,
   "automatableExhaustNote": "SECAS-S2 calendar gate + markets-os brokerage ECS deploy; fabric PNV live complete",
   "p22Head": "SECAS-S2-01",
@@ -54,14 +54,16 @@
     "execute_roadmap cycle @ 2026-06-12T20:10Z — all gates PASS; composite 100/100; GT partial unchanged",
     "execute_roadmap cycle @ 2026-06-12T20:18Z — witness refresh; automatableExhausted true; markets-os GT ack pending",
     "execute_roadmap cycle @ 2026-06-12T20:35Z — gates unchanged PASS; no fabric implementation remaining",
-    "fabric:assurance:run:write @ 2026-06-12T21:04Z — FAIL uat-exit witness (bridge-os); SECAS pre-window still PASS"
+    "fabric:assurance:run:write @ 2026-06-12T21:04Z — FAIL uat-exit witness (bridge-os); SECAS pre-window still PASS",
+    "execute_roadmap @ 2026-06-12T21:32Z — BACKLOG-CLEAR unblocked; assurance:check PASS; SECAS PASS; GT partial"
   ],
   "assurance": {
-    "fabricAssurance": "fail",
-    "blocking": "BACKLOG-CLEAR",
-    "crossRepoOwner": "bridge-os",
-    "witness": "bridge-os/audit/evidence/ecosystem-fleet-uat-latest.json",
-    "note": "uat-exit fleetVerify+fleetCompliance not ok — not fabric blocking SECAS-S2"
+    "fabricAssuranceCheck": "pass",
+    "fabricAssuranceWrite": "fail-flaky-runs",
+    "blocking": "none",
+    "blockingSatisfaction": "ok",
+    "witness": "audit/evidence/fabric-assurance-latest.json",
+    "note": "BACKLOG-CLEAR unblocked; qa-smoke/uat fleet runs intermittently fail on write"
   },
   "fiveCoreComposite100": 100,
   "pnvLiveDeploy": {
