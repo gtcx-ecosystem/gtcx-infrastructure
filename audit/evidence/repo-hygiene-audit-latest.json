@@ -4,9 +4,9 @@
   "slug": "repo-hygiene",
   "repo": "fabric-os",
   "date": "2026-06-12",
-  "score10": 7,
-  "score100": 70,
-  "score100Raw": 75,
+  "score10": 10,
+  "score100": 100,
+  "score100Raw": 100,
   "status": "probe-gates-only",
   "source": "run-five-core-audit",
   "metrics": {
@@ -33,7 +33,7 @@
     {
       "id": "p35-strict-pass",
       "label": "P35 layout strict",
-      "pass": false,
+      "pass": true,
       "severity": "P1",
       "cap100": 70
     },
@@ -52,23 +52,16 @@
       "cap100": 85
     }
   ],
-  "capsFired": [
-    {
-      "id": "gate-p35-strict-pass",
-      "label": "Gate failed: P35 layout strict",
-      "ceiling100": 70,
-      "trigger": "p35-strict-pass"
-    }
-  ],
+  "capsFired": [],
   "openP0": 0,
   "openP1": 0,
   "rubricSource": null,
   "rubricSourcePath": null,
   "checks": {
     "p35Strict": {
-      "ok": false,
-      "code": 1,
-      "out": "{\n  \"ok\": false,\n  \"protocol\": \"35-ecosystem-workspace-world-class/v5.0.0\",\n  \"engine\": \"layout-spec-enforce/v1\",\n  \"contractVersion\": \"5.1.0\",\n  \"contractPath\": \"/Users/amanianai/Sites/gtcx-ecosystem/bridge-os/config/ecosystem-layout-contract.json\",\n  \"mode\": \"strict\",\n  \"repo\": \"fabric-os\",\n  \"repoRoot\": \"/Users/amanianai/Sites/gtcx-ecosystem/fabric-os\",\n  \"repoKind\": \"product\",\n  \"layoutVersion\": \"v5\",\n  \"resolvedHubs\": {\n    \"agentic\": {\n      \"path\": \"agentic\",\n      \"kind\": \"v5\"\n    },\n    \"archive\": {\n      \"path\": \"archive\",\n      \"kind\": \"v5\"\n    },\n    \"audit\": {\n      \"path\": \"audit"
+      "ok": true,
+      "code": 0,
+      "out": "{\n  \"ok\": true,\n  \"protocol\": \"35-ecosystem-workspace-world-class/v5.0.0\",\n  \"engine\": \"layout-spec-enforce/v1\",\n  \"contractVersion\": \"5.1.0\",\n  \"contractPath\": \"/Users/amanianai/Sites/gtcx-ecosystem/bridge-os/config/ecosystem-layout-contract.json\",\n  \"mode\": \"strict\",\n  \"repo\": \"fabric-os\",\n  \"repoRoot\": \"/Users/amanianai/Sites/gtcx-ecosystem/fabric-os\",\n  \"repoKind\": \"product\",\n  \"layoutVersion\": \"v5\",\n  \"resolvedHubs\": {\n    \"agentic\": {\n      \"path\": \"agentic\",\n      \"kind\": \"v5\"\n    },\n    \"archive\": {\n      \"path\": \"archive\",\n      \"kind\": \"v5\"\n    },\n    \"audit\": {\n      \"path\": \"audit\""
     },
     "docsSor": {
       "ok": true,
@@ -83,6 +76,6 @@
       "detail": "audit/FIVE-CORE-AUDITS.md"
     }
   },
-  "gaps": ["p35Strict"],
+  "gaps": [],
   "runbook": "audit/runbooks/A5-repo-hygiene.md"
 }

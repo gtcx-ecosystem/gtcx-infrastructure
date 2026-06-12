@@ -2,7 +2,7 @@
   "storyId": "T7",
   "initiative": "INIT-P35-TOOLCHAIN",
   "status": "done",
-  "checkedAt": "2026-06-09T19:18:49.978Z",
+  "checkedAt": "2026-06-12T19:57:49.005Z",
   "owner": "fabric-os",
   "policySoR": "bridge-os/pm/spec/environment-cost-policy.json",
   "governanceSoR": "bridge-os/pm/spec/aws-cost-governance.json",

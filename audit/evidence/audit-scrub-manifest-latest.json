@@ -1,33 +1,13 @@
 {
   "schema": "gtcx.auditScrubManifest.v1",
   "repo": "fabric-os",
-  "date": "2026-06-10",
+  "date": "2026-06-12",
   "initiative": "INIT-AUDIT-CONSOLIDATION",
   "dryRun": false,
   "moved": [
     {
-      "from": "pen-test-intake-evidence-2026-05-31.md",
-      "to": "audit/archive/superseded/audits/pen-test-intake-evidence-2026-05-31.md"
-    },
-    {
-      "from": "pen-test-rfp-2026.md",
-      "to": "audit/archive/superseded/audits/pen-test-rfp-2026.md"
-    },
-    {
-      "from": "pen-test-scope-2026.md",
-      "to": "audit/archive/superseded/audits/pen-test-scope-2026.md"
-    },
-    {
-      "from": "product-management/auto-dev-state.md",
-      "to": "audit/archive/superseded/audits/product-management_auto-dev-state.md"
-    },
-    {
-      "from": "product-management/execution-roadmap.md",
-      "to": "audit/archive/superseded/audits/product-management_execution-roadmap.md"
-    },
-    {
-      "from": "product-management/secas-execution-roadmap.md",
-      "to": "audit/archive/superseded/audits/product-management_secas-execution-roadmap.md"
+      "from": "legacy-repo-id-audit-2026-06-12.md",
+      "to": "audit/archive/superseded/audits/legacy-repo-id-audit-2026-06-12.md"
     }
   ],
   "fiveCoreOnly": [

@@ -2,8 +2,8 @@
   "schema": "gtcx://audit/composite/v2",
   "repo": "fabric-os",
   "date": "2026-06-12",
-  "composite100": 87,
-  "composite100Raw": 88,
+  "composite100": 97,
+  "composite100Raw": 97,
   "productionReady": true,
   "openP0": 0,
   "openP1": 0,
@@ -14,13 +14,6 @@
       "ceiling100": 80,
       "trigger": "baseline-session-ok",
       "coreId": "A3-AGENTIC-INNOVATION"
-    },
-    {
-      "id": "gate-p35-strict-pass",
-      "label": "Gate failed: P35 layout strict",
-      "ceiling100": 70,
-      "trigger": "p35-strict-pass",
-      "coreId": "A5-REPO-HYGIENE"
     }
   ],
   "cores": {
@@ -59,8 +52,8 @@
     },
     "A2-PRODUCTION-GRADE": {
       "slug": "production-grade",
-      "score100": 80,
-      "score100Raw": 80,
+      "score100": 100,
+      "score100Raw": 100,
       "weight": 0.2,
       "status": "probe-gates-only",
       "metrics": {
@@ -122,8 +115,8 @@
     },
     "A5-REPO-HYGIENE": {
       "slug": "repo-hygiene",
-      "score100": 70,
-      "score100Raw": 75,
+      "score100": 100,
+      "score100Raw": 100,
       "weight": 0.2,
       "status": "probe-gates-only",
       "metrics": {
