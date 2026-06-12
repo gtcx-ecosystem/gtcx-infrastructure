@@ -18,5 +18,6 @@
   "rdsSecurityGroup": "sg-0ef616997e1005284",
   "ingressAdded": ["sg-0913949c0a93ba11b", "sg-0da14ad389d427d04"],
   "status": "active",
-  "note": "Cross-VPC peering for F10 DR path; operator laptop probe still requires VPN or in-VPC ECS runner"
+  "note": "Cross-VPC peering active; in-VPC probe confirms RDS reachable at 10.0.100.156 — auth credential reconcile pending",
+  "probeWitness": "docs/operations/evidence/vpc-markets-rds-probe-2026-06-12.json"
 }

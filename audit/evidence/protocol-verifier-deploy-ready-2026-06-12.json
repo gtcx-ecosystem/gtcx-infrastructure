@@ -1,0 +1,44 @@
+{
+  "schema": "gtcx.protocolVerifierDeployReady.v1",
+  "id": "PROTOCOL-VERIFIER-DEPLOY-READY-2026-06-12",
+  "ticket": "XR-MKT-PROTOCOL-NATIVE-001",
+  "program": "PROG-CAPITAL-FORMATION-001",
+  "laneId": "L4b",
+  "preparedAt": "2026-06-12T15:35:00.000Z",
+  "preparedBy": "agent:fabric-os",
+  "pnv1": {
+    "owner": "gtcx-os/protocols",
+    "commit": "aeefd48e",
+    "status": "implemented",
+    "contracts": [
+      "manifest signing preimage",
+      "Ed25519 wire envelope",
+      "SHA-256 receipt binding",
+      "authorized-signer registry",
+      "purpose-bound verification request/receipt/rejection"
+    ]
+  },
+  "fabricDeployPrerequisites": [
+    { "item": "Live verifier route in staging", "owner": "fabric-os", "status": "pending" },
+    {
+      "item": "GTCX_OS_PROTOCOLS_VERIFIER_URL + TOKEN via ESO",
+      "owner": "fabric-os",
+      "status": "pending"
+    },
+    {
+      "item": "Replay/revocation dependency readiness probes",
+      "owner": "fabric-os",
+      "status": "pending"
+    },
+    { "item": "Markets trace route health probe", "owner": "fabric-os", "status": "pending" },
+    {
+      "item": "Golden Transaction live trace pack",
+      "owner": "fabric-os + markets-os",
+      "status": "pending"
+    }
+  ],
+  "inbound": "docs/operations/coordination/from-markets-os-protocol-native-runtime-2026-06-12.md",
+  "ack": "docs/operations/coordination/outbound/to-markets-os-xr-mkt-protocol-native-ack-2026-06-12.md",
+  "blocksIR": false,
+  "repo": "fabric-os"
+}

@@ -1,0 +1,28 @@
+{
+  "schema": "gtcx://fabric-os/vpc-markets-rds-probe/v1",
+  "id": "VPC-MARKETS-RDS-PROBE-2026-06-12",
+  "frictionId": "XR-MKT-RDS-VPC",
+  "task": "F10",
+  "probedAt": "2026-06-12T15:35:12.139Z",
+  "probedBy": "agent:fabric-os",
+  "command": "node platform/scripts/vpc-markets-rds-probe.mjs",
+  "runner": {
+    "type": "kubectl",
+    "namespace": "gtcx",
+    "image": "postgres:16-alpine"
+  },
+  "target": {
+    "host": "gtx-markets-staging-0.c9q6m82euzii.af-south-1.rds.amazonaws.com",
+    "port": 5432
+  },
+  "peeringWitness": "docs/operations/evidence/vpc-peering-gtcx-markets-staging-2026-06-12.json",
+  "peeringConnectionId": "pcx-014f211f0e7c2cb08",
+  "result": "PARTIAL",
+  "peeringPathVerified": true,
+  "authOk": false,
+  "exitCode": 2,
+  "stdoutRedacted": "psql: error: connection to server at \"gtx-markets-staging.cluster-c9q6m82euzii.af-south-1.rds.amazonaws.com\" (10.0.100.156), port 5432 failed: FATAL:  password authentication failed for user \"gtxmarke",
+  "stderrSummary": "pod gtcx/vpc-rds-probe-1781278505133 terminated (Error)",
+  "blocksIR": false,
+  "repo": "fabric-os"
+}

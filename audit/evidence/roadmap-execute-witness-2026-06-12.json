@@ -2,7 +2,7 @@
   "schema": "gtcx.roadmapExecuteWitness.v1",
   "repo": "fabric-os",
   "mode": "execute_roadmap",
-  "witnessedAt": "2026-06-12T15:20:00.000Z",
+  "witnessedAt": "2026-06-12T15:35:00.000Z",
   "p22Head": "SECAS-S2-01",
   "calendarGate": {
     "blockedUntil": "2026-06-21",
@@ -19,7 +19,10 @@
     "P24 outbound-ack XR-MKT-PROTOCOL-NATIVE-001 to markets-os",
     "VPC peering witness pcx-014f211f0e7c2cb08 (XR-MKT-RDS-VPC partial)",
     "P24 outbound-ack XR-MKT-TRADEPASS-001 TradePass programme",
-    "fleet health refresh PASS 4/4 (2026-06-12T15:17:27Z)"
+    "fleet health refresh PASS 4/4 (2026-06-12T15:17:27Z)",
+    "PNV-1 gtcx-os aeefd48e reconciled in protocol-native outbound ack",
+    "protocol-verifier-deploy-ready witness",
+    "XR-MKT-RDS-VPC in-VPC psql probe PARTIAL — peering path verified, auth pending"
   ],
   "classSDeferred": [
     { "id": "SECAS-S2-01", "item": "Vendor pen-test report ingest", "blockedUntil": "2026-06-21" },

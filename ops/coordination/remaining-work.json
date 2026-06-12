@@ -2,7 +2,7 @@
   "$schema": "gtcx://workspace/remaining-work/v1",
   "repo": "fabric-os",
   "updated": "2026-06-12",
-  "reconciledAt": "2026-06-12T15:20:00.000Z",
+  "reconciledAt": "2026-06-12T15:35:00.000Z",
   "sessionRef": "fabric-os-domain-model-2026-06-12",
   "items": [
     {
@@ -23,7 +23,8 @@
       "status": "in_progress",
       "authority": "R",
       "witness": "docs/operations/evidence/vpc-peering-gtcx-markets-staging-2026-06-12.json",
-      "blockedBy": "in-vpc psql probe pending",
+      "blockedBy": "psql auth fail — peering path verified",
+      "probeWitness": "docs/operations/evidence/vpc-markets-rds-probe-2026-06-12.json",
       "blocksIR": false
     },
     {

@@ -2,7 +2,7 @@
   "schema": "gtcx://fabric-os/daas-cards-check/v1",
   "protocol": "P41-DEVOPS-AS-A-SERVICE",
   "sprint": "DAAS-S2",
-  "checkedAt": "2026-06-12T14:43:54.714Z",
+  "checkedAt": "2026-06-12T15:35:33.622Z",
   "owner": "fabric-os",
   "gates": {
     "index": {

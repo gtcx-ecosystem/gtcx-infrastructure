@@ -83,7 +83,8 @@
       "infraAction": "pcx-014f211f0e7c2cb08 active; RDS SG ingress EKS node+cluster SG",
       "witness": "docs/operations/evidence/vpc-peering-gtcx-markets-staging-2026-06-12.json",
       "executionStatus": "partial",
-      "blockedBy": "in-vpc psql probe pending",
+      "blockedBy": "psql auth fail — peering path verified (10.0.100.156 reachable)",
+      "probeWitness": "docs/operations/evidence/vpc-markets-rds-probe-2026-06-12.json",
       "blocksIR": false
     }
   ]

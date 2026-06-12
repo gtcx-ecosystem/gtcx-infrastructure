@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "testType": "cross-repo-health-probe",
   "storyId": "S1-13",
-  "timestamp": "2026-06-12T15:17:27.140Z",
+  "timestamp": "2026-06-12T15:33:02.654Z",
   "environment": "staging",
   "overall": "PASS",
   "services": [
@@ -14,7 +14,7 @@
       "error": null,
       "body": {
         "status": "up",
-        "timestamp": "2026-06-12T15:17:22.356Z",
+        "timestamp": "2026-06-12T15:32:58.409Z",
         "database": {
           "status": "up",
           "details": {
@@ -36,13 +36,13 @@
         "audit-trail": {
           "status": "up",
           "details": {
-            "lastAppend": "2026-06-12T15:17:22.356Z",
+            "lastAppend": "2026-06-12T15:32:58.409Z",
             "chainVerified": true
           }
         }
       },
       "transport": "fetch",
-      "latencyMs": 1797,
+      "latencyMs": 1728,
       "required": true
     },
     {
@@ -53,7 +53,7 @@
       "error": null,
       "body": {
         "status": "up",
-        "timestamp": "2026-06-12T15:17:22.292Z",
+        "timestamp": "2026-06-12T15:32:58.362Z",
         "database": {
           "status": "up",
           "details": {
@@ -75,13 +75,13 @@
         "audit-trail": {
           "status": "up",
           "details": {
-            "lastAppend": "2026-06-12T15:17:22.292Z",
+            "lastAppend": "2026-06-12T15:32:58.362Z",
             "chainVerified": true
           }
         }
       },
       "transport": "fetch",
-      "latencyMs": 1751,
+      "latencyMs": 1694,
       "required": true
     },
     {
@@ -93,7 +93,7 @@
       "body": {
         "service": "intelligence-sdk",
         "version": "0.1.0",
-        "uptime": 224558,
+        "uptime": 225514,
         "status": "healthy",
         "dependencies": {
           "inference_backend": {
@@ -110,8 +110,8 @@
           "jobs": {
             "anomaly": {
               "enabled": true,
-              "lastRun": "2026-06-12T15:14:44.637Z",
-              "runCount": 748
+              "lastRun": "2026-06-12T15:29:24.828Z",
+              "runCount": 751
             },
             "trend": {
               "enabled": true,
@@ -137,7 +137,7 @@
         }
       },
       "transport": "fetch",
-      "latencyMs": 1924,
+      "latencyMs": 1958,
       "required": true
     },
     {
@@ -166,7 +166,7 @@
         "availableProviders": ["claude-sonnet", "claude-haiku"]
       },
       "transport": "kubectl-exec",
-      "latencyMs": 6662,
+      "latencyMs": 6050,
       "required": false
     }
   ],

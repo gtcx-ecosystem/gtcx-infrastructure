@@ -64,6 +64,7 @@
     "taas:tool-scout:run": "node platform/scripts/taas-tool-scout-run.mjs",
     "taas:tool-scout:run:write": "node platform/scripts/taas-tool-scout-run.mjs --write",
     "daas:fleet:health": "node platform/tools/scripts/cross-repo-health-probe.mjs",
+    "infra:vpc:markets-rds:probe": "node platform/scripts/vpc-markets-rds-probe.mjs",
     "agent:launch:check": "node ../gtcx-agentic/platform/scripts/check-agent-launch-focus.mjs",
     "agent:work-selection:check": "node platform/scripts/check-agent-work-selection.mjs",
     "agent:execution-obligation:check": "node platform/scripts/check-agent-execution-obligation.mjs",
