@@ -64,6 +64,7 @@
         "audit/evidence/ext-inf-002-sow-approval-2026-06-10.json",
         "audit/evidence/pen-test-report-ingest-ready-2026-06-12.json",
         "audit/evidence/pen-test-window-execution-ready-2026-06-12.json",
+        "audit/evidence/pen-test-pre-window-fleet-health-2026-06-12.json",
         "docs/operations/coordination/from-fabric-os-ext-inf-002-sow-approved-2026-06-10.md"
       ],
       "acceptance": [

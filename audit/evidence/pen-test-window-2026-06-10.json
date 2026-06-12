@@ -27,7 +27,8 @@
   "prerequisites": {
     "fleetHealth": "audit/evidence/cross-repo-health/cross-repo-health-probe-latest.json",
     "fleetHealthResult": "PASS 4/4",
-    "fleetHealthAt": "2026-06-10T09:27:04.746Z"
+    "fleetHealthAt": "2026-06-12T14:50:26.389Z",
+    "preWindowWitness": "audit/evidence/pen-test-pre-window-fleet-health-2026-06-12.json"
   },
   "status": "scheduled",
   "nextMilestone": "ingest vendor report to audit/evidence/pen-test-report-YYYY-MM-DD.json",

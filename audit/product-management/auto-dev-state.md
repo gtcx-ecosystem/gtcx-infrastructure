@@ -51,6 +51,8 @@ last_reconciled: 2026-06-12T14:45:00.000Z
 - **Window ready:** `audit/evidence/pen-test-window-execution-ready-2026-06-12.json`
 - **Ingest dry-run:** `platform/fixtures/secas/pen-test-report-synthetic.json` — PASS (no evidence write)
 - **Blocked:** vendor report ingest until post 2026-06-21 window
+- **Fleet health:** `pen-test-pre-window-fleet-health-2026-06-12.json` — PASS 4/4 (2026-06-12)
+- **P24 ack:** `outbound/to-markets-os-xr-mkt-protocol-native-ack-2026-06-12.md`
 
 ## Evidence
 

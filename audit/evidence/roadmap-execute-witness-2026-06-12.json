@@ -2,7 +2,7 @@
   "schema": "gtcx.roadmapExecuteWitness.v1",
   "repo": "fabric-os",
   "mode": "execute_roadmap",
-  "witnessedAt": "2026-06-12T15:00:00.000Z",
+  "witnessedAt": "2026-06-12T14:55:00.000Z",
   "p22Head": "SECAS-S2-01",
   "calendarGate": {
     "blockedUntil": "2026-06-21",
@@ -14,7 +14,9 @@
     "fabric:lanes:check PASS",
     "daas:cards:check PASS",
     "pen-test-window-execution-ready witness",
-    "ingest dry-run validation (synthetic fixture — no evidence write)"
+    "ingest dry-run validation (synthetic fixture — no evidence write)",
+    "pre-window fleet health probe PASS 4/4 (daas:fleet:health)",
+    "P24 outbound-ack XR-MKT-PROTOCOL-NATIVE-001 to markets-os"
   ],
   "classSDeferred": [
     { "id": "SECAS-S2-01", "item": "Vendor pen-test report ingest", "blockedUntil": "2026-06-21" },

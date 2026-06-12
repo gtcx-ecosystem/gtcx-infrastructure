@@ -2,7 +2,7 @@
 title: Execution roadmap — Security-as-a-Service
 status: current
 date: 2026-06-12
-last_reconciled: 2026-06-12T14:44:32.900Z
+last_reconciled: 2026-06-12T14:51:08.154Z
 owner: fabric-os
 program: INIT-GTCX-INFRA-SECAS
 generated: true
@@ -33,7 +33,7 @@ sources:
 
 ### SECAS-S2-01: Live-stack pen-test execution window
 
-**Files:** audit/pen-test-intake-evidence-2026-05-31.md, audit/evidence/ext-inf-002-sow-approval-2026-06-10.json, audit/evidence/pen-test-report-ingest-ready-2026-06-12.json, audit/evidence/pen-test-window-execution-ready-2026-06-12.json, docs/operations/coordination/from-fabric-os-ext-inf-002-sow-approved-2026-06-10.md
+**Files:** audit/pen-test-intake-evidence-2026-05-31.md, audit/evidence/ext-inf-002-sow-approval-2026-06-10.json, audit/evidence/pen-test-report-ingest-ready-2026-06-12.json, audit/evidence/pen-test-window-execution-ready-2026-06-12.json, audit/evidence/pen-test-pre-window-fleet-health-2026-06-12.json, docs/operations/coordination/from-fabric-os-ext-inf-002-sow-approved-2026-06-10.md
 
 **Acceptance**
 
