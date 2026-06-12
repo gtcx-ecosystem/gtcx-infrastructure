@@ -23,7 +23,7 @@ Each initiative below was indicated in the 2026-06-11/12 strategy session. **Own
 | **Status**     | draft                                                                          |
 | **Owner**      | fabric-os (spec author) → canon-os (ratification)                              |
 | **Spec**       | `docs/specs/ecosystem/trade-ecosystem-lanes-spec.md`                           |
-| **Machine**    | `pm/spec/trade-ecosystem-lanes.v1.json`                                        |
+| **Machine**    | `pm/spec/trade-ecosystem-lanes.json`                                           |
 | **Goal**       | Replace flat D1–D4 and P-tier diagrams with normative lane IDs                 |
 | **Acceptance** | canon frame published; bridge registry synced; no repo lists gtcx-os under I/U |
 | **Authority**  | R                                                                              |
@@ -51,7 +51,7 @@ Each initiative below was indicated in the 2026-06-11/12 strategy session. **Own
 **Features:**
 
 - F-CONST-001 — Article IV bis table
-- F-CONST-002 — Cross-reference to trade-ecosystem-lanes.v1.json
+- F-CONST-002 — Cross-reference to trade-ecosystem-lanes.json
 
 ---
 
@@ -97,7 +97,7 @@ Each initiative below was indicated in the 2026-06-11/12 strategy session. **Own
 | **Owner**      | bridge-os                                                                                |
 | **Handoff**    | `docs/operations/coordination/to-bridge-os-trade-ecosystem-lanes-registry-2026-06-12.md` |
 | **Goal**       | Add `tradeCore` plane; remove gtcx-os from fabric/agentRuntime confusion                 |
-| **Files**      | `pm/spec/gtcx-execution-engine.v1.json`, `config/fleet-deploy-readiness-registry.json`   |
+| **Files**      | `pm/spec/gtcx-execution-engine.json`, `config/fleet-deploy-readiness-registry.json`      |
 | **Acceptance** | `pnpm ecosystem:execution-engine:check` green with lane refs                             |
 
 ---

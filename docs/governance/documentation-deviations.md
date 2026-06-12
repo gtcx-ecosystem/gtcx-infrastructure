@@ -91,5 +91,5 @@ When this repo is not the authority for a referenced concept:
 - [`./README.md`](./README.md) — governance corpus index
 - [`../README.md`](../README.md) — docs index
 - [`../audit/docs-standard-compliance-2026-05-24-cycle-2.md`](../audit/docs-standard-compliance-2026-05-24-cycle-2.md) — most recent docs-standard self-attestation
-- Protocol 1 v2.0: https://github.com/gtcx-ecosystem/gtcx-docs/blob/main/system-sop/1-protocols/1-docs-structure/protocol.md
-- Protocol 13: https://github.com/gtcx-ecosystem/gtcx-docs/blob/main/system-sop/1-protocols/13-architecture-diagrams/protocol.md
+- Protocol 1 v2.0: https://github.com/gtcx-ecosystem/canon-os/blob/main/system-sop/1-protocols/1-docs-structure/protocol.md
+- Protocol 13: https://github.com/gtcx-ecosystem/canon-os/blob/main/system-sop/1-protocols/13-architecture-diagrams/protocol.md

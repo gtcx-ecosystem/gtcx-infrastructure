@@ -15,7 +15,7 @@ review_cycle: weekly
 
 > **Reconciled 2026-06-12:** This file is an **archival open-items inventory**, not the P22 system-of-record. Agents must use **`docs/operations/agent-work-selection.md`** (work register) + **`audit/product-management/secas-execution-roadmap.md`** (SECAS) + **`pnpm agent:next-work`** for selection. Many rows below are **done** per session memory and the work register — do not treat the 43-item headline as live backlog.
 >
-> **P22 next (fabric-os):** `SECAS-S2-01` (in_progress) then `S4-07` (pending). LAUNCH-PLAN-01/02/03 **done** — not selectable.
+> **P22 next (fabric-os):** `SECAS-S2-01` (in_progress — await vendor report post 2026-06-21). S4-07 **done**. LAUNCH-PLAN-01/02/03 **done** — not selectable.
 >
 > **Reconciled from:** execution-roadmap-2026-06-01, master-audit-2026-06-02, 10-10-roadmap-2026-06-02, cross-repo-sprint-workplan-2026-06, INF-86 ceremony tracker, session forensic review 2026-06-04, and open-items inventory 2026-06-05.
 >
@@ -25,7 +25,7 @@ review_cycle: weekly
 
 ## Open Items Inventory
 
-**Historical snapshot (2026-06-05): 43 items** — superseded by work register reconcile 2026-06-12. **Live implement queue:** S4-07 + SECAS-S2-01; **human parallel:** EXT-INF-013 (ZWCMP owner).
+**Historical snapshot (2026-06-05): 43 items** — superseded by work register reconcile 2026-06-12. **Live implement queue:** SECAS-S2-01 only; **human parallel:** EXT-INF-013 (ZWCMP owner).
 
 ### P0 — Critical / GTM Blockers (5)
 

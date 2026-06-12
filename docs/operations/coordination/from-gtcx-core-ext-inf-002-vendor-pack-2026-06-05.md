@@ -4,7 +4,7 @@ status: acknowledged
 date: 2026-06-07
 owner: fabric-os
 source: gtcx-core
-protocol: gtcx-docs/01-docs/governance/protocols/24-cross-repo-coordination/protocol.md
+protocol: canon-os/01-docs/governance/protocols/24-cross-repo-coordination/protocol.md
 tags: ['coordination', 'inbound', 'ext-inf-002', 'pen-test']
 ---
 

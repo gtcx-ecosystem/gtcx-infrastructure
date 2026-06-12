@@ -37,7 +37,7 @@ AGENT_FRAME=regulatory-audit pnpm agent:next-work
 
 ## Active phase
 
-**Co-primary programs (2026-06-12):** DAAS **complete** · **SECAS-S2 in_progress** (pen-test window 2026-06-17..21). IR implement queue nearly drained — **S4-07** (P2 flake) remains.
+**Co-primary programs (2026-06-12):** DAAS **complete** · **SECAS-S2 in_progress** (pen-test window 2026-06-17..21). IR implement queue **drained** — S4-07 **done** (P35 path drift).
 
 When `pnpm agent:next-work` returns a story ID, execute it. When `backlogClear: true`, run **witness** (`node 03-platform/tools/scripts/validate-all.mjs`) + refresh evidence gates — do not idle. **Human gates (XC)** run parallel — do not block IR implement queue.
 

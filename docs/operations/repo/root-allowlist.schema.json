@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://gtcx.org/schemas/audit/root-allowlist.schema.json",
   "title": "Repo Root Allowlist",
-  "description": "Canonical schema for 01-docs/04-ops/repo/root-allowlist.json. Consumed by 03-platform/scripts/ops/check-workspace-root-cleanliness.py. Owned by gtcx-docs/03-platform/tools/audit/audit-framework/schemas/root-allowlist.schema.json.",
+  "description": "Canonical schema for 01-docs/04-ops/repo/root-allowlist.json. Consumed by 03-platform/scripts/ops/check-workspace-root-cleanliness.py. Owned by canon-os/03-platform/tools/audit/audit-framework/schemas/root-allowlist.schema.json.",
   "type": "object",
   "required": ["version", "required_files", "allowed_files", "allowed_directories"],
   "additionalProperties": false,

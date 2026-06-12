@@ -34,10 +34,10 @@ The ecosystem review of 2026-05-12 (`01-docs/05-audit/ecosystem-repo-review-2026
 
 **Deprecate both repos.** Archive them in GitHub and redirect all references.
 
-| Repo          | Superseded By                                   | Rationale                                                                                                                                                                |
-| ------------- | ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `gtcx-core12` | `compliance-os` → `services/core12/`            | Standalone repo **deleted** 2026-06-01. Python Core12 service lives in the ComplianceOS monorepo.                                                                        |
-| `gtcx-amis`   | `gtcx-infrastructure` (templates) + `sensei-ai` | AMANI/MABA templates in `03-platform/tools/templates/projects/`. Repo **deleted** 2026-06-01; persona archive in `gtcx-docs/01-docs/archive/_historical/amis-personas/`. |
+| Repo          | Superseded By                                   | Rationale                                                                                                                                                               |
+| ------------- | ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `gtcx-core12` | `compliance-os` → `services/core12/`            | Standalone repo **deleted** 2026-06-01. Python Core12 service lives in the ComplianceOS monorepo.                                                                       |
+| `gtcx-amis`   | `gtcx-infrastructure` (templates) + `sensei-ai` | AMANI/MABA templates in `03-platform/tools/templates/projects/`. Repo **deleted** 2026-06-01; persona archive in `canon-os/01-docs/archive/_historical/amis-personas/`. |
 
 ---
 
@@ -73,7 +73,7 @@ The ecosystem review of 2026-05-12 (`01-docs/05-audit/ecosystem-repo-review-2026
 - [x] Deleted empty demo repos `agx-demo1`, `sgx-demo` (2026-06-01)
 - [x] Deleted `gtcx-amis` from GitHub (2026-06-01; persona docs in `gtcx-docs` archive; bundle in `_local-backups/`)
 - [x] Deleted Sensei GitBook mirror repos `sensei-ai-docs-{developers,operations,enterprise}` (2026-06-01; no live content migrated — see `sensei-ai/01-docs/_historical/migration-review/`)
-- [x] Deleted `gtcx-complianceos` from GitHub (2026-06-02; archive in `gtcx-docs/01-docs/archive/_historical/complianceos-legacy/`; bundle in `_local-backups/`)
+- [x] Deleted `gtcx-complianceos` from GitHub (2026-06-02; archive in `canon-os/01-docs/archive/_historical/complianceos-legacy/`; bundle in `_local-backups/`)
 - [ ] Notify `#engineering` Slack channel
 
 ---

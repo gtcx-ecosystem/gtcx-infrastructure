@@ -5,7 +5,5 @@
   "branch": "main",
   "ok": true,
   "errors": [],
-  "warnings": [
-    "pushing protected branch main"
-  ]
+  "warnings": ["pushing protected branch main"]
 }

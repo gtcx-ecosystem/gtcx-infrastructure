@@ -8,7 +8,7 @@ date: 2026-06-12
 
 ## Context
 
-Coordination, P44 Fabric Consumption, and `service-fabric.v1.json` used `fabric-os`
+Coordination, P44 Fabric Consumption, and `service-fabric.json` used `fabric-os`
 conceptually while the GitHub repository remained `gtcx-infrastructure`, causing
 hub and workspace discovery failures parallel to the markets-os rename.
 
@@ -17,7 +17,7 @@ hub and workspace discovery failures parallel to the markets-os rename.
 - **Canonical repo id:** `fabric-os`
 - **GitHub:** `gtcx-ecosystem/fabric-os` (renamed 2026-06-12; redirect from `gtcx-infrastructure`)
 - **Local checkout:** `~/Sites/gtcx-ecosystem/fabric-os` (no legacy folder symlinks)
-- **Legacy id:** `gtcx-infrastructure` resolves via `bridge-os/pm/spec/ecosystem-repo-aliases.v1.json` (IDs only — not disk paths)
+- **Legacy id:** `gtcx-infrastructure` resolves via `bridge-os/pm/spec/ecosystem-repo-aliases.json` (IDs only — not disk paths)
 
 ## Consequences
 
@@ -28,8 +28,8 @@ hub and workspace discovery failures parallel to the markets-os rename.
 
 ## References
 
-- `bridge-os/pm/spec/ecosystem-repo-aliases.v1.json`
-- `bridge-os/pm/spec/service-fabric.v1.json`
+- `bridge-os/pm/spec/ecosystem-repo-aliases.json`
+- `bridge-os/pm/spec/service-fabric.json`
 - ADR-0006 (markets-os rename pattern)
 
 ## Does NOT Cover

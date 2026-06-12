@@ -11,7 +11,7 @@ er1: ER-1-10
 work_id: W2-E2E / XR-502 / XR-503 / XR-504
 authority_class: A
 authorization_artifact: compliance-os/01-docs/04-ops/coordination/to-fabric-os-w2-secrets-inbound-2026-06-04.md
-protocol: gtcx-docs/01-docs/governance/protocols/24-cross-repo-coordination/protocol.md
+protocol: canon-os/01-docs/governance/protocols/24-cross-repo-coordination/protocol.md
 document_id: INFRA-OUT-HUB17-PROD-001
 tags: ['coordination', 'outbound', 'hub-17', 'w2', 'prod', 'class-a']
 ---

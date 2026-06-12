@@ -8,7 +8,7 @@ role: platform-engineer
 
 # AWS control plane — fabric-os
 
-**Canonical ecosystem spec (SoR: gtcx-docs):** [`gtcx-docs/01-docs/architecture/cloud-placement/README.md`](../../../../gtcx-docs/01-docs/architecture/cloud-placement/README.md) → [`gtcx-ecosystem-2026-06-05.md`](../../../../gtcx-docs/01-docs/architecture/cloud-placement/gtcx-ecosystem-2026-06-05.md) · **Per-repo register:** [`repo-register-2026-06-05.md`](../../../../gtcx-docs/01-docs/architecture/cloud-placement/repo-register-2026-06-05.md)
+**Canonical ecosystem spec (SoR: gtcx-docs):** [`canon-os/01-docs/architecture/cloud-placement/README.md`](../../../../canon-os/01-docs/architecture/cloud-placement/README.md) → [`gtcx-ecosystem-2026-06-05.md`](../../../../canon-os/01-docs/architecture/cloud-placement/gtcx-ecosystem-2026-06-05.md) · **Per-repo register:** [`repo-register-2026-06-05.md`](../../../../canon-os/01-docs/architecture/cloud-placement/repo-register-2026-06-05.md)
 
 > **Infra agents — start here for “what do I do per repo?”**  
 > [`infra-per-repo-action-matrix-2026-06-05.md`](./infra-per-repo-action-matrix-2026-06-05.md) (P0/P1 checklist; owner vs infra split)

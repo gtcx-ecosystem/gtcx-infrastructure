@@ -5,7 +5,7 @@ date: 2026-06-08
 owner: fabric-os
 to: gtcx-agentic
 from: fabric-os
-protocol: gtcx-docs/01-docs/governance/protocols/24-cross-repo-coordination/protocol.md
+protocol: canon-os/01-docs/governance/protocols/24-cross-repo-coordination/protocol.md
 document_id: INFRA-OUT-AGENTIC-BLOCKERS-001
 priority: P0
 tags: ['coordination', 'outbound', 'human-gates', 'ext-inf', 'witness']

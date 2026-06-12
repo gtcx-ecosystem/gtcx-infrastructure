@@ -231,5 +231,5 @@ Fabric **records** these gates; it does **not** execute Class S approvals.
 
 - markets-os: `docs/architecture/eix/fractionalization.md`, `authority-model.md`
 - fabric-os: XR-MKT-011 authority URL matrix
-- bridge-os: `pm/spec/service-fabric.v1.json`, `pm/spec/gtcx-execution-engine.v1.json`
+- bridge-os: `pm/spec/service-fabric.json`, `pm/spec/gtcx-execution-engine.json`
 - compliance-os: cloud placement + W2 hub witnesses

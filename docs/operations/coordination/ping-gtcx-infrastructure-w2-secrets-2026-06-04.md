@@ -70,4 +70,4 @@ Confirm `COMPLIANCE_OS_INTAKE_*` + `COMPLIANCE_OS_TERMINAL_*` (+ internal token)
 - ExplorationOS retest: `ping-exploration-os-w2-m2m-wire-2026-06-03.md`
 - TerminalOS receiver: `ping-terminal-os-w2-xr505-2026-06-03.md`
 - Infra W2 readiness: `to-exploration-os-w2-dependencies-2026-06-03.md` § W2 prod E2E
-- Hub P1 register: `gtcx-docs/01-docs/governance/.../hub-p1-register.md`
+- Hub P1 register: `canon-os/01-docs/governance/.../hub-p1-register.md`

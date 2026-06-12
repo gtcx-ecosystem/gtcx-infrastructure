@@ -85,7 +85,7 @@ work_ids: [XR-507, XR-508, XR-502, W2-E2E]
 
 ## Cross-references
 
-- Hub P1 register: `gtcx-docs/01-docs/governance/.../hub-p1-register.md`
+- Hub P1 register: `canon-os/01-docs/governance/.../hub-p1-register.md`
 - Protocols unblock doc: `gtcx-protocols/01-docs/operations/coordination/from-gtcx-protocols-cross-repo-unblock-2026-06-03.md`
 - Infra remaining work: `fabric-os/01-docs/04-ops/coordination/remaining-cross-repo-work-2026-06-03.md`
 - Sprint workplan: `fabric-os/01-docs/04-ops/coordination/cross-repo-sprint-workplan-2026-06.md`

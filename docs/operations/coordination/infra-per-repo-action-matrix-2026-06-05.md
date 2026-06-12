@@ -7,21 +7,21 @@ role: platform-engineer
 document_id: INF-PER-REPO-001
 parent: cloud-placement-aws-control-plane-2026-06-05.md
 initiative: INIT-FABRIC-LANE-DEPLOY-MATRIX
-laneRegistry: pm/spec/trade-ecosystem-lanes.v1.json
+laneRegistry: pm/spec/trade-ecosystem-lanes.json
 ---
 
 # Infra per-repo action matrix
 
 **Audience:** fabric-os agents only.
 
-**Problem this solves:** The ecosystem register ([`repo-register-2026-06-05.md`](../../../../gtcx-docs/01-docs/architecture/cloud-placement/repo-register-2026-06-05.md)) describes **every repo’s cloud posture**. This file says **what fabric-os must do** for each repo — and what is **not** infra’s job.
+**Problem this solves:** The ecosystem register ([`repo-register-2026-06-05.md`](../../../../canon-os/01-docs/architecture/cloud-placement/repo-register-2026-06-05.md)) describes **every repo’s cloud posture**. This file says **what fabric-os must do** for each repo — and what is **not** infra’s job.
 
 **Read order:**
 
 1. **This file** — execution checklist
 2. [`cloud-placement-aws-control-plane-2026-06-05.md`](./cloud-placement-aws-control-plane-2026-06-05.md) — scope boundaries
 3. [`README.md`](./README.md) — XR sprint IDs (staging E2E, INF-86, etc.)
-4. Ecosystem SoR: [`gtcx-docs/.../cloud-placement/README.md`](../../../../gtcx-docs/01-docs/architecture/cloud-placement/README.md)
+4. Ecosystem SoR: [`canon-os/.../cloud-placement/README.md`](../../../../canon-os/01-docs/architecture/cloud-placement/README.md)
 
 ---
 

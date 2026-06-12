@@ -63,7 +63,7 @@ The audit registry is provider-agnostic — the same prompts work for Claude, Co
 
 ## Credentials: system-of-record + ownership split (cross-repo)
 
-**Canonical policy:** `gtcx-docs/01-docs/governance/protocols/19-agent-credential-access/protocol.md` (see “System-of-Record and Operational Ownership Split”).
+**Canonical policy:** `canon-os/01-docs/governance/protocols/19-agent-credential-access/protocol.md` (see “System-of-Record and Operational Ownership Split”).
 
 - **System-of-record (SoR)**: `gtcx-agentic` Baseline vault (shared provider creds + audited access)
 - **Runtime usage owner**: product repo (e.g. `gtcx-intelligence`) owns its runtime secrets
@@ -88,7 +88,7 @@ The audit registry is provider-agnostic — the same prompts work for Claude, Co
 
 Command: **`execute-roadmap`** (not `roadmap`).
 
-1. Read `../gtcx-docs/03-platform/tools/roadmap/roadmap-framework/AGENT-START.md`
+1. Read `../canon-os/03-platform/tools/roadmap/roadmap-framework/AGENT-START.md`
 2. Read `commands/execute-roadmap.md` and `prompts/roadmap/roadmap-reconcile-execute-prompt.md`
 3. Update `01-docs/strategy/execution-roadmap.md` or `01-docs/05-audit/execution-roadmap.md`; execute until active phase done
 4. Quick: `prompts/shareable/execute-roadmap-prompt-RUN.md`
@@ -97,8 +97,8 @@ Provider-agnostic — Claude, Codex, Gemini, Kimi, Cursor, etc.
 
 ## Cross-repo coordination (Protocol 24)
 
-**Canonical policy:** [Protocol 24 — Cross-Repo Coordination](https://github.com/gtcx-ecosystem/gtcx-docs/blob/main/01-docs/governance/protocols/24-cross-repo-coordination/protocol.md)  
-**Complements:** [Protocol 22 — Agent Work Selection](https://github.com/gtcx-ecosystem/gtcx-docs/blob/main/01-docs/governance/protocols/22-agent-work-selection/protocol.md) (what to work on next).
+**Canonical policy:** [Protocol 24 — Cross-Repo Coordination](https://github.com/gtcx-ecosystem/canon-os/blob/main/01-docs/governance/protocols/24-cross-repo-coordination/protocol.md)  
+**Complements:** [Protocol 22 — Agent Work Selection](https://github.com/gtcx-ecosystem/canon-os/blob/main/01-docs/governance/protocols/22-agent-work-selection/protocol.md) (what to work on next).
 
 When a story is **blocked on a sibling repo** or you **hand off** cross-repo work, follow these five steps in order:
 
@@ -106,8 +106,8 @@ When a story is **blocked on a sibling repo** or you **hand off** cross-repo wor
 | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | **1. Ack**          | Read open handoffs: `baseline-os/workstream/coordination/coordination-report-latest.md` (if present) and any `from-*` / `to-*` tickets naming this repo. Reply with `outbound-ack` template when you receive a durable inbound.                                                |
 | **2. Roadmap**      | Record ticket IDs and blocker repo in `01-docs/05-audit/auto-dev-state.md`, `.baseline/memory/dependencies.md`, and/or `01-docs/05-audit/agent-work-pointer.md` (if used). Do not leave blockers chat-only.                                                                                |
-| **3. Inbound doc**  | File a durable handoff: `01-docs/08-gtm/inbound-tickets/from-<this-repo>-<topic>-YYYY-MM-DD.md` or `01-docs/06-coordination/<initiative>-coordination.md` ([template](https://github.com/gtcx-ecosystem/gtcx-docs/blob/main/01-docs/reference/templates/agents/3-structure/coordination.md)). |
-| **4. Hub if P0**    | Ecosystem-critical path: from `baseline-os`, `pnpm ecosystem:repo:report-work --repo=<repo> --item="..." --status=blocked`. Use `gtcx-docs/01-docs/08-gtm/inbound-tickets/` only when the **docs hub** is the coordination witness (releases, standards).                            |
+| **3. Inbound doc**  | File a durable handoff: `01-docs/08-gtm/inbound-tickets/from-<this-repo>-<topic>-YYYY-MM-DD.md` or `01-docs/06-coordination/<initiative>-coordination.md` ([template](https://github.com/gtcx-ecosystem/canon-os/blob/main/01-docs/reference/templates/agents/3-structure/coordination.md)). |
+| **4. Hub if P0**    | Ecosystem-critical path: from `baseline-os`, `pnpm ecosystem:repo:report-work --repo=<repo> --item="..." --status=blocked`. Use `canon-os/01-docs/08-gtm/inbound-tickets/` only when the **docs hub** is the coordination witness (releases, standards).                            |
 | **5. No duplicate** | Link [deployment-proof-index](https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/01-docs/05-audit/evidence/deployment-proof-index.md) and protocol contracts — **do not** copy harness YAML, evidence indexes, or normative protocol text into product repos.                |
 
 **Not in this repo:** inbound archive SoR for ecosystem-wide weekly reports — that stays **`baseline-os`** (`workstream/coordination/`).
@@ -176,9 +176,9 @@ Emit **one** brief, then work. Human may **stop**, **correct:**, or story ID —
 
 ### Hub specs
 
-- P22 `gtcx-docs/01-docs/governance/protocols/22-agent-work-selection/protocol.md`
-- P26 `gtcx-docs/01-docs/governance/protocols/26-agent-proceed-confirmation/protocol.md`
-- P27 `gtcx-docs/01-docs/governance/protocols/27-agent-execution-obligation/protocol.md`
+- P22 `canon-os/01-docs/governance/protocols/22-agent-work-selection/protocol.md`
+- P26 `canon-os/01-docs/governance/protocols/26-agent-proceed-confirmation/protocol.md`
+- P27 `canon-os/01-docs/governance/protocols/27-agent-execution-obligation/protocol.md`
 
 ## Session start (all terminals / LLMs)
 
@@ -235,7 +235,7 @@ Template: `01-docs/04-ops/agent-status-update-template.md` · Spec: P26 §3b (gt
 ## Persona selection (Phase 4 — mandatory)
 
 **Bridge:** [ecosystem-persona-bridge-2026-06.md](https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/01-docs/04-ops/coordination/ecosystem-persona-bridge-2026-06.md)  
-**Registry:** [gtcx-docs institutional personas](https://github.com/gtcx-ecosystem/gtcx-docs/tree/main/01-docs/governance/institutional/personas)
+**Registry:** [gtcx-docs institutional personas](https://github.com/gtcx-ecosystem/canon-os/tree/main/01-docs/governance/institutional/personas)
 
 | Step | Action                                                                                        |
 | ---- | --------------------------------------------------------------------------------------------- |
