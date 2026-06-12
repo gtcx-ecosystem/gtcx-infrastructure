@@ -2,7 +2,7 @@
   "$schema": "gtcx://workspace/remaining-work/v1",
   "repo": "fabric-os",
   "updated": "2026-06-12",
-  "reconciledAt": "2026-06-12T16:00:00.000Z",
+  "reconciledAt": "2026-06-12T19:01:00.000Z",
   "sessionOpenItems": "pm/ci/session-open-items-latest.json",
   "bridgeHandoff": "docs/operations/coordination/from-bridge-os-session-open-items-handoff-ack-2026-06-12.md",
   "sessionRef": "fabric-os-domain-model-2026-06-12",
@@ -16,7 +16,18 @@
       "blockedUntil": "2026-06-21",
       "authority": "R",
       "p22": true,
-      "notes": "Pre-window fleet health PASS 4/4; window-ready witness; vendor report post 2026-06-21"
+      "notes": "Pre-window fleet health PASS 3/4; window-ready witness refreshed 2026-06-12T19:01Z; vendor report post 2026-06-21"
+    },
+    {
+      "id": "XR-MKT-PROTOCOL-NATIVE-001-GT",
+      "storyId": "XR-MKT-PROTOCOL-NATIVE-001",
+      "title": "Golden Transaction trace — markets-os brokerage staging deploy",
+      "ownerRepo": "markets-os",
+      "status": "open",
+      "authority": "R",
+      "handoff": "docs/operations/coordination/outbound/to-markets-os-brokerage-staging-gt-trace-2026-06-12.md",
+      "witness": "audit/evidence/golden-transaction-protocol-native-2026-06-12.json",
+      "blocksIR": false
     },
     {
       "id": "XR-MKT-TRADEPASS-001",

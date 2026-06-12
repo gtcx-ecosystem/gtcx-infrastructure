@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "testType": "cross-repo-health-probe",
   "storyId": "S1-13",
-  "timestamp": "2026-06-12T18:36:36.308Z",
+  "timestamp": "2026-06-12T19:01:55.550Z",
   "environment": "staging",
   "overall": "PASS",
   "services": [
@@ -14,7 +14,7 @@
       "error": null,
       "body": {
         "status": "up",
-        "timestamp": "2026-06-12T18:35:29.581Z",
+        "timestamp": "2026-06-12T19:00:47.307Z",
         "database": {
           "status": "up",
           "details": {
@@ -36,13 +36,13 @@
         "audit-trail": {
           "status": "up",
           "details": {
-            "lastAppend": "2026-06-12T18:35:29.581Z",
+            "lastAppend": "2026-06-12T19:00:47.307Z",
             "chainVerified": true
           }
         }
       },
       "transport": "curl",
-      "latencyMs": 3164,
+      "latencyMs": 2773,
       "required": true
     },
     {
@@ -53,7 +53,7 @@
       "error": null,
       "body": {
         "status": "up",
-        "timestamp": "2026-06-12T18:35:30.695Z",
+        "timestamp": "2026-06-12T19:00:47.204Z",
         "database": {
           "status": "up",
           "details": {
@@ -75,13 +75,13 @@
         "audit-trail": {
           "status": "up",
           "details": {
-            "lastAppend": "2026-06-12T18:35:30.695Z",
+            "lastAppend": "2026-06-12T19:00:47.204Z",
             "chainVerified": true
           }
         }
       },
       "transport": "fetch",
-      "latencyMs": 4093,
+      "latencyMs": 2328,
       "required": true
     },
     {
@@ -93,7 +93,7 @@
       "body": {
         "service": "intelligence-sdk",
         "version": "0.1.0",
-        "uptime": 236465,
+        "uptime": 237962,
         "status": "healthy",
         "dependencies": {
           "inference_backend": {
@@ -110,8 +110,8 @@
           "jobs": {
             "anomaly": {
               "enabled": true,
-              "lastRun": "2026-06-12T18:34:24.833Z",
-              "runCount": 788
+              "lastRun": "2026-06-12T18:59:44.648Z",
+              "runCount": 793
             },
             "trend": {
               "enabled": true,
@@ -136,8 +136,8 @@
           "activeSessions": 0
         }
       },
-      "transport": "curl",
-      "latencyMs": 3606,
+      "transport": "fetch",
+      "latencyMs": 2156,
       "required": true
     },
     {
@@ -146,9 +146,9 @@
       "url": "https://compliance-gateway-staging.gtcx.trade/health",
       "status": 525,
       "error": "Command failed: kubectl exec -n gtcx-staging deploy/compliance-gateway-staging -- wget -qO- http://127.0.0.1:8500/health\nerror: timed out waiting for the condition\n",
-      "body": "error code: 525",
-      "transport": "curl",
-      "latencyMs": 69685,
+      "body": "<!DOCTYPE html>\n<!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]-->\n<!--[if IE 7]>    <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]-->\n<!--[if IE 8]>    <html class=\"no-js ie8 oldie\" lang=\"en-US\"> <![endif]-->\n<!--[if gt IE 8]><!--> <html class=\"no-js\" lang=\"en-US\"> <!--<![endif]-->\n<head>\n\n<title>gtcx.trade | 525: SSL handshake failed</title>\n<meta charset=\"UTF-8\" />\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />\n<meta http-equiv=\"X-UA-Compa",
+      "transport": "fetch",
+      "latencyMs": 70746,
       "required": false
     }
   ],

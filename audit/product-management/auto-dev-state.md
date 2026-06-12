@@ -64,7 +64,7 @@ last_reconciled: 2026-06-12T14:45:00.000Z
 - **Session:** `fabric-os-domain-model-2026-06-12`
 - **Machine witness:** `pm/ci/session-open-items-latest.json` · `audit/evidence/session-open-items-reconcile-2026-06-12.json`
 - **Lane sprint:** CLOSED · DAAS sealed · git 0 ahead
-- **P22:** SECAS-S2-01 `awaiting_vendor_report` until 2026-06-21
+- **P22:** SECAS-S2-01 `awaiting_vendor_report` until 2026-06-21 · window-ready refreshed 2026-06-12T19:01Z
 - **Bridge handoff:** XR-BRIDGE-SESSION-OPEN-001 accepted · closure **5/5** · program office **0 open**
 - **T23 / XR-MKT-RDS-VPC:** sealed per bridge — do not re-open
 - **Assurance:** `fabric:assurance:run:write` — bridge evaluate consumed; `uat-exit` cross-repo witness open (bridge-os)
