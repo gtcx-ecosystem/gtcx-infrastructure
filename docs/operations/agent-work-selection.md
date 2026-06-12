@@ -9,7 +9,7 @@ tags: ['protocol-22', 'agent', 'work-selection']
 review_cycle: on-change
 document_id: OPS-AWS-001
 protocol: canon-os/01-docs/governance/protocols/22-agent-work-selection/protocol.md
-adoption_status: pilot
+adoption_status: established
 ---
 
 # Agent Work Selection — fabric-os
