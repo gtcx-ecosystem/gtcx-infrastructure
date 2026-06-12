@@ -2,7 +2,7 @@
   "$schema": "gtcx://workspace/remaining-work/v1",
   "repo": "fabric-os",
   "updated": "2026-06-12",
-  "reconciledAt": "2026-06-12T20:35:00.000Z",
+  "reconciledAt": "2026-06-12T20:37:53.000Z",
   "sessionOpenItems": "pm/ci/session-open-items-latest.json",
   "bridgeHandoff": "docs/operations/coordination/from-bridge-os-session-open-items-handoff-ack-2026-06-12.md",
   "sessionRef": "fabric-os-domain-model-2026-06-12",
