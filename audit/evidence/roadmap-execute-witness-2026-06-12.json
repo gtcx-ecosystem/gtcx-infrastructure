@@ -2,7 +2,7 @@
   "schema": "gtcx.roadmapExecuteWitness.v1",
   "repo": "fabric-os",
   "mode": "execute_roadmap",
-  "witnessedAt": "2026-06-12T21:32:00.000Z",
+  "witnessedAt": "2026-06-12T21:58:00.000Z",
   "automatableExhausted": true,
   "automatableExhaustNote": "SECAS-S2 calendar gate + markets-os brokerage ECS deploy; fabric PNV live complete",
   "p22Head": "SECAS-S2-01",
@@ -55,15 +55,15 @@
     "execute_roadmap cycle @ 2026-06-12T20:18Z — witness refresh; automatableExhausted true; markets-os GT ack pending",
     "execute_roadmap cycle @ 2026-06-12T20:35Z — gates unchanged PASS; no fabric implementation remaining",
     "fabric:assurance:run:write @ 2026-06-12T21:04Z — FAIL uat-exit witness (bridge-os); SECAS pre-window still PASS",
-    "execute_roadmap @ 2026-06-12T21:32Z — BACKLOG-CLEAR unblocked; assurance:check PASS; SECAS PASS; GT partial"
+    "execute_roadmap @ 2026-06-12T21:32Z — BACKLOG-CLEAR unblocked; assurance:check PASS; SECAS PASS; GT partial",
+    "execute_roadmap @ 2026-06-12T21:58Z — bridge UAT witness refreshed; assurance:check PASS restored"
   ],
   "assurance": {
     "fabricAssuranceCheck": "pass",
-    "fabricAssuranceWrite": "fail-flaky-runs",
-    "blocking": "none",
+    "blocking": "BACKLOG-CLEAR",
     "blockingSatisfaction": "ok",
     "witness": "audit/evidence/fabric-assurance-latest.json",
-    "note": "BACKLOG-CLEAR unblocked; qa-smoke/uat fleet runs intermittently fail on write"
+    "note": "UAT witness regressed then refreshed via bridge-os ecosystem:fleet:uat:run in-session @ 21:57Z"
   },
   "fiveCoreComposite100": 100,
   "pnvLiveDeploy": {
