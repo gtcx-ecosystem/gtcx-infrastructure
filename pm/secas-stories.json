@@ -87,7 +87,7 @@
         },
         { "text": "Report ingested to audit/evidence/", "done": false }
       ],
-      "blockers": null
+      "blockers": "awaiting_vendor_report — calendar gate 2026-06-17..21; pnpm secas:pentest:report:ingest when delivered"
     },
     {
       "id": "SECAS-S3-01",
@@ -128,12 +128,13 @@
         "docs/operations/secas/cards/compliance-os.md",
         "docs/operations/secas/cards/markets-os.md",
         "docs/operations/secas/cards/gtcx-intelligence.md",
+        "docs/operations/secas/cards/protocols-t0.md",
         "platform/scripts/secas-cards-check.mjs"
       ],
       "acceptance": ["pnpm secas:cards:check:write"],
       "uat": [
         {
-          "text": "SECaaS cards for compliance-os, markets-os, gtcx-intelligence",
+          "text": "SECaaS cards for compliance-os, markets-os, gtcx-intelligence, protocols T0",
           "done": true
         },
         {

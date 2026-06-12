@@ -1,9 +1,9 @@
 ---
 title: Execution roadmap — DevOps-as-a-Service
 status: current
-date: 2026-06-10
-last_reconciled: 2026-06-10T09:28:30.734Z
-owner: gtcx-infrastructure
+date: 2026-06-12
+last_reconciled: 2026-06-12T14:10:14.582Z
+owner: fabric-os
 program: INIT-GTCX-INFRA-DAAS
 generated: true
 generated_by: platform/scripts/generate-execution-roadmap.mjs
@@ -15,7 +15,7 @@ sources:
   - audit/evidence/cross-repo-health/cross-repo-health-probe-latest.json
 ---
 
-# gtcx-infrastructure execution roadmap
+# fabric-os execution roadmap
 
 > **Generated file.** Edit `pm/daas-stories.json`, `pm/friction-register.json`, or
 > `pm/daas-roadmap.json`, then run `pnpm generate:roadmap`.
@@ -32,10 +32,10 @@ sources:
 
 **Live probe:** AGX `api/health` → **200** (fleet witness 2026-06-10).
 
-| Story      | Title                                                      | Priority | Status | Owner               |
-| ---------- | ---------------------------------------------------------- | -------- | ------ | ------------------- |
-| DAAS-S3-01 | Compliance-os GHCR imagePullSecrets on all app deployments | P1       | done   | gtcx-infrastructure |
-| DAAS-S3-02 | Intelligence staging image with ENABLE_COST_ROUTER         | P1       | done   | gtcx-infrastructure |
+| Story      | Title                                                      | Priority | Status | Owner     |
+| ---------- | ---------------------------------------------------------- | -------- | ------ | --------- |
+| DAAS-S3-01 | Compliance-os GHCR imagePullSecrets on all app deployments | P1       | done   | fabric-os |
+| DAAS-S3-02 | Intelligence staging image with ENABLE_COST_ROUTER         | P1       | done   | fabric-os |
 
 ### DAAS-S3-01: Compliance-os GHCR imagePullSecrets on all app deployments
 
@@ -75,10 +75,10 @@ pnpm daas:fleet:health
 
 ## Future Phases
 
-| Sprint  | Goal                                         | Status   | Owner               | Stories / Friction |
-| ------- | -------------------------------------------- | -------- | ------------------- | ------------------ |
-| DAAS-S1 | Friction register + fleet health witness     | complete | gtcx-infrastructure |                    |
-| DAAS-S2 | Per-repo DaaS cards + ingress matrix publish | complete | gtcx-infrastructure |                    |
+| Sprint  | Goal                                         | Status   | Owner     | Stories / Friction |
+| ------- | -------------------------------------------- | -------- | --------- | ------------------ |
+| DAAS-S1 | Friction register + fleet health witness     | complete | fabric-os |                    |
+| DAAS-S2 | Per-repo DaaS cards + ingress matrix publish | complete | fabric-os |                    |
 
 ## Issue Reconciliation
 

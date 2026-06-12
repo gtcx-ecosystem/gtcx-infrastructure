@@ -16,25 +16,25 @@
       "id": "DAAS-S3-01",
       "status": "done",
       "title": "Compliance-os GHCR imagePullSecrets on all app deployments",
-      "owner": "gtcx-infrastructure"
+      "owner": "fabric-os"
     },
     {
       "id": "DAAS-S3-02",
       "status": "done",
       "title": "Intelligence staging image with ENABLE_COST_ROUTER",
-      "owner": "gtcx-infrastructure"
+      "owner": "fabric-os"
     },
     {
       "id": "DAAS-S1",
       "status": "done",
       "title": "Friction register + fleet health witness",
-      "owner": "gtcx-infrastructure"
+      "owner": "fabric-os"
     },
     {
       "id": "DAAS-S2",
       "status": "done",
       "title": "Per-repo DaaS cards + ingress matrix publish",
-      "owner": "gtcx-infrastructure"
+      "owner": "fabric-os"
     }
   ],
   "crossRepoRefs": [

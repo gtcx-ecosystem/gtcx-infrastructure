@@ -2,7 +2,7 @@
 title: Execution roadmap — Security-as-a-Service
 status: current
 date: 2026-06-12
-last_reconciled: 2026-06-12T13:41:11.522Z
+last_reconciled: 2026-06-12T14:10:14.260Z
 owner: fabric-os
 program: INIT-GTCX-INFRA-SECAS
 generated: true
@@ -50,7 +50,7 @@ pnpm secas:pentest:ingest:check:write
 - [x] Report ingest scaffold + prerequisites at canonical paths (2026-06-12 — audit/evidence/pen-test-report-ingest-ready-2026-06-12.json; secas:pentest:ingest:check pre-window PASS)
 - [ ] Report ingested to audit/evidence/
 
-**Blockers:** none
+**Blockers:** awaiting_vendor_report — calendar gate 2026-06-17..21; pnpm secas:pentest:report:ingest when delivered
 
 ## Class S — Approval needed (parallel, blocksIR false)
 

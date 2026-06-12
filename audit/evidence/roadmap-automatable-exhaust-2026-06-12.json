@@ -1,0 +1,38 @@
+{
+  "schema": "gtcx://fabric-os/roadmap-automatable-exhaust/v1",
+  "mode": "complete_roadmap",
+  "checkedAt": "2026-06-12T14:45:00.000Z",
+  "repo": "fabric-os",
+  "programs": {
+    "DAAS": { "status": "complete", "sprints": ["S1", "S2", "S3"] },
+    "SECAS": { "status": "S1/S3 complete; S2 in_progress", "openStory": "SECAS-S2-01" }
+  },
+  "automatableExhausted": true,
+  "backlogClear": false,
+  "p22Head": "SECAS-S2-01",
+  "calendarBlocked": {
+    "storyId": "SECAS-S2-01",
+    "until": "2026-06-21",
+    "phase": "awaiting_vendor_report",
+    "ingest": "pnpm secas:pentest:report:ingest -- --input=<vendor-report.json>"
+  },
+  "gates": {
+    "validateAll": "55/55",
+    "pnpmTest": "pass",
+    "opsCheck": "pass",
+    "daasCards": "pass",
+    "secasFriction": "pass",
+    "secasApproval": "pass",
+    "secasPentestIngest": "pre-window pass",
+    "secasCards": "pass",
+    "fabricLanes": "pass"
+  },
+  "deferred": [
+    { "id": "SECAS-S2-01-final-uat", "reason": "vendor pen-test report", "class": "A/S" },
+    { "id": "INIT-GTCX-TWO-PRODUCT-DEPLOY-WITNESS", "owner": "gtcx-os", "class": "R" },
+    { "id": "XR-CANON-TRADE-LANES-001-ack", "owner": "canon-os", "class": "S" },
+    { "id": "EXT-INF-013", "owner": "Leadership", "class": "S", "blocksIR": false }
+  ],
+  "roadmapComplete": false,
+  "roadmapCompleteWhen": "SECAS-S2-01 UAT item 4 ingested + secas:pentest:ingest:check storyComplete"
+}
