@@ -67,6 +67,8 @@ last_reconciled: 2026-06-12T14:45:00.000Z
 - **P22:** SECAS-S2-01 `awaiting_vendor_report` until 2026-06-21
 - **Bridge handoff:** XR-BRIDGE-SESSION-OPEN-001 accepted · closure **5/5** · program office **0 open**
 - **T23 / XR-MKT-RDS-VPC:** sealed per bridge — do not re-open
+- **Assurance:** `fabric:assurance:run:write` — bridge evaluate consumed; `uat-exit` cross-repo witness open (bridge-os)
+- **Fleet:** cross-repo-health PASS 4/4 @ 2026-06-12T16:45:42Z
 
 ## Evidence
 

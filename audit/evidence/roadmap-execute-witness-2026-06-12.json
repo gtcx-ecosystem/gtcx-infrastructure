@@ -2,7 +2,7 @@
   "schema": "gtcx.roadmapExecuteWitness.v1",
   "repo": "fabric-os",
   "mode": "execute_roadmap",
-  "witnessedAt": "2026-06-12T15:35:00.000Z",
+  "witnessedAt": "2026-06-12T16:55:00.000Z",
   "p22Head": "SECAS-S2-01",
   "calendarGate": {
     "blockedUntil": "2026-06-21",
@@ -22,7 +22,10 @@
     "fleet health refresh PASS 4/4 (2026-06-12T15:17:27Z)",
     "PNV-1 gtcx-os aeefd48e reconciled in protocol-native outbound ack",
     "protocol-verifier-deploy-ready witness",
-    "XR-MKT-RDS-VPC in-VPC psql probe PARTIAL — peering path verified, auth pending"
+    "XR-MKT-RDS-VPC sealed per bridge T23 (do not re-open)",
+    "bridge session open-items handoff accepted — closure 5/5",
+    "fabric:assurance:run:write — bridge evaluate witness consumed (uat-exit cross-repo open)",
+    "fleet health refresh PASS 4/4 (2026-06-12T16:45:42Z)"
   ],
   "classSDeferred": [
     { "id": "SECAS-S2-01", "item": "Vendor pen-test report ingest", "blockedUntil": "2026-06-21" },
@@ -30,9 +33,16 @@
   ],
   "crossRepo": [
     {
-      "id": "INIT-EXECUTIVE-GAP-PROGRAM",
+      "id": "XR-BRIDGE-SESSION-OPEN-001",
       "owner": "bridge-os",
-      "handoff": "docs/operations/coordination/to-bridge-os-init-executive-gap-seal-reconcile-2026-06-12.md"
+      "status": "sealed",
+      "closureBar": "5/5"
+    },
+    {
+      "id": "uat-exit",
+      "owner": "bridge-os",
+      "status": "open",
+      "witness": "bridge-os/audit/evidence/ecosystem-fleet-uat-latest.json"
     }
   ],
   "roadmapComplete": false
