@@ -2,7 +2,7 @@
   "$schema": "gtcx://workspace/remaining-work/v1",
   "repo": "fabric-os",
   "updated": "2026-06-12",
-  "reconciledAt": "2026-06-12T14:30:00.000Z",
+  "reconciledAt": "2026-06-12T15:00:00.000Z",
   "sessionRef": "fabric-os-domain-model-2026-06-12",
   "items": [
     {
@@ -14,7 +14,7 @@
       "blockedUntil": "2026-06-21",
       "authority": "R",
       "p22": true,
-      "notes": "Pre-window harness PASS; ingest after vendor window"
+      "notes": "Window execution ready witness; ingest dry-run PASS; vendor report post 2026-06-21"
     },
     {
       "id": "XR-FABRIC-TRADE-LANES-001-ack",

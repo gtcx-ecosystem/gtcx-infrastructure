@@ -44,6 +44,14 @@ last_reconciled: 2026-06-12T14:45:00.000Z
 - **Gates:** validate-all 55/55 · pnpm test · ops:check · DAAS/SECAS/fabric lanes PASS
 - **roadmapComplete:** false until vendor report ingest (post 2026-06-21)
 
+## execute_roadmap witness (2026-06-12)
+
+- **Mode:** `execute_roadmap` — SECAS-S2-01 window-day readiness + ingest dry-run
+- **Witness:** `audit/evidence/roadmap-execute-witness-2026-06-12.json`
+- **Window ready:** `audit/evidence/pen-test-window-execution-ready-2026-06-12.json`
+- **Ingest dry-run:** `platform/fixtures/secas/pen-test-report-synthetic.json` — PASS (no evidence write)
+- **Blocked:** vendor report ingest until post 2026-06-21 window
+
 ## Evidence
 
 - `audit/evidence/pen-test-window-2026-06-10.json` — window scheduled

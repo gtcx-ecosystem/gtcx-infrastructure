@@ -2,7 +2,7 @@
 title: Execution roadmap — Security-as-a-Service
 status: current
 date: 2026-06-12
-last_reconciled: 2026-06-12T14:10:14.260Z
+last_reconciled: 2026-06-12T14:44:32.900Z
 owner: fabric-os
 program: INIT-GTCX-INFRA-SECAS
 generated: true
@@ -33,7 +33,7 @@ sources:
 
 ### SECAS-S2-01: Live-stack pen-test execution window
 
-**Files:** audit/pen-test-intake-evidence-2026-05-31.md, audit/evidence/ext-inf-002-sow-approval-2026-06-10.json, docs/operations/coordination/from-fabric-os-ext-inf-002-sow-approved-2026-06-10.md
+**Files:** audit/pen-test-intake-evidence-2026-05-31.md, audit/evidence/ext-inf-002-sow-approval-2026-06-10.json, audit/evidence/pen-test-report-ingest-ready-2026-06-12.json, audit/evidence/pen-test-window-execution-ready-2026-06-12.json, docs/operations/coordination/from-fabric-os-ext-inf-002-sow-approved-2026-06-10.md
 
 **Acceptance**
 
@@ -47,7 +47,7 @@ pnpm secas:pentest:ingest:check:write
 
 - [x] Vendor SOW countersign received (2026-06-10 — audit/evidence/ext-inf-002-countersign-approval-2026-06-10.json)
 - [x] Pen-test window scheduled and witnessed (2026-06-10 — audit/evidence/pen-test-window-2026-06-10.json (window 2026-06-17..21))
-- [x] Report ingest scaffold + prerequisites at canonical paths (2026-06-12 — audit/evidence/pen-test-report-ingest-ready-2026-06-12.json; secas:pentest:ingest:check pre-window PASS)
+- [x] Report ingest scaffold + prerequisites at canonical paths (2026-06-12 — ingest-ready + window-execution-ready witnesses; secas:pentest:ingest:check pre-window PASS; dry-run fixture validated)
 - [ ] Report ingested to audit/evidence/
 
 **Blockers:** awaiting_vendor_report — calendar gate 2026-06-17..21; pnpm secas:pentest:report:ingest when delivered

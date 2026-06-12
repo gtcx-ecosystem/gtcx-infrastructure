@@ -32,5 +32,5 @@
   "status": "scheduled",
   "nextMilestone": "ingest vendor report to audit/evidence/pen-test-report-YYYY-MM-DD.json",
   "blocksIR": false,
-  "repo": "gtcx-infrastructure"
+  "repo": "fabric-os"
 }

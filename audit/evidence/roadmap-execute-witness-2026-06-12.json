@@ -1,0 +1,31 @@
+{
+  "schema": "gtcx.roadmapExecuteWitness.v1",
+  "repo": "fabric-os",
+  "mode": "execute_roadmap",
+  "witnessedAt": "2026-06-12T15:00:00.000Z",
+  "p22Head": "SECAS-S2-01",
+  "calendarGate": {
+    "blockedUntil": "2026-06-21",
+    "phase": "awaiting_vendor_report",
+    "window": { "start": "2026-06-17", "end": "2026-06-21" }
+  },
+  "classRCompleted": [
+    "SECAS witness gates refreshed (friction, approval, ingest pre-window, cards)",
+    "fabric:lanes:check PASS",
+    "daas:cards:check PASS",
+    "pen-test-window-execution-ready witness",
+    "ingest dry-run validation (synthetic fixture — no evidence write)"
+  ],
+  "classSDeferred": [
+    { "id": "SECAS-S2-01", "item": "Vendor pen-test report ingest", "blockedUntil": "2026-06-21" },
+    { "id": "EXT-INF-013", "item": "ZWCMP pilot owner", "owner": "Leadership" }
+  ],
+  "crossRepo": [
+    {
+      "id": "INIT-EXECUTIVE-GAP-PROGRAM",
+      "owner": "bridge-os",
+      "handoff": "docs/operations/coordination/to-bridge-os-init-executive-gap-seal-reconcile-2026-06-12.md"
+    }
+  ],
+  "roadmapComplete": false
+}

@@ -62,6 +62,8 @@
       "files": [
         "audit/pen-test-intake-evidence-2026-05-31.md",
         "audit/evidence/ext-inf-002-sow-approval-2026-06-10.json",
+        "audit/evidence/pen-test-report-ingest-ready-2026-06-12.json",
+        "audit/evidence/pen-test-window-execution-ready-2026-06-12.json",
         "docs/operations/coordination/from-fabric-os-ext-inf-002-sow-approved-2026-06-10.md"
       ],
       "acceptance": [
@@ -83,7 +85,7 @@
         {
           "text": "Report ingest scaffold + prerequisites at canonical paths",
           "done": true,
-          "note": "2026-06-12 — audit/evidence/pen-test-report-ingest-ready-2026-06-12.json; secas:pentest:ingest:check pre-window PASS"
+          "note": "2026-06-12 — ingest-ready + window-execution-ready witnesses; secas:pentest:ingest:check pre-window PASS; dry-run fixture validated"
         },
         { "text": "Report ingested to audit/evidence/", "done": false }
       ],

@@ -2,7 +2,7 @@
 title: Execution roadmap — DevOps-as-a-Service
 status: current
 date: 2026-06-12
-last_reconciled: 2026-06-12T14:10:14.582Z
+last_reconciled: 2026-06-12T14:44:33.158Z
 owner: fabric-os
 program: INIT-GTCX-INFRA-DAAS
 generated: true

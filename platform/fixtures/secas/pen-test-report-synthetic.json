@@ -1,0 +1,9 @@
+{
+  "vendor": "SYNTHETIC-FIXTURE — not a vendor deliverable",
+  "reportDate": "2099-01-01",
+  "window": { "start": "2026-06-17", "end": "2026-06-21" },
+  "findingsSummary": "Synthetic fixture for ingest contract validation only — do not commit as evidence.",
+  "severityCounts": { "critical": 0, "high": 0, "medium": 0, "low": 0, "informational": 0 },
+  "remediationDue": "2099-02-01",
+  "redactionPolicy": "synthetic-dry-run"
+}

@@ -1,0 +1,37 @@
+{
+  "schema": "gtcx.penTestWindowExecutionReady.v1",
+  "id": "PEN-TEST-WINDOW-EXEC-READY-2026-06-12",
+  "storyId": "SECAS-S2-01",
+  "frictionId": "SEC-PENTEST-01",
+  "program": "INIT-GTCX-INFRA-SECAS",
+  "status": "ready_for_window",
+  "preparedAt": "2026-06-12T15:00:00.000Z",
+  "preparedBy": "agent:fabric-os",
+  "window": {
+    "start": "2026-06-17",
+    "end": "2026-06-21",
+    "timezone": "Africa/Johannesburg",
+    "witness": "audit/evidence/pen-test-window-2026-06-10.json"
+  },
+  "preWindowGates": {
+    "secasFriction": "audit/evidence/secas-friction-check-latest.json",
+    "secasApproval": "audit/evidence/secas-approval-check-latest.json",
+    "pentestIngest": "audit/evidence/secas-pentest-ingest-check-latest.json",
+    "ingestReady": "audit/evidence/pen-test-report-ingest-ready-2026-06-12.json",
+    "phase": "awaiting_vendor_report"
+  },
+  "dayOfChecklist": [
+    "Confirm staging fleet health probe PASS (cross-repo-health-probe-latest.json)",
+    "Vendor has scope doc audit/pen-test-scope-2026.md §2.1b lane boundaries (T0, L4a, L4b)",
+    "Window contacts per audit/pen-test-intake-evidence-2026-05-31.md",
+    "No production scope without Class S approval"
+  ],
+  "postWindowIngest": {
+    "command": "pnpm secas:pentest:report:ingest -- --input=<vendor-report.json>",
+    "verify": "pnpm secas:pentest:ingest:check:write",
+    "target": "audit/evidence/pen-test-report-YYYY-MM-DD.json",
+    "dryRunFixture": "platform/fixtures/secas/pen-test-report-synthetic.json"
+  },
+  "blocksIR": false,
+  "repo": "fabric-os"
+}
