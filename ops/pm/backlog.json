@@ -1,13 +1,14 @@
 {
   "$schema": "gtcx://workspace/pm-backlog/v1",
   "repo": "fabric-os",
-  "updated": "2026-06-10",
+  "updated": "2026-06-12",
   "syncSource": "pnpm pm:sync",
   "active": {
-    "storyId": "LAUNCH-PLAN-01",
-    "title": "Advance launch planning",
+    "storyId": "SECAS-S2-01",
+    "title": "Live-stack pen-test execution window",
+    "status": "in_progress",
     "owner": null,
-    "tier": null
+    "tier": "resume-in_progress"
   },
   "backlogClear": false,
   "stories": [
@@ -15,25 +16,25 @@
       "id": "DAAS-S3-01",
       "status": "done",
       "title": "Compliance-os GHCR imagePullSecrets on all app deployments",
-      "owner": "fabric-os"
+      "owner": "gtcx-infrastructure"
     },
     {
       "id": "DAAS-S3-02",
       "status": "done",
       "title": "Intelligence staging image with ENABLE_COST_ROUTER",
-      "owner": "fabric-os"
+      "owner": "gtcx-infrastructure"
     },
     {
       "id": "DAAS-S1",
       "status": "done",
       "title": "Friction register + fleet health witness",
-      "owner": "fabric-os"
+      "owner": "gtcx-infrastructure"
     },
     {
       "id": "DAAS-S2",
       "status": "done",
       "title": "Per-repo DaaS cards + ingress matrix publish",
-      "owner": "fabric-os"
+      "owner": "gtcx-infrastructure"
     }
   ],
   "crossRepoRefs": [],

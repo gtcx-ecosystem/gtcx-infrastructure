@@ -169,13 +169,13 @@ Staging sovereign pods use the same key alias but assume the staging IRSA role
 - [ ] Re-read `.baseline/memory/pitfalls.md`
 - [ ] Run `pnpm agent:next-work` to confirm next story
 
-## Session bootstrap (2026-06-11 18:36:26 UTC)
+## Session bootstrap (2026-06-12 P22 reconcile)
 
-- **Command:** `agent start` (baseline-os repo-session-core)
+- **Command:** `correct:` P22 registry drift — LAUNCH-PLAN-01 stale across SoRs
 - **Repo:** fabric-os
-- **Next work:** LAUNCH-PLAN-01 — Advance launch planning
-- **Blocked:** no
-- **Git:** 14 changed path(s)
+- **Next work:** SECAS-S2-01 — Live-stack pen-test execution window (then S4-07)
+- **Root cause:** `agent-next-work.mjs` read `01-docs/*` paths that do not exist; empty selection → LAUNCH-PLAN-01 PLAN fallback
+- **Blocked:** no (EXT-INF-013 Class S parallel only)
 
 
 ## Session — 2026-06-05 (continued)

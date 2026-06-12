@@ -1,7 +1,8 @@
 ---
 title: 'Sprint Phase 3 — June 2026: Hardening + External Readiness (Revamped)'
-status: current
+status: archival-inventory
 date: 2026-06-05
+last_reconciled: 2026-06-12
 owner: gtcx-infrastructure
 role: platform-architect
 frame: development
@@ -12,6 +13,10 @@ review_cycle: weekly
 
 # Sprint Phase 3 — June 2026: Hardening + External Readiness (Revamped)
 
+> **Reconciled 2026-06-12:** This file is an **archival open-items inventory**, not the P22 system-of-record. Agents must use **`docs/operations/agent-work-selection.md`** (work register) + **`audit/product-management/secas-execution-roadmap.md`** (SECAS) + **`pnpm agent:next-work`** for selection. Many rows below are **done** per session memory and the work register — do not treat the 43-item headline as live backlog.
+>
+> **P22 next (fabric-os):** `SECAS-S2-01` (in_progress) then `S4-07` (pending). LAUNCH-PLAN-01/02/03 **done** — not selectable.
+>
 > **Reconciled from:** execution-roadmap-2026-06-01, master-audit-2026-06-02, 10-10-roadmap-2026-06-02, cross-repo-sprint-workplan-2026-06, INF-86 ceremony tracker, session forensic review 2026-06-04, and open-items inventory 2026-06-05.
 >
 > **Completed this session:** XR-405 sovereign KMS signing, compliance-gateway deploy unblock, IR-2.2 AI SDK v6 migration, ER-1-08 ecosystem closure, workspace lint coverage, INT-R2-03 cost router enable, compliance-gateway branch coverage 86.1% → 90.03%.
@@ -20,7 +25,7 @@ review_cycle: weekly
 
 ## Open Items Inventory
 
-**Total open items: 43** (P0: 5, P1: 15, P2: 13, Blocked cross-repo: 9, P3: 1)
+**Historical snapshot (2026-06-05): 43 items** — superseded by work register reconcile 2026-06-12. **Live implement queue:** S4-07 + SECAS-S2-01; **human parallel:** EXT-INF-013 (ZWCMP owner).
 
 ### P0 — Critical / GTM Blockers (5)
 

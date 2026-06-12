@@ -286,20 +286,34 @@ export function attachLaunchFocus(nextWork, repoRoot) {
 
   if (launchFocus.sessionMode === 'plan') {
     const head = launchFocus.workSet.plan[0];
-    nextWork.next = {
-      storyId: head?.storyId ?? 'LAUNCH-PLAN-01',
-      title: head?.title ?? 'Advance launch planning',
-      track: 'launch',
-      milestone: head?.storyId,
-      workClass: 'ops-docs',
-      blocked: false,
-    };
+    const witnessHead = launchFocus.workSet.witness[0];
+    const humanHead = launchFocus.workSet.human[0];
+    const p22KeepsHead =
+      nextWork.next?.storyId && nextWork.next.storyId !== 'LAUNCH-PLAN-01';
+    if (!p22KeepsHead) {
+      const fallback = head ?? witnessHead ?? humanHead;
+      if (fallback) {
+        nextWork.next = {
+          storyId: fallback.storyId,
+          title: fallback.title,
+          track: 'launch',
+          milestone: fallback.storyId,
+          workClass: fallback.workClass ?? 'ops-docs',
+          blocked: false,
+        };
+      }
+    }
     nextWork.backlogClear = false;
-    nextWork.message =
-      'Implement queue empty — PLAN mode: advance launch/GTM state without forensic audit.';
+    nextWork.message = head
+      ? 'PLAN mode — drain workSet.plan toward launch/GTM.'
+      : witnessHead
+        ? 'WITNESS mode — SECAS/coordination queue; LAUNCH-PLAN items done.'
+        : 'Human gates parallel — implement queue reconciled; see work register.';
     nextWork.agentInstructions = [
       ...(launchFocus.agentInstructions ?? []),
-      'Drain workSet.plan in-session — same bout loop as implement.',
+      head
+        ? 'Drain workSet.plan in-session — same bout loop as implement.'
+        : 'Do not recycle LAUNCH-PLAN-01 — work register marks LAUNCH-PLAN-01/02/03 done.',
     ];
   }
 

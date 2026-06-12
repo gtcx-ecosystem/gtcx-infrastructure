@@ -15,14 +15,48 @@
     "openItems": "docs/operations/agent-work-selection.md",
     "latestJson": "audit/latest.json"
   },
-  "storyIdPattern": "(?:IR-\\d+\\.\\d+|S\\d+-\\d+|P22-[A-Z]+-\\d+)",
+  "storyIdPattern": "(?:SECAS-S\\d+-\\d+|IR-\\d+\\.\\d+|S\\d+-\\d+|P22-[A-Z]+-\\d+)",
   "implementStatuses": ["pending", "in_progress"],
   "parseOpenIds": [],
-  "staticImplement": [],
-  "staticHuman": [],
+  "staticImplement": [
+    {
+      "storyId": "S4-07",
+      "title": "pnpm test quick 1/359 flake investigation",
+      "workClass": "code",
+      "lane": "work-register",
+      "because": "Only pending IR-class code story in P22 manifest"
+    }
+  ],
+  "staticWitness": [
+    {
+      "storyId": "SECAS-S2-01",
+      "title": "Pen-test window witness prep — report ingest scaffolding",
+      "workClass": "ops-docs",
+      "lane": "secas",
+      "because": "SECAS-S2 in_progress; window 2026-06-17..21"
+    },
+    {
+      "storyId": "XR-FABRIC-SPRINT-AUTH-001",
+      "title": "Consume bridge fleet-sprint-orientation-latest.json",
+      "workClass": "ops-docs",
+      "lane": "coordination",
+      "because": "L2 sprint authority eval delivered; await bridge witness"
+    }
+  ],
+  "staticHuman": [
+    {
+      "storyId": "EXT-INF-013",
+      "title": "ZWCMP pilot owner + cadence call",
+      "authorityClass": "S",
+      "owner": "Leadership",
+      "lane": "zwcmp-unblock",
+      "because": "Class S human gate — blocksIR false"
+    }
+  ],
   "planningQueue": [],
   "forbidden": [
     "Ask operator to run master-audit before starting work",
-    "Story menus when launch-focus.json is provisioned"
+    "Story menus when launch-focus.json is provisioned",
+    "Re-select LAUNCH-PLAN-01 when LAUNCH-PLAN-01/02/03 are done in work register"
   ]
 }

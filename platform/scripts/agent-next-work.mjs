@@ -1,8 +1,7 @@
 #!/usr/bin/env node
 /**
  * Protocol 22 — deterministic next-work selection for fabric-os.
- * Sources: 01-docs/04-ops/agent-work-selection.md (work register),
- * 01-docs/05-audit/execution-roadmap.md (sprint stories),
+ * Sources: pm/manifest.json local paths — work register, DAAS/SECAS roadmaps,
  * .baseline/memory/session.md (session pointer).
  */
 import { readFileSync, existsSync } from 'node:fs';
@@ -16,13 +15,27 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = join(__dirname, '../..');
 const THIS_REPO = 'fabric-os';
 
-const PATHS = {
-  manifest: join(REPO_ROOT, '01-docs/operations/agent-work-selection.md'),
-  roadmap: join(REPO_ROOT, '01-docs/audit/execution-roadmap.md'),
-  session: join(REPO_ROOT, '.baseline/memory/session.md'),
-};
+function resolvePaths() {
+  const paths = {
+    manifest: join(REPO_ROOT, 'docs/operations/agent-work-selection.md'),
+    roadmap: join(REPO_ROOT, 'audit/product-management/execution-roadmap.md'),
+    secasRoadmap: join(REPO_ROOT, 'audit/product-management/secas-execution-roadmap.md'),
+    session: join(REPO_ROOT, '.baseline/memory/session.md'),
+  };
+  const manifestJson = join(REPO_ROOT, 'pm/manifest.json');
+  if (!existsSync(manifestJson)) return paths;
+  try {
+    const pm = JSON.parse(readFileSync(manifestJson, 'utf8'));
+    if (pm.local?.workSelection) paths.manifest = join(REPO_ROOT, pm.local.workSelection);
+    if (pm.local?.executionRoadmap) paths.roadmap = join(REPO_ROOT, pm.local.executionRoadmap);
+    if (pm.generate?.secas?.output) paths.secasRoadmap = join(REPO_ROOT, pm.generate.secas.output);
+  } catch {
+    // keep defaults
+  }
+  return paths;
+}
 
-const STORY_ID_RE = /^(S\d+-\d+|IR-\d+\.\d+|P22-[A-Z]+-\d+)$/;
+const STORY_ID_RE = /^(S\d+-\d+|SECAS-S\d+-\d+|IR-\d+\.\d+|P22-[A-Z]+-\d+)$/;
 
 const EVIDENCE_RE =
   /\b(manual UAT|staging probe with live creds|operator step|live RDS restore)\b/i;
@@ -62,6 +75,8 @@ function classifyStory(title, statusCol, classCol) {
 function storyOrdinal(id) {
   const ir = /^IR-(\d+)\.(\d+)/.exec(id);
   if (ir) return Number.parseInt(ir[1], 10) * 100 + Number.parseInt(ir[2], 10);
+  const secas = /^SECAS-S(\d+)-(\d+)/.exec(id);
+  if (secas) return 900 + Number.parseInt(secas[1], 10) * 100 + Number.parseInt(secas[2], 10);
   const s = /^S(\d+)-(\d+)/.exec(id);
   if (s) return Number.parseInt(s[1], 10) * 100 + Number.parseInt(s[2], 10);
   const p22 = /^P22-[A-Z]+-(\d+)/.exec(id);
@@ -72,7 +87,7 @@ function storyOrdinal(id) {
 function parseWorkRegister(md) {
   const stories = new Map();
   const rowRe =
-    /^\|\s*(S\d+-\d+|IR-\d+\.\d+|P22-[A-Z]+-\d+)\s*\|\s*([^|]+?)\s*\|\s*(P\d)\s*\|\s*(pending|in_progress|blocked|done|deferred)\s*\|\s*([^|]+?)\s*\|/gm;
+    /^\|\s*(S\d+-\d+|SECAS-S\d+-\d+|IR-\d+\.\d+|P22-[A-Z]+-\d+)\s*\|\s*([^|]+?)\s*\|\s*(P\d)\s*\|\s*(pending|in_progress|blocked|done|deferred)\s*\|\s*([^|]+?)\s*\|/gm;
   let match;
   while ((match = rowRe.exec(md)) !== null) {
     const [, id, title, priority, status, classCol] = match;
@@ -104,9 +119,14 @@ function deriveStatusFromRowTail(rowTail) {
   return 'pending';
 }
 
-function parseRoadmapStories(md) {
+function roadmapPriority(id) {
+  if (id.startsWith('SECAS-') || id.startsWith('S1-') || id.startsWith('S4-')) return 'P0';
+  return 'P1';
+}
+
+function parseRoadmapStories(md, source = 'execution-roadmap') {
   const stories = new Map();
-  const rowRe = /^\| \*{0,2}(S\d+-\d+)\*{0,2} \|(.+)$/gm;
+  const rowRe = /^\| \*{0,2}((?:SECAS-|DAAS-)?S\d+(?:-\d+)?)\*{0,2} \|(.+)$/gm;
   let match;
   while ((match = rowRe.exec(md)) !== null) {
     const [, id, rowTail] = match;
@@ -116,10 +136,10 @@ function parseRoadmapStories(md) {
     stories.set(key, {
       id: key,
       title,
-      priority: key.startsWith('S1-') ? 'P0' : key.startsWith('S4-') ? 'P0' : 'P1',
+      priority: roadmapPriority(key),
       status,
       implementationClass: classifyStory(title, rowTail, ''),
-      source: 'execution-roadmap',
+      source,
     });
   }
   return stories;
@@ -171,6 +191,23 @@ function selectNext(allStories, options) {
     };
   }
 
+  const registerPending = [...allStories.values()]
+    .filter(
+      (s) =>
+        s.source === 'work-register' &&
+        s.status === 'pending' &&
+        isAutomatable(s, frame) &&
+        !s.id.startsWith('LAUNCH-PLAN'),
+    )
+    .sort(compareStories);
+  if (registerPending.length > 0) {
+    return {
+      story: registerPending[0],
+      tier: 'work-register',
+      reason: 'Next pending work-register item',
+    };
+  }
+
   const p22Pending = [...allStories.values()]
     .filter(
       (s) =>
@@ -182,7 +219,7 @@ function selectNext(allStories, options) {
   if (p22Pending.length > 0) {
     return {
       story: p22Pending[0],
-      tier: 'work-register',
+      tier: 'work-register-ir',
       reason: 'Next pending IR/P22 work-register item',
     };
   }
@@ -190,9 +227,9 @@ function selectNext(allStories, options) {
   const remainder = [...allStories.values()]
     .filter(
       (s) =>
-        s.source === 'execution-roadmap' &&
         s.status === 'pending' &&
-        isAutomatable(s, frame),
+        isAutomatable(s, frame) &&
+        !s.id.startsWith('LAUNCH-PLAN'),
     )
     .sort(compareStories);
   if (remainder.length > 0) {
@@ -217,6 +254,7 @@ function attachTrace(payload) {
 
 function main() {
   const frame = process.env.AGENT_FRAME === 'regulatory-audit' ? 'regulatory-audit' : 'development';
+  const PATHS = resolvePaths();
   const allStories = new Map();
 
   if (existsSync(PATHS.manifest)) {
@@ -227,6 +265,15 @@ function main() {
 
   if (existsSync(PATHS.roadmap)) {
     for (const [k, v] of parseRoadmapStories(readFileSync(PATHS.roadmap, 'utf8'))) {
+      if (!allStories.has(k)) allStories.set(k, v);
+    }
+  }
+
+  if (existsSync(PATHS.secasRoadmap)) {
+    for (const [k, v] of parseRoadmapStories(
+      readFileSync(PATHS.secasRoadmap, 'utf8'),
+      'secas-roadmap',
+    )) {
       if (!allStories.has(k)) allStories.set(k, v);
     }
   }
@@ -301,9 +348,9 @@ function main() {
       ],
     },
     agentInstructions: [
-      `Mark ${story.id} in_progress in 01-docs/04-ops/agent-work-selection.md before coding.`,
-      'Update 01-docs/05-audit/execution-roadmap.md and work register when complete.',
-      'Refresh 01-docs/05-audit/auto-dev-state.md after completion.',
+      `Mark ${story.id} in_progress in docs/operations/agent-work-selection.md before coding.`,
+      'Update audit/product-management execution roadmaps and work register when complete.',
+      'Refresh audit/product-management/auto-dev-state.md after completion.',
       'After push/status reports: Status Update (Done → Next priority from this JSON → Approval needed if any), then implement.',
       'FORBIDDEN: "Your call", "Two options", "Want me to tackle…", "anything on the P1 list?", repo pick menus.',
       'Do not ask the user which story or repo to pick — P22 already selected.',

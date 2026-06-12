@@ -3,7 +3,7 @@
   "normativeDoc": "01-docs/04-ops/agent-launch-focus.md",
   "hubDoc": "https://github.com/gtcx-ecosystem/gtcx-core/blob/main/01-docs/04-ops/agent-launch-focus.md",
   "statePath": ".baseline/launch-focus.json",
-  "provisionedAt": "2026-06-11T18:41:54.002Z",
+  "provisionedAt": "2026-06-12T11:20:27.198Z",
   "repo": "fabric-os",
   "northStar": {
     "outcome": "Live sovereign pilot substrate (Wire #2, staging/testnet, hub acks, pen-test path) so apps and GTM can close GR-T2 deals.",
@@ -16,23 +16,77 @@
       "index": "01-docs/05-audit/gtm-audit-2026-06-05.md"
     }
   },
-  "sessionMode": "plan",
+  "sessionMode": "implement",
   "activePhase": {
     "id": "zwcmp-unblock",
     "label": "ZWCMP pilot + Global South 10x deploy"
   },
   "workSet": {
-    "implement": [],
+    "implement": [
+      {
+        "storyId": "SECAS-S2-01",
+        "title": "Live-stack pen-test execution window",
+        "workClass": "ops-docs",
+        "authorityClass": "S",
+        "lane": "p22-head"
+      },
+      {
+        "storyId": "S4-07",
+        "title": "pnpm test quick 1/359 flake investigation",
+        "workClass": "code",
+        "lane": "work-register",
+        "because": "Only pending IR-class code story in P22 manifest"
+      }
+    ],
     "plan": [],
-    "witness": [],
-    "human": []
+    "witness": [
+      {
+        "storyId": "SECAS-S2-01",
+        "title": "Pen-test window witness prep — report ingest scaffolding",
+        "workClass": "ops-docs",
+        "lane": "secas",
+        "because": "SECAS-S2 in_progress; window 2026-06-17..21"
+      },
+      {
+        "storyId": "XR-FABRIC-SPRINT-AUTH-001",
+        "title": "Consume bridge fleet-sprint-orientation-latest.json",
+        "workClass": "ops-docs",
+        "lane": "coordination",
+        "because": "L2 sprint authority eval delivered; await bridge witness"
+      }
+    ],
+    "human": [
+      {
+        "storyId": "EXT-INF-013",
+        "title": "ZWCMP pilot owner + cadence call",
+        "authorityClass": "S",
+        "owner": "Leadership",
+        "lane": "zwcmp-unblock",
+        "because": "Class S human gate — blocksIR false"
+      }
+    ]
   },
-  "activeWorkSet": [],
+  "activeWorkSet": [
+    {
+      "storyId": "SECAS-S2-01",
+      "title": "Live-stack pen-test execution window",
+      "workClass": "ops-docs",
+      "authorityClass": "S",
+      "lane": "p22-head"
+    },
+    {
+      "storyId": "S4-07",
+      "title": "pnpm test quick 1/359 flake investigation",
+      "workClass": "code",
+      "lane": "work-register",
+      "because": "Only pending IR-class code story in P22 manifest"
+    }
+  ],
   "workSetCounts": {
-    "implement": 0,
+    "implement": 2,
     "plan": 0,
-    "witness": 0,
-    "human": 0
+    "witness": 2,
+    "human": 1
   },
   "sources": [
     "audit/product-management/execution-roadmap.md",
@@ -41,11 +95,12 @@
   ],
   "forbidden": [
     "Ask operator to run master-audit before starting work",
-    "Story menus when launch-focus.json is provisioned"
+    "Story menus when launch-focus.json is provisioned",
+    "Re-select LAUNCH-PLAN-01 when LAUNCH-PLAN-01/02/03 are done in work register"
   ],
   "agentInstructions": [
     "Launch focus (fabric-os) — read .baseline/launch-focus.json before audits.",
     "Live sovereign pilot substrate (Wire #2, staging/testnet, hub acks, pen-test path) so apps and GTM can close GR-T2 deals.",
-    "PLAN mode — 0 Class R planning tasks; reconcile roadmaps and coordination; do not idle."
+    "IMPLEMENT mode — drain 1 item(s) toward app launch / GTM."
   ]
 }
