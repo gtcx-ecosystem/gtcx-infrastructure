@@ -45,6 +45,14 @@ Verification:
 Direct `gtcx-os/protocols` handoff:
 `XR-MKT-PROTOCOL-NATIVE-001`, accepted in commit `ed7f8c6e`.
 
+`gtcx-os/protocols` PNV-1 is implemented in commit `aeefd48e`:
+
+- canonical manifest signing preimage with the signature field excluded;
+- adopted GTCX Ed25519 wire envelope;
+- exact-manifest SHA-256 receipt binding;
+- authorized-signer registry contract; and
+- purpose-bound verification request, receipt, and rejection contracts.
+
 ## Runtime Contract
 
 Markets calls:
@@ -106,10 +114,11 @@ handoff.
 
 ## Residual Gap
 
-The Markets boundary is implemented. The `gtcx-os/protocols` live verifier,
-canonical signing convention, signer registry, authority adapters, signed
-receipts, Fabric deployment configuration, and live Golden Transaction trace
-pack remain required before claiming complete protocol-native execution.
+The Markets boundary and the `gtcx-os/protocols` PNV-1 signing and receipt
+contract are implemented. The live verifier route, signer-registry runtime,
+authority adapters, signed receipt issuer, Fabric deployment configuration,
+and live Golden Transaction trace pack remain required before claiming
+complete protocol-native execution.
 
 ## What This Document Does NOT Cover
 
