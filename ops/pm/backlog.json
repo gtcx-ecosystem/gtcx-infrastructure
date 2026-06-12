@@ -45,6 +45,18 @@
       "traceId": null
     },
     {
+      "id": "XR-MKT-RDS-VPC",
+      "ownerRepo": "fabric-os",
+      "status": "in_progress",
+      "traceId": null
+    },
+    {
+      "id": "XR-MKT-TRADEPASS-001",
+      "ownerRepo": "fabric-os",
+      "status": "open",
+      "traceId": null
+    },
+    {
       "id": "XR-FABRIC-TRADE-LANES-001-ack",
       "ownerRepo": "canon-os",
       "status": "open",

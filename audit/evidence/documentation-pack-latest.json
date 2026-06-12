@@ -3,7 +3,7 @@
   "repo": "fabric-os",
   "repoKind": "infra",
   "isPilot": true,
-  "date": "2026-06-11",
+  "date": "2026-06-12",
   "ok": true,
   "score100": 100,
   "pillar": "compliance",
@@ -202,7 +202,7 @@
           "label": "Broken internal links in docs/ ≤25",
           "severity": "P2",
           "pass": false,
-          "detail": "213 broken / 403 files"
+          "detail": "198 broken / 420 files"
         }
       ]
     },

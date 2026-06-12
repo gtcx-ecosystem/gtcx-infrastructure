@@ -2,7 +2,8 @@
   "$schema": "gtcx://workspace/remaining-work/v1",
   "repo": "fabric-os",
   "updated": "2026-06-12",
-  "reconciledAt": "2026-06-12T15:35:00.000Z",
+  "reconciledAt": "2026-06-12T15:40:00.000Z",
+  "sessionOpenItems": "pm/ci/session-open-items-latest.json",
   "sessionRef": "fabric-os-domain-model-2026-06-12",
   "items": [
     {

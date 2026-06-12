@@ -59,6 +59,13 @@ last_reconciled: 2026-06-12T14:45:00.000Z
 - **PNV-1:** gtcx-os `aeefd48e` — verifier deploy-ready witness filed
 - **XR-MKT-RDS-VPC:** in-VPC probe PARTIAL — peering to 10.0.100.156 OK, psql auth pending
 
+## Session open-items reconcile (2026-06-12)
+
+- **Session:** `fabric-os-domain-model-2026-06-12`
+- **Machine witness:** `pm/ci/session-open-items-latest.json` · `audit/evidence/session-open-items-reconcile-2026-06-12.json`
+- **Lane sprint:** CLOSED · DAAS sealed · git 0 ahead
+- **P22:** SECAS-S2-01 `awaiting_vendor_report` until 2026-06-21
+
 ## Evidence
 
 - `audit/evidence/pen-test-window-2026-06-10.json` — window scheduled

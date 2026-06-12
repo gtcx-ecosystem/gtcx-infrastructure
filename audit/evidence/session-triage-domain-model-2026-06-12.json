@@ -1,7 +1,7 @@
 {
   "schema": "gtcx://fabric-os/session-triage/v1",
   "sessionId": "fabric-os-domain-model-2026-06-12",
-  "compiledAt": "2026-06-12T14:30:00.000Z",
+  "compiledAt": "2026-06-12T15:40:00.000Z",
   "repo": "fabric-os",
   "sources": [
     "docs/specs/ecosystem/session-brainstorm-trade-domain-model-2026-06-12.md",
@@ -34,10 +34,9 @@
         "until": "INST-F-006 publish"
       },
       {
-        "id": "git-push",
-        "owner": "fabric-os",
-        "until": "network/sandbox push unblock",
-        "ahead": 11
+        "id": "XR-MKT-RDS-VPC-auth",
+        "owner": "fabric-os+markets-os",
+        "until": "gtx-markets/staging/database-url credential reconcile"
       }
     ],
     "deferred_p2": ["INIT-GTCX-TWO-PRODUCT-DEPLOY-WITNESS", "nyota-ai-griot-ai-hosting"],
@@ -87,9 +86,16 @@
     "docs/operations/secas/cards/markets-os.md markets-os path"
   ],
   "docDriftOpen": [
-    "gtcx-ecosystem/README.md gtcx-docs refs",
     "reports/fable-pillar-audit FOLDER-INDEX gtcx-docs",
-    "Fable pack missing agile-os canon-os"
+    "Fable pack missing agile-os canon-os",
+    "docs/agile historical gtcx-infrastructure metadata (bulk deferred)"
+  ],
+  "completedSince6d9d4fd": [
+    "INIT-GTCX-INFRA-DAAS seal",
+    "PNV-1 aeefd48e reconcile",
+    "XR-MKT-RDS-VPC peering path probe",
+    "protocol-verifier-deploy-ready witness",
+    "XR-MKT-TRADEPASS outbound-ack"
   ],
   "p22Next": "SECAS-S2-01",
   "sessionOpenItemsNote": "Use baseline session:open-items --json; no --handoff flag; bridge exit 1 = closureBar not parse failure",

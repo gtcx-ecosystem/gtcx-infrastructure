@@ -1,0 +1,46 @@
+{
+  "schema": "gtcx://fabric-os/session-open-items-reconcile/v1",
+  "sessionId": "fabric-os-domain-model-2026-06-12",
+  "reconciledAt": "2026-06-12T15:40:00.000Z",
+  "reconciledBy": "agent:fabric-os",
+  "machineWitness": "pm/ci/session-open-items-latest.json",
+  "priorWitnessCommit": "6d9d4fd",
+  "headCommit": "fe8b2d1",
+  "gates": {
+    "fabricLanes": {
+      "command": "pnpm fabric:lanes:check",
+      "result": "PASS",
+      "detail": "18 matrix rows, 3 handoffs"
+    },
+    "daasCards": { "command": "pnpm daas:cards:check", "result": "PASS" },
+    "secasPentestIngest": {
+      "command": "pnpm secas:pentest:ingest:check",
+      "result": "PASS",
+      "phase": "awaiting_vendor_report"
+    },
+    "bridgeLanes": {
+      "command": "bridge-os ecosystem:lanes:check",
+      "result": "PASS",
+      "detail": "16 fleet repos"
+    },
+    "bridgeSprintAuthority": {
+      "command": "bridge-os ecosystem:sprint-authority:check",
+      "result": "PASS"
+    },
+    "vpcMarketsRdsProbe": {
+      "command": "pnpm infra:vpc:markets-rds:probe",
+      "result": "PARTIAL",
+      "detail": "peering OK; auth fail"
+    }
+  },
+  "git": { "ahead": 0, "behind": 0, "branch": "main" },
+  "laneSprintClosed": true,
+  "deltaSinceForensicCompile": 14,
+  "fabricWipHygiene": "settled this reconcile",
+  "docDriftResolved": ["docs/agile/team.md fabric-os owner"],
+  "docDriftOpen": [
+    "Fable FOLDER-INDEX gtcx-docs",
+    "Fable pack agile-os/canon-os coverage",
+    "docs/agile historical gtcx-infrastructure metadata (deferred)"
+  ]
+}
