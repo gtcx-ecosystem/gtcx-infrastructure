@@ -35,13 +35,6 @@
       "lane": "secas",
       "because": "SECAS-S2 in_progress; window 2026-06-17..21"
     },
-    {
-      "storyId": "XR-FABRIC-SPRINT-AUTH-001",
-      "title": "Consume bridge fleet-sprint-orientation-latest.json",
-      "workClass": "ops-docs",
-      "lane": "coordination",
-      "because": "L2 sprint authority eval delivered; await bridge witness"
-    }
   ],
   "staticHuman": [
     {

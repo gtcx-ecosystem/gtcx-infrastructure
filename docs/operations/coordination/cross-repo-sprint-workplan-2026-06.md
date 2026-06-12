@@ -76,7 +76,7 @@ Three parallel numbering schemes exist across the ecosystem. This register adopt
 ## Product sprint witness (L1 — read-only)
 
 > **Contract:** `bridge-os/pm/spec/sprint-authority.json` · fabric L2 consumes; never writes product `active.json`.  
-> **Fleet witness:** `bridge-os/pm/ci/fleet-sprint-orientation-latest.json` (planned) — until present, cite product SoR directly.
+> **Fleet witness:** `bridge-os/pm/ci/fleet-sprint-orientation-latest.json` — **live** (2026-06-12, `ecosystem:sprint:orientation:write`). fabric L2 read-only; product SoR remains `pm/roadmap/sprints/active.json` per repo.
 
 | Repo       | Active sprint (SoR)      | `updated`  | Icebox (initiative)    | fabric programme use                      |
 | ---------- | ------------------------ | ---------- | ---------------------- | ----------------------------------------- |
