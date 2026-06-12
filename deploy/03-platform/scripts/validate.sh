@@ -9,9 +9,9 @@
 #   full   - quick plus terraform validate/test, kustomize, compose, and deploy dry-run validation
 #
 # Usage:
-#   ./04-deploy/03-platform/scripts/validate.sh
-#   ./04-deploy/03-platform/scripts/validate.sh quick
-#   ./04-deploy/03-platform/scripts/validate.sh full
+#   ./deploy/03-platform/scripts/validate.sh
+#   ./deploy/03-platform/scripts/validate.sh quick
+#   ./deploy/03-platform/scripts/validate.sh full
 # =============================================================================
 
 set -euo pipefail
@@ -53,10 +53,10 @@ run_shell_checks() {
     require_command shellcheck
 
     log_info "Checking shell script syntax..."
-    bash -n "${PROJECT_ROOT}"/04-deploy/03-platform/scripts/*.sh
+    bash -n "${PROJECT_ROOT}"/deploy/03-platform/scripts/*.sh
 
     log_info "Running shellcheck..."
-    shellcheck "${PROJECT_ROOT}"/04-deploy/03-platform/scripts/*.sh
+    shellcheck "${PROJECT_ROOT}"/deploy/03-platform/scripts/*.sh
 }
 
 run_policy_checks() {
@@ -70,7 +70,7 @@ run_policy_checks() {
 
 run_replay_protection_tests() {
     log_info "Running replay-protection tests..."
-    (cd "${PROJECT_ROOT}/03-platform/tools/replay-protection" && node --test tests/verifier.test.mjs tests/integration.test.mjs)
+    (cd "${PROJECT_ROOT}/platform/tools/replay-protection" && node --test tests/verifier.test.mjs tests/integration.test.mjs)
 }
 
 run_replay_production_policy_tests() {
@@ -78,91 +78,91 @@ run_replay_production_policy_tests() {
     (
         cd "${PROJECT_ROOT}" && \
         node --test \
-            03-platform/tools/replay-protection/tests/failure-modes.test.mjs \
-            03-platform/tools/replay-protection/tests/runtime-policy.test.mjs \
-            03-platform/tools/replay-protection/tests/production-fail-closed.test.mjs
+            platform/tools/replay-protection/tests/failure-modes.test.mjs \
+            platform/tools/replay-protection/tests/runtime-policy.test.mjs \
+            platform/tools/replay-protection/tests/production-fail-closed.test.mjs
     )
 }
 
 run_compliance_gateway_tests() {
     log_info "Running compliance-gateway tests..."
-    (cd "${PROJECT_ROOT}" && node --test 03-platform/tools/compliance-gateway/tests/*.test.mjs)
+    (cd "${PROJECT_ROOT}" && node --test platform/tools/compliance-gateway/tests/*.test.mjs)
 }
 
 run_deployment_guard_tests() {
     log_info "Running deployment-guard tests..."
-    (cd "${PROJECT_ROOT}/03-platform/tools/deployment-guard" && node ../scripts/run-package-tests.mjs)
+    (cd "${PROJECT_ROOT}/platform/tools/deployment-guard" && node ../scripts/run-package-tests.mjs)
     log_info "Running deployment-guard typecheck..."
-    (cd "${PROJECT_ROOT}/03-platform/tools/deployment-guard" && npx tsc --noEmit)
+    (cd "${PROJECT_ROOT}/platform/tools/deployment-guard" && npx tsc --noEmit)
 }
 
 run_script_smoke_tests() {
     log_info "Running operator script smoke tests..."
-    (cd "${PROJECT_ROOT}" && bash 04-deploy/03-platform/scripts/build-push.sh --list >/dev/null)
-    (cd "${PROJECT_ROOT}" && bash 04-deploy/03-platform/scripts/deploy.sh staging --dry-run --version=sha-smoke-test >/dev/null)
-    (cd "${PROJECT_ROOT}" && bash 04-deploy/03-platform/scripts/fine-tune-workflow.sh --help >/dev/null)
-    (cd "${PROJECT_ROOT}" && bash 04-deploy/03-platform/scripts/capture-rollback-evidence.sh --help >/dev/null)
-    (cd "${PROJECT_ROOT}" && bash 04-deploy/03-platform/scripts/prepare-intelligence-evidence-env.sh --help >/dev/null)
+    (cd "${PROJECT_ROOT}" && bash deploy/03-platform/scripts/build-push.sh --list >/dev/null)
+    (cd "${PROJECT_ROOT}" && bash deploy/03-platform/scripts/deploy.sh staging --dry-run --version=sha-smoke-test >/dev/null)
+    (cd "${PROJECT_ROOT}" && bash deploy/03-platform/scripts/fine-tune-workflow.sh --help >/dev/null)
+    (cd "${PROJECT_ROOT}" && bash deploy/03-platform/scripts/capture-rollback-evidence.sh --help >/dev/null)
+    (cd "${PROJECT_ROOT}" && bash deploy/03-platform/scripts/prepare-intelligence-evidence-env.sh --help >/dev/null)
 }
 
 run_docs_standard_validation() {
     log_info "Running docs-standard validation..."
-    (cd "${PROJECT_ROOT}" && node 03-platform/tools/scripts/docs-standard-validator.mjs --baseline=.docs-exceptions.json)
+    (cd "${PROJECT_ROOT}" && node platform/tools/scripts/docs-standard-validator.mjs --baseline=.docs-exceptions.json)
 }
 
 run_alert_runbook_url_check() {
     log_info "Running alert runbook_url annotation check..."
-    (cd "${PROJECT_ROOT}" && node 03-platform/tools/scripts/alerts-add-runbook-url.mjs --check)
+    (cd "${PROJECT_ROOT}" && node platform/tools/scripts/alerts-add-runbook-url.mjs --check)
 }
 
 run_runbook_frontmatter_check() {
     log_info "Running runbook frontmatter dedupe check..."
-    (cd "${PROJECT_ROOT}" && node 03-platform/tools/scripts/runbook-frontmatter-check.mjs --check)
+    (cd "${PROJECT_ROOT}" && node platform/tools/scripts/runbook-frontmatter-check.mjs --check)
 }
 
 run_runbook_commands_check() {
     log_info "Running runbook command validation..."
-    (cd "${PROJECT_ROOT}" && node 03-platform/tools/scripts/runbook-commands-check.mjs)
+    (cd "${PROJECT_ROOT}" && node platform/tools/scripts/runbook-commands-check.mjs)
 }
 
 run_empty_catch_check() {
     log_info "Running empty-catch lint check..."
-    (cd "${PROJECT_ROOT}" && node 03-platform/tools/scripts/empty-catch-check.mjs)
+    (cd "${PROJECT_ROOT}" && node platform/tools/scripts/empty-catch-check.mjs)
 }
 
 run_fail_closed_tests() {
     log_info "Running failClosed helper tests..."
-    (cd "${PROJECT_ROOT}" && node --test 03-platform/tools/scripts/fail-closed.test.mjs)
+    (cd "${PROJECT_ROOT}" && node --test platform/tools/scripts/fail-closed.test.mjs)
 }
 
 run_pin_actions_sha_check() {
     log_info "Running GitHub Actions SHA-pin check..."
-    (cd "${PROJECT_ROOT}" && node 03-platform/tools/scripts/pin-actions-sha.mjs --check)
+    (cd "${PROJECT_ROOT}" && node platform/tools/scripts/pin-actions-sha.mjs --check)
 }
 
 run_production_overlay_guard() {
     log_info "Running production overlay image-tag guard..."
-    (cd "${PROJECT_ROOT}" && node 03-platform/tools/scripts/production-overlay-guard.mjs)
+    (cd "${PROJECT_ROOT}" && node platform/tools/scripts/production-overlay-guard.mjs)
 }
 
 run_compliance_data_signature_verify() {
     log_info "Running compliance-data catalog signature verification..."
-    (cd "${PROJECT_ROOT}" && node 03-platform/tools/compliance-data/scripts/verify-catalog.mjs)
+    (cd "${PROJECT_ROOT}" && node platform/tools/compliance-data/scripts/verify-catalog.mjs)
 }
 
 run_docs_link_check() {
     log_info "Running docs link check..."
-    (cd "${PROJECT_ROOT}" && node 03-platform/tools/scripts/docs-link-checker.mjs)
+    (cd "${PROJECT_ROOT}" && node platform/tools/scripts/docs-link-checker.mjs)
 }
 
 run_score_ledger_validation() {
     log_info "Running score-evidence ledger validation..."
-    (cd "${PROJECT_ROOT}" && node 03-platform/tools/scripts/validate-score-ledger.mjs)
+    (cd "${PROJECT_ROOT}" && node platform/tools/scripts/validate-score-ledger.mjs)
 }
 
 run_build_evidence_generation() {
     log_info "Running build evidence generation..."
-    (cd "${PROJECT_ROOT}" && node 03-platform/tools/control-plane/generate-release-evidence.mjs \
+    (cd "${PROJECT_ROOT}" && node platform/tools/control-plane/generate-release-evidence.mjs \
         --environment=ci \
         --version=ci-smoke \
         --commit=smoke-test \
@@ -178,7 +178,7 @@ run_runtime_smoke_evidence_generation() {
     log_info "Running runtime smoke evidence generation..."
     (
         cd "${PROJECT_ROOT}"
-        node 03-platform/tools/control-plane/capture-runtime-smoke-evidence.mjs \
+        node platform/tools/control-plane/capture-runtime-smoke-evidence.mjs \
             --environment=ci \
             --base-url=http://127.0.0.1:9 \
             --endpoint=unreachable=/health \
@@ -189,7 +189,7 @@ run_runtime_smoke_evidence_generation() {
 
 run_control_plane_tests() {
     log_info "Running control-plane tests..."
-    (cd "${PROJECT_ROOT}" && node --test 03-platform/tools/control-plane/tests/*.test.mjs)
+    (cd "${PROJECT_ROOT}" && node --test platform/tools/control-plane/tests/*.test.mjs)
 }
 
 run_terraform_validation() {
@@ -197,7 +197,7 @@ run_terraform_validation() {
     require_command zip
 
     log_info "Running terraform format check..."
-    (cd "${PROJECT_ROOT}" && terraform fmt -check -recursive 04-deploy/terraform/)
+    (cd "${PROJECT_ROOT}" && terraform fmt -check -recursive deploy/terraform/)
 
     local modules=(
         vpc
@@ -217,7 +217,7 @@ run_terraform_validation() {
     for module in "${modules[@]}"; do
         log_info "Terraform validate: ${module}"
         (
-            cd "${PROJECT_ROOT}/04-deploy/terraform/modules/${module}"
+            cd "${PROJECT_ROOT}/deploy/terraform/modules/${module}"
             if [[ "${module}" == "secrets" ]]; then
                 echo '{}' | zip -q lambda/rotation.zip -
             fi
@@ -253,7 +253,7 @@ run_terraform_tests() {
     for module in "${modules[@]}"; do
         log_info "Terraform test: ${module}"
         (
-            cd "${PROJECT_ROOT}/04-deploy/terraform/modules/${module}"
+            cd "${PROJECT_ROOT}/deploy/terraform/modules/${module}"
             if [[ "${module}" == "secrets" ]]; then
                 echo '{}' | zip -q lambda/rotation.zip -
             fi
@@ -267,23 +267,23 @@ run_kustomize_validation() {
     require_command kubectl
 
     log_info "Running kustomize builds..."
-    (cd "${PROJECT_ROOT}" && kubectl kustomize 04-deploy/kubernetes/base/ > /dev/null)
-    (cd "${PROJECT_ROOT}" && kubectl kustomize 04-deploy/kubernetes/overlays/development/ > /dev/null)
-    (cd "${PROJECT_ROOT}" && kubectl kustomize 04-deploy/kubernetes/overlays/staging/ > /dev/null)
-    (cd "${PROJECT_ROOT}" && kubectl kustomize 04-deploy/kubernetes/overlays/staging/linkerd/ > /dev/null)
-    (cd "${PROJECT_ROOT}" && kubectl kustomize 04-deploy/kubernetes/overlays/production/ > /dev/null)
-    (cd "${PROJECT_ROOT}" && kubectl kustomize 04-deploy/kubernetes/overlays/production/linkerd/ > /dev/null)
-    (cd "${PROJECT_ROOT}" && kubectl kustomize 04-deploy/kubernetes/overlays/testnet/ > /dev/null)
-    (cd "${PROJECT_ROOT}" && kubectl kustomize 04-deploy/kubernetes/overlays/pen-test/ > /dev/null)
+    (cd "${PROJECT_ROOT}" && kubectl kustomize deploy/kubernetes/base/ > /dev/null)
+    (cd "${PROJECT_ROOT}" && kubectl kustomize deploy/kubernetes/overlays/development/ > /dev/null)
+    (cd "${PROJECT_ROOT}" && kubectl kustomize deploy/kubernetes/overlays/staging/ > /dev/null)
+    (cd "${PROJECT_ROOT}" && kubectl kustomize deploy/kubernetes/overlays/staging/linkerd/ > /dev/null)
+    (cd "${PROJECT_ROOT}" && kubectl kustomize deploy/kubernetes/overlays/production/ > /dev/null)
+    (cd "${PROJECT_ROOT}" && kubectl kustomize deploy/kubernetes/overlays/production/linkerd/ > /dev/null)
+    (cd "${PROJECT_ROOT}" && kubectl kustomize deploy/kubernetes/overlays/testnet/ > /dev/null)
+    (cd "${PROJECT_ROOT}" && kubectl kustomize deploy/kubernetes/overlays/pen-test/ > /dev/null)
 }
 
 run_compose_validation() {
     require_command docker
 
     log_info "Running docker compose config validation..."
-    (cd "${PROJECT_ROOT}" && docker compose -f 04-deploy/docker/docker/docker-compose.dev.yml config --quiet)
-    (cd "${PROJECT_ROOT}" && docker compose -f 04-deploy/docker/docker/docker-compose.test.yml config --quiet)
-    (cd "${PROJECT_ROOT}" && docker compose -f 04-deploy/docker/docker/docker-compose.infra.yml config --quiet)
+    (cd "${PROJECT_ROOT}" && docker compose -f deploy/docker/docker/docker-compose.dev.yml config --quiet)
+    (cd "${PROJECT_ROOT}" && docker compose -f deploy/docker/docker/docker-compose.test.yml config --quiet)
+    (cd "${PROJECT_ROOT}" && docker compose -f deploy/docker/docker/docker-compose.infra.yml config --quiet)
 }
 
 run_audit_immutability_fixture() {
@@ -291,37 +291,37 @@ run_audit_immutability_fixture() {
     require_command psql
 
     log_info "Running audit immutability fixture..."
-    (cd "${PROJECT_ROOT}" && bash 04-deploy/03-platform/scripts/test-audit-immutability.sh)
+    (cd "${PROJECT_ROOT}" && bash deploy/03-platform/scripts/test-audit-immutability.sh)
 }
 
 run_incident_drill_validation() {
     log_info "Running incident-drill validation..."
-    (cd "${PROJECT_ROOT}" && node 03-platform/tools/scripts/incident-drill-validator.mjs)
+    (cd "${PROJECT_ROOT}" && node platform/tools/scripts/incident-drill-validator.mjs)
 }
 
 run_kyverno_policy_validation() {
     log_info "Running Kyverno policy validation..."
-    (cd "${PROJECT_ROOT}" && node 03-platform/tools/scripts/kyverno-policy-validator.mjs)
+    (cd "${PROJECT_ROOT}" && node platform/tools/scripts/kyverno-policy-validator.mjs)
 }
 
 run_signal_scorecard_validation() {
     log_info "Running SIGNAL scorecard validation..."
-    (cd "${PROJECT_ROOT}" && node 03-platform/tools/scripts/validate-signal.mjs)
+    (cd "${PROJECT_ROOT}" && node platform/tools/scripts/validate-signal.mjs)
 }
 
 run_contract_tests() {
     log_info "Running protocol API contract tests..."
-    (cd "${PROJECT_ROOT}" && node --test 03-platform/tools/contract-tests/protocol-schema.test.mjs)
+    (cd "${PROJECT_ROOT}" && node --test platform/tools/contract-tests/protocol-schema.test.mjs)
 }
 
 run_chaos_manifest_validation() {
     log_info "Running chaos manifest validation..."
-    (cd "${PROJECT_ROOT}" && node 03-platform/tools/scripts/chaos-manifest-validator.mjs)
+    (cd "${PROJECT_ROOT}" && node platform/tools/scripts/chaos-manifest-validator.mjs)
 }
 
 run_pagerduty_drill_simulation() {
     log_info "Running PagerDuty incident drill simulation..."
-    (cd "${PROJECT_ROOT}" && node 03-platform/tools/scripts/incident-drill-pagerduty-simulation.mjs --dry-run)
+    (cd "${PROJECT_ROOT}" && node platform/tools/scripts/incident-drill-pagerduty-simulation.mjs --dry-run)
 }
 
 run_nats_integration() {
@@ -354,7 +354,7 @@ run_load_tests() {
         return 1
     fi
     log_info "Running load tests..."
-    (cd "${PROJECT_ROOT}" && bash 03-platform/tools/load-tests/run-load-tests.sh)
+    (cd "${PROJECT_ROOT}" && bash platform/tools/load-tests/run-load-tests.sh)
 }
 
 case "${MODE}" in

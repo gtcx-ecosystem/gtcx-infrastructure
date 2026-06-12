@@ -77,7 +77,7 @@ When `pnpm agent:next-work` returns a story ID, execute it. When `backlogClear: 
 | S4-04                     | deployment-guard typecheck regression                          | P1  | done        | code     |
 | S4-05                     | audit-signer + compliance-gateway lint regressions             | P1  | done        | code     |
 | S4-06                     | README gaps (12 dirs) per repo-hygiene audit                   | P0  | done        | code     |
-| S4-07                     | pnpm test quick 1/359 flake investigation                      | P2  | pending     | code     |
+| S4-07                     | pnpm test quick 1/359 flake investigation                      | P2  | done        | code     |
 | SECAS-S2-01               | Live-stack pen-test execution window                           | P0  | in_progress | ops-docs |
 | XR-FABRIC-SPRINT-AUTH-001 | Sprint authority L2 read contract witness                      | P1  | done        | ops-docs |
 

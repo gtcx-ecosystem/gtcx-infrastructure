@@ -2,7 +2,14 @@ import { readFileSync, existsSync, readdirSync, statSync } from 'node:fs';
 import path from 'node:path';
 
 const repoRoot = process.cwd();
-const environmentsRoot = path.join(repoRoot, '04-deploy/terraform/environments');
+const deployHub = ['deploy', '04-deploy'].find((hub) =>
+  existsSync(path.join(repoRoot, hub, 'terraform', 'environments'))
+);
+if (!deployHub) {
+  console.error('policy error: deploy/terraform/environments not found (checked deploy/, 04-deploy/)');
+  process.exit(1);
+}
+const environmentsRoot = path.join(repoRoot, deployHub, 'terraform', 'environments');
 
 const requiredChecks = ['trainer_artifact', 'eval_gate', 'promotion_target', 'staging_e2e'];
 

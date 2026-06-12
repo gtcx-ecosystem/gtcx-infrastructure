@@ -1,10 +1,19 @@
 #!/usr/bin/env node
 
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 
 const repoRoot = process.cwd();
-const shipRoot = path.join(repoRoot, '04-deploy');
+const deployHub = ['deploy', '04-deploy'].find((hub) =>
+  existsSync(path.join(repoRoot, hub, 'kubernetes'))
+);
+if (!deployHub) {
+  console.error(
+    'security-control-boundaries: deploy/kubernetes not found (checked deploy/, 04-deploy/)'
+  );
+  process.exit(1);
+}
+const shipRoot = path.join(repoRoot, deployHub);
 const cloudflaredConfig = path.join(
   shipRoot,
   'kubernetes',
