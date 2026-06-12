@@ -35,6 +35,8 @@
     "protocol:golden-transaction:probe:write": "node platform/scripts/golden-transaction-protocol-native-probe.mjs --write",
     "protocol:markets:verifier:populate": "bash deploy/03-platform/scripts/staging/populate-markets-protocol-verifier-sm.sh",
     "protocol:markets:verifier:populate:dry-run": "bash deploy/03-platform/scripts/staging/populate-markets-protocol-verifier-sm.sh --dry-run",
+    "protocol:verifier:staging:build-push": "bash deploy/03-platform/scripts/staging/build-push-protocols-pnv2.sh",
+    "protocol:verifier:staging:build-push:dry-run": "bash deploy/03-platform/scripts/staging/build-push-protocols-pnv2.sh --dry-run",
     "check:workspace-root-cleanliness": "python3 platform/scripts/ops/check-workspace-root-cleanliness.py",
     "check:workspace-root-cleanliness:strict": "python3 platform/scripts/ops/check-workspace-root-cleanliness.py --strict",
     "signal:import-cost-stats": "node platform/scripts/ops/import-baseline-cost-stats.mjs",

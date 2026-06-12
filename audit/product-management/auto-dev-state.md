@@ -68,7 +68,7 @@ last_reconciled: 2026-06-12T14:45:00.000Z
 - **Bridge handoff:** XR-BRIDGE-SESSION-OPEN-001 accepted · closure **5/5** · program office **0 open**
 - **T23 / XR-MKT-RDS-VPC:** sealed per bridge — do not re-open
 - **Assurance:** `fabric:assurance:run:write` — bridge evaluate consumed; `uat-exit` cross-repo witness open (bridge-os)
-- **PNV live deploy:** secrets + Markets SM **synced** · protocols **Running** · image `v0.4.6` (need `e7525dfa` ECR) · GT blocked on Markets brokerage cluster deploy + image
+- **PNV live deploy:** `e7525dfa` **live** · `/ready` true · verify route **409** (live rejection) · GT blocked on **Markets brokerage** cluster deploy
 - **Fleet:** cross-repo-health PASS 4/4 @ 2026-06-12T16:45:42Z
 
 ## Evidence

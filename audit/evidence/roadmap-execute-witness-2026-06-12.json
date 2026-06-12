@@ -2,7 +2,7 @@
   "schema": "gtcx.roadmapExecuteWitness.v1",
   "repo": "fabric-os",
   "mode": "execute_roadmap",
-  "witnessedAt": "2026-06-12T17:50:00.000Z",
+  "witnessedAt": "2026-06-12T18:25:00.000Z",
   "p22Head": "SECAS-S2-01",
   "calendarGate": {
     "blockedUntil": "2026-06-21",
@@ -31,14 +31,18 @@
     "secas:pentest:ingest:check:write pre-window PASS (awaiting_vendor_report)",
     "protocol:verifier:staging:readiness — secret EXISTS; image e7525dfa pending",
     "protocol:golden-transaction:probe — verify route probe attempted",
-    "staging cluster capacity remediation documented (protocols Recreate + resource tuning)"
+    "staging cluster capacity remediation documented (protocols Recreate + resource tuning)",
+    "gtcx-protocols:e7525dfa built, pushed to ECR, rolled to gtcx-staging",
+    "verifier env patched live — /ready true, verify route 409 rejection",
+    "protocol-verifier-staging-readiness PASS",
+    "GT probe: verify_route_live_markets_trace_pending"
   ],
   "pnvLiveDeploy": {
     "secret": "done",
     "marketsSigner": "done",
     "marketsSm": "done",
-    "image": "blocked_ecr_e7525dfa",
-    "dockerBuildNote": "install PASS after workspace strip; build fails @gtcx/sdk tsup in Docker context",
+    "image": "done_ecr_e7525dfa",
+    "verifyRoute": "live_409_rejection",
     "goldenTransaction": "blocked_markets_brokerage_not_on_cluster"
   },
   "classSDeferred": [

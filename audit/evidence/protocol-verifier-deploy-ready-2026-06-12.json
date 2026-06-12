@@ -7,7 +7,7 @@
   "preparedAt": "2026-06-12T17:15:00.000Z",
   "readinessWitness": "audit/evidence/protocol-verifier-staging-readiness-2026-06-12.json",
   "populateScript": "deploy/03-platform/scripts/staging/populate-manifest-verifier-staging-secret.mjs",
-  "liveDeployPhase": "markets_sm_synced_awaiting_ecr_image_e7525dfa",
+  "liveDeployPhase": "verify_route_live_awaiting_markets_brokerage_gt_trace",
   "clusterRemediation": {
     "at": "2026-06-12T17:22:00.000Z",
     "note": "Staging cluster CPU/memory saturated; scaled non-PNV workloads to 0 and lowered protocols requests to restore gtcx-protocols-staging pod.",
@@ -67,7 +67,12 @@
     ]
   },
   "fabricDeployPrerequisites": [
-    { "item": "Live verifier route in staging", "owner": "fabric-os", "status": "pending" },
+    {
+      "item": "Live verifier route in staging",
+      "owner": "fabric-os",
+      "status": "live",
+      "witness": "protocol-verifier-staging-readiness-2026-06-12.json"
+    },
     {
       "item": "Fail-closed verifier deployment configuration contract",
       "owner": "fabric-os",

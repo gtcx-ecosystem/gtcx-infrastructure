@@ -2,86 +2,30 @@
   "schemaVersion": 1,
   "testType": "cross-repo-health-probe",
   "storyId": "S1-13",
-  "timestamp": "2026-06-12T16:45:42.789Z",
+  "timestamp": "2026-06-12T17:49:32.652Z",
   "environment": "staging",
-  "overall": "PASS",
+  "overall": "FAIL",
   "services": [
     {
       "name": "sovereign",
       "repo": "gtcx-platforms",
       "url": "https://sovereign-staging.gtcx.trade/api/health",
-      "status": 200,
+      "status": 503,
       "error": null,
-      "body": {
-        "status": "up",
-        "timestamp": "2026-06-12T16:45:37.703Z",
-        "database": {
-          "status": "up",
-          "details": {
-            "type": "postgres"
-          }
-        },
-        "protocol-adapters": {
-          "status": "up",
-          "details": {
-            "expectedVersions": {
-              "tradepass": "1.0.0",
-              "geotag": "1.0.0",
-              "gci": "1.0.0",
-              "vaultmark": "1.0.0",
-              "panx": "1.0.0"
-            }
-          }
-        },
-        "audit-trail": {
-          "status": "up",
-          "details": {
-            "lastAppend": "2026-06-12T16:45:37.703Z",
-            "chainVerified": true
-          }
-        }
-      },
+      "body": "<html>\r\n<head><title>503 Service Temporarily Unavailable</title></head>\r\n<body>\r\n<center><h1>503 Service Temporarily Unavailable</h1></center>\r\n</body>\r\n</html>\r\n",
       "transport": "curl",
-      "latencyMs": 2316,
+      "latencyMs": 2484,
       "required": true
     },
     {
       "name": "agx-api",
       "repo": "gtcx-platforms",
       "url": "https://api.staging.gtcx.trade/api/health",
-      "status": 200,
+      "status": 503,
       "error": null,
-      "body": {
-        "status": "up",
-        "timestamp": "2026-06-12T16:45:37.628Z",
-        "database": {
-          "status": "up",
-          "details": {
-            "type": "postgres"
-          }
-        },
-        "protocol-adapters": {
-          "status": "up",
-          "details": {
-            "expectedVersions": {
-              "tradepass": "1.0.0",
-              "geotag": "1.0.0",
-              "gci": "1.0.0",
-              "vaultmark": "1.0.0",
-              "panx": "1.0.0"
-            }
-          }
-        },
-        "audit-trail": {
-          "status": "up",
-          "details": {
-            "lastAppend": "2026-06-12T16:45:37.628Z",
-            "chainVerified": true
-          }
-        }
-      },
+      "body": "<html>\r\n<head><title>503 Service Temporarily Unavailable</title></head>\r\n<body>\r\n<center><h1>503 Service Temporarily Unavailable</h1></center>\r\n</body>\r\n</html>\r\n",
       "transport": "fetch",
-      "latencyMs": 2270,
+      "latencyMs": 2220,
       "required": true
     },
     {
@@ -93,7 +37,7 @@
       "body": {
         "service": "intelligence-sdk",
         "version": "0.1.0",
-        "uptime": 229873,
+        "uptime": 233703,
         "status": "healthy",
         "dependencies": {
           "inference_backend": {
@@ -110,8 +54,8 @@
           "jobs": {
             "anomaly": {
               "enabled": true,
-              "lastRun": "2026-06-12T16:44:24.830Z",
-              "runCount": 766
+              "lastRun": "2026-06-12T17:49:24.832Z",
+              "runCount": 779
             },
             "trend": {
               "enabled": true,
@@ -136,8 +80,8 @@
           "activeSessions": 0
         }
       },
-      "transport": "curl",
-      "latencyMs": 2495,
+      "transport": "fetch",
+      "latencyMs": 2024,
       "required": true
     },
     {
@@ -166,14 +110,14 @@
         "availableProviders": ["claude-sonnet", "claude-haiku"]
       },
       "transport": "kubectl-exec",
-      "latencyMs": 7397,
+      "latencyMs": 6932,
       "required": false
     }
   ],
   "summary": {
     "total": 4,
-    "healthy": 4,
-    "unhealthy": 0,
-    "requiredUnhealthy": 0
+    "healthy": 2,
+    "unhealthy": 2,
+    "requiredUnhealthy": 2
   }
 }

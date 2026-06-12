@@ -2,7 +2,7 @@
   "schema": "gtcx://fabric-os/protocol-verifier-staging-readiness/v1",
   "id": "PROTOCOL-VERIFIER-STAGING-READINESS-2026-06-12",
   "ticket": "XR-MKT-PROTOCOL-NATIVE-001",
-  "checkedAt": "2026-06-12T17:46:27.412Z",
+  "checkedAt": "2026-06-12T18:23:57.038Z",
   "namespace": "gtcx-staging",
   "deployment": "gtcx-protocols-staging",
   "secret": {
@@ -13,10 +13,10 @@
     "name": "gtcx-markets-manifest-signer-staging",
     "exists": true
   },
-  "image": "348389439381.dkr.ecr.af-south-1.amazonaws.com/gtcx-protocols:v0.4.6",
+  "image": "348389439381.dkr.ecr.af-south-1.amazonaws.com/gtcx-protocols:e7525dfa",
   "pnv2": {
     "requiredCommit": "e7525dfa",
-    "imageContainsCommit": false
+    "imageContainsCommit": true
   },
   "configGate": {
     "ok": true,
@@ -28,10 +28,9 @@
     "stderr": null
   },
   "blockers": [
-    "deploy image containing e7525dfa",
-    "inject Markets GTCX_OS_PROTOCOLS_VERIFIER_URL + TOKEN",
+    "markets-os ESO sync + brokerage staging deploy for GT trace",
     "live Golden Transaction trace pack"
   ],
-  "ok": false,
+  "ok": true,
   "repo": "fabric-os"
 }

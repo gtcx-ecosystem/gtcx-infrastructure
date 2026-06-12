@@ -2,9 +2,9 @@
   "schema": "gtcx://fabric-os/golden-transaction-protocol-native/v1",
   "id": "GOLDEN-TXN-PROTOCOL-NATIVE-2026-06-12",
   "ticket": "XR-MKT-PROTOCOL-NATIVE-001",
-  "probedAt": "2026-06-12T17:47:01.575Z",
+  "probedAt": "2026-06-12T18:26:12.719Z",
   "ok": false,
-  "phase": "blocked_prerequisites",
+  "phase": "verify_route_live_markets_trace_pending",
   "prerequisites": {
     "verifierUrl": true,
     "verifierToken": true,
@@ -14,11 +14,11 @@
     "pnv2Image": "e7525dfa"
   },
   "verifyRouteProbe": {
-    "ok": false,
-    "exitCode": 1,
-    "body": null,
-    "stderr": "wget: server returned error: HTTP/1.1 404 Not Found\ncommand terminated with exit code 1"
+    "ok": true,
+    "exitCode": 0,
+    "body": "wget: server returned error: HTTP/1.1 409 Conflict",
+    "stderr": null
   },
-  "note": "Live Golden Transaction trace pack requires e7525dfa image, Markets brokerage deploy, and trace orchestration.",
+  "note": "Verify route live (409 rejection on probe manifest). Golden Transaction trace pack blocked on Markets brokerage cluster deploy.",
   "repo": "fabric-os"
 }

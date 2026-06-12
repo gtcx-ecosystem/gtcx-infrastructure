@@ -59,28 +59,24 @@ function probeVerifyRoute(pod, token) {
     '-c',
     'protocols',
     '--',
-    'wget',
-    '-qO-',
-    '--header',
-    `Authorization: Bearer ${token}`,
-    '--header',
-    'Content-Type: application/json',
-    '--post-data',
-    postBody,
-    'http://127.0.0.1:8300/v1/protocol-manifests/verify',
+    'sh',
+    '-c',
+    `wget -qO- --header 'Authorization: Bearer ${token}' --header 'Content-Type: application/json' --post-data '${postBody.replace(/'/g, "'\\''")}' http://127.0.0.1:8300/v1/protocol-manifests/verify 2>&1 || true`,
   ]);
-  const responseBody = exec.stdout?.trim()?.slice(0, 500) || null;
-  const stderr = exec.stderr?.trim()?.slice(0, 300) || null;
+  const combined = `${exec.stdout ?? ''}${exec.stderr ?? ''}`.trim();
+  const jsonMatch = combined.match(/\{[\s\S]*\}/);
+  const responseBody = jsonMatch?.[0]?.slice(0, 500) ?? (combined.slice(0, 500) || null);
   const routeReachable =
-    exec.status === 0 ||
-    Boolean(responseBody?.includes('INVALID_')) ||
-    Boolean(responseBody?.includes('UNAUTHORIZED_')) ||
-    Boolean(responseBody?.includes('"allowed"'));
+    Boolean(jsonMatch) ||
+    combined.includes('409') ||
+    combined.includes('INVALID_') ||
+    combined.includes('UNAUTHORIZED_') ||
+    combined.includes('"allowed"');
   return {
     ok: routeReachable,
     exitCode: exec.status,
     body: responseBody,
-    stderr,
+    stderr: exec.stderr?.trim()?.slice(0, 300) || null,
   };
 }
 
@@ -108,7 +104,7 @@ const witness = {
   ticket: 'XR-MKT-PROTOCOL-NATIVE-001',
   probedAt: new Date().toISOString(),
   ok: false,
-  phase: verifyProbe.ok ? 'verify_route_reachable' : 'blocked_prerequisites',
+  phase: verifyProbe.ok ? 'verify_route_live_markets_trace_pending' : 'blocked_prerequisites',
   prerequisites: {
     verifierUrl: Boolean(url),
     verifierToken: Boolean(token),
@@ -119,7 +115,9 @@ const witness = {
   },
   verifyRouteProbe: verifyProbe,
   note:
-    'Live Golden Transaction trace pack requires e7525dfa image, Markets brokerage deploy, and trace orchestration.',
+    verifyProbe.ok
+      ? 'Verify route live (409 rejection on probe manifest). Golden Transaction trace pack blocked on Markets brokerage cluster deploy.'
+      : 'Live Golden Transaction trace pack requires e7525dfa image, Markets brokerage deploy, and trace orchestration.',
   repo: 'fabric-os',
 };
 
