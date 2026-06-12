@@ -1,7 +1,7 @@
 {
   "schema": "gtcx://audit/technical-excellence-pillar/v1",
   "repo": "fabric-os",
-  "date": "2026-06-11",
+  "date": "2026-06-12",
   "score100": 70,
   "published": false,
   "provisional": true,
@@ -60,7 +60,7 @@
   },
   "hasRubric": true,
   "rubricSource": "audit-output",
-  "rubricSpec": "pm/spec/technical-excellence-rubric.v1.json",
+  "rubricSpec": "pm/spec/technical-excellence-rubric.json",
   "rubricVersion": "1.0.0",
   "capped": true,
   "capReason": "probe-only-or-snapshot"

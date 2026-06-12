@@ -1,7 +1,7 @@
 {
   "schema": "gtcx://audit/world-class-pillar/v1",
   "repo": "fabric-os",
-  "date": "2026-06-11",
+  "date": "2026-06-12",
   "score100": 69,
   "published": false,
   "provisional": true,
@@ -82,6 +82,6 @@
     }
   },
   "hasRubric": true,
-  "rubricSpec": "pm/spec/world-class-rubric.v1.json",
+  "rubricSpec": "pm/spec/world-class-rubric.json",
   "rubricVersion": "1.0.0"
 }

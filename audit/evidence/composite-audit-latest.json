@@ -1,42 +1,164 @@
 {
-  "schema": "gtcx://audit/composite/v1",
+  "schema": "gtcx://audit/composite/v2",
   "repo": "fabric-os",
-  "date": "2026-06-11",
-  "composite100": 90,
-  "productionReady": false,
-  "source": "ecosystem-master-audit-gate-rollup",
-  "gates": {
-    "baselineConfig": {
-      "ok": true,
-      "sor": true,
-      "stub": true
+  "date": "2026-06-12",
+  "composite100": 87,
+  "composite100Raw": 88,
+  "productionReady": true,
+  "openP0": 0,
+  "openP1": 0,
+  "capsFired": [
+    {
+      "id": "gate-baseline-session-ok",
+      "label": "Gate failed: Baseline session or agentic manifest",
+      "ceiling100": 80,
+      "trigger": "baseline-session-ok",
+      "coreId": "A3-AGENTIC-INNOVATION"
     },
-    "ops": {
-      "ok": true,
-      "code": 0,
-      "out": "> fabric-os@0.1.0 ops:check /Users/amanianai/Sites/gtcx-ecosystem/fabric-os\n> pnpm workspace:check && pnpm check:workspace-root-cleanliness:strict\n\n\n> fabric-os@0.1.0 workspace:check /Users/amanianai/Sites/gtcx-ecosystem/fabric-os\n> node platform/scripts/workspace/check.mjs\n\nworkspace:root OK\nworkspace:coordination OK\nworkspace:compliance OK\nworkspace:gtm OK\nworkspace:attestation OK\nworkspace:product-management OK\nworkspace:security OK\nworkspace:assurance-programs OK\nworkspace:audit OK\nworkspace:operations OK\nworkspace:readmes OK\nworkspace:agents OK\nworkspace:legal OK\n\n> fabric-os@0.1.0 check:workspace-root-cleanliness:strict /Users/amanianai/Sites/gtcx-ecosystem/fabric-os\n> python3 platform/scripts/ops/check-workspace-root-cleanliness.py --strict\n\n# Workspace Root Cleanliness\n\nPolicy: 01-"
+    {
+      "id": "gate-p35-strict-pass",
+      "label": "Gate failed: P35 layout strict",
+      "ceiling100": 70,
+      "trigger": "p35-strict-pass",
+      "coreId": "A5-REPO-HYGIENE"
+    }
+  ],
+  "cores": {
+    "A1-PRODUCT-EXCELLENCE": {
+      "slug": "product-excellence",
+      "score100": 100,
+      "score100Raw": 100,
+      "weight": 0.25,
+      "status": "probe-gates-only",
+      "metrics": {
+        "ux-product-design": {
+          "score100": 0,
+          "weight": 1,
+          "confidence": "D",
+          "source": "missing"
+        },
+        "ecosystem-integration": {
+          "score100": 0,
+          "weight": 1,
+          "confidence": "D",
+          "source": "missing"
+        },
+        "innovation-originality": {
+          "score100": 0,
+          "weight": 1,
+          "confidence": "D",
+          "source": "missing"
+        },
+        "technical-moat": {
+          "score100": 0,
+          "weight": 1,
+          "confidence": "D",
+          "source": "missing"
+        }
+      }
     },
-    "session": {
-      "ok": true,
-      "detail": "session ran"
+    "A2-PRODUCTION-GRADE": {
+      "slug": "production-grade",
+      "score100": 80,
+      "score100Raw": 80,
+      "weight": 0.2,
+      "status": "probe-gates-only",
+      "metrics": {
+        "production-readiness": {
+          "score100": 0,
+          "weight": 1,
+          "confidence": "D",
+          "source": "missing"
+        }
+      }
     },
-    "p35Strict": {
-      "ok": false,
-      "detail": "{\n  \"ok\": false,\n  \"protocol\": \"35-ecosystem-workspace-world-class/v5.0.0\",\n  \"engine\": \"layout-spec-enforce/v1\",\n  \"contractVersion\": \"5.1.0\",\n  \"contractPath\""
+    "A3-AGENTIC-INNOVATION": {
+      "slug": "agentic-innovation",
+      "score100": 80,
+      "score100Raw": 80,
+      "weight": 0.15,
+      "status": "probe-gates-only",
+      "metrics": {
+        "ai-maturity": {
+          "score100": 0,
+          "weight": 1,
+          "confidence": "D",
+          "source": "missing"
+        },
+        "hallucination-resilience": {
+          "score100": 0,
+          "weight": 1,
+          "confidence": "D",
+          "source": "missing"
+        }
+      }
     },
-    "agentic": {
-      "ok": true
+    "A4-COMPLIANCE-SECURITY": {
+      "slug": "compliance-security",
+      "score100": 100,
+      "score100Raw": 100,
+      "weight": 0.2,
+      "status": "probe-gates-only",
+      "metrics": {
+        "security": {
+          "score100": 0,
+          "weight": 1,
+          "confidence": "D",
+          "source": "missing"
+        },
+        "enterprise-readiness": {
+          "score100": 0,
+          "weight": 1,
+          "confidence": "D",
+          "source": "missing"
+        },
+        "bank-grade-auditability": {
+          "score100": 0,
+          "weight": 1,
+          "confidence": "D",
+          "source": "missing"
+        }
+      }
     },
-    "mcp": {
-      "ok": false,
-      "detail": "optional product"
-    },
-    "gitPush": {
-      "ok": true,
-      "detail": "To https://github.com/gtcx-ecosystem/fabric-os.git\n   985bba6..5d4b122  HEAD -> "
+    "A5-REPO-HYGIENE": {
+      "slug": "repo-hygiene",
+      "score100": 70,
+      "score100Raw": 75,
+      "weight": 0.2,
+      "status": "probe-gates-only",
+      "metrics": {
+        "documentation": {
+          "score100": 0,
+          "weight": 1,
+          "confidence": "D",
+          "source": "missing"
+        },
+        "repo-folder-hygiene": {
+          "score100": 0,
+          "weight": 1,
+          "confidence": "D",
+          "source": "missing"
+        },
+        "spec-drift": {
+          "score100": 0,
+          "weight": 1,
+          "confidence": "D",
+          "source": "missing"
+        }
+      }
     }
   },
-  "gaps": ["P35 strict"],
-  "note": "Gate rollup — replace with five-core witness composite after A1–A5 audits",
-  "replaces": "master-audit"
+  "weights": {
+    "A1-PRODUCT-EXCELLENCE": 0.25,
+    "A2-PRODUCTION-GRADE": 0.2,
+    "A3-AGENTIC-INNOVATION": 0.15,
+    "A4-COMPLIANCE-SECURITY": 0.2,
+    "A5-REPO-HYGIENE": 0.2
+  },
+  "replaces": ["master-audit", "comprehensive-audit", "bank-grade-audit"],
+  "initiative": "INIT-AUDIT-CONSOLIDATION",
+  "source": "run-five-core-audit",
+  "status": "probe-gates-only",
+  "rubricSource": null,
+  "rubricSourcePath": null
 }

@@ -202,7 +202,7 @@
           "label": "Broken internal links in docs/ ≤25",
           "severity": "P2",
           "pass": false,
-          "detail": "259 broken / 403 files"
+          "detail": "213 broken / 403 files"
         }
       ]
     },

@@ -1,6 +1,6 @@
 {
   "schema": "gtcx://fabric-os/fabric-assurance/v1",
-  "at": "2026-06-11T06:28:15.114Z",
+  "at": "2026-06-12T05:19:41.481Z",
   "repo": "fabric-os",
   "initiative": "INIT-GTCX-SERVICE-FABRIC",
   "story": "ECO-EE-09",
@@ -8,10 +8,10 @@
   "evaluateExitCode": 0,
   "contextBundle": {
     "baselineConfig": "config/baseline/baseline.config.json",
-    "persona": "pm/spec/repo-persona-profiles.v1.json",
-    "skills": "bridge-os/pm/spec/skills-ecosystem-map.v1.json",
+    "persona": "pm/spec/repo-persona-profiles.json",
+    "skills": "bridge-os/pm/spec/skills-ecosystem-map.json",
     "ragWitness": "audit/evidence/rag-model-b-fabric-os-latest.json",
-    "triggers": "bridge-os/pm/spec/assurance-triggers.v1.json"
+    "triggers": "bridge-os/pm/spec/assurance-triggers.json"
   },
   "executionOwner": "fabric-os",
   "orchestrator": "bridge-os",

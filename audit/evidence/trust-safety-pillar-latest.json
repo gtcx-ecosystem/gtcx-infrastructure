@@ -1,7 +1,7 @@
 {
   "schema": "gtcx://audit/trust-safety-pillar/v1",
   "repo": "fabric-os",
-  "date": "2026-06-11",
+  "date": "2026-06-12",
   "score100": 71,
   "published": true,
   "metrics": {
@@ -39,7 +39,7 @@
     }
   },
   "mode": "envelope-cap",
-  "rubricSpec": "pm/spec/trust-safety-rubric.v1.json",
+  "rubricSpec": "pm/spec/trust-safety-rubric.json",
   "rubricVersion": "1.0.0",
   "publishGate": {
     "minConfidence": "B",

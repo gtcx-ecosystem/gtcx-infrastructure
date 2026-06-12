@@ -3,30 +3,30 @@
   "coreId": "A4-COMPLIANCE-SECURITY",
   "slug": "compliance-security",
   "repo": "fabric-os",
-  "date": "2026-06-11",
+  "date": "2026-06-12",
   "score10": 10,
   "score100": 100,
   "score100Raw": 100,
-  "status": "rubric-driven",
+  "status": "probe-gates-only",
   "source": "run-five-core-audit",
   "metrics": {
     "security": {
-      "score100": 100,
+      "score100": 0,
       "weight": 1,
-      "confidence": "C",
-      "source": "audit-output"
+      "confidence": "D",
+      "source": "missing"
     },
     "enterprise-readiness": {
-      "score100": 100,
+      "score100": 0,
       "weight": 1,
-      "confidence": "C",
-      "source": "audit-output"
+      "confidence": "D",
+      "source": "missing"
     },
     "bank-grade-auditability": {
-      "score100": 100,
+      "score100": 0,
       "weight": 1,
-      "confidence": "C",
-      "source": "audit-output"
+      "confidence": "D",
+      "source": "missing"
     }
   },
   "gates": [
@@ -55,8 +55,8 @@
   "capsFired": [],
   "openP0": 0,
   "openP1": 0,
-  "rubricSource": "audit-output",
-  "rubricSourcePath": "/Users/amanianai/Sites/gtcx-ecosystem/fabric-os/audit/audit-output-2026-06-11.json",
+  "rubricSource": null,
+  "rubricSourcePath": null,
   "checks": {
     "noEnvInGit": {
       "ok": true,

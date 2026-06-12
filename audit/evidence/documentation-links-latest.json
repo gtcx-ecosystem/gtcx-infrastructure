@@ -2,15 +2,13 @@
   "schema": "gtcx://audit/documentation-links/v1",
   "ok": false,
   "filesScanned": 403,
-  "brokenCount": 259,
+  "brokenCount": 213,
+  "advisoryCount": 37,
+  "internalBrokenCount": 213,
   "results": [
     {
       "file": "docs/README.md",
       "broken": [
-        {
-          "href": "../03-platform/tools/docs-site/README.md",
-          "reason": "missing target"
-        },
         {
           "href": "gtm/plans/bank-grade-10x-remediation-plan.md",
           "reason": "missing target"
@@ -77,10 +75,6 @@
         },
         {
           "href": "audit/execution-roadmap.md",
-          "reason": "missing target"
-        },
-        {
-          "href": "audit/latest.json",
           "reason": "missing target"
         },
         {
@@ -379,16 +373,8 @@
           "href": "security/threat-model.md",
           "reason": "missing target"
         }
-      ]
-    },
-    {
-      "file": "docs/agents/README.md",
-      "broken": [
-        {
-          "href": "../01-agents/README.md",
-          "reason": "missing target"
-        }
-      ]
+      ],
+      "advisory": []
     },
     {
       "file": "docs/agents/claude/README.md",
@@ -396,6 +382,24 @@
         {
           "href": "../../../02-ops/",
           "reason": "missing target"
+        }
+      ],
+      "advisory": [
+        {
+          "href": "../../../.claude/CLAUDE.md",
+          "reason": "provider-bootstrap-optional"
+        },
+        {
+          "href": "../../../.claude/",
+          "reason": "provider-bootstrap-optional"
+        },
+        {
+          "href": "../../../AGENTS.md",
+          "reason": "provider-bootstrap-optional"
+        },
+        {
+          "href": "../../../.agent/",
+          "reason": "provider-bootstrap-optional"
         }
       ]
     },
@@ -406,6 +410,12 @@
           "href": "../../../02-ops/",
           "reason": "missing target"
         }
+      ],
+      "advisory": [
+        {
+          "href": "../../../.agent/",
+          "reason": "provider-bootstrap-optional"
+        }
       ]
     },
     {
@@ -414,6 +424,12 @@
         {
           "href": "../../../02-ops/",
           "reason": "missing target"
+        }
+      ],
+      "advisory": [
+        {
+          "href": "../../../.github/copilot/instructions.md",
+          "reason": "provider-bootstrap-optional"
         }
       ]
     },
@@ -424,6 +440,24 @@
           "href": "../../../02-ops/",
           "reason": "missing target"
         }
+      ],
+      "advisory": [
+        {
+          "href": "../../../AGENTS.md",
+          "reason": "provider-bootstrap-optional"
+        },
+        {
+          "href": "../../../.cursor/rules/",
+          "reason": "provider-bootstrap-optional"
+        },
+        {
+          "href": "../../../.cursor/cli.json",
+          "reason": "provider-bootstrap-optional"
+        },
+        {
+          "href": "../../../.agent/",
+          "reason": "provider-bootstrap-optional"
+        }
       ]
     },
     {
@@ -432,6 +466,12 @@
         {
           "href": "../../../02-ops/",
           "reason": "missing target"
+        }
+      ],
+      "advisory": [
+        {
+          "href": "../../../.gemini/GEMINI.md",
+          "reason": "provider-bootstrap-optional"
         }
       ]
     },
@@ -442,6 +482,12 @@
           "href": "../../../02-ops/",
           "reason": "missing target"
         }
+      ],
+      "advisory": [
+        {
+          "href": "../../../.kimi/AGENTS.md",
+          "reason": "provider-bootstrap-optional"
+        }
       ]
     },
     {
@@ -450,6 +496,12 @@
         {
           "href": "../audit/execution-roadmap.md",
           "reason": "missing target"
+        }
+      ],
+      "advisory": [
+        {
+          "href": "../../AGENTS.md",
+          "reason": "provider-bootstrap-optional"
         }
       ]
     },
@@ -460,7 +512,8 @@
           "href": "../audit/execution-roadmap.md",
           "reason": "missing target"
         }
-      ]
+      ],
+      "advisory": []
     },
     {
       "file": "docs/agile/execution-roadmap-2026-05-22.md",
@@ -486,22 +539,6 @@
           "reason": "missing target"
         },
         {
-          "href": "../../03-platform/tools/compliance-gateway/src/schemas.mjs",
-          "reason": "missing target"
-        },
-        {
-          "href": "../../03-platform/tools/compliance-gateway/src/budget.mjs",
-          "reason": "missing target"
-        },
-        {
-          "href": "../../03-platform/tools/eval-pipeline/injection-suite.mjs",
-          "reason": "missing target"
-        },
-        {
-          "href": "../audit/pen-test-rfp-2026.md",
-          "reason": "missing target"
-        },
-        {
           "href": "../audit/soc2-engagement-2026.md",
           "reason": "missing target"
         },
@@ -518,26 +555,15 @@
           "reason": "missing target"
         },
         {
-          "href": "../audit/signal-scorecard.json",
-          "reason": "missing target"
-        },
-        {
-          "href": "../audit/score-evidence-ledger.json",
-          "reason": "missing target"
-        },
-        {
           "href": "../audit/coverage-gate-rationale.md",
-          "reason": "missing target"
-        },
-        {
-          "href": "../audit/pen-test-rfp-2026.md",
           "reason": "missing target"
         },
         {
           "href": "../audit/soc2-engagement-2026.md",
           "reason": "missing target"
         }
-      ]
+      ],
+      "advisory": []
     },
     {
       "file": "docs/agile/executive-summary.md",
@@ -546,7 +572,8 @@
           "href": "../audit/execution-roadmap.md",
           "reason": "missing target"
         }
-      ]
+      ],
+      "advisory": []
     },
     {
       "file": "docs/agile/sprints/README.md",
@@ -555,7 +582,8 @@
           "href": "../../audit/execution-roadmap.md",
           "reason": "missing target"
         }
-      ]
+      ],
+      "advisory": []
     },
     {
       "file": "docs/agile/sprints/current.md",
@@ -564,7 +592,8 @@
           "href": "../../audit/execution-roadmap.md",
           "reason": "missing target"
         }
-      ]
+      ],
+      "advisory": []
     },
     {
       "file": "docs/api/README.md",
@@ -576,12 +605,9 @@
         {
           "href": "../security/threat-model-2026-05.md",
           "reason": "missing target"
-        },
-        {
-          "href": "../../03-platform/tools/compliance-gateway/src/server.mjs",
-          "reason": "missing target"
         }
-      ]
+      ],
+      "advisory": []
     },
     {
       "file": "docs/architecture/compliance-substrate-deep-dive.md",
@@ -597,12 +623,9 @@
         {
           "href": "../audit/full-audit-2026-05-22.md",
           "reason": "missing target"
-        },
-        {
-          "href": "../audit/signal-scorecard.json",
-          "reason": "missing target"
         }
-      ]
+      ],
+      "advisory": []
     },
     {
       "file": "docs/architecture/infrastructure-architecture-overview.md",
@@ -623,7 +646,8 @@
           "href": "../compliance/compliance-templates-overview.md",
           "reason": "missing target"
         }
-      ]
+      ],
+      "advisory": []
     },
     {
       "file": "docs/architecture/system-overview.md",
@@ -632,7 +656,8 @@
           "href": "../compliance/platform-compliance-governance.md",
           "reason": "missing target"
         }
-      ]
+      ],
+      "advisory": []
     },
     {
       "file": "docs/architecture/trust-model.md",
@@ -641,7 +666,8 @@
           "href": "../security/security-architecture.md",
           "reason": "missing target"
         }
-      ]
+      ],
+      "advisory": []
     },
     {
       "file": "docs/engineering/backend-architecture.md",
@@ -650,7 +676,26 @@
           "href": "../compliance/soc2-evidence-pipeline.md",
           "reason": "missing target"
         }
-      ]
+      ],
+      "advisory": []
+    },
+    {
+      "file": "docs/governance/README.md",
+      "broken": [
+        {
+          "href": "../compliance/board-security-committee-charter.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "../compliance/regulatory-contacts.md",
+          "reason": "missing target"
+        },
+        {
+          "href": "../compliance/risk-register.md",
+          "reason": "missing target"
+        }
+      ],
+      "advisory": []
     }
   ],
   "repo": "fabric-os"

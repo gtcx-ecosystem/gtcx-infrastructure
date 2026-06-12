@@ -4,8 +4,8 @@
   "status": "done",
   "checkedAt": "2026-06-09T19:18:49.978Z",
   "owner": "fabric-os",
-  "policySoR": "bridge-os/pm/spec/environment-cost-policy.v1.json",
-  "governanceSoR": "bridge-os/pm/spec/aws-cost-governance.v1.json",
+  "policySoR": "bridge-os/pm/spec/environment-cost-policy.json",
+  "governanceSoR": "bridge-os/pm/spec/aws-cost-governance.json",
   "module": "deploy/terraform/modules/cost-profile",
   "profiles": {
     "scheduled": {

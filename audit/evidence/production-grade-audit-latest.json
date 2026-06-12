@@ -3,18 +3,18 @@
   "coreId": "A2-PRODUCTION-GRADE",
   "slug": "production-grade",
   "repo": "fabric-os",
-  "date": "2026-06-11",
+  "date": "2026-06-12",
   "score10": 8,
   "score100": 80,
   "score100Raw": 80,
-  "status": "rubric-driven",
+  "status": "probe-gates-only",
   "source": "run-five-core-audit",
   "metrics": {
     "production-readiness": {
-      "score100": 80,
+      "score100": 0,
       "weight": 1,
-      "confidence": "C",
-      "source": "audit-output"
+      "confidence": "D",
+      "source": "missing"
     }
   },
   "gates": [
@@ -43,8 +43,8 @@
   "capsFired": [],
   "openP0": 0,
   "openP1": 0,
-  "rubricSource": "audit-output",
-  "rubricSourcePath": "/Users/amanianai/Sites/gtcx-ecosystem/fabric-os/audit/audit-output-2026-06-11.json",
+  "rubricSource": null,
+  "rubricSourcePath": null,
   "checks": {
     "ciPipeline": {
       "ok": true,
@@ -66,7 +66,7 @@
     "p35Strict": {
       "ok": false,
       "code": 1,
-      "out": "{\n  \"ok\": false,\n  \"protocol\": \"35-ecosystem-workspace-world-class/v5.0.0\",\n  \"engine\": \"layout-spec-enforce/v1\",\n  \"contractVersion\": \"5.1.0\",\n  \"contractPath\": \"/Users/amanianai/Sites/gtcx-ecosystem/bridge-os/config/ecosystem-layout-contract.v5.json\",\n  \"mode\": \"strict\",\n  \"repo\": \"fabric-os\",\n  \"repoRoot\": \"/Users/amanianai/Sites/gtcx-ecosystem/fabric-os\",\n  \"repoKind\": \"product\",\n  \"layoutVersion\": \"v5\",\n  \"resolvedHubs\": {\n    \"agentic\": {\n      \"path\": \"agentic\",\n      \"kind\": \"v5\"\n    },\n    \"archive\": {\n      \"path\": \"archive\",\n      \"kind\": \"v5\"\n    },\n    \"audit\": {\n      \"path\": \"au"
+      "out": "{\n  \"ok\": false,\n  \"protocol\": \"35-ecosystem-workspace-world-class/v5.0.0\",\n  \"engine\": \"layout-spec-enforce/v1\",\n  \"contractVersion\": \"5.1.0\",\n  \"contractPath\": \"/Users/amanianai/Sites/gtcx-ecosystem/bridge-os/config/ecosystem-layout-contract.json\",\n  \"mode\": \"strict\",\n  \"repo\": \"fabric-os\",\n  \"repoRoot\": \"/Users/amanianai/Sites/gtcx-ecosystem/fabric-os\",\n  \"repoKind\": \"product\",\n  \"layoutVersion\": \"v5\",\n  \"resolvedHubs\": {\n    \"agentic\": {\n      \"path\": \"agentic\",\n      \"kind\": \"v5\"\n    },\n    \"archive\": {\n      \"path\": \"archive\",\n      \"kind\": \"v5\"\n    },\n    \"audit\": {\n      \"path\": \"audit"
     }
   },
   "gaps": ["p35Strict"],

@@ -1,0 +1,21 @@
+{
+  "schema": "gtcx.uxSorPack.v1",
+  "repo": "fabric-os",
+  "repoKind": "infra",
+  "pilotDeep": false,
+  "ok": false,
+  "score100": 75,
+  "openP1": 1,
+  "openP2": 0,
+  "itemsPass": 3,
+  "itemsTotal": 4,
+  "violations": [
+    {
+      "packId": "UX-P21-CORE",
+      "itemId": "exr-pack-valid",
+      "severity": "P1",
+      "detail": "FAIL: governance block required"
+    }
+  ],
+  "at": "2026-06-11T21:39:19.208Z"
+}

@@ -1,7 +1,7 @@
 {
   "schema": "gtcx://audit/five-pillar/v1",
   "repo": "fabric-os",
-  "date": "2026-06-11",
+  "date": "2026-06-12",
   "composite100": 59,
   "composite100Raw": 69,
   "trustCap100": 71,
@@ -63,7 +63,7 @@
               "weight": 20,
               "severity": "P2",
               "optional": false,
-              "detail": "config/layout-contract.v5.json",
+              "detail": "config/layout-contract.json",
               "protocol": "P35"
             }
           ],
@@ -264,7 +264,7 @@
               "weight": 40,
               "severity": "P2",
               "optional": false,
-              "detail": "5 dated sibling(s) with -latest witness — e.g. audit/agentic-innovation-audit-2026-06-10.md",
+              "detail": "5 dated sibling(s) with -latest witness — e.g. audit/agentic-innovation-audit-2026-06-12.md",
               "protocol": "P32"
             }
           ],
@@ -273,9 +273,9 @@
         "pm-folder-p37": {
           "label": "PM folder requirements (P37)",
           "weight": 12,
-          "score100": 38,
+          "score100": 44,
           "protocol": "P37",
-          "specRef": "pm/spec/pm-folder-requirements.v1.json",
+          "specRef": "pm/spec/pm-folder-requirements.json",
           "items": [
             {
               "id": "pm-folder-check",
@@ -368,12 +368,12 @@
             {
               "id": "pm-ci-witness-dir",
               "label": "pm/ci/ witnesses directory",
-              "pass": false,
-              "score100": 0,
+              "pass": true,
+              "score100": 100,
               "weight": 6,
               "severity": "P2",
               "optional": false,
-              "detail": "missing pm/ci",
+              "detail": "pm/ci",
               "protocol": "P37"
             }
           ],
@@ -384,7 +384,7 @@
           "weight": 8,
           "score100": 65,
           "protocol": "shipping-culture",
-          "specRef": "pm/spec/shipping-culture-pm-engine.v1.json",
+          "specRef": "pm/spec/shipping-culture-pm-engine.json",
           "items": [
             {
               "id": "execution-roadmap",
@@ -427,7 +427,7 @@
               "weight": 15,
               "severity": "P2",
               "optional": false,
-              "detail": "missing dir pm/ci",
+              "detail": "pm/ci/shipping-status-latest.json",
               "protocol": "shipping-culture"
             },
             {
@@ -511,30 +511,30 @@
         "ci-retrospectives-improvement": {
           "label": "CI, retrospectives & continuous improvement",
           "weight": 10,
-          "score100": 30,
+          "score100": 100,
           "protocol": "T16-ci-retrospectives",
-          "specRef": "pm/spec/ci-retrospectives-sprint-gate.v1.json",
+          "specRef": "pm/spec/ci-retrospectives-sprint-gate.json",
           "items": [
             {
               "id": "retrospectives-readme",
               "label": "pm/retrospectives/README.md",
-              "pass": false,
-              "score100": 0,
+              "pass": true,
+              "score100": 100,
               "weight": 15,
               "severity": "P2",
               "optional": false,
-              "detail": "missing pm/retrospectives/README.md",
+              "detail": "pm/retrospectives/README.md",
               "protocol": "T16-ci-retrospectives"
             },
             {
               "id": "retrospectives-template",
               "label": "pm/retrospectives/TEMPLATE-session-retrospective.md",
-              "pass": false,
-              "score100": 0,
+              "pass": true,
+              "score100": 100,
               "weight": 10,
               "severity": "P2",
               "optional": false,
-              "detail": "missing pm/retrospectives/TEMPLATE-session-retrospective.md",
+              "detail": "pm/retrospectives/TEMPLATE-session-retrospective.md",
               "protocol": "T16-ci-retrospectives"
             },
             {
@@ -545,18 +545,18 @@
               "weight": 15,
               "severity": "P2",
               "optional": false,
-              "detail": "pm/manifest.json",
+              "detail": "pm/ci/gates.json",
               "protocol": "T16-ci-retrospectives"
             },
             {
               "id": "pm-ci-readme",
               "label": "pm/ci/README.md",
-              "pass": false,
-              "score100": 0,
+              "pass": true,
+              "score100": 100,
               "weight": 10,
               "severity": "P3",
               "optional": false,
-              "detail": "missing pm/ci/README.md",
+              "detail": "pm/ci/README.md",
               "protocol": "T16-ci-retrospectives"
             }
           ],
@@ -585,7 +585,7 @@
               "weight": 30,
               "severity": "P2",
               "optional": false,
-              "detail": "2 items"
+              "detail": "5 items"
             },
             {
               "id": "uat-scenarios",
@@ -603,7 +603,7 @@
         "agentic-product-team": {
           "label": "World-class agentic product team signals",
           "weight": 8,
-          "score100": 80,
+          "score100": 100,
           "items": [
             {
               "id": "persona-profiles",
@@ -648,12 +648,12 @@
             {
               "id": "continuous-improvement-chain",
               "label": "Retro → backlog → roadmap chain witness",
-              "pass": false,
-              "score100": 0,
+              "pass": true,
+              "score100": 100,
               "weight": 20,
               "severity": "P2",
               "optional": false,
-              "detail": "1/2 present"
+              "detail": "2/2 present"
             }
           ],
           "itemCount": 5
@@ -831,7 +831,7 @@
           "categoryId": "anti-version-bloat-p32",
           "label": "No dated audit/evidence siblings when *-latest.* exists",
           "severity": "P2",
-          "detail": "5 dated sibling(s) with -latest witness — e.g. audit/agentic-innovation-audit-2026-06-10.md"
+          "detail": "5 dated sibling(s) with -latest witness — e.g. audit/agentic-innovation-audit-2026-06-12.md"
         },
         {
           "id": "pm-folder-check",
@@ -862,18 +862,11 @@
           "detail": "missing pm/roadmap/sprints/active.json"
         },
         {
-          "id": "pm-ci-witness-dir",
-          "categoryId": "pm-folder-p37",
-          "label": "pm/ci/ witnesses directory",
-          "severity": "P2",
-          "detail": "missing pm/ci"
-        },
-        {
           "id": "shipping-status-witness",
           "categoryId": "shipping-culture-engine",
           "label": "pm/ci/shipping-status-latest.json",
           "severity": "P2",
-          "detail": "missing dir pm/ci"
+          "detail": "pm/ci/shipping-status-latest.json"
         },
         {
           "id": "readiness-snapshot",
@@ -890,39 +883,11 @@
           "detail": "MCP hub or hub repo"
         },
         {
-          "id": "retrospectives-readme",
-          "categoryId": "ci-retrospectives-improvement",
-          "label": "pm/retrospectives/README.md",
-          "severity": "P2",
-          "detail": "missing pm/retrospectives/README.md"
-        },
-        {
-          "id": "retrospectives-template",
-          "categoryId": "ci-retrospectives-improvement",
-          "label": "pm/retrospectives/TEMPLATE-session-retrospective.md",
-          "severity": "P2",
-          "detail": "missing pm/retrospectives/TEMPLATE-session-retrospective.md"
-        },
-        {
-          "id": "pm-ci-readme",
-          "categoryId": "ci-retrospectives-improvement",
-          "label": "pm/ci/README.md",
-          "severity": "P3",
-          "detail": "missing pm/ci/README.md"
-        },
-        {
           "id": "roadmap-readme",
           "categoryId": "roadmap-agile-planning",
           "label": "pm/roadmap/README.md",
           "severity": "P2",
           "detail": "missing pm/roadmap/README.md"
-        },
-        {
-          "id": "continuous-improvement-chain",
-          "categoryId": "agentic-product-team",
-          "label": "Retro → backlog → roadmap chain witness",
-          "severity": "P2",
-          "detail": "1/2 present"
         }
       ],
       "itemTotal": 62,
@@ -989,7 +954,7 @@
       },
       "hasRubric": true,
       "rubricSource": "audit-output",
-      "rubricSpec": "pm/spec/technical-excellence-rubric.v1.json",
+      "rubricSpec": "pm/spec/technical-excellence-rubric.json",
       "rubricVersion": "1.0.0",
       "capped": true,
       "capReason": "probe-only-or-snapshot"
@@ -1038,7 +1003,7 @@
         }
       },
       "hasRubric": true,
-      "rubricSpec": "pm/spec/craft-rubric.v1.json",
+      "rubricSpec": "pm/spec/craft-rubric.json",
       "rubricVersion": "1.0.0",
       "capped": true,
       "capReasons": ["quality-scaffold"],
@@ -1128,7 +1093,7 @@
         }
       },
       "hasRubric": true,
-      "rubricSpec": "pm/spec/world-class-rubric.v1.json",
+      "rubricSpec": "pm/spec/world-class-rubric.json",
       "rubricVersion": "1.0.0"
     },
     "trustAndSafety": {
@@ -1169,7 +1134,7 @@
         }
       },
       "mode": "envelope-cap",
-      "rubricSpec": "pm/spec/trust-safety-rubric.v1.json",
+      "rubricSpec": "pm/spec/trust-safety-rubric.json",
       "rubricVersion": "1.0.0",
       "publishGate": {
         "minConfidence": "B",
