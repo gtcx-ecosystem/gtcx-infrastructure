@@ -10,7 +10,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../..');
-const REGISTRY = join(ROOT, 'pm/spec/trade-ecosystem-lanes.v1.json');
+const REGISTRY = join(ROOT, 'pm/spec/trade-ecosystem-lanes.json');
 const MATRIX = join(ROOT, 'docs/operations/coordination/infra-per-repo-action-matrix-2026-06-05.md');
 const COORD_DIR = join(ROOT, 'docs/operations/coordination');
 const OUT = join(ROOT, 'audit/evidence/fabric-lanes-check-latest.json');
@@ -165,7 +165,7 @@ const witness = {
   owner: 'fabric-os',
   initiative: 'INIT-GTCX-TRADE-ECOSYSTEM-LANES',
   sources: {
-    registry: 'pm/spec/trade-ecosystem-lanes.v1.json',
+    registry: 'pm/spec/trade-ecosystem-lanes.json',
     matrix: 'docs/operations/coordination/infra-per-repo-action-matrix-2026-06-05.md',
   },
   gates,

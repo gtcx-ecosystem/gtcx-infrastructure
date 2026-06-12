@@ -5,7 +5,7 @@
  */
 
 export const PERSONA_DOCS =
-  'https://github.com/gtcx-ecosystem/gtcx-docs/blob/main/01-docs/governance/institutional/personas';
+  'https://github.com/gtcx-ecosystem/canon-os/blob/main/01-docs/governance/institutional/personas';
 
 export const PERSONA_BRIDGE_URL =
   'https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/01-docs/04-ops/coordination/ecosystem-persona-bridge-2026-06.md';

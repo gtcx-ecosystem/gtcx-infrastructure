@@ -6,10 +6,10 @@
   "canonSubscribe": {
     "canonRepo": "canon-os",
     "legacyCanonRepo": "gtcx-docs",
-    "servicesSpec": "../bridge-os/pm/spec/documentation-services.v1.json",
-    "jurisdictionSpec": "../bridge-os/pm/spec/documentation-jurisdiction.v1.json"
+    "servicesSpec": "../bridge-os/pm/spec/documentation-services.json",
+    "jurisdictionSpec": "../bridge-os/pm/spec/documentation-jurisdiction.json"
   },
   "gitbookSourcePath": "docs/gitbook/",
   "publishRegister": "../canon-os/pm/publish-register.json",
-  "packRegistry": "../bridge-os/pm/spec/documentation-pack-registry.v1.json"
+  "packRegistry": "../bridge-os/pm/spec/documentation-pack-registry.json"
 }

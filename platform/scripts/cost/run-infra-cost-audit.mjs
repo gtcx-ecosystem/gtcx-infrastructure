@@ -22,8 +22,8 @@ const STAGING_TFVARS = join(ROOT, 'deploy/terraform/environments/staging/terrafo
 const TESTNET_TFVARS = join(ROOT, 'deploy/terraform/environments/testnet-pilot/terraform.tfvars');
 const OUT = join(ROOT, 'audit/evidence/infra-aws-cost-optimization-latest.json');
 
-const POLICY_SOR = 'bridge-os/pm/spec/environment-cost-policy.v1.json';
-const GOVERNANCE_SOR = 'bridge-os/pm/spec/aws-cost-governance.v1.json';
+const POLICY_SOR = 'bridge-os/pm/spec/environment-cost-policy.json';
+const GOVERNANCE_SOR = 'bridge-os/pm/spec/aws-cost-governance.json';
 
 const BRIDGE_WITNESSES = [
   'pm/ci/eco-env-07-terraform-cost-profile-latest.json',
@@ -107,8 +107,8 @@ const gates = {
   testnetTfvars: assertTfvars(TESTNET_TFVARS, 'ephemeral'),
   stagingWiring: assertModuleWiring('staging'),
   testnetWiring: assertModuleWiring('testnet-pilot'),
-  policySoR: { ok: existsSync(join(BRIDGE, 'pm/spec/environment-cost-policy.v1.json')) },
-  governanceSoR: { ok: existsSync(join(BRIDGE, 'pm/spec/aws-cost-governance.v1.json')) },
+  policySoR: { ok: existsSync(join(BRIDGE, 'pm/spec/environment-cost-policy.json')) },
+  governanceSoR: { ok: existsSync(join(BRIDGE, 'pm/spec/aws-cost-governance.json')) },
   bridgeWitnesses: linkBridgeWitnesses(),
   terraformTest: runTerraformTest(),
 };

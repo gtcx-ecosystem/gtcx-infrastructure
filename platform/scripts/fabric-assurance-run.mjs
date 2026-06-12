@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Fabric assurance runner stub — need-based triggers → contextBundle witness.
- * Spec: bridge-os/pm/spec/assurance-triggers.v1.json
+ * Spec: bridge-os/pm/spec/assurance-triggers.json
  */
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -23,10 +23,10 @@ function buildContextBundle() {
     : null;
   return {
     baselineConfig,
-    persona: 'pm/spec/repo-persona-profiles.v1.json',
-    skills: 'bridge-os/pm/spec/skills-ecosystem-map.v1.json',
+    persona: 'pm/spec/repo-persona-profiles.json',
+    skills: 'bridge-os/pm/spec/skills-ecosystem-map.json',
     ragWitness: 'audit/evidence/rag-model-b-fabric-os-latest.json',
-    triggers: 'bridge-os/pm/spec/assurance-triggers.v1.json',
+    triggers: 'bridge-os/pm/spec/assurance-triggers.json',
   };
 }
 
