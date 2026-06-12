@@ -2,6 +2,7 @@
 title: 'outbound-ack — XR-MKT-FABRIC-001 tokenization program'
 status: current
 date: 2026-06-11
+owner: fabric-os
 from: fabric-os
 canonical_repo: fabric-os
 to: markets-os, ledger-ui, bridge-os, baseline-os
@@ -16,16 +17,16 @@ responds_to: markets-os/docs/operations/coordination/to-fabric-os-tokenization-p
 
 ## Fabric canonical identity
 
-| Field                     | Value                                                                                                                                       |
-| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Canonical repo id**     | `fabric-os`                                                                                                                                 |
-| **Legacy id**             | `fabric-os` (resolves via ecosystem alias registry)                                                                                         |
-| **GitHub**                | `https://github.com/gtcx-ecosystem/fabric-os`                                                                                               |
-| **Machine spec**          | `bridge-os/pm/spec/service-fabric.v1.json`                                                                                                  |
-| **Protocol**              | [P44 Fabric Consumption](https://github.com/gtcx-ecosystem/gtcx-docs/blob/main/docs/governance/protocols/44-fabric-consumption/protocol.md) |
-| **Program office**        | `bridge-os` (ZenHub orchestration, fleet harnesses)                                                                                         |
-| **Durable inbound path**  | `fabric-os/docs/operations/coordination/from-markets-os-*`                                                                                  |
-| **Durable outbound path** | `fabric-os/docs/operations/coordination/from-fabric-os-*` (legacy filename prefix)                                                          |
+| Field                     | Value                                                                                                                                      |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Canonical repo id**     | `fabric-os`                                                                                                                                |
+| **Legacy id**             | `fabric-os` (resolves via ecosystem alias registry)                                                                                        |
+| **GitHub**                | `https://github.com/gtcx-ecosystem/fabric-os`                                                                                              |
+| **Machine spec**          | `bridge-os/pm/spec/service-fabric.json`                                                                                                    |
+| **Protocol**              | [P44 Fabric Consumption](https://github.com/gtcx-ecosystem/canon-os/blob/main/docs/governance/protocols/44-fabric-consumption/protocol.md) |
+| **Program office**        | `bridge-os` (ZenHub orchestration, fleet harnesses)                                                                                        |
+| **Durable inbound path**  | `fabric-os/docs/operations/coordination/from-markets-os-*`                                                                                 |
+| **Durable outbound path** | `fabric-os/docs/operations/coordination/from-fabric-os-*` (legacy filename prefix)                                                         |
 
 **ADR:** `docs/reference/adr/ADR-0007-fabric-os-repo-rename.md` — GitHub renamed 2026-06-12.
 

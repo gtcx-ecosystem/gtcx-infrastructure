@@ -2,6 +2,7 @@
 title: 'Inbound — Markets Protocol-Native Listing Runtime'
 status: delivered
 date: 2026-06-12
+owner: fabric-os
 from: markets-os
 to: fabric-os
 ticket: XR-MKT-PROTOCOL-NATIVE-001

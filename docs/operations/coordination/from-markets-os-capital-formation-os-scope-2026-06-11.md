@@ -2,6 +2,7 @@
 title: 'Handoff — Capital Formation OS Expanded Programme Scope'
 status: open
 date: 2026-06-11
+owner: fabric-os
 from: markets-os
 to: fabric-os
 ticket: XR-MKT-FABRIC-002

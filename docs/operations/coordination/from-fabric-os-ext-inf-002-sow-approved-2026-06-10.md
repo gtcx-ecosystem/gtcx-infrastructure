@@ -21,12 +21,12 @@ Sovereign operator approved the **live-stack pen-test vendor SOW path** on 2026-
 
 ## Preconditions met
 
-| Check                     | Status                                                                                                              |
-| ------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| DAAS-S1 staging substrate | complete — AGX `/api/health` 200, authority trace 7/7                                                               |
-| validate-all              | 55/55                                                                                                               |
-| Vendor pack ack           | [`from-fabric-os-ext-inf-002-pack-ack-2026-06-07.md`](./outbound/from-fabric-os-ext-inf-002-pack-ack-2026-06-07.md) |
-| Master audit composite    | 8.4 (A-) — [`audit/master-audit-2026-06-10.md`](../../../audit/master-audit-2026-06-10.md)                          |
+| Check                     | Status                                                                                                                                  |
+| ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| DAAS-S1 staging substrate | complete — AGX `/api/health` 200, authority trace 7/7                                                                                   |
+| validate-all              | 55/55                                                                                                                                   |
+| Vendor pack ack           | [`from-gtcx-infrastructure-ext-inf-002-pack-ack-2026-06-07.md`](./outbound/from-gtcx-infrastructure-ext-inf-002-pack-ack-2026-06-07.md) |
+| Master audit composite    | 8.4 (A-) — [`audit/evidence/master-audit-2026-06-11.json`](../../../audit/evidence/master-audit-2026-06-11.json)                        |
 
 ## Remaining (procurement execution — not repo-blocked)
 

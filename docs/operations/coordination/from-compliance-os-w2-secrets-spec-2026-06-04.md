@@ -44,4 +44,4 @@ infra_raise: 01-docs/04-ops/coordination/outbound/hub-17-prod-w2-close-raise-202
 3. Patch **web** + **compliance-api** `env.valueFrom.secretKeyRef`; rolling restart.
 4. Post evidence (names only) → unblocks exploration `w2:prod:retest` → compliance PATCH proof → hub #17 close.
 
-**Responds to:** [ping-fabric-os-w2-secrets-2026-06-04.md](./ping-fabric-os-w2-secrets-2026-06-04.md) (`77dfa9b`)
+**Responds to:** [ping-gtcx-infrastructure-w2-secrets-2026-06-04.md](./ping-gtcx-infrastructure-w2-secrets-2026-06-04.md) (`77dfa9b`)

@@ -2,6 +2,7 @@
 title: 'Handoff — Trade ecosystem lanes → fabric-os execution'
 status: open
 date: 2026-06-12
+owner: fabric-os
 from: ecosystem-strategy-session
 to: fabric-os
 ticket: XR-FABRIC-TRADE-LANES-001

@@ -5,7 +5,7 @@ date: 2026-06-07
 owner: fabric-os
 to: gtcx-core
 from: fabric-os
-protocol: gtcx-docs/01-docs/governance/protocols/24-cross-repo-coordination/protocol.md
+protocol: canon-os/01-docs/governance/protocols/24-cross-repo-coordination/protocol.md
 tags: ['coordination', 'outbound', 'ext-inf-002', 'witness']
 ---
 
@@ -20,14 +20,14 @@ tags: ['coordination', 'outbound', 'ext-inf-002', 'witness']
 
 ## Summary
 
-fabric-os **acknowledges receipt** of gtcx-core FA-S6-02 vendor pen-test pack (22 artifacts). Pack will be attached to live-stack SOW per [`pen-test-intake-evidence-2026-05-31.md`](../../../audit/pen-test-intake-evidence-2026-05-31.md).
+fabric-os **acknowledges receipt** of gtcx-core FA-S6-02 vendor pen-test pack (22 artifacts). Pack will be attached to live-stack SOW per [`pen-test-intake-evidence-2026-05-31.md`](../../../../audit/pen-test-intake-evidence-2026-05-31.md).
 
 ## Verification
 
 | Check                   | Result                                                                                                                                                                   |
 | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Core manifest on `main` | [`vendor-pen-test-pack-manifest-latest.json`](https://github.com/gtcx-ecosystem/gtcx-core/blob/main/01-docs/05-audit/evidence/vendor-pen-test-pack-manifest-latest.json) |
-| Infra intake SoR        | [`pen-test-intake-evidence-2026-05-31.md`](../../../audit/pen-test-intake-evidence-2026-05-31.md)                                                                        |
+| Infra intake SoR        | [`pen-test-intake-evidence-2026-05-31.md`](../../../../audit/pen-test-intake-evidence-2026-05-31.md)                                                                     |
 | Human gate register     | [`ext-inf-human-gates-unblock-2026-06-06.md`](./ext-inf-human-gates-unblock-2026-06-06.md)                                                                               |
 
 ## Remaining (Class S — not closed by this ack)

@@ -2,6 +2,7 @@
 title: 'Share note — trade ecosystem lanes for fabric-os team'
 status: current
 date: 2026-06-12
+owner: fabric-os
 audience: fabric-os builders, platform operators, sibling integrators
 copy_paste: true
 laneId: I
@@ -39,7 +40,7 @@ Full specs are in fabric-os already — start with the handoff doc.
    `docs/specs/ecosystem/lane-deploy-matrix.md`
 
 4. **Machine registry (for future lint)**  
-   `pm/spec/trade-ecosystem-lanes.v1.json`
+   `pm/spec/trade-ecosystem-lanes.json`
 
 5. **Raw brainstorm (context)**  
    `docs/specs/ecosystem/session-brainstorm-trade-domain-model-2026-06-12.md`

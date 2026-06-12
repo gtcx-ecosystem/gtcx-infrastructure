@@ -2,6 +2,7 @@
 title: 'Shareable Note — Capital Formation OS Expanded Product Direction'
 status: current
 date: 2026-06-11
+owner: fabric-os
 from: markets-os
 to: fabric-os
 program: PROG-CAPITAL-FORMATION-001

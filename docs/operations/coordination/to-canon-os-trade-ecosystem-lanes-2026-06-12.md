@@ -2,6 +2,7 @@
 title: 'Handoff — Trade ecosystem lanes → canon-os ratification'
 status: open
 date: 2026-06-12
+owner: fabric-os
 from: fabric-os
 to: canon-os
 ticket: XR-CANON-TRADE-LANES-001
@@ -32,7 +33,7 @@ authorityClass: R
 ## Source specs (fabric-os — draft SoR until canon adopts)
 
 - `fabric-os/docs/specs/ecosystem/trade-ecosystem-lanes-spec.md`
-- `fabric-os/pm/spec/trade-ecosystem-lanes.v1.json`
+- `fabric-os/pm/spec/trade-ecosystem-lanes.json`
 - `fabric-os/docs/specs/ecosystem/session-brainstorm-trade-domain-model-2026-06-12.md`
 
 **Golden rule:** canon **summarizes**; fabric spec remains execution detail until canon publishes authoritative frame.

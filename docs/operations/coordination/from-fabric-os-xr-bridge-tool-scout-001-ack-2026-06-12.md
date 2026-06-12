@@ -2,6 +2,7 @@
 title: 'Inbound ack — Agent Tool Scout TAAS execution (XR-BRIDGE-TOOL-SCOUT-001)'
 status: ack
 date: 2026-06-12
+owner: fabric-os
 from: fabric-os
 to: bridge-os
 ticket: XR-BRIDGE-TOOL-SCOUT-001

@@ -2,6 +2,7 @@
 title: 'Outbound — Executive gap program handoff to bridge-os'
 status: open
 date: 2026-06-12
+owner: fabric-os
 from: fabric-os
 to: bridge-os
 ticket: XR-BRIDGE-EXEC-GAP-001

@@ -2,6 +2,7 @@
 title: 'Handoff — Trade ecosystem lanes → bridge-os registry sync'
 status: done
 date: 2026-06-12
+owner: fabric-os
 from: fabric-os
 to: bridge-os
 ticket: XR-BRIDGE-LANES-REGISTRY-001
@@ -23,16 +24,16 @@ authorityClass: R
 
 | File                                          | Change                                                                                                      |
 | --------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| `pm/spec/gtcx-execution-engine.v1.json`       | Add `tradeCore` plane (`gtcx-os`); clarify `fabric` = I only; `agentRuntime` → label as AI OS (A)           |
+| `pm/spec/gtcx-execution-engine.json`          | Add `tradeCore` plane (`gtcx-os`); clarify `fabric` = I only; `agentRuntime` → label as AI OS (A)           |
 | `config/fleet-deploy-readiness-registry.json` | Add `laneId` per repo entry                                                                                 |
-| `config/ecosystem-repo-aliases.v1.json`       | Cross-link lane IDs                                                                                         |
-| `pm/spec/trade-ecosystem-lanes.v1.json`       | **Copy or symlink** from fabric-os (fleet SoR decision: bridge owns fleet registry — fabric authored draft) |
+| `config/ecosystem-repo-aliases.json`          | Cross-link lane IDs                                                                                         |
+| `pm/spec/trade-ecosystem-lanes.json`          | **Copy or symlink** from fabric-os (fleet SoR decision: bridge owns fleet registry — fabric authored draft) |
 
 ---
 
 ## Source (fabric-os draft)
 
-- `../fabric-os/pm/spec/trade-ecosystem-lanes.v1.json`
+- `../fabric-os/pm/spec/trade-ecosystem-lanes.json`
 - `../fabric-os/docs/specs/ecosystem/trade-ecosystem-lanes-spec.md`
 
 ---

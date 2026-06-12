@@ -2,6 +2,7 @@
 title: 'Planning handoff — Sprint authority, ceremonies, and fabric read contract'
 status: open
 date: 2026-06-12
+owner: fabric-os
 from: bridge-os
 to: fabric-os
 ticket: XR-FABRIC-SPRINT-AUTH-001
@@ -44,7 +45,7 @@ The failure is **governance plumbing**, not product judgment:
 
 ## Five-pillar framing (design constraints)
 
-From `bridge-os/pm/spec/five-pillar-evaluation.v1.json` — use as acceptance lens, not optional flavor.
+From `bridge-os/pm/spec/five-pillar-evaluation.json` — use as acceptance lens, not optional flavor.
 
 | Pillar                   | Requirement for this initiative                                                                             |
 | ------------------------ | ----------------------------------------------------------------------------------------------------------- |
@@ -98,24 +99,24 @@ From `bridge-os/pm/spec/five-pillar-evaluation.v1.json` — use as acceptance le
 | **L1 Product agile**   | product repos | `active.json`, P22, icebox promotion                                    |
 | **L2 Programme**       | fabric-os     | XR programmes — read-only L1                                            |
 
-**Normative contract (draft):** `bridge-os/pm/spec/sprint-authority.v1.json` · Ops: `bridge-os/docs/operations/sprint-authority.md`
+**Normative contract (draft):** `bridge-os/pm/spec/sprint-authority.json` · Ops: `bridge-os/docs/operations/sprint-authority.md`
 
 ---
 
 ## What already exists (bridge-os SoR — link, do not fork)
 
-| Resource                               | Path                                                             |
-| -------------------------------------- | ---------------------------------------------------------------- |
-| Sprint authority (draft)               | `bridge-os/pm/spec/sprint-authority.v1.json`                     |
-| Agile successor (gtcx-agile)           | `bridge-os/pm/agile-successor.json`                              |
-| Ceremony cadence spec                  | `bridge-os/pm/spec/sprint-ceremony-cadence.v1.json`              |
-| Ops doc                                | `bridge-os/docs/operations/sprint-ceremony-cadence.md`           |
-| CI scheduler                           | `bridge-os/.github/workflows/sprint-ceremony-cadence.yml`        |
-| Retro / CI gate                        | `bridge-os/pm/spec/ci-retrospectives-sprint-gate.v1.json`        |
-| New work defer                         | `bridge-os/pm/spec/new-work-protocol.v1.json`                    |
-| ZenHub hierarchy (Icebox pipeline)     | `bridge-os/pm/spec/pm-zenhub-standard.v1.json`                   |
-| P22 work selection                     | Protocol 22 + per-repo `agent:next-work`                         |
-| Agent communication (terminal updates) | P45 / `baseline-os/pm/spec/agent-communication-protocol.v1.json` |
+| Resource                               | Path                                                          |
+| -------------------------------------- | ------------------------------------------------------------- |
+| Sprint authority (draft)               | `bridge-os/pm/spec/sprint-authority.json`                     |
+| Agile successor (gtcx-agile)           | `bridge-os/pm/agile-successor.json`                           |
+| Ceremony cadence spec                  | `bridge-os/pm/spec/sprint-ceremony-cadence.json`              |
+| Ops doc                                | `bridge-os/docs/operations/sprint-ceremony-cadence.md`        |
+| CI scheduler                           | `bridge-os/.github/workflows/sprint-ceremony-cadence.yml`     |
+| Retro / CI gate                        | `bridge-os/pm/spec/ci-retrospectives-sprint-gate.json`        |
+| New work defer                         | `bridge-os/pm/spec/new-work-protocol.json`                    |
+| ZenHub hierarchy (Icebox pipeline)     | `bridge-os/pm/spec/pm-zenhub-standard.json`                   |
+| P22 work selection                     | Protocol 22 + per-repo `agent:next-work`                      |
+| Agent communication (terminal updates) | P45 / `baseline-os/pm/spec/agent-communication-protocol.json` |
 
 **Principle already in ceremony spec:**
 
@@ -123,7 +124,7 @@ From `bridge-os/pm/spec/five-pillar-evaluation.v1.json` — use as acceptance le
 
 ---
 
-## Draft spec outline — `sprint-authority.v1.json` (for fabric + bridge to co-own)
+## Draft spec outline — `sprint-authority.json` (for fabric + bridge to co-own)
 
 **Proposed owner:** bridge-os (normative harness) · **fabric-os** (programme consumption contract) · **product repos** (L1 SoR)
 
@@ -300,7 +301,7 @@ Full architecture, five-pillar acceptance, icebox promotion model, and phased de
 | Maturity L1→L3                     | v1 ceremony cron exists (L1); do not treat green hub witness as programme truth until fleet witness (L3) |
 | Success criterion #3               | Programme docs cite witness — **zero operator `--flag`** in one Mon→Fri cycle                            |
 
-**Normative target (not yet shipped):** `pm/spec/sprint-agile-operating-system.v2.json` · draft outline in `sprint-authority.v1.json` below.
+**Normative target (not yet shipped):** `pm/spec/sprint-agile-operating-system.v2.json` · draft outline in `sprint-authority.json` below.
 
 ---
 
@@ -311,7 +312,7 @@ Full architecture, five-pillar acceptance, icebox promotion model, and phased de
 - markets-os icebox: `markets-os/docs/strategy/execution-roadmap.md` § Icebox — INIT-AFM-REG-ADAPTER
 - Tokenization programme: `fabric-os/docs/operations/coordination/xr-mkt-fabric-001-tokenization-execution-plan-2026-06-11.md`
 - Capital formation handoff: `fabric-os/docs/operations/coordination/from-markets-os-capital-formation-os-scope-2026-06-11.md`
-- bridge ceremony spec: `bridge-os/pm/spec/sprint-ceremony-cadence.v1.json`
+- bridge ceremony spec: `bridge-os/pm/spec/sprint-ceremony-cadence.json`
 
 ---
 
