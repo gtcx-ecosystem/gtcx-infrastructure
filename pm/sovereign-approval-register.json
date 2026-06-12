@@ -1,7 +1,7 @@
 {
   "$schema": "gtcx://fabric-os/sovereign-approval-register/v1",
   "version": "1.0.0",
-  "updated": "2026-06-10",
+  "updated": "2026-06-12",
   "program": "Security-as-a-Service",
   "initiative": "INIT-GTCX-INFRA-SECAS",
   "protocol": "P42-SECURITY-AS-A-SERVICE",
@@ -59,6 +59,43 @@
       "blocksClaims": ["SOC 2 Type I attested", "SOC 2 attested"],
       "blocksIR": false,
       "note": "baseline-os BG-10-11 — not gtcx-docs Q2 hygiene BG-10-11"
+    },
+    {
+      "id": "SECAS-S2-01-INGEST",
+      "aliases": ["SEC-PENTEST-01-INGEST"],
+      "storyId": "SECAS-S2-01",
+      "priority": "P0",
+      "authorityClass": "A",
+      "status": "approved",
+      "title": "Vendor pen-test report ingest after window close",
+      "owner": "Human / Security",
+      "approvedAt": "2026-06-12",
+      "approvedBy": "human:sovereign",
+      "witness": "audit/evidence/secas-pentest-report-ingest-approval-2026-06-12.json",
+      "seal": "docs/operations/coordination/from-fabric-os-secas-pentest-ingest-approved-2026-06-12.md",
+      "postApprovalOwner": "fabric-os",
+      "postApprovalAction": "pnpm secas:pentest:report:ingest after vendor report (earliest 2026-06-21)",
+      "calendarGate": "2026-06-21",
+      "blocksClaims": ["pen-test complete", "SECAS-S2 UAT"],
+      "blocksIR": false
+    },
+    {
+      "id": "EXT-INF-013",
+      "aliases": ["S3-01"],
+      "priority": "P0",
+      "authorityClass": "S",
+      "status": "approved",
+      "title": "ZWCMP pilot owner + cadence call",
+      "owner": "Leadership / GTM",
+      "approvedAt": "2026-06-12",
+      "approvedBy": "human:sovereign",
+      "witness": "audit/evidence/ext-inf-013-zwcmp-pilot-owner-approval-2026-06-12.json",
+      "seal": "docs/operations/coordination/from-fabric-os-ext-inf-013-approved-2026-06-12.md",
+      "postApprovalOwner": "GTM / Program Lead",
+      "postApprovalAction": "Name owner in pilot-success-criteria; schedule first cadence; unblock EXT-INF-014",
+      "unblocks": ["EXT-INF-014"],
+      "blocksClaims": ["ZWCMP pilot owner named"],
+      "blocksIR": false
     }
   ]
 }

@@ -5,8 +5,13 @@
   "frictionId": "SEC-PENTEST-01",
   "program": "INIT-GTCX-INFRA-SECAS",
   "status": "awaiting_vendor_report",
+  "ingestAuthorized": true,
+  "ingestApproval": "audit/evidence/secas-pentest-report-ingest-approval-2026-06-12.json",
+  "ingestApprovalSeal": "docs/operations/coordination/from-fabric-os-secas-pentest-ingest-approved-2026-06-12.md",
   "preparedAt": "2026-06-12T11:40:00.000Z",
   "preparedBy": "agent:fabric-os",
+  "authorizedAt": "2026-06-12T19:40:00.000Z",
+  "authorizedBy": "human:sovereign",
   "window": {
     "start": "2026-06-17",
     "end": "2026-06-21",

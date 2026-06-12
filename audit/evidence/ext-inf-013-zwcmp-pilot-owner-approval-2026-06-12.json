@@ -1,0 +1,31 @@
+{
+  "schema": "gtcx.sovereignApproval.v1",
+  "id": "EXT-INF-013",
+  "storyId": "S3-01",
+  "title": "ZWCMP pilot owner + cadence call",
+  "authorityClass": "S",
+  "approvedAt": "2026-06-12T19:40:00.000Z",
+  "approvedBy": "human:sovereign",
+  "approvalChannel": "cursor-session",
+  "approvalUtterance": "approved",
+  "scope": "Authorize ZWCMP TradePass pilot owner assignment (Q6 sales-led profile) and first cadence scheduling for GR-T2 integrator pilot substrate",
+  "ownerProfile": {
+    "lane": "GTM / Program Lead",
+    "selection": "Q6 sales-led",
+    "requirements": [
+      "Senior pilot-facing operator",
+      "Regulator-comfort + Chamber-of-Mines political fluency",
+      "Prior African central-bank pilot experience"
+    ]
+  },
+  "pilotRef": "ZWCMP TradePass Pilot — Zimbabwe Chamber of Mines / Women in Mining Cooperative",
+  "postApprovalActions": [
+    "Record named owner in pilot-success-criteria (gtcx-os platform/infrastructure)",
+    "Schedule first cadence call with Chamber-of-Mines stakeholders",
+    "Unblock EXT-INF-014 DPA + pilot agreement legal packet"
+  ],
+  "unblocks": ["EXT-INF-014"],
+  "blocksIR": false,
+  "repo": "fabric-os",
+  "commitAtApproval": "2d4934d"
+}

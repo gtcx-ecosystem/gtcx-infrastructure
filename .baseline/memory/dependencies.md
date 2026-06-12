@@ -7,7 +7,7 @@
 | Needs | From Repo / Owner | Status | ETA | Blocking |
 | --- | --- | --- | --- | --- |
 | EXT-INF-002 pen-test SOW | Human Security + **gtcx-agentic** H-05 chase | **open** | 2026-06-13 | S2-13, live-stack pen-test |
-| EXT-INF-013 ZWCMP pilot owner | Leadership (**gtcx-agentic** escalate) | **overdue** | was 2026-06-07 | EXT-INF-014, Bet 2 |
+| EXT-INF-013 ZWCMP pilot owner | GTM / Program Lead | **approved** | 2026-06-12 | EXT-INF-014 unblocked |
 | EXT-INF-014 DPA + pilot agreement | Legal | **open** | 2026-06-21 | ZWCMP signature |
 | EXT-INF-015 indemnified SLA | Legal | **open** | 2026-06-21 | Pilot agreement |
 | EXT-INF-016 SOC 2 Type I auditor | CISO + Finance | **open** | TBD | Bank-grade B.1 |

@@ -45,6 +45,12 @@
       "traceId": null
     },
     {
+      "id": "XR-MKT-PROTOCOL-NATIVE-001-GT",
+      "ownerRepo": "markets-os",
+      "status": "open",
+      "traceId": null
+    },
+    {
       "id": "XR-MKT-TRADEPASS-001",
       "ownerRepo": "fabric-os",
       "status": "open",
@@ -65,7 +71,7 @@
     {
       "id": "EXT-INF-013",
       "ownerRepo": "Leadership",
-      "status": "open",
+      "status": "approved",
       "traceId": null
     }
   ],

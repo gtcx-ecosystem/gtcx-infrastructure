@@ -2,7 +2,7 @@
   "$schema": "gtcx://workspace/remaining-work/v1",
   "repo": "fabric-os",
   "updated": "2026-06-12",
-  "reconciledAt": "2026-06-12T19:37:13.000Z",
+  "reconciledAt": "2026-06-12T19:40:00.000Z",
   "sessionOpenItems": "pm/ci/session-open-items-latest.json",
   "bridgeHandoff": "docs/operations/coordination/from-bridge-os-session-open-items-handoff-ack-2026-06-12.md",
   "sessionRef": "fabric-os-domain-model-2026-06-12",
@@ -16,7 +16,7 @@
       "blockedUntil": "2026-06-21",
       "authority": "R",
       "p22": true,
-      "notes": "Pre-window fleet health PASS 3/3 required; secas:window:readiness:write @ 2026-06-12T19:23Z; vendor report post 2026-06-21"
+      "notes": "Ingest Class A approved 2026-06-12; awaiting vendor report post 2026-06-21; pre-window gates PASS"
     },
     {
       "id": "XR-MKT-PROTOCOL-NATIVE-001-GT",
@@ -61,8 +61,12 @@
       "id": "EXT-INF-013",
       "title": "ZWCMP pilot owner + cadence",
       "ownerRepo": "Leadership",
-      "status": "open",
+      "status": "approved",
       "authority": "S",
+      "witness": "audit/evidence/ext-inf-013-zwcmp-pilot-owner-approval-2026-06-12.json",
+      "seal": "docs/operations/coordination/from-fabric-os-ext-inf-013-approved-2026-06-12.md",
+      "postApprovalOwner": "GTM / Program Lead",
+      "unblocks": ["EXT-INF-014"],
       "blocksIR": false
     }
   ],
