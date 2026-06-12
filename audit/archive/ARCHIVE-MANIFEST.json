@@ -102,7 +102,127 @@
       "to": "audit/archive/2026-06-11/audit/repo-hygiene-audit-2026-06-11.md",
       "reason": "dated-sibling-when-latest-exists",
       "at": "2026-06-11T18:40:41.290Z"
+    },
+    {
+      "from": "audit/agentic-innovation-audit-2026-06-12.md",
+      "to": "audit/archive/2026-06-12/audit/agentic-innovation-audit-2026-06-12.md",
+      "reason": "dated-sibling-when-latest-exists",
+      "at": "2026-06-12T11:31:35.879Z"
+    },
+    {
+      "from": "audit/audit-output-2026-06-11.json",
+      "to": "audit/archive/2026-06-12/audit/audit-output-2026-06-11.json",
+      "reason": "stale-dated-active-tree",
+      "at": "2026-06-12T11:31:35.879Z"
+    },
+    {
+      "from": "audit/compliance-security-audit-2026-06-12.md",
+      "to": "audit/archive/2026-06-12/audit/compliance-security-audit-2026-06-12.md",
+      "reason": "dated-sibling-when-latest-exists",
+      "at": "2026-06-12T11:31:35.879Z"
+    },
+    {
+      "from": "audit/dr-fire-drill-evidence-2026-06-04.md",
+      "to": "audit/archive/2026-06-12/audit/dr-fire-drill-evidence-2026-06-04.md",
+      "reason": "stale-dated-active-tree",
+      "at": "2026-06-12T11:31:35.879Z"
+    },
+    {
+      "from": "audit/ecosystem-integration-matrix-2026-06-07.json",
+      "to": "audit/archive/2026-06-12/audit/ecosystem-integration-matrix-2026-06-07.json",
+      "reason": "stale-dated-active-tree",
+      "at": "2026-06-12T11:31:35.879Z"
+    },
+    {
+      "from": "audit/ecosystem-repo-review-2026-06-07.md",
+      "to": "audit/archive/2026-06-12/audit/ecosystem-repo-review-2026-06-07.md",
+      "reason": "stale-dated-active-tree",
+      "at": "2026-06-12T11:31:35.879Z"
+    },
+    {
+      "from": "audit/evidence/bl-soc2-01-auditor-approval-2026-06-10.json",
+      "to": "audit/archive/2026-06-12/audit/evidence/bl-soc2-01-auditor-approval-2026-06-10.json",
+      "reason": "stale-dated-active-tree",
+      "at": "2026-06-12T11:31:35.879Z"
+    },
+    {
+      "from": "audit/evidence/bl-soc2-01-msa-execution-approval-2026-06-10.json",
+      "to": "audit/archive/2026-06-12/audit/evidence/bl-soc2-01-msa-execution-approval-2026-06-10.json",
+      "reason": "stale-dated-active-tree",
+      "at": "2026-06-12T11:31:35.879Z"
+    },
+    {
+      "from": "audit/evidence/compliance-gateway-staging-restore-2026-06-10.json",
+      "to": "audit/archive/2026-06-12/audit/evidence/compliance-gateway-staging-restore-2026-06-10.json",
+      "reason": "stale-dated-active-tree",
+      "at": "2026-06-12T11:31:35.879Z"
+    },
+    {
+      "from": "audit/evidence/daas-cost-router-witness-2026-06-10.json",
+      "to": "audit/archive/2026-06-12/audit/evidence/daas-cost-router-witness-2026-06-10.json",
+      "reason": "stale-dated-active-tree",
+      "at": "2026-06-12T11:31:35.879Z"
+    },
+    {
+      "from": "audit/evidence/ext-inf-002-countersign-approval-2026-06-10.json",
+      "to": "audit/archive/2026-06-12/audit/evidence/ext-inf-002-countersign-approval-2026-06-10.json",
+      "reason": "stale-dated-active-tree",
+      "at": "2026-06-12T11:31:35.879Z"
+    },
+    {
+      "from": "audit/evidence/ext-inf-002-sow-approval-2026-06-10.json",
+      "to": "audit/archive/2026-06-12/audit/evidence/ext-inf-002-sow-approval-2026-06-10.json",
+      "reason": "stale-dated-active-tree",
+      "at": "2026-06-12T11:31:35.879Z"
+    },
+    {
+      "from": "audit/evidence/migration-complete-2026-06-06.md",
+      "to": "audit/archive/2026-06-12/audit/evidence/migration-complete-2026-06-06.md",
+      "reason": "stale-dated-active-tree",
+      "at": "2026-06-12T11:31:35.879Z"
+    },
+    {
+      "from": "audit/evidence/pen-test-window-2026-06-10.json",
+      "to": "audit/archive/2026-06-12/audit/evidence/pen-test-window-2026-06-10.json",
+      "reason": "stale-dated-active-tree",
+      "at": "2026-06-12T11:31:35.879Z"
+    },
+    {
+      "from": "audit/evidence/secas-irsa-compliance-os-2026-06-10.json",
+      "to": "audit/archive/2026-06-12/audit/evidence/secas-irsa-compliance-os-2026-06-10.json",
+      "reason": "stale-dated-active-tree",
+      "at": "2026-06-12T11:31:35.879Z"
+    },
+    {
+      "from": "audit/evidence/waf-terraform-apply-2026-06-10.json",
+      "to": "audit/archive/2026-06-12/audit/evidence/waf-terraform-apply-2026-06-10.json",
+      "reason": "stale-dated-active-tree",
+      "at": "2026-06-12T11:31:35.879Z"
+    },
+    {
+      "from": "audit/pen-test-intake-evidence-2026-05-31.md",
+      "to": "audit/archive/2026-06-12/audit/pen-test-intake-evidence-2026-05-31.md",
+      "reason": "stale-dated-active-tree",
+      "at": "2026-06-12T11:31:35.879Z"
+    },
+    {
+      "from": "audit/product-excellence-audit-2026-06-12.md",
+      "to": "audit/archive/2026-06-12/audit/product-excellence-audit-2026-06-12.md",
+      "reason": "dated-sibling-when-latest-exists",
+      "at": "2026-06-12T11:31:35.879Z"
+    },
+    {
+      "from": "audit/production-grade-audit-2026-06-12.md",
+      "to": "audit/archive/2026-06-12/audit/production-grade-audit-2026-06-12.md",
+      "reason": "dated-sibling-when-latest-exists",
+      "at": "2026-06-12T11:31:35.879Z"
+    },
+    {
+      "from": "audit/repo-hygiene-audit-2026-06-12.md",
+      "to": "audit/archive/2026-06-12/audit/repo-hygiene-audit-2026-06-12.md",
+      "reason": "dated-sibling-when-latest-exists",
+      "at": "2026-06-12T11:31:35.879Z"
     }
   ],
-  "updated": "2026-06-11T18:40:41.290Z"
+  "updated": "2026-06-12T11:31:35.879Z"
 }

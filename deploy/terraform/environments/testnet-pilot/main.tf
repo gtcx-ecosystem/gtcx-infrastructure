@@ -91,7 +91,7 @@ variable "eks_node_instance_types" {
 }
 
 variable "cost_profile" {
-  description = "Fleet cost tier: ephemeral (testnet default). See modules/cost-profile and bridgeOS environment-cost-policy.v1.json."
+  description = "Fleet cost tier: ephemeral (testnet default). See modules/cost-profile and bridgeOS environment-cost-policy.json."
   type        = string
   default     = null
 

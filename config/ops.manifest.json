@@ -3,7 +3,7 @@
   "schema": "gtcx.ops.manifest.v14",
   "repo": "fabric-os",
   "updated": "2026-06-09",
-  "protocol": "https://github.com/gtcx-ecosystem/gtcx-docs/blob/main/01-docs/governance/protocols/29-agent-workspace-domains/protocol.md",
+  "protocol": "https://github.com/gtcx-ecosystem/canon-os/blob/main/01-docs/governance/protocols/29-agent-workspace-domains/protocol.md",
   "layout": "docs/operations/workspace/ecosystem-repo-layout-v5.md",
   "hubs": {
     "archive": "archive",
@@ -49,7 +49,7 @@
   },
   "docs": {
     "map": "01-docs/README.md",
-    "framework": "https://github.com/gtcx-ecosystem/gtcx-docs/blob/main/01-docs/governance/protocols/29-agent-workspace-domains/ecosystem-repo-layout-v3.md",
+    "framework": "https://github.com/gtcx-ecosystem/canon-os/blob/main/01-docs/governance/protocols/29-agent-workspace-domains/ecosystem-repo-layout-v3.md",
     "consolidation": "01-docs/04-ops/workspace/repo-consolidation-review.md",
     "index": "README.md#operational-domains"
   },

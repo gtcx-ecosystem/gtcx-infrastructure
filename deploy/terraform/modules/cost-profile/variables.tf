@@ -1,6 +1,6 @@
 variable "cost_profile" {
   description = <<-EOT
-    Fleet cost tier per bridgeOS environment-cost-policy.v1.json:
+    Fleet cost tier per bridgeOS environment-cost-policy.json:
     always_on (production), scheduled (staging), ephemeral (testnet_pilot).
     When set, overrides eks_node_* sizing unless explicit overrides are provided.
   EOT

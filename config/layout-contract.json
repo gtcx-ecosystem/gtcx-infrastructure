@@ -3,7 +3,7 @@
   "version": "5.1.0",
   "updated": "2026-06-08",
   "owner": "bridge-os",
-  "sor": "bridge-os/config/ecosystem-layout-contract.v5.json",
+  "sor": "bridge-os/config/ecosystem-layout-contract.json",
   "prose": "bridge-os/docs/ecosystem-layout-v5.md",
   "policy": {
     "numberedPaths": "forbidden-for-new-work",
@@ -51,13 +51,13 @@
     "enforceInP35": true,
     "specUrl": "docs/root-allowlist-spec-v5.md",
     "manifestPath": "docs/operations/repo/root-allowlist.json",
-    "templatePath": "config/ecosystem-root-allowlist.v5.template.json",
+    "templatePath": "config/ecosystem-root-allowlist.template.json",
     "classes": ["REQUIRED", "ALLOWED", "PERMISSIBLE_ON_APPROVAL", "FORBIDDEN"]
   },
   "providerBootstrap": {
     "enforceInP35": true,
     "protocol": "39-provider-agnostic-agent-bootstrap",
-    "registryPath": "config/ecosystem-provider-bootstrap-registry.v1.json",
+    "registryPath": "config/ecosystem-provider-bootstrap-registry.json",
     "specUrl": "docs/provider-bootstrap-enforcement.md"
   },
   "docsHub": {

@@ -1,5 +1,5 @@
 locals {
-  # SoR: bridge-os/pm/spec/environment-cost-policy.v1.json (eks.nodeMin/nodeDesired/nodeMax)
+  # SoR: bridge-os/pm/spec/environment-cost-policy.json (eks.nodeMin/nodeDesired/nodeMax)
   profiles = {
     always_on = { min = 2, desired = 3, max = 6 }
     scheduled = { min = 0, desired = 0, max = 4 }
