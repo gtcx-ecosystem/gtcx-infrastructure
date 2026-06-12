@@ -3,7 +3,7 @@ title: Auto-development state
 status: current
 date: 2026-06-10
 owner: gtcx-infrastructure
-last_reconciled: 2026-06-12T13:10:00.000Z
+last_reconciled: 2026-06-12T13:15:00.000Z
 ---
 
 # Auto-Development State
@@ -25,14 +25,15 @@ last_reconciled: 2026-06-12T13:10:00.000Z
 
 - **Owner:** fabric-os
 - **Action:** `SECAS-S2-01` — ingest vendor pen-test report after window execution (Class A/S); witness prep complete.
-- **Parallel (Class R):** `backlogClear` witness — docs-standard drift (45 violations) + ecosystem-integration-matrix JSON restore.
+- **Parallel (Class R):** witness backlog cleared — `validate-all` 55/55 (2026-06-12).
 
 ## Execute-roadmap (2026-06-12)
 
-| Story       | Outcome                                                                                           |
-| ----------- | ------------------------------------------------------------------------------------------------- |
-| S4-07       | **done** — root cause was stale P35 paths (`04-deploy`/`03-platform`); policy + validate.sh fixed |
-| SECAS-S2-01 | **blocked** — `awaiting_vendor_report` until pen-test window 2026-06-17..21                       |
+| Story       | Outcome                                                                                                     |
+| ----------- | ----------------------------------------------------------------------------------------------------------- |
+| S4-07       | **done** — root cause was stale P35 paths (`04-deploy`/`03-platform`); policy + validate.sh fixed           |
+| IR-WITNESS  | **done** — ecosystem matrix restore, prompt semver pin, hygiene workflow SHA+node floor, docs-standard 45→0 |
+| SECAS-S2-01 | **blocked** — `awaiting_vendor_report` until pen-test window 2026-06-17..21                                 |
 
 ## Evidence
 
