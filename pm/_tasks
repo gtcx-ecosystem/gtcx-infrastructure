@@ -23,7 +23,8 @@ gtcx-infrastructure → fabric-os rename (ADR-0007). Lane I service fabric; GitH
 
 --
 INIT-GTCX-INFRA-DAAS - DevOps-as-a-Service primary program - initiative
-status: in_progress
+status: done
+sealedAt: 2026-06-12
 priority: P0
 owner: fabric-os
 initiative: INIT-GTCX-INFRA-DAAS
