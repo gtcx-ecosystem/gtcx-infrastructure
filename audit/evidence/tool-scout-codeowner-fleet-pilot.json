@@ -1,0 +1,36 @@
+{
+  "schema": "gtcx://fabric-os/tool-scout-pilot-witness/v1",
+  "pilotId": "PILOT-CODEOWNER-FLEET",
+  "tool": "baseline-ai-codeowner-fleet-rollout",
+  "owner": "fabric-os",
+  "initiative": "INIT-AGENT-TOOL-SCOUT",
+  "phase": "P0-desk",
+  "status": "done",
+  "at": "2026-06-12T18:00:00.000Z",
+  "countryAgnostic": true,
+  "rolloutDoc": "docs/operations/ai-codeowner-fleet-rollout.md",
+  "sourceTemplate": "baseline-os/.github/workflows/ai-codeowner-review.yml",
+  "reposDeployed": [
+    {
+      "repo": "markets-os",
+      "workflow": ".github/workflows/ai-codeowner-review.yml",
+      "nonBlocking": true
+    },
+    {
+      "repo": "ledger-ui",
+      "workflow": ".github/workflows/ai-codeowner-review.yml",
+      "nonBlocking": true
+    },
+    {
+      "repo": "compliance-os",
+      "workflow": ".github/workflows/ai-codeowner-review.yml",
+      "nonBlocking": true
+    }
+  ],
+  "successCriteria": {
+    "tier1ReposWithWorkflow": 3,
+    "tier1ReposTarget": 3,
+    "nonBlocking": true,
+    "witnessComplete": true
+  }
+}
