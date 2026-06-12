@@ -21,6 +21,28 @@ const PHASE_B_WITNESSES = {
   'PILOT-FIGMA-MCP-EXR': '../ledger-ui/audit/evidence/tool-scout-figma-mcp-pilot.json',
 };
 
+const PHASE_C_WITNESSES = {
+  'PILOT-NOTEBOOKLM-BRIEF-SYNTHESIS': '../canon-os/audit/evidence/tool-scout-notebooklm-pilot.json',
+  'PILOT-QWILR-PILOT-PACK': 'audit/evidence/tool-scout-qwilr-pilot.json',
+  'PILOT-POSTHOG-PILOT-PROOF': 'audit/evidence/tool-scout-posthog-pilot.json',
+  'PILOT-RECRAFT-MOCKUP': '../canon-os/audit/evidence/tool-scout-recraft-pilot.json',
+};
+
+function pilotGate(root, rel) {
+  const path = join(root, rel);
+  const exists = existsSync(path);
+  let complete = false;
+  if (exists) {
+    try {
+      const w = JSON.parse(readFileSync(path, 'utf8'));
+      complete = w.status === 'done' || w.successCriteria?.witnessComplete === true;
+    } catch {
+      complete = false;
+    }
+  }
+  return { ok: exists, complete, path: rel };
+}
+
 function main() {
   const gates = {
     register: { ok: existsSync(REGISTER) },
@@ -32,6 +54,7 @@ function main() {
     },
     countryAgnostic: { ok: false },
     phaseBPilots: {},
+    phaseCPilots: {},
   };
 
   let reg = { adoptions: [] };
@@ -41,31 +64,26 @@ function main() {
   }
 
   for (const [pilotId, rel] of Object.entries(PHASE_B_WITNESSES)) {
-    const path = join(ROOT, rel);
-    const exists = existsSync(path);
-    let complete = false;
-    if (exists) {
-      try {
-        const w = JSON.parse(readFileSync(path, 'utf8'));
-        complete = w.status === 'done' || w.successCriteria?.witnessComplete === true;
-      } catch {
-        complete = false;
-      }
-    }
-    gates.phaseBPilots[pilotId] = { ok: exists, complete, path: rel };
+    gates.phaseBPilots[pilotId] = pilotGate(ROOT, rel);
+  }
+  for (const [pilotId, rel] of Object.entries(PHASE_C_WITNESSES)) {
+    gates.phaseCPilots[pilotId] = pilotGate(ROOT, rel);
   }
 
   const phaseBStarted = Object.values(gates.phaseBPilots).some((p) => p.ok);
+  const phaseBComplete = Object.values(gates.phaseBPilots).every((p) => p.complete);
+  const phaseCComplete = Object.values(gates.phaseCPilots).every((p) => p.complete);
   const structuralOk = gates.register.ok && gates.ackDoc.ok && gates.countryAgnostic.ok;
 
   const witness = {
     schema: 'gtcx://fabric-os/tool-scout-fabric-execution/v1',
     initiative: 'INIT-AGENT-TOOL-SCOUT',
     at: new Date().toISOString(),
-    ok: structuralOk && phaseBStarted,
+    ok: structuralOk && phaseBComplete && phaseCComplete,
     gates,
     registerStatus: reg.status,
-    phaseBComplete: Object.values(gates.phaseBPilots).every((p) => p.complete),
+    phaseBComplete,
+    phaseCComplete,
   };
 
   if (WRITE) {
@@ -76,16 +94,19 @@ function main() {
   if (JSON_OUT) console.log(JSON.stringify(witness, null, 2));
   else {
     for (const [k, v] of Object.entries(gates)) {
-      if (k === 'phaseBPilots') continue;
+      if (k === 'phaseBPilots' || k === 'phaseCPilots') continue;
       console.log(`${v.ok ? 'OK' : 'FAIL'} ${k}`);
     }
     for (const [id, p] of Object.entries(gates.phaseBPilots)) {
-      console.log(`${p.complete ? 'DONE' : p.ok ? 'WIP' : 'MISS'} ${id}`);
+      console.log(`${p.complete ? 'DONE' : p.ok ? 'WIP' : 'MISS'} B ${id}`);
+    }
+    for (const [id, p] of Object.entries(gates.phaseCPilots)) {
+      console.log(`${p.complete ? 'DONE' : p.ok ? 'WIP' : 'MISS'} C ${id}`);
     }
     console.log(`\n${witness.ok ? 'PASS' : 'FAIL'} — TAAS tool scout execution`);
     if (WRITE) console.log(`witness: ${OUT}`);
   }
-  process.exit(structuralOk ? 0 : 1);
+  process.exit(witness.ok ? 0 : 1);
 }
 
 main();

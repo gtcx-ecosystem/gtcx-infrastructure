@@ -1,7 +1,7 @@
 {
   "schema": "gtcx://fabric-os/tool-scout-fabric-execution/v1",
   "initiative": "INIT-AGENT-TOOL-SCOUT",
-  "at": "2026-06-12T04:31:01.562Z",
+  "at": "2026-06-12T18:44:06.967Z",
   "ok": true,
   "gates": {
     "register": {
@@ -37,8 +37,31 @@
         "complete": true,
         "path": "../ledger-ui/audit/evidence/tool-scout-figma-mcp-pilot.json"
       }
+    },
+    "phaseCPilots": {
+      "PILOT-NOTEBOOKLM-BRIEF-SYNTHESIS": {
+        "ok": true,
+        "complete": true,
+        "path": "../canon-os/audit/evidence/tool-scout-notebooklm-pilot.json"
+      },
+      "PILOT-QWILR-PILOT-PACK": {
+        "ok": true,
+        "complete": true,
+        "path": "audit/evidence/tool-scout-qwilr-pilot.json"
+      },
+      "PILOT-POSTHOG-PILOT-PROOF": {
+        "ok": true,
+        "complete": true,
+        "path": "audit/evidence/tool-scout-posthog-pilot.json"
+      },
+      "PILOT-RECRAFT-MOCKUP": {
+        "ok": true,
+        "complete": true,
+        "path": "../canon-os/audit/evidence/tool-scout-recraft-pilot.json"
+      }
     }
   },
-  "registerStatus": "in_progress",
-  "phaseBComplete": true
+  "registerStatus": "phase_c_complete",
+  "phaseBComplete": true,
+  "phaseCComplete": true
 }

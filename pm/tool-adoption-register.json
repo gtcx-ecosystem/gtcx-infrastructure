@@ -8,7 +8,7 @@
   "matrix": "bridge-os/pm/spec/tool-scout-matrix.v1.json",
   "programOffice": "bridge-os",
   "handoff": "bridge-os/docs/operations/coordination/to-fabric-os-agent-tool-scout-handoff-2026-06-12.md",
-  "status": "phase_b_complete",
+  "status": "phase_c_complete",
   "policy": {
     "countryAgnostic": true,
     "executionOwner": "fabric-os TAAS"
@@ -56,8 +56,8 @@
       "tool": "notebooklm",
       "owner": "canon-os",
       "phase": "P1-pilot",
-      "status": "blocked",
-      "blockedBy": "core-spec-gate",
+      "status": "done",
+      "witness": "canon-os/audit/evidence/tool-scout-notebooklm-pilot.json",
       "pillars": ["trustAndSafety", "compliance"],
       "source": "bridge-os/pm/tool-scout-register.json"
     },
@@ -66,8 +66,9 @@
       "tool": "qwilr",
       "owner": "fabric-os",
       "phase": "P1-pilot",
-      "status": "blocked",
-      "blockedBy": "PILOT-ADV-PITCH-INTERNAL",
+      "status": "done",
+      "witness": "fabric-os/audit/evidence/tool-scout-qwilr-pilot.json",
+      "dodTemplate": "docs/operations/enterprise-pilot-dod-template.md",
       "pillars": ["worldClass", "trustAndSafety"],
       "source": "bridge-os/pm/tool-scout-register.json"
     },
@@ -76,9 +77,20 @@
       "tool": "posthog-self-host",
       "owner": "fabric-os",
       "phase": "P1-pilot",
-      "status": "blocked",
-      "blockedBy": "fabric-staging-deploy",
+      "status": "done",
+      "witness": "fabric-os/audit/evidence/tool-scout-posthog-pilot.json",
+      "stagingPath": "docs/operations/posthog-pilot-staging-path.md",
       "pillars": ["trustAndSafety", "technicalExcellence"],
+      "source": "bridge-os/pm/tool-scout-register.json"
+    },
+    {
+      "pilotId": "PILOT-RECRAFT-MOCKUP",
+      "tool": "recraft-v3",
+      "owner": "canon-os",
+      "phase": "P1-pilot",
+      "status": "done",
+      "witness": "canon-os/audit/evidence/tool-scout-recraft-pilot.json",
+      "pillars": ["craft"],
       "source": "bridge-os/pm/tool-scout-register.json"
     }
   ],

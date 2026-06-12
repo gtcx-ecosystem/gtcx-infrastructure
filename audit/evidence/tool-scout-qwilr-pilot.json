@@ -1,0 +1,22 @@
+{
+  "schema": "gtcx://fabric-os/tool-scout-pilot-witness/v1",
+  "pilotId": "PILOT-QWILR-PILOT-PACK",
+  "tool": "qwilr",
+  "owner": "fabric-os",
+  "initiative": "INIT-AGENT-TOOL-SCOUT",
+  "phase": "P1-pilot",
+  "status": "done",
+  "at": "2026-06-12T18:45:00.000Z",
+  "countryAgnostic": true,
+  "pillars": ["worldClass", "trustAndSafety"],
+  "dependencies": {
+    "PILOT-ADV-PITCH-INTERNAL": "markets-os/audit/evidence/tool-scout-adv-pitch-pilot.json"
+  },
+  "dodTemplate": "docs/operations/enterprise-pilot-dod-template.md",
+  "successCriteria": {
+    "dodTemplatePublished": true,
+    "advPitchWitnessGreen": true,
+    "interactivePackSections": 6,
+    "witnessComplete": true
+  }
+}

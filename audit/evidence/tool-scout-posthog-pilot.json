@@ -1,0 +1,19 @@
+{
+  "schema": "gtcx://fabric-os/tool-scout-pilot-witness/v1",
+  "pilotId": "PILOT-POSTHOG-PILOT-PROOF",
+  "tool": "posthog-self-host",
+  "owner": "fabric-os",
+  "initiative": "INIT-AGENT-TOOL-SCOUT",
+  "phase": "P1-pilot",
+  "status": "done",
+  "at": "2026-06-12T18:45:00.000Z",
+  "countryAgnostic": true,
+  "pillars": ["trustAndSafety", "technicalExcellence"],
+  "stagingPath": "docs/operations/posthog-pilot-staging-path.md",
+  "successCriteria": {
+    "stagingPathDocumented": true,
+    "captureTargetsDefined": true,
+    "envContractPublished": true,
+    "witnessComplete": true
+  }
+}
