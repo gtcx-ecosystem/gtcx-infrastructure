@@ -69,7 +69,8 @@ last_reconciled: 2026-06-12T14:45:00.000Z
 - **Bridge handoff:** XR-BRIDGE-SESSION-OPEN-001 accepted · closure **5/5** · program office **0 open**
 - **T23 / XR-MKT-RDS-VPC:** sealed per bridge — do not re-open
 - **Assurance:** `fabric:assurance:run:write` — bridge evaluate consumed; `uat-exit` cross-repo witness open (bridge-os)
-- **Fleet:** cross-repo-health PASS 3/3 required @ 2026-06-12T19:23Z (compliance-gateway optional scaled 0)
+- **Fleet:** cross-repo-health PASS 3/3 required @ 2026-06-12T20:08Z
+- **Audits:** five-core composite **100/100** · validate-all **55/55** · fabric-assurance **PASS** (`dce881e` + MCP pointer)
 - **PNV:** verifier **live** · GT blocked on **markets-os brokerage staging deploy** — P24 `to-markets-os-brokerage-staging-gt-trace-2026-06-12.md`
 
 ## Evidence

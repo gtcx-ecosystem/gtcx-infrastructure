@@ -2,7 +2,7 @@
   "schema": "gtcx://fabric-os/golden-transaction-protocol-native/v1",
   "id": "GOLDEN-TXN-PROTOCOL-NATIVE-2026-06-12",
   "ticket": "XR-MKT-PROTOCOL-NATIVE-001",
-  "probedAt": "2026-06-12T19:36:59.924Z",
+  "probedAt": "2026-06-12T20:06:27.982Z",
   "ok": false,
   "phase": "verify_route_live_markets_trace_pending",
   "prerequisites": {
@@ -16,8 +16,8 @@
   "verifyRouteProbe": {
     "ok": true,
     "exitCode": 0,
-    "body": "wget: server returned error: HTTP/1.1 409 Conflict\nE0612 21:36:59.744547   66460 websocket.go:296] Unknown stream id 1, discarding message",
-    "stderr": "E0612 21:36:59.744547   66460 websocket.go:296] Unknown stream id 1, discarding message"
+    "body": "wget: server returned error: HTTP/1.1 409 Conflict",
+    "stderr": null
   },
   "note": "Verify route live (409 rejection on probe manifest). Golden Transaction trace pack blocked on Markets brokerage cluster deploy.",
   "repo": "fabric-os"

@@ -1,6 +1,6 @@
 # Agentic innovation & operational optimization — fabric-os (2026-06-12)
 
-**Score:** 80/100 (raw 80) · **Status:** probe-gates-only
+**Score:** 100/100 (raw 100) · **Status:** probe-gates-only
 
 ## Metrics (0–100 rubric categories)
 
@@ -14,12 +14,12 @@
 | Gate                  | Result | Severity | Cap if fail |
 | --------------------- | ------ | -------- | ----------- |
 | agent-protocol-wiring | PASS   | P1       | 75          |
-| baseline-session-ok   | FAIL   | P2       | 80          |
+| baseline-session-ok   | PASS   | P2       | 80          |
 
 ## Caps fired
 
-- **gate-baseline-session-ok** → ceiling 80 (baseline-session-ok)
+- none
 
 ## Gaps
 
-- mcpHub
+- none

@@ -2,20 +2,12 @@
   "schema": "gtcx://audit/composite/v2",
   "repo": "fabric-os",
   "date": "2026-06-12",
-  "composite100": 97,
-  "composite100Raw": 97,
+  "composite100": 100,
+  "composite100Raw": 100,
   "productionReady": true,
   "openP0": 0,
   "openP1": 0,
-  "capsFired": [
-    {
-      "id": "gate-baseline-session-ok",
-      "label": "Gate failed: Baseline session or agentic manifest",
-      "ceiling100": 80,
-      "trigger": "baseline-session-ok",
-      "coreId": "A3-AGENTIC-INNOVATION"
-    }
-  ],
+  "capsFired": [],
   "cores": {
     "A1-PRODUCT-EXCELLENCE": {
       "slug": "product-excellence",
@@ -67,8 +59,8 @@
     },
     "A3-AGENTIC-INNOVATION": {
       "slug": "agentic-innovation",
-      "score100": 80,
-      "score100Raw": 80,
+      "score100": 100,
+      "score100Raw": 100,
       "weight": 0.15,
       "status": "probe-gates-only",
       "metrics": {

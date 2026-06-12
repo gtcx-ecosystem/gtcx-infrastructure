@@ -13,9 +13,9 @@
   "irRoadmap": "01-docs/05-audit/ir-10-10-roadmap.md",
   "status": "five-core-fresh-2026-06-12",
   "scores": {
-    "internalEngineeringReadiness": 9.7,
-    "internalReadiness": 9.7,
-    "engineeringLaneScore": 9.7,
+    "internalEngineeringReadiness": 10.0,
+    "internalReadiness": 10.0,
+    "engineeringLaneScore": 10.0,
     "engineeringSignoff": 10.0,
     "engineeringCompletion": 10.0,
     "externalClearance": 9,
@@ -25,10 +25,10 @@
     "security": 10.0,
     "globalSouthResilience": 8.3,
     "ecosystemIntegration": 10.0,
-    "agenticMaturity": 8.0,
+    "agenticMaturity": 10.0,
     "enterpriseReadiness": 10.0,
-    "bankGradeComposite": 9.7,
-    "fiveCoreComposite100": 97
+    "bankGradeComposite": 10.0,
+    "fiveCoreComposite100": 100
   },
   "scoreReconciliation": "IR = in-repo engineering only. XC = external/GTM track (separate). See 01-docs/05-audit/SCORING.md v2. certifiedReadiness/composite as IR−gap are retired.",
   "findings": {
