@@ -28,7 +28,7 @@ spec:
             - name: GTCX_STAGING_TRADEPASS_SEED
               value: '1'
             - name: GTCX_STAGING_TRADEPASS_FIXTURES_PATH
-              value: server/fixtures/staging-tradepass-operators.json
+              value: 03-platform/server/fixtures/staging-tradepass-operators.json
             # API key for admin/operator registration (Bearer auth).
             - name: GTCX_API_KEY
               valueFrom:
