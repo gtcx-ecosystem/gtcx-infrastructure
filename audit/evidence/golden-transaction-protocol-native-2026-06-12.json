@@ -2,7 +2,7 @@
   "schema": "gtcx://fabric-os/golden-transaction-protocol-native/v1",
   "id": "GOLDEN-TXN-PROTOCOL-NATIVE-2026-06-12",
   "ticket": "XR-MKT-PROTOCOL-NATIVE-001",
-  "probedAt": "2026-06-12T18:30:52.006Z",
+  "probedAt": "2026-06-12T18:43:55.219Z",
   "ok": false,
   "phase": "verify_route_live_markets_trace_pending",
   "prerequisites": {

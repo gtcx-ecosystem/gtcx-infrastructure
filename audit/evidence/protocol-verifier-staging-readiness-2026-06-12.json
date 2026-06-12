@@ -2,7 +2,7 @@
   "schema": "gtcx://fabric-os/protocol-verifier-staging-readiness/v1",
   "id": "PROTOCOL-VERIFIER-STAGING-READINESS-2026-06-12",
   "ticket": "XR-MKT-PROTOCOL-NATIVE-001",
-  "checkedAt": "2026-06-12T18:23:57.038Z",
+  "checkedAt": "2026-06-12T18:42:05.980Z",
   "namespace": "gtcx-staging",
   "deployment": "gtcx-protocols-staging",
   "secret": {
@@ -13,7 +13,7 @@
     "name": "gtcx-markets-manifest-signer-staging",
     "exists": true
   },
-  "image": "348389439381.dkr.ecr.af-south-1.amazonaws.com/gtcx-protocols:e7525dfa",
+  "image": "348389439381.dkr.ecr.af-south-1.amazonaws.com/gtcx-protocols:e7525dfa-amd64",
   "pnv2": {
     "requiredCommit": "e7525dfa",
     "imageContainsCommit": true
