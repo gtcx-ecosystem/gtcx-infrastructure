@@ -1,9 +1,80 @@
 {
   "$schema": "gtcx://workspace/remaining-work/v1",
-  "repo": "gtcx-infrastructure",
-  "updated": "2026-06-08",
-  "open": [],
-  "siblingWitness": [],
-  "closedRecently": [],
-  "legacyArchive": "01-docs/04-ops/coordination"
+  "repo": "fabric-os",
+  "updated": "2026-06-12",
+  "reconciledAt": "2026-06-12T14:30:00.000Z",
+  "sessionRef": "fabric-os-domain-model-2026-06-12",
+  "items": [
+    {
+      "id": "SECAS-S2-01",
+      "storyId": "SECAS-S2-01",
+      "title": "Pen-test window execution + vendor report ingest",
+      "ownerRepo": "fabric-os",
+      "status": "in_progress",
+      "blockedUntil": "2026-06-21",
+      "authority": "R",
+      "p22": true,
+      "notes": "Pre-window harness PASS; ingest after vendor window"
+    },
+    {
+      "id": "XR-FABRIC-TRADE-LANES-001-ack",
+      "title": "Canon handoff ack — INST-F-006 publish",
+      "ownerRepo": "canon-os",
+      "status": "open",
+      "authority": "S",
+      "handoff": "docs/operations/coordination/to-canon-os-trade-ecosystem-lanes-2026-06-12.md",
+      "blocksIR": false
+    },
+    {
+      "id": "INIT-GTCX-TWO-PRODUCT-DEPLOY-WITNESS",
+      "title": "ADR-007 E2E deploy witness with lane tags",
+      "ownerRepo": "gtcx-os",
+      "status": "deferred",
+      "authority": "R",
+      "partnerRepo": "fabric-os",
+      "notes": "Partial xr-lane-witness; sovereign-cloud-e2e-latest.json pending"
+    },
+    {
+      "id": "EXT-INF-013",
+      "title": "ZWCMP pilot owner + cadence",
+      "ownerRepo": "Leadership",
+      "status": "open",
+      "authority": "S",
+      "blocksIR": false
+    }
+  ],
+  "siblingWitness": [
+    {
+      "id": "markets-os-SPR-82",
+      "title": "SPR-82 seal + persona roster",
+      "ownerRepo": "markets-os",
+      "status": "open",
+      "authority": "R"
+    }
+  ],
+  "closedRecently": [
+    {
+      "id": "S4-07",
+      "title": "pnpm test P35 deploy/platform path drift",
+      "ownerRepo": "fabric-os",
+      "status": "done",
+      "witness": "dd75330, 94c3567 — pnpm test exit 0",
+      "closedAt": "2026-06-12"
+    },
+    {
+      "id": "INIT-GTCX-TRADE-ECOSYSTEM-LANES",
+      "title": "Trade ecosystem lane taxonomy",
+      "ownerRepo": "fabric-os",
+      "status": "complete",
+      "witness": "672067b, xr-lane-witness-latest.json",
+      "closedAt": "2026-06-12"
+    }
+  ],
+  "programOffice": {
+    "ownerRepo": "bridge-os",
+    "closureBar": "3/5 sessionComplete=false",
+    "blocker": "INIT-EXECUTIVE-GAP-PROGRAM marked done without closureBar.ok witness",
+    "handoff": "docs/operations/coordination/to-bridge-os-init-executive-gap-seal-reconcile-2026-06-12.md"
+  },
+  "legacyArchive": "docs/operations/coordination"
 }

@@ -92,5 +92,12 @@
     "Fable pack missing agile-os canon-os"
   ],
   "p22Next": "SECAS-S2-01",
-  "sessionOpenItemsNote": "Use baseline session:open-items --json; no --handoff flag; bridge exit 1 = closureBar not parse failure"
+  "sessionOpenItemsNote": "Use baseline session:open-items --json; no --handoff flag; bridge exit 1 = closureBar not parse failure",
+  "backlogReconciled": "2026-06-12",
+  "backlogSource": "ops/coordination/remaining-work.json",
+  "staleItemsCorrected": {
+    "S4-07": "done — dd75330/94c3567; not pending",
+    "INIT-EXECUTIVE-GAP-PROGRAM": "bridge seal mismatch — in_progress until closureBar ok"
+  },
+  "programOfficeHandoff": "docs/operations/coordination/to-bridge-os-init-executive-gap-seal-reconcile-2026-06-12.md"
 }

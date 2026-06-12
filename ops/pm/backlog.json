@@ -37,7 +37,32 @@
       "owner": "gtcx-infrastructure"
     }
   ],
-  "crossRepoRefs": [],
+  "crossRepoRefs": [
+    {
+      "id": "SECAS-S2-01",
+      "ownerRepo": "fabric-os",
+      "status": "in_progress",
+      "traceId": null
+    },
+    {
+      "id": "XR-FABRIC-TRADE-LANES-001-ack",
+      "ownerRepo": "canon-os",
+      "status": "open",
+      "traceId": null
+    },
+    {
+      "id": "INIT-GTCX-TWO-PRODUCT-DEPLOY-WITNESS",
+      "ownerRepo": "gtcx-os",
+      "status": "deferred",
+      "traceId": null
+    },
+    {
+      "id": "EXT-INF-013",
+      "ownerRepo": "Leadership",
+      "status": "open",
+      "traceId": null
+    }
+  ],
   "agileHub": null,
   "roadmapPath": "audit/product-management/execution-roadmap.md"
 }
