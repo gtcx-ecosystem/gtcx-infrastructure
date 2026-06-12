@@ -2,7 +2,7 @@
   "schema": "gtcx.roadmapExecuteWitness.v1",
   "repo": "fabric-os",
   "mode": "execute_roadmap",
-  "witnessedAt": "2026-06-12T20:18:38.000Z",
+  "witnessedAt": "2026-06-12T20:35:00.000Z",
   "automatableExhausted": true,
   "automatableExhaustNote": "SECAS-S2 calendar gate + markets-os brokerage ECS deploy; fabric PNV live complete",
   "p22Head": "SECAS-S2-01",
@@ -51,7 +51,8 @@
     "fresh five-core audit cycle dce881e — composite 97/100, validate-all 55/55, fabric-assurance PASS",
     "platform/mcp pointer — A3 baseline-session-ok cap cleared; composite 100/100 @ 2026-06-12T20:08Z",
     "execute_roadmap witness refresh — SECAS pre-window PASS, PNV PASS, GT partial, assurance PASS",
-    "execute_roadmap cycle @ 2026-06-12T20:10Z — all gates PASS; composite 100/100; GT partial unchanged"
+    "execute_roadmap cycle @ 2026-06-12T20:10Z — all gates PASS; composite 100/100; GT partial unchanged",
+    "execute_roadmap cycle @ 2026-06-12T20:18Z — witness refresh; automatableExhausted true; markets-os GT ack pending"
   ],
   "fiveCoreComposite100": 100,
   "pnvLiveDeploy": {
