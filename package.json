@@ -119,7 +119,7 @@
     "lint-staged": "^16.4.0",
     "prettier": "^3.8.3",
     "tinyexec": "^1.2.4",
-    "turbo": "^2.9.14",
+    "turbo": "^2.9.18",
     "typescript": "^5.7.0",
     "typescript-eslint": "^8.60.0"
   },
