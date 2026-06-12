@@ -1,0 +1,22 @@
+{
+  "schema": "gtcx://fabric-os/vpc-peering-witness/v1",
+  "date": "2026-06-12",
+  "task": "T23",
+  "ticket": "XR-MKT-STAGING",
+  "peeringConnectionId": "pcx-014f211f0e7c2cb08",
+  "requesterVpc": {
+    "id": "vpc-0c489ca4ba9c71cc4",
+    "cidr": "10.3.0.0/16",
+    "name": "gtcx-staging-vpc"
+  },
+  "accepterVpc": {
+    "id": "vpc-0a7a18887f5011cb9",
+    "cidr": "10.0.0.0/16",
+    "name": "gtx-markets-staging"
+  },
+  "routes": { "gtcxToMarkets": "10.0.0.0/16", "marketsToGtcx": "10.3.0.0/16" },
+  "rdsSecurityGroup": "sg-0ef616997e1005284",
+  "ingressAdded": ["sg-0913949c0a93ba11b", "sg-0da14ad389d427d04"],
+  "status": "active",
+  "note": "Cross-VPC peering for F10 DR path; operator laptop probe still requires VPN or in-VPC ECS runner"
+}

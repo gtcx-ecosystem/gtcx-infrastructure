@@ -72,6 +72,19 @@
       "executionStatus": "done",
       "witness": "intelligence-orchestrator 2/2; ENABLE_COST_ROUTER=1; fleet health PASS",
       "blocksIR": false
+    },
+    {
+      "id": "XR-MKT-RDS-VPC",
+      "priority": "P1",
+      "status": "in_progress",
+      "repo": "markets-os",
+      "title": "VPC peering gtcx-staging ↔ gtx-markets-staging for F10 DR psql",
+      "symptom": "F10 DR psql timeout cross-VPC",
+      "infraAction": "pcx-014f211f0e7c2cb08 active; RDS SG ingress EKS node+cluster SG",
+      "witness": "docs/operations/evidence/vpc-peering-gtcx-markets-staging-2026-06-12.json",
+      "executionStatus": "partial",
+      "blockedBy": "in-vpc psql probe pending",
+      "blocksIR": false
     }
   ]
 }
