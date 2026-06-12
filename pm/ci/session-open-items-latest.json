@@ -1,6 +1,6 @@
 {
   "schema": "gtcx://baseline-os/session-open-items/v1",
-  "at": "2026-06-12T13:50:18.167Z",
+  "at": "2026-06-12T13:50:32.357Z",
   "repo": "fabric-os",
   "repoPath": "/Users/amanianai/Sites/gtcx-ecosystem/fabric-os",
   "session": {
@@ -30,8 +30,8 @@
     }
   },
   "git": {
-    "dirtyCount": 2,
-    "commitsSinceSession": 17
+    "dirtyCount": 3,
+    "commitsSinceSession": 19
   },
   "productionWeek": null,
   "intake": null,
@@ -45,7 +45,7 @@
       "n": 1
     },
     {
-      "task": "Git-clean fabric-os (2 uncommitted path(s) in working tree)",
+      "task": "Git-clean fabric-os (3 uncommitted path(s) in working tree)",
       "owner": "fabric-os",
       "command": "micro-commit conventional + push when GATE-PUSH green",
       "doneWhen": "working tree clean; ahead=0",
@@ -54,6 +54,16 @@
     }
   ],
   "completed": [
+    {
+      "kind": "commit",
+      "detail": "ff8eb3d chore(session): refresh open-items witness and launch focus.",
+      "source": "git log"
+    },
+    {
+      "kind": "commit",
+      "detail": "63c1be0 chore(pm): update settlement-commit witness after batch commits.",
+      "source": "git log"
+    },
     {
       "kind": "commit",
       "detail": "04657e1 chore(pm): refresh settlement witness after git micro-commits.",
@@ -153,11 +163,15 @@
     {
       "type": "blocker",
       "id": "uncommitted-work",
-      "title": "2 uncommitted path(s) in working tree",
+      "title": "3 uncommitted path(s) in working tree",
       "owner": "fabric-os",
       "source": "git status",
       "status": "open",
-      "sample": ["MM pm/ci/settlement-commit-latest.json", "?? .claude/skills/"]
+      "sample": [
+        "M  .gitignore",
+        " M pm/ci/settlement-commit-latest.json",
+        " M pm/ci/settlement-push-latest.json"
+      ]
     }
   ],
   "threads": [],
