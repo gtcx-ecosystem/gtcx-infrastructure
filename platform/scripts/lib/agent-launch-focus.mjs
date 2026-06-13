@@ -106,6 +106,25 @@ function fileExists(repoRoot, rel) {
   return rel && existsSync(join(repoRoot, rel));
 }
 
+const SECAS_CALENDAR_HEAD = 'SECAS-S2-01';
+
+function readSecasCalendarPhase(repoRoot) {
+  const rel = 'audit/evidence/secas-pentest-ingest-check-latest.json';
+  if (!fileExists(repoRoot, rel)) return null;
+  try {
+    const j = JSON.parse(readFileSync(join(repoRoot, rel), 'utf8'));
+    return j.phase ?? j.gates?.report?.phase ?? null;
+  } catch {
+    return null;
+  }
+}
+
+/** SECAS-S2-01 pre-window complete — only vendor report ingest remains (calendar custody). */
+function isSecasCalendarGate(repoRoot, p22Head) {
+  if (p22Head?.storyId !== SECAS_CALENDAR_HEAD) return false;
+  return readSecasCalendarPhase(repoRoot) === 'awaiting_vendor_report';
+}
+
 export function buildLaunchFocusFromConfig(repoRoot, config, nextWork = {}) {
   const executionMd = readUtf8(repoRoot, config.paths?.executionRoadmap);
   const openMd = readUtf8(repoRoot, config.paths?.openItems);
@@ -207,7 +226,14 @@ export function attachLaunchFocus(nextWork, repoRoot) {
   const launchFocus = buildLaunchFocusFromConfig(repoRoot, config, nextWork);
 
   const p22Head = nextWork?.next;
-  if (p22Head?.storyId && !p22Head.blocked && p22Head.implementationClass !== 'external') {
+  const calendarGate = isSecasCalendarGate(repoRoot, p22Head);
+
+  if (
+    p22Head?.storyId &&
+    !p22Head.blocked &&
+    p22Head.implementationClass !== 'external' &&
+    !calendarGate
+  ) {
     launchFocus.workSet.implement = dedupeById([
       {
         storyId: p22Head.storyId,
@@ -221,6 +247,37 @@ export function attachLaunchFocus(nextWork, repoRoot) {
     launchFocus.workSetCounts.implement = launchFocus.workSet.implement.length;
     launchFocus.sessionMode = 'implement';
     launchFocus.activeWorkSet = launchFocus.workSet.implement;
+  }
+
+  if (calendarGate) {
+    launchFocus.workSet.implement = launchFocus.workSet.implement.filter(
+      (item) => item.storyId !== SECAS_CALENDAR_HEAD,
+    );
+    launchFocus.workSetCounts.implement = launchFocus.workSet.implement.length;
+    launchFocus.sessionMode = 'witness';
+    launchFocus.activeWorkSet =
+      launchFocus.workSet.witness.length > 0
+        ? launchFocus.workSet.witness
+        : [
+            {
+              storyId: SECAS_CALENDAR_HEAD,
+              title: p22Head?.title ?? 'Live-stack pen-test execution window',
+              workClass: 'ops-docs',
+              lane: 'secas',
+              because: 'SECAS calendar gate — witness maintenance until vendor report',
+            },
+          ];
+    launchFocus.agentInstructions = buildInstructions(
+      config,
+      'witness',
+      0,
+      launchFocus.workSet.plan.length,
+    );
+    nextWork.backlogClear = false;
+    nextWork.automatableExhausted = true;
+    nextWork.message =
+      'WITNESS mode — SECAS calendar gate (awaiting_vendor_report); Class R exhausted until vendor report post 2026-06-21.';
+    return { ...nextWork, launchFocus };
   }
 
   if (launchFocus.workSetCounts.implement > 0) {
