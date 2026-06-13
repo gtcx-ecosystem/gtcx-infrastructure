@@ -10,10 +10,15 @@ import { fileURLToPath } from 'node:url';
 import { enrichWithPersona } from './lib/suggest-persona.mjs';
 import { attachLaunchFocus, writeLaunchFocusState } from './lib/attach-launch-focus.mjs';
 import { resolveTraceId } from './lib/trace-context.mjs';
+import { finalizeP22Payload } from '../../../baseline-os/platform/scripts/ecosystem/lib/finalize-p22-payload.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = join(__dirname, '../..');
 const THIS_REPO = 'fabric-os';
+
+function emitP22(payload) {
+  console.log(JSON.stringify(finalizeP22Payload(THIS_REPO, payload), null, 2));
+}
 
 function resolvePaths() {
   const paths = {
@@ -291,15 +296,11 @@ function main() {
     };
     const withLaunch = attachLaunchFocus(base, REPO_ROOT);
     if (withLaunch.launchFocus) writeLaunchFocusState(REPO_ROOT, withLaunch.launchFocus);
-    console.log(
-      JSON.stringify(
-        enrichWithPersona(attachTrace(withLaunch), {
-          repo: THIS_REPO,
-          title: 'coordination witness',
-        }),
-        null,
-        2,
-      ),
+    emitP22(
+      enrichWithPersona(attachTrace(withLaunch), {
+        repo: THIS_REPO,
+        title: 'coordination witness',
+      }),
     );
     process.exit(0);
   }
@@ -359,16 +360,12 @@ function main() {
 
   const withLaunch = attachLaunchFocus(payload, REPO_ROOT);
   if (withLaunch.launchFocus) writeLaunchFocusState(REPO_ROOT, withLaunch.launchFocus);
-  console.log(
-    JSON.stringify(
-      enrichWithPersona(attachTrace(withLaunch), {
-        repo: THIS_REPO,
-        storyId: withLaunch.next?.storyId ?? story.id,
-        title: withLaunch.next?.title ?? story.title,
-      }),
-      null,
-      2,
-    ),
+  emitP22(
+    enrichWithPersona(attachTrace(withLaunch), {
+      repo: THIS_REPO,
+      storyId: withLaunch.next?.storyId ?? story.id,
+      title: withLaunch.next?.title ?? story.title,
+    }),
   );
 }
 
