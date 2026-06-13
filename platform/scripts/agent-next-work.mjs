@@ -333,7 +333,8 @@ function main() {
     communicationPolicy: {
       protocol: '26-agent-proceed-confirmation',
       version: '1.2.0',
-      statusUpdateSections: ['Done', 'Next priority', 'Approval needed'],
+      statusUpdateSections: ['Execution mode', 'Done', 'Next work item', 'Approval needed'],
+      forbiddenStatusUpdateSections: ['Parallel sovereign gates'],
       forbiddenReplyPatterns: [
         'Your call',
         'Two options',

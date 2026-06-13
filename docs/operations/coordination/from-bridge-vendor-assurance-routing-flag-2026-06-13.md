@@ -7,12 +7,27 @@ inboundFrom: bridge-os
 ticket: XR-BRIDGE-VENDOR-ROUTING-001
 ---
 
-# ACK — fabric-os owns vendor gate Status Update sections
+# ACK — fabric-os owns vendor Approval needed closure
 
-Bridge flag **XR-BRIDGE-VENDOR-ROUTING-001** accepted.
+Bridge flag **XR-BRIDGE-VENDOR-ROUTING-001** accepted (v3).
 
-**fabric-os** is the sole owner repo that may list `BG-10-10`, `BG-10-11`, and `EXT-INF-013` in agent Status Updates — under `### Parallel sovereign gates` with `blocksIR: false` and **Does not block:** `SECAS-S2-01`. Never under `### Approval needed`.
+## fabric-os (owner only)
 
-Sibling repos (bridge-os, agile-os, canon-os, gtcx-os) **omit** these gates entirely; they witness via `fleetOwnerRedirect` and `bridge-os/pm/ci/secas-witness-rollup-latest.json`.
+| Field               | Value                                                                  |
+| ------------------- | ---------------------------------------------------------------------- |
+| **Next**            | `SECAS-S2-01` · phase `awaiting_vendor_report` · window 2026-06-17..21 |
+| **Approval needed** | `SECAS-S2-01-INGEST` post 2026-06-21 — Class A                         |
+| **parallelClassS**  | `BG-10-10` / `BG-10-11` under `### Approval needed` only               |
+| **Forbidden**       | `### Parallel sovereign gates`                                         |
 
-Normative: `bridge-os/pm/spec/vendor-assurance-status-update-routing.json`
+## Product repos (silent exempt)
+
+- `vendorAssuranceExempt: true` — no `FORBIDDEN: pen-test / SECAS / BG-10-10/11` in `agentInstructions`
+- Leaked vendor stories stripped from `next` / `nextWorkItem`
+- Must not mirror fabric Next work item or list vendor gates under Approval needed
+
+## Witness repos (bridge-os, agile-os, canon-os)
+
+- `fleetOwnerRedirect` to fabric-os — omit Approval needed and vendor gate listings in Status Update
+
+Normative: `bridge-os/pm/spec/vendor-assurance-status-update-routing.json` (v3)
