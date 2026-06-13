@@ -1,6 +1,6 @@
 {
   "schema": "gtcx://fabric-os/fabric-assurance/v1",
-  "at": "2026-06-13T04:37:55.110Z",
+  "at": "2026-06-13T05:26:34.469Z",
   "repo": "fabric-os",
   "initiative": "INIT-ASSURANCE-BURN-DOWN",
   "story": "T35",
@@ -11,63 +11,87 @@
     {
       "id": "PROG-25",
       "reason": "sprintProgressPct 100 >= 25",
-      "runs": ["hygiene-touch-paths"],
+      "runs": [
+        "hygiene-touch-paths"
+      ],
       "blocks": false,
       "delegateTo": "fabric-os"
     },
     {
       "id": "PROG-50",
       "reason": "sprintProgressPct 100 >= 50",
-      "runs": ["qa-smoke", "rag-index-freshness-check"],
+      "runs": [
+        "qa-smoke",
+        "rag-index-freshness-check"
+      ],
       "blocks": false,
       "delegateTo": "fabric-os"
     },
     {
       "id": "PROG-75",
       "reason": "sprintProgressPct 100 >= 75",
-      "runs": ["five-core-partial-A1-A5"],
+      "runs": [
+        "five-core-partial-A1-A5"
+      ],
       "blocks": false,
       "delegateTo": "fabric-os"
     },
     {
       "id": "PROG-90",
       "reason": "sprintProgressPct 100 >= 90",
-      "runs": ["five-core-full", "uat-independent"],
+      "runs": [
+        "five-core-full",
+        "uat-independent"
+      ],
       "blocks": false,
       "delegateTo": "fabric-os"
     },
     {
       "id": "FORWARD-50",
       "reason": "forwardQueuePct 84.9 >= 50",
-      "runs": ["qa-smoke", "five-core-partial-A1-A5"],
+      "runs": [
+        "qa-smoke",
+        "five-core-partial-A1-A5"
+      ],
       "blocks": false,
       "delegateTo": "fabric-os"
     },
     {
       "id": "FORWARD-75",
       "reason": "forwardQueuePct 84.9 >= 75",
-      "runs": ["five-core-full", "uat-independent"],
+      "runs": [
+        "five-core-full",
+        "uat-independent"
+      ],
       "blocks": false,
       "delegateTo": "fabric-os"
     },
     {
       "id": "ROADMAP-75",
       "reason": "roadmapPct 100 >= 75",
-      "runs": ["five-core-full"],
+      "runs": [
+        "five-core-full"
+      ],
       "blocks": false,
       "delegateTo": "fabric-os"
     },
     {
       "id": "ROADMAP-90",
       "reason": "roadmapPct 100 >= 90",
-      "runs": ["five-core-exit-audit", "uat-independent"],
+      "runs": [
+        "five-core-exit-audit",
+        "uat-independent"
+      ],
       "blocks": false,
       "delegateTo": "fabric-os"
     },
     {
       "id": "BACKLOG-CLEAR",
       "reason": "backlogClear · exit witnesses green",
-      "runs": ["five-core-exit-audit", "uat-exit"],
+      "runs": [
+        "five-core-exit-audit",
+        "uat-exit"
+      ],
       "blocks": false,
       "delegateTo": "fabric-os"
     }
