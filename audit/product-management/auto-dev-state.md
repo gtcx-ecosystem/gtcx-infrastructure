@@ -79,6 +79,14 @@ last_reconciled: 2026-06-13T04:41:00.000Z
 - **Commits:** `b8b2d79` (audit witnesses) · `bed3cc3` (assurance runner) · `233f8a0` (agentic sync)
 - **SECAS / assurance:** unchanged — `awaiting_vendor_report` · ingest pre-window PASS · `fabric:assurance:check` exit **0**
 
+## Session EXECUTE reconcile (2026-06-13 — cycle 2)
+
+- **Trace:** `da87eb83-46da-497d-a2f1-77b84422b1ad` (P22 resume SECAS-S2-01)
+- **Commands:** full acceptance bundle exit **0** · synthetic ingest dry-run PASS
+- **Witness commit:** `15171b4` — pre-window bundle refreshed
+- **Bridge:** `ecosystem:secas:rollup:write` **8/8 PASS**
+- **Phase:** `awaiting_vendor_report` · calendar gate post **2026-06-21**
+
 ## Session EXECUTE reconcile (2026-06-13)
 
 - **Trace:** `53a37f7f-6e06-462a-baca-00d8dcf87c9b` (P22 resume SECAS-S2-01)
