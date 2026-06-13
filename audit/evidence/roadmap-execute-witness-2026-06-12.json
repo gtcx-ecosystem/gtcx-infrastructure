@@ -2,7 +2,7 @@
   "schema": "gtcx.roadmapExecuteWitness.v1",
   "repo": "fabric-os",
   "mode": "execute_roadmap",
-  "witnessedAt": "2026-06-13T00:40:00.000Z",
+  "witnessedAt": "2026-06-13T04:42:00.000Z",
   "automatableExhausted": true,
   "automatableExhaustNote": "SECAS-S2 calendar gate + markets-os brokerage ECS deploy; fabric PNV live complete",
   "p22Head": "SECAS-S2-01",
@@ -56,7 +56,9 @@
     "execute_roadmap cycle @ 2026-06-12T20:35Z — gates unchanged PASS; no fabric implementation remaining",
     "fabric:assurance:run:write @ 2026-06-12T21:04Z — FAIL uat-exit witness (bridge-os); SECAS pre-window still PASS",
     "execute_roadmap @ 2026-06-12T21:32Z — BACKLOG-CLEAR unblocked; assurance:check PASS; SECAS PASS; GT partial",
-    "execute_roadmap @ 2026-06-12T21:58Z — bridge UAT witness refreshed; assurance:check PASS restored"
+    "execute_roadmap @ 2026-06-12T21:58Z — bridge UAT witness refreshed; assurance:check PASS restored",
+    "execute_roadmap @ 2026-06-13T04:40Z — GT probe PASS (fabric + markets); secas:window:readiness fleet 3/3; fabric:assurance:run:write PASS",
+    "bridge ecosystem:secas:witness:rollup PASS — phase awaiting_vendor_report"
   ],
   "assurance": {
     "fabricAssuranceCheck": "pass",
@@ -72,7 +74,7 @@
     "marketsSm": "done",
     "image": "done_ecr_e7525dfa",
     "verifyRoute": "live_409_rejection",
-    "goldenTransaction": "blocked_markets_brokerage_not_on_cluster"
+    "goldenTransaction": "pass_fabric_and_markets_2026-06-13"
   },
   "classSDeferred": [
     {
