@@ -73,6 +73,14 @@ last_reconciled: 2026-06-12T14:45:00.000Z
 - **Audits:** five-core composite **100/100** · validate-all **55/55** · fabric-assurance **PASS** (`dce881e` + MCP pointer)
 - **PNV:** verifier **live** · GT blocked on **markets-os brokerage staging deploy** — P24 `to-markets-os-brokerage-staging-gt-trace-2026-06-12.md`
 
+## Session EXECUTE reconcile (2026-06-13)
+
+- **Trace:** `dd92610a-aac7-497e-8a81-75589ab5ce78`
+- **Commands:** `secas:window:readiness:write` exit **0** · `secas:cards:check:write` exit **0** · `secas:pentest:ingest:check:write` exit **0** (report gate expected FAIL pre-vendor)
+- **Fleet:** cross-repo-health PASS **3/3 required** @ 2026-06-13T00:21Z (compliance-gateway optional 525)
+- **Bridge:** `ecosystem:secas:witness:rollup:check:write` **8/8 PASS** · `ecosystem:status:report:write` refreshed
+- **Phase:** `awaiting_vendor_report` until post **2026-06-21** window · ingest Class A approved
+
 ## Evidence
 
 - `audit/evidence/pen-test-window-2026-06-10.json` — window scheduled
