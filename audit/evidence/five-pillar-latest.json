@@ -2,9 +2,9 @@
   "schema": "gtcx://audit/five-pillar/v1",
   "repo": "fabric-os",
   "date": "2026-06-13",
-  "composite100": 50,
+  "composite100": 59,
   "composite100Raw": 69,
-  "trustCap100": 50,
+  "trustCap100": 59,
   "compositeMode": "partial-unlock",
   "fullCompositeEligible": false,
   "unlockThreshold100": 85,
@@ -1083,11 +1083,11 @@
       "rubricVersion": "1.0.0"
     },
     "trustAndSafety": {
-      "score100": 50,
+      "score100": 59,
       "published": true,
       "metrics": {
         "evidence-coverage": {
-          "score100": 67,
+          "score100": 50,
           "weight": 25,
           "signals": {
             "hasAuditOutput": false,
@@ -1098,7 +1098,7 @@
           }
         },
         "confidence-grade": {
-          "score100": 25,
+          "score100": 95,
           "weight": 20,
           "grades": [],
           "publishBlocked": false

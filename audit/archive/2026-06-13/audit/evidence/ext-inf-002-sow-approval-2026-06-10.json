@@ -1,0 +1,24 @@
+{
+  "schema": "gtcx.sovereignApproval.v1",
+  "id": "EXT-INF-002",
+  "storyId": "S2-13",
+  "title": "Live-stack pen-test vendor SOW",
+  "authorityClass": "S",
+  "approvedAt": "2026-06-10T12:00:00.000Z",
+  "approvedBy": "human:sovereign",
+  "approvalChannel": "cursor-session",
+  "approvalUtterance": "approve",
+  "scope": "Authorize pen-test vendor SOW signature and kickoff against post-DAAS-S1 staging substrate",
+  "intakeArtifacts": [
+    "audit/pen-test-intake-evidence-2026-05-31.md",
+    "audit/pen-test-rfp-2026.md",
+    "audit/pen-test-scope-2026.md",
+    "docs/operations/coordination/outbound/from-fabric-os-ext-inf-002-pack-ack-2026-06-07.md"
+  ],
+  "postApprovalActions": [
+    "Security/procurement: execute vendor SOW countersign",
+    "gtcx-infrastructure: schedule live-stack pen-test window after vendor ack"
+  ],
+  "repo": "gtcx-infrastructure",
+  "commitAtApproval": "47d099d"
+}

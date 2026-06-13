@@ -4,12 +4,12 @@
   "storyId": "SECAS-S2-01",
   "frictionId": "SEC-PENTEST-01",
   "program": "INIT-GTCX-INFRA-SECAS",
-  "status": "blocked_pre_window",
-  "preparedAt": "2026-06-13T14:53:37.532Z",
+  "status": "ready_for_window",
+  "preparedAt": "2026-06-13T14:55:45.211Z",
   "fleetHealth": {
     "result": "PASS",
     "servicesHealthy": "3/3 required",
-    "probedAt": "2026-06-13T14:53:37.532Z",
+    "probedAt": "2026-06-13T14:55:45.211Z",
     "witness": "audit/evidence/pen-test-pre-window-fleet-health-2026-06-12.json"
   },
   "preparedBy": "agent:fabric-os",
@@ -29,7 +29,7 @@
   "checks": {
     "friction": 0,
     "approval": 0,
-    "ingest": 1,
+    "ingest": 0,
     "fleet": 0
   },
   "dayOfChecklist": [
