@@ -2,7 +2,7 @@
   "schema": "gtcx://fabric-os/secas-cards-check/v1",
   "protocol": "P42-SECURITY-AS-A-SERVICE",
   "sprint": "SECAS-S3",
-  "checkedAt": "2026-06-13T06:03:06.649Z",
+  "checkedAt": "2026-06-13T06:14:17.166Z",
   "owner": "fabric-os",
   "gates": {
     "index": {
