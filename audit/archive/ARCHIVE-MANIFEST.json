@@ -294,7 +294,13 @@
       "to": "audit/archive/2026-06-12/audit/legacy-repo-id-scan-2026-06-12.md",
       "reason": "stale-dated-active-tree",
       "at": "2026-06-12T22:02:46.649Z"
+    },
+    {
+      "from": "audit/gtm-audit-2026-06-05.md",
+      "to": "audit/archive/2026-06-13/audit/gtm-audit-2026-06-05.md",
+      "reason": "dated-sibling-when-latest-exists",
+      "at": "2026-06-13T04:43:15.327Z"
     }
   ],
-  "updated": "2026-06-12T22:02:46.649Z"
+  "updated": "2026-06-13T04:43:15.327Z"
 }
