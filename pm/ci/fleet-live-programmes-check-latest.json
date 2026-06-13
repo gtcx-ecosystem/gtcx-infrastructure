@@ -1,0 +1,9 @@
+{
+  "schema": "gtcx://bridge-os/fleet-live-programmes-check/v1",
+  "checkedAt": "2026-06-13T04:33:08.412Z",
+  "ok": false,
+  "programmeCount": 0,
+  "p22FleetProgrammes": 0,
+  "recommendedOwner": null,
+  "errors": ["missing pm/spec/fleet-live-programmes.json", "agent:next-work exit 1"]
+}

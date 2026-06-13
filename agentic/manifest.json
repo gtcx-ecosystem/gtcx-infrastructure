@@ -3,7 +3,7 @@
   "schema": "gtcx.agentic.bridge.v1",
   "repo": "fabric-os",
   "role": "thin-bridge",
-  "updated": "2026-06-09",
+  "updated": "2026-06-12",
   "baseline": {
     "provider": "baseline-os",
     "resolvedAt": "../baseline-os",
@@ -13,21 +13,44 @@
       "next": "pnpm next",
       "gates": "pnpm gates",
       "hub": "pnpm hub"
-    }
+    },
+    "mnemonic": "session → next → gates → hub"
   },
   "bridge-os": {
     "provider": "bridge-os",
     "resolvedAt": "../bridge-os",
     "role": "ecosystem-program-office",
     "verbs": {
+      "zenhub:status": "pnpm --dir ../bridge-os ecosystem:zenhub:status",
+      "zenhub:plan": "pnpm --dir ../bridge-os ecosystem:zenhub:plan",
+      "zenhub:apply": "pnpm --dir ../bridge-os ecosystem:zenhub:apply",
       "ecosystem:p35:check": "pnpm --dir ../bridge-os ecosystem:p35:check -- --repo fabric-os",
-      "fleet:readiness": "pnpm --dir ../bridge-os ecosystem:fleet:readiness -- --repo fabric-os"
+      "fleet:readiness": "pnpm --dir ../bridge-os ecosystem:fleet:readiness -- --repo fabric-os",
+      "skills:rollout": "pnpm --dir ../bridge-os ecosystem:skills:rollout -- --repo fabric-os",
+      "cursor:rollout": "pnpm --dir ../bridge-os ecosystem:cursor:rollout -- --repo fabric-os"
     }
+  },
+  "skills": {
+    "provider": "bridge-os",
+    "resolvedAt": "../bridge-os",
+    "source": "../bridge-os/docs/skills",
+    "cursorRules": ".cursor/rules/skill-*.mdc",
+    "claudeCode": ".claude/skills/",
+    "verbs": {
+      "build": "pnpm --dir ../bridge-os skills:build",
+      "build:check": "pnpm --dir ../bridge-os skills:build:check"
+    },
+    "precedence": "GTCX P22/P26/P27/P28 win over skill HARD-GATEs — see ../bridge-os/docs/skills/README.md#precedence-vs-gtcx-protocols"
   },
   "directiveSources": {
     "primary": "pm/",
     "ecosystemPlan": "../bridge-os/pm/",
     "rejected": ["fat-hub-in-product-repo"]
+  },
+  "integrationCatalogs": {
+    "bridge-os": "../bridge-os",
+    "gtcx-os": "../gtcx-os",
+    "scope": "bridge-os = coordination + ZenHub SoR; fabric-os = infra assurance runner"
   },
   "protocols": {
     "P22": "work selection from local pm/backlog.json",

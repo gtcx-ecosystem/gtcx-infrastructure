@@ -5,11 +5,7 @@
   "updated": "2026-06-09",
   "description": "P35 v5 closed-world repo root — REQUIRED / ALLOWED / PERMISSIBLE_ON_APPROVAL / FORBIDDEN. Spec: bridge-os/docs/root-allowlist-spec-v5.md",
   "migration_tier": "stable",
-  "required_files": [
-    "README.md",
-    "AGENTS.md",
-    "CHANGELOG.md"
-  ],
+  "required_files": ["README.md", "AGENTS.md", "CHANGELOG.md"],
   "required_directories": [
     "archive",
     "docs",
@@ -36,6 +32,7 @@
     ".prettierrc",
     ".size-limit.json",
     "CHANGELOG.md",
+    "baseline.config.json",
     "Cargo.toml",
     "LICENSE",
     "Makefile",
@@ -78,14 +75,8 @@
     ".turbo",
     ".changeset"
   ],
-  "ignored_prefixes": [
-    ".",
-    "node_modules"
-  ],
-  "ignored_exact": [
-    "node_modules",
-    "tsconfig.tsbuildinfo"
-  ],
+  "ignored_prefixes": [".", "node_modules"],
+  "ignored_exact": ["node_modules", "tsconfig.tsbuildinfo"],
   "permissible_on_approval": {
     "00-archive": "Transitional — relocate per P35 v5",
     "01-docs": "Transitional — relocate per P35 v5",
@@ -127,11 +118,7 @@
     ".eslintrc.json": "Use config/toolchain/eslint.config.js + root re-export (P35 toolchain).",
     ".eslintignore": "Use eslint.config.js ignores block (P35 toolchain)."
   },
-  "forbidden_name_prefixes": [
-    "IMG_",
-    "Screenshot",
-    "Untitled"
-  ],
+  "forbidden_name_prefixes": ["IMG_", "Screenshot", "Untitled"],
   "human_owned_paths": {
     "_delete": {
       "owner": "repository maintainer (manual)",

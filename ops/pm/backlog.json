@@ -1,7 +1,7 @@
 {
   "$schema": "gtcx://workspace/pm-backlog/v1",
   "repo": "fabric-os",
-  "updated": "2026-06-12",
+  "updated": "2026-06-13",
   "syncSource": "pnpm pm:sync",
   "active": {
     "storyId": "SECAS-S2-01",
