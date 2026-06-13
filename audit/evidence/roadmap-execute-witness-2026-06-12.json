@@ -2,7 +2,7 @@
   "schema": "gtcx.roadmapExecuteWitness.v1",
   "repo": "fabric-os",
   "mode": "execute_roadmap",
-  "witnessedAt": "2026-06-13T14:43:42.000Z",
+  "witnessedAt": "2026-06-13T14:55:00.000Z",
   "automatableExhausted": true,
   "automatableExhaustNote": "SECAS-S2 calendar gate + markets-os brokerage ECS deploy; fabric PNV live complete",
   "p22Head": "SECAS-S2-01",
@@ -65,7 +65,9 @@
     "execute_roadmap @ 2026-06-13T06:04Z — SECAS friction/approval/cards/ingest/window PASS; lanes + daas + fabric:assurance:check PASS; bridge rollup PASS; phase awaiting_vendor_report unchanged",
     "execute_roadmap @ 2026-06-13T06:15Z — SECAS friction/approval/cards/ingest/window PASS; lanes + daas + fabric:assurance:check PASS; bridge rollup PASS; phase awaiting_vendor_report unchanged",
     "execute_roadmap @ 2026-06-13T06:37Z — SECAS friction/approval/cards/ingest/window PASS; lanes + daas + fabric:assurance:check PASS; bridge rollup PASS; phase awaiting_vendor_report unchanged",
-    "execute_roadmap @ 2026-06-13T07:10Z — SECAS bundle PASS; bridge intake rollup sync + fleet UAT refresh; fabric:assurance:run:write PASS; regression 8/8; calendar gate unchanged"
+    "execute_roadmap @ 2026-06-13T07:10Z — SECAS bundle PASS; bridge intake rollup sync + fleet UAT refresh; fabric:assurance:run:write PASS; regression 8/8; calendar gate unchanged",
+    "execute_roadmap @ 2026-06-13T14:43Z — SECAS friction/approval/cards/ingest/window PASS; lanes + daas + fabric:assurance:check PASS; bridge rollup + regression 8/8 PASS; phase awaiting_vendor_report unchanged",
+    "execute_roadmap @ 2026-06-13T14:55Z — SECAS friction/approval/cards/ingest/window PASS; lanes + daas + fabric:assurance:check PASS (blocking none); bridge rollup + regression 8/8 PASS; phase awaiting_vendor_report unchanged"
   ],
   "assurance": {
     "fabricAssuranceCheck": "pass",
