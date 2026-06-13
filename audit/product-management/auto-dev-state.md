@@ -19,7 +19,7 @@ last_reconciled: 2026-06-13T04:41:00.000Z
 
 - **ID:** SECAS-S2
 - **Status:** in_progress (3/4 UAT — pre-window gates green 2026-06-13)
-- **Reason:** Pen-test window **2026-06-17..21**; vendor report ingest pending (`awaiting_vendor_report`); pre-window cycle PASS.
+- **Reason:** Pen-test window **2026-06-17..21**; vendor report ingest pending (`awaiting_vendor_report`); execute_roadmap witness cycle PASS @ 2026-06-13T05:30Z.
 
 ## Next Work
 
