@@ -73,6 +73,12 @@ last_reconciled: 2026-06-13T04:41:00.000Z
 - **Audits:** five-core composite **100/100** · validate-all **55/55** · fabric-assurance **PASS** (`dce881e` + MCP pointer)
 - **PNV:** verifier **live** · GT blocked on **markets-os brokerage staging deploy** — P24 `to-markets-os-brokerage-staging-gt-trace-2026-06-12.md`
 
+## Audit WIP settlement (2026-06-13)
+
+- **Scope:** five-pillar witnesses, master-audit archive move, legacy repo-id audit retirement — **not** SECAS-S2-01 remediation
+- **Commits:** `b8b2d79` (audit witnesses) · `bed3cc3` (assurance runner) · `233f8a0` (agentic sync)
+- **SECAS / assurance:** unchanged — `awaiting_vendor_report` · ingest pre-window PASS · `fabric:assurance:check` exit **0**
+
 ## Session EXECUTE reconcile (2026-06-13)
 
 - **Trace:** `53a37f7f-6e06-462a-baca-00d8dcf87c9b` (P22 resume SECAS-S2-01)
