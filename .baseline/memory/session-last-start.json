@@ -1,12 +1,12 @@
 {
-  "startedAt": "2026-06-13T05:26:32.248Z",
+  "startedAt": "2026-06-13T06:21:02.398Z",
   "repo": "fabric-os",
   "ssot": "baseline-os/platform/scripts/ecosystem/repo-session-core.mjs",
   "agentTrace": {
-    "id": "gtcx-agent-c3ca4bb0-9af6-4cf2-9574-e860fee18292",
+    "id": "gtcx-agent-e6254d7c-f54c-4cd1-8c87-5ae90e21c0fd",
     "header": "x-gtcx-agent-trace-id",
     "otelAttribute": "gtcx.agent_trace_id",
-    "traceparent": "00-225d394f89c0a9c57e184ec17df320d0-bd065a5bd7f6b794-01"
+    "traceparent": "00-34ac57ad4c5d829e815f9ea3d0006406-42abb545a2c09217-01"
   },
   "nextWork": {
     "protocol": "22-agent-work-selection",
@@ -20,8 +20,8 @@
       "bridgeUrl": "https://github.com/gtcx-ecosystem/gtcx-protocols/blob/main/01-docs/04-ops/coordination/ecosystem-persona-bridge-2026-06.md",
       "instruction": "Read persona doc before work; re-select persona on task switch (Phase 4)."
     },
-    "traceId": "744ac4ae-3e8e-4ed5-93ad-9384de606b5f",
-    "coordinationHint": "Append cross-repo-agent-log row with trace_id=744ac4ae-3e8e-4ed5-93ad-9384de606b5f",
+    "traceId": "b4fbdf86-a17d-437f-b935-af3700f7af3c",
+    "coordinationHint": "Append cross-repo-agent-log row with trace_id=b4fbdf86-a17d-437f-b935-af3700f7af3c",
     "ok": true,
     "backlogClear": false,
     "next": {
@@ -99,7 +99,7 @@
       "normativeDoc": "01-docs/04-ops/agent-launch-focus.md",
       "hubDoc": "https://github.com/gtcx-ecosystem/gtcx-core/blob/main/01-docs/04-ops/agent-launch-focus.md",
       "statePath": ".baseline/launch-focus.json",
-      "provisionedAt": "2026-06-13T05:26:32.242Z",
+      "provisionedAt": "2026-06-13T06:21:02.391Z",
       "repo": "fabric-os",
       "northStar": {
         "outcome": "Live sovereign pilot substrate (Wire #2, staging/testnet, hub acks, pen-test path) so apps and GTM can close GR-T2 deals.",
@@ -403,6 +403,6 @@
       "applies": false
     }
   },
-  "gitChanged": 29,
+  "gitChanged": 20,
   "authorityClass": "R"
 }
