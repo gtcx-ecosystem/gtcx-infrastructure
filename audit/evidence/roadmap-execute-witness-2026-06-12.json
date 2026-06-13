@@ -2,7 +2,7 @@
   "schema": "gtcx.roadmapExecuteWitness.v1",
   "repo": "fabric-os",
   "mode": "execute_roadmap",
-  "witnessedAt": "2026-06-13T04:42:00.000Z",
+  "witnessedAt": "2026-06-13T04:55:00.000Z",
   "automatableExhausted": true,
   "automatableExhaustNote": "SECAS-S2 calendar gate + markets-os brokerage ECS deploy; fabric PNV live complete",
   "p22Head": "SECAS-S2-01",
@@ -58,7 +58,8 @@
     "execute_roadmap @ 2026-06-12T21:32Z — BACKLOG-CLEAR unblocked; assurance:check PASS; SECAS PASS; GT partial",
     "execute_roadmap @ 2026-06-12T21:58Z — bridge UAT witness refreshed; assurance:check PASS restored",
     "execute_roadmap @ 2026-06-13T04:40Z — GT probe PASS (fabric + markets); secas:window:readiness fleet 3/3; fabric:assurance:run:write PASS",
-    "bridge ecosystem:secas:witness:rollup PASS — phase awaiting_vendor_report"
+    "bridge ecosystem:secas:witness:rollup PASS — phase awaiting_vendor_report",
+    "execute_roadmap @ 2026-06-13T04:55Z — fleet fan-out PASS (fabric SECAS + bridge ER-5-03 + baseline ceiling); P22 vendor isolation fix verified; calendar gate unchanged"
   ],
   "assurance": {
     "fabricAssuranceCheck": "pass",
